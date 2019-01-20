@@ -1,0 +1,99 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+apply plugin: 'forge'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                "$projectDir/src/main/java",
+                "$projectDir/src/api",
+                "$projectDir/src/forcefields",
+                "$projectDir/src/nuclear"
+            ]
+            include '**/*.java'
+        }
+
+        resources {
+            srcDirs = [
+                 "$projectDir/src/main/resources"
+            ]
+        }
+    }
+}
+version="1.0.0.0"
+group= "physica"
+archivesBaseName = "PhysicaAll"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+libsDirName = "../output"
+distsDirName = "../output"
+
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "eclipse"
+	
+	replace "@VERSION@", project.version
+    replaceIn "References.java"
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', includes: ['*.jar']) 
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+task coreJar(type: Jar) {
+    baseName = 'PhysicaCore'
+
+    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
+        exclude 'physica/nuclear/**', 'physica/forcefield/**'
+    }
+}
+
+task nuclearJar(type: Jar) {
+    baseName = 'PhysicaNuclearPhysics'
+
+    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
+        include 'physica/nuclear/**'
+    }
+}
+
+task forcefieldJar(type: Jar) {
+    baseName = 'PhysicaForcefield'
+
+    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
+        include 'physica/forcefield/**'
+    }
+}
+
+coreJar.dependsOn('reobf')
+nuclearJar.dependsOn('reobf')
+forcefieldJar.dependsOn('reobf')

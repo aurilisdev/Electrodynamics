@@ -1,0 +1,38 @@
+{
+  "block.accelerator": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "accelerator",
+        "stream": false
+      }
+    ]
+  },
+  "block.turbine": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "turbine",
+        "stream": false
+      }
+    ]
+  },
+  "block.fission_reactor": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "fission_reactor",
+        "stream": false
+      }
+    ]
+  },
+  "block.siren": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "siren",
+        "stream": false
+      }
+    ]
+  }
+}

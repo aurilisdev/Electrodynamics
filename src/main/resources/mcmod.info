@@ -1,0 +1,46 @@
+[
+{
+  "modid": "physica",
+  "name": "Physica",
+  "description": "Physica is a Minecraft Mod focused around science and technology that introduces many new machines/blocks and items into the game.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/Aurilisdev/Physica",
+  "updateUrl": "https://github.com/Aurilisdev/Physica/releases",
+  "authorList": ["aurilisdev"],
+  "credits": "Thanks to everyone who has contributed to this project.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+},
+{
+  "modid": "physicaforcefields",
+  "name": "PhysicaForcefields",
+  "description": "PhysicaForcefields is a Minecraft Mod focused around science and technology that introduces many new machines/blocks and items into the game.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/Aurilisdev/Physica",
+  "updateUrl": "https://github.com/Aurilisdev/Physica/releases",
+  "authorList": ["aurilisdev"],
+  "parent": "physica",
+  "credits": "Thanks to everyone who has contributed to this project.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+},
+{
+  "modid": "physicanuclearphysics",
+  "name": "PhysicaNuclearPhysics",
+  "description": "PhysicaNuclearPhysics is a Minecraft Mod focused around science and technology that introduces many new machines/blocks and items into the game.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/Aurilisdev/Physica",
+  "updateUrl": "https://github.com/Aurilisdev/Physica/releases",
+  "authorList": ["aurilisdev"],
+  "parent": "physica",
+  "credits": "Thanks to everyone who has contributed to this project.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
