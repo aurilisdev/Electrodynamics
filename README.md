@@ -5,6 +5,7 @@ Physica is a Minecraft Mod focused around science and technology that introduces
 Physica has a discord where you can come chat with other Physica users, staff and the developers. Join us!
 
 Invite link: https://discordapp.com/invite/jJANcdK
+
 Please visit our official modpack containing all of Physica! http://voltzmodpack.com/
 
 ## Core Curseforge page
