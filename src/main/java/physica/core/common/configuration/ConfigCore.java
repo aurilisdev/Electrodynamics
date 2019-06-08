@@ -1,12 +1,12 @@
 package physica.core.common.configuration;
 
-import java.io.File;
-
 import net.minecraftforge.common.config.Configuration;
 import physica.CoreReferences;
 import physica.Physica;
 import physica.api.core.IContent;
 import physica.api.core.PhysicaAPI;
+
+import java.io.File;
 
 public class ConfigCore implements IContent {
 
@@ -40,7 +40,7 @@ public class ConfigCore implements IContent {
 
 		TIN_ORE_MIN_Y = configuration.getInt("tin_min_y", CATEGORY, TIN_ORE_MIN_Y, 0, 255, "Lowest y level/height that ore can spawn");
 		TIN_ORE_MAX_Y = configuration.getInt("tin_max_y", CATEGORY, TIN_ORE_MAX_Y, 0, 255, "Highest y level/height that ore can spawn");
-		TIN_ORE_COUNT = configuration.getInt("tin_chunk_count", CATEGORY, TIN_ORE_COUNT, 1, 100,
+		TIN_ORE_COUNT = configuration.getInt("tin_chunk_count", CATEGORY, TIN_ORE_COUNT, 0, 100,
 				"Max amount of ore to spawn in each chunk. " + "Actual count per chunk is a mix of randomization and conditions of the chunk itself.");
 		TIN_ORE_BRANCH_SIZE = configuration.getInt("tin_branch_size", CATEGORY, TIN_ORE_BRANCH_SIZE, 0, 100, "Amount of ore to generate per branch");
 		TIN_ORE_HARVEST_LEVEL = configuration.getInt("tin_harvest_level", CATEGORY, TIN_ORE_HARVEST_LEVEL, 0, 255,
@@ -48,7 +48,7 @@ public class ConfigCore implements IContent {
 
 		COPPER_ORE_MIN_Y = configuration.getInt("copper_min_y", CATEGORY, COPPER_ORE_MIN_Y, 0, 255, "Lowest y level/height that ore can spawn");
 		COPPER_ORE_MAX_Y = configuration.getInt("copper_max_y", CATEGORY, COPPER_ORE_MAX_Y, 0, 255, "Highest y level/height that ore can spawn");
-		COPPER_ORE_COUNT = configuration.getInt("copper_chunk_count", CATEGORY, COPPER_ORE_COUNT, 1, 100,
+		COPPER_ORE_COUNT = configuration.getInt("copper_chunk_count", CATEGORY, COPPER_ORE_COUNT, 0, 100,
 				"Max amount of ore to spawn in each chunk. " + "Actual count per chunk is a mix of randomization and conditions of the chunk itself.");
 		COPPER_ORE_BRANCH_SIZE = configuration.getInt("copper_branch_size", CATEGORY, COPPER_ORE_BRANCH_SIZE, 0, 100, "Amount of ore to generate per branch");
 		COPPER_ORE_HARVEST_LEVEL = configuration.getInt("copper_harvest_level", CATEGORY, COPPER_ORE_HARVEST_LEVEL, 0, 255,
