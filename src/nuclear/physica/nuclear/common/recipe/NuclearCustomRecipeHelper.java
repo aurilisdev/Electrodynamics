@@ -28,7 +28,7 @@ public class NuclearCustomRecipeHelper {
 
 	public static ChemicalBoilerRecipe getBoilerRecipe(Item input) {
 		for (ChemicalBoilerRecipe recipe : NuclearCustomRecipeRegister.getInstance().getBoilerRecipes()) {
-			if ((recipe.getInput() != null && recipe.getInput() == input) || (recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName()))) {
+			if (recipe.getInput() != null && recipe.getInput() == input || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName())) {
 				return recipe;
 			}
 		}
@@ -37,7 +37,7 @@ public class NuclearCustomRecipeHelper {
 
 	public static ChemicalExtractorRecipe getExtractorRecipe(Item input) {
 		for (ChemicalExtractorRecipe recipe : NuclearCustomRecipeRegister.getInstance().getExtractorRecipes()) {
-			if ((recipe.getInput() != null && recipe.getInput() == input) || (recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName()))) {
+			if (recipe.getInput() != null && recipe.getInput() == input || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName())) {
 				return recipe;
 			}
 		}
@@ -47,7 +47,7 @@ public class NuclearCustomRecipeHelper {
 	public static boolean isBoilerInput(Item input) {
 		if (input != null) {
 			for (ChemicalBoilerRecipe recipe : NuclearCustomRecipeRegister.getInstance().getBoilerRecipes()) {
-				if ((recipe.getInput() != null && recipe.getInput() == input) || (recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName()))) {
+				if (recipe.getInput() != null && recipe.getInput() == input || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName())) {
 					return true;
 				}
 			}
@@ -58,7 +58,7 @@ public class NuclearCustomRecipeHelper {
 	public static boolean isExtractorInput(Item input) {
 		if (input != null) {
 			for (ChemicalExtractorRecipe recipe : NuclearCustomRecipeRegister.getInstance().getExtractorRecipes()) {
-				if ((recipe.getInput() != null && recipe.getInput() == input) || (recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName()))) {
+				if (recipe.getInput() != null && recipe.getInput() == input || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName())) {
 					return true;
 				}
 			}

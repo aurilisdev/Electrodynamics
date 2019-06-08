@@ -64,7 +64,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	}
 
 	public int getFortronUse() {
-		int extra = (Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX)));
+		int extra = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
 		return (int) (45000.91 * extra + (hasModule("moduleUpgradeAntiHostile") ? 100000 : 0)
 				+ (hasModule("moduleUpgradeAntiFriendly") ? 100000 : 0)
 				+ (hasModule("moduleUpgradeAntiPersonnel") ? 100000 : 0)
@@ -355,7 +355,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
-		tag.setInteger("frequency", frequency);;
+		tag.setInteger("frequency", frequency);
 		super.writeToNBT(tag);
 	}
 

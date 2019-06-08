@@ -45,19 +45,19 @@ public class NeutronCaptureRecipeHandler extends NuclearRecipeHandlerBase {
 		drawTexturedModalRect(-1, 0, xOffset, yOffset, 169, 62);
 
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
-		renderFurnaceCookArrow(38 + ((118 - 38) / 2) - 3, 24, 0, 1000);
+		renderFurnaceCookArrow(38 + (118 - 38) / 2 - 3, 24, 0, 1000);
 
 		drawSlot(38, 24, false);
 		drawSlot(118, 24, false);
 		GuiDraw.drawString("Progress: " + (int) ((float) (cycleticks % TileNeutronCaptureChamber.TICKS_REQUIRED) * 100 / TileNeutronCaptureChamber.TICKS_REQUIRED) + "%",
-				38 + ((118 - 38) / 4) - 3, 10,
+				38 + (118 - 38) / 4 - 3, 10,
 				Color.GRAY.getRGB(),
 				false);
 	}
 
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
-		if (outputId.equals(getRecipeID()) || (outputId.equals("item") && results[0] instanceof ItemStack && ((ItemStack) results[0]).getItem() == NuclearItemRegister.itemTritiumCell)) {
+		if (outputId.equals(getRecipeID()) || outputId.equals("item") && results[0] instanceof ItemStack && ((ItemStack) results[0]).getItem() == NuclearItemRegister.itemTritiumCell) {
 			arecipes.add(new recipe(NuclearItemRegister.itemDeuteriumCell, NuclearItemRegister.itemTritiumCell));
 		}
 	}
@@ -65,19 +65,19 @@ public class NeutronCaptureRecipeHandler extends NuclearRecipeHandlerBase {
 	@Override
 	public void drawExtras(int recipe) {
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
-		drawProgressBar(38 + ((118 - 38) / 2) - 3, 24, 18, 15, 22, 15, TileNeutronCaptureChamber.TICKS_REQUIRED, 0);
+		drawProgressBar(38 + (118 - 38) / 2 - 3, 24, 18, 15, 22, 15, TileNeutronCaptureChamber.TICKS_REQUIRED, 0);
 	}
 
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients) {
-		if (inputId.equals(getRecipeID()) || (inputId.equals("item") && ingredients[0] instanceof ItemStack && ((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemDeuteriumCell)) {
+		if (inputId.equals(getRecipeID()) || inputId.equals("item") && ingredients[0] instanceof ItemStack && ((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemDeuteriumCell) {
 			arecipes.add(new recipe(NuclearItemRegister.itemDeuteriumCell, NuclearItemRegister.itemTritiumCell));
 		}
 	}
 
 	@Override
 	public void loadTransferRects() {
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(38 + ((118 - 38) / 2) - 3, 24, 22, 15), getRecipeID(), new Object[0]));
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(38 + (118 - 38) / 2 - 3, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override

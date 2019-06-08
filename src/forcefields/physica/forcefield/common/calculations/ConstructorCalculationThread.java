@@ -138,7 +138,7 @@ public class ConstructorCalculationThread extends Thread {
 					if (this.isInterrupted()) {
 						return;
 					}
-					boolean isEdge = (j == yPos || j == yNeg) || ((i == xNeg || i == xPos) && j >= yNeg && j <= yPos || (k == zNeg || k == zPos) && j >= yNeg && j <= yPos);
+					boolean isEdge = j == yPos || j == yNeg || (i == xNeg || i == xPos) && j >= yNeg && j <= yPos || (k == zNeg || k == zPos) && j >= yNeg && j <= yPos;
 					if (interior != isEdge) {
 						constructor.calculatedFieldPoints.add(new BlockLocation(i, j, k));
 					}

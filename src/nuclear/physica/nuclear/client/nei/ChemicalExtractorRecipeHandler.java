@@ -65,7 +65,7 @@ public class ChemicalExtractorRecipeHandler extends NuclearRecipeHandlerBase {
 		drawTexturedModalRect(-1, 0, xOffset, yOffset, 169, 62);
 
 		drawFluidTank(8, 8,
-				new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - (cycleticks % TileChemicalExtractor.TICKS_REQUIRED) / (float) TileChemicalExtractor.TICKS_REQUIRED))));
+				new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - cycleticks % TileChemicalExtractor.TICKS_REQUIRED / (float) TileChemicalExtractor.TICKS_REQUIRED))));
 		renderFurnaceCookArrow(36, 24, 0, TileChemicalExtractor.TICKS_REQUIRED);
 
 		drawSlot(131, 21, true);

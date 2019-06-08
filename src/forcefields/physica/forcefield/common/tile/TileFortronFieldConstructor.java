@@ -1,6 +1,5 @@
 package physica.forcefield.common.tile;
 
-import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +27,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 import physica.CoreReferences;
@@ -128,7 +126,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		if (fortronUse == 0) {
 			return;
 		}
-		this.healthLost += (amount / fortronUse) * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
+		this.healthLost += amount / fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
 		if (this.healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS) {
 			destroyField(true);
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -170,7 +168,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				ItemStack stack = getStackInSlot(i);
 				if (stack != null) {
 					if (stack.getItem() == ForcefieldItemRegister.itemMetaManipulationModule || stack.getItem() == ForcefieldItemRegister.itemMetaShapeModule
-							|| (stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule) && (stack.getItemDamage() >= 3 && stack.getItemDamage() <= 6)) {
+							|| stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule && stack.getItemDamage() >= 3 && stack.getItemDamage() <= 6) {
 						ret += stack.stackSize;
 					}
 				}
@@ -264,7 +262,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				int zNeg = cachedInformation[5];
 				yPos += yCoordShifted() - yNeg;
 				if (y >= yNeg && y <= yPos) {
-					double diff = (y - yNeg) + 1;
+					double diff = y - yNeg + 1;
 					xNeg += diff;
 					xPos -= diff;
 					zNeg += diff;
@@ -551,7 +549,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setInteger("frequency", frequency);;
+		tag.setInteger("frequency", frequency);
 		tag.setBoolean("isCalculating", isCalculating);
 		tag.setBoolean("isCurrentlyConstructing", isCurrentlyConstructing);
 		tag.setBoolean("isDestroying", isDestroying);

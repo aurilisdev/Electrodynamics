@@ -56,7 +56,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 		ForgeDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor) {
-			if (getStackInSlot(SLOT_INPUT) == null || (getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit())) {
+			if (getStackInSlot(SLOT_INPUT) == null || getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit()) {
 				return false;
 			}
 			return ((TileFissionReactor) tile).hasFuelRod();
@@ -105,7 +105,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return slot == SLOT_INPUT ? (stack != null && stack.getItem() == NuclearItemRegister.itemDeuteriumCell) : false;
+		return slot == SLOT_INPUT ? stack != null && stack.getItem() == NuclearItemRegister.itemDeuteriumCell : false;
 	}
 
 	@Override

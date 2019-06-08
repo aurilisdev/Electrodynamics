@@ -66,7 +66,7 @@ public class ChemicalBoilerRecipeHandler extends NuclearRecipeHandlerBase {
 		drawTexturedModalRect(-1, 0, xOffset, yOffset, 169, 62);
 
 		drawFluidTank(8, 8,
-				new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - (cycleticks % TileChemicalBoiler.TICKS_REQUIRED) / (float) TileChemicalBoiler.TICKS_REQUIRED))));
+				new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - cycleticks % TileChemicalBoiler.TICKS_REQUIRED / (float) TileChemicalBoiler.TICKS_REQUIRED))));
 		drawFluidTank(145, 8, new FluidStack(NuclearFluidRegister.LIQUID_HE, theRecipe.hexaAmount));
 
 		renderFurnaceCookArrow(30, 24, 0, 1000 / 2);

@@ -73,52 +73,52 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 
 						boolean vanilla = itemStack.getItem() == Items.dye;
 						int damage = itemStack.getItemDamage();
-						if ((vanilla && damage == 0) || defaultDisplayName.contains("black")) {
+						if (vanilla && damage == 0 || defaultDisplayName.contains("black")) {
 							color = Color.BLACK.brighter().getRGB();
 							colorName = "black";
-						} else if ((vanilla && damage == 1) || defaultDisplayName.contains("red")) {
+						} else if (vanilla && damage == 1 || defaultDisplayName.contains("red")) {
 							color = Color.RED.getRGB();
 							colorName = "red";
-						} else if ((vanilla && damage == 2) || defaultDisplayName.contains("green")) {
+						} else if (vanilla && damage == 2 || defaultDisplayName.contains("green")) {
 							color = Color.GREEN.darker().darker().getRGB();
 							colorName = "green";
-						} else if ((vanilla && damage == 3) || defaultDisplayName.contains("brown")) {
+						} else if (vanilla && damage == 3 || defaultDisplayName.contains("brown")) {
 							color = new Color(255, 255, 0).getRGB();
 							colorName = "brown";
-						} else if ((vanilla && damage == 4) || defaultDisplayName.contains("blue")) {
+						} else if (vanilla && damage == 4 || defaultDisplayName.contains("blue")) {
 							color = Color.BLUE.brighter().brighter().brighter().brighter().getRGB();
 							colorName = "blue";
-						} else if ((vanilla && damage == 5) || defaultDisplayName.contains("purple")) {
+						} else if (vanilla && damage == 5 || defaultDisplayName.contains("purple")) {
 							color = Color.MAGENTA.darker().darker().getRGB();
 							colorName = "purple";
-						} else if ((vanilla && damage == 6) || defaultDisplayName.contains("cyan")) {
+						} else if (vanilla && damage == 6 || defaultDisplayName.contains("cyan")) {
 							color = Color.CYAN.darker().getRGB();
 							colorName = "cyan";
-						} else if ((vanilla && damage == 7) || defaultDisplayName.contains("light gray")) {
+						} else if (vanilla && damage == 7 || defaultDisplayName.contains("light gray")) {
 							color = Color.LIGHT_GRAY.getRGB();
 							colorName = "light gray";
-						} else if ((vanilla && damage == 8) || defaultDisplayName.contains("gray")) {
+						} else if (vanilla && damage == 8 || defaultDisplayName.contains("gray")) {
 							color = Color.GRAY.getRGB();
 							colorName = "gray";
-						} else if ((vanilla && damage == 9) || defaultDisplayName.contains("pink")) {
+						} else if (vanilla && damage == 9 || defaultDisplayName.contains("pink")) {
 							color = Color.PINK.getRGB();
 							colorName = "pink";
-						} else if ((vanilla && damage == 10) || defaultDisplayName.contains("lime")) {
+						} else if (vanilla && damage == 10 || defaultDisplayName.contains("lime")) {
 							color = Color.GREEN.brighter().getRGB();
 							colorName = "green";
-						} else if ((vanilla && damage == 11) || defaultDisplayName.contains("yellow")) {
+						} else if (vanilla && damage == 11 || defaultDisplayName.contains("yellow")) {
 							color = Color.YELLOW.getRGB();
 							colorName = "yellow";
-						} else if ((vanilla && damage == 12) || defaultDisplayName.contains("default")) {
+						} else if (vanilla && damage == 12 || defaultDisplayName.contains("default")) {
 							color = PhysicaForcefields.DEFAULT_COLOR;
 							colorName = "default";
-						} else if ((vanilla && damage == 13) || defaultDisplayName.contains("magenta")) {
+						} else if (vanilla && damage == 13 || defaultDisplayName.contains("magenta")) {
 							color = Color.MAGENTA.getRGB();
 							colorName = "magenta";
-						} else if ((vanilla && damage == 14) || defaultDisplayName.contains("orange")) {
+						} else if (vanilla && damage == 14 || defaultDisplayName.contains("orange")) {
 							color = Color.ORANGE.getRGB();
 							colorName = "orange";
-						} else if ((vanilla && damage == 15) || defaultDisplayName.contains("white")) {
+						} else if (vanilla && damage == 15 || defaultDisplayName.contains("white")) {
 							color = super.colorMultiplier(world, x, y, z);
 							colorName = "white";
 						}

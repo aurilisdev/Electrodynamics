@@ -28,6 +28,6 @@ public class GuiNeutronCaptureChamber extends GuiContainerBase<TileNeutronCaptur
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
-		renderFurnaceCookArrow(38 + ((118 - 38) / 2) - 3, 36, host.getOperatingTicks(), TileNeutronCaptureChamber.TICKS_REQUIRED);
+		renderFurnaceCookArrow(38 + (118 - 38) / 2 - 3, 36, host.getOperatingTicks(), TileNeutronCaptureChamber.TICKS_REQUIRED);
 	}
 }

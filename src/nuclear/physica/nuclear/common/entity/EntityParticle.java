@@ -115,7 +115,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 				ForgeChunkManager.forceChunk(updateTicket, new ChunkCoordIntPair((int) posX >> 4, (int) posZ >> 4));
 			}
 			if (ticksExisted % 10 == 0) {
-				worldObj.playSound(posX, posY, posZ, CoreReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + (0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED))),
+				worldObj.playSound(posX, posY, posZ, CoreReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)),
 						true);
 			}
 			double acceleration = 0.002;

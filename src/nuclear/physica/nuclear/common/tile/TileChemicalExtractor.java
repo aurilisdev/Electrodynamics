@@ -75,7 +75,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input.getItem());
 			if (recipe != null) {
 				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null
-						|| (output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())) {
+						|| output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize()) {
 					return true;
 				}
 			}
@@ -147,8 +147,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return slot != SLOT_OUTPUT && (stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem
-				: slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack.getItem())));
+		return slot != SLOT_OUTPUT && stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem
+				: slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack.getItem()));
 	}
 
 	@Override

@@ -86,6 +86,6 @@ public class TileFortronField extends TileBase {
 
 	@Override
 	public int hashCode() {
-		return xCoord * (2 * yCoord) * zCoord;
+		return xCoord * 2 * yCoord * zCoord;
 	}
 }

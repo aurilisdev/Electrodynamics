@@ -62,7 +62,7 @@ public class CentrifugeRecipeHandler extends NuclearRecipeHandlerBase {
 		drawSlot(131, 24, true);
 		drawSlot(81, 24, false);
 		drawSlot(101, 24, false);
-		String text = (((recipe) arecipes.get(i)).chance * 100) + "% Chance";
+		String text = ((recipe) arecipes.get(i)).chance * 100 + "% Chance";
 		drawString(text, 81, 45, Color.GRAY.getRGB(), false);
 	}
 

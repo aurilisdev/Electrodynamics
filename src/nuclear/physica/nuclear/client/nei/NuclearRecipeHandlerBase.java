@@ -109,10 +109,10 @@ public class NuclearRecipeHandlerBase extends TemplateRecipeHandler {
 
 	public void drawDoubleProgressBar(int x, int y, int tx, int ty, int w, int h, int ticks, int direction, boolean first) {
 		if (first) {
-			this.drawProgressBar(x, y, tx, ty, w, h, (float) (Math.min(ticks / 2, this.cycleticks % ticks)) / (float) (ticks / 2), direction);
+			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.min(ticks / 2, this.cycleticks % ticks) / (float) (ticks / 2), direction);
 
 		} else {
-			this.drawProgressBar(x, y, tx, ty, w, h, (float) (Math.max(0, (this.cycleticks % ticks) - ticks / 2)) / (float) (ticks / 2), direction);
+			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.max(0, this.cycleticks % ticks - ticks / 2) / (float) (ticks / 2), direction);
 		}
 	}
 }
