@@ -39,7 +39,7 @@ public class OreGenReplace extends AbstractOreGenerator {
 			while (blocksPlaced < settings.amountPerChunk) {
 				int x = varX + random.nextInt(16);
 				int z = varZ + random.nextInt(16);
-				int y = random.nextInt(Math.max(1, settings.maxGenerateHeight - settings.minGenerateHeight)) + settings.minGenerateHeight - 1;
+				int y = random.nextInt(Math.max(settings.maxGenerateHeight - settings.minGenerateHeight, 0)) + settings.minGenerateHeight;
 				int placed = generateBranch(world, random, varX, varZ, x, y, z);
 				if (placed <= 0) {
 					placed = settings.amountPerBranch;
