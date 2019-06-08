@@ -62,6 +62,7 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 					}
 				}
 			}
+			drainBattery(SLOT_ENERGY);
 		} else {
 			drainBattery(SLOT_ENERGY);
 		}
