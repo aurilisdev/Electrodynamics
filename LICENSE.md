@@ -9,18 +9,18 @@ The following license is subject to change at any time with or without notice an
 
 If you would like to request permission to distribute this software please send an e-mail to aurilisdev@gmail.com
 
-> You are allowed to 
+You are allowed to 
 
-Use the software in whatever way you like without any limitations.
-Installing the software and use it without restriction.
-Look at the source code, decompile it and learn from it.
-Modify the code for personal use.
+> Use the software in whatever way you like without any limitations.
+> Installing the software and use it without restriction.
+> Look at the source code, decompile it and learn from it.
+> Modify the code for personal use.
 
-> You are not allowed to
+You are not allowed to
 
-Copy any part of the softare's source code and redistribute publish or any means of public distribution.
-Redistribute the original source code or its binary form without the licencor’s permission.
-Redistribute your modified changes or derivative work either its binary form or in source code form without the licensor's permission.
+> Copy any part of the softare's source code and redistribute publish or any means of public distribution.
+> Redistribute the original source code or its binary form without the licencor’s permission.
+> Redistribute your modified changes or derivative work either its binary form or in source code form without the licensor's permission.
 
 > The term “Distribution” refers to the act of distributing, redistributing and or providing the software to any third party in any form including the following forms:
 
@@ -34,10 +34,10 @@ The present license is granted to any user of The software. The Terms of license
 
 The software is provided ‘as is’ with no warranties, implied or otherwise. The owner of the software takes no responsibility for any damages incurred from the use of the software. All damages caused by the use or misuse of the software fall on the user.
 
-> Modpacks
+Modpacks
 
-An exception to the restrictions of distribution is a private modpack. A private modpack is defined as a set of mods distributed as a collection. In which the pack is only distributed for personal use or for small server usage. The user is allowed to distribute this software as a part of such a private modpack if the user provides proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the download page for the modpack. The user is hereby warned that the pack should never be publically accessible for download if it is to be considered as private.
+An exception to the restrictions of distribution is a private modpack. A private modpack is defined as a set of mods distributed as a collection. In which the pack is only distributed for personal use or for small server usage. The user is allowed to distribute this software as a part of such a private modpack if the user provides proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the download page for the modpack. The user is hereby warned that the pack should never be publically accessible for download if it is to be considered as private. The user may distribute this software as a part of a public modpack if explicit permission is granted by the owner
 
-> Terms if distribution permission is granted by the owner
+Terms if distribution permission is granted by the owner
 
 A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs.
