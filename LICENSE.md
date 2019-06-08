@@ -34,7 +34,9 @@ The present license is granted to any user of The software. The Terms of license
 The software is provided ‘as is’ with no warranties, implied or otherwise. The owner of the software takes no responsibility for any damages incurred from the use of the software. All damages caused by the use or misuse of the software fall on the user.
 
 Modpacks
+
 An exception to the restrictions of distribution is a private modpack. A private modpack is defined as a set of mods distributed as a collection. In which the pack is only distributed for personal use or for small server usage. The user is allowed to distribute this software as a part of such a private modpack if the user provides proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the download page for the modpack. The user is hereby warned that the pack should never be publically accessible for download if it is to be considered as private.
 
 Terms if distribution permission is granted by the owner
+
 A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs.
