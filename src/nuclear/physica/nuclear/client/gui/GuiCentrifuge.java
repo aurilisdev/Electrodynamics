@@ -8,9 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import physica.api.core.IBaseUtilities;
 import physica.library.client.gui.GuiContainerBase;
-import physica.library.energy.ElectricityDisplay;
-import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Unit;
 import physica.library.inventory.tooltip.ToolTipTank;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.inventory.ContainerCentrifuge;
@@ -34,8 +31,9 @@ public class GuiCentrifuge extends GuiContainerBase<TileCentrifuge> implements I
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT) + "/t", 86, 73);
-		drawString("Inventory", 8, 73);
+		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+		drawString("Status: " + (host.hasEnoughEnergy() ? host.canProcess() ? "Processing" : "Lacking hexafluoride" : "Insufficient Power"), 8,
+				73);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "centrifuge.gui"), xSize / 2, 5);
 	}
 

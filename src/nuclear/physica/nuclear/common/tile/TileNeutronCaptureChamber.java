@@ -52,7 +52,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 		return reactor.temperature / TICKS_REQUIRED;
 	}
 
-	private boolean canProcess() {
+	public boolean canProcess() {
 		ForgeDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor) {
