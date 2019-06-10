@@ -107,7 +107,7 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "SSS", "SGC", "SSS", 'S', "plateSteel", 'G', new ItemStack(Blocks.glass), 'C', CoreItemRegister.itemEmptyContainer);
+		addRecipe(this, "SSS", "SGC", "SSS", 'S', "plateSteel", 'G', new ItemStack(Blocks.glass), 'C', CoreItemRegister.itemEmptyCell);
 	}
 
 	@Override

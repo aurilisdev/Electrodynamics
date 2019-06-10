@@ -20,13 +20,13 @@ import physica.nuclear.common.inventory.ContainerNeutronCaptureChamber;
 
 public class TileNeutronCaptureChamber extends TileBaseContainer implements IGuiInterface {
 
-	public static final int TICKS_REQUIRED = 2200;
+	public static final int TICKS_REQUIRED = 2847;
 	public static final int SLOT_INPUT = 0;
 	public static final int SLOT_OUTPUT = 1;
 	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
 	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
 
-	protected int operatingTicks = 0;
+	protected float operatingTicks = 0;
 	private boolean hasDeuterium;
 
 	@Override
@@ -46,10 +46,10 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 		}
 	}
 
-	private int getTicksAddition() {
+	private float getTicksAddition() {
 		ForgeDirection facing = getFacing().getOpposite();
 		TileFissionReactor reactor = (TileFissionReactor) worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
-		return reactor.isFissileRod() ? 2 : 1;
+		return reactor.temperature / TICKS_REQUIRED;
 	}
 
 	private boolean canProcess() {
@@ -59,7 +59,8 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 			if (getStackInSlot(SLOT_INPUT) == null || getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit()) {
 				return false;
 			}
-			return ((TileFissionReactor) tile).hasFuelRod();
+			TileFissionReactor reactor = (TileFissionReactor) tile;
+			return reactor.hasFuelRod() && reactor.temperature > 1000;
 		} else {
 			worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, new ItemStack(getBlockType())));
 			getLocation().setBlockAir(worldObj);
@@ -90,11 +91,11 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	@Override
 	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
 		super.readClientGuiPacket(buf, player);
-		operatingTicks = buf.readInt();
+		operatingTicks = buf.readFloat();
 		hasDeuterium = buf.readBoolean();
 	}
 
-	public int getOperatingTicks() {
+	public float getOperatingTicks() {
 		return operatingTicks;
 	}
 

@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -52,7 +51,7 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 				'M',
 				"motor", 'S', "ingotSteel");
 		addShapeless(new ItemStack(this, 1, EnumElectromagnet.GLASS.ordinal()), NuclearBlockRegister.blockElectromagnet, Blocks.glass);
-		addRecipe(new ItemStack(this, 2, EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), "BEB", "ALA", "BEB", 'B', Items.bucket, 'E', "circuitElite", 'A', "circuitAdvanced", 'L',
+		addRecipe(new ItemStack(this, 2, EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), "ELE", "LEL", "ELE", 'E', "circuitElite", 'L',
 				new ItemStack(this, 1, 0));
 		addShapeless(new ItemStack(this, 1, EnumElectromagnet.CONTAINMENT_GLASS.ordinal()), new ItemStack(this, 1, EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), Blocks.glass);
 	}

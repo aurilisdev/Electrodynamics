@@ -19,7 +19,6 @@ import net.minecraftforge.common.MinecraftForge;
 import physica.core.client.ClientRegister;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreItemRegister;
-import physica.core.common.CoreOreRegister;
 import physica.core.common.CoreRecipeRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.CoreWorldGenRegister;
@@ -64,7 +63,6 @@ public class Physica {
 			proxyLoader.addContent(new ClientRegister());
 		}
 
-		proxyLoader.addContent(new CoreOreRegister());
 		proxyLoader.addContent(new CoreRecipeRegister());
 		proxyLoader.addContent(new CoreWorldGenRegister());
 

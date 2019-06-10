@@ -5,6 +5,7 @@ import java.awt.Color;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +18,8 @@ import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.block.BlockBaseContainerModelled;
 import physica.library.recipe.RecipeSide;
+import physica.nuclear.common.NuclearBlockRegister;
+import physica.nuclear.common.block.BlockElectromagnet;
 
 public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 
@@ -37,7 +40,8 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 
 	@Override
 	public void initialize() {
-		addRecipe(this, " D ", "FFF", "MCM", 'D', Items.diamond, 'C', "phyBattery", 'F', ForcefieldItemRegister.itemFocusMatrix, 'M', "plateSteel");
+		addRecipe(this, "PEP", "EDE", "PEP", 'E', "circuitElite", 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()),
+				'D', Blocks.diamond_block);
 	}
 
 	@Override

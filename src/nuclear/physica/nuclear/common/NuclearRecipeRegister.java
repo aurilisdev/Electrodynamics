@@ -18,17 +18,17 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram);
 
 		//Hazmat Suit
-		addRecipe(NuclearItemRegister.itemHazmatHelmet, "SSS", "BAB", "SCS", 'A', Items.leather_helmet, 'C', "circuitBasic", 'S', Blocks.wool);
-		addRecipe(NuclearItemRegister.itemHazmatPlate, "SSS", "BAB", "SCS", 'A', Items.leather_chestplate, 'C', "circuitBasic", 'S', Blocks.wool);
-		addRecipe(NuclearItemRegister.itemHazmatLegs, "SSS", "BAB", "SCS", 'A', Items.leather_leggings, 'C', "circuitBasic", 'S', Blocks.wool);
-		addRecipe(NuclearItemRegister.itemHazmatBoots, "SSS", "BAB", "SCS", 'A', Items.leather_boots, 'C', "circuitBasic", 'S', Blocks.wool);
+		addRecipe(NuclearItemRegister.itemHazmatHelmet, "SSS", "BAB", "SCS", 'A', Items.leather_helmet, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
+		addRecipe(NuclearItemRegister.itemHazmatPlate, "SSS", "BAB", "SCS", 'A', Items.leather_chestplate, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
+		addRecipe(NuclearItemRegister.itemHazmatLegs, "SSS", "BAB", "SCS", 'A', Items.leather_leggings, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
+		addRecipe(NuclearItemRegister.itemHazmatBoots, "SSS", "BAB", "SCS", 'A', Items.leather_boots, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
 
 		// Fissile Fuel cell
-		addRecipe(NuclearItemRegister.itemHighEnrichedFuelCell, "CUC", "CUC", "CUC", 'U', NuclearItemRegister.itemUranium235, 'C', CoreItemRegister.itemEmptyContainer);
+		addRecipe(NuclearItemRegister.itemHighEnrichedFuelCell, "CUC", "CUC", "CUC", 'U', NuclearItemRegister.itemUranium235, 'C', CoreItemRegister.itemEmptyCell);
 
 		// Breeder Fuel cell
 		addRecipe(NuclearItemRegister.itemLowEnrichedFuelCell, "CUC", "CIC", "CUC", 'I', NuclearItemRegister.itemUranium235, 'U', NuclearItemRegister.itemUranium238, 'C',
-				CoreItemRegister.itemEmptyContainer);
+				CoreItemRegister.itemEmptyCell);
 
 		// Empty Electromagnetic cell
 		addRecipe(new ItemStack(NuclearItemRegister.itemEmptyElectromagneticCell, 1), " T ", "TGT", " T ", 'G', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, 1), 'T', "ingotTin");
@@ -42,7 +42,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 		NuclearCustomRecipeHelper.addBoilerRecipe(2400, "oreUranium", 1250);
 
 		// Extractor Recipes
-		NuclearCustomRecipeHelper.addExtractorRecipe(4800, CoreItemRegister.itemEmptyContainer, new ItemStack(NuclearItemRegister.itemHeavyWaterCell));
+		NuclearCustomRecipeHelper.addExtractorRecipe(4800, CoreItemRegister.itemEmptyCell, new ItemStack(NuclearItemRegister.itemHeavyWaterCell));
 		NuclearCustomRecipeHelper.addExtractorRecipe(4800, NuclearItemRegister.itemHeavyWaterCell, new ItemStack(NuclearItemRegister.itemDeuteriumCell));
 		NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
 	}

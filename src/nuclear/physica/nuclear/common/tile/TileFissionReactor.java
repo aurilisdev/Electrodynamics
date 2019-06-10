@@ -188,7 +188,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			temperature += (MELTDOWN_TEMPERATURE * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / 200;
 		} else if (isBreederRod()) {
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
-				setInventorySlotContents(SLOT_INPUT, new ItemStack(CoreItemRegister.itemEmptyContainer));
+				setInventorySlotContents(SLOT_INPUT, new ItemStack(CoreItemRegister.itemEmptyCell));
 			}
 			temperature += (MELTDOWN_TEMPERATURE * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / 200;
 		}

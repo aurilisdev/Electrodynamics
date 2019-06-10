@@ -5,6 +5,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IItemUpdate;
 
 public class ItemUpdateable extends Item {
@@ -26,5 +27,10 @@ public class ItemUpdateable extends Item {
 	public boolean onEntityItemUpdate(EntityItem entityItem) {
 		update.onEntityItemUpdate(entityItem.getEntityItem(), entityItem);
 		return false;
+	}
+
+	public ItemUpdateable addOreDictionaryInput(String oreName, int meta) {
+		OreDictionary.registerOre(oreName, new ItemStack(this, 1, meta));
+		return this;
 	}
 }

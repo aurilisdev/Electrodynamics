@@ -13,7 +13,7 @@ public class ForcefieldRecipeRegister implements IContent, IBaseUtilities {
 	@Override
 	public void loadComplete() {
 		// Focus Matrix
-		addRecipe(new ItemStack(ForcefieldItemRegister.itemFocusMatrix, 5), "RMR", "MDM", "RMR", 'M', "ingotSteel", 'D', Items.diamond, 'R', Items.redstone);
+		addRecipe(new ItemStack(ForcefieldItemRegister.itemFocusMatrix, 4), "RMR", "MDM", "RMR", 'M', "plateSteel", 'D', Items.diamond, 'R', Items.redstone);
 
 		// Different modes
 		addRecipe(ForcefieldItemRegister.moduleMap.get("moduleShapeSphere"), " F ", "FFF", " F ", 'F', ForcefieldItemRegister.itemFocusMatrix);
@@ -61,7 +61,7 @@ public class ForcefieldRecipeRegister implements IContent, IBaseUtilities {
 
 		// Frequency Card
 		addRecipe(ForcefieldItemRegister.itemFrequency, "PPP", "PCP", "PPP", 'P', Items.paper, 'C', "circuitBasic");
-		// Frequency Card
+		// Identification Card
 		addRecipe(ForcefieldItemRegister.itemIdentifcationCard, "PCP", "PIP", "PCP", 'P', Items.paper, 'C', "circuitBasic", 'I', ForcefieldItemRegister.itemFrequency);
 	}
 }

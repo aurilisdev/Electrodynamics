@@ -78,7 +78,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 		if (input != null) {
 			if (NuclearCustomRecipeHelper.isBoilerInput(input.getItem())) {
 				ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
-				if (recipe.getWaterUse() <= waterTank.getFluidAmount()) {
+				if (recipe.getWaterUse() / TICKS_REQUIRED <= waterTank.getFluidAmount()) {
 					return hexaTank.getFluidAmount() < hexaTank.getCapacity();
 				}
 			}

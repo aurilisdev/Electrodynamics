@@ -28,7 +28,7 @@ public class BlockBiometricIdentifier extends BlockBaseContainerModelled {
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "FMF", "MCM", "FMF", 'C', ForcefieldItemRegister.itemIdentifcationCard, 'M', "plateSteel", 'F', ForcefieldItemRegister.itemFocusMatrix);
+		addRecipe(this, "FMF", "CMC", "FMF", 'C', ForcefieldItemRegister.itemIdentifcationCard, 'M', "circuitElite", 'F', "plateSteel");
 	}
 
 	@Override

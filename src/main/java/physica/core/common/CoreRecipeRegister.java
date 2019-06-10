@@ -12,20 +12,16 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 	@Override
 	public void loadComplete() {
 		//Circuits
-		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CIC", "RPR", "GIG", 'C', new ItemStack(Items.dye, 1, 2), 'P', "plateIron", 'R', Items.redstone, 'I', Items.iron_ingot,
-				'G',
-				Items.gold_ingot);
-		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 1), "RGR", "PCP", "RGR", 'C', "circuitBasic", 'P', "plateSteel", 'R', Items.redstone, 'G',
-				Items.gold_ingot);
-		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 2), "LDL", "PCP", "RDR", 'C', "circuitAdvanced", 'L', new ItemStack(Items.dye, 1, 4), 'P', "plateSteel", 'R', Items.redstone,
-				'D',
-				Items.diamond);
+		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CRC", "RPR", "CRC", 'C', "ingotCopper", 'R', Items.redstone, 'P', "plateSteel");
+		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CRC", "RPR", "CRC", 'C', "ingotCopper", 'R', Items.redstone, 'P', "plateIron");
+		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 1), "RGR", "BCB", "RGR", 'R', Items.redstone, 'G', Items.gold_nugget, 'B', "circuitBasic", 'C', "ingotCopper");
+		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 2), "GDG", "ALA", "GDG", 'G', Items.gold_ingot, 'D', Items.diamond, 'A', "circuitAdvanced", 'L', Blocks.lapis_block);
 
 		// Motor
-		addRecipe(CoreItemRegister.itemMotor, "WSW", "SIS", "WSW", 'W', Items.redstone, 'S', "ingotSteel", 'I', "ingotCopper");
+		addRecipe(CoreItemRegister.itemMotor, "RSR", "SIS", "RSR", 'R', Items.redstone, 'S', "ingotSteel", 'I', "ingotCopper");
 
-		// Empty Container
-		addRecipe(new ItemStack(CoreItemRegister.itemEmptyContainer, 3), " T ", "TGT", " T ", 'G', Blocks.glass, 'T', "ingotTin");
+		// Empty Cell
+		addRecipe(new ItemStack(CoreItemRegister.itemEmptyCell, 4), "GTG", "T T", "GTG", 'G', Blocks.glass, 'T', "ingotTin");
 
 		// Plates
 		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 0), Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot);

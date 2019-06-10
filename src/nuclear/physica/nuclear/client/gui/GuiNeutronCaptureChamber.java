@@ -20,7 +20,7 @@ public class GuiNeutronCaptureChamber extends GuiContainerBase<TileNeutronCaptur
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		drawString("Progress: " + (int) ((float) host.getOperatingTicks() * 100 / TileNeutronCaptureChamber.TICKS_REQUIRED) + "%", 86, 73);
+		drawString("Progress: " + (int) (host.getOperatingTicks() * 100 / TileNeutronCaptureChamber.TICKS_REQUIRED) + "%", 86, 73);
 		drawString("Inventory", 8, 73);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "neutronCaptureChamber.gui"), xSize / 2, 5);
 	}
