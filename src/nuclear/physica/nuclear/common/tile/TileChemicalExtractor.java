@@ -57,6 +57,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 			} else {
 				operatingTicks = 0;
 			}
+			drainBattery(SLOT_ENERGY);
 		} else {
 			drainBattery(SLOT_ENERGY);
 			operatingTicks = 0;
@@ -75,7 +76,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input.getItem());
 			if (recipe != null) {
 				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null
-						|| (output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())) {
+						|| output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize()) {
 					return true;
 				}
 			}

@@ -53,7 +53,7 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 				String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
 				player.addChatMessage(new ChatComponentText("Signal at: " + temp + ".0C"));
 			} else if (tile instanceof TileFissionReactor) {
-				player.addChatMessage(new ChatComponentText("Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "K"));
+				player.addChatMessage(new ChatComponentText("Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "C"));
 			} else {
 				player.addChatMessage(new ChatComponentText("Heat: 14.0C"));
 			}

@@ -61,6 +61,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 			} else {
 				operatingTicks = 0;
 			}
+			drainBattery(SLOT_ENERGY);
 		} else {
 			drainBattery(SLOT_ENERGY);
 			operatingTicks = 0;
