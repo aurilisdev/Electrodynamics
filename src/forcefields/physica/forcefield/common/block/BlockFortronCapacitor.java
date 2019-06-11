@@ -1,7 +1,6 @@
 package physica.forcefield.common.block;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.forcefield.ForcefieldReferences;
@@ -29,7 +28,7 @@ public class BlockFortronCapacitor extends BlockBaseContainerModelled {
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "MFM", "FCF", "MFM", 'D', Items.diamond, 'C', "phyBattery", 'F', ForcefieldItemRegister.itemFocusMatrix, 'M', "plateSteel");
+		addRecipe(this, "MFM", "FCF", "MFM", 'C', "phyBattery", 'F', ForcefieldItemRegister.itemFocusMatrix, 'M', "plateSteel");
 	}
 
 	@Override

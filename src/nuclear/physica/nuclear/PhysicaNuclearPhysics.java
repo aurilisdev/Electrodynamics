@@ -21,7 +21,6 @@ import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearEntityRegister;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.NuclearItemRegister;
-import physica.nuclear.common.NuclearOreRegister;
 import physica.nuclear.common.NuclearRecipeRegister;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.NuclearWorldGenRegister;
@@ -61,7 +60,6 @@ public class PhysicaNuclearPhysics {
 			proxyLoader.addContent(new NuclearClientRegister());
 		}
 
-		proxyLoader.addContent(new NuclearOreRegister());
 		proxyLoader.addContent(new NuclearRecipeRegister());
 		proxyLoader.addContent(new NuclearWorldGenRegister());
 		proxyLoader.preInit();

@@ -1,6 +1,7 @@
 package physica.nuclear.common;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IContent;
 import physica.library.item.ItemBlockMetadata;
 import physica.nuclear.NuclearReferences;
@@ -78,5 +79,6 @@ public class NuclearBlockRegister implements IContent {
 		GameRegistry.registerTileEntity(TilePlasma.class, NuclearReferences.PREFIX + "plasma");
 		GameRegistry.registerBlock(blockSiren = new BlockSiren(), "siren");
 		GameRegistry.registerTileEntity(TileSiren.class, NuclearReferences.PREFIX + "siren");
+		OreDictionary.registerOre("oreUranium", NuclearBlockRegister.blockUraniumOre);
 	}
 }

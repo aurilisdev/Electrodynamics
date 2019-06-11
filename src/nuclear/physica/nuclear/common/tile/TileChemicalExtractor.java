@@ -71,7 +71,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 		}
 	}
 
-	private boolean canProcess(ItemStack output, ItemStack input) {
+	public boolean canProcess(ItemStack output, ItemStack input) {
 		if (input != null) {
 			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input.getItem());
 			if (recipe != null) {

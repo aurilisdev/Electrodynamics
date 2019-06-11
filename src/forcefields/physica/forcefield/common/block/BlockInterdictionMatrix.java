@@ -1,8 +1,6 @@
 package physica.forcefield.common.block;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.forcefield.ForcefieldReferences;
@@ -30,8 +28,7 @@ public class BlockInterdictionMatrix extends BlockBaseContainerModelled {
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "SSS", "FFF", "FEF", 'S', ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"), 'E', Item.getItemFromBlock(Blocks.ender_chest), 'F',
-				ForcefieldItemRegister.itemFocusMatrix);
+		addRecipe(this, "BEB", "ESE", "BEB", 'B', "phyBattery", 'E', "circuitElite", 'S', ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"));
 	}
 
 	@Override

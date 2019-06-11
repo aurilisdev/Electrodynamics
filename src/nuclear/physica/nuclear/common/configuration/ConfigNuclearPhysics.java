@@ -23,7 +23,7 @@ public class ConfigNuclearPhysics implements IContent {
 	public static boolean ENABLE_URANIUM_ORE = true;
 	public static int URANIUM_ORE_MIN_Y = 10;
 	public static int URANIUM_ORE_MAX_Y = 40;
-	public static int URANIUM_ORE_COUNT = 15;
+	public static int URANIUM_ORE_COUNT = 20;
 	public static int URANIUM_ORE_BRANCH_SIZE = 3;
 	public static int URANIUM_ORE_HARVEST_LEVEL = 2;
 

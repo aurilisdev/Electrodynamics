@@ -37,8 +37,7 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "IBI", "PMP", "III",
-				'B', "circuitBasic", 'M', "motor", 'P', "plateSteel", 'I', new ItemStack(Blocks.iron_bars));
+		addRecipe(this, "PAP", "BMB", "PBP", 'P', "plateSteel", 'A', "circuitAdvanced", 'B', Blocks.iron_bars, 'M', "motor");
 	}
 
 	@Override

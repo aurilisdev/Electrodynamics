@@ -73,12 +73,12 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 		}
 	}
 
-	private boolean canProcess() {
+	public boolean canProcess() {
 		ItemStack input = getStackInSlot(SLOT_INPUT2);
 		if (input != null) {
 			if (NuclearCustomRecipeHelper.isBoilerInput(input.getItem())) {
 				ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
-				if (recipe.getWaterUse() <= waterTank.getFluidAmount()) {
+				if (recipe.getWaterUse() / TICKS_REQUIRED <= waterTank.getFluidAmount()) {
 					return hexaTank.getFluidAmount() < hexaTank.getCapacity();
 				}
 			}
@@ -167,7 +167,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
-		return getEnergyUsage() * 2;
+		return getEnergyUsage() * 4;
 	}
 
 	@Override

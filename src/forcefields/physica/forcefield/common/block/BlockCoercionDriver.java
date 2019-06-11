@@ -29,7 +29,7 @@ public class BlockCoercionDriver extends BlockBaseContainerModelled {
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "M M", "MFM", "MCM", 'C', "phyBattery", 'M', "plateSteel", 'F', ForcefieldItemRegister.itemFocusMatrix);
+		addRecipe(this, "SES", "FBF", "SES", 'S', "plateSteel", 'F', ForcefieldItemRegister.itemFocusMatrix, 'B', "phyBattery", 'E', "circuitElite");
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package physica.nuclear.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Items;
 import net.minecraft.world.IBlockAccess;
 import physica.api.core.IBaseUtilities;
 import physica.library.recipe.IRecipeRegister;
@@ -27,7 +26,7 @@ public class BlockControlRod extends Block implements IBaseUtilities, IRecipeReg
 
 	@Override
 	public void initialize() {
-		addRecipe(this, "II", "II", "II", 'I', Items.iron_ingot);
+		addRecipe(this, "ISI", "IAI", "ISI", 'I', "plateIron", 'S', "plateSteel", 'A', "circuitAdvanced");
 	}
 
 	@Override

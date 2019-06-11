@@ -68,7 +68,7 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 		}
 	}
 
-	private boolean canProcess() {
+	public boolean canProcess() {
 		if (getStackInSlot(SLOT_OUTPUT1) != null && getStackInSlot(SLOT_OUTPUT1).stackSize == getStackInSlot(SLOT_OUTPUT1).getMaxStackSize()) {
 			return false;
 		} else if (getStackInSlot(SLOT_OUTPUT2) != null && getStackInSlot(SLOT_OUTPUT2).stackSize == getStackInSlot(SLOT_OUTPUT2).getMaxStackSize()) {
