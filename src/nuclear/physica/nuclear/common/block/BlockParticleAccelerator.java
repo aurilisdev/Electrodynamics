@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
+import physica.api.nuclear.IElectromagnet;
 import physica.library.block.BlockBaseContainer;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
@@ -14,7 +15,7 @@ import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileParticleAccelerator;
 
-public class BlockParticleAccelerator extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
+public class BlockParticleAccelerator extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister, IElectromagnet {
 
 	public BlockParticleAccelerator() {
 		super(Material.iron);
