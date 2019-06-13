@@ -118,7 +118,6 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		if (hasMain && !isMain) {
 			return;
 		}
-		lastEnergyStored = energyStored;
 		if (isGenerating && !(energyStored > lastEnergyStored || steam > 0)) {
 			if (delayGeneration > 0) {
 				delayGeneration--;
@@ -128,6 +127,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 			}
 		}
 		isGenerating = energyStored > lastEnergyStored || steam > 0;
+		lastEnergyStored = energyStored;
 		if (steam > 0) {
 			float steamToRf = ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO;
 			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
