@@ -114,6 +114,9 @@ public class ItemIdentifcationCard extends Item implements ICardIdentification {
 	@Override
 	public boolean hasPermission(ItemStack itemStack, Permission permission) {
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
+		if (permission == null) {
+			return true;
+		}
 		return nbt.getBoolean(NBT_PERM_PREFIX + permission.id);
 	}
 
