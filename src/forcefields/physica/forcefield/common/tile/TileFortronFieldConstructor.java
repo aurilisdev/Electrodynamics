@@ -480,7 +480,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							}
 						}
 					} else {
-						fieldPoint.setBlock(worldObj, ForcefieldBlockRegister.blockFortronField);
+						fieldPoint.setBlockFast(worldObj, ForcefieldBlockRegister.blockFortronField);
 						TileEntity tile = fieldPoint.getTile(worldObj);
 						if (tile instanceof TileFortronField) {
 							TileFortronField field = (TileFortronField) tile;
