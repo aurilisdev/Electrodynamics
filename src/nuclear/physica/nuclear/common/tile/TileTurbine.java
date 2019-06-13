@@ -159,7 +159,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 				}
 			}
 		}
-		if (worldObj.getWorldTime() % 20 == 0 && isGenerating) {
+		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (hasMain ? isMain : true)) {
 			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", 3f, 1F);
 		}
 	}
