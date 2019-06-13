@@ -131,7 +131,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		if (steam > 0) {
 			float steamToRf = ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO;
 			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
-					energyStored + steam * (isMain ? steamToRf * 9 : steamToRf));
+					energyStored + steam * (isMain ? steamToRf * 10 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
 		}
 		if (receiver == null || receiver.isInvalid()) {
