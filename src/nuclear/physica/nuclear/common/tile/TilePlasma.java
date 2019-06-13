@@ -84,7 +84,7 @@ public class TilePlasma extends TileBase {
 						TileEntity tileAboveWater = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY + 2, zCoord + direction.offsetZ);
 						if (tileAboveWater instanceof TileTurbine) {
 							float temperature = (float) (TARGET_TEMPERATURE * 1.25f / (TileFusionReactor.PLASMA_SPAWN_STRENGTH * 0.15226));
-							float steam = temperature * (worldObj.getBlockMetadata(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) > 1 ? 5 : 1);
+							float steam = temperature * (worldObj.getBlockMetadata(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) > 1 ? 100 : 5);
 							((TileTurbine) tileAboveWater).addSteam((int) steam);
 						}
 

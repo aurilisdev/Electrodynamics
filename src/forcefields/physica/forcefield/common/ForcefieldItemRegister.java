@@ -6,7 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 import physica.api.core.IContent;
 import physica.forcefield.common.item.ItemFrequency;
-import physica.forcefield.common.item.ItemIdentifcationCard;
+import physica.forcefield.common.item.ItemIdentificationCard;
 import physica.library.item.ItemInformationHolder;
 import physica.library.item.ItemMetaHolder;
 
@@ -19,7 +19,7 @@ public class ForcefieldItemRegister implements IContent {
 	public static ItemInformationHolder itemFocusMatrix;
 
 	public static ItemFrequency itemFrequency;
-	public static ItemIdentifcationCard itemIdentifcationCard;
+	public static ItemIdentificationCard itemIdentifcationCard;
 
 	public static HashMap<String, ItemStack> moduleMap = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class ForcefieldItemRegister implements IContent {
 				itemFocusMatrix.getUnlocalizedName());
 
 		GameRegistry.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
-		GameRegistry.registerItem(itemIdentifcationCard = new ItemIdentifcationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());
+		GameRegistry.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());
 
 		moduleMap.put("moduleShapeSphere", new ItemStack(itemMetaShapeModule, 1, 0));
 		moduleMap.put("moduleShapeHemisphere", new ItemStack(itemMetaShapeModule, 1, 1));

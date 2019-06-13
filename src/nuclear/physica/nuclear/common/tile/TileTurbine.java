@@ -111,8 +111,13 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		return isMain;
 	}
 
+	public TileEntity receiver = null;
+
 	@Override
 	public void updateServer(int ticks) {
+		if (hasMain && !isMain) {
+			return;
+		}
 		lastEnergyStored = energyStored;
 		if (isGenerating && !(energyStored > lastEnergyStored || steam > 0)) {
 			if (delayGeneration > 0) {
@@ -126,40 +131,31 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		if (steam > 0) {
 			float steamToRf = ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO;
 			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
-					energyStored + steam * (hasMain ? steamToRf * 1.1f : steamToRf));
+					energyStored + steam * (isMain ? steamToRf * 9 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
 		}
-
+		if (receiver == null || receiver.isInvalid()) {
+			if (receiver != null && receiver.isInvalid()) {
+				receiver = null;
+			}
+			TileEntity above = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+			if (above instanceof IEnergyReceiver) {
+				receiver = above;
+			}
+		} else {
+			IEnergyReceiver above = (IEnergyReceiver) receiver;
+			energyStored -= ((IEnergyReceiver) above).receiveEnergy(ForgeDirection.DOWN, energyStored, false);
+		}
 		TileEntity above = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
 		if (above != null) {
 			if (above instanceof IEnergyReceiver) {
 				if (isMain) {
-					int radius = 1;
-					for (int i = -radius; i <= radius; i++) {
-						for (int j = -radius; j <= radius; j++) {
-							TileEntity tile = worldObj.getTileEntity(xCoord + i, yCoord, zCoord + j);
-							if (tile instanceof TileTurbine) {
-								TileTurbine turbine = (TileTurbine) tile;
-								turbine.energyStored -= ((IEnergyReceiver) above).receiveEnergy(ForgeDirection.DOWN,
-										turbine.energyStored, false);
-							}
-						}
-					}
 				} else if (!hasMain) {
 					energyStored -= ((IEnergyReceiver) above).receiveEnergy(ForgeDirection.DOWN, energyStored, false);
 				}
 			}
 		}
-		if (!isMain && hasMain) {
-			if (isGenerating) {
-				TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
-				if (tile instanceof TileTurbine) {
-					TileTurbine turbine = (TileTurbine) tile;
-					turbine.isGenerating = true;
-				}
-			}
-		}
-		if (worldObj.getWorldTime() % 20 == 0 && isGenerating) {
+		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (hasMain ? isMain : true)) {
 			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", 3f, 1F);
 		}
 	}
@@ -226,7 +222,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
-		return 320000000;
+		return !isMain ? 320000000 : Integer.MAX_VALUE - 1;
 	}
 
 	@Override
