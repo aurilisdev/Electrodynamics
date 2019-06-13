@@ -74,7 +74,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
 				if (isElectromagnet(world, x, y, z, side)) {
 					electromagnetCount++;
-					if (electromagnetCount >= 4) {
+					if (electromagnetCount >= 3) {
 						return true;
 					}
 				}
