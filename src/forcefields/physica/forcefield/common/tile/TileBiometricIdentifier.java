@@ -20,7 +20,7 @@ import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.client.gui.GuiBiometricIdentifier;
 import physica.forcefield.common.ForcefieldFluidRegister;
 import physica.forcefield.common.inventory.ContainerBiometricIndentifier;
-import physica.forcefield.common.item.ItemIdentifcationCard;
+import physica.forcefield.common.item.ItemIdentificationCard;
 import physica.forcefield.common.item.Permission;
 import physica.library.location.BlockLocation;
 import physica.library.network.IPacket;
@@ -57,8 +57,8 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", BIOMETRIC_IDENTIFIER_PACKET_ID, xCoord, yCoord, zCoord, perm.id));
 		} else {
 			ItemStack card = getStackInSlot(SLOT_INPUT_CARD);
-			if (card != null && card.getItem() instanceof ItemIdentifcationCard) {
-				ItemIdentifcationCard id = (ItemIdentifcationCard) card.getItem();
+			if (card != null && card.getItem() instanceof ItemIdentificationCard) {
+				ItemIdentificationCard id = (ItemIdentificationCard) card.getItem();
 				if (id.hasPermission(card, perm)) {
 					id.removePermission(card, perm);
 				} else {
@@ -70,17 +70,17 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 
 	public boolean isPlayerValidated(EntityPlayer player, Permission perm) {
 		ItemStack stack = getStackInSlot(SLOT_MASTER_CARD);
-		if (stack != null && stack.getItem() instanceof ItemIdentifcationCard) {
-			ItemIdentifcationCard id = (ItemIdentifcationCard) stack.getItem();
+		if (stack != null && stack.getItem() instanceof ItemIdentificationCard) {
+			ItemIdentificationCard id = (ItemIdentificationCard) stack.getItem();
 			UUID itemSavedId = id.getUniqueId(stack);
 			if (itemSavedId != null && itemSavedId.equals(player.getUniqueID())) {
 				return true;
 			}
 		}
-		for (int i = 0; i < getSizeInventory(); i++) {
+		for (int i = 2; i < getSizeInventory(); i++) {
 			stack = getStackInSlot(i);
-			if (stack != null && stack.getItem() instanceof ItemIdentifcationCard) {
-				ItemIdentifcationCard id = (ItemIdentifcationCard) stack.getItem();
+			if (stack != null && stack.getItem() instanceof ItemIdentificationCard) {
+				ItemIdentificationCard id = (ItemIdentificationCard) stack.getItem();
 				UUID itemSavedId = id.getUniqueId(stack);
 				if (itemSavedId != null && itemSavedId.equals(player.getUniqueID()) && id.hasPermission(stack, perm)) {
 					return true;
@@ -92,7 +92,7 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		return stack != null && stack.getItem() instanceof ItemIdentifcationCard;
+		return stack != null && stack.getItem() instanceof ItemIdentificationCard;
 	}
 
 	@Override

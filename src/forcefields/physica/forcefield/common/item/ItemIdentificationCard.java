@@ -13,11 +13,11 @@ import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.forcefield.common.ForcefieldTabRegister;
 
-public class ItemIdentifcationCard extends Item implements ICardIdentification {
+public class ItemIdentificationCard extends Item implements ICardIdentification {
 
 	private static final String NBT_PERM_PREFIX = "mffs_permission_";
 
-	public ItemIdentifcationCard(String name) {
+	public ItemIdentificationCard(String name) {
 		setUnlocalizedName(name);
 		setTextureName(CoreReferences.PREFIX + name);
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
@@ -114,7 +114,7 @@ public class ItemIdentifcationCard extends Item implements ICardIdentification {
 	@Override
 	public boolean hasPermission(ItemStack itemStack, Permission permission) {
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null) {
+		if (permission == null || nbt == null) {
 			return true;
 		}
 		return nbt.getBoolean(NBT_PERM_PREFIX + permission.id);
@@ -123,6 +123,9 @@ public class ItemIdentifcationCard extends Item implements ICardIdentification {
 	@Override
 	public boolean addPermission(ItemStack itemStack, Permission permission) {
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
+		if (permission == null || nbt == null) {
+			return false;
+		}
 		nbt.setBoolean(NBT_PERM_PREFIX + permission.id, true);
 		return false;
 	}
@@ -130,6 +133,9 @@ public class ItemIdentifcationCard extends Item implements ICardIdentification {
 	@Override
 	public boolean removePermission(ItemStack itemStack, Permission permission) {
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
+		if (permission == null || nbt == null) {
+			return false;
+		}
 		nbt.setBoolean(NBT_PERM_PREFIX + permission.id, false);
 		return false;
 	}
