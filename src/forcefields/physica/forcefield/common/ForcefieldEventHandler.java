@@ -128,7 +128,9 @@ public class ForcefieldEventHandler {
 			if (matrix.isActivated()) {
 				if (matrix.getActiveBB().isVecInside(Vec3.createVectorHelper(evt.x, evt.y, evt.z))) {
 					if (matrix.hasModule("moduleUpgradeAntiSpawn")) {
-						evt.setCanceled(true);
+						if (evt.isCancelable()) {
+							evt.setCanceled(true);
+						}
 						evt.setResult(Result.DENY);
 						return;
 					}
