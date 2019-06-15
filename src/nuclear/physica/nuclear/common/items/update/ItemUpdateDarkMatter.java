@@ -53,9 +53,7 @@ public class ItemUpdateDarkMatter implements IItemUpdate, IBaseUtilities {
 
 				world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, 5.0f, true);
 				int x = (int) entity.posX, y = (int) entity.posY, z = (int) entity.posZ;
-				if (TilePlasma.canPlace(world.getBlock(x, y, z), world, x, y, z)) {
-					NuclearBlockRegister.blockPlasma.spawn(world, x, y, z, 4);
-				}
+				NuclearBlockRegister.blockPlasma.spawn(world, world.getBlock(x, y, z), x, y, z, 4);
 				entity.setDead();
 			}
 		}

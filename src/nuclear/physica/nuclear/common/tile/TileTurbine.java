@@ -16,12 +16,13 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 
 public class TileTurbine extends TileBase implements IEnergyProvider {
 
+	public static final int MAX_STEAM = 3000000;
+
 	protected int energyStored;
 	protected int lastEnergyStored;
 	protected boolean isGenerating = false;
 	protected int delayGeneration = 10;
 	protected int steam;
-	protected int maxSteam = 3000000;
 	protected int mainX, mainY, mainZ;
 	protected boolean hasMain = false;
 	protected boolean isMain = false;
@@ -245,7 +246,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	public void addSteam(int steam) {
-		this.steam = Math.min(maxSteam, this.steam + steam);
+		this.steam = Math.min(MAX_STEAM, this.steam + steam);
 	}
 
 	public boolean isGenerating() {

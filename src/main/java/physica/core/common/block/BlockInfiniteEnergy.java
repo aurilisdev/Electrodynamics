@@ -17,7 +17,7 @@ public class BlockInfiniteEnergy extends Block implements ITileEntityProvider {
 
 	public BlockInfiniteEnergy() {
 		super(Material.iron);
-		setHardness(3.5F);
+		setBlockUnbreakable();
 		setResistance(20);
 		setLightLevel(0.1f);
 		setHarvestLevel("pickaxe", 2);

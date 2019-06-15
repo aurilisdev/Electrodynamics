@@ -42,11 +42,11 @@ public class BlockPlasma extends Block implements ITileEntityProvider {
 		return block == this && neighborBlock == this ? false : super.shouldSideBeRendered(world, x, y, z, side);
 	}
 
-	public void spawn(World world, int x, int y, int z, int strength) {
-		if (TilePlasma.canPlace(world.getBlock(x, y, z), world, x, y, z)) {
+	public void spawn(World world, Block block, int x, int y, int z, int strength) {
+		if (TilePlasma.canPlace(block, world, x, y, z)) {
 			world.setBlock(x, y, z, this, 0, 3);
 			TileEntity tile = world.getTileEntity(x, y, z);
-			if (tile != null && tile instanceof TilePlasma) {
+			if (tile instanceof TilePlasma) {
 				((TilePlasma) tile).strength = strength;
 			}
 		}

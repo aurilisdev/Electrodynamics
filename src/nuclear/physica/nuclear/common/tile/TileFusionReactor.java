@@ -37,8 +37,7 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 		super.updateServer(ticks);
 		ItemStack deuterium = getStackInSlot(SLOT_DEUTERIUM);
 		ItemStack tritium = getStackInSlot(SLOT_TRITIUM);
-		if (hasEnoughEnergy() && deuterium != null && deuterium.stackSize > 0 && tritium != null
-				&& tritium.stackSize > 0) {
+		if (hasEnoughEnergy() && deuterium != null && deuterium.stackSize > 0 && tritium != null && tritium.stackSize > 0) {
 			ticksRunning++;
 			if (ticksRunning % (20 * 15) == 0) {
 				deuterium.stackSize--;
@@ -46,13 +45,17 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 			}
 			isRunning = true;
 			extractEnergy();
+
+			if (ticks % 2 != 0) {
+				return;
+			}
 			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
 				if (direction == ForgeDirection.DOWN || direction == ForgeDirection.UP) {
 					continue;
 				}
 				Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-				if (block.isAir(worldObj, xCoord, yCoord, zCoord) || block.getMaterial() == Material.fire || block == NuclearBlockRegister.blockPlasma) {
-					NuclearBlockRegister.blockPlasma.spawn(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, 10);
+				if (block.getMaterial() == Material.air || block.getMaterial() == Material.fire) {
+					NuclearBlockRegister.blockPlasma.spawn(worldObj, block, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, 10);
 				}
 			}
 		} else {

@@ -1,12 +1,8 @@
 package physica.forcefield.common.effect.damage;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IChatComponent;
+import physica.library.effect.PhysicaDamageSource;
 
-public class DamageSourceForcefield extends DamageSource {
+public class DamageSourceForcefield extends PhysicaDamageSource {
 
 	public static final DamageSourceForcefield INSTANCE = new DamageSourceForcefield();
 
@@ -14,14 +10,11 @@ public class DamageSourceForcefield extends DamageSource {
 		super("forcefield");
 		setDamageBypassesArmor();
 		setDamageIsAbsolute();
-	}
 
-	@Override
-	public IChatComponent func_151519_b(EntityLivingBase entity) {
-		if (entity instanceof EntityPlayer) {
-			return new ChatComponentText(((EntityPlayer) entity).getDisplayName() + " was disintegrated by a forcefield!");
-		}
-		return super.func_151519_b(entity);
-
+		setDeathMessages(
+			"tried to walk through a force field",
+			"was disintegrated by a forcefield",
+			"walked into an energy field"
+		);
 	}
 }
