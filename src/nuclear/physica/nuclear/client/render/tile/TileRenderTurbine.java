@@ -35,11 +35,11 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 			GL11.glScaled(0.0925, 0.0525, 0.0925);
 			bindTexture(model_texture);
 			model_base.renderAll();
-			if (tile.isGenerating()) {
+			if (tile.hasClientSpin()) {
 				GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
 			}
 			model_middle.renderAll();
-			if (tile.isGenerating()) {
+			if (tile.hasClientSpin()) {
 				GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
 			}
 			GL11.glScaled(1 / 0.0925, 1 / 0.0525, 1 / 0.0925);

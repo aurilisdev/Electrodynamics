@@ -112,17 +112,18 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	public TileEntity receiver = null;
+	public boolean clientSpin = false;
 
 	@Override
 	public void updateServer(int ticks) {
 		if (hasMain && !isMain) {
 			return;
 		}
-		if (isGenerating && !(energyStored > lastEnergyStored || steam > 0)) {
+		if (clientSpin) {
 			if (delayGeneration > 0) {
 				delayGeneration--;
 			} else {
-				isGenerating = false;
+				clientSpin = false;
 				delayGeneration = 30;
 			}
 		}
@@ -133,6 +134,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
 					energyStored + steam * (isMain ? steamToRf * 10 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
+			clientSpin = true;
 			delayGeneration = 30;
 		}
 		if (receiver == null || receiver.isInvalid()) {
@@ -161,6 +163,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(steam);
 		dataList.add(isGenerating);
+		dataList.add(clientSpin);
 		dataList.add(hasMain);
 		dataList.add(isMain);
 		dataList.add(mainX);
@@ -173,6 +176,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		super.readSynchronizationPacket(buf, player);
 		steam = buf.readInt();
 		isGenerating = buf.readBoolean();
+		clientSpin = buf.readBoolean();
 		hasMain = buf.readBoolean();
 		isMain = buf.readBoolean();
 		mainX = buf.readInt();
@@ -246,6 +250,10 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 
 	public boolean isGenerating() {
 		return isGenerating;
+	}
+
+	public boolean hasClientSpin() {
+		return clientSpin;
 	}
 
 	public int getSteam() {
