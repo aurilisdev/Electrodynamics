@@ -83,6 +83,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							continue;
 						}
 					}
+
 					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), (int) Math.max(0, scale)));
 				}
 			}

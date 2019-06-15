@@ -1,12 +1,12 @@
 package physica.core.common.configuration;
 
+import java.io.File;
+
 import net.minecraftforge.common.config.Configuration;
 import physica.CoreReferences;
 import physica.Physica;
 import physica.api.core.IContent;
 import physica.api.core.PhysicaAPI;
-
-import java.io.File;
 
 public class ConfigCore implements IContent {
 
