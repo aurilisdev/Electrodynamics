@@ -104,7 +104,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	public int getMaxFortron() {
-		return getFortronUse() * 3 + BASE_FORTRON;
+		return getFortronUse() * 40 + BASE_FORTRON;
 	}
 
 	public int getFortronUse() {

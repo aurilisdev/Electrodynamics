@@ -13,11 +13,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,11 +51,14 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			if (temperature > MELTDOWN_TEMPERATURE + 101 + worldObj.rand.nextInt(5) && hasFuelRod()) {
 				performMeltdown();
 			}
+			double radius = temperature / 400;
+
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities =
-					worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord - 4, zCoord - 4, xCoord + 5, yCoord + 5, zCoord + 5));
+					worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
+					double scale = (radius - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
 					if (entity instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) entity;
 						boolean hasArmor = true;
@@ -73,9 +74,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							if (hasArmor) {
 								for (int i = 0; i < player.inventory.armorInventory.length; i++) {
 									if (player.getCurrentArmor(i) != null) {
-										if (player.getCurrentArmor(i).attemptDamageItem(isFissileRod() ? 2 : 1, worldObj.rand)) {
-											player.renderBrokenItemStack(player.getCurrentArmor(i));
-											player.addStat(StatList.objectBreakStats[Item.getIdFromItem(player.getCurrentArmor(i).getItem())], 1);
+										if (player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, scale * 3), worldObj.rand)) {
 											player.setCurrentItemOrArmor(i + 1, null);
 										}
 									}
@@ -84,8 +83,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							continue;
 						}
 					}
-					float scale = 3f / (float) (1 + entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5));
-					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300f * scale), isFissileRod() ? 1 : 0));
+					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), (int) Math.max(0, scale)));
 				}
 			}
 		}
@@ -120,19 +118,24 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		if (worldObj.getWorldTime() % 100 == 0 && temperature >= 100) {
 			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
 		}
-		if (hasFuelRod() && !isBeingControlled()) {
-			float radius = 0.15f;
-			for (float i = 0.175f; i < 0.7; i += 0.1) {
-				for (int j = 0; j < 5; j++) {
-					worldObj.spawnParticle("reddust", xCoord + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
-							zCoord + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0, 255, 0);
+		float radius = 0.15f;
+		for (int k = 0; k < 4; k++) {
+			float outerRods = 0.15f;
+			float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
+			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
+			for (float i = 0.175f; i < 0.8; i += 0.1) {
+				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3)) {
+					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2,
+							yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
+							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 				}
 			}
 			if (temperature > MELTDOWN_TEMPERATURE) {
 				radius = 0.05f + (temperature - MELTDOWN_TEMPERATURE) / 20;
-				worldObj.spawnParticle("reddust", xCoord + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-						zCoord + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0, 255, 0);
+				worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
+						zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 			}
+
 		}
 		produceSteam();
 	}
@@ -146,7 +149,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase())) {
 			return;
 		}
-		float power = isFissileRod() ? 20 : isBreederRod() ? 12 : 0;
+		float power = isFissileRod() ? 20 : isBreederRod() ? 7 : 0;
 		setInventorySlotContents(SLOT_INPUT, null);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
 			BlockLocation location = new BlockLocation(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
@@ -159,6 +162,9 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	private void cooldownReactor() {
 		double decrease = (temperature - AIR_TEMPERATURE) / 3000f;
+		if (!hasFuelRod()) {
+			decrease *= 25;
+		}
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
 			Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 			if (block == Blocks.water) {
@@ -215,7 +221,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 									if (above instanceof TileTurbine) {
 										Block under = worldObj.getBlock(xCoord + i, yCoord + j - 1, zCoord + k);
 										if (under == Blocks.water || isReactorBlock) {
-											((TileTurbine) above).addSteam((int) ((temperature - 100) / 10 * 0.65f) * 10);
+											((TileTurbine) above).addSteam((int) ((temperature - 100) / 10 * 0.65f) * 20);
 										}
 									}
 								} else if (isClient()) {

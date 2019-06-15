@@ -146,7 +146,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 			energyStored -= ((IEnergyReceiver) receiver).receiveEnergy(ForgeDirection.DOWN, energyStored, false);
 		}
 		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain)) {
-			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", 3f, 1F);
+			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
 		}
 	}
 

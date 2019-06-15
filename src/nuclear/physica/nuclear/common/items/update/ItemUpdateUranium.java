@@ -4,10 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 import physica.api.core.IItemUpdate;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -30,7 +28,7 @@ public class ItemUpdateUranium implements IItemUpdate {
 			return;
 		}
 		if (rand.nextFloat() < 0.015f * scale) {
-			world.spawnParticle("reddust", entity.posX + rand.nextDouble() - 0.5, entity.posY + rand.nextDouble() - 0.5, entity.posZ + rand.nextDouble() - 0.5, 0, 1.25f, 0);
+			world.spawnParticle("reddust", entity.posX + rand.nextDouble() - 0.5, entity.posY + rand.nextDouble() - 0.5, entity.posZ + rand.nextDouble() - 0.5, 0.01f, 1, 0.01f);
 		}
 	}
 
@@ -54,16 +52,14 @@ public class ItemUpdateUranium implements IItemUpdate {
 						player.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale)));
 					} else {
 						for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-							if (player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, scale), world.rand)) {
-								player.renderBrokenItemStack(player.getCurrentArmor(i));
-								player.addStat(StatList.objectBreakStats[Item.getIdFromItem(player.getCurrentArmor(i).getItem())], 1);
+							if (player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, scale * (stack.getItemDamage() > 0 ? 1 : 0.33)), world.rand)) {
 								player.setCurrentItemOrArmor(i + 1, null);
 							}
 						}
 					}
 				}
 			} else {
-				((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale)));
+				((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), (int) Math.max(1, scale / (stack.getItemDamage() > 0 ? 2 : 1))));
 			}
 		}
 	}

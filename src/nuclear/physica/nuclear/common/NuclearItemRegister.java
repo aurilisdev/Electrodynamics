@@ -47,10 +47,10 @@ public class NuclearItemRegister implements IContent {
 				(ItemInformationHolder) new ItemInformationHolder("darkmatterCell").setUpdate(new ItemUpdateDarkMatter()).setMaxDamage(8).setMaxStackSize(1)
 						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemDarkmatterCell.getUnlocalizedName());
-		GameRegistry.registerItem(itemHighEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "High-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(4))
+		GameRegistry.registerItem(itemHighEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "High-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(4.5f))
 				.setMaxDamage(24000).setTextureName(CoreReferences.PREFIX + "fissileFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1),
 				itemHighEnrichedFuelCell.getUnlocalizedName() + "Fissile");
-		GameRegistry.registerItem(itemLowEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "Low-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(1.75f))
+		GameRegistry.registerItem(itemLowEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "Low-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(1.25f))
 				.setMaxDamage(26000).setTextureName(CoreReferences.PREFIX + "breederFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1),
 				itemLowEnrichedFuelCell.getUnlocalizedName() + "Breeder");
 		GameRegistry.registerItem(
@@ -66,7 +66,7 @@ public class NuclearItemRegister implements IContent {
 				itemDeuteriumCell.getUnlocalizedName());
 		GameRegistry.registerItem(itemTritiumCell = (ItemInformationHolder) new ItemInformationHolder("tritiumCell", "12.5ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemTritiumCell.getUnlocalizedName());
-		GameRegistry.registerItem(itemUranium235 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 235").setUpdate(new ItemUpdateUranium().setScale(6))
+		GameRegistry.registerItem(itemUranium235 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 235").setUpdate(new ItemUpdateUranium().setScale(8.1f))
 				.setTextureName(CoreReferences.PREFIX + "uranium235").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium235.getUnlocalizedName() + "235");
 		GameRegistry.registerItem(itemUranium238 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 238").setUpdate(new ItemUpdateUranium().setScale(2.25f))
 				.setTextureName(CoreReferences.PREFIX + "uranium238").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium238.getUnlocalizedName() + "238");

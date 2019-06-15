@@ -50,7 +50,7 @@ public class BlockUraniumOre extends Block {
 						player.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), 300));
 					} else {
 						for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-							player.getCurrentArmor(i).damageItem(30, player);
+							player.getCurrentArmor(i).damageItem(3, player);
 						}
 					}
 				} else {
@@ -66,7 +66,7 @@ public class BlockUraniumOre extends Block {
 		if (random.nextFloat() < 0.333) {
 			for (int i = 0; i < 2; i++) {
 				if (random.nextFloat() < 0.666) {
-					world.spawnParticle("reddust", x + random.nextDouble() * 3 - 1.5, y + random.nextDouble() * 3 - 1.5, z + random.nextDouble() * 3 - 1.5, 0, 1, 0);
+					world.spawnParticle("reddust", x + random.nextDouble() * 3 - 1.5, y + random.nextDouble() * 3 - 1.5, z + random.nextDouble() * 3 - 1.5, 0.01f, 1, 0.01f);
 				}
 			}
 		}
