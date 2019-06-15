@@ -40,4 +40,4 @@ Modpacks
 
 Terms if distribution permission is granted by the owner
 
-> A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs.
+> A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
