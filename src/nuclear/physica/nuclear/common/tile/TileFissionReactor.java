@@ -60,6 +60,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			if (temperature > MELTDOWN_TEMPERATURE + 101 + worldObj.rand.nextInt(5) && hasFuelRod()) {
 				performMeltdown();
 			}
+		}
+		if (hasFuelRod() && temperature > 400) {
 			double radius = temperature / 400;
 
 			if (this.getTicksRunning() % 4 != 0) {
@@ -68,7 +70,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
-				AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
+					AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
 					int vulnerability = 0;
@@ -138,14 +140,14 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			for (float i = 0.175f; i < 0.8; i += 0.1) {
 				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3)) {
 					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2,
-						yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
-						zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+							yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
+							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 				}
 			}
 			if (temperature > MELTDOWN_TEMPERATURE) {
 				radius = 0.05f + (temperature - MELTDOWN_TEMPERATURE) / 20;
 				worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-					zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+						zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 			}
 		}
 		produceSteam();
@@ -202,7 +204,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		if (isFissileRod()) {
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(NuclearItemRegister.itemLowEnrichedFuelCell, 1,
-					(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + worldObj.rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
+						(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + worldObj.rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
 			}
 			temperature += (MELTDOWN_TEMPERATURE * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		} else if (isBreederRod()) {
@@ -245,8 +247,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE) {
 									float steamRadius = 0.5f;
 									worldObj.spawnParticle("bubble", xCoord + steamRadius + i + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
-										yCoord + steamRadius + j + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
-										zCoord + steamRadius + k + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2, 0, 0, 0);
+											yCoord + steamRadius + j + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
+											zCoord + steamRadius + k + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2, 0, 0, 0);
 								}
 							}
 						}
@@ -258,7 +260,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	public boolean hasFuelRod() {
 		return getStackInSlot(SLOT_INPUT) != null
-			       && (getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemLowEnrichedFuelCell);
+				&& (getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemLowEnrichedFuelCell);
 	}
 
 	public float getTemperature() {
