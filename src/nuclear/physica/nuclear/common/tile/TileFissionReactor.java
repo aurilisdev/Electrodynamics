@@ -259,6 +259,11 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				for (int j = -radius; j <= radius; j++) {
 					for (int k = -radius; k <= radius; k++) {
 						if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE) {
+
+							Block block = worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k);
+							if (block != Blocks.water) {
+								continue;
+							}
 							float steamRadius = 0.5f;
 							worldObj.spawnParticle("bubble", xCoord + steamRadius + i + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
 								yCoord + steamRadius + j + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
