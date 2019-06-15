@@ -53,38 +53,40 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			}
 			double radius = temperature / 400;
 
+			if (this.getTicksRunning() % 4 != 0) {
+				return;
+			}
+
 			@SuppressWarnings("unchecked")
-			List<EntityLiving> entities =
-					worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
+			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+				AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
+					int vulnerability = 0;
 					double scale = (radius - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
 					if (entity instanceof EntityPlayer) {
 						EntityPlayer player = (EntityPlayer) entity;
-						boolean hasArmor = true;
-						if (!player.capabilities.isCreativeMode) {
-							for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-								ItemStack armorStack = player.getCurrentArmor(i);
-								if (!(armorStack != null && armorStack.getItem() instanceof ItemHazmatArmor)) {
-									hasArmor = false;
-								}
-							}
-						}
-						if (((EntityPlayer) entity).capabilities.isCreativeMode || hasArmor) {
-							if (hasArmor) {
-								for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-									if (player.getCurrentArmor(i) != null) {
-										if (player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, scale * 3), worldObj.rand)) {
-											player.setCurrentItemOrArmor(i + 1, null);
-										}
-									}
-								}
-							}
+						if (player.capabilities.isCreativeMode) {
 							continue;
 						}
+
+						for (int i = 0; i < player.inventory.armorInventory.length; i++) {
+							ItemStack armorStack = player.getCurrentArmor(i);
+							if (armorStack != null && armorStack.getItem() instanceof ItemHazmatArmor) {
+								if (armorStack.attemptDamageItem((int) Math.max(1, scale * 3), worldObj.rand)) {
+									player.setCurrentItemOrArmor(i + 1, null);
+								}
+							} else {
+								vulnerability++;
+							}
+						}
+					} else {
+						vulnerability = 4;
 					}
 
-					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), (int) Math.max(0, scale)));
+					if (vulnerability > 0) {
+						((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), vulnerability * (int) Math.max(0, scale)));
+					}
 				}
 			}
 		}
