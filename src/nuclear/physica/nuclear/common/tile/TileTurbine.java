@@ -123,7 +123,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 				delayGeneration--;
 			} else {
 				isGenerating = false;
-				delayGeneration = 10;
+				delayGeneration = 30;
 			}
 		}
 		isGenerating = energyStored > lastEnergyStored || steam > 0;
@@ -133,6 +133,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
 					energyStored + steam * (isMain ? steamToRf * 10 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
+			delayGeneration = 30;
 		}
 		if (receiver == null || receiver.isInvalid()) {
 			if (receiver != null && receiver.isInvalid()) {
