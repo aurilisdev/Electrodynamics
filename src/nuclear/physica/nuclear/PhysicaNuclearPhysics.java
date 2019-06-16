@@ -41,13 +41,15 @@ public class PhysicaNuclearPhysics {
 	public static ModMetadata metadata;
 
 	public static File configFolder;
+	public static ConfigNuclearPhysics config;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + NuclearReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
-		new ConfigNuclearPhysics().preInit();
+		config = new ConfigNuclearPhysics();
+		config.preInit();
 
 		proxyLoader.addContent(new NuclearTabRegister());
 

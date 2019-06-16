@@ -47,6 +47,7 @@ public class PhysicaForcefields {
 	public static ModMetadata metadata;
 
 	public static File configFolder;
+	public static ConfigForcefields config;
 
 	public static int DEFAULT_COLOR = Color.CYAN.brighter().brighter().getRGB();
 
@@ -55,7 +56,8 @@ public class PhysicaForcefields {
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + ForcefieldReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
-		new ConfigForcefields().preInit();
+		config = new ConfigForcefields();
+		config.preInit();
 
 		proxyLoader.addContent(new ForcefieldTabRegister());
 

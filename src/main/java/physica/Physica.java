@@ -45,6 +45,7 @@ public class Physica {
 	public static ModMetadata metadata;
 
 	public static File configFolder;
+	public static ConfigCore config;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -53,7 +54,8 @@ public class Physica {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, sidedProxy);
 		proxyLoader.addContent(sidedProxy);
 		proxyLoader.addContent(PacketSystem.INSTANCE);
-		new ConfigCore().preInit();
+		config = new ConfigCore();
+		config.preInit();
 
 		proxyLoader.addContent(new CoreTabRegister());
 		proxyLoader.addContent(new CoreBlockRegister());
