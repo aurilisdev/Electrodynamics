@@ -15,9 +15,11 @@ import physica.library.client.render.ItemRenderObjModel;
 import physica.library.client.render.TileRenderObjModel;
 import physica.nuclear.client.render.entity.RenderParticle;
 import physica.nuclear.client.render.item.ItemRenderCentrifuge;
+import physica.nuclear.client.render.item.ItemRenderControlRod;
 import physica.nuclear.client.render.item.ItemRenderTurbine;
 import physica.nuclear.client.render.tile.TileRenderAssembler;
 import physica.nuclear.client.render.tile.TileRenderCentrifuge;
+import physica.nuclear.client.render.tile.TileRenderControlRod;
 import physica.nuclear.client.render.tile.TileRenderFissionReactor;
 import physica.nuclear.client.render.tile.TileRenderFusionReactor;
 import physica.nuclear.client.render.tile.TileRenderNeutronCaptureChamber;
@@ -30,6 +32,7 @@ import physica.nuclear.common.tile.TileChemicalBoiler;
 import physica.nuclear.common.tile.TileChemicalExtractor;
 import physica.nuclear.common.tile.TileFissionReactor;
 import physica.nuclear.common.tile.TileFusionReactor;
+import physica.nuclear.common.tile.TileInsertableControlRod;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 import physica.nuclear.common.tile.TileQuantumAssembler;
 import physica.nuclear.common.tile.TileTurbine;
@@ -76,6 +79,11 @@ public class NuclearClientRegister implements IContent {
 				new TileRenderFusionReactor("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockFusionReactor),
 				new ItemRenderObjModel("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileInsertableControlRod.class,
+				new TileRenderControlRod());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockInsertableControlRod),
+				new ItemRenderControlRod("controlRodStation.obj", "fissionReactor.png"));
 	}
 
 	@Override

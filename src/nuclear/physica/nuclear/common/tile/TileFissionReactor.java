@@ -42,6 +42,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	protected float temperature = AIR_TEMPERATURE;
 	protected int surroundingWater;
+	private int insertion;
 
 	@Override
 	public void updateServer(int ticks) {
@@ -54,7 +55,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 		cooldownReactor(adjacentBlocks);
 		produceSteam();
-
+		insertion = 0;
 		if (hasFuelRod() && !isBeingControlled(adjacentBlocks)) {
 			processFuelRod();
 			if (temperature > MELTDOWN_TEMPERATURE + 101 + worldObj.rand.nextInt(5) && hasFuelRod()) {
@@ -107,11 +108,17 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		boolean beingControlled = false;
 		for (int i = 0; i < adjacentBlocks.length; i++) {
 			Block block = adjacentBlocks[i];
+			ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
 			if (block == NuclearBlockRegister.blockControlRod) {
 				beingControlled = true;
 			} else if (block == NuclearBlockRegister.blockThermometer) {
-				ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
 				block.updateTick(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, worldObj.rand);
+			} else if (block == NuclearBlockRegister.blockInsertableControlRod) {
+				TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+				if (tile instanceof TileInsertableControlRod) {
+					TileInsertableControlRod rod = (TileInsertableControlRod) tile;
+					insertion = rod.getInsertion();
+				}
 			}
 		}
 		return beingControlled;
@@ -144,11 +151,14 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 				}
 			}
-			if (temperature > MELTDOWN_TEMPERATURE) {
-				radius = 0.05f + (temperature - MELTDOWN_TEMPERATURE) / 20;
-				worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-						zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
-			}
+		}
+		radius = temperature / 400.0f;
+		for (int k = 0; k < 4; k++) {
+			float outerRods = 0.15f;
+			float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
+			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
+			worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
+					zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 		}
 		produceSteam();
 	}
@@ -200,18 +210,21 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	private void processFuelRod() {
 		ItemStack fuelRod = getStackInSlot(SLOT_INPUT);
-		fuelRod.setItemDamage(fuelRod.getItemDamage() + 1);
+		double insertDecimal = (100 - insertion) / 100.0;
+		if (worldObj.rand.nextFloat() < insertDecimal) {
+			fuelRod.setItemDamage((int) (fuelRod.getItemDamage() + 1 + Math.round(temperature / (MELTDOWN_TEMPERATURE / 2))));
+		}
 		if (isFissileRod()) {
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(NuclearItemRegister.itemLowEnrichedFuelCell, 1,
 						(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + worldObj.rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
 			}
-			temperature += (MELTDOWN_TEMPERATURE * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
+			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		} else if (isBreederRod()) {
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(CoreItemRegister.itemEmptyCell));
 			}
-			temperature += (MELTDOWN_TEMPERATURE * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
+			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		}
 	}
 
