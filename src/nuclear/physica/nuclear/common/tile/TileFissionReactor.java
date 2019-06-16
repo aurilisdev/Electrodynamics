@@ -151,11 +151,14 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 				}
 			}
-			if (temperature > MELTDOWN_TEMPERATURE) {
-				radius = temperature / 400;
-				worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-						zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
-			}
+		}
+		radius = temperature / 400;
+		for (int k = 0; k < radius * 2; k++) {
+			float outerRods = 0.15f;
+			float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
+			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
+			worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
+					zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 		}
 		produceSteam();
 	}
