@@ -110,4 +110,13 @@ public class PhysicaForcefields {
 	public static ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z) {
 		return ForcefieldEventHandler.INSTANCE.getRelevantConstructors(world, x, y, z);
 	}
+
+	public static boolean isInForcefields(ArrayList<TileFortronFieldConstructor> constructors, double x, double y, double z) {
+		for (TileFortronFieldConstructor constructor : constructors) {
+			if (constructor.isInForcefield(x, y, z)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
