@@ -1,12 +1,12 @@
 package physica.library.effect;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IChatComponent;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class PhysicaDamageSource extends DamageSource {
 

@@ -11,7 +11,6 @@ import physica.api.core.IBaseUtilities;
 import physica.api.core.IItemUpdate;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
-import physica.nuclear.common.tile.TilePlasma;
 
 public class ItemUpdateDarkMatter implements IItemUpdate, IBaseUtilities {
 

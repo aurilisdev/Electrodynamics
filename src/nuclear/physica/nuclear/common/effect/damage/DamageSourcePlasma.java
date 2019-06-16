@@ -12,10 +12,9 @@ public class DamageSourcePlasma extends PhysicaDamageSource {
 		setDamageIsAbsolute();
 
 		setDeathMessages(
-			"'s electrons flew off their body",
-			"fell into a fusion reactor",
-			"tried to swim in plasma",
-			"was vaporized by plasma"
-		);
+				"'s electrons flew off their body",
+				"fell into a fusion reactor",
+				"tried to swim in plasma",
+				"was vaporized by plasma");
 	}
 }
