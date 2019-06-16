@@ -8,10 +8,11 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import physica.api.core.IPlayerUsing;
 import physica.api.core.ITileBaseContainer;
 
-public class ContainerBase<T extends IInventory & IPlayerUsing> extends Container {
+public class ContainerBase<T extends IPlayerUsing> extends Container {
 
 	protected T host;
 	protected EntityPlayer player;
@@ -164,6 +165,7 @@ public class ContainerBase<T extends IInventory & IPlayerUsing> extends Containe
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
-		return host.isUseableByPlayer(entityplayer);
+		return host instanceof IInventory ? ((IInventory) host).isUseableByPlayer(entityplayer)
+				: (boolean) (host instanceof TileEntity ? entityplayer.getDistanceSq(((TileEntity) host).xCoord, ((TileEntity) host).yCoord, ((TileEntity) host).zCoord) <= 64 : true);
 	}
 }
