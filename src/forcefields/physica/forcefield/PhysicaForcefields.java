@@ -2,6 +2,7 @@ package physica.forcefield;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.ArrayList;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -15,6 +16,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
 import physica.forcefield.client.ForcefieldClientRegister;
@@ -26,6 +28,7 @@ import physica.forcefield.common.ForcefieldRecipeRegister;
 import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.command.SetIdentityCommand;
 import physica.forcefield.common.configuration.ConfigForcefields;
+import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
 import physica.proxy.ContentLoader;
@@ -102,5 +105,9 @@ public class PhysicaForcefields {
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new SetIdentityCommand());
+	}
+
+	public static ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z) {
+		return ForcefieldEventHandler.INSTANCE.getRelevantConstructors(world, x, y, z);
 	}
 }

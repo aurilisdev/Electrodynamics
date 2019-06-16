@@ -1,5 +1,6 @@
 package physica.forcefield.common;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -55,17 +56,21 @@ public class ForcefieldEventHandler {
 		set.remove(tile);
 	}
 
-	public boolean isProtectedByForceField(double x, double y, double z) {
+	public ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z) {
+		ArrayList<TileFortronFieldConstructor> list = new ArrayList<>();
 		Iterator<TileFortronFieldConstructor> iterator = forceFieldConstructors.iterator();
 		while (iterator.hasNext()) {
 			TileFortronFieldConstructor constructor = iterator.next();
 			if (constructor.isInvalid()) {
 				iterator.remove();
-			} else if (constructor.isInForcefield(x, y, z)) {
-				return true;
+			} else if (constructor.getWorldObj().equals(world)) {
+				double distSquared = Math.pow(constructor.xCoord - x, 2) + Math.pow(constructor.yCoord - y, 2) + Math.pow(constructor.zCoord - z, 2);
+				if (distSquared < 400 * 400) {
+					list.add(constructor);
+				}
 			}
 		}
-		return false;
+		return list;
 	}
 
 	@SubscribeEvent
