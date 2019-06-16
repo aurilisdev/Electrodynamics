@@ -152,8 +152,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
-		radius = temperature / 400;
-		for (int k = 0; k < radius * 2; k++) {
+		radius = temperature / 400.0f;
+		for (int k = 0; k < 4; k++) {
 			float outerRods = 0.15f;
 			float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
 			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
