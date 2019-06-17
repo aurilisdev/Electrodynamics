@@ -217,9 +217,8 @@ public class ChemicalExtractorRecipeHandler extends NuclearRecipeHandlerBase {
 		public List<PositionedStack> getIngredients() {
 			List<PositionedStack> ingredients = new ArrayList<>();
 			if (oreDict != null) {
-				for (ItemStack item : OreDictionary.getOres(oreDict)) {
-					ingredients.add(new PositionedStack(item, 82, 22));
-				}
+				List<ItemStack> items = new ArrayList<>(OreDictionary.getOres(oreDict));
+				ingredients.add(new PositionedStack(items, 82, 22));
 			} else {
 				ingredients.add(new PositionedStack(new ItemStack(iteminput), 82, 22));
 			}

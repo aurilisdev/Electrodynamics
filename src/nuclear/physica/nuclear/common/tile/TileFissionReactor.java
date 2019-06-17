@@ -151,15 +151,27 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 				}
 			}
+			for (int i = 0; i < 2; i++) {
+				if (temperature > MELTDOWN_TEMPERATURE - 50) {
+					radius = 0.05f + (temperature - MELTDOWN_TEMPERATURE) / 20;
+					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
+							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+				}
+			}
 		}
 		radius = temperature / 400.0f;
-		for (int k = 0; k < 4; k++) {
-			float outerRods = 0.15f;
-			float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
-			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
-			worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-					zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+		if (radius > 0.5) {
+			for (int i = 0; i < (int) (Math.pow(radius, 1.5) / 10f); i++) {
+				for (int k = 0; k < 4; k++) {
+					float outerRods = 0.15f;
+					float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
+					float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
+					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
+							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+				}
+			}
 		}
+
 		produceSteam();
 	}
 
@@ -175,10 +187,17 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 		float power = isFissileRod() ? 20 : isBreederRod() ? 7 : 0;
 		setInventorySlotContents(SLOT_INPUT, null);
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			BlockLocation location = new BlockLocation(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-			if (location.getBlock(worldObj) == Blocks.water) {
-				location.setBlockAirFast(worldObj);
+		int radius = 2;
+		BlockLocation location = new BlockLocation(xCoord, yCoord, zCoord);
+		for (int i = -radius; i <= radius; i++) {
+			for (int j = -radius; j <= radius; j++) {
+				for (int k = -radius; k <= radius; k++) {
+					location.set(xCoord + i, yCoord + j, zCoord + k);
+					Block block = location.getBlock(worldObj);
+					if (block == Blocks.water || block == Blocks.flowing_water) {
+						location.setBlockAirFast(worldObj);
+					}
+				}
 			}
 		}
 		worldObj.createExplosion(null, xCoord, yCoord, zCoord, power, true);
@@ -212,7 +231,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		ItemStack fuelRod = getStackInSlot(SLOT_INPUT);
 		double insertDecimal = (100 - insertion) / 100.0;
 		if (worldObj.rand.nextFloat() < insertDecimal) {
-			fuelRod.setItemDamage((int) (fuelRod.getItemDamage() + 1 + Math.round(temperature / (MELTDOWN_TEMPERATURE / 2))));
+			fuelRod.setItemDamage(fuelRod.getItemDamage() + 1 + Math.round(temperature / (MELTDOWN_TEMPERATURE / 2)));
 		}
 		if (isFissileRod()) {
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
@@ -234,7 +253,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 		int radius = 1;
 		for (int i = -radius; i <= radius; i++) {
-			for (int j = -radius; j <= radius; j++) {
+			for (int j = radius; j >= -radius; j--) {
 				for (int k = -radius; k <= radius; k++) {
 					Block blockXDirection = worldObj.getBlock(xCoord + i, yCoord, zCoord);
 					Block blockZDirection = worldObj.getBlock(xCoord, yCoord, zCoord + k);
@@ -243,7 +262,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 						Block block = worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k);
 						if (block == Blocks.water) {
 							if (isServer()) {
-								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE / 2400) {
+								float temperatureVarient = temperature / MELTDOWN_TEMPERATURE / 2400;
+								if (worldObj.rand.nextFloat() < temperatureVarient + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250)) {
 									worldObj.setBlockToAir(xCoord + i, yCoord + j, zCoord + k);
 									continue;
 								}

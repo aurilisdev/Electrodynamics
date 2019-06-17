@@ -7,6 +7,7 @@ import physica.nuclear.client.gui.GuiCentrifuge;
 import physica.nuclear.client.gui.GuiChemicalBoiler;
 import physica.nuclear.client.gui.GuiChemicalExtractor;
 import physica.nuclear.client.gui.GuiNeutronCaptureChamber;
+import physica.nuclear.client.gui.GuiParticleAccelerator;
 
 public class NEINuclearConfig implements IConfigureNEI {
 
@@ -20,10 +21,14 @@ public class NEINuclearConfig implements IConfigureNEI {
 		API.registerUsageHandler(new CentrifugeRecipeHandler());
 		API.registerRecipeHandler(new NeutronCaptureRecipeHandler());
 		API.registerUsageHandler(new NeutronCaptureRecipeHandler());
+		API.registerRecipeHandler(new ParticleAcceleratorRecipehelper());
+		API.registerUsageHandler(new ParticleAcceleratorRecipehelper());
+
 		API.setGuiOffset(GuiChemicalBoiler.class, 0, 13);
 		API.setGuiOffset(GuiChemicalExtractor.class, 0, 13);
 		API.setGuiOffset(GuiCentrifuge.class, 0, 13);
 		API.setGuiOffset(GuiNeutronCaptureChamber.class, 0, 13);
+		API.setGuiOffset(GuiParticleAccelerator.class, 0, 13);
 	}
 
 	@Override

@@ -24,7 +24,9 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		double ticksLeft = 0;
 		if (host.hasFuelRod()) {
-			ticksLeft = host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage() - host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage();
+			ticksLeft = (host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage()
+					- host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
+					/ (+1 + Math.round(host.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
 		}
 		drawString("Time Left: " + roundPrecise(ticksLeft / 20, 1) + " seconds", 9, 59);
 		drawString("Temperature: " + roundPrecise(host.getTemperature(), 2) + " C", 9, 70);

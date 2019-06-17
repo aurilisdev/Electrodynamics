@@ -1,5 +1,8 @@
 package physica.core.common.command;
 
+import java.util.Arrays;
+import java.util.List;
+
 import cpw.mods.fml.common.Loader;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -9,9 +12,6 @@ import physica.CoreReferences;
 import physica.Physica;
 import physica.forcefield.PhysicaForcefields;
 import physica.nuclear.PhysicaNuclearPhysics;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class CommandPhysica extends CommandBase {
 

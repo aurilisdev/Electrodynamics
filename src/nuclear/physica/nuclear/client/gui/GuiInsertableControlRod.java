@@ -13,7 +13,7 @@ import physica.nuclear.common.tile.TileInsertableControlRod;
 public class GuiInsertableControlRod extends GuiContainerBase<TileInsertableControlRod> implements IBaseUtilities {
 
 	public GuiInsertableControlRod(EntityPlayer player, TileInsertableControlRod host) {
-		super(new ContainerBase<TileInsertableControlRod>(player, host), host);
+		super(new ContainerBase<>(player, host), host);
 	}
 
 	@Override
@@ -22,6 +22,7 @@ public class GuiInsertableControlRod extends GuiContainerBase<TileInsertableCont
 		drawString("Insertion: " + host.getInsertion() + "%", 50, 59);
 	}
 
+	@Override
 	public void initGui() {
 		super.initGui();
 		addButton(new GuiButton(1, width / 2 - 70, height / 2, "Raise 5%".length() * 8, 20, "Raise 5%"));
