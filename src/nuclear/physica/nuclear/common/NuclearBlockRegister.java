@@ -13,6 +13,7 @@ import physica.nuclear.common.block.BlockElectromagnet;
 import physica.nuclear.common.block.BlockFissionReactor;
 import physica.nuclear.common.block.BlockFusionReactor;
 import physica.nuclear.common.block.BlockInsertableControlRod;
+import physica.nuclear.common.block.BlockMeltedReactor;
 import physica.nuclear.common.block.BlockNeutronCaptureChamber;
 import physica.nuclear.common.block.BlockParticleAccelerator;
 import physica.nuclear.common.block.BlockPlasma;
@@ -27,6 +28,7 @@ import physica.nuclear.common.tile.TileChemicalExtractor;
 import physica.nuclear.common.tile.TileFissionReactor;
 import physica.nuclear.common.tile.TileFusionReactor;
 import physica.nuclear.common.tile.TileInsertableControlRod;
+import physica.nuclear.common.tile.TileMeltedReactor;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 import physica.nuclear.common.tile.TileParticleAccelerator;
 import physica.nuclear.common.tile.TilePlasma;
@@ -53,6 +55,7 @@ public class NuclearBlockRegister implements IContent {
 	public static BlockUraniumOre blockUraniumOre;
 	public static BlockPlasma blockPlasma;
 	public static BlockInsertableControlRod blockInsertableControlRod;
+	public static BlockMeltedReactor blockMeltedReactor;
 
 	@Override
 	public void preInit() {
@@ -85,6 +88,9 @@ public class NuclearBlockRegister implements IContent {
 
 		GameRegistry.registerBlock(blockInsertableControlRod = new BlockInsertableControlRod(), "insertableControlRod");
 		GameRegistry.registerTileEntity(TileInsertableControlRod.class, NuclearReferences.PREFIX + "insertableControlRod");
+
+		GameRegistry.registerBlock(blockMeltedReactor = new BlockMeltedReactor(), "meltedReactor");
+		GameRegistry.registerTileEntity(TileMeltedReactor.class, NuclearReferences.PREFIX + "meltedReactor");
 
 		OreDictionary.registerOre("oreUranium", NuclearBlockRegister.blockUraniumOre);
 	}

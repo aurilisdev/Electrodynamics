@@ -185,13 +185,12 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
 		}
-		float power = isFissileRod() ? 20 : isBreederRod() ? 7 : 0;
+		int power = (isFissileRod() ? 20 : isBreederRod() ? 7 : 0) / 2;
 		setInventorySlotContents(SLOT_INPUT, null);
-		int radius = 2;
 		BlockLocation location = new BlockLocation(xCoord, yCoord, zCoord);
-		for (int i = -radius; i <= radius; i++) {
-			for (int j = -radius; j <= radius; j++) {
-				for (int k = -radius; k <= radius; k++) {
+		for (int i = -power; i <= power; i++) {
+			for (int j = -power; j <= power; j++) {
+				for (int k = -power; k <= power; k++) {
 					location.set(xCoord + i, yCoord + j, zCoord + k);
 					Block block = location.getBlock(worldObj);
 					if (block == Blocks.water || block == Blocks.flowing_water) {
@@ -200,7 +199,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
-		worldObj.createExplosion(null, xCoord, yCoord, zCoord, power, true);
+		worldObj.createExplosion(null, xCoord, yCoord, zCoord, power * 2, true);
+		worldObj.setBlock(xCoord, yCoord, zCoord, NuclearBlockRegister.blockMeltedReactor);
 	}
 
 	private void cooldownReactor(Block[] adjacentBlocks) {

@@ -45,6 +45,7 @@ tile.physicanuclearphysics:electromagnet.3.name=Plasma Containment Glass
 tile.physicanuclearphysics:plasma.name=Plasma
 tile.physicanuclearphysics:uraniumOre.name=Uranium Ore
 tile.physicanuclearphysics:insertableControlRod.name=Insertable Control Rod
+tile.physicanuclearphysics:meltedReactor.name=Melted Reactor
 #### GUI
 tile.physicanuclearphysics:accelerator.gui=Particle Accelerator
 tile.physicanuclearphysics:centrifuge.gui=Gas Centrifuge

@@ -33,6 +33,7 @@ import physica.nuclear.common.tile.TileChemicalExtractor;
 import physica.nuclear.common.tile.TileFissionReactor;
 import physica.nuclear.common.tile.TileFusionReactor;
 import physica.nuclear.common.tile.TileInsertableControlRod;
+import physica.nuclear.common.tile.TileMeltedReactor;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 import physica.nuclear.common.tile.TileQuantumAssembler;
 import physica.nuclear.common.tile.TileTurbine;
@@ -84,6 +85,12 @@ public class NuclearClientRegister implements IContent {
 				new TileRenderControlRod());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockInsertableControlRod),
 				new ItemRenderControlRod("controlRodStation.obj", "fissionReactor.png"));
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMeltedReactor.class,
+				new TileRenderObjModel<TileMeltedReactor>("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockMeltedReactor),
+				new ItemRenderObjModel("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+
 	}
 
 	@Override
