@@ -24,4 +24,5 @@ public class ItemHazmatArmor extends ItemArmor {
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		return CoreReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + "hazmatArmor.png";
 	}
+
 }

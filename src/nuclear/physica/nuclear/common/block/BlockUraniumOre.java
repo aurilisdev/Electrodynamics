@@ -8,15 +8,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
-import physica.nuclear.common.effect.potion.PotionRadiation;
-import physica.nuclear.common.items.armor.ItemHazmatArmor;
+import physica.nuclear.common.radiation.RadiationSystem;
 
 public class BlockUraniumOre extends Block {
 
@@ -36,27 +33,8 @@ public class BlockUraniumOre extends Block {
 	@Override
 	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
 		super.onEntityWalking(world, x, y, z, ent);
-		if (world.rand.nextFloat() < 0.333) {
-			if (ent instanceof EntityLivingBase) {
-				if (ent instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) ent;
-					boolean hasArmor = true;
-					for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-						if (!(player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor)) {
-							hasArmor = false;
-						}
-					}
-					if (!hasArmor) {
-						player.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), 300));
-					} else {
-						for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-							player.getCurrentArmor(i).damageItem(3, player);
-						}
-					}
-				} else {
-					((EntityLivingBase) ent).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), 300));
-				}
-			}
+		if (ent instanceof EntityLivingBase) {
+			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, 0.75f, 15, 1, 1);
 		}
 	}
 

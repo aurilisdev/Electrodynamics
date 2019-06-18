@@ -15,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,9 +27,8 @@ import physica.nuclear.client.gui.GuiFissionReactor;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
-import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.inventory.ContainerFissionReactor;
-import physica.nuclear.common.items.armor.ItemHazmatArmor;
+import physica.nuclear.common.radiation.RadiationSystem;
 
 public class TileFissionReactor extends TileBaseContainer implements IGuiInterface {
 
@@ -74,31 +72,9 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 					AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
-					int vulnerability = 0;
 					double scale = (radius - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
-					if (entity instanceof EntityPlayer) {
-						EntityPlayer player = (EntityPlayer) entity;
-						if (player.capabilities.isCreativeMode) {
-							continue;
-						}
-
-						for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-							ItemStack armorStack = player.getCurrentArmor(i);
-							if (armorStack != null && armorStack.getItem() instanceof ItemHazmatArmor) {
-								if (armorStack.attemptDamageItem((int) Math.max(1, scale * 3), worldObj.rand)) {
-									player.setCurrentItemOrArmor(i + 1, null);
-								}
-							} else {
-								vulnerability++;
-							}
-						}
-					} else {
-						vulnerability = 4;
-					}
-
-					if (vulnerability > 0) {
-						((EntityLivingBase) entity).addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), vulnerability * (int) Math.max(0, scale)));
-					}
+					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale * 3, (float) scale * 15, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+							(float) radius);
 				}
 			}
 		}

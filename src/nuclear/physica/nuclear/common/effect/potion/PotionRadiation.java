@@ -1,7 +1,6 @@
 package physica.nuclear.common.effect.potion;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import physica.nuclear.common.effect.damage.DamageSourceRadiation;
 
@@ -32,9 +31,6 @@ public class PotionRadiation extends Potion {
 	public void performEffect(EntityLivingBase par1EntityLiving, int amplifier) {
 		if (par1EntityLiving.worldObj.rand.nextFloat() <= (amplifier + 1) / 10f && par1EntityLiving.worldObj.rand.nextFloat() > 0.8 - amplifier * 0.08D) {
 			par1EntityLiving.attackEntityFrom(DamageSourceRadiation.INSTANCE, amplifier + 1);
-			if (par1EntityLiving instanceof EntityPlayer) {
-				((EntityPlayer) par1EntityLiving).addExhaustion(0.01F * (amplifier + 1));
-			}
 		}
 	}
 

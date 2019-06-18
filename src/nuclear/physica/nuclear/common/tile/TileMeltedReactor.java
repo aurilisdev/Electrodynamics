@@ -7,17 +7,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.NuclearBlockRegister;
-import physica.nuclear.common.effect.potion.PotionRadiation;
-import physica.nuclear.common.items.armor.ItemHazmatArmor;
+import physica.nuclear.common.radiation.RadiationSystem;
 
 public class TileMeltedReactor extends TileBase {
 
@@ -70,32 +66,9 @@ public class TileMeltedReactor extends TileBase {
 							zCoord + RADIATION_RADIUS));
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
-					int vulnerability = 0;
 					double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-					if (entity instanceof EntityPlayer) {
-						EntityPlayer player = (EntityPlayer) entity;
-						if (player.capabilities.isCreativeMode) {
-							continue;
-						}
-
-						for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-							ItemStack armorStack = player.getCurrentArmor(i);
-							if (armorStack != null && armorStack.getItem() instanceof ItemHazmatArmor) {
-								if (armorStack.attemptDamageItem((int) Math.max(1, scale * 2.15), worldObj.rand)) {
-									player.setCurrentItemOrArmor(i + 1, null);
-								}
-							} else {
-								vulnerability++;
-							}
-						}
-					} else {
-						vulnerability = 4;
-					}
-
-					if (vulnerability > 0) {
-						((EntityLivingBase) entity)
-								.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), (int) (300 * scale), (int) (vulnerability / 2.5 * scale / (RADIATION_RADIUS / 2))));
-					}
+					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+							RADIATION_RADIUS);
 				}
 			}
 			radiation--;
@@ -111,8 +84,8 @@ public class TileMeltedReactor extends TileBase {
 				int y = (int) Math.floor(y2);
 				int z = (int) Math.floor(z2);
 				Block block = worldObj.getBlock(x, y, z);
-				if (block == Blocks.grass || block == Blocks.dirt) {
-					worldObj.setBlock(x, y, z, Blocks.sand);
+				if (block == Blocks.grass) {
+					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveGrass);
 				}
 			}
 		}
