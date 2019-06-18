@@ -201,13 +201,13 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public void onDefendAntiFriendly(EntityLivingBase living) {
 		if ((!(living instanceof IMob) || living instanceof INpc) && !(living instanceof EntityPlayer)) {
-			living.attackEntityFrom(DamageSource.magic, 20);
+			living.attackEntityFrom(DamageSource.magic, 200);
 		}
 	}
 
 	public void onDefendAntiHostile(EntityLivingBase living) {
 		if (living instanceof IMob && !(living instanceof INpc) && !(living instanceof EntityPlayer)) {
-			living.attackEntityFrom(DamageSource.magic, 20);
+			living.attackEntityFrom(DamageSource.magic, 750);
 		}
 	}
 

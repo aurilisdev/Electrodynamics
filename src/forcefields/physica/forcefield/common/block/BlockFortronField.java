@@ -75,6 +75,11 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	}
 
 	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+		return false;
+	}
+
+	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		float bound = world.isRemote ? 0.01f : 0.0625F;
 		@SuppressWarnings("unchecked")
