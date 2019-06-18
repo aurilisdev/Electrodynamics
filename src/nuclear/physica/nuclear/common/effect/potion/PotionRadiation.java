@@ -8,8 +8,12 @@ public class PotionRadiation extends Potion {
 
 	public static final PotionRadiation INSTANCE = new PotionRadiation(21, true, 5149489, "radiation");
 
-	public PotionRadiation(int id, boolean isBadEffect, int color, String name) {
+	public PotionRadiation(int id, boolean isBadEffect, int color) {
 		super(id, isBadEffect, color);
+	}
+
+	public PotionRadiation(int id, boolean isBadEffect, int color, String name) {
+		this(id, isBadEffect, color);
 		setPotionName("potion." + name);
 		Potion.potionTypes[getId()] = this;
 		setIconIndex(6, 0);
