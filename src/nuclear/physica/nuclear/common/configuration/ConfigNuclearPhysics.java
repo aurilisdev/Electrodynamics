@@ -4,10 +4,12 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import physica.CoreReferences;
 import physica.api.core.IContent;
 import physica.nuclear.PhysicaNuclearPhysics;
+import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
 public class ConfigNuclearPhysics implements IContent {
@@ -17,8 +19,10 @@ public class ConfigNuclearPhysics implements IContent {
 	public static float ANTIMATTER_CREATION_SPEED = 1f;
 	public static boolean ENABLE_PARTICLE_COLLISION = true;
 	public static boolean ENABLE_PARTICLE_CHUNKLOADING = true;
-	public static HashSet<String> PROTECTED_WORLDS = new HashSet<>(Arrays.asList("spawn", "creative"));
 	public static float TURBINE_STEAM_TO_RF_RATIO = 2f;
+
+	public static HashSet<String> PROTECTED_WORLDS = new HashSet<>(Arrays.asList("spawn", "creative"));
+	public static HashSet<String> QUANTUM_ASSEMBLER_BLACKLIST = new HashSet<>(Arrays.asList(Item.getItemFromBlock(NuclearBlockRegister.blockQuantumAssembler).getUnlocalizedName()));
 
 	public static boolean ENABLE_URANIUM_ORE = true;
 	public static int URANIUM_ORE_MIN_Y = 10;
@@ -45,10 +49,13 @@ public class ConfigNuclearPhysics implements IContent {
 				configuration.getInt("fulmination_antimatter_energy_scale", CATEGORY, ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE, 1, 3000,
 						"Multiplier for an antimatter explosion's energy generation in a fulmination generator.");
 
-		String[] protectedWorlds = configuration.getStringList("protected_worlds", CATEGORY, new String[] { "spawn", "creative" }, "Worlds that are protected from typical explosions and such");
+		String[] protectedWorlds = configuration.getStringList("protected_worlds", CATEGORY, PROTECTED_WORLDS.toArray(new String[0]), "Worlds that are protected from typical explosions and such");
 		for (String world : protectedWorlds) {
 			PROTECTED_WORLDS.add(world.toLowerCase());
 		}
+
+		QUANTUM_ASSEMBLER_BLACKLIST = new HashSet<>(Arrays.asList(configuration.getStringList("quantum_assembler_blacklist", CATEGORY,
+			QUANTUM_ASSEMBLER_BLACKLIST.toArray(new String[0]), "Items which are blacklisted from use in the quantum assembler")));
 
 		TURBINE_STEAM_TO_RF_RATIO = configuration.getFloat("turbineSteamToRfRatio", CATEGORY, TURBINE_STEAM_TO_RF_RATIO, 0.01f, 100f,
 				"Ratio for turbines to convert one ml of steam into rf.");

@@ -15,6 +15,7 @@ import physica.api.core.IGuiInterface;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiQuantumAssembler;
 import physica.nuclear.common.NuclearItemRegister;
+import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.inventory.ContainerQuantumAssembler;
 
 public class TileQuantumAssembler extends TileBasePoweredContainer implements IGuiInterface {
@@ -49,7 +50,9 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	}
 
 	public boolean isRestricted(ItemStack itemStack) {
-		return itemStack == null || itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell || itemStack.stackSize <= 0 || !itemStack.isStackable() || itemStack.hasTagCompound();
+		return itemStack == null || itemStack.stackSize <= 0 || !itemStack.isStackable() || itemStack.hasTagCompound()
+			       || itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell
+			       || ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName());
 	}
 
 	@Override

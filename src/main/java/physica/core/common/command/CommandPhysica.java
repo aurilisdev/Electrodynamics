@@ -1,17 +1,19 @@
 package physica.core.common.command;
 
-import java.util.Arrays;
-import java.util.List;
-
 import cpw.mods.fml.common.Loader;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import physica.CoreReferences;
 import physica.Physica;
 import physica.forcefield.PhysicaForcefields;
 import physica.nuclear.PhysicaNuclearPhysics;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandPhysica extends CommandBase {
 
@@ -38,7 +40,7 @@ public class CommandPhysica extends CommandBase {
 			sender.addChatMessage(new ChatComponentText(" Developed by aurilisdev"));
 			sender.addChatMessage(new ChatComponentText(" Website: github.com/Aurilisdev/" + CoreReferences.NAME));
 			sender.addChatMessage(new ChatComponentText(" Version: " + CoreReferences.VERSION));
-		} else {
+		} else if (args[0].equalsIgnoreCase("reload")) {
 			Physica.config.preInit();
 			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics")) {
 				PhysicaNuclearPhysics.config.preInit();
@@ -47,6 +49,20 @@ public class CommandPhysica extends CommandBase {
 				PhysicaForcefields.config.preInit();
 			}
 			sender.addChatMessage(new ChatComponentText("Physica configs reloaded successfully"));
+		} else if (args[0].equalsIgnoreCase("item")) {
+			if (sender instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) sender;
+				ItemStack itemStack = player.getItemInUse();
+				if (itemStack != null) {
+					sender.addChatMessage(new ChatComponentText(itemStack.getItem().getUnlocalizedName()));
+				} else {
+					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "You are not holding anything in your hand!"));
+				}
+			} else {
+				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command must be executed in game"));
+			}
+		} else {
+			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Unknown Physica sub-command"));
 		}
 	}
 
