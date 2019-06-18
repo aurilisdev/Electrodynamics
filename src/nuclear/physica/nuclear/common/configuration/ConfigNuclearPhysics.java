@@ -32,6 +32,7 @@ public class ConfigNuclearPhysics implements IContent {
 	public static int URANIUM_ORE_HARVEST_LEVEL = 2;
 
 	public static int PLASMA_STRENGTH = 5;
+	public static int DARK_MATTER_USES = 8;
 
 	@Override
 	public void preInit() {
@@ -71,6 +72,9 @@ public class ConfigNuclearPhysics implements IContent {
 
 		PLASMA_STRENGTH = configuration.getInt("plasma_strength", CATEGORY, PLASMA_STRENGTH, 0, 50,
 				"Amount of destruction caused by plasma");
+
+		DARK_MATTER_USES = configuration.getInt("dark_matter_uses", CATEGORY, DARK_MATTER_USES, 1, 1000,
+				"The number of items each dark matter cell can be used in a quantum assembler");
 
 		configuration.save();
 	}

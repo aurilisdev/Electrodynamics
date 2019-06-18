@@ -7,6 +7,7 @@ import physica.CoreReferences;
 import physica.api.core.IContent;
 import physica.library.item.ItemInformationHolder;
 import physica.library.item.ItemUpdateable;
+import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.items.armor.ItemHazmatArmor;
 import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 import physica.nuclear.common.items.update.ItemUpdateDarkMatter;
@@ -44,7 +45,7 @@ public class NuclearItemRegister implements IContent {
 						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemAntimatterCell1Gram.getUnlocalizedName());
 		GameRegistry.registerItem(itemDarkmatterCell =
-				(ItemInformationHolder) new ItemInformationHolder("darkmatterCell").setUpdate(new ItemUpdateDarkMatter()).setMaxDamage(8).setMaxStackSize(1)
+				(ItemInformationHolder) new ItemInformationHolder("darkmatterCell").setUpdate(new ItemUpdateDarkMatter()).setMaxDamage(ConfigNuclearPhysics.DARK_MATTER_USES).setMaxStackSize(1)
 						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemDarkmatterCell.getUnlocalizedName());
 		GameRegistry.registerItem(itemHighEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "High-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(4.5f))
