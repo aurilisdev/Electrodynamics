@@ -14,10 +14,11 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import physica.core.client.nei.PhysicaRecipeHandlerBase;
 import physica.nuclear.client.gui.GuiParticleAccelerator;
 import physica.nuclear.common.NuclearItemRegister;
 
-public class ParticleAcceleratorRecipehelper extends NuclearRecipeHandlerBase {
+public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 
 	@Override
 	public String getRecipeName() {

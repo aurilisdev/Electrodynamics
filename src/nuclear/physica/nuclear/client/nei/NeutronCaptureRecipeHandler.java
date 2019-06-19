@@ -12,11 +12,12 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import physica.core.client.nei.PhysicaRecipeHandlerBase;
 import physica.nuclear.client.gui.GuiNeutronCaptureChamber;
 import physica.nuclear.common.NuclearItemRegister;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 
-public class NeutronCaptureRecipeHandler extends NuclearRecipeHandlerBase {
+public class NeutronCaptureRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	@Override
 	public String getRecipeName() {

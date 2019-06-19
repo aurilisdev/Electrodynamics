@@ -1,4 +1,4 @@
-package physica.nuclear.client.nei;
+package physica.core.client.nei;
 
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 import static codechicken.lib.gui.GuiDraw.gui;
@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import physica.CoreReferences;
 
-public class NuclearRecipeHandlerBase extends TemplateRecipeHandler {
+public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 	public static final ResourceLocation GUI_COMPONENTS = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_components.png");
 	public static final String GUI_STRING = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png").toString().toString();
@@ -22,7 +22,7 @@ public class NuclearRecipeHandlerBase extends TemplateRecipeHandler {
 	public int yOffset = 13;
 	protected int meterHeight = 49;
 	protected int meterWidth = 14;
-	Minecraft mc = Minecraft.getMinecraft();
+	protected Minecraft mc = Minecraft.getMinecraft();
 
 	@Override
 	public String getGuiTexture() {

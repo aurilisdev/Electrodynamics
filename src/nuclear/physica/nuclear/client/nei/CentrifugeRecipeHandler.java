@@ -21,12 +21,13 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import physica.core.client.nei.PhysicaRecipeHandlerBase;
 import physica.nuclear.client.gui.GuiCentrifuge;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.NuclearItemRegister;
 import physica.nuclear.common.tile.TileCentrifuge;
 
-public class CentrifugeRecipeHandler extends NuclearRecipeHandlerBase {
+public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	@Override
 	public String getRecipeName() {

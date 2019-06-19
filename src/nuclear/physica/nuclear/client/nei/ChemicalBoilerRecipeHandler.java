@@ -24,13 +24,14 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.CoreReferences;
+import physica.core.client.nei.PhysicaRecipeHandlerBase;
 import physica.nuclear.client.gui.GuiChemicalBoiler;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.recipe.NuclearCustomRecipeHelper;
 import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
 import physica.nuclear.common.tile.TileChemicalBoiler;
 
-public class ChemicalBoilerRecipeHandler extends NuclearRecipeHandlerBase {
+public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	@Override
 	public String getGuiTexture() {
