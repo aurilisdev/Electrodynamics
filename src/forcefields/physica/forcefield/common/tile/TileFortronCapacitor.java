@@ -100,7 +100,7 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return canSendBeam() ? INFINITE_EXTENT_AABB : super.getRenderBoundingBox();
+		return canSendBeam() ? super.getRenderBoundingBox().expand(5, 5, 5) : super.getRenderBoundingBox();
 	}
 
 	@Override

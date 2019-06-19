@@ -29,7 +29,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return isMain ? INFINITE_EXTENT_AABB
+		return isMain ? super.getRenderBoundingBox().expand(1, 1, 1)
 				: hasMain ? AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0) : super.getRenderBoundingBox();
 	}
 

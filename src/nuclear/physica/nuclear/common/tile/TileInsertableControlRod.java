@@ -11,6 +11,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.IGuiInterface;
 import physica.library.inventory.ContainerBase;
@@ -24,6 +25,11 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 
 	public static final int CONTROL_ROD_PACKET_ID = 8;
 	private int insertion = 100;
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return super.getRenderBoundingBox().expand(1, 1, 1);
+	}
 
 	@Override
 	public void updateServer(int ticks) {

@@ -31,18 +31,17 @@ public class RadiationSystem {
 								if (player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor) {
 									if (player.getCurrentArmor(i).getItemDamage() > player.getCurrentArmor(i).getMaxDamage()
 											|| player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, kiloRontgen * 2.15), base.worldObj.rand)) {
-										player.setCurrentItemOrArmor(i+1, null);
+										player.setCurrentItemOrArmor(i + 1, null);
 									}
 								}
 							}
 						}
 					}
 				}
-				int duration = (int) (((durationMultiplier * 20 * kiloRontgen) / protection) / distanceFromSource);
-				int amplifier = (int) ((((maxRadius - distanceFromSource) / maxRadius) * 5) - protection);
+				int duration = (int) (durationMultiplier * 20 * kiloRontgen / protection / distanceFromSource);
+				int amplifier = (int) ((maxRadius - distanceFromSource) / maxRadius * 5 - protection);
 				if (protection < 5) {
 					base.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), duration, amplifier));
-					System.out.println("DistanceFromSource: " + distanceFromSource + ", Duration: " + duration / 20 + "s, Amplifier: " + amplifier);
 				}
 			}
 		}
