@@ -117,6 +117,30 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		}
 	}
 
+	public static void main(String args[]) {
+		double speed = 0.001;
+		double travelled = 0.5f;
+		int ticks = 0;
+		int stopped = 0;
+		while (speed < 1) {
+			speed += 0.002;
+			travelled += speed;
+			if ((int) (travelled) % 50 == 49) {
+				speed *= 0.9075f;
+				stopped++;
+				if (stopped > 32) {
+					System.out.println("Never hit a max.");
+					break;
+				}
+			}
+			if (speed > 1) {
+				break;
+			}
+			ticks++;
+		}
+		System.out.println("Corner hits: " + stopped + ", Speed: " + speed + ", Ticks: " + ticks + ", Seconds: " + (ticks / 20) + ", Travelled: " + travelled);
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateClient(int ticks) {

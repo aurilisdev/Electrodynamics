@@ -272,7 +272,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		}
 
 		setPosition(Math.floor(posX) + 0.5, Math.floor(posY) + 0.5, Math.floor(posZ) + 0.5);
-		return getTotalVelocity() * 0.8f;
+		return getTotalVelocity() * 0.9075f;
 	}
 
 	@SuppressWarnings("unchecked")
