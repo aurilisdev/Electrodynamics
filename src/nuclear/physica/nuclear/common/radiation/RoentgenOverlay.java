@@ -25,7 +25,7 @@ public class RoentgenOverlay implements IBaseUtilities {
 	private float cachedRoentgen = 0;
 	private long cachedTime;
 
-	public static HashMap<Long, Float> cachedRadiationMap = new HashMap<Long, Float>();
+	public static HashMap<Long, Float> cachedRadiationMap = new HashMap<>();
 
 	public static void storeDataValue(long worldTime, float kiloRoentgen) {
 		if (RoentgenOverlay.cachedRadiationMap.containsKey(worldTime)) {

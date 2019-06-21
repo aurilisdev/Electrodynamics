@@ -125,7 +125,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		while (speed < 1) {
 			speed += 0.002;
 			travelled += speed;
-			if ((int) (travelled) % 50 == 49) {
+			if ((int) travelled % 50 == 49) {
 				speed *= 0.9075f;
 				stopped++;
 				if (stopped > 32) {
@@ -138,7 +138,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			}
 			ticks++;
 		}
-		System.out.println("Corner hits: " + stopped + ", Speed: " + speed + ", Ticks: " + ticks + ", Seconds: " + (ticks / 20) + ", Travelled: " + travelled);
+		System.out.println("Corner hits: " + stopped + ", Speed: " + speed + ", Ticks: " + ticks + ", Seconds: " + ticks / 20 + ", Travelled: " + travelled);
 	}
 
 	@Override
