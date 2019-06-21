@@ -111,7 +111,7 @@ public class BlockLocation {
 		world.setBlock(x, y, z, block);
 	}
 
-	public void setBlockFast(World world, Block block) {
+	public void setBlockNonUpdate(World world, Block block) {
 		world.setBlock(x, y, z, block, 0, 2);
 	}
 
@@ -119,7 +119,7 @@ public class BlockLocation {
 		world.setBlockToAir(x, y, z);
 	}
 
-	public void setBlockAirFast(World world) {
+	public void setBlockAirNonUpdate(World world) {
 		world.setBlock(x, y, z, Blocks.air, 0, 2);
 	}
 

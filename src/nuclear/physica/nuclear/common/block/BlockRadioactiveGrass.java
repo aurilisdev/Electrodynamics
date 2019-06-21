@@ -44,16 +44,15 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 		if (!world.isRemote) {
-			if (world.getBlockLightValue(x, y + 1, z) < 4 && world.getBlockLightOpacity(x, y + 1, z) > 2) {
-				world.setBlock(x, y, z, Blocks.dirt);
-			} else if (world.getBlockLightValue(x, y + 1, z) >= 9) {
+			if (world.rand.nextFloat() < 0.666f) {
+				int currentMeta = world.getBlockMetadata(x, y, z);
 				for (int l = 0; l < 4; ++l) {
 					int i1 = x + rand.nextInt(3) - 1;
 					int j1 = y + rand.nextInt(5) - 3;
 					int k1 = z + rand.nextInt(3) - 1;
-					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && world.getBlockLightValue(i1, j1 + 1, k1) >= 4
-							&& world.getBlockLightOpacity(i1, j1 + 1, k1) <= 2) {
-						world.setBlock(i1, j1, k1, this);
+					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && currentMeta > 1) {
+						world.setBlock(i1, j1, k1, this, currentMeta - 1, 3);
+						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
 					}
 				}
 			}
@@ -63,13 +62,13 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
 		if (ent instanceof EntityLivingBase) {
-			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, 1f, 15, 1, 1);
+			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, 1f, world.getBlockMetadata(x, y, z), 1, 1);
 		}
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
-		return Blocks.grass.colorMultiplier(world, x, y, z) - 10;
+		return Blocks.grass.colorMultiplier(world, x, y, z) - 3009;
 	}
 
 	@Override

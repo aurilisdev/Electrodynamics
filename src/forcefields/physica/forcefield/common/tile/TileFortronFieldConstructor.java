@@ -446,7 +446,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							currentlyMissed++;
 							continue;
 						}
-						fieldPoint.setBlockAirFast(worldObj);
+						fieldPoint.setBlockAirNonUpdate(worldObj);
 
 						currentlyGenerated++;
 					}
@@ -480,7 +480,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							}
 						}
 					} else {
-						fieldPoint.setBlockFast(worldObj, ForcefieldBlockRegister.blockFortronField);
+						fieldPoint.setBlockNonUpdate(worldObj, ForcefieldBlockRegister.blockFortronField);
 						TileEntity tile = fieldPoint.getTile(worldObj);
 						if (tile instanceof TileFortronField) {
 							TileFortronField field = (TileFortronField) tile;

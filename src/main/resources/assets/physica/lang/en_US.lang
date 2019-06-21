@@ -48,6 +48,7 @@ tile.physicanuclearphysics:insertableControlRod.name=Insertable Control Rod
 tile.physicanuclearphysics:meltedReactor.name=Melted Reactor
 tile.physicanuclearphysics:radioactiveGrass.name=Radioactive Grass
 tile.physicanuclearphysics:radioactiveStone.name=Radioactive Stone
+tile.physicanuclearphysics:radioactiveDirt.name=Radioactive Dirt
 #### GUI
 tile.physicanuclearphysics:accelerator.gui=Particle Accelerator
 tile.physicanuclearphysics:centrifuge.gui=Gas Centrifuge

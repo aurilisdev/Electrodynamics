@@ -54,11 +54,12 @@ public class TileMeltedReactor extends TileBase {
 					}
 				} else if (block == Blocks.stone) {
 					if (temperature < 2100) {
-						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveStone);
+						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveStone, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
 					} else {
 						worldObj.setBlock(x, y, z, Blocks.cobblestone);
 					}
-				} else if (block == NuclearBlockRegister.blockRadioactiveStone) {
+				} else if (block == Blocks.cobblestone) {
+					worldObj.setBlock(x, y, z, Blocks.lava);
 				} else if (block == Blocks.water || block == Blocks.flowing_water) {
 					worldObj.setBlockToAir(x, y, z);
 				} else if (block == Blocks.sand) {
@@ -92,7 +93,9 @@ public class TileMeltedReactor extends TileBase {
 				int z = (int) Math.floor(z2);
 				Block block = worldObj.getBlock(x, y, z);
 				if (block == Blocks.grass) {
-					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveGrass);
+					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveGrass, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
+				} else if (block == Blocks.dirt) {
+					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveDirt, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
 				}
 			}
 		}

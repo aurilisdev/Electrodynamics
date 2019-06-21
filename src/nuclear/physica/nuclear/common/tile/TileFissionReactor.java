@@ -171,7 +171,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 					location.set(xCoord + i, yCoord + j, zCoord + k);
 					Block block = location.getBlock(worldObj);
 					if (block == Blocks.water || block == Blocks.flowing_water) {
-						location.setBlockAirFast(worldObj);
+						location.setBlockAirNonUpdate(worldObj);
 					}
 				}
 			}

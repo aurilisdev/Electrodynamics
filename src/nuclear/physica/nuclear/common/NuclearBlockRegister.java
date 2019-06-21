@@ -18,6 +18,7 @@ import physica.nuclear.common.block.BlockNeutronCaptureChamber;
 import physica.nuclear.common.block.BlockParticleAccelerator;
 import physica.nuclear.common.block.BlockPlasma;
 import physica.nuclear.common.block.BlockQuantumAssembler;
+import physica.nuclear.common.block.BlockRadioactiveDirt;
 import physica.nuclear.common.block.BlockRadioactiveGrass;
 import physica.nuclear.common.block.BlockRadioactiveStone;
 import physica.nuclear.common.block.BlockSiren;
@@ -60,6 +61,7 @@ public class NuclearBlockRegister implements IContent {
 	public static BlockMeltedReactor blockMeltedReactor;
 	public static BlockRadioactiveGrass blockRadioactiveGrass;
 	public static BlockRadioactiveStone blockRadioactiveStone;
+	public static BlockRadioactiveDirt blockRadioactiveDirt;
 
 	@Override
 	public void preInit() {
@@ -98,6 +100,7 @@ public class NuclearBlockRegister implements IContent {
 
 		GameRegistry.registerBlock(blockRadioactiveGrass = new BlockRadioactiveGrass(), "radioactiveGrass");
 		GameRegistry.registerBlock(blockRadioactiveStone = new BlockRadioactiveStone(), "radioactiveStone");
+		GameRegistry.registerBlock(blockRadioactiveDirt = new BlockRadioactiveDirt(), "radioactiveDirt");
 
 		OreDictionary.registerOre("oreUranium", NuclearBlockRegister.blockUraniumOre);
 	}
