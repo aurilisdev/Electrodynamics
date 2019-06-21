@@ -14,6 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.ForgeDirection;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.radiation.RadiationSystem;
@@ -35,6 +38,12 @@ public class BlockRadioactiveGrass extends BlockGrass {
 		setBlockTextureName("grass");
 	}
 
+	@Override
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable) {
+		EnumPlantType plantType = plantable.getPlantType(world, x, y + 1, z);
+		return plantType == EnumPlantType.Plains;
+	}
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIcon(int side, int meta) {
@@ -46,13 +55,15 @@ public class BlockRadioactiveGrass extends BlockGrass {
 		if (!world.isRemote) {
 			if (world.rand.nextFloat() < 0.666f) {
 				int currentMeta = world.getBlockMetadata(x, y, z);
-				for (int l = 0; l < 4; ++l) {
-					int i1 = x + rand.nextInt(3) - 1;
-					int j1 = y + rand.nextInt(5) - 3;
-					int k1 = z + rand.nextInt(3) - 1;
-					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && currentMeta > 1) {
-						world.setBlock(i1, j1, k1, this, currentMeta - 1, 3);
-						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
+				if (currentMeta > 1) {
+					for (int l = 0; l < 4; ++l) {
+						int i1 = x + rand.nextInt(3) - 1;
+						int j1 = y + rand.nextInt(5) - 3;
+						int k1 = z + rand.nextInt(3) - 1;
+						if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && currentMeta > 1) {
+							world.setBlock(i1, j1, k1, this, currentMeta - 1, 3);
+							world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
+						}
 					}
 				}
 			}
@@ -68,7 +79,7 @@ public class BlockRadioactiveGrass extends BlockGrass {
 
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
-		return Blocks.grass.colorMultiplier(world, x, y, z) - 3009;
+		return Blocks.grass.colorMultiplier(world, x, y, z) - 10;
 	}
 
 	@Override

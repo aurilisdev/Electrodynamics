@@ -28,12 +28,14 @@ public class BlockRadioactiveStone extends BlockStone {
 		if (!world.isRemote) {
 			if (world.rand.nextFloat() < 0.167f) {
 				int currentMeta = world.getBlockMetadata(x, y, z);
-				for (int l = 0; l < 4; ++l) {
-					int i1 = x + rand.nextInt(3) - 1;
-					int j1 = y + rand.nextInt(5) - 3;
-					int k1 = z + rand.nextInt(3) - 1;
-					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && currentMeta > 0) {
-						world.setBlock(i1, j1, k1, this, currentMeta - 1, 3);
+				if (currentMeta > 1) {
+					for (int l = 0; l < 4; ++l) {
+						int i1 = x + rand.nextInt(3) - 1;
+						int j1 = y + rand.nextInt(5) - 3;
+						int k1 = z + rand.nextInt(3) - 1;
+						if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && currentMeta > 0) {
+							world.setBlock(i1, j1, k1, this, currentMeta - 1, 3);
+						}
 					}
 				}
 			}
