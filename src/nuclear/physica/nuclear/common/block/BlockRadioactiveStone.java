@@ -45,7 +45,8 @@ public class BlockRadioactiveStone extends BlockStone {
 	@Override
 	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
 		if (ent instanceof EntityLivingBase) {
-			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, 1f, world.getBlockMetadata(x, y, z), 1, 1);
+			int meta = world.getBlockMetadata(x, y, z);
+			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 7.5f, meta, 1, 1);
 		}
 	}
 

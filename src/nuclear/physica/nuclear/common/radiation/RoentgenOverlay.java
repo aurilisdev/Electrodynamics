@@ -12,10 +12,13 @@ import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
 import physica.nuclear.common.NuclearItemRegister;
 
@@ -43,15 +46,20 @@ public class RoentgenOverlay implements IBaseUtilities {
 
 	@SubscribeEvent
 	public void onGameOverlay(RenderGameOverlayEvent.Text event) {
-		ItemStack use = Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem();
+		EntityClientPlayerMP mp = Minecraft.getMinecraft().thePlayer;
+		ItemStack use = mp.inventory.getCurrentItem();
 		if (use != null && use.getItem() == NuclearItemRegister.itemGeigerCounter) {
 			GL11.glPushMatrix();
-			String radiationText = "Roentgen per hour: " + roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2);
+			String radiationText = "Roentgen per hour: " + (cachedRoentgen == 0 ? "< 0.01" : roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2));
 			ScaledResolution get = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 			Minecraft.getMinecraft().fontRenderer.drawString(radiationText, get.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(radiationText) / 2,
 					get.getScaledHeight() / 2 + 20,
 					Color.green.getRGB());
 			GL11.glPopMatrix();
+			if (Minecraft.getMinecraft().thePlayer.worldObj.rand.nextFloat() * 50 * RadiationSystem.toRealRoentgenConversionRate < cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate) {
+				Minecraft.getMinecraft().getSoundHandler()
+						.playSound(new PositionedSoundRecord(new ResourceLocation(CoreReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
+			}
 		}
 	}
 
@@ -61,13 +69,13 @@ public class RoentgenOverlay implements IBaseUtilities {
 			EntityClientPlayerMP client = Minecraft.getMinecraft().thePlayer;
 			if (client != null) {
 				long worldTime = Minecraft.getMinecraft().thePlayer.worldObj.getTotalWorldTime();
-				if (cachedTime != worldTime) {
+				if (worldTime != cachedTime) {
 					float roentgenTick = getRoentgenTickClient();
 					if (roentgenTick != -3) {
 						cachedTime = worldTime;
 						cachedRoentgen = roentgenTick;
 					} else if (worldTime - cachedTime > 5) {
-						cachedRoentgen = 0;
+						cachedRoentgen = Math.max(cachedRoentgen - 0.0213f, 0);
 					}
 					cachedRadiationMap.clear();
 				}

@@ -34,5 +34,14 @@
         "stream": false
       }
     ]
+  },
+  "block.geiger": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "geiger",
+        "stream": false
+      }
+    ]
   }
 }
