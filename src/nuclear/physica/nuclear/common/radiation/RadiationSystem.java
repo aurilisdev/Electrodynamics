@@ -25,6 +25,9 @@ public class RadiationSystem {
 					playerCheck: {
 						if (base instanceof EntityPlayer) {
 							EntityPlayer player = (EntityPlayer) base;
+							if (player.capabilities.isCreativeMode) {
+								break playerCheck;
+							}
 							boolean hasArmor = true;
 							for (int i = 0; i < player.inventory.armorInventory.length; i++) {
 								if (!(player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor)) {

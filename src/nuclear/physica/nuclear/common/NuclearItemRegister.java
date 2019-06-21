@@ -63,7 +63,7 @@ public class NuclearItemRegister implements IContent {
 				itemEmptyQuantumCell.getUnlocalizedName());
 
 		GameRegistry.registerItem(
-				itemGeigerCounter = (ItemInformationHolder) new ItemInformationHolder("geigerCounter", "detecting and measuring ionizing radiation", "The Geiger counter is an instrument used for")
+				itemGeigerCounter = (ItemInformationHolder) new ItemInformationHolder("geigerCounter", "Detects and measures ionizing radiation").setMaxStackSize(1)
 						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemGeigerCounter.getUnlocalizedName());
 

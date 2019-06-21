@@ -121,12 +121,12 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	}
 
 	protected GuiTextField newInputField(int x, int y, int w, int h, String msg) {
-		GuiTextField x_field = new GuiTextField(fontRendererObj, x, y, w, h);
-		x_field.setText("" + msg);
-		x_field.setMaxStringLength(15);
-		x_field.setTextColor(16777215);
-		fields.add(x_field);
-		return x_field;
+		GuiTextField textField = new GuiTextField(fontRendererObj, x, y, w, h);
+		textField.setText("" + msg);
+		textField.setMaxStringLength(15);
+		textField.setTextColor(16777215);
+		fields.add(textField);
+		return textField;
 	}
 
 	@Override
