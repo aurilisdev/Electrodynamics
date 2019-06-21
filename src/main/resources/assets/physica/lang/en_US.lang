@@ -47,6 +47,7 @@ tile.physicanuclearphysics:uraniumOre.name=Uranium Ore
 tile.physicanuclearphysics:insertableControlRod.name=Insertable Control Rod
 tile.physicanuclearphysics:meltedReactor.name=Melted Reactor
 tile.physicanuclearphysics:radioactiveGrass.name=Radioactive Grass
+tile.physicanuclearphysics:radioactiveStone.name=Radioactive Stone
 #### GUI
 tile.physicanuclearphysics:accelerator.gui=Particle Accelerator
 tile.physicanuclearphysics:centrifuge.gui=Gas Centrifuge
@@ -66,6 +67,7 @@ item.antimatterCell1Gram.name=Antimatter Cell
 item.darkmatterCell.name=Dark Matter Cell
 item.emptyElectromagneticCell.name=Empty Electromagnetic Cell
 item.emptyQuantumCell.name=Empty Quantum Cell
+item.geigerCounter.name=Geiger Counter
 item.HazmatHelmet.name=Hazmat Suit Helmet
 item.HazmatPlate.name=Hazmat Suit Chestplate
 item.HazmatLegs.name=Hazmat Suit Leggings

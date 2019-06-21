@@ -25,6 +25,7 @@ public class NuclearItemRegister implements IContent {
 	public static ItemInformationHolder itemTritiumCell;
 	public static ItemInformationHolder itemEmptyElectromagneticCell;
 	public static ItemInformationHolder itemEmptyQuantumCell;
+	public static ItemInformationHolder itemGeigerCounter;
 
 	public static ItemInformationHolder itemUranium235;
 	public static ItemInformationHolder itemUranium238;
@@ -60,6 +61,11 @@ public class NuclearItemRegister implements IContent {
 		GameRegistry.registerItem(
 				itemEmptyQuantumCell = (ItemInformationHolder) new ItemInformationHolder("emptyQuantumCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
 				itemEmptyQuantumCell.getUnlocalizedName());
+
+		GameRegistry.registerItem(
+				itemGeigerCounter = (ItemInformationHolder) new ItemInformationHolder("geigerCounter", "detecting and measuring ionizing radiation", "The Geiger counter is an instrument used for")
+						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
+				itemGeigerCounter.getUnlocalizedName());
 
 		GameRegistry.registerItem(itemHeavyWaterCell = (ItemInformationHolder) new ItemInformationHolder("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemHeavyWaterCell.getUnlocalizedName());

@@ -19,6 +19,7 @@ import physica.nuclear.common.block.BlockParticleAccelerator;
 import physica.nuclear.common.block.BlockPlasma;
 import physica.nuclear.common.block.BlockQuantumAssembler;
 import physica.nuclear.common.block.BlockRadioactiveGrass;
+import physica.nuclear.common.block.BlockRadioactiveStone;
 import physica.nuclear.common.block.BlockSiren;
 import physica.nuclear.common.block.BlockThermometer;
 import physica.nuclear.common.block.BlockTurbine;
@@ -58,6 +59,7 @@ public class NuclearBlockRegister implements IContent {
 	public static BlockInsertableControlRod blockInsertableControlRod;
 	public static BlockMeltedReactor blockMeltedReactor;
 	public static BlockRadioactiveGrass blockRadioactiveGrass;
+	public static BlockRadioactiveStone blockRadioactiveStone;
 
 	@Override
 	public void preInit() {
@@ -95,6 +97,7 @@ public class NuclearBlockRegister implements IContent {
 		GameRegistry.registerTileEntity(TileMeltedReactor.class, NuclearReferences.PREFIX + "meltedReactor");
 
 		GameRegistry.registerBlock(blockRadioactiveGrass = new BlockRadioactiveGrass(), "radioactiveGrass");
+		GameRegistry.registerBlock(blockRadioactiveStone = new BlockRadioactiveStone(), "radioactiveStone");
 
 		OreDictionary.registerOre("oreUranium", NuclearBlockRegister.blockUraniumOre);
 	}

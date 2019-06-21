@@ -2,6 +2,7 @@ package physica.nuclear;
 
 import java.io.File;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -13,6 +14,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
@@ -25,6 +27,7 @@ import physica.nuclear.common.NuclearRecipeRegister;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.NuclearWorldGenRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
+import physica.nuclear.common.radiation.RoentgenOverlay;
 import physica.proxy.ContentLoader;
 import physica.proxy.sided.CommonProxy;
 
@@ -60,6 +63,9 @@ public class PhysicaNuclearPhysics {
 
 		if (event.getSide() == Side.CLIENT) {
 			proxyLoader.addContent(new NuclearClientRegister());
+			RoentgenOverlay overlay = new RoentgenOverlay();
+			MinecraftForge.EVENT_BUS.register(overlay);
+			FMLCommonHandler.instance().bus().register(overlay);
 		}
 
 		proxyLoader.addContent(new NuclearRecipeRegister());

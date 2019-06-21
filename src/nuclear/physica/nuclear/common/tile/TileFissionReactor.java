@@ -60,12 +60,13 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				performMeltdown();
 			}
 		}
-		if (hasFuelRod() && temperature > 400) {
-			double radius = temperature / 400;
+	}
 
-			if (this.getTicksRunning() % 4 != 0) {
-				return;
-			}
+	@Override
+	public void updateCommon(int ticks) {
+		super.updateCommon(ticks);
+		if (hasFuelRod() && temperature > 400) {
+			double radius = temperature / 400.0;
 
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,

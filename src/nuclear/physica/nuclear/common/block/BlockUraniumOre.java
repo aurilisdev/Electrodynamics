@@ -32,7 +32,6 @@ public class BlockUraniumOre extends Block {
 
 	@Override
 	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
-		super.onEntityWalking(world, x, y, z, ent);
 		if (ent instanceof EntityLivingBase) {
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, 0.75f, 15, 1, 1);
 		}

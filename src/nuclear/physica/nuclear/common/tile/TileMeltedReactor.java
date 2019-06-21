@@ -2,11 +2,13 @@ package physica.nuclear.common.tile;
 
 import java.util.List;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -20,7 +22,7 @@ public class TileMeltedReactor extends TileBase {
 	public static final float RADIATION_RADIUS = 20;
 	public static final float RADIATION_PARTICLES = 10;
 	public int radiation = 8766000;
-	public int heatTime = 6000;
+	public int temperature = 6000;
 
 	@Override
 	public void updateServer(int ticks) {
@@ -32,8 +34,8 @@ public class TileMeltedReactor extends TileBase {
 				return;
 			}
 		}
-		if (heatTime > 0) {
-			heatTime--;
+		if (temperature > 0) {
+			temperature--;
 			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
 			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
 			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
@@ -50,8 +52,13 @@ public class TileMeltedReactor extends TileBase {
 					if (worldObj.getBlock(x, y - 1, z).getMaterial() != Material.air) {
 						worldObj.setBlock(x, y, z, Blocks.fire);
 					}
-				} else if (block == Blocks.cobblestone || block == Blocks.stone) {
-					worldObj.setBlock(x, y, z, Blocks.lava);
+				} else if (block == Blocks.stone) {
+					if (temperature < 2100) {
+						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveStone);
+					} else {
+						worldObj.setBlock(x, y, z, Blocks.cobblestone);
+					}
+				} else if (block == NuclearBlockRegister.blockRadioactiveStone) {
 				} else if (block == Blocks.water || block == Blocks.flowing_water) {
 					worldObj.setBlockToAir(x, y, z);
 				} else if (block == Blocks.sand) {
@@ -94,6 +101,19 @@ public class TileMeltedReactor extends TileBase {
 	@Override
 	public void updateClient(int ticks) {
 		super.updateClient(ticks);
+		if (radiation > 0) {
+			@SuppressWarnings("unchecked")
+			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
+							zCoord + RADIATION_RADIUS));
+			for (Entity entity : entities) {
+				if (entity instanceof EntityLivingBase) {
+					double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+							RADIATION_RADIUS);
+				}
+			}
+		}
 		int i = 0;
 		while (true) {
 			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
@@ -114,16 +134,28 @@ public class TileMeltedReactor extends TileBase {
 	}
 
 	@Override
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+		super.writeSynchronizationPacket(dataList, player);
+		dataList.add(radiation);
+	}
+
+	@Override
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+		super.readSynchronizationPacket(buf, player);
+		radiation = buf.readInt();
+	}
+
+	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setInteger("radiation", radiation);
-		tag.setInteger("heatTime", heatTime);
+		tag.setInteger("heatTime", temperature);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		radiation = tag.getInteger("radiation");
-		heatTime = tag.getInteger("heatTime");
+		temperature = tag.getInteger("heatTime");
 	}
 }
