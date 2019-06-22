@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import physica.library.tile.TileBase;
@@ -29,6 +30,12 @@ public class TileMeltedReactor extends TileBase {
 			if (worldObj.getBlock(xCoord, yCoord - 1, zCoord).getMaterial().isReplaceable()) {
 				worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 				worldObj.setBlock(xCoord, yCoord - 1, zCoord, NuclearBlockRegister.blockMeltedReactor);
+				TileEntity entity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+				if (entity instanceof TileMeltedReactor) {
+					TileMeltedReactor tile = (TileMeltedReactor) entity;
+					tile.radiation = radiation;
+					tile.temperature = temperature;
+				}
 				return;
 			}
 		}
