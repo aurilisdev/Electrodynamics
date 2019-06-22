@@ -9,7 +9,7 @@ import physica.nuclear.common.items.armor.ItemHazmatArmor;
 
 public class RadiationSystem {
 
-	public static final double toRealRoentgenConversionRate = 2140;
+	public static final double toRealRoentgenConversionRate = 2139.995;
 
 	public static void applyRontgenEntity(EntityLivingBase base, float kiloRoentgen, float durationMultiplier, float distanceFromSource, float maxRadius) {
 		if (base != null) {

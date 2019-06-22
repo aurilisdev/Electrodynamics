@@ -75,14 +75,15 @@ public class TileMeltedReactor extends TileBase {
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
 					double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) (scale / 2f) * (radiation / 8766000), (float) scale * 2f,
+							(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
 							RADIATION_RADIUS);
 				}
 			}
 			radiation--;
-			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
-			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
-			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
+			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
+			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
+			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
 			double d3 = xCoord - x2;
 			double d4 = yCoord - y2;
 			double d5 = zCoord - z2;

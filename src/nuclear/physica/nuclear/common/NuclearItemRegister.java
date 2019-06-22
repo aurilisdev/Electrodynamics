@@ -8,6 +8,7 @@ import physica.api.core.IContent;
 import physica.library.item.ItemInformationHolder;
 import physica.library.item.ItemUpdateable;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
+import physica.nuclear.common.items.ItemGeigerCounter;
 import physica.nuclear.common.items.armor.ItemHazmatArmor;
 import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 import physica.nuclear.common.items.update.ItemUpdateDarkMatter;
@@ -25,7 +26,7 @@ public class NuclearItemRegister implements IContent {
 	public static ItemInformationHolder itemTritiumCell;
 	public static ItemInformationHolder itemEmptyElectromagneticCell;
 	public static ItemInformationHolder itemEmptyQuantumCell;
-	public static ItemInformationHolder itemGeigerCounter;
+	public static ItemGeigerCounter itemGeigerCounter;
 
 	public static ItemInformationHolder itemUranium235;
 	public static ItemInformationHolder itemUranium238;
@@ -63,8 +64,7 @@ public class NuclearItemRegister implements IContent {
 				itemEmptyQuantumCell.getUnlocalizedName());
 
 		GameRegistry.registerItem(
-				itemGeigerCounter = (ItemInformationHolder) new ItemInformationHolder("geigerCounter", "Detects and measures ionizing radiation").setMaxStackSize(1)
-						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
+				itemGeigerCounter = new ItemGeigerCounter("geigerCounter"),
 				itemGeigerCounter.getUnlocalizedName());
 
 		GameRegistry.registerItem(itemHeavyWaterCell = (ItemInformationHolder) new ItemInformationHolder("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),

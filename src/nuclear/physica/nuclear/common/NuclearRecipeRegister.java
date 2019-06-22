@@ -37,7 +37,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 		addRecipe(new ItemStack(NuclearItemRegister.itemEmptyQuantumCell, 1), " T ", "TGT", " T ", 'G', NuclearItemRegister.itemAntimatterCell125Milligram, 'T', "ingotTin");
 
 		// Geiger Counter
-		addRecipe(NuclearItemRegister.itemGeigerCounter, "SAS", "SBS", "SSS", 'S', "plateSteel", 'A', "circuitAdvanced", 'B', "circuitBasic");
+		addRecipe(NuclearItemRegister.itemGeigerCounter, "SAS", "SBS", "SSS", 'S', "plateSteel", 'A', "circuitAdvanced", 'B', "phyBattery");
 
 		// Boiler Recipes
 		NuclearCustomRecipeHelper.addBoilerRecipe(800, NuclearItemRegister.itemUranium238, 1750);
