@@ -74,7 +74,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
 					double scale = (radius - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
-					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale * 3, (float) scale * 15, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale * 1.5f, (float) scale * 15, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
 							(float) radius);
 				}
 			}

@@ -85,10 +85,10 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 		if (container.stackTagCompound == null) {
 			container.stackTagCompound = new NBTTagCompound();
 		}
+
 		int energyStored = (int) Math.max(Math.min(amount, getMaxEnergyStored(container)), 0.0D);
 		container.stackTagCompound.setInteger(ENERGY_NBT_DATA, energyStored);
 		container.setItemDamage((int) Math.max(1, Math.abs(energyStored / (float) getMaxEnergyStored(container) * 100 - 100)));
-		System.out.println(container.getItemDamage());
 	}
 
 	@Override
@@ -120,7 +120,6 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	}
 
 	public ItemElectric setCapacity(int capacity) {
-
 		this.capacity = capacity;
 		return this;
 	}

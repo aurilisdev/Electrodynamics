@@ -1,9 +1,12 @@
 package physica.nuclear.common.items.update;
 
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import physica.api.core.IItemUpdate;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -27,6 +30,15 @@ public class ItemUpdateUranium implements IItemUpdate {
 		if (rand.nextFloat() < 0.015f * scale) {
 			world.spawnParticle("reddust", entity.posX + rand.nextDouble() - 0.5, entity.posY + rand.nextDouble() - 0.5, entity.posZ + rand.nextDouble() - 0.5, 0.01f, 1, 0.01f);
 		}
+		@SuppressWarnings("unchecked")
+		List<EntityLivingBase> entities = entity.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+				AxisAlignedBB.getBoundingBox(entity.posX - scale, entity.posY - scale, entity.posZ - scale, entity.posX + scale, entity.posY + scale,
+						entity.posZ + scale));
+		for (EntityLivingBase ent : entities) {
+			float dist = (float) (scale - ent.getDistance(entity.posX, entity.posY, entity.posZ));
+			RadiationSystem.applyRontgenEntity(ent, (float) dist, (float) dist * 4.5f, (float) entity.getDistanceToEntity(ent),
+					dist);
+		}
 	}
 
 	@Override
@@ -35,7 +47,7 @@ public class ItemUpdateUranium implements IItemUpdate {
 			return;
 		}
 		if (entity instanceof EntityLivingBase) {
-			RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, scale, 15, 1, 1);
+			RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, scale, 15, 0.1f, 1);
 		}
 	}
 }

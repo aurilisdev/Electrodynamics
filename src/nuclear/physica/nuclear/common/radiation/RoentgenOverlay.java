@@ -49,18 +49,18 @@ public class RoentgenOverlay implements IBaseUtilities {
 		EntityClientPlayerMP mp = Minecraft.getMinecraft().thePlayer;
 		ItemStack use = mp.inventory.getCurrentItem();
 		if (use != null && use.getItem() == NuclearItemRegister.itemGeigerCounter) {
-			if (NuclearItemRegister.itemGeigerCounter.getEnergyStored(use) > 5) {
-				GL11.glPushMatrix();
-				String radiationText = "Roentgen per hour: " + (cachedRoentgen == 0 ? "< 0.01" : roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2));
-				ScaledResolution get = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-				Minecraft.getMinecraft().fontRenderer.drawString(radiationText, get.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(radiationText) / 2,
-						get.getScaledHeight() / 2 + 20,
-						Color.green.getRGB());
-				GL11.glPopMatrix();
-				if (Minecraft.getMinecraft().thePlayer.worldObj.rand.nextFloat() * 50 * RadiationSystem.toRealRoentgenConversionRate < cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate) {
-					Minecraft.getMinecraft().getSoundHandler()
-							.playSound(new PositionedSoundRecord(new ResourceLocation(CoreReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
-				}
+			GL11.glPushMatrix();
+			double rounded = NuclearItemRegister.itemGeigerCounter.getEnergyStored(use) > 5
+					? roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2) : roundPrecise(Math.min(3.6, cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate), 2);
+			String radiationText = "Roentgen per hour: " + (cachedRoentgen == 0 ? "< 0.01" : rounded);
+			ScaledResolution get = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+			Minecraft.getMinecraft().fontRenderer.drawString(radiationText, get.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(radiationText) / 2,
+					get.getScaledHeight() / 2 + 20,
+					Color.green.getRGB());
+			GL11.glPopMatrix();
+			if (Minecraft.getMinecraft().thePlayer.worldObj.rand.nextFloat() * 50 * RadiationSystem.toRealRoentgenConversionRate < (rounded == 3.6 ? 180 : rounded)) {
+				Minecraft.getMinecraft().getSoundHandler()
+						.playSound(new PositionedSoundRecord(new ResourceLocation(CoreReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
 			}
 		}
 	}
@@ -77,7 +77,7 @@ public class RoentgenOverlay implements IBaseUtilities {
 						cachedTime = worldTime;
 						cachedRoentgen = roentgenTick;
 					} else if (worldTime - cachedTime > 5) {
-						cachedRoentgen = Math.max(cachedRoentgen - 0.0213f, 0);
+						cachedRoentgen = Math.max(cachedRoentgen - 0.0813f, 0);
 					}
 					cachedRadiationMap.clear();
 				}

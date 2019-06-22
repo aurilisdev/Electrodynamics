@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.IPlayerUsing;
 import physica.api.core.ITileBaseContainer;
+import physica.library.inventory.slot.SlotNull;
 
 public class ContainerBase<T extends IPlayerUsing> extends Container {
 
@@ -54,6 +55,14 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 			}
 		}
 		return toReturn;
+	}
+
+	@Override
+	public Slot getSlot(int index) {
+		if (index < this.inventorySlots.size()) {
+			return (Slot) this.inventorySlots.get(index);
+		}
+		return new SlotNull(null, 0, 0, 0);
 	}
 
 	public void addDefaultPlayerInventory(EntityPlayer player, int offset) {

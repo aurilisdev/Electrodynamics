@@ -5,8 +5,6 @@ import java.util.List;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -69,16 +67,14 @@ public class TileMeltedReactor extends TileBase {
 		}
 		if (radiation > 0) {
 			@SuppressWarnings("unchecked")
-			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
 					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
 							zCoord + RADIATION_RADIUS));
-			for (Entity entity : entities) {
-				if (entity instanceof EntityLivingBase) {
-					double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) (scale / 2f) * (radiation / 8766000.0f), (float) scale * 2f,
-							(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
-							RADIATION_RADIUS);
-				}
+			for (EntityLivingBase entity : entities) {
+				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 2f) * (radiation / 8766000.0f), (float) scale * 2f,
+						(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+						RADIATION_RADIUS);
 			}
 			radiation--;
 			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
@@ -107,15 +103,13 @@ public class TileMeltedReactor extends TileBase {
 		super.updateClient(ticks);
 		if (radiation > 0) {
 			@SuppressWarnings("unchecked")
-			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
 					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
 							zCoord + RADIATION_RADIUS));
-			for (Entity entity : entities) {
-				if (entity instanceof EntityLivingBase) {
-					double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
-							RADIATION_RADIUS);
-				}
+			for (EntityLivingBase entity : entities) {
+				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+				RadiationSystem.applyRontgenEntity(entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
+						RADIATION_RADIUS);
 			}
 		}
 		int i = 0;
