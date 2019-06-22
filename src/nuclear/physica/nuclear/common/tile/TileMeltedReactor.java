@@ -75,7 +75,7 @@ public class TileMeltedReactor extends TileBase {
 			for (Entity entity : entities) {
 				if (entity instanceof EntityLivingBase) {
 					double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) (scale / 2f) * (radiation / 8766000), (float) scale * 2f,
+					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) (scale / 2f) * (radiation / 8766000.0f), (float) scale * 2f,
 							(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
 							RADIATION_RADIUS);
 				}
