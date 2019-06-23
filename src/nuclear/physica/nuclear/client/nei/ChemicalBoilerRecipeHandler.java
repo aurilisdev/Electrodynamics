@@ -19,11 +19,9 @@ import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import physica.CoreReferences;
 import physica.core.client.nei.PhysicaRecipeHandlerBase;
 import physica.nuclear.client.gui.GuiChemicalBoiler;
 import physica.nuclear.common.NuclearFluidRegister;
@@ -32,11 +30,6 @@ import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
 import physica.nuclear.common.tile.TileChemicalBoiler;
 
 public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
-
-	@Override
-	public String getGuiTexture() {
-		return new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png").toString();
-	}
 
 	@Override
 	public String getRecipeName() {

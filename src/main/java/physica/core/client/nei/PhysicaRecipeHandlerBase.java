@@ -17,7 +17,7 @@ import physica.CoreReferences;
 public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 	public static final ResourceLocation GUI_COMPONENTS = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_components.png");
-	public static final String GUI_STRING = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png").toString().toString();
+	public static final String GUI_STRING = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png").toString();
 	public int xOffset = 4;
 	public int yOffset = 13;
 	protected int meterHeight = 49;
