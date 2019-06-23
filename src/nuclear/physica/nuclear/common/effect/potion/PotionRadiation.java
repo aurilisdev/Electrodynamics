@@ -9,7 +9,7 @@ import physica.nuclear.common.effect.damage.DamageSourceRadiation;
 
 public class PotionRadiation extends Potion {
 
-	public static final PotionRadiation INSTANCE = new PotionRadiation(21, true, Color.GREEN.getRGB(), "radiation");
+	public static final PotionRadiation INSTANCE = new PotionRadiation(31, true, Color.GREEN.getRGB(), "radiation");
 
 	public PotionRadiation(int id, boolean isBadEffect, int color) {
 		super(id, isBadEffect, color);
