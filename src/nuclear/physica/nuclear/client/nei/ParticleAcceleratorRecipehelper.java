@@ -66,12 +66,14 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients) {
-		if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyElectromagneticCell) {
-			arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125,
-					"To generate antimatter, you must accelerate any matter in a particle accelerator. An antimatter cell is generated when the amount of antimatter in the accelerator is at least 125mg."));
-		} else if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyQuantumCell) {
-			arecipes.add(new recipe(NuclearItemRegister.itemEmptyQuantumCell, NuclearItemRegister.itemDarkmatterCell, 100,
-					"To generate dark matter, you must collide two particles while there is 100 mg of antimatter in the accelerator, this will have a chance of creating a dark matter cell."));
+		if (inputId.equals("item") && ingredients[0] instanceof ItemStack) {
+			if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyElectromagneticCell) {
+				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125,
+						"To generate antimatter, you must accelerate any matter in a particle accelerator. An antimatter cell is generated when the amount of antimatter in the accelerator is at least 125mg."));
+			} else if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyQuantumCell) {
+				arecipes.add(new recipe(NuclearItemRegister.itemEmptyQuantumCell, NuclearItemRegister.itemDarkmatterCell, 100,
+						"To generate dark matter, you must collide two particles while there is 100 mg of antimatter in the accelerator, this will have a chance of creating a dark matter cell."));
+			}
 		}
 	}
 

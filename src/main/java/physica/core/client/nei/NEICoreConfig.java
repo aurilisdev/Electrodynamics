@@ -1,12 +1,18 @@
 package physica.core.client.nei;
 
+import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import physica.Physica;
+import physica.core.client.gui.GuiBlastFurnace;
 
 public class NEICoreConfig implements IConfigureNEI {
 
 	@Override
 	public void loadConfig() {
+		API.registerRecipeHandler(new BlastFurnaceRecipeHelper());
+		API.registerUsageHandler(new BlastFurnaceRecipeHelper());
+
+		API.setGuiOffset(GuiBlastFurnace.class, 5, 13);
 	}
 
 	@Override
