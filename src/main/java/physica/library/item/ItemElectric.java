@@ -54,6 +54,11 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
+	public double getDurabilityForDisplay(ItemStack container) {
+		return 1.0 - getEnergyStored(container) / (double) getMaxEnergyStored(container);
+	}
+
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return true;
 	}

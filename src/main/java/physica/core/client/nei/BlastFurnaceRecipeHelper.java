@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import physica.core.client.gui.GuiBlastFurnace;
 import physica.core.common.CoreItemRegister;
-import physica.core.common.tile.TileBlastFurnace;
 
 public class BlastFurnaceRecipeHelper extends PhysicaRecipeHandlerBase {
 
@@ -83,7 +82,6 @@ public class BlastFurnaceRecipeHelper extends PhysicaRecipeHandlerBase {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		cycleticks += TileBlastFurnace.TOTAL_BURN_TIME / 50;
 	}
 
 	@Override
@@ -98,10 +96,10 @@ public class BlastFurnaceRecipeHelper extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients) {
 		if (inputId.equals(getRecipeID()) || inputId.equals("fuel") || (inputId.equals("item") && ingredients[0] != null && ingredients[0] instanceof ItemStack
-				&& ((ItemStack) ingredients[0]).getUnlocalizedName().equals("item." + CoreItemRegister.itemMetaIngot.subItems.get(2))))
-			;
-		findFuels();
-		arecipes.add(new SmeltingPair(new ItemStack(Items.iron_ingot), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2)));
+				&& ((ItemStack) ingredients[0]).getUnlocalizedName().equals("item." + CoreItemRegister.itemMetaIngot.subItems.get(2)))) {
+			findFuels();
+			arecipes.add(new SmeltingPair(new ItemStack(Items.iron_ingot), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2)));
+		}
 	}
 
 	@Override
