@@ -1,0 +1,44 @@
+Version 1.0.0.2
+Added changelog for version 1.0.0.1
+Fission reactor performance has been improved - server side
+Fusion reactor performance has been improved - server side
+Make turbines spin better than it was before. More consistent.
+Made fusion reactors survive plasma even though they aren't running. Also, add more blocks to the "survivable" blocks list.
+Optimize dark matter item drops.
+Improve Physica damage source API
+Add more death messages for radiation sources. They now have 2 different death messages: "died from radiation exposure", "held too much uranium". 
+Add a custom damage source for plasma. Has 4 different death messages: "'s electrons flew off their body", "fell into a fusion reactor", "tried to swim in plasma", "was vaporized by plasma".
+Add a custom damage source for forcefields. Has 3 different death messages: "tried to walk through a force field", "was disintegrated by a forcefield", "walked into an energy field". 
+Made infinite energy cubes unbreakable in survival like bedrock.
+Improve fission reactor particle emittion.
+Add more and different fission reactor particle emission.
+Improve and expand the forcefield protection API.
+Add an insertable control rod. Can insert by increments of 5 and also has a total shutdown button.
+Increase the Fortron field block's explosive resistance to 2 to the power of 31. Aka the max value of a float
+Add a reload command for the config.
+Made the fission reactor GUI's "time left" text more dynamic.
+Fix bugs with the chemical extractor NEI recipe handler.
+Add a NEI recipe handler for particle accelerators.
+Improve the fission reactor explosion when a meltdown occurs.
+Increase the fission reactor explosion size.
+Add a melted reactor core block. This is highly radioactive and smelts the stone around it. It also spreads radiation to grass, stone and dirt.
+Add radiated versions of grass, stone and dirt.
+Add a quantum assembler blacklist and related /Physica item command to get the item name for this blacklist.
+Add a config option for the dark matter max uses.
+Improve the radiation system a lot. All radiation now works in the same way for all sources.
+Made forcefield able to survive wither, and matrix kills the wither now.
+Improve the NEI integration API.
+Improve turbine performance - client-side
+Improve Fortron capacitor performance - client-side
+Improve coercion driver performance - client-side
+Made the required particle accelerator size smaller. Works with 50x50 now. Takes 1 and a half minute to reach 100.0%
+Add a Geiger counter so you can see the amount of radiation around you. This also emits the classic radiation click sounds.
+Radiation now damages electronics.
+Fix bugs with radiation that damages creative players.
+Improve electronic items so that they show the amount of electricity in the durability bar. Electricity also works better now.
+Improve radiation potion effect colours.
+Fix crashes with the neutron capture chamber.
+Made radioactive items emit radiation when dropped.
+Add an NEI recipe handler for the blast furnace.
+Optimize all NEI recipe handlers.
+The cleanup code in the entire project. Changed some names here and there. - Dev related only.
