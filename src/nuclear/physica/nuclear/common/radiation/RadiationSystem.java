@@ -59,12 +59,12 @@ public class RadiationSystem {
 					if (protection < 5 && !(isPlayer && ((EntityPlayer) base).capabilities.isCreativeMode)) {
 						base.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), duration, Math.max(0, amplifier)));
 					}
-					if (isPlayer && ((maxRadius - distanceFromSource) / maxRadius * 75) > 0) {
+					if (isPlayer && (maxRadius - distanceFromSource) / maxRadius * 75 > 0) {
 						EntityPlayer player = (EntityPlayer) base;
 						ItemStack stack = player.inventory.getCurrentItem();
 						if (stack != null && stack.getItem() instanceof IEnergyContainerItem) {
 							IEnergyContainerItem item = (IEnergyContainerItem) stack.getItem();
-							int electricity = (int) (item.getMaxEnergyStored(stack) / ((60 * 20) / (maxRadius - distanceFromSource) / maxRadius * 75));
+							int electricity = (int) (item.getMaxEnergyStored(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
 							item.extractEnergy(stack, electricity, false);
 						}
 					}

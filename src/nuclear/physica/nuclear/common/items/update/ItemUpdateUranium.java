@@ -36,7 +36,7 @@ public class ItemUpdateUranium implements IItemUpdate {
 						entity.posZ + scale));
 		for (EntityLivingBase ent : entities) {
 			float dist = (float) (scale - ent.getDistance(entity.posX, entity.posY, entity.posZ));
-			RadiationSystem.applyRontgenEntity(ent, (float) dist, (float) dist * 4.5f, (float) entity.getDistanceToEntity(ent),
+			RadiationSystem.applyRontgenEntity(ent, dist, dist * 4.5f, entity.getDistanceToEntity(ent),
 					dist);
 		}
 	}

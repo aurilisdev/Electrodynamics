@@ -50,7 +50,7 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 
 	@Override
 	public Container getServerGuiElement(int id, EntityPlayer player) {
-		ContainerBase<TileInsertableControlRod> base = new ContainerBase<TileInsertableControlRod>(player, this);
+		ContainerBase<TileInsertableControlRod> base = new ContainerBase<>(player, this);
 		base.addDefaultPlayerInventory(player, 0);
 		return base;
 	}
