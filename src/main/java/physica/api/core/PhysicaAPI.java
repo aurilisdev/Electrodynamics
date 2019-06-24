@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 public class PhysicaAPI {
 
-	public static final Logger logger = LogManager.getLogger("physica-api");
+	public static final Logger logger = LogManager.getLogger("PhysicaAPI");
 	public static final Random random = new Random();
 
 	public static boolean isDebugMode = false;

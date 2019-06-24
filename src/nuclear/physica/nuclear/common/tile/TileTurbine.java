@@ -125,7 +125,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 				delayGeneration--;
 			} else {
 				clientSpin = false;
-				delayGeneration = 30;
+				delayGeneration = 60;
 			}
 		}
 		isGenerating = energyStored > lastEnergyStored || steam > 0;
@@ -133,10 +133,10 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		if (steam > 0) {
 			float steamToRf = ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO;
 			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
-					energyStored + steam * (isMain ? steamToRf * 10 : steamToRf));
+					energyStored + steam * (isMain ? steamToRf * 1.111 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
 			clientSpin = true;
-			delayGeneration = 30;
+			delayGeneration = 60;
 		}
 		if (receiver == null || receiver.isInvalid()) {
 			if (receiver != null && receiver.isInvalid()) {
@@ -150,7 +150,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 			energyStored -= ((IEnergyReceiver) receiver).receiveEnergy(ForgeDirection.DOWN, energyStored, false);
 		}
 		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain)) {
-			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
+			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", (isMain ? 0.75f : 0.1f) * (delayGeneration / 60.0f), 1F);
 		}
 	}
 
@@ -213,12 +213,18 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 
 	@Override
 	public int getEnergyStored(ForgeDirection from) {
+		if (!isMain && hasMain) {
+			TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
+			if (tile instanceof TileTurbine) {
+				return ((TileTurbine) tile).energyStored;
+			}
+		}
 		return energyStored;
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
-		return !isMain ? 320000000 : Integer.MAX_VALUE - 1;
+		return !isMain && !hasMain ? 320000000 : Integer.MAX_VALUE - 1;
 	}
 
 	@Override
@@ -247,6 +253,15 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 
 	public void addSteam(int steam) {
 		this.steam = Math.min(MAX_STEAM, this.steam + steam);
+		if (!isMain && hasMain) {
+			TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
+			if (tile instanceof TileTurbine) {
+				((TileTurbine) tile).steam = Math.min(MAX_STEAM, ((TileTurbine) tile).steam + this.steam);
+				((TileTurbine) tile).energyStored = Math.min(((TileTurbine) tile).getMaxEnergyStored(ForgeDirection.UNKNOWN), ((TileTurbine) tile).energyStored + this.energyStored);
+				this.steam = 0;
+				this.energyStored = 0;
+			}
+		}
 	}
 
 	public boolean isGenerating() {

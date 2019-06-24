@@ -4,8 +4,12 @@ import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.items.armor.ItemHazmatArmor;
 
@@ -67,6 +71,29 @@ public class RadiationSystem {
 							int electricity = (int) (item.getMaxEnergyStored(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
 							item.extractEnergy(stack, electricity, false);
 						}
+					}
+				}
+			}
+		}
+	}
+
+	public static void spreadRadioactiveBlock(World world, int x, int y, int z) {
+		int currentMeta = world.getBlockMetadata(x, y, z);
+		if (currentMeta > 1) {
+			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				int i1 = x + dir.offsetX;
+				int j1 = y + dir.offsetY;
+				int k1 = z + dir.offsetZ;
+				if (currentMeta > 1) {
+					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0) {
+						world.setBlock(i1, j1, k1, NuclearBlockRegister.blockRadioactiveDirt, currentMeta - 1, 3);
+						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
+					} else if (world.getBlock(i1, j1, k1) == Blocks.grass && world.getBlockMetadata(i1, j1, k1) == 0) {
+						world.setBlock(i1, j1, k1, NuclearBlockRegister.blockRadioactiveGrass, currentMeta - 1, 3);
+						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
+					} else if (world.getBlock(i1, j1, k1) == Blocks.stone && world.getBlockMetadata(i1, j1, k1) == 0) {
+						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
+						world.setBlock(i1, j1, k1, NuclearBlockRegister.blockRadioactiveStone, currentMeta - 1, 3);
 					}
 				}
 			}

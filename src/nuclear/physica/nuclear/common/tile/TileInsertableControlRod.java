@@ -3,6 +3,7 @@ package physica.nuclear.common.tile;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityItem;
@@ -44,6 +45,7 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
 		return new GuiInsertableControlRod(player, this);
 	}

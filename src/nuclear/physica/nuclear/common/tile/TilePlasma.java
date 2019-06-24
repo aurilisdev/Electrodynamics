@@ -26,56 +26,46 @@ public class TilePlasma extends TileBase {
 
 	public int strength = ConfigNuclearPhysics.PLASMA_STRENGTH;
 
-	@Override
-	public void onFirstUpdate() {
-		super.onFirstUpdate();
-		if (isServer()) {
-			if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase())) {
-				worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
-				return;
-			}
-
-			int power = Math.max(strength - 1, 0);
-
-			if (power <= 0) {
-				worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
-				return;
-			}
-			float directions = 1;
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-				if (worldObj.rand.nextFloat() < directions) {
-					Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-					if (canPlace(block, worldObj, xCoord, yCoord, zCoord)) {
-						directions -= 1 / 6f;
-						worldObj.setBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, NuclearBlockRegister.blockPlasma, 0, 3);
-
-						TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-						if (tile instanceof TilePlasma) {
-							int newPower = power + worldObj.rand.nextInt(2) - 1;
-							((TilePlasma) tile).strength = (int) (newPower
-									/ Math.max(1, block.getBlockHardness(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ)));
-						}
-					}
-				}
-			}
-		}
-	}
 	public static final int TARGET_TEMPERATURE = 4407;
-
-	private TileTurbine turbine;
-	private int lastSteam;
 
 	@Override
 	public void updateServer(int ticks) {
 		super.updateServer(ticks);
-		if (ticks > strength * 5 && worldObj.rand.nextFloat() < 0.333f) {
-			worldObj.setBlock(xCoord, yCoord, zCoord, worldObj.rand.nextFloat() < 0.025f ? Blocks.fire : Blocks.air);
-		}
-		if (ticks % 5 != 0) {
-			if (turbine != null) {
-				turbine.addSteam(lastSteam);
+		if (ticks == 20) {
+			if (isServer()) {
+				if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase())) {
+					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
+					return;
+				}
+
+				int power = Math.max(strength - 1, 0);
+
+				if (power <= 0) {
+					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
+					return;
+				}
+				float directions = 1;
+				for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+					if (worldObj.rand.nextFloat() < directions) {
+						Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+						if (canPlace(block, worldObj, xCoord, yCoord, zCoord)) {
+							directions -= 1 / 6f;
+							worldObj.setBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, NuclearBlockRegister.blockPlasma, 0, 3);
+
+							TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+							if (tile instanceof TilePlasma) {
+								int newPower = power + worldObj.rand.nextInt(2) - 1;
+								((TilePlasma) tile).strength = (int) (newPower
+										/ Math.max(1, block.getBlockHardness(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ)));
+							}
+						}
+					}
+				}
 			}
-			return;
+		} else if (ticks > 20) {
+			if (ticks > strength * 5 && worldObj.rand.nextFloat() < 0.333f) {
+				worldObj.setBlock(xCoord, yCoord, zCoord, worldObj.rand.nextFloat() < 0.025f ? Blocks.fire : Blocks.air);
+			}
 		}
 
 		AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
@@ -96,11 +86,8 @@ public class TilePlasma extends TileBase {
 							int steam = (int) temperature * (worldObj.getBlockMetadata(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) > 1 ? 100 : 5);
 							if (steam > 0) {
 								turbine.addSteam(steam);
-								this.turbine = turbine;
-								this.lastSteam = steam;
 							}
 						}
-
 					}
 				}
 			}

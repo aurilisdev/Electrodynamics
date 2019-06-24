@@ -29,36 +29,38 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 	}
 
 	public void renderTileAt(TileTurbine tile, double x, double y, double z, float deltaFrame) {
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
-		if (!tile.hasMain()) {
-			GL11.glScaled(0.0925, 0.0525, 0.0925);
-			bindTexture(model_texture);
-			model_base.renderAll();
-			if (tile.hasClientSpin()) {
-				GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
-			}
-			model_middle.renderAll();
-			if (tile.hasClientSpin()) {
-				GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
-			}
-			GL11.glScaled(1 / 0.0925, 1 / 0.0525, 1 / 0.0925);
-		} else if (tile.isMain()) {
-			GL11.glScaled(0.0725 * 4, 0.0525, 0.0725 * 4);
-			bindTexture(model_texture);
-			model_big.renderAll();
-			if (tile.isGenerating()) {
-				GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
-			}
-			model_middle.renderAll();
-			if (tile.isGenerating()) {
-				GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
-			}
-			GL11.glScaled(1 / (0.0725 * 4), 1 / 0.0525, 1 / (0.0725 * 4));
+		if (!tile.hasMain() || tile.isMain()) {
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+			GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+			if (!tile.hasMain()) {
+				GL11.glScaled(0.0925, 0.0525, 0.0925);
+				bindTexture(model_texture);
+				model_base.renderAll();
+				if (tile.hasClientSpin()) {
+					GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
+				}
+				model_middle.renderAll();
+				if (tile.hasClientSpin()) {
+					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
+				}
+				GL11.glScaled(1 / 0.0925, 1 / 0.0525, 1 / 0.0925);
+			} else if (tile.isMain()) {
+				GL11.glScaled(0.0725 * 4, 0.0525, 0.0725 * 4);
+				bindTexture(model_texture);
+				model_big.renderAll();
+				if (tile.isGenerating()) {
+					GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
+				}
+				model_middle.renderAll();
+				if (tile.isGenerating()) {
+					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
+				}
+				GL11.glScaled(1 / (0.0725 * 4), 1 / 0.0525, 1 / (0.0725 * 4));
 
+			}
+			GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
+			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		}
-		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 
 	@Override

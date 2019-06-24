@@ -224,41 +224,54 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 	}
 
+	public static final int STEAM_GEN_DIAMETER = 3;
+	public static final int STEAM_GEN_HEIGHT = 2;
+	private TileTurbine[][][] cachedTurbines = new TileTurbine[STEAM_GEN_DIAMETER][STEAM_GEN_HEIGHT][STEAM_GEN_DIAMETER];
+
 	private void produceSteam() {
 		if (temperature <= 100) {
 			return;
 		}
-		int radius = 1;
-		for (int i = -radius; i <= radius; i++) {
-			for (int j = radius; j >= -radius; j--) {
-				for (int k = -radius; k <= radius; k++) {
-					Block blockXDirection = worldObj.getBlock(xCoord + i, yCoord, zCoord);
-					Block blockZDirection = worldObj.getBlock(xCoord, yCoord, zCoord + k);
-					boolean isReactorBlock = i == 0 && k == 0;
-					if (blockXDirection == Blocks.water || blockZDirection == Blocks.water || isReactorBlock) {
-						Block block = worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k);
-						if (block == Blocks.water) {
+		for (int i = 0; i < STEAM_GEN_DIAMETER; i++) {
+			for (int j = 0; j < STEAM_GEN_HEIGHT; j++) {
+				for (int k = 0; k < STEAM_GEN_DIAMETER; k++) {
+					boolean isReactor2d = i - STEAM_GEN_DIAMETER / 2 == 0 && k - STEAM_GEN_DIAMETER / 2 == 0;
+					if (isReactor2d && j == 0) {
+						continue;
+					}
+					int offsetX = xCoord + i - STEAM_GEN_DIAMETER / 2;
+					int offsetY = yCoord + j;
+					int offsetZ = zCoord + k - STEAM_GEN_DIAMETER / 2;
+					Block offset = worldObj.getBlock(offsetX, offsetY, offsetZ);
+					if (offset == Blocks.water) {
+						boolean isFaceWater = worldObj.getBlock(offsetX, yCoord, zCoord) == Blocks.water || worldObj.getBlock(xCoord, yCoord, offsetZ) == Blocks.water || isReactor2d;
+						if (isFaceWater) {
 							if (isServer()) {
 								float temperatureVarient = temperature / MELTDOWN_TEMPERATURE / 2400;
 								if (worldObj.rand.nextFloat() < temperatureVarient + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250)) {
 									worldObj.setBlockToAir(xCoord + i, yCoord + j, zCoord + k);
 									continue;
 								}
-								TileEntity above = worldObj.getTileEntity(xCoord + i, yCoord + j + 1, zCoord + k);
-								if (above instanceof TileTurbine) {
-									Block under = worldObj.getBlock(xCoord + i, yCoord + j - 1, zCoord + k);
-									if (under == Blocks.water || isReactorBlock) {
-										TileTurbine turbine = (TileTurbine) above;
-										int steam = (int) ((temperature - 100) / 10 * 0.65f) * 20;
-										turbine.addSteam(steam);
+								TileTurbine turbine = cachedTurbines[i][j][k];
+								if (turbine == null || !worldObj.loadedTileEntityList.contains(turbine)) {
+									TileEntity above = worldObj.getTileEntity(offsetX, offsetY + 1, offsetZ);
+									if (above instanceof TileTurbine) {
+										cachedTurbines[i][j][k] = (TileTurbine) above;
+										turbine = (TileTurbine) above;
+									} else {
+										cachedTurbines[i][j][k] = null;
+										turbine = null;
 									}
+								}
+								if (turbine != null) {
+									turbine.addSteam((int) ((temperature - 100) / 10 * 0.65f) * 20);
 								}
 							} else if (isClient()) {
 								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE) {
 									float steamRadius = 0.5f;
-									worldObj.spawnParticle("bubble", xCoord + steamRadius + i + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
-											yCoord + steamRadius + j + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
-											zCoord + steamRadius + k + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2, 0, 0, 0);
+									worldObj.spawnParticle("bubble", offsetX + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
+											offsetY + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
+											offsetZ + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2, 0, 0, 0);
 								}
 							}
 						}

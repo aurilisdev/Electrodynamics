@@ -14,6 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
@@ -33,6 +35,23 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 		setHarvestLevel("pickaxe", 2);
 		setBlockName(NuclearReferences.PREFIX + "turbine");
 		addToRegister(RecipeSide.Nuclear, this);
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+	}
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+		float minX = 0;
+		float minY = 0;
+		float minZ = 0;
+		float maxX = 1;
+		float maxY = 1;
+		float maxZ = 1;
+		setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
 	@Override

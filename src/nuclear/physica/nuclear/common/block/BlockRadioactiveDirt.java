@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
@@ -28,18 +27,7 @@ public class BlockRadioactiveDirt extends Block {
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 		if (!world.isRemote) {
 			if (world.rand.nextFloat() < 0.45f) {
-				int currentMeta = world.getBlockMetadata(x, y, z);
-				if (currentMeta > 1) {
-					for (int l = 0; l < 4; ++l) {
-						int i1 = x + rand.nextInt(3) - 1;
-						int j1 = y + rand.nextInt(5) - 3;
-						int k1 = z + rand.nextInt(3) - 1;
-						if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0 && currentMeta > 1) {
-							world.setBlock(i1, j1, k1, this, currentMeta - 1, 3);
-							world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
-						}
-					}
-				}
+				RadiationSystem.spreadRadioactiveBlock(world, x, y, z);
 			}
 		}
 	}

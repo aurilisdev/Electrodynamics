@@ -2,8 +2,6 @@ package physica.nuclear.common.tile;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -67,21 +65,6 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	@Override
 	public int getSyncRate() {
 		return 1;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateClient(int ticks) {
-		super.updateClient(ticks);
-		if (isRunning) {
-			float radius = 1f;
-			for (float i = 0.175f; i < 0.7; i += 0.1) {
-				for (int j = 0; j < 5; j++) {
-					worldObj.spawnParticle("portal", xCoord + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2 - 1,
-							zCoord + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0, 0, 0);
-				}
-			}
-		}
 	}
 
 	@Override
