@@ -13,23 +13,27 @@ public class ItemUpdateable extends Item {
 	protected IItemUpdate update = new IItemUpdate() {
 	};
 
-	public ItemUpdateable setUpdate(IItemUpdate update) {
+	public ItemUpdateable setUpdate(IItemUpdate update)
+	{
 		this.update = update;
 		return this;
 	}
 
 	@Override
-	public void onUpdate(ItemStack container, World world, Entity entity, int slot, boolean par5) {
+	public void onUpdate(ItemStack container, World world, Entity entity, int slot, boolean par5)
+	{
 		update.onUpdate(container, world, entity, slot, par5);
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem) {
+	public boolean onEntityItemUpdate(EntityItem entityItem)
+	{
 		update.onEntityItemUpdate(entityItem.getEntityItem(), entityItem);
 		return false;
 	}
 
-	public ItemUpdateable addOreDictionaryInput(String oreName, int meta) {
+	public ItemUpdateable addOreDictionaryInput(String oreName, int meta)
+	{
 		OreDictionary.registerOre(oreName, new ItemStack(this, 1, meta));
 		return this;
 	}

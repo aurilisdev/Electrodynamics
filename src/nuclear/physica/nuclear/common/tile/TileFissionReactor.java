@@ -43,7 +43,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	private int insertion;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 
 		Block[] adjacentBlocks = new Block[ForgeDirection.VALID_DIRECTIONS.length];
@@ -63,7 +64,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	}
 
 	@Override
-	public void updateCommon(int ticks) {
+	public void updateCommon(int ticks)
+	{
 		super.updateCommon(ticks);
 		if (hasFuelRod() && temperature > 400) {
 			double radius = temperature / 400.0;
@@ -81,7 +83,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 	}
 
-	private boolean isBeingControlled(Block[] adjacentBlocks) {
+	private boolean isBeingControlled(Block[] adjacentBlocks)
+	{
 		boolean beingControlled = false;
 		for (int i = 0; i < adjacentBlocks.length; i++) {
 			Block block = adjacentBlocks[i];
@@ -101,17 +104,20 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		return beingControlled;
 	}
 
-	public boolean isFissileRod() {
+	public boolean isFissileRod()
+	{
 		return hasFuelRod() && getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemHighEnrichedFuelCell;
 	}
 
-	public boolean isBreederRod() {
+	public boolean isBreederRod()
+	{
 		return hasFuelRod() && getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemLowEnrichedFuelCell;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateClient(int ticks) {
+	public void updateClient(int ticks)
+	{
 		super.updateClient(ticks);
 		if (worldObj.getWorldTime() % 100 == 0 && temperature >= 100) {
 			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
@@ -153,11 +159,13 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getInventoryStackLimit()
+	{
 		return 1;
 	}
 
-	public void performMeltdown() {
+	public void performMeltdown()
+	{
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase())) {
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
@@ -180,7 +188,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		worldObj.setBlock(xCoord, yCoord, zCoord, NuclearBlockRegister.blockMeltedReactor);
 	}
 
-	private void cooldownReactor(Block[] adjacentBlocks) {
+	private void cooldownReactor(Block[] adjacentBlocks)
+	{
 		double decrease = (temperature - AIR_TEMPERATURE) / 3000f;
 		if (!hasFuelRod()) {
 			decrease *= 25;
@@ -204,7 +213,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 	}
 
-	private void processFuelRod() {
+	private void processFuelRod()
+	{
 		ItemStack fuelRod = getStackInSlot(SLOT_INPUT);
 		double insertDecimal = (100 - insertion) / 100.0;
 		if (worldObj.rand.nextFloat() < insertDecimal) {
@@ -228,7 +238,8 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public static final int STEAM_GEN_HEIGHT = 2;
 	private TileTurbine[][][] cachedTurbines = new TileTurbine[STEAM_GEN_DIAMETER][STEAM_GEN_HEIGHT][STEAM_GEN_DIAMETER];
 
-	private void produceSteam() {
+	private void produceSteam()
+	{
 		if (temperature <= 100) {
 			return;
 		}
@@ -281,72 +292,85 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 	}
 
-	public boolean hasFuelRod() {
+	public boolean hasFuelRod()
+	{
 		return getStackInSlot(SLOT_INPUT) != null
 				&& (getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemLowEnrichedFuelCell);
 	}
 
-	public float getTemperature() {
+	public float getTemperature()
+	{
 		return temperature;
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(temperature);
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		temperature = buf.readFloat();
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 		super.writeToNBT(nbt);
 		nbt.setFloat("Temperature", temperature);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 		super.readFromNBT(nbt);
 		temperature = nbt.getFloat("Temperature");
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 1;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return stack == null ? false : slot == SLOT_INPUT ? stack.getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || stack.getItem() == NuclearItemRegister.itemLowEnrichedFuelCell : false;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiFissionReactor(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerFissionReactor(player, this);
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return true;
 	}
 

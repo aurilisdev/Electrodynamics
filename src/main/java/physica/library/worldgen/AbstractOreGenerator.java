@@ -29,7 +29,8 @@ public abstract class AbstractOreGenerator implements IWorldGenerator {
 	public abstract boolean isOreGeneratedInWorld(World world, IChunkProvider chunkGenerator);
 
 	@Override
-	public final void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+	public final void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+	{
 		chunkX = chunkX << 4;
 		chunkZ = chunkZ << 4;
 

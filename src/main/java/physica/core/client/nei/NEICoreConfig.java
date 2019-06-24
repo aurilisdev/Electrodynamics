@@ -8,7 +8,8 @@ import physica.core.client.gui.GuiBlastFurnace;
 public class NEICoreConfig implements IConfigureNEI {
 
 	@Override
-	public void loadConfig() {
+	public void loadConfig()
+	{
 		API.registerRecipeHandler(new BlastFurnaceRecipeHelper());
 		API.registerUsageHandler(new BlastFurnaceRecipeHelper());
 
@@ -16,12 +17,14 @@ public class NEICoreConfig implements IConfigureNEI {
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return Physica.metadata.name;
 	}
 
 	@Override
-	public String getVersion() {
+	public String getVersion()
+	{
 		return Physica.metadata.version;
 	}
 }

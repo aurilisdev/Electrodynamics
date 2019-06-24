@@ -22,12 +22,14 @@ public class BlockCentrifuge extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileCentrifuge();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "ICI", "TMT", "TPT", 'I', "ingotSteel", 'T',
 				CoreItemRegister.itemEmptyCell, 'M',
 				"motor", 'P', "plateSteel", 'C', "circuitAdvanced");
@@ -35,7 +37,8 @@ public class BlockCentrifuge extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 }

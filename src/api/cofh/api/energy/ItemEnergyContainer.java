@@ -39,7 +39,8 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate)
+	{
 
 		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
 			return 0;
@@ -55,7 +56,8 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public int getEnergyStored(ItemStack container) {
+	public int getEnergyStored(ItemStack container)
+	{
 
 		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
 			return 0;
@@ -64,14 +66,16 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public int getMaxEnergyStored(ItemStack container) {
+	public int getMaxEnergyStored(ItemStack container)
+	{
 
 		return capacity;
 	}
 
 	/* IEnergyContainerItem */
 	@Override
-	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate)
+	{
 
 		if (container.stackTagCompound == null) {
 			container.stackTagCompound = new NBTTagCompound();
@@ -86,23 +90,27 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 		return energyReceived;
 	}
 
-	public ItemEnergyContainer setCapacity(int capacity) {
+	public ItemEnergyContainer setCapacity(int capacity)
+	{
 
 		this.capacity = capacity;
 		return this;
 	}
 
-	public void setMaxExtract(int maxExtract) {
+	public void setMaxExtract(int maxExtract)
+	{
 
 		this.maxExtract = maxExtract;
 	}
 
-	public void setMaxReceive(int maxReceive) {
+	public void setMaxReceive(int maxReceive)
+	{
 
 		this.maxReceive = maxReceive;
 	}
 
-	public void setMaxTransfer(int maxTransfer) {
+	public void setMaxTransfer(int maxTransfer)
+	{
 
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);

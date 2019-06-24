@@ -28,7 +28,8 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 		model_big = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
 	}
 
-	public void renderTileAt(TileTurbine tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(TileTurbine tile, double x, double y, double z, float deltaFrame)
+	{
 		if (!tile.hasMain() || tile.isMain()) {
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -64,7 +65,8 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame)
+	{
 		renderTileAt((TileTurbine) tile, x, y, z, deltaFrame);
 	}
 }

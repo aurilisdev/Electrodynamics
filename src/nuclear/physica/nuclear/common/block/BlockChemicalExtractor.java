@@ -21,19 +21,22 @@ public class BlockChemicalExtractor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileChemicalExtractor();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "IPI", "MCM", "IPI", 'I', "ingotSteel", 'M',
 				"motor", 'P',
 				"plateSteel", 'C', "circuitAdvanced");
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 

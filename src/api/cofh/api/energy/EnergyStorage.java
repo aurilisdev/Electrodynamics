@@ -34,7 +34,8 @@ public class EnergyStorage implements IEnergyStorage {
 	}
 
 	@Override
-	public int extractEnergy(int maxExtract, boolean simulate) {
+	public int extractEnergy(int maxExtract, boolean simulate)
+	{
 
 		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 
@@ -45,23 +46,27 @@ public class EnergyStorage implements IEnergyStorage {
 	}
 
 	@Override
-	public int getEnergyStored() {
+	public int getEnergyStored()
+	{
 
 		return energy;
 	}
 
 	@Override
-	public int getMaxEnergyStored() {
+	public int getMaxEnergyStored()
+	{
 
 		return capacity;
 	}
 
-	public int getMaxExtract() {
+	public int getMaxExtract()
+	{
 
 		return maxExtract;
 	}
 
-	public int getMaxReceive() {
+	public int getMaxReceive()
+	{
 
 		return maxReceive;
 	}
@@ -74,7 +79,8 @@ public class EnergyStorage implements IEnergyStorage {
 	 *
 	 * @param energy
 	 */
-	public void modifyEnergyStored(int energy) {
+	public void modifyEnergyStored(int energy)
+	{
 
 		this.energy += energy;
 
@@ -85,7 +91,8 @@ public class EnergyStorage implements IEnergyStorage {
 		}
 	}
 
-	public EnergyStorage readFromNBT(NBTTagCompound nbt) {
+	public EnergyStorage readFromNBT(NBTTagCompound nbt)
+	{
 
 		energy = nbt.getInteger("Energy");
 
@@ -97,7 +104,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 	/* IEnergyStorage */
 	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate) {
+	public int receiveEnergy(int maxReceive, boolean simulate)
+	{
 
 		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
 
@@ -107,7 +115,8 @@ public class EnergyStorage implements IEnergyStorage {
 		return energyReceived;
 	}
 
-	public void setCapacity(int capacity) {
+	public void setCapacity(int capacity)
+	{
 
 		this.capacity = capacity;
 
@@ -124,7 +133,8 @@ public class EnergyStorage implements IEnergyStorage {
 	 *
 	 * @param energy
 	 */
-	public void setEnergyStored(int energy) {
+	public void setEnergyStored(int energy)
+	{
 
 		this.energy = energy;
 
@@ -135,23 +145,27 @@ public class EnergyStorage implements IEnergyStorage {
 		}
 	}
 
-	public void setMaxExtract(int maxExtract) {
+	public void setMaxExtract(int maxExtract)
+	{
 
 		this.maxExtract = maxExtract;
 	}
 
-	public void setMaxReceive(int maxReceive) {
+	public void setMaxReceive(int maxReceive)
+	{
 
 		this.maxReceive = maxReceive;
 	}
 
-	public void setMaxTransfer(int maxTransfer) {
+	public void setMaxTransfer(int maxTransfer)
+	{
 
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);
 	}
 
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+	{
 
 		if (energy < 0) {
 			energy = 0;

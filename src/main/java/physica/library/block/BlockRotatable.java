@@ -22,11 +22,13 @@ public abstract class BlockRotatable extends BlockContainer {
 		super(material);
 	}
 
-	public boolean canRotate(int ordinal) {
+	public boolean canRotate(int ordinal)
+	{
 		return (rotationMask & 1 << ordinal) != 0;
 	}
 
-	public int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity) {
+	public int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	{
 		if (MathHelper.abs((float) entity.posX - x) < 2 && MathHelper.abs((float) entity.posZ - z) < 2) {
 			double d0 = entity.posY + 1.82D - entity.yOffset;
 
@@ -50,12 +52,14 @@ public abstract class BlockRotatable extends BlockContainer {
 	}
 
 	@Override
-	public ForgeDirection[] getValidRotations(World world, int x, int y, int z) {
+	public ForgeDirection[] getValidRotations(World world, int x, int y, int z)
+	{
 		return ForgeDirection.VALID_DIRECTIONS;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof IRotatable) {
@@ -67,7 +71,8 @@ public abstract class BlockRotatable extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof IRotatable) {
@@ -78,7 +83,8 @@ public abstract class BlockRotatable extends BlockContainer {
 	}
 
 	@Override
-	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection side) {
+	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection side)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (tile instanceof IRotatable) {

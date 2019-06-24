@@ -39,19 +39,22 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	}
 
 	@Override
-	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable) {
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+	{
 		EnumPlantType plantType = plantable.getPlantType(world, x, y + 1, z);
 		return plantType == EnumPlantType.Plains;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public IIcon getIcon(int side, int meta) {
+	public IIcon getIcon(int side, int meta)
+	{
 		return side == 1 ? this.topIcon : side == 0 ? Blocks.dirt.getBlockTextureFromSide(side) : this.blockIcon;
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
 		if (!world.isRemote) {
 			if (world.rand.nextFloat() < 0.666f) {
 				RadiationSystem.spreadRadioactiveBlock(world, x, y, z);
@@ -60,7 +63,8 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	}
 
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
+	public void onEntityWalking(World world, int x, int y, int z, Entity ent)
+	{
 		if (ent instanceof EntityLivingBase) {
 			int meta = world.getBlockMetadata(x, y, z);
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 7.5f, meta, 1, 1);
@@ -68,18 +72,21 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
+	{
 		return Blocks.grass.colorMultiplier(world, x, y, z) - 10;
 	}
 
 	@Override
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
+	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+	{
 		return Blocks.dirt.getItemDropped(0, p_149650_2_, p_149650_3_);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+	{
 		if (side == 1) {
 			return this.topIcon;
 		} else if (side == 0) {
@@ -92,7 +99,8 @@ public class BlockRadioactiveGrass extends BlockGrass {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_) {
+	public void registerBlockIcons(IIconRegister p_149651_1_)
+	{
 		this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
 		this.topIcon = p_149651_1_.registerIcon(this.getTextureName() + "_top");
 		this.snowVersion = p_149651_1_.registerIcon("grass_side_snowed");
@@ -104,7 +112,8 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	 */
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_) {
+	public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_)
+	{
 		super.randomDisplayTick(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_, p_149734_5_);
 
 		if (p_149734_5_.nextInt(10) == 0) {

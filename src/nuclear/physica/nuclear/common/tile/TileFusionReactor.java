@@ -26,12 +26,14 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	private int ticksRunning;
 	private boolean isRunning = false;
 
-	public boolean isRunning() {
+	public boolean isRunning()
+	{
 		return isRunning;
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		ItemStack deuterium = getStackInSlot(SLOT_DEUTERIUM);
 		ItemStack tritium = getStackInSlot(SLOT_TRITIUM);
@@ -63,24 +65,28 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public int getSyncRate() {
+	public int getSyncRate()
+	{
 		return 1;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 		super.writeToNBT(nbt);
 		nbt.setInteger("Energy", energyStored);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 		super.readFromNBT(nbt);
 		energyStored = nbt.getInteger("Energy");
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(energyStored);
 		dataList.add(isRunning);
@@ -90,7 +96,8 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readSynchronizationPacket(buf, player);
 		energyStored = buf.readInt();
 		isRunning = buf.readBoolean();
@@ -113,27 +120,32 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return from != ForgeDirection.UP;
 	}
 
 	@Override
-	public int getEnergyUsage() {
+	public int getEnergyUsage()
+	{
 		return ENERGY_USAGE;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return ENERGY_USAGE * 2;
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getInventoryStackLimit()
+	{
 		return MAX_DEUTERIUM;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		ItemStack slotStack = getStackInSlot(slot);
 		if (slot == SLOT_DEUTERIUM && stack != null && stack.getItem() == NuclearItemRegister.itemDeuteriumCell) {
 			if (slotStack != null) {
@@ -157,22 +169,26 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return true;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 2;
 	}
 

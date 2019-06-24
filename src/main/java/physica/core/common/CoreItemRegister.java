@@ -19,7 +19,8 @@ public class CoreItemRegister implements IContent {
 	public static ItemBattery itemBattery;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		GameRegistry.registerItem(itemEmptyCell = (ItemInformationHolder) new ItemInformationHolder("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
 		GameRegistry.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
 		GameRegistry.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel"), "item.metaPlate");

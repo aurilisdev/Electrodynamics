@@ -21,7 +21,8 @@ import physica.library.client.render.TileRenderObjModel;
 public class ClientRegister implements IContent {
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileInfiniteEnergy.class,
 				new TileRenderObjModel<TileInfiniteEnergy>("infEnergy.obj", "infEnergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockInfEnergy),

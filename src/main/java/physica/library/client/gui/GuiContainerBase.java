@@ -58,7 +58,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		buttonList.clear();
 		this.fields.clear();
@@ -75,52 +76,64 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <E extends GuiButton> E addButton(E button) {
+	protected <E extends GuiButton> E addButton(E button)
+	{
 		buttonList.add(button);
 		return button;
 	}
 
-	protected void addToolTip(int x, int y, int w, int h, String text) {
+	protected void addToolTip(int x, int y, int w, int h, String text)
+	{
 		addToolTip(new Rectangle(x, y, w, h), text);
 	}
 
-	protected void addToolTip(Rectangle triggerArea, String text) {
+	protected void addToolTip(Rectangle triggerArea, String text)
+	{
 		addToolTip(new ToolTip(triggerArea, text));
 	}
 
-	protected void addToolTip(ToolTip toolTip) {
+	protected void addToolTip(ToolTip toolTip)
+	{
 		tooltips.add(toolTip);
 	}
 
-	protected void drawString(String str, int x, int y, int color) {
+	protected void drawString(String str, int x, int y, int color)
+	{
 		fontRendererObj.drawString(str, x, y, color);
 	}
 
-	protected void drawString(String str, int x, int y) {
+	protected void drawString(String str, int x, int y)
+	{
 		drawString(str, x, y, 4210752);
 	}
 
-	protected void drawString(String str, int x, int y, Color color) {
+	protected void drawString(String str, int x, int y, Color color)
+	{
 		drawString(str, x, y, color.getRGB());
 	}
 
-	protected void drawStringCentered(String str, int x, int y) {
+	protected void drawStringCentered(String str, int x, int y)
+	{
 		drawStringCentered(str, x, y, 4210752);
 	}
 
-	protected void drawStringCentered(String str, int x, int y, Color color) {
+	protected void drawStringCentered(String str, int x, int y, Color color)
+	{
 		drawStringCentered(str, x, y, color.getRGB());
 	}
 
-	protected void drawStringCentered(String str, int x, int y, int color) {
+	protected void drawStringCentered(String str, int x, int y, int color)
+	{
 		drawString(str, x - fontRendererObj.getStringWidth(str) / 2, y, color);
 	}
 
-	protected GuiTextField newField(int x, int y, int w, String msg) {
+	protected GuiTextField newField(int x, int y, int w, String msg)
+	{
 		return this.newInputField(x, y, w, 20, msg);
 	}
 
-	protected GuiTextField newInputField(int x, int y, int w, int h, String msg) {
+	protected GuiTextField newInputField(int x, int y, int w, int h, String msg)
+	{
 		GuiTextField textField = new GuiTextField(fontRendererObj, x, y, w, h);
 		textField.setText("" + msg);
 		textField.setMaxStringLength(15);
@@ -130,17 +143,20 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	}
 
 	@Override
-	public void onGuiClosed() {
+	public void onGuiClosed()
+	{
 		Keyboard.enableRepeatEvents(false);
 		super.onGuiClosed();
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float p_73863_3_) {
+	public void drawScreen(int mouseX, int mouseY, float p_73863_3_)
+	{
 		super.drawScreen(mouseX, mouseY, p_73863_3_);
 
 		if (fields != null && fields.size() > 0) {
@@ -175,7 +191,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char c, int id) {
+	protected void keyTyped(char c, int id)
+	{
 		boolean f = false;
 		for (GuiTextField field : fields) {
 			field.textboxKeyTyped(c, id);
@@ -189,7 +206,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int p_73864_1_, int p_73864_2_, int p_73864_3_) {
+	protected void mouseClicked(int p_73864_1_, int p_73864_2_, int p_73864_3_)
+	{
 		super.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
 		for (GuiTextField field : fields) {
 			field.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
@@ -197,7 +215,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		this.containerWidth = (width - xSize) / 2;
 		this.containerHeight = (height - ySize) / 2;
 
@@ -211,16 +230,19 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		drawContainerSlots();
 	}
 
-	protected void preDrawContainerSlots() {
+	protected void preDrawContainerSlots()
+	{
 	}
 
-	protected void drawContainerSlots() {
+	protected void drawContainerSlots()
+	{
 		for (Object object : inventorySlots.inventorySlots) {
 			drawSlot((Slot) object);
 		}
 	}
 
-	protected void drawSlot(Slot slot) {
+	protected void drawSlot(Slot slot)
+	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if (slot instanceof IRenderableSlot) {
 			((IRenderableSlot) slot).renderSlotOverlay(this, this.containerWidth + slot.xDisplayPosition - 1, this.containerHeight + slot.yDisplayPosition - 1);
@@ -230,12 +252,14 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	}
 
-	protected void drawSlot(int x, int y) {
+	protected void drawSlot(int x, int y)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 0, 0, 18, 18);
 	}
 
-	public void drawLargeBar(int x, int y, int w, float percent, Color color) {
+	public void drawLargeBar(int x, int y, int w, float percent, Color color)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 
 		int width = Math.round(percent * 138);
@@ -245,7 +269,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		drawRectWithScaledWidth(containerWidth + x + 1, containerHeight + y + 1, 55, 65, width, 13, w - 2);
 	}
 
-	public void drawSmallBar(int x, int y, int w, float percent, Color color) {
+	public void drawSmallBar(int x, int y, int w, float percent, Color color)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 
 		final int width = Math.round(percent * 105);
@@ -256,11 +281,13 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		drawRectWithScaledWidth(containerWidth + x + 1, containerHeight + y + 1, 55, 24, width, 9, w);
 	}
 
-	public void drawMicroBar(int x, int y, float percent, Color color) {
+	public void drawMicroBar(int x, int y, float percent, Color color)
+	{
 		drawMicroBar(x, y, -1, percent, color);
 	}
 
-	public void drawMicroBar(int x, int y, int w, float percent, Color color) {
+	public void drawMicroBar(int x, int y, int w, float percent, Color color)
+	{
 		final int backgroundWidth = 56;
 		final int fillBarWidth = 54;
 
@@ -274,7 +301,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		drawRectWithScaledWidth(containerWidth + x + 1, containerHeight + y + 1, 55, 87, width, 5, (int) ((w - 2) * percent));
 	}
 
-	protected void drawRectWithScaledWidth(int x, int y, int u, int v, int width, int height, int newWidth) {
+	protected void drawRectWithScaledWidth(int x, int y, int u, int v, int width, int height, int newWidth)
+	{
 		if (width > 0) {
 			if (newWidth <= 0 || width == newWidth) {
 				drawTexturedModalRect(x, y, u, v, width, height);
@@ -306,7 +334,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		}
 	}
 
-	protected void setColor(Color color) {
+	protected void setColor(Color color)
+	{
 		if (color == null) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		} else {
@@ -314,7 +343,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		}
 	}
 
-	protected void drawElectricity(int x, int y, float scale) {
+	protected void drawElectricity(int x, int y, float scale)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -325,11 +355,13 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		}
 	}
 
-	protected void drawFluidTank(int x, int y, IFluidTank tank) {
+	protected void drawFluidTank(int x, int y, IFluidTank tank)
+	{
 		drawFluidTank(x, y, tank, null);
 	}
 
-	protected void drawFluidTank(int x, int y, IFluidTank tank, Color edgeColor) {
+	protected void drawFluidTank(int x, int y, IFluidTank tank, Color edgeColor)
+	{
 		float scale = tank.getFluidAmount() / (float) tank.getCapacity();
 		FluidStack fluidStack = tank.getFluid();
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
@@ -354,15 +386,18 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void drawTooltip(int x, int y, String... tooltips) {
+	public void drawTooltip(int x, int y, String... tooltips)
+	{
 		drawTooltip(x, y, Lists.newArrayList(tooltips));
 	}
 
-	public void drawTooltip(int x, int y, List<String> tooltips) {
+	public void drawTooltip(int x, int y, List<String> tooltips)
+	{
 		drawHoveringText(tooltips, x, y, fontRendererObj);
 	}
 
-	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack) {
+	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack)
+	{
 		if (fluidStack != null && fluidStack.getFluid() != null) {
 			drawSize -= 1;
 
@@ -395,11 +430,13 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		}
 	}
 
-	protected void renderFurnaceCookArrow(int x, int y, float progress) {
+	protected void renderFurnaceCookArrow(int x, int y, float progress)
+	{
 		renderFurnaceCookArrow(x, y, progress, 1);
 	}
 
-	protected void renderFurnaceCookArrow(int x, int y, double cookTime, double maxCookTime) {
+	protected void renderFurnaceCookArrow(int x, int y, double cookTime, double maxCookTime)
+	{
 		cookTime = Math.min(cookTime, maxCookTime);
 		drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 0, 22, 15);
 		if (cookTime > 0) {

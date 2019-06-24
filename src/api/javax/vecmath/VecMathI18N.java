@@ -31,7 +31,8 @@ import java.util.ResourceBundle;
 
 class VecMathI18N {
 
-	static String getString(String key) {
+	static String getString(String key)
+	{
 		String s;
 		try {
 			s = ResourceBundle.getBundle("javax.vecmath.ExceptionStrings").getString(key);

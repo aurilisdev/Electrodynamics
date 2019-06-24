@@ -87,41 +87,50 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	private boolean hasInterior = false;
 	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
 
-	public boolean hasUpgrade(String name) {
+	public boolean hasUpgrade(String name)
+	{
 		return findModule(ForcefieldItemRegister.moduleMap.get(name), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
 	}
 
-	public int xCoordShifted() {
+	public int xCoordShifted()
+	{
 		return cachedCoordinates[0];
 	}
 
-	public int yCoordShifted() {
+	public int yCoordShifted()
+	{
 		return cachedCoordinates[1];
 	}
 
-	public int zCoordShifted() {
+	public int zCoordShifted()
+	{
 		return cachedCoordinates[2];
 	}
 
-	public int getMaxFortron() {
+	public int getMaxFortron()
+	{
 		return getFortronUse() * 40 + BASE_FORTRON;
 	}
 
-	public int getFortronUse() {
+	public int getFortronUse()
+	{
 		return cachedInformation[7] + cachedInformation[8] + (shouldDisintegrate ? 25000 : 0);
 	}
 	private int healthLost = 0;
 
-	public int getHealthLost() {
+	public int getHealthLost()
+	{
 		return healthLost;
 	}
 
 	@Override
-	public void receiveExplosionEnergy(double energy) {
+	public void receiveExplosionEnergy(double energy)
+	{
 		this.damageForcefield((int) energy);
 	}
 
-	public void damageForcefield(int amount) {
+	public void damageForcefield(int amount)
+	{
 		int fortronUse = getFortronUse();
 		if (fortronUse == 0) {
 			return;
@@ -139,27 +148,32 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void onChunkUnload() {
+	public void onChunkUnload()
+	{
 		ForcefieldEventHandler.INSTANCE.unregisterConstructor(this);
 	}
 
 	@Override
-	public boolean canRecieveFortron(IInvFortronTile from) {
+	public boolean canRecieveFortron(IInvFortronTile from)
+	{
 		return from instanceof TileFortronCapacitor;
 	}
 
 	@Override
-	public FluidTank getFortronTank() {
+	public FluidTank getFortronTank()
+	{
 		return fortronTank;
 	}
 
 	@Override
-	public boolean canSendBeam() {
+	public boolean canSendBeam()
+	{
 		return false;
 	}
 
 	@Override
-	public void onInventoryChanged() {
+	public void onInventoryChanged()
+	{
 		super.onInventoryChanged();
 		updateFieldTerms();
 		int ret = 0;
@@ -203,7 +217,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void onFirstUpdate() {
+	public void onFirstUpdate()
+	{
 		invalidateConnections();
 		fortronConnections.clear();
 		findNearbyConnections(TileFortronCapacitor.class);
@@ -211,7 +226,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void updateCommon(int ticks) {
+	public void updateCommon(int ticks)
+	{
 		super.updateCommon(ticks);
 		if (getStackInSlot(SLOT_FREQUENCY) != null) {
 			if (getStackInSlot(SLOT_FREQUENCY).stackTagCompound != null) {
@@ -226,7 +242,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public boolean isInForcefield(double x, double y, double z) {
+	public boolean isInForcefield(double x, double y, double z)
+	{
 		if (!isFullySealed) {
 			return false;
 		}
@@ -274,7 +291,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public boolean isFinishedConstructing() {
+	public boolean isFinishedConstructing()
+	{
 		return !isDestroying && calculatedFieldPoints.isEmpty() && isActivated() && getStackInSlot(SLOT_TYPE) != null && fortronTank.getFluidAmount() > getFortronUse() && getFortronUse() > 0
 				&& activeFields.size() > 0;
 	}
@@ -285,14 +303,16 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public int moduleCount;
 	public int forcefieldType = -1;
 
-	public void setCalculating(boolean b) {
+	public void setCalculating(boolean b)
+	{
 		isCalculating = b;
 	}
 	public int delay = 0;
 	public boolean isFullySealed = false;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (!ForcefieldEventHandler.INSTANCE.isConstructorRegistered(this)) {
 			ForcefieldEventHandler.INSTANCE.registerConstructor(this);
@@ -365,7 +385,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	private int totalGeneratedPerTick = 0;
 	public int maximumForceFieldCount = 0;
 
-	public void destroyField(boolean instant) {
+	public void destroyField(boolean instant)
+	{
 		healthLost = 0;
 		isDestroying = true;
 		isCurrentlyConstructing = false;
@@ -385,7 +406,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		}
 	}
 
-	public void updateFieldTerms() {
+	public void updateFieldTerms()
+	{
 		shouldSponge = hasUpgrade("moduleUpgradeSponge");
 		shouldDisintegrate = hasUpgrade("moduleUpgradeDisintegration");
 		shouldStabilize = hasUpgrade("moduleUpgradeStabilize");
@@ -401,7 +423,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		}
 	}
 
-	protected void projectField() {
+	protected void projectField()
+	{
 		Set<BlockLocation> finishedQueueItems = new HashSet<>();
 		int currentlyGenerated = 0, currentlyMissed = 0;
 		for (BlockLocation fieldPoint : calculatedFieldPoints) {
@@ -498,25 +521,29 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void invalidate() {
+	public void invalidate()
+	{
 		super.invalidate();
 		invalidateConnections();
 	}
 
 	@Override
-	public Set<ITileBase> getFortronConnections() {
+	public Set<ITileBase> getFortronConnections()
+	{
 		return fortronConnections;
 	}
 	private int frequency;
 	private int fieldColorMultiplier = PhysicaForcefields.DEFAULT_COLOR;
 
 	@Override
-	public int getFrequency() {
+	public int getFrequency()
+	{
 		return frequency;
 	}
 
 	@Override
-	public void setFrequency(int freq) {
+	public void setFrequency(int freq)
+	{
 		int oldFrequency = frequency;
 		frequency = freq;
 		if (oldFrequency != freq) {
@@ -525,7 +552,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(isActivated);
 		dataList.add(frequency);
@@ -536,7 +564,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		isActivated = buf.readBoolean();
 		frequency = buf.readInt();
@@ -547,7 +576,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		tag.setInteger("frequency", frequency);
 		tag.setBoolean("isCalculating", isCalculating);
@@ -561,7 +591,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		frequency = tag.getInteger("frequency");
 		isActivated = tag.getBoolean("isActivated");
@@ -574,12 +605,14 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		if (stack == null || stack.getItem() == null) {
 			return false;
 		}
@@ -599,50 +632,60 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 21;
 	}
 
 	@Override
-	public boolean isActivated() {
+	public boolean isActivated()
+	{
 		return isActivated;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiFortronFieldConstructor(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerFortronFieldConstructor(player, this);
 	}
 
-	public int getProjectorMode() {
+	public int getProjectorMode()
+	{
 		return getStackInSlot(TileFortronFieldConstructor.SLOT_TYPE) != null ? getStackInSlot(TileFortronFieldConstructor.SLOT_TYPE).getItemDamage() : -1;
 	}
 
-	public int fieldColorMultiplier() {
+	public int fieldColorMultiplier()
+	{
 		return fieldColorMultiplier;
 	}
 
-	public void setFieldColorMultiplier(int fieldColorMultiplier) {
+	public void setFieldColorMultiplier(int fieldColorMultiplier)
+	{
 		this.fieldColorMultiplier = fieldColorMultiplier;
 	}
 
 	@Override
-	public BlockLocation getLocation() {
+	public BlockLocation getLocation()
+	{
 		if (location == null) {
 			location = super.getLocation();
 		}

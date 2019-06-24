@@ -30,33 +30,40 @@ public class ForcefieldEventHandler {
 	private static final Set<TileInterdictionMatrix> set = new HashSet<>();
 	private static final Set<TileFortronFieldConstructor> forceFieldConstructors = new HashSet<>();
 
-	public void registerConstructor(TileFortronFieldConstructor tile) {
+	public void registerConstructor(TileFortronFieldConstructor tile)
+	{
 		forceFieldConstructors.add(tile);
 	}
 
-	public void unregisterConstructor(TileFortronFieldConstructor tile) {
+	public void unregisterConstructor(TileFortronFieldConstructor tile)
+	{
 		forceFieldConstructors.remove(tile);
 	}
 
-	public boolean isConstructorRegistered(TileFortronFieldConstructor tile) {
+	public boolean isConstructorRegistered(TileFortronFieldConstructor tile)
+	{
 		return forceFieldConstructors.contains(tile);
 	}
 
-	public void registerMatrix(TileInterdictionMatrix tile) {
+	public void registerMatrix(TileInterdictionMatrix tile)
+	{
 		if (!set.contains(tile)) {
 			set.add(tile);
 		}
 	}
 
-	public boolean isMatrixRegistered(TileInterdictionMatrix tile) {
+	public boolean isMatrixRegistered(TileInterdictionMatrix tile)
+	{
 		return set.contains(tile);
 	}
 
-	public void unregisterMatrix(TileInterdictionMatrix tile) {
+	public void unregisterMatrix(TileInterdictionMatrix tile)
+	{
 		set.remove(tile);
 	}
 
-	public ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z) {
+	public ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z)
+	{
 		ArrayList<TileFortronFieldConstructor> list = new ArrayList<>();
 		Iterator<TileFortronFieldConstructor> iterator = forceFieldConstructors.iterator();
 		while (iterator.hasNext()) {
@@ -74,7 +81,8 @@ public class ForcefieldEventHandler {
 	}
 
 	@SubscribeEvent
-	public void interactEvent(PlayerInteractEvent evt) {
+	public void interactEvent(PlayerInteractEvent evt)
+	{
 		if (evt.action == Action.RIGHT_CLICK_BLOCK || evt.action == Action.LEFT_CLICK_BLOCK) {
 			TileEntity tile = evt.world.getTileEntity(evt.x, evt.y, evt.z);
 			if (tile instanceof TileFortronFieldConstructor) {
@@ -128,7 +136,8 @@ public class ForcefieldEventHandler {
 	}
 
 	@SubscribeEvent
-	public void livingSpawnEvent(LivingSpawnEvent evt) {
+	public void livingSpawnEvent(LivingSpawnEvent evt)
+	{
 		for (TileInterdictionMatrix matrix : set) {
 			if (matrix.isActivated()) {
 				if (matrix.getActiveBB().isVecInside(Vec3.createVectorHelper(evt.x, evt.y, evt.z))) {
@@ -145,21 +154,24 @@ public class ForcefieldEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onDefenseExplosion(PostExplosionEvent event) {
+	public void onDefenseExplosion(PostExplosionEvent event)
+	{
 		if (event.explosion != null) {
 			onExplosionImpl(event.iExplosion.getEnergy(), event.explosion.explosionSize, event.world, event.x, event.y, event.z);
 		}
 	}
 
 	@SubscribeEvent
-	public void onResonantExplosion(resonant.api.explosion.ExplosionEvent.PreExplosionEvent event) {
+	public void onResonantExplosion(resonant.api.explosion.ExplosionEvent.PreExplosionEvent event)
+	{
 		if (event.explosion != null) {
 			onExplosionImpl(event.iExplosion.getEnergy(), event.explosion.explosionSize, event.world, event.x, event.y, event.z);
 		}
 	}
 
 	@SubscribeEvent
-	public void onExplosion(ExplosionEvent.Detonate event) {
+	public void onExplosion(ExplosionEvent.Detonate event)
+	{
 		if (event.explosion != null) {
 			float size = event.explosion.explosionSize;
 			long energy = (long) size * 50;
@@ -172,7 +184,8 @@ public class ForcefieldEventHandler {
 		}
 	}
 
-	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z) {
+	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z)
+	{
 		if (size > 0 && energy > 0) {
 			for (TileFortronFieldConstructor tile : forceFieldConstructors) {
 				if (tile != null && !tile.isInvalid() && world == tile.getWorldObj()) {

@@ -23,18 +23,21 @@ public class BlockChemicalBoiler extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileChemicalBoiler();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "PCP", "TFT", "PMP", 'F', CoreBlockRegister.blockBlastFurnace, 'T', CoreItemRegister.itemEmptyCell, 'M', "motor", 'P',
 				"plateSteel", 'C', "circuitAdvanced");
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 }

@@ -17,7 +17,8 @@ public class RadiationSystem {
 
 	public static final double toRealRoentgenConversionRate = 2139.995 / 3;
 
-	public static void applyRontgenEntity(EntityLivingBase base, float kiloRoentgen, float durationMultiplier, float distanceFromSource, float maxRadius) {
+	public static void applyRontgenEntity(EntityLivingBase base, float kiloRoentgen, float durationMultiplier, float distanceFromSource, float maxRadius)
+	{
 		if (base != null) {
 			if (base.worldObj.rand.nextFloat() < kiloRoentgen) {
 				if (base.worldObj.isRemote) {
@@ -77,7 +78,8 @@ public class RadiationSystem {
 		}
 	}
 
-	public static void spreadRadioactiveBlock(World world, int x, int y, int z) {
+	public static void spreadRadioactiveBlock(World world, int x, int y, int z)
+	{
 		int currentMeta = world.getBlockMetadata(x, y, z);
 		if (currentMeta > 1) {
 			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {

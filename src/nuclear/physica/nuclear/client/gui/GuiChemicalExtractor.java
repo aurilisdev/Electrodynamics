@@ -23,13 +23,15 @@ public class GuiChemicalExtractor extends GuiContainerBase<TileChemicalExtractor
 	}
 
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		addToolTip(new ToolTipTank(AREA_WATER_TANK, "gui.chemicalExtractor.water_tank", host.getTank()));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: "
 				+ (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting"
@@ -39,7 +41,8 @@ public class GuiChemicalExtractor extends GuiContainerBase<TileChemicalExtractor
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_WATER_TANK.x, AREA_WATER_TANK.y, host.getTank());
 		renderFurnaceCookArrow(36, 36, host.getOperatingTicks(), TileChemicalExtractor.TICKS_REQUIRED);

@@ -11,9 +11,11 @@ public interface IItemUpdate {
 
 	Random rand = new Random();
 
-	default void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean p_77663_5_) {
+	default void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean p_77663_5_)
+	{
 	}
 
-	default void onEntityItemUpdate(ItemStack stack, EntityItem entity) {
+	default void onEntityItemUpdate(ItemStack stack, EntityItem entity)
+	{
 	}
 }

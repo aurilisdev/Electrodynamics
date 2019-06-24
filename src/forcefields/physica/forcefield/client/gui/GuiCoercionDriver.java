@@ -25,13 +25,15 @@ public class GuiCoercionDriver extends GuiContainerBase<TileCoercionDriver> impl
 	}
 
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		addToolTip(new ToolTipTank(new Rectangle(8, 115, electricityMeterWidth, electricityMeterHeight), "gui.coercionDriver.fortron_tank", host.getFortronTank()));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Transfer rate: " + host.getFortronTransferRate() / 1000.0 + "L/t", 8, 105);
 		drawString("Linked Devices: " + host.getFortronConnections().size(), 8, 95);
@@ -44,7 +46,8 @@ public class GuiCoercionDriver extends GuiContainerBase<TileCoercionDriver> impl
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawElectricity(8, 115, (float) host.getFortronTank().getFluidAmount() / host.getMaxEnergyStored());
 	}

@@ -21,19 +21,23 @@ public class ChemicalBoilerRecipe {
 		this.hexaFluorideGenerated = hexaFluorideGenerated;
 	}
 
-	public int getWaterUse() {
+	public int getWaterUse()
+	{
 		return waterRequired;
 	}
 
-	public Item getInput() {
+	public Item getInput()
+	{
 		return inputItem;
 	}
 
-	public int getHexafluorideGenerated() {
+	public int getHexafluorideGenerated()
+	{
 		return hexaFluorideGenerated;
 	}
 
-	public String getOreDictName() {
+	public String getOreDictName()
+	{
 		return oreDictName;
 	}
 }

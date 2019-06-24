@@ -21,21 +21,25 @@ import physica.nuclear.common.NuclearItemRegister;
 public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 
 	@Override
-	public String getRecipeName() {
+	public String getRecipeName()
+	{
 		return "Particle Accelerator";
 	}
 
-	public String getRecipeID() {
+	public String getRecipeID()
+	{
 		return "Physica.ParticleAccelerator";
 	}
 
 	@Override
-	public Class<GuiParticleAccelerator> getGuiClass() {
+	public Class<GuiParticleAccelerator> getGuiClass()
+	{
 		return GuiParticleAccelerator.class;
 	}
 
 	@Override
-	public void drawBackground(int i) {
+	public void drawBackground(int i)
+	{
 		recipe theRecipe = (recipe) arecipes.get(i);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -52,7 +56,8 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadCraftingRecipes(String outputId, Object... results) {
+	public void loadCraftingRecipes(String outputId, Object... results)
+	{
 		if (outputId.equals("item") && results[0] instanceof ItemStack) {
 			if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemAntimatterCell125Milligram) {
 				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125,
@@ -65,7 +70,8 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadUsageRecipes(String inputId, Object... ingredients) {
+	public void loadUsageRecipes(String inputId, Object... ingredients)
+	{
 		if (inputId.equals("item") && ingredients[0] instanceof ItemStack) {
 			if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyElectromagneticCell) {
 				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125,
@@ -78,7 +84,8 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public int recipiesPerPage() {
+	public int recipiesPerPage()
+	{
 		return 2;
 	}
 
@@ -91,12 +98,14 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 		String text;
 
 		@Override
-		public PositionedStack getResult() {
+		public PositionedStack getResult()
+		{
 			return new PositionedStack(itemOutput, 138, 40);
 		}
 
 		@Override
-		public PositionedStack getOtherStack() {
+		public PositionedStack getOtherStack()
+		{
 			return getCycledIngredients(cycleticks / 20, other).get(0);
 		}
 
@@ -114,7 +123,8 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 		}
 
 		@Override
-		public PositionedStack getIngredient() {
+		public PositionedStack getIngredient()
+		{
 			return new PositionedStack(itemInput, 118, 40);
 		}
 	}

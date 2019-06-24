@@ -23,19 +23,22 @@ public class PotionRadiation extends Potion {
 	}
 
 	@Override
-	public Potion setIconIndex(int par1, int par2) {
+	public Potion setIconIndex(int par1, int par2)
+	{
 		super.setIconIndex(par1, par2);
 		return this;
 	}
 
 	@Override
-	protected Potion setEffectiveness(double par1) {
+	protected Potion setEffectiveness(double par1)
+	{
 		super.setEffectiveness(par1);
 		return this;
 	}
 
 	@Override
-	public void performEffect(EntityLivingBase par1EntityLiving, int amplifier) {
+	public void performEffect(EntityLivingBase par1EntityLiving, int amplifier)
+	{
 		if (par1EntityLiving.worldObj.rand.nextFloat() <= (amplifier + 1) / 10f && par1EntityLiving.worldObj.rand.nextFloat() > 0.8 - amplifier * 0.08D) {
 			par1EntityLiving.attackEntityFrom(DamageSourceRadiation.INSTANCE, amplifier + 1);
 			if (par1EntityLiving instanceof EntityPlayer) {
@@ -45,7 +48,8 @@ public class PotionRadiation extends Potion {
 	}
 
 	@Override
-	public boolean isReady(int duration, int amplifier) {
+	public boolean isReady(int duration, int amplifier)
+	{
 		return true;
 	}
 }

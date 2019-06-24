@@ -34,18 +34,21 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileFortronFieldConstructor();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "PEP", "EDE", "PEP", 'E', "circuitElite", 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()),
 				'D', Blocks.diamond_block);
 	}
 
 	@Override
-	public boolean canWrench(World worldObj, int x, int y, int z) {
+	public boolean canWrench(World worldObj, int x, int y, int z)
+	{
 		TileEntity tile = worldObj.getTileEntity(x, y, z);
 		if (tile instanceof TileFortronFieldConstructor) {
 			TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) tile;
@@ -57,7 +60,8 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		if (!world.isRemote) {
 			ItemStack itemStack = player.getCurrentEquippedItem();
 			if (itemStack == null) {
@@ -143,7 +147,8 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+	{
 		if (!world.isRemote) {
 			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof TileFortronFieldConstructor) {
@@ -154,7 +159,8 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Forcefield;
 	}
 }

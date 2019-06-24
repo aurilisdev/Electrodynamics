@@ -114,7 +114,8 @@ public class Point3d extends Tuple3d implements java.io.Serializable {
 	 *            the other point
 	 * @return the square of the distance
 	 */
-	public final double distanceSquared(Point3d p1) {
+	public final double distanceSquared(Point3d p1)
+	{
 		double dx, dy, dz;
 
 		dx = x - p1.x;
@@ -130,7 +131,8 @@ public class Point3d extends Tuple3d implements java.io.Serializable {
 	 *            the other point
 	 * @return the distance
 	 */
-	public final double distance(Point3d p1) {
+	public final double distance(Point3d p1)
+	{
 		double dx, dy, dz;
 
 		dx = x - p1.x;
@@ -148,7 +150,8 @@ public class Point3d extends Tuple3d implements java.io.Serializable {
 	 *            the other point
 	 * @return the L-1 distance
 	 */
-	public final double distanceL1(Point3d p1) {
+	public final double distanceL1(Point3d p1)
+	{
 		return Math.abs(x - p1.x) + Math.abs(y - p1.y) +
 				Math.abs(z - p1.z);
 	}
@@ -162,7 +165,8 @@ public class Point3d extends Tuple3d implements java.io.Serializable {
 	 *            the other point
 	 * @return the L-infinite distance
 	 */
-	public final double distanceLinf(Point3d p1) {
+	public final double distanceLinf(Point3d p1)
+	{
 		double tmp;
 		tmp = Math.max(Math.abs(x - p1.x), Math.abs(y - p1.y));
 
@@ -176,7 +180,8 @@ public class Point3d extends Tuple3d implements java.io.Serializable {
 	 * @param p1
 	 *            the source Point4d, which is not modified
 	 */
-	public final void project(Point4d p1) {
+	public final void project(Point4d p1)
+	{
 		double oneOw;
 
 		oneOw = 1 / p1.w;

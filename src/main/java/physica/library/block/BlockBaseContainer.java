@@ -23,7 +23,8 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 		ItemStack item = player.getCurrentEquippedItem();
 		if (WrenchEventHandler.canWrench(item, x, y, z, player)) {
@@ -41,12 +42,14 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 		return super.onBlockActivated(world, x, y, z, player, side, xHit, yHit, zHit);
 	}
 
-	public Object getModInstance() {
+	public Object getModInstance()
+	{
 		return Physica.INSTANCE;
 	}
 
 	@Override
-	public void breakBlock(World worldObj, int x, int y, int z, Block block, int meta) {
+	public void breakBlock(World worldObj, int x, int y, int z, Block block, int meta)
+	{
 		TileEntity tile = worldObj.getTileEntity(x, y, z);
 		if (tile instanceof IInventory) {
 			IInventory inv = (IInventory) tile;
@@ -78,7 +81,8 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 		super.breakBlock(worldObj, x, y, z, block, meta);
 	}
 
-	public boolean canWrench(World worldObj, int x, int y, int z) {
+	public boolean canWrench(World worldObj, int x, int y, int z)
+	{
 		return true;
 	}
 }

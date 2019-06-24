@@ -25,21 +25,25 @@ public class BlockMeltedReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+	{
 		return new ArrayList<>();
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileMeltedReactor();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 	}
 }

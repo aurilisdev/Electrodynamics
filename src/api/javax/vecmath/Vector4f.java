@@ -135,7 +135,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 *
 	 * @since vecmath 1.2
 	 */
-	public final void set(Tuple3f t1) {
+	public final void set(Tuple3f t1)
+	{
 		x = t1.x;
 		y = t1.y;
 		z = t1.z;
@@ -147,7 +148,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 *
 	 * @return the length of this vector as a float
 	 */
-	public final float length() {
+	public final float length()
+	{
 		return (float) Math.sqrt(x * x + y * y +
 				z * z + w * w);
 	}
@@ -157,7 +159,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 *
 	 * @return the squared length of this vector as a float
 	 */
-	public final float lengthSquared() {
+	public final float lengthSquared()
+	{
 		return x * x + y * y +
 				z * z + w * w;
 	}
@@ -169,7 +172,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 *            the other vector
 	 * @return the dot product of this vector and v1
 	 */
-	public final float dot(Vector4f v1) {
+	public final float dot(Vector4f v1)
+	{
 		return x * v1.x + y * v1.y + z * v1.z + w * v1.w;
 	}
 
@@ -179,7 +183,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 * @param v1
 	 *            the un-normalized vector
 	 */
-	public final void normalize(Vector4f v1) {
+	public final void normalize(Vector4f v1)
+	{
 		float norm;
 
 		norm = (float) (1.0 / Math.sqrt(v1.x * v1.x + v1.y * v1.y +
@@ -193,7 +198,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	/**
 	 * Normalizes this vector in place.
 	 */
-	public final void normalize() {
+	public final void normalize()
+	{
 		float norm;
 
 		norm = (float) (1.0 / Math.sqrt(x * x + y * y +
@@ -213,7 +219,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 *            the other vector
 	 * @return the angle in radians in the range [0,PI]
 	 */
-	public final float angle(Vector4f v1) {
+	public final float angle(Vector4f v1)
+	{
 		double vDot = dot(v1) / (length() * v1.length());
 		if (vDot < -1.0) {
 			vDot = -1.0;

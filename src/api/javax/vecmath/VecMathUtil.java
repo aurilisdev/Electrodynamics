@@ -38,12 +38,14 @@ class VecMathUtil {
 	private VecMathUtil() {
 	}
 
-	static final long hashLongBits(long hash, long l) {
+	static final long hashLongBits(long hash, long l)
+	{
 		hash *= 31L;
 		return hash + l;
 	}
 
-	static final long hashFloatBits(long hash, float f) {
+	static final long hashFloatBits(long hash, float f)
+	{
 		hash *= 31L;
 		// Treat 0.0d and -0.0d the same (all zero bits)
 		if (f == 0.0f) {
@@ -53,7 +55,8 @@ class VecMathUtil {
 		return hash + Float.floatToIntBits(f);
 	}
 
-	static final long hashDoubleBits(long hash, double d) {
+	static final long hashDoubleBits(long hash, double d)
+	{
 		hash *= 31L;
 		// Treat 0.0d and -0.0d the same (all zero bits)
 		if (d == 0.0d) {
@@ -66,7 +69,8 @@ class VecMathUtil {
 	/**
 	 * Return an integer hash from a long by mixing it with itself.
 	 */
-	static final int hashFinish(long hash) {
+	static final int hashFinish(long hash)
+	{
 		return (int) (hash ^ hash >> 32);
 	}
 }

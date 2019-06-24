@@ -20,27 +20,32 @@ public abstract class BlockBaseContainerModelled extends BlockBaseContainer impl
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public final void registerBlockIcons(IIconRegister reg) {
+	public final void registerBlockIcons(IIconRegister reg)
+	{
 		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "siren");
 	}
 
 	@Override
-	public final boolean renderAsNormalBlock() {
+	public final boolean renderAsNormalBlock()
+	{
 		return false;
 	}
 
 	@Override
-	public final int getRenderType() {
+	public final int getRenderType()
+	{
 		return -1;
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube()
+	{
 		return false;
 	}
 
 	@Override
-	public final boolean isNormalCube() {
+	public final boolean isNormalCube()
+	{
 		return false;
 	}
 }

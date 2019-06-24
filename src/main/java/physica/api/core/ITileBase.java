@@ -24,42 +24,52 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 	int DESC_PACKET_ID = 0;
 	int GUI_PACKET_ID = 1;
 
-	default TileEntity This() {
+	default TileEntity This()
+	{
 		return (TileEntity) this;
 	}
 
-	default boolean isClient() {
+	default boolean isClient()
+	{
 		return This().getWorldObj() != null && This().getWorldObj().isRemote;
 	}
 
-	default boolean isServer() {
+	default boolean isServer()
+	{
 		return This().getWorldObj() != null && !This().getWorldObj().isRemote;
 	}
 
-	default void onFirstUpdate() {
+	default void onFirstUpdate()
+	{
 	}
 
-	default int getGuiSyncRate() {
+	default int getGuiSyncRate()
+	{
 		return 3;
 	}
 
-	default int getSyncRate() {
+	default int getSyncRate()
+	{
 		return 20;
 	}
 
-	default BlockLocation getLocation() {
+	default BlockLocation getLocation()
+	{
 		return new BlockLocation(This().xCoord, This().yCoord, This().zCoord);
 	}
 
-	default boolean shouldSendGuiPacket(EntityPlayerMP playerMP) {
+	default boolean shouldSendGuiPacket(EntityPlayerMP playerMP)
+	{
 		return playerMP.isEntityAlive() && playerMP.openContainer != null;
 	}
 
-	default boolean isPoweredByRedstone() {
+	default boolean isPoweredByRedstone()
+	{
 		return This().getWorldObj().isBlockIndirectlyGettingPowered(This().xCoord, This().yCoord, This().zCoord);
 	}
 
-	default int handleUpdate(int ticks) {
+	default int handleUpdate(int ticks)
+	{
 		if (ticks == 0) {
 			onFirstUpdate();
 		}
@@ -89,20 +99,23 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 		return ticks;
 	}
 
-	default void handleWriteToNBT(NBTTagCompound nbt) {
+	default void handleWriteToNBT(NBTTagCompound nbt)
+	{
 		if (isRotateAble()) {
 			nbt.setInteger("facing", getFacing().ordinal());
 		}
 	}
 
-	default void handleReadFromNBT(NBTTagCompound nbt) {
+	default void handleReadFromNBT(NBTTagCompound nbt)
+	{
 		if (isRotateAble()) {
 			setFacing(ForgeDirection.getOrientation(nbt.getInteger("facing")));
 		}
 	}
 
 	@Override
-	default boolean read(ByteBuf buf, int id, EntityPlayer player, IPacket type) {
+	default boolean read(ByteBuf buf, int id, EntityPlayer player, IPacket type)
+	{
 		if (isClient()) {
 			if (id == DESC_PACKET_ID) {
 				readSynchronizationPacket(buf, player);
@@ -118,10 +131,12 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 		return false;
 	}
 
-	default void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type) {
+	default void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
+	{
 	}
 
-	default void sendDescPacket() {
+	default void sendDescPacket()
+	{
 		if (isServer()) {
 			PacketTile packetTile = new PacketTile("descSync", DESC_PACKET_ID, This());
 			List<Object> list = new ArrayList<>();
@@ -132,25 +147,30 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 		}
 	}
 
-	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		if (isRotateAble()) {
 			setFacing(ForgeDirection.getOrientation(buf.readInt()));
 		}
 	}
 
-	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 	}
 
-	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		if (isRotateAble()) {
 			dataList.add(getFacing().ordinal());
 		}
 	}
 
-	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 	}
 
-	default Set<TileEntity> getNearbyTiles(int radius) {
+	default Set<TileEntity> getNearbyTiles(int radius)
+	{
 		Set<TileEntity> tiles = new HashSet<>();
 		for (int i = -radius; i <= radius; i++) {
 			for (int j = -radius; j <= radius; j++) {
@@ -166,15 +186,18 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 	}
 
 	@Override
-	default ForgeDirection getFacing() {
+	default ForgeDirection getFacing()
+	{
 		return ForgeDirection.UNKNOWN;
 	}
 
 	@Override
-	default void setFacing(ForgeDirection facing) {
+	default void setFacing(ForgeDirection facing)
+	{
 	}
 
-	default boolean isRotateAble() {
+	default boolean isRotateAble()
+	{
 		return false;
 	}
 

@@ -38,7 +38,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	protected int antimatterAmount = 0;
 
 	@Override
-	public void onChunkUnload() {
+	public void onChunkUnload()
+	{
 		if (particle != null) {
 			particle.setDead();
 			particle = null;
@@ -48,7 +49,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		ItemStack stackMatter = getStackInSlot(SLOT_INPUTMATTER);
 		ItemStack stackEmptyCell = getStackInSlot(SLOT_INPUTCELLS);
@@ -117,7 +119,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		}
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[])
+	{
 		double speed = 0.001;
 		double travelled = 0.5f;
 		int ticks = 0;
@@ -143,7 +146,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateClient(int ticks) {
+	public void updateClient(int ticks)
+	{
 		super.updateClient(ticks);
 		if (particle != null) {
 			if (particle.isDead) {
@@ -152,7 +156,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		}
 	}
 
-	public AcceleratorStatus getAcceleratorStatus() {
+	public AcceleratorStatus getAcceleratorStatus()
+	{
 		if (particle != null) {
 			if (hasEnoughEnergy() && isPoweredByRedstone()) {
 				if (particle.isDead) {
@@ -182,7 +187,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public void invalidate() {
+	public void invalidate()
+	{
 		super.invalidate();
 		if (particle != null) {
 			particle.setDead();
@@ -190,21 +196,24 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 		super.writeToNBT(nbt);
 		nbt.setInteger("currentSessionUse", currentSessionUse);
 		nbt.setInteger("antimatterAmount", antimatterAmount);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 		super.readFromNBT(nbt);
 		currentSessionUse = nbt.getInteger("currentSessionUse");
 		antimatterAmount = nbt.getInteger("antimatterAmount");
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(currentSessionUse);
 		dataList.add(antimatterAmount);
@@ -212,7 +221,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		currentSessionUse = buf.readInt();
 		antimatterAmount = buf.readInt();
@@ -220,12 +230,14 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 3;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return stack == null || slot == SLOT_OUTPUT ? false
 				: slot == SLOT_INPUTMATTER && stack.isStackable() ? true
 						: slot == SLOT_INPUTCELLS && (stack.getItem() == NuclearItemRegister.itemEmptyElectromagneticCell || stack.getItem() == NuclearItemRegister.itemEmptyQuantumCell);
@@ -233,12 +245,14 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiParticleAccelerator(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerParticleAccelerator(player, this);
 	}
 
@@ -247,54 +261,65 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return getEnergyUsage() * 5;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return !from.equals(getFacing().getOpposite());
 	}
 
 	@Override
-	public int getEnergyUsage() {
+	public int getEnergyUsage()
+	{
 		return 14000;
 	}
 
-	public float getParticleVelocity() {
+	public float getParticleVelocity()
+	{
 		return (float) velocity;
 	}
 
-	public double getSessionUse() {
+	public double getSessionUse()
+	{
 		return currentSessionUse;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN
 				: side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP
 						: ACCESSIBLE_SLOTS_MIDDLE_SIDES;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return slot == SLOT_OUTPUT;
 	}
 
-	public int getAntimatterAmount() {
+	public int getAntimatterAmount()
+	{
 		return antimatterAmount;
 	}
 
-	public Entity getParticle() {
+	public Entity getParticle()
+	{
 		return particle;
 	}
 
-	public void setParticle(EntityParticle particle) {
+	public void setParticle(EntityParticle particle)
+	{
 		this.particle = particle;
 	}
 

@@ -33,7 +33,8 @@ public class OreGenReplace extends AbstractOreGenerator {
 	}
 
 	@Override
-	public void generate(World world, Random random, int varX, int varZ) {
+	public void generate(World world, Random random, int varX, int varZ)
+	{
 		int blocksPlaced = 0;
 		if (settings.amountPerChunk > 0) {
 			while (blocksPlaced < settings.amountPerChunk) {
@@ -49,7 +50,8 @@ public class OreGenReplace extends AbstractOreGenerator {
 		}
 	}
 
-	public int generateBranch(World world, Random rand, int chunkCornerX, int chunkCornerZ, int varX, int varY, int varZ) {
+	public int generateBranch(World world, Random rand, int chunkCornerX, int chunkCornerZ, int varX, int varY, int varZ)
+	{
 		int blocksPlaced = 0;
 		Set<Vector3d> pathed = new HashSet<>();
 		Queue<Vector3d> toPath = new LinkedList<>();
@@ -97,7 +99,8 @@ public class OreGenReplace extends AbstractOreGenerator {
 	}
 
 	@Override
-	public boolean isOreGeneratedInWorld(World world, IChunkProvider chunkGenerator) {
+	public boolean isOreGeneratedInWorld(World world, IChunkProvider chunkGenerator)
+	{
 		return chunkGenerator instanceof ChunkProviderGenerate ? !ignoreSurface
 				: chunkGenerator instanceof ChunkProviderHell ? !ignoreNether : chunkGenerator instanceof ChunkProviderEnd ? !ignoreEnd : false;
 	}

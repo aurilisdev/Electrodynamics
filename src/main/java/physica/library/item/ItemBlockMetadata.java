@@ -13,12 +13,14 @@ public class ItemBlockMetadata extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(final ItemStack itemStack) {
+	public String getUnlocalizedName(final ItemStack itemStack)
+	{
 		return super.getUnlocalizedName(itemStack) + "." + itemStack.getItemDamage();
 	}
 
 	@Override
-	public int getMetadata(int metadata) {
+	public int getMetadata(int metadata)
+	{
 		return metadata;
 	}
 }

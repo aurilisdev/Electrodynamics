@@ -17,17 +17,20 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 	protected static final ResourceLocation model_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "copperCable.png");
 
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+	public boolean handleRenderType(ItemStack item, ItemRenderType type)
+	{
 		return true;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+	{
 		return true;
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+	{
 		GL11.glPushMatrix();
 		GL11.glScalef(1.25f, 1.25f, 1.25f);
 		if (type.equals(ItemRenderType.INVENTORY)) {
@@ -47,7 +50,8 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 		GL11.glPopMatrix();
 	}
 
-	public void render() {
+	public void render()
+	{
 		TileRenderCopperCable.drawCore();
 	}
 }

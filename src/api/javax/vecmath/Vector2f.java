@@ -111,7 +111,8 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	 * @param v1
 	 *            the other vector
 	 */
-	public final float dot(Vector2f v1) {
+	public final float dot(Vector2f v1)
+	{
 		return x * v1.x + y * v1.y;
 	}
 
@@ -120,7 +121,8 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	 *
 	 * @return the length of this vector
 	 */
-	public final float length() {
+	public final float length()
+	{
 		return (float) Math.sqrt(x * x + y * y);
 	}
 
@@ -129,7 +131,8 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	 *
 	 * @return the squared length of this vector
 	 */
-	public final float lengthSquared() {
+	public final float lengthSquared()
+	{
 		return x * x + y * y;
 	}
 
@@ -139,7 +142,8 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	 * @param v1
 	 *            the un-normalized vector
 	 */
-	public final void normalize(Vector2f v1) {
+	public final void normalize(Vector2f v1)
+	{
 		float norm;
 
 		norm = (float) (1.0 / Math.sqrt(v1.x * v1.x + v1.y * v1.y));
@@ -150,7 +154,8 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	/**
 	 * Normalizes this vector in place.
 	 */
-	public final void normalize() {
+	public final void normalize()
+	{
 		float norm;
 
 		norm = (float) (1.0 / Math.sqrt(x * x + y * y));
@@ -166,7 +171,8 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	 *            the other vector
 	 * @return the angle in radians in the range [0,PI]
 	 */
-	public final float angle(Vector2f v1) {
+	public final float angle(Vector2f v1)
+	{
 		double vDot = dot(v1) / (length() * v1.length());
 		if (vDot < -1.0) {
 			vDot = -1.0;

@@ -16,7 +16,8 @@ import net.minecraft.util.ResourceLocation;
 public class RenderParticle extends Render {
 
 	@Override
-	public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks)
+	{
 		Tessellator tessellator = Tessellator.instance;
 
 		float age = entity.ticksExisted;
@@ -83,7 +84,8 @@ public class RenderParticle extends Render {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity)
+	{
 		return null;
 	}
 }

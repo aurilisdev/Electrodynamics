@@ -24,7 +24,8 @@ public class BlockRadioactiveDirt extends Block {
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
 		if (!world.isRemote) {
 			if (world.rand.nextFloat() < 0.45f) {
 				RadiationSystem.spreadRadioactiveBlock(world, x, y, z);
@@ -33,7 +34,8 @@ public class BlockRadioactiveDirt extends Block {
 	}
 
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
+	public void onEntityWalking(World world, int x, int y, int z, Entity ent)
+	{
 		if (ent instanceof EntityLivingBase) {
 			int meta = world.getBlockMetadata(x, y, z);
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 7.5f, meta, 1, 1);

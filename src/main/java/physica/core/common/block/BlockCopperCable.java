@@ -40,18 +40,21 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6), "SIS", "SIS", "SIS", 'S', "ingotSteel", 'I', "ingotCopper");
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	{
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
 		float tempMinX = TileRenderCopperCable.pixelElevenTwo;
 		float tempMinY = TileRenderCopperCable.pixelElevenTwo;
 		float tempMinZ = TileRenderCopperCable.pixelElevenTwo;
@@ -89,43 +92,51 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		return true;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister reg) {
+	public void registerBlockIcons(IIconRegister reg)
+	{
 		blockIcon = Blocks.iron_block.getIcon(0, 0);
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
+	public boolean hasTileEntity(int metadata)
+	{
 		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createNewTileEntity(World world, int metadata)
+	{
 		return new TileCopperCable();
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean renderAsNormalBlock()
+	{
 		return false;
 	}
 
 	@Override
-	public int getRenderType() {
+	public int getRenderType()
+	{
 		return -1;
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube()
+	{
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube() {
+	public boolean isNormalCube()
+	{
 		return false;
 	}
 

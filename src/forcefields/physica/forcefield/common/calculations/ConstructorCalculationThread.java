@@ -22,7 +22,8 @@ public class ConstructorCalculationThread extends Thread {
 	}
 
 	@Override
-	public void run() {
+	public void run()
+	{
 		super.run();
 		if (!constructor.isInvalid()) {
 			constructor.setCalculating(true);
@@ -61,7 +62,8 @@ public class ConstructorCalculationThread extends Thread {
 		}
 	}
 
-	private void calculateCube(boolean interior, int x, int y, int z) {
+	private void calculateCube(boolean interior, int x, int y, int z)
+	{
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
 		int xRadiusPos = (int) (x + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1]))
 				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
@@ -90,7 +92,8 @@ public class ConstructorCalculationThread extends Thread {
 		}
 	}
 
-	private void calculateSphere(boolean interior, int x, int y, int z, boolean semi) {
+	private void calculateSphere(boolean interior, int x, int y, int z, boolean semi)
+	{
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
 		int radius = Math.min(64, constructor.getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0],
 				TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
@@ -113,7 +116,8 @@ public class ConstructorCalculationThread extends Thread {
 		}
 	}
 
-	private void calculatePyramid(boolean interior, int x, int y, int z) {
+	private void calculatePyramid(boolean interior, int x, int y, int z)
+	{
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
 		double xPos = x + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1]))
 				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);

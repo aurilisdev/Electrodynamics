@@ -38,7 +38,8 @@ public class NuclearItemRegister implements IContent {
 	public static ItemHazmatArmor itemHazmatBoots;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		GameRegistry.registerItem(itemAntimatterCell125Milligram = (ItemInformationHolder) ((ItemUpdateable) new ItemInformationHolder("antimatterCell100Milligram", "125 Milligrams")
 				.setTextureName(CoreReferences.PREFIX + "antimatterCell")).setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemAntimatterCell125Milligram.getUnlocalizedName());

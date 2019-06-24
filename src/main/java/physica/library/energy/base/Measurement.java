@@ -13,14 +13,16 @@ public enum Measurement {
 		this.value = value;
 	}
 
-	public String getName(boolean isSymbol) {
+	public String getName(boolean isSymbol)
+	{
 		if (isSymbol) {
 			return symbol;
 		}
 		return name;
 	}
 
-	public double process(double value) {
+	public double process(double value)
+	{
 		return value / this.value;
 	}
 }

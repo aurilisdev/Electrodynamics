@@ -22,17 +22,20 @@ public class BlockInterdictionMatrix extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileInterdictionMatrix();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "BEB", "ESE", "BEB", 'B', "phyBattery", 'E', "circuitElite", 'S', ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"));
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Forcefield;
 	}
 }

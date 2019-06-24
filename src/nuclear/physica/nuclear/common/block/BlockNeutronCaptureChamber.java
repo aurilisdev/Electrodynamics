@@ -30,13 +30,15 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	{
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
 		float minX = 0;
 		float minY = 0;
 		float minZ = 0;
@@ -83,7 +85,8 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
+	{
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (dir.ordinal() > 1) {
@@ -95,23 +98,27 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+	{
 		ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
 		return side > 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileNeutronCaptureChamber();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "SSS", "SGC", "SSS", 'S', "plateSteel", 'G', new ItemStack(Blocks.glass), 'C', CoreItemRegister.itemEmptyCell);
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 

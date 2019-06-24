@@ -8,7 +8,8 @@ import physica.library.tile.TileBase;
 public class TileSiren extends TileBase {
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		if (!worldObj.isRemote && worldObj.getWorldTime() % 30 == 0) {
 			if (worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0) {
 				float volume = 2.5F;

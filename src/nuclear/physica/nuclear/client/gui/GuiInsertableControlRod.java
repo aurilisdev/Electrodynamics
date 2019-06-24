@@ -17,13 +17,15 @@ public class GuiInsertableControlRod extends GuiContainerBase<TileInsertableCont
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Insertion: " + host.getInsertion() + "%", 50, 59);
 	}
 
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		addButton(new GuiButton(1, width / 2 - 70, height / 2, "Raise 5%".length() * 8, 20, "Raise 5%"));
 		addButton(new GuiButton(2, width / 2 - 70 + "Raise 5%".length() * 8 + 10, height / 2, "Lower 5%".length() * 8, 20, "Lower 5%"));
@@ -31,7 +33,8 @@ public class GuiInsertableControlRod extends GuiContainerBase<TileInsertableCont
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(GuiButton button)
+	{
 		super.actionPerformed(button);
 		host.actionPerformed(button.id == 1 ? -5 : button.id == 2 ? 5 : 100, Side.CLIENT);
 	}

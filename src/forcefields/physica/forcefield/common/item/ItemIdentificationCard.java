@@ -25,7 +25,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase hitter) {
+	public boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase hitter)
+	{
 		if (target instanceof EntityPlayer) {
 			setUsername(itemStack, target.getCommandSenderName());
 			setUniqueId(itemStack, target.getUniqueID());
@@ -38,7 +39,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean b) {
+	public void addInformation(ItemStack itemStack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean b)
+	{
 		if (getUsername(itemStack) != null && !getUsername(itemStack).isEmpty()) {
 			info.add("Username: " + getUsername(itemStack));
 		} else {
@@ -61,7 +63,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
+	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
+	{
 		setUsername(itemStack, entityPlayer.getCommandSenderName());
 		setUniqueId(itemStack, entityPlayer.getUniqueID());
 		if (!world.isRemote) {
@@ -70,25 +73,29 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 		return itemStack;
 	}
 
-	public void notifyIdentificationChange(EntityPlayer sender, String username) {
+	public void notifyIdentificationChange(EntityPlayer sender, String username)
+	{
 		sender.addChatMessage(new ChatComponentText("Identification card linked to player: " + username));
 	}
 
 	@Override
-	public void setUsername(ItemStack itemStack, String username) {
+	public void setUsername(ItemStack itemStack, String username)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
 		nbtTagCompound.setString("username", username);
 	}
 
 	@Override
-	public void setUniqueId(ItemStack itemStack, UUID uniqueId) {
+	public void setUniqueId(ItemStack itemStack, UUID uniqueId)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
 		nbtTagCompound.setLong("uuid_least", uniqueId.getLeastSignificantBits());
 		nbtTagCompound.setLong("uuid_most", uniqueId.getMostSignificantBits());
 	}
 
 	@Override
-	public String getUsername(ItemStack itemStack) {
+	public String getUsername(ItemStack itemStack)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
 		if (nbtTagCompound != null) {
 			if (!nbtTagCompound.getString("username").isEmpty()) {
@@ -99,7 +106,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public UUID getUniqueId(ItemStack itemStack) {
+	public UUID getUniqueId(ItemStack itemStack)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
 		if (nbtTagCompound != null) {
 			long least = nbtTagCompound.getLong("uuid_least");
@@ -112,7 +120,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean hasPermission(ItemStack itemStack, Permission permission) {
+	public boolean hasPermission(ItemStack itemStack, Permission permission)
+	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
 		if (permission == null || nbt == null) {
 			return true;
@@ -121,7 +130,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean addPermission(ItemStack itemStack, Permission permission) {
+	public boolean addPermission(ItemStack itemStack, Permission permission)
+	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
 		if (permission == null || nbt == null) {
 			return false;
@@ -131,7 +141,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean removePermission(ItemStack itemStack, Permission permission) {
+	public boolean removePermission(ItemStack itemStack, Permission permission)
+	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
 		if (permission == null || nbt == null) {
 			return false;
@@ -140,7 +151,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 		return false;
 	}
 
-	public NBTTagCompound getSafeTagCompound(ItemStack itemStack) {
+	public NBTTagCompound getSafeTagCompound(ItemStack itemStack)
+	{
 		if (itemStack != null) {
 			if (itemStack.getTagCompound() == null) {
 				itemStack.setTagCompound(new NBTTagCompound());

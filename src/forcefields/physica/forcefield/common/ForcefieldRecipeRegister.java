@@ -11,7 +11,8 @@ import physica.core.common.CoreBlockRegister;
 public class ForcefieldRecipeRegister implements IContent, IBaseUtilities {
 
 	@Override
-	public void loadComplete() {
+	public void loadComplete()
+	{
 		// Focus Matrix
 		addRecipe(new ItemStack(ForcefieldItemRegister.itemFocusMatrix, 4), "RMR", "MDM", "RMR", 'M', "plateSteel", 'D', Items.diamond, 'R', Items.redstone);
 

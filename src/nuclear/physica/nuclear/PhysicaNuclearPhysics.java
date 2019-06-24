@@ -47,7 +47,8 @@ public class PhysicaNuclearPhysics {
 	public static ConfigNuclearPhysics config;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event)
+	{
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + NuclearReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
@@ -84,17 +85,20 @@ public class PhysicaNuclearPhysics {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event)
+	{
 		proxyLoader.init();
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event)
+	{
 		proxyLoader.postInit();
 	}
 
 	@EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event) {
+	public void loadComplete(FMLLoadCompleteEvent event)
+	{
 		proxyLoader.loadComplete();
 		IRecipeRegister.InitializeSide(RecipeSide.Nuclear);
 	}

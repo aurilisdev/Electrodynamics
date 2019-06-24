@@ -36,7 +36,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	public int furnaceCookTime;
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		furnaceBurnTime = tag.getShort("BurnTime");
 		furnaceCookTime = tag.getShort("CookTime");
@@ -44,19 +45,22 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		tag.setShort("BurnTime", (short) furnaceBurnTime);
 		tag.setShort("CookTime", (short) furnaceCookTime);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public int getCookProgressScaled(int scale) {
+	public int getCookProgressScaled(int scale)
+	{
 		return furnaceCookTime * scale / TOTAL_BURN_TIME;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public int getBurnTimeRemainingScaled(int scale) {
+	public int getBurnTimeRemainingScaled(int scale)
+	{
 		if (currentItemBurnTime == 0) {
 			currentItemBurnTime = TOTAL_BURN_TIME;
 		}
@@ -64,12 +68,14 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		return furnaceBurnTime * scale / currentItemBurnTime;
 	}
 
-	public boolean isBurning() {
+	public boolean isBurning()
+	{
 		return furnaceBurnTime > 0;
 	}
 
 	@Override
-	public void updateClient(int ticks) {
+	public void updateClient(int ticks)
+	{
 		super.updateClient(ticks);
 		if (isBurning()) {
 			if (worldObj.rand.nextFloat() < 0.25f) {
@@ -81,7 +87,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (furnaceBurnTime > 0) {
 			--furnaceBurnTime;
@@ -118,7 +125,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(furnaceBurnTime);
 		dataList.add(currentItemBurnTime);
@@ -126,7 +134,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readSynchronizationPacket(buf, player);
 		furnaceBurnTime = buf.readInt();
 		currentItemBurnTime = buf.readInt();
@@ -135,11 +144,13 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public int getSyncRate() {
+	public int getSyncRate()
+	{
 		return 10;
 	}
 
-	private boolean canSmelt() {
+	private boolean canSmelt()
+	{
 		ItemStack input = getStackInSlot(SLOT_INPUT);
 		if (input == null) {
 			return false;
@@ -160,7 +171,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		}
 	}
 
-	public void smeltItem() {
+	public void smeltItem()
+	{
 		if (canSmelt()) {
 			ItemStack input = getStackInSlot(SLOT_INPUT);
 			ItemStack recipe = input.getItem() == Items.iron_ingot ? new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2) : null;
@@ -179,38 +191,45 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return slot == 2 ? false : slot == 1 ? TileEntityFurnace.isItemFuel(stack) : stack != null && stack.getItem() == Items.iron_ingot;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return side == 0 ? ACCESSIBLE_SLOTS_DOWN : side == 1 ? ACCESSIBLE_SLOTS_TOP : ACCESSIBLE_SLOTS_SIDES;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side) {
+	public boolean canInsertItem(int slot, ItemStack item, int side)
+	{
 		return isItemValidForSlot(slot, item);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side) {
+	public boolean canExtractItem(int slot, ItemStack item, int side)
+	{
 		return side != 0 || slot != 1 || item.getItem() == Items.bucket;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 3;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiBlastFurnace(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerBlastFurnace(player, this);
 	}
 }

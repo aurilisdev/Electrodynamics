@@ -16,13 +16,15 @@ public class ItemUpdateUranium implements IItemUpdate {
 
 	protected float scale = 1;
 
-	public ItemUpdateUranium setScale(float scale) {
+	public ItemUpdateUranium setScale(float scale)
+	{
 		this.scale = scale;
 		return this;
 	}
 
 	@Override
-	public void onEntityItemUpdate(ItemStack stack, EntityItem entity) {
+	public void onEntityItemUpdate(ItemStack stack, EntityItem entity)
+	{
 		World world = entity.worldObj;
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
 			return;
@@ -42,7 +44,8 @@ public class ItemUpdateUranium implements IItemUpdate {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean p_77663_5_) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean p_77663_5_)
+	{
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
 			return;
 		}

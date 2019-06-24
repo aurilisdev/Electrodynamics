@@ -23,7 +23,8 @@ public class TileRenderFissionReactor extends TileRenderObjModel<TileFissionReac
 	}
 
 	@Override
-	public void renderTileAt(TileFissionReactor tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(TileFissionReactor tile, double x, double y, double z, float deltaFrame)
+	{
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.49, z + 0.5);
 		GL11.glScaled(0.0625, 0.0625, 0.0625);

@@ -24,7 +24,8 @@ import physica.library.client.render.ItemRenderObjModel;
 public class ForcefieldClientRegister implements IContent {
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		MinecraftForge.EVENT_BUS.register(this);
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCoercionDriver.class,
@@ -55,14 +56,16 @@ public class ForcefieldClientRegister implements IContent {
 	}
 
 	@SubscribeEvent
-	public void textureStitchEventPre(TextureStitchEvent.Pre event) {
+	public void textureStitchEventPre(TextureStitchEvent.Pre event)
+	{
 		if (event.map.getTextureType() == 0) {
 			ForcefieldFluidRegister.textureStitchEventPre(event);
 		}
 	}
 
 	@SubscribeEvent
-	public void textureStitchEventPost(TextureStitchEvent.Post event) {
+	public void textureStitchEventPost(TextureStitchEvent.Post event)
+	{
 		if (event.map.getTextureType() == 0) {
 			ForcefieldFluidRegister.textureStitchEventPost(event);
 		}

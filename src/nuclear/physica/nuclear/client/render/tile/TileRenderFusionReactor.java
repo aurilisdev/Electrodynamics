@@ -16,7 +16,8 @@ public class TileRenderFusionReactor extends TileRenderObjModel<TileFusionReacto
 	}
 
 	@Override
-	public void renderTileAt(TileFusionReactor tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(TileFusionReactor tile, double x, double y, double z, float deltaFrame)
+	{
 		super.renderTileAt(tile, x, y, z, deltaFrame);
 		if (Minecraft.getMinecraft().thePlayer.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord) <= 64) {
 			GL11.glPushMatrix();

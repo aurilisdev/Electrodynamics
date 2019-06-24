@@ -24,7 +24,8 @@ public class BlockFusionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "ECE", "CFC", "ECE",
 				'C', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()),
 				'F', NuclearBlockRegister.blockFissionReactor,
@@ -32,12 +33,14 @@ public class BlockFusionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		if (!world.isRemote) {
 			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof TileFusionReactor) {
@@ -79,7 +82,8 @@ public class BlockFusionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileFusionReactor();
 	}
 }

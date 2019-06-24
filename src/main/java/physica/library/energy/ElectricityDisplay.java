@@ -6,7 +6,8 @@ import physica.library.energy.base.Unit;
 
 public class ElectricityDisplay implements IBaseUtilities {
 
-	public static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort) {
+	public static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort)
+	{
 		String unitName = unit.name;
 		if (isShort) {
 			unitName = unit.symbol;
@@ -31,19 +32,23 @@ public class ElectricityDisplay implements IBaseUtilities {
 		return IBaseUtilities.roundPreciseStatic(value, decimalPlaces) + " " + unitName;
 	}
 
-	public static String getDisplay(double value, Unit unit) {
+	public static String getDisplay(double value, Unit unit)
+	{
 		return getDisplay(value, unit, 2, false);
 	}
 
-	public static String getDisplayShort(double value, Unit unit) {
+	public static String getDisplayShort(double value, Unit unit)
+	{
 		return getDisplay(value, unit, 2, true);
 	}
 
-	public static String getDisplayShort(double value, Unit unit, int decimalPlaces) {
+	public static String getDisplayShort(double value, Unit unit, int decimalPlaces)
+	{
 		return getDisplay(value, unit, decimalPlaces, true);
 	}
 
-	public static String getDisplaySimple(double value, Unit unit, int decimalPlaces) {
+	public static String getDisplaySimple(double value, Unit unit, int decimalPlaces)
+	{
 		if (value > 1.0D) {
 			if (decimalPlaces < 1) {
 				return (int) value + " " + unit.getPlural();

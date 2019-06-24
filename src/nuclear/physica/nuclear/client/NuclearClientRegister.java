@@ -42,7 +42,8 @@ import physica.nuclear.common.tile.TileTurbine;
 public class NuclearClientRegister implements IContent {
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		MinecraftForge.EVENT_BUS.register(this);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileQuantumAssembler.class, new TileRenderAssembler("assembler.obj", "assembler.png"));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockQuantumAssembler),
@@ -94,19 +95,22 @@ public class NuclearClientRegister implements IContent {
 	}
 
 	@Override
-	public void postInit() {
+	public void postInit()
+	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityParticle.class, new RenderParticle());
 	}
 
 	@SubscribeEvent
-	public void textureStitchEventPre(TextureStitchEvent.Pre event) {
+	public void textureStitchEventPre(TextureStitchEvent.Pre event)
+	{
 		if (event.map.getTextureType() == 0) {
 			NuclearFluidRegister.textureStitchEventPre(event);
 		}
 	}
 
 	@SubscribeEvent
-	public void textureStitchEventPost(TextureStitchEvent.Post event) {
+	public void textureStitchEventPost(TextureStitchEvent.Post event)
+	{
 		if (event.map.getTextureType() == 0) {
 			NuclearFluidRegister.textureStitchEventPost(event);
 		}

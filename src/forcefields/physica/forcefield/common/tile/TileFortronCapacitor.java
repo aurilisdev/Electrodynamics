@@ -37,24 +37,28 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	protected Set<ITileBase> fortronConnections = new HashSet<>();
 	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
 
-	public int getMaxFortron() {
+	public int getMaxFortron()
+	{
 		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3)) +
 				BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
 	}
 
-	public int getFortronTransferRate() {
+	public int getFortronTransferRate()
+	{
 		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))) / 2;
 	}
 
 	@Override
-	public void onFirstUpdate() {
+	public void onFirstUpdate()
+	{
 		invalidateConnections();
 		fortronConnections.clear();
 		findNearbyConnections(TileFortronCapacitor.class, TileCoercionDriver.class, TileFortronFieldConstructor.class, TileInterdictionMatrix.class);
 	}
 
 	@Override
-	public void updateCommon(int ticks) {
+	public void updateCommon(int ticks)
+	{
 		super.updateCommon(ticks);
 		fortronTank.setCapacity(getMaxFortron());
 		if (fortronTank.getCapacity() < fortronTank.getFluidAmount()) {
@@ -69,7 +73,8 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (ticks % 20 == 0) {
 			validateConnections();
@@ -83,28 +88,33 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	}
 
 	@Override
-	public FluidTank getFortronTank() {
+	public FluidTank getFortronTank()
+	{
 		return fortronTank;
 	}
 
 	@Override
-	public void invalidate() {
+	public void invalidate()
+	{
 		super.invalidate();
 		invalidateConnections();
 	}
 
 	@Override
-	public Set<ITileBase> getFortronConnections() {
+	public Set<ITileBase> getFortronConnections()
+	{
 		return fortronConnections;
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox()
+	{
 		return canSendBeam() ? super.getRenderBoundingBox().expand(5, 5, 5) : super.getRenderBoundingBox();
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return stack == null ? false
 				: stack.getItem() == null ? false : slot >= SLOT_MODULE1 && slot <= SLOT_MODULE3 ? stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule
 						: slot == SLOT_CARD ? stack.getItem() == ForcefieldItemRegister.itemFrequency : true;
@@ -112,12 +122,14 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	private int frequency;
 
 	@Override
-	public int getFrequency() {
+	public int getFrequency()
+	{
 		return frequency;
 	}
 
 	@Override
-	public void setFrequency(int freq) {
+	public void setFrequency(int freq)
+	{
 		int oldFrequency = frequency;
 		frequency = freq;
 		if (oldFrequency != freq) {
@@ -126,7 +138,8 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(isActivated);
 		dataList.add(frequency);
@@ -134,7 +147,8 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		isActivated = buf.readBoolean();
 		frequency = buf.readInt();
@@ -142,52 +156,61 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		tag.setInteger("frequency", frequency);
 		fortronTank.writeToNBT(tag);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		frequency = tag.getInteger("frequency");
 		fortronTank.readFromNBT(tag);
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
+	{
 		return ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 4;
 	}
 
 	@Override
-	public boolean isActivated() {
+	public boolean isActivated()
+	{
 		return isActivated;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiFortronCapacitor(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerFortronCapacitor(player, this);
 	}
 

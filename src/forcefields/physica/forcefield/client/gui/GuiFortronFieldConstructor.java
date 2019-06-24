@@ -22,13 +22,15 @@ public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFiel
 	}
 
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		addToolTip(new ToolTipTank(new Rectangle(8, 115, electricityMeterWidth, electricityMeterHeight), "gui.fortronFieldConstructor.fortron_tank", host.getFortronTank()));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Linked to: " + host.getFortronConnections().size(), 8, 30);
 		drawString("Status: " + (host.isActivated() ? "Active" : "Disabled"), 8, 20);
@@ -41,7 +43,8 @@ public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFiel
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawElectricity(8, 115, (float) host.getFortronTank().getFluidAmount() / host.getMaxFortron());
 		drawElectricity(8, 140, (float) (TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / TileFortronFieldConstructor.MAX_HEALTH_LOSS);

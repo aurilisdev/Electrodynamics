@@ -30,7 +30,8 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 	protected boolean goesDown = false;
 
 	@Override
-	public void renderTileAt(TileQuantumAssembler tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(TileQuantumAssembler tile, double x, double y, double z, float deltaFrame)
+	{
 		super.renderTileAt(tile, x, y, z, deltaFrame);
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y + 0.4, z + 0.5);

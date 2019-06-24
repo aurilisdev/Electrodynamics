@@ -29,12 +29,14 @@ public class BlockParticleAccelerator extends BlockBaseContainer implements IBas
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileParticleAccelerator();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "PCP", "CMC", "PCP", 'M', "motor", 'C', "circuitElite", 'P',
 				new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()));
 

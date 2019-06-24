@@ -24,7 +24,8 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 	public static final float texPixel = 1 / 32f;
 
 	@Override
-	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame) {
+	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame)
+	{
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -63,7 +64,8 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 	}
 
-	public static void drawConnection(ForgeDirection direction) {
+	public static void drawConnection(ForgeDirection direction)
+	{
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
 		if (direction == ForgeDirection.DOWN) {
 			GL11.glRotatef(180, 1, 0, 0);
@@ -118,7 +120,8 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 		GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
 	}
 
-	public static void drawCore() {
+	public static void drawCore()
+	{
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		float fiveTex = 5 * texPixel;

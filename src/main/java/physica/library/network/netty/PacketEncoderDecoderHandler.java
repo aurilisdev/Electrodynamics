@@ -22,12 +22,14 @@ public class PacketEncoderDecoderHandler extends FMLIndexedMessageToMessageCodec
 		addPacket(PacketTile.class);
 	}
 
-	public void addPacket(Class<? extends IPacket> clazz) {
+	public void addPacket(Class<? extends IPacket> clazz)
+	{
 		addDiscriminator(nextID++, clazz);
 	}
 
 	@Override
-	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket packet) {
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket packet)
+	{
 		try {
 			packet.decodeInto(ctx, source);
 		} catch (Exception e) {
@@ -40,7 +42,8 @@ public class PacketEncoderDecoderHandler extends FMLIndexedMessageToMessageCodec
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext ctx, IPacket packet, ByteBuf target) throws Exception {
+	public void encodeInto(ChannelHandlerContext ctx, IPacket packet, ByteBuf target) throws Exception
+	{
 		try {
 			packet.encodeInto(ctx, target);
 		} catch (Exception e) {

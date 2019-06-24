@@ -15,7 +15,8 @@ public class NuclearCustomRecipeRegister {
 	private Set<ChemicalBoilerRecipe> boilerRecipes = new HashSet<>();
 	private Set<ChemicalExtractorRecipe> extractorRecipes = new HashSet<>();
 
-	public static NuclearCustomRecipeRegister getInstance() {
+	public static NuclearCustomRecipeRegister getInstance()
+	{
 		if (instance == null) {
 			instance = new NuclearCustomRecipeRegister();
 		}
@@ -23,27 +24,33 @@ public class NuclearCustomRecipeRegister {
 		return instance;
 	}
 
-	public void addExtractorRecipe(int waterUse, Item input, ItemStack output) {
+	public void addExtractorRecipe(int waterUse, Item input, ItemStack output)
+	{
 		extractorRecipes.add(new ChemicalExtractorRecipe(waterUse, input, output));
 	}
 
-	public void addBoilerRecipe(int waterUse, Item input, int hexaProduced) {
+	public void addBoilerRecipe(int waterUse, Item input, int hexaProduced)
+	{
 		boilerRecipes.add(new ChemicalBoilerRecipe(waterUse, input, hexaProduced));
 	}
 
-	public void addExtractorRecipe(int waterUse, String input, ItemStack output) {
+	public void addExtractorRecipe(int waterUse, String input, ItemStack output)
+	{
 		extractorRecipes.add(new ChemicalExtractorRecipe(waterUse, output, input));
 	}
 
-	public void addBoilerRecipe(int waterUse, String input, int hexaProduced) {
+	public void addBoilerRecipe(int waterUse, String input, int hexaProduced)
+	{
 		boilerRecipes.add(new ChemicalBoilerRecipe(waterUse, input, hexaProduced));
 	}
 
-	public Set<ChemicalBoilerRecipe> getBoilerRecipes() {
+	public Set<ChemicalBoilerRecipe> getBoilerRecipes()
+	{
 		return boilerRecipes;
 	}
 
-	public Set<ChemicalExtractorRecipe> getExtractorRecipes() {
+	public Set<ChemicalExtractorRecipe> getExtractorRecipes()
+	{
 		return extractorRecipes;
 	}
 }

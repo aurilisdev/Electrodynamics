@@ -14,17 +14,20 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	private int energyStored;
 
 	@Override
-	public int getEnergyStored() {
+	public int getEnergyStored()
+	{
 		return energyStored;
 	}
 
 	@Override
-	public void setEnergyStored(int energy) {
+	public void setEnergyStored(int energy)
+	{
 		energyStored = Math.min(energy, MAX_ENERGY_STORED);
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (!FulminationEventHandler.INSTANCE.isRegistered(this)) {
 			FulminationEventHandler.INSTANCE.register(this);
@@ -43,17 +46,20 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return MAX_ENERGY_STORED;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return true;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	{
 		if (!simulate) {
 			energyStored -= Math.min(5000, energyStored);
 		}
@@ -61,17 +67,20 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int getEnergyUsage() {
+	public int getEnergyUsage()
+	{
 		return 0;
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+	{
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(ForgeDirection from)
+	{
 		return ITileBasePowered.super.getEnergyStored(from);
 	}
 

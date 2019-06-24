@@ -30,7 +30,8 @@ public class RoentgenOverlay implements IBaseUtilities {
 
 	public static HashMap<Long, Float> cachedRadiationMap = new HashMap<>();
 
-	public static void storeDataValue(long worldTime, float kiloRoentgen) {
+	public static void storeDataValue(long worldTime, float kiloRoentgen)
+	{
 		if (RoentgenOverlay.cachedRadiationMap.containsKey(worldTime)) {
 			cachedRadiationMap.put(worldTime, kiloRoentgen + cachedRadiationMap.get(worldTime));
 		} else {
@@ -38,14 +39,16 @@ public class RoentgenOverlay implements IBaseUtilities {
 		}
 	}
 
-	public static float getRoentgenTickClient() {
+	public static float getRoentgenTickClient()
+	{
 		long worldTime = Minecraft.getMinecraft().thePlayer.worldObj.getTotalWorldTime();
 		Float value = cachedRadiationMap.get(worldTime - 1);
 		return value == null ? -3 : value;
 	}
 
 	@SubscribeEvent
-	public void onGameOverlay(RenderGameOverlayEvent.Text event) {
+	public void onGameOverlay(RenderGameOverlayEvent.Text event)
+	{
 		EntityClientPlayerMP mp = Minecraft.getMinecraft().thePlayer;
 		ItemStack use = mp.inventory.getCurrentItem();
 		if (use != null && use.getItem() == NuclearItemRegister.itemGeigerCounter) {
@@ -66,7 +69,8 @@ public class RoentgenOverlay implements IBaseUtilities {
 	}
 
 	@SubscribeEvent
-	public void onGameUpdate(ClientTickEvent event) {
+	public void onGameUpdate(ClientTickEvent event)
+	{
 		if (event.type == Type.CLIENT && event.phase == Phase.END) {
 			EntityClientPlayerMP client = Minecraft.getMinecraft().thePlayer;
 			if (client != null) {

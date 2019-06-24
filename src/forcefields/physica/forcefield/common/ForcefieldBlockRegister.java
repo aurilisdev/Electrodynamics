@@ -26,7 +26,8 @@ public class ForcefieldBlockRegister implements IContent {
 	public static BlockBiometricIdentifier blockBiometricIdentifier;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		GameRegistry.registerBlock(blockCoercionDriver = new BlockCoercionDriver(), "coercionDriver");
 		GameRegistry.registerTileEntity(TileCoercionDriver.class, ForcefieldReferences.PREFIX + "coercionDriver");
 		GameRegistry.registerBlock(blockFortronConstructor = new BlockFortronFieldConstructor(), "fortronConstructor");

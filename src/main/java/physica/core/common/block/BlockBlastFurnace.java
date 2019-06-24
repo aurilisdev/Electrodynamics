@@ -25,23 +25,27 @@ public class BlockBlastFurnace extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+	public int getLightValue(IBlockAccess world, int x, int y, int z)
+	{
 		TileBlastFurnace tile = (TileBlastFurnace) world.getTileEntity(x, y, z);
 		return tile.isBurning() ? Blocks.lava.getLightValue() : 0;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileBlastFurnace();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(CoreBlockRegister.blockBlastFurnace, "III", "IFI", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', Blocks.stonebrick);
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Core;
 	}
 }

@@ -31,7 +31,8 @@ public class BlockUraniumOre extends Block {
 	}
 
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
+	public void onEntityWalking(World world, int x, int y, int z, Entity ent)
+	{
 		if (ent instanceof EntityLivingBase) {
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, 0.75f, 15, 1, 1);
 		}
@@ -39,7 +40,8 @@ public class BlockUraniumOre extends Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+	public void randomDisplayTick(World world, int x, int y, int z, Random random)
+	{
 		if (random.nextFloat() < 0.333) {
 			for (int i = 0; i < 2; i++) {
 				if (random.nextFloat() < 0.666) {

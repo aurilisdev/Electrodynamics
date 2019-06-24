@@ -15,7 +15,8 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 public class ItemUpdateDarkMatter implements IItemUpdate, IBaseUtilities {
 
 	@Override
-	public void onEntityItemUpdate(ItemStack stack, EntityItem entity) {
+	public void onEntityItemUpdate(ItemStack stack, EntityItem entity)
+	{
 		World world = entity.worldObj;
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
 			return;

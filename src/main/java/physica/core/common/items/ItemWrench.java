@@ -22,32 +22,38 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer, IMekWr
 	}
 
 	@Override
-	public boolean canUseWrench(EntityPlayer player, int x, int y, int z) {
+	public boolean canUseWrench(EntityPlayer player, int x, int y, int z)
+	{
 		return true;
 	}
 
 	@Override
-	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
+	public boolean canWrench(EntityPlayer player, int x, int y, int z)
+	{
 		return true;
 	}
 
 	@Override
-	public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
+	public void wrenchUsed(EntityPlayer player, int x, int y, int z)
+	{
 		player.swingItem();
 	}
 
 	@Override
-	public boolean isUsable(ItemStack itemStack, EntityLivingBase entity, int x, int y, int z) {
+	public boolean isUsable(ItemStack itemStack, EntityLivingBase entity, int x, int y, int z)
+	{
 		return true;
 	}
 
 	@Override
-	public void toolUsed(ItemStack item, EntityLivingBase entity, int x, int y, int z) {
+	public void toolUsed(ItemStack item, EntityLivingBase entity, int x, int y, int z)
+	{
 		entity.swingItem();
 	}
 
 	@Override
-	public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z) {
+	public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z)
+	{
 		return true;
 	}
 

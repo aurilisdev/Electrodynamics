@@ -24,7 +24,8 @@ public class CoreBlockRegister implements IContent {
 	public static BlockCopperCable blockCable;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		GameRegistry.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), "infEnergy");
 		GameRegistry.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
 		GameRegistry.registerBlock(blockFulmination = new BlockFulmination(), "fulmination");

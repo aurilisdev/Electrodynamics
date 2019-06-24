@@ -25,14 +25,16 @@ public class GuiQuantumAssembler extends GuiContainerBase<TileQuantumAssembler> 
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT) + "/t", 6, 6);
 		fontRendererObj.drawString("Progress: " + (int) ((float) host.getOperatingTicks() / TileQuantumAssembler.TICKS_REQUIRED * 100) + "%", xSize / 2 - 80, ySize - 106, 0x404040);
 		drawString("Inventory", 8, 73 + 230 - defaultYSize);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		containerWidth = (width - xSize) / 2;
 		containerHeight = (height - ySize) / 2;
 

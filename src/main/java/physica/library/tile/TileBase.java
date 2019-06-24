@@ -15,29 +15,34 @@ public abstract class TileBase extends TileEntity implements ITileBase {
 	protected Set<EntityPlayer> playersUsingGUI = new HashSet<>();
 
 	@Override
-	public Collection<EntityPlayer> getPlayersUsingGui() {
+	public Collection<EntityPlayer> getPlayersUsingGui()
+	{
 		return playersUsingGUI;
 	}
 
 	@Override
-	public void updateEntity() {
+	public void updateEntity()
+	{
 		_ticksRunning = handleUpdate(_ticksRunning);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		handleWriteToNBT(tag);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		handleReadFromNBT(tag);
 	}
 
 	@Override
-	public int getTicksRunning() {
+	public int getTicksRunning()
+	{
 		return _ticksRunning;
 	}
 }

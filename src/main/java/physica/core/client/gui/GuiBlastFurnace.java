@@ -20,14 +20,16 @@ public class GuiBlastFurnace extends GuiContainerBase<TileBlastFurnace> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Inventory", 8, 73);
 		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "blastFurnace.gui"), xSize / 2, 5);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		containerWidth = (width - xSize) / 2;
 		containerHeight = (height - ySize) / 2;
 		mc.renderEngine.bindTexture(GUI_FURNACE);

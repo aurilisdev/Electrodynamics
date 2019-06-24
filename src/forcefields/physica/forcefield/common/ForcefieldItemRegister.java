@@ -24,7 +24,8 @@ public class ForcefieldItemRegister implements IContent {
 	public static HashMap<String, ItemStack> moduleMap = new HashMap<>();
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		GameRegistry.registerItem(
 				itemMetaShapeModule =
 						(ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere").addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube").addSubItem("moduleShapePyramid")

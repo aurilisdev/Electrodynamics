@@ -14,20 +14,24 @@ public class ToolTip {
 		this.info = info.trim();
 	}
 
-	public String getLocalizedTooltip() {
+	public String getLocalizedTooltip()
+	{
 		return localize(info);
 	}
 
-	protected String localize(String key) {
+	protected String localize(String key)
+	{
 		String base = "";
 		return key != null ? (base = StatCollector.translateToLocal(key)).isEmpty() ? key : base : base;
 	}
 
-	public boolean shouldShowAt(int x, int y) {
+	public boolean shouldShowAt(int x, int y)
+	{
 		return area.contains(x, y);
 	}
 
-	public boolean shouldShow() {
+	public boolean shouldShow()
+	{
 		return true;
 	}
 }

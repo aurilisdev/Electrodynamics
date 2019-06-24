@@ -39,12 +39,14 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "SSS", "SWS", "SSS", 'S', "ingotSteel", 'W', "circuitAdvanced");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
 		if (!world.isRemote) {
 			if (player.isSneaking()) {
@@ -62,17 +64,20 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	}
 
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(World world)
+	{
 		return 1;
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
 		world.notifyBlocksOfNeighborChange(x, y, z, this);
 	}
 
 	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
 		if (tile instanceof TileFissionReactor) {
 			world.notifyBlocksOfNeighborChange(x, y, z, this);
@@ -80,17 +85,20 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	}
 
 	@Override
-	public boolean canProvidePower() {
+	public boolean canProvidePower()
+	{
 		return true;
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
+	{
 		return isProvidingStrongPower(world, x, y, z, side);
 	}
 
 	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
+	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
 		if (tile instanceof TileFissionReactor) {
 			int meta = world.getBlockMetadata(x, y, z);
@@ -103,14 +111,16 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister)
+	{
 		super.registerBlockIcons(iconRegister);
 		iconTop = iconRegister.registerIcon(CoreReferences.PREFIX + "thermometerTop");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int metadata) {
+	public IIcon getIcon(int side, int metadata)
+	{
 		return side == 0 || side == 1 ? iconTop : super.getIcon(side, metadata);
 	}
 }

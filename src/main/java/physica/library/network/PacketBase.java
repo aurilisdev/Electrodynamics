@@ -19,7 +19,8 @@ public class PacketBase implements IPacket {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <P extends IPacket> P addData(Object... data) {
+	public <P extends IPacket> P addData(Object... data)
+	{
 		for (Object object : data) {
 			writeData.add(object);
 		}
@@ -27,22 +28,26 @@ public class PacketBase implements IPacket {
 	}
 
 	@Override
-	public void decodeInto(ChannelHandlerContext handler, ByteBuf buffer) {
+	public void decodeInto(ChannelHandlerContext handler, ByteBuf buffer)
+	{
 		readData = buffer.slice().copy();
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext handler, ByteBuf buffer) {
+	public void encodeInto(ChannelHandlerContext handler, ByteBuf buffer)
+	{
 		for (Object object : writeData) {
 			writeData(object, buffer);
 		}
 	}
 
-	public ByteBuf getReadData() {
+	public ByteBuf getReadData()
+	{
 		return readData;
 	}
 
-	protected void writeData(Object object, ByteBuf buffer) {
+	protected void writeData(Object object, ByteBuf buffer)
+	{
 		if (object.getClass().isArray()) {
 			for (int i = 0; i < Array.getLength(object); i++) {
 				writeData(Array.get(object, i), buffer);

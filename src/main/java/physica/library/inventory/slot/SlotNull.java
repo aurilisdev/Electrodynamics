@@ -12,21 +12,25 @@ public class SlotNull extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean isItemValid(ItemStack stack)
+	{
 		return false;
 	}
 
 	@Override
-	public void putStack(ItemStack stack) {
+	public void putStack(ItemStack stack)
+	{
 	}
 
 	@Override
-	public boolean canTakeStack(EntityPlayer player) {
+	public boolean canTakeStack(EntityPlayer player)
+	{
 		return false;
 	}
 
 	@Override
-	public int getSlotIndex() {
+	public int getSlotIndex()
+	{
 		return super.getSlotIndex();
 	}
 }

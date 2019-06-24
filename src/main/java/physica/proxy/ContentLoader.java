@@ -9,33 +9,39 @@ public class ContentLoader {
 
 	private final List<IContent> contentList = new ArrayList<>();
 
-	public void addContent(IContent content) {
+	public void addContent(IContent content)
+	{
 		contentList.add(content);
 	}
 
-	public List<IContent> getContentList() {
+	public List<IContent> getContentList()
+	{
 		return contentList;
 	}
 
-	public void init() {
+	public void init()
+	{
 		for (IContent proxy : contentList) {
 			proxy.init();
 		}
 	}
 
-	public void loadComplete() {
+	public void loadComplete()
+	{
 		for (IContent proxy : contentList) {
 			proxy.loadComplete();
 		}
 	}
 
-	public void postInit() {
+	public void postInit()
+	{
 		for (IContent proxy : contentList) {
 			proxy.postInit();
 		}
 	}
 
-	public void preInit() {
+	public void preInit()
+	{
 		for (IContent proxy : contentList) {
 			proxy.preInit();
 		}

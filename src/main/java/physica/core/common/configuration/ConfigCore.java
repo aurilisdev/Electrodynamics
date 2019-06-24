@@ -28,7 +28,8 @@ public class ConfigCore implements IContent {
 	public static int COPPER_ORE_HARVEST_LEVEL = 1;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		Configuration configuration = new Configuration(new File(Physica.configFolder, "Core.cfg"), CoreReferences.VERSION);
 		configuration.load();
 		IS_DEBUG_MODE = configuration.getBoolean("isDebugMode", "Debugging", IS_DEBUG_MODE, "Enable/disable debug mode");

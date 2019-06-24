@@ -44,17 +44,20 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube()
+	{
 		return false;
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean renderAsNormalBlock()
+	{
 		return false;
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
+	{
 		BlockLocation loc = new BlockLocation(x, y, z);
 		TileEntity tile = loc.getTile(world);
 		if (tile instanceof TileFortronField) {
@@ -65,22 +68,26 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	}
 
 	@Override
-	protected boolean canSilkHarvest() {
+	protected boolean canSilkHarvest()
+	{
 		return false;
 	}
 
 	@Override
-	public int quantityDropped(Random random) {
+	public int quantityDropped(Random random)
+	{
 		return 0;
 	}
 
 	@Override
-	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	{
 		float bound = world.isRemote ? 0.01f : 0.0625F;
 		@SuppressWarnings("unchecked")
 		List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x - bound, y - bound, z - bound, x + 1 + bound, y + 0.9 + bound, z + 1 + bound));
@@ -96,25 +103,29 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderBlockPass() {
+	public int getRenderBlockPass()
+	{
 		return 1;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderType() {
+	public int getRenderType()
+	{
 		return Blocks.glass.getRenderType();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+	{
 		Block block = world.getBlock(x, y, z);
 		return block != this && super.shouldSideBeRendered(world, x, y, z, side);
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	{
 		if (!world.isRemote && entity instanceof EntityLivingBase) {
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			if (tileEntity instanceof TileFortronField) {
@@ -167,17 +178,20 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	}
 
 	@Override
-	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double d, double d1, double d2) {
+	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double d, double d1, double d2)
+	{
 		return Float.MAX_VALUE - 1;
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+	public int getLightValue(IBlockAccess world, int x, int y, int z)
+	{
 		return 0;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileFortronField();
 	}
 

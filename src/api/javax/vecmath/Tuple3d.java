@@ -121,7 +121,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param z
 	 *            the z coordinate
 	 */
-	public final void set(double x, double y, double z) {
+	public final void set(double x, double y, double z)
+	{
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -134,7 +135,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the array of length 3 containing xyz in order
 	 */
-	public final void set(double[] t) {
+	public final void set(double[] t)
+	{
 		x = t[0];
 		y = t[1];
 		z = t[2];
@@ -146,7 +148,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple to be copied
 	 */
-	public final void set(Tuple3d t1) {
+	public final void set(Tuple3d t1)
+	{
 		x = t1.x;
 		y = t1.y;
 		z = t1.z;
@@ -158,7 +161,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple to be copied
 	 */
-	public final void set(Tuple3f t1) {
+	public final void set(Tuple3f t1)
+	{
 		x = t1.x;
 		y = t1.y;
 		z = t1.z;
@@ -171,7 +175,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the target array
 	 */
-	public final void get(double[] t) {
+	public final void get(double[] t)
+	{
 		t[0] = x;
 		t[1] = y;
 		t[2] = z;
@@ -184,7 +189,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *            the Tuple3d object into which the values of this object are
 	 *            copied
 	 */
-	public final void get(Tuple3d t) {
+	public final void get(Tuple3d t)
+	{
 		t.x = x;
 		t.y = y;
 		t.z = z;
@@ -198,7 +204,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t2
 	 *            the second tuple
 	 */
-	public final void add(Tuple3d t1, Tuple3d t2) {
+	public final void add(Tuple3d t1, Tuple3d t2)
+	{
 		x = t1.x + t2.x;
 		y = t1.y + t2.y;
 		z = t1.z + t2.z;
@@ -210,7 +217,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the other tuple
 	 */
-	public final void add(Tuple3d t1) {
+	public final void add(Tuple3d t1)
+	{
 		x += t1.x;
 		y += t1.y;
 		z += t1.z;
@@ -225,7 +233,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t2
 	 *            the second tuple
 	 */
-	public final void sub(Tuple3d t1, Tuple3d t2) {
+	public final void sub(Tuple3d t1, Tuple3d t2)
+	{
 		x = t1.x - t2.x;
 		y = t1.y - t2.y;
 		z = t1.z - t2.z;
@@ -238,7 +247,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the other tuple
 	 */
-	public final void sub(Tuple3d t1) {
+	public final void sub(Tuple3d t1)
+	{
 		x -= t1.x;
 		y -= t1.y;
 		z -= t1.z;
@@ -250,7 +260,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the source tuple
 	 */
-	public final void negate(Tuple3d t1) {
+	public final void negate(Tuple3d t1)
+	{
 		x = -t1.x;
 		y = -t1.y;
 		z = -t1.z;
@@ -259,7 +270,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	/**
 	 * Negates the value of this tuple in place.
 	 */
-	public final void negate() {
+	public final void negate()
+	{
 		x = -x;
 		y = -y;
 		z = -z;
@@ -274,7 +286,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the source tuple
 	 */
-	public final void scale(double s, Tuple3d t1) {
+	public final void scale(double s, Tuple3d t1)
+	{
 		x = s * t1.x;
 		y = s * t1.y;
 		z = s * t1.z;
@@ -287,7 +300,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param s
 	 *            the scalar value
 	 */
-	public final void scale(double s) {
+	public final void scale(double s)
+	{
 		x *= s;
 		y *= s;
 		z *= s;
@@ -304,7 +318,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t2
 	 *            the tuple to be added
 	 */
-	public final void scaleAdd(double s, Tuple3d t1, Tuple3d t2) {
+	public final void scaleAdd(double s, Tuple3d t1, Tuple3d t2)
+	{
 		x = s * t1.x + t2.x;
 		y = s * t1.y + t2.y;
 		z = s * t1.z + t2.z;
@@ -314,7 +329,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use scaleAdd(double,Tuple3d) instead
 	 */
 	@Deprecated
-	public final void scaleAdd(double s, Tuple3f t1) {
+	public final void scaleAdd(double s, Tuple3f t1)
+	{
 		scaleAdd(s, new Point3d(t1));
 	}
 
@@ -327,7 +343,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple to be added
 	 */
-	public final void scaleAdd(double s, Tuple3d t1) {
+	public final void scaleAdd(double s, Tuple3d t1)
+	{
 		x = s * x + t1.x;
 		y = s * y + t1.y;
 		z = s * z + t1.z;
@@ -340,7 +357,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @return the String representation
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
 
@@ -354,7 +372,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @return the integer hash code value
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		long bits = 1L;
 		bits = VecMathUtil.hashDoubleBits(bits, x);
 		bits = VecMathUtil.hashDoubleBits(bits, y);
@@ -370,7 +389,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *            the tuple with which the comparison is made
 	 * @return true or false
 	 */
-	public boolean equals(Tuple3d t1) {
+	public boolean equals(Tuple3d t1)
+	{
 		try {
 			return x == t1.x && y == t1.y && z == t1.z;
 		} catch (NullPointerException e2) {
@@ -388,7 +408,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @return true or false
 	 */
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object t1)
+	{
 		try {
 			Tuple3d t2 = (Tuple3d) t1;
 			return x == t2.x && y == t2.y && z == t2.z;
@@ -412,7 +433,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *            the threshold value
 	 * @return true or false
 	 */
-	public boolean epsilonEquals(Tuple3d t1, double epsilon) {
+	public boolean epsilonEquals(Tuple3d t1, double epsilon)
+	{
 		double diff;
 
 		diff = x - t1.x;
@@ -447,7 +469,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use clamp(double,double,Tuple3d) instead
 	 */
 	@Deprecated
-	public final void clamp(float min, float max, Tuple3d t) {
+	public final void clamp(float min, float max, Tuple3d t)
+	{
 		clamp((double) min, (double) max, t);
 	}
 
@@ -462,7 +485,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void clamp(double min, double max, Tuple3d t) {
+	public final void clamp(double min, double max, Tuple3d t)
+	{
 		if (t.x > max) {
 			x = max;
 		} else if (t.x < min) {
@@ -493,7 +517,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use clampMin(double,Tuple3d) instead
 	 */
 	@Deprecated
-	public final void clampMin(float min, Tuple3d t) {
+	public final void clampMin(float min, Tuple3d t)
+	{
 		clampMin((double) min, t);
 	}
 
@@ -506,7 +531,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void clampMin(double min, Tuple3d t) {
+	public final void clampMin(double min, Tuple3d t)
+	{
 		if (t.x < min) {
 			x = min;
 		} else {
@@ -531,7 +557,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use clampMax(double,Tuple3d) instead
 	 */
 	@Deprecated
-	public final void clampMax(float max, Tuple3d t) {
+	public final void clampMax(float max, Tuple3d t)
+	{
 		clampMax((double) max, t);
 	}
 
@@ -544,7 +571,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void clampMax(double max, Tuple3d t) {
+	public final void clampMax(double max, Tuple3d t)
+	{
 		if (t.x > max) {
 			x = max;
 		} else {
@@ -572,7 +600,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void absolute(Tuple3d t) {
+	public final void absolute(Tuple3d t)
+	{
 		x = Math.abs(t.x);
 		y = Math.abs(t.y);
 		z = Math.abs(t.z);
@@ -583,7 +612,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use clamp(double,double) instead
 	 */
 	@Deprecated
-	public final void clamp(float min, float max) {
+	public final void clamp(float min, float max)
+	{
 		clamp((double) min, (double) max);
 	}
 
@@ -595,7 +625,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param max
 	 *            the highest value in this tuple after clamping
 	 */
-	public final void clamp(double min, double max) {
+	public final void clamp(double min, double max)
+	{
 		if (x > max) {
 			x = max;
 		} else if (x < min) {
@@ -620,7 +651,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use clampMin(double) instead
 	 */
 	@Deprecated
-	public final void clampMin(float min) {
+	public final void clampMin(float min)
+	{
 		clampMin((double) min);
 	}
 
@@ -630,7 +662,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param min
 	 *            the lowest value in this tuple after clamping
 	 */
-	public final void clampMin(double min) {
+	public final void clampMin(double min)
+	{
 		if (x < min) {
 			x = min;
 		}
@@ -647,7 +680,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use clampMax(double) instead
 	 */
 	@Deprecated
-	public final void clampMax(float max) {
+	public final void clampMax(float max)
+	{
 		clampMax((double) max);
 	}
 
@@ -657,7 +691,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param max
 	 *            the highest value in the tuple after clamping
 	 */
-	public final void clampMax(double max) {
+	public final void clampMax(double max)
+	{
 		if (x > max) {
 			x = max;
 		}
@@ -672,7 +707,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	/**
 	 * Sets each component of this tuple to its absolute value.
 	 */
-	public final void absolute() {
+	public final void absolute()
+	{
 		x = Math.abs(x);
 		y = Math.abs(y);
 		z = Math.abs(z);
@@ -682,7 +718,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use interpolate(Tuple3d,Tuple3d,double) instead
 	 */
 	@Deprecated
-	public final void interpolate(Tuple3d t1, Tuple3d t2, float alpha) {
+	public final void interpolate(Tuple3d t1, Tuple3d t2, float alpha)
+	{
 		interpolate(t1, t2, (double) alpha);
 	}
 
@@ -697,7 +734,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param alpha
 	 *            the alpha interpolation parameter
 	 */
-	public final void interpolate(Tuple3d t1, Tuple3d t2, double alpha) {
+	public final void interpolate(Tuple3d t1, Tuple3d t2, double alpha)
+	{
 		x = (1 - alpha) * t1.x + alpha * t2.x;
 		y = (1 - alpha) * t1.y + alpha * t2.y;
 		z = (1 - alpha) * t1.z + alpha * t2.z;
@@ -707,7 +745,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @deprecated Use interpolate(Tuple3d,double) instead
 	 */
 	@Deprecated
-	public final void interpolate(Tuple3d t1, float alpha) {
+	public final void interpolate(Tuple3d t1, float alpha)
+	{
 		interpolate(t1, (double) alpha);
 	}
 
@@ -720,7 +759,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @param alpha
 	 *            the alpha interpolation parameter
 	 */
-	public final void interpolate(Tuple3d t1, double alpha) {
+	public final void interpolate(Tuple3d t1, double alpha)
+	{
 		x = (1 - alpha) * x + alpha * t1.x;
 		y = (1 - alpha) * y + alpha * t1.y;
 		z = (1 - alpha) * z + alpha * t1.z;
@@ -736,7 +776,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 * @since vecmath 1.3
 	 */
 	@Override
-	public Object clone() {
+	public Object clone()
+	{
 		// Since there are no arrays we can just use Object.clone()
 		try {
 			return super.clone();
@@ -753,7 +794,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final double getX() {
+	public final double getX()
+	{
 		return x;
 	}
 
@@ -765,7 +807,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setX(double x) {
+	public final void setX(double x)
+	{
 		this.x = x;
 	}
 
@@ -776,7 +819,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final double getY() {
+	public final double getY()
+	{
 		return y;
 	}
 
@@ -788,7 +832,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setY(double y) {
+	public final void setY(double y)
+	{
 		this.y = y;
 	}
 
@@ -799,7 +844,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final double getZ() {
+	public final double getZ()
+	{
 		return z;
 	}
 
@@ -811,7 +857,8 @@ public abstract class Tuple3d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setZ(double z) {
+	public final void setZ(double z)
+	{
 		this.z = z;
 	}
 }

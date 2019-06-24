@@ -25,22 +25,26 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 	protected Minecraft mc = Minecraft.getMinecraft();
 
 	@Override
-	public String getGuiTexture() {
+	public String getGuiTexture()
+	{
 		return GUI_STRING;
 	}
 
 	@Override
-	public String getRecipeName() {
+	public String getRecipeName()
+	{
 		return "Physica";
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate()
+	{
 		super.onUpdate();
 		cycleticks += 4;
 	}
 
-	protected void drawFluidTank(int x, int y, FluidStack fluidStack) {
+	protected void drawFluidTank(int x, int y, FluidStack fluidStack)
+	{
 		float scale = fluidStack.amount / 5000f;
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -57,7 +61,8 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack) {
+	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack)
+	{
 		if (fluidStack != null && fluidStack.getFluid() != null) {
 			drawSize -= 1;
 
@@ -90,7 +95,8 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 		}
 	}
 
-	protected void renderFurnaceCookArrow(int x, int y, double cookTime, double maxCookTime) {
+	protected void renderFurnaceCookArrow(int x, int y, double cookTime, double maxCookTime)
+	{
 		cookTime = Math.min(cookTime, maxCookTime);
 		drawTexturedModalRect(x, y, 18, 0, 22, 15);
 		if (cookTime > 0) {
@@ -99,7 +105,8 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 		}
 	}
 
-	protected void drawSlot(int x, int y, boolean powered) {
+	protected void drawSlot(int x, int y, boolean powered)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawTexturedModalRect(x, y, 0, 0, 18, 18);
 		if (powered) {
@@ -107,7 +114,8 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 		}
 	}
 
-	public void drawDoubleProgressBar(int x, int y, int tx, int ty, int w, int h, int ticks, int direction, boolean first) {
+	public void drawDoubleProgressBar(int x, int y, int tx, int ty, int w, int h, int ticks, int direction, boolean first)
+	{
 		if (first) {
 			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.min(ticks / 2, this.cycleticks % ticks) / (float) (ticks / 2), direction);
 

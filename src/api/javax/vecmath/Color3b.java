@@ -128,7 +128,8 @@ public class Color3b extends Tuple3b implements java.io.Serializable {
 	 *
 	 * @since vecmath 1.2
 	 */
-	public final void set(Color color) {
+	public final void set(Color color)
+	{
 		x = (byte) color.getRed();
 		y = (byte) color.getGreen();
 		z = (byte) color.getBlue();
@@ -142,7 +143,8 @@ public class Color3b extends Tuple3b implements java.io.Serializable {
 	 *
 	 * @since vecmath 1.2
 	 */
-	public final Color get() {
+	public final Color get()
+	{
 		int r = x & 0xff;
 		int g = y & 0xff;
 		int b = z & 0xff;

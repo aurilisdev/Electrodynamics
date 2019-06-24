@@ -20,19 +20,23 @@ public interface IInvFortronTile extends ITileBase {
 
 	public FluidTank getFortronTank();
 
-	default boolean canSendBeam() {
+	default boolean canSendBeam()
+	{
 		return isActivated() && getFortronTank().getFluidAmount() > 0 && getFortronConnections().size() > 0;
 	}
 
-	default boolean canRecieveFortron(IInvFortronTile tile) {
+	default boolean canRecieveFortron(IInvFortronTile tile)
+	{
 		return getFortronTank().getCapacity() - getFortronTank().getFluidAmount() > 0;
 	}
 
-	default int recieveFortron(int maxFill) {
+	default int recieveFortron(int maxFill)
+	{
 		return getFortronTank().fill(new FluidStack(ForcefieldFluidRegister.LIQUID_FORTRON, maxFill), true);
 	}
 
-	default int sendFortronTo(int maxSend, Class<?>... types) {
+	default int sendFortronTo(int maxSend, Class<?>... types)
+	{
 		int ret = 0;
 		Set<IInvFortronTile> send = new HashSet<>();
 		for (ITileBase base : getFortronConnections()) {
@@ -51,7 +55,8 @@ public interface IInvFortronTile extends ITileBase {
 		return ret;
 	}
 
-	default void invalidateConnections() {
+	default void invalidateConnections()
+	{
 		for (ITileBase base : getFortronConnections()) {
 			if (base instanceof IInvFortronTile) {
 				((IInvFortronTile) base).getFortronConnections().remove(this);
@@ -60,7 +65,8 @@ public interface IInvFortronTile extends ITileBase {
 		getFortronConnections().clear();
 	}
 
-	default void validateConnections() {
+	default void validateConnections()
+	{
 		Set<ITileBase> invalid = new HashSet<>();
 		for (ITileBase base : getFortronConnections()) {
 			if (base instanceof IInvFortronTile) {
@@ -73,15 +79,18 @@ public interface IInvFortronTile extends ITileBase {
 		getFortronConnections().removeAll(invalid);
 	}
 
-	default int getFrequency() {
+	default int getFrequency()
+	{
 		return 0;
 	}
 
-	default void setFrequency(int freq) {
+	default void setFrequency(int freq)
+	{
 
 	}
 
-	default void findNearbyConnections(Class<?>... classes) {
+	default void findNearbyConnections(Class<?>... classes)
+	{
 		for (TileEntity tile : getNearbyTiles(5)) {
 			if (tile instanceof IInvFortronTile && !tile.isInvalid() && Arrays.asList(classes).contains(tile.getClass())) {
 				IInvFortronTile fortronTile = (IInvFortronTile) tile;
@@ -95,7 +104,8 @@ public interface IInvFortronTile extends ITileBase {
 		}
 	}
 
-	default int getModuleCount(ItemStack compare, int fromSlot, int toSlot) {
+	default int getModuleCount(ItemStack compare, int fromSlot, int toSlot)
+	{
 		int ret = 0;
 		if (compare != null) {
 			IInventory inv = (IInventory) this;
@@ -109,7 +119,8 @@ public interface IInvFortronTile extends ITileBase {
 		return ret;
 	}
 
-	default boolean findModule(ItemStack compare, int fromSlot, int toSlot) {
+	default boolean findModule(ItemStack compare, int fromSlot, int toSlot)
+	{
 		if (compare != null) {
 			IInventory inv = (IInventory) this;
 			for (int i = fromSlot; i <= toSlot; i++) {
@@ -122,7 +133,8 @@ public interface IInvFortronTile extends ITileBase {
 		return false;
 	}
 
-	default int getModuleCountIn(ItemStack compare, int... slots) {
+	default int getModuleCountIn(ItemStack compare, int... slots)
+	{
 		int ret = 0;
 		if (compare != null && slots.length > 0) {
 			IInventory inv = (IInventory) this;

@@ -23,13 +23,15 @@ public class GuiCentrifuge extends GuiContainerBase<TileCentrifuge> implements I
 	}
 
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		addToolTip(new ToolTipTank(AREA_HEX_TANK, "gui.centrifuge.hex_tank", host.getTank()));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: " + (host.hasEnoughEnergy() ? host.canProcess() ? "Processing" : "Lacking hexafluoride" : "Insufficient Power"), 8,
@@ -38,7 +40,8 @@ public class GuiCentrifuge extends GuiContainerBase<TileCentrifuge> implements I
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_HEX_TANK.x, AREA_HEX_TANK.y, host.getTank());
 		renderFurnaceCookArrow(36, 36, host.getOperatingTicks(), TileCentrifuge.TICKS_REQUIRED);

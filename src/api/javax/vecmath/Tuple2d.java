@@ -107,7 +107,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param y
 	 *            the y coordinate
 	 */
-	public final void set(double x, double y) {
+	public final void set(double x, double y)
+	{
 		this.x = x;
 		this.y = y;
 	}
@@ -119,7 +120,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the array of length 2 containing xy in order
 	 */
-	public final void set(double[] t) {
+	public final void set(double[] t)
+	{
 		x = t[0];
 		y = t[1];
 	}
@@ -130,7 +132,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple to be copied
 	 */
-	public final void set(Tuple2d t1) {
+	public final void set(Tuple2d t1)
+	{
 		x = t1.x;
 		y = t1.y;
 	}
@@ -141,7 +144,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple to be copied
 	 */
-	public final void set(Tuple2f t1) {
+	public final void set(Tuple2f t1)
+	{
 		x = t1.x;
 		y = t1.y;
 	}
@@ -152,7 +156,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the array that will contain the values of the vector
 	 */
-	public final void get(double[] t) {
+	public final void get(double[] t)
+	{
 		t[0] = x;
 		t[1] = y;
 	}
@@ -165,7 +170,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t2
 	 *            the second tuple
 	 */
-	public final void add(Tuple2d t1, Tuple2d t2) {
+	public final void add(Tuple2d t1, Tuple2d t2)
+	{
 		x = t1.x + t2.x;
 		y = t1.y + t2.y;
 	}
@@ -176,7 +182,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the other tuple
 	 */
-	public final void add(Tuple2d t1) {
+	public final void add(Tuple2d t1)
+	{
 		x += t1.x;
 		y += t1.y;
 	}
@@ -190,7 +197,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t2
 	 *            the second tuple
 	 */
-	public final void sub(Tuple2d t1, Tuple2d t2) {
+	public final void sub(Tuple2d t1, Tuple2d t2)
+	{
 		x = t1.x - t2.x;
 		y = t1.y - t2.y;
 	}
@@ -202,7 +210,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the other vector
 	 */
-	public final void sub(Tuple2d t1) {
+	public final void sub(Tuple2d t1)
+	{
 		x -= t1.x;
 		y -= t1.y;
 	}
@@ -213,7 +222,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the source vector
 	 */
-	public final void negate(Tuple2d t1) {
+	public final void negate(Tuple2d t1)
+	{
 		x = -t1.x;
 		y = -t1.y;
 	}
@@ -221,7 +231,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	/**
 	 * Negates the value of this vector in place.
 	 */
-	public final void negate() {
+	public final void negate()
+	{
 		x = -x;
 		y = -y;
 	}
@@ -235,7 +246,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the source tuple
 	 */
-	public final void scale(double s, Tuple2d t1) {
+	public final void scale(double s, Tuple2d t1)
+	{
 		x = s * t1.x;
 		y = s * t1.y;
 	}
@@ -247,7 +259,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param s
 	 *            the scalar value
 	 */
-	public final void scale(double s) {
+	public final void scale(double s)
+	{
 		x *= s;
 		y *= s;
 	}
@@ -263,7 +276,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t2
 	 *            the tuple to be added
 	 */
-	public final void scaleAdd(double s, Tuple2d t1, Tuple2d t2) {
+	public final void scaleAdd(double s, Tuple2d t1, Tuple2d t2)
+	{
 		x = s * t1.x + t2.x;
 		y = s * t1.y + t2.y;
 	}
@@ -277,7 +291,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple to be added
 	 */
-	public final void scaleAdd(double s, Tuple2d t1) {
+	public final void scaleAdd(double s, Tuple2d t1)
+	{
 		x = s * x + t1.x;
 		y = s * y + t1.y;
 	}
@@ -292,7 +307,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @return the integer hash code value
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		long bits = 1L;
 		bits = VecMathUtil.hashDoubleBits(bits, x);
 		bits = VecMathUtil.hashDoubleBits(bits, y);
@@ -307,7 +323,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 *            the vector with which the comparison is made
 	 * @return true or false
 	 */
-	public boolean equals(Tuple2d t1) {
+	public boolean equals(Tuple2d t1)
+	{
 		try {
 			return x == t1.x && y == t1.y;
 		} catch (NullPointerException e2) {
@@ -326,7 +343,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @return true or false
 	 */
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object t1)
+	{
 		try {
 			Tuple2d t2 = (Tuple2d) t1;
 			return x == t2.x && y == t2.y;
@@ -350,7 +368,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 *            the threshold value
 	 * @return true or false
 	 */
-	public boolean epsilonEquals(Tuple2d t1, double epsilon) {
+	public boolean epsilonEquals(Tuple2d t1, double epsilon)
+	{
 		double diff;
 
 		diff = x - t1.x;
@@ -379,7 +398,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @return the String representation
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "(" + x + ", " + y + ")";
 	}
 
@@ -394,7 +414,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void clamp(double min, double max, Tuple2d t) {
+	public final void clamp(double min, double max, Tuple2d t)
+	{
 		if (t.x > max) {
 			x = max;
 		} else if (t.x < min) {
@@ -422,7 +443,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void clampMin(double min, Tuple2d t) {
+	public final void clampMin(double min, Tuple2d t)
+	{
 		if (t.x < min) {
 			x = min;
 		} else {
@@ -446,7 +468,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void clampMax(double max, Tuple2d t) {
+	public final void clampMax(double max, Tuple2d t)
+	{
 		if (t.x > max) {
 			x = max;
 		} else {
@@ -468,7 +491,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            the source tuple, which will not be modified
 	 */
-	public final void absolute(Tuple2d t) {
+	public final void absolute(Tuple2d t)
+	{
 		x = Math.abs(t.x);
 		y = Math.abs(t.y);
 	}
@@ -481,7 +505,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param max
 	 *            the highest value in this tuple after clamping
 	 */
-	public final void clamp(double min, double max) {
+	public final void clamp(double min, double max)
+	{
 		if (x > max) {
 			x = max;
 		} else if (x < min) {
@@ -502,7 +527,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param min
 	 *            the lowest value in this tuple after clamping
 	 */
-	public final void clampMin(double min) {
+	public final void clampMin(double min)
+	{
 		if (x < min) {
 			x = min;
 		}
@@ -517,7 +543,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param max
 	 *            the highest value in the tuple after clamping
 	 */
-	public final void clampMax(double max) {
+	public final void clampMax(double max)
+	{
 		if (x > max) {
 			x = max;
 		}
@@ -529,7 +556,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	/**
 	 * Sets each component of this tuple to its absolute value.
 	 */
-	public final void absolute() {
+	public final void absolute()
+	{
 		x = Math.abs(x);
 		y = Math.abs(y);
 	}
@@ -545,7 +573,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param alpha
 	 *            the alpha interpolation parameter
 	 */
-	public final void interpolate(Tuple2d t1, Tuple2d t2, double alpha) {
+	public final void interpolate(Tuple2d t1, Tuple2d t2, double alpha)
+	{
 		x = (1 - alpha) * t1.x + alpha * t2.x;
 		y = (1 - alpha) * t1.y + alpha * t2.y;
 	}
@@ -559,7 +588,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @param alpha
 	 *            the alpha interpolation parameter
 	 */
-	public final void interpolate(Tuple2d t1, double alpha) {
+	public final void interpolate(Tuple2d t1, double alpha)
+	{
 		x = (1 - alpha) * x + alpha * t1.x;
 		y = (1 - alpha) * y + alpha * t1.y;
 
@@ -575,7 +605,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 * @since vecmath 1.3
 	 */
 	@Override
-	public Object clone() {
+	public Object clone()
+	{
 		// Since there are no arrays we can just use Object.clone()
 		try {
 			return super.clone();
@@ -592,7 +623,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final double getX() {
+	public final double getX()
+	{
 		return x;
 	}
 
@@ -604,7 +636,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setX(double x) {
+	public final void setX(double x)
+	{
 		this.x = x;
 	}
 
@@ -615,7 +648,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final double getY() {
+	public final double getY()
+	{
 		return y;
 	}
 
@@ -627,7 +661,8 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setY(double y) {
+	public final void setY(double y)
+	{
 		this.y = y;
 	}
 

@@ -24,12 +24,14 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 		this.player = player;
 	}
 
-	public void setSlotCount(int count) {
+	public void setSlotCount(int count)
+	{
 		this.slotCount = count;
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer entityplayer) {
+	public void onContainerClosed(EntityPlayer entityplayer)
+	{
 		if (host instanceof IPlayerUsing && entityplayer.openContainer != this) {
 			((IPlayerUsing) host).removePlayerUsingGui(entityplayer);
 		}
@@ -38,7 +40,8 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ItemStack slotClick(int slot, int p_75144_2_, int p_75144_3_, EntityPlayer player) {
+	public ItemStack slotClick(int slot, int p_75144_2_, int p_75144_3_, EntityPlayer player)
+	{
 		ItemStack toReturn = super.slotClick(slot, p_75144_2_, p_75144_3_, player);
 
 		if (slot >= 0 && slot < inventorySlots.size()) {
@@ -58,14 +61,16 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	}
 
 	@Override
-	public Slot getSlot(int index) {
+	public Slot getSlot(int index)
+	{
 		if (index < this.inventorySlots.size()) {
 			return (Slot) this.inventorySlots.get(index);
 		}
 		return new SlotNull(null, 0, 0, 0);
 	}
 
-	public void addDefaultPlayerInventory(EntityPlayer player, int offset) {
+	public void addDefaultPlayerInventory(EntityPlayer player, int offset)
+	{
 		host.addPlayerUsingGui(player);
 
 		int defaultx = 8, defaultY = 84 + offset;
@@ -80,7 +85,8 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	}
 
 	@Override
-	protected boolean mergeItemStack(ItemStack stack, int min, int max, boolean negative) {
+	protected boolean mergeItemStack(ItemStack stack, int min, int max, boolean negative)
+	{
 		boolean flag1 = false;
 		int k = negative ? max - 1 : min;
 		Slot slot;
@@ -146,7 +152,8 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int index)
+	{
 		Slot slot = (Slot) inventorySlots.get(index);
 
 		if (slot != null && slot.getStack() != null) {
@@ -173,7 +180,8 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) {
+	public boolean canInteractWith(EntityPlayer entityplayer)
+	{
 		return host instanceof IInventory ? ((IInventory) host).isUseableByPlayer(entityplayer)
 				: (boolean) (host instanceof TileEntity ? entityplayer.getDistanceSq(((TileEntity) host).xCoord, ((TileEntity) host).yCoord, ((TileEntity) host).zCoord) <= 64 : true);
 	}

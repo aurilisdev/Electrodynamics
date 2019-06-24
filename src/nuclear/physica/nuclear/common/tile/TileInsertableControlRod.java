@@ -28,12 +28,14 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	private int insertion = 100;
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox()
+	{
 		return super.getRenderBoundingBox().expand(1, 1, 1);
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		ForgeDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
@@ -46,58 +48,68 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiInsertableControlRod(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		ContainerBase<TileInsertableControlRod> base = new ContainerBase<>(player, this);
 		base.addDefaultPlayerInventory(player, 0);
 		return base;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		tag.setInteger("insertion", insertion);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		insertion = tag.getInteger("insertion");
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(insertion);
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		insertion = buf.readInt();
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(insertion);
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readSynchronizationPacket(buf, player);
 		insertion = buf.readInt();
 	}
 
-	public int getInsertion() {
+	public int getInsertion()
+	{
 		return insertion;
 	}
 
-	public void actionPerformed(int amount, Side side) {
+	public void actionPerformed(int amount, Side side)
+	{
 		if (side == Side.CLIENT) {
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", CONTROL_ROD_PACKET_ID, xCoord, yCoord, zCoord, amount));
 		}
@@ -105,7 +117,8 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	}
 
 	@Override
-	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type) {
+	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
+	{
 		if (id == CONTROL_ROD_PACKET_ID && side.isServer() && type instanceof PacketTile) {
 			actionPerformed(((PacketTile) type).customInteger, side);
 		}

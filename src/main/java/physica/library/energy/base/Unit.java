@@ -19,7 +19,8 @@ public enum Unit {
 		this.ratio = ratio;
 	}
 
-	public String getPlural() {
+	public String getPlural()
+	{
 		return name + plural;
 	}
 }

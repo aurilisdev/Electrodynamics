@@ -44,7 +44,8 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void getSubItems(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
+	public void getSubItems(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list)
+	{
 		ItemStack disCharged = new ItemStack(this);
 		setEnergyStored(disCharged, 0);
 		list.add(disCharged);
@@ -54,25 +55,29 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public double getDurabilityForDisplay(ItemStack container) {
+	public double getDurabilityForDisplay(ItemStack container)
+	{
 		return 1.0 - getEnergyStored(container) / (double) getMaxEnergyStored(container);
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean showDurabilityBar(ItemStack stack)
+	{
 		return true;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean par4)
+	{
 		super.addInformation(stack, player, info, par4);
 		info.add(EnumChatFormatting.AQUA + "Energy Stored: " + EnumChatFormatting.GRAY
 				+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getEnergyStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
 	}
 
 	@Override
-	public int extractEnergy(ItemStack container, int amount, boolean simulate) {
+	public int extractEnergy(ItemStack container, int amount, boolean simulate)
+	{
 		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA)) {
 			return 0;
 		}
@@ -86,7 +91,8 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 		return energyExtracted;
 	}
 
-	public void setEnergyStored(ItemStack container, int amount) {
+	public void setEnergyStored(ItemStack container, int amount)
+	{
 		if (container.stackTagCompound == null) {
 			container.stackTagCompound = new NBTTagCompound();
 		}
@@ -97,7 +103,8 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public int getEnergyStored(ItemStack container) {
+	public int getEnergyStored(ItemStack container)
+	{
 		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA)) {
 			return 0;
 		}
@@ -105,12 +112,14 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public int getMaxEnergyStored(ItemStack container) {
+	public int getMaxEnergyStored(ItemStack container)
+	{
 		return capacity;
 	}
 
 	@Override
-	public int receiveEnergy(ItemStack container, int amount, boolean simulate) {
+	public int receiveEnergy(ItemStack container, int amount, boolean simulate)
+	{
 		if (container.stackTagCompound == null) {
 			container.stackTagCompound = new NBTTagCompound();
 		}
@@ -124,22 +133,26 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 		return energyReceived;
 	}
 
-	public ItemElectric setCapacity(int capacity) {
+	public ItemElectric setCapacity(int capacity)
+	{
 		this.capacity = capacity;
 		return this;
 	}
 
-	public ItemElectric setExtractRate(int extractRate) {
+	public ItemElectric setExtractRate(int extractRate)
+	{
 		this.extractRate = extractRate;
 		return this;
 	}
 
-	public ItemElectric setReceiveRate(int receiveRate) {
+	public ItemElectric setReceiveRate(int receiveRate)
+	{
 		this.receiveRate = receiveRate;
 		return this;
 	}
 
-	public ItemElectric setMaxTransfer(int maxTransfer) {
+	public ItemElectric setMaxTransfer(int maxTransfer)
+	{
 		setExtractRate(maxTransfer);
 		setReceiveRate(maxTransfer);
 		return this;

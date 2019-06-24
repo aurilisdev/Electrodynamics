@@ -28,18 +28,21 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C',
 				"circuitAdvanced", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		if (player.getHeldItem() != null
 				&& (player.getHeldItem().getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || player.getHeldItem().getItem() == NuclearItemRegister.itemLowEnrichedFuelCell)) {
 			if (player.getHeldItem().stackSize == 1) {
@@ -69,7 +72,8 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
+	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile instanceof TileFissionReactor) {
 			TileFissionReactor reactor = (TileFissionReactor) tile;
@@ -81,7 +85,8 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileFissionReactor();
 	}
 }

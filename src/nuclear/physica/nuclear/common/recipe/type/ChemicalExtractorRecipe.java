@@ -22,19 +22,23 @@ public class ChemicalExtractorRecipe {
 		this.outputItem = outputItem;
 	}
 
-	public int getWaterUse() {
+	public int getWaterUse()
+	{
 		return waterUse;
 	}
 
-	public Item getInput() {
+	public Item getInput()
+	{
 		return inputItem;
 	}
 
-	public ItemStack getOutput() {
+	public ItemStack getOutput()
+	{
 		return outputItem;
 	}
 
-	public String getOreDictName() {
+	public String getOreDictName()
+	{
 		return oreDictName;
 	}
 

@@ -133,7 +133,8 @@ public class Color3f extends Tuple3f implements java.io.Serializable {
 	 *
 	 * @since vecmath 1.2
 	 */
-	public final void set(Color color) {
+	public final void set(Color color)
+	{
 		x = color.getRed() / 255.0f;
 		y = color.getGreen() / 255.0f;
 		z = color.getBlue() / 255.0f;
@@ -147,7 +148,8 @@ public class Color3f extends Tuple3f implements java.io.Serializable {
 	 *
 	 * @since vecmath 1.2
 	 */
-	public final Color get() {
+	public final Color get()
+	{
 		int r = Math.round(x * 255.0f);
 		int g = Math.round(y * 255.0f);
 		int b = Math.round(z * 255.0f);

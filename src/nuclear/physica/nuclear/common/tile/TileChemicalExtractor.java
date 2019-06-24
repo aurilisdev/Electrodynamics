@@ -41,7 +41,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	protected int operatingTicks = 0;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (hasEnoughEnergy()) {
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
@@ -71,7 +72,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 		}
 	}
 
-	public boolean canProcess(ItemStack output, ItemStack input) {
+	public boolean canProcess(ItemStack output, ItemStack input)
+	{
 		if (input != null) {
 			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input.getItem());
 			if (recipe != null) {
@@ -84,7 +86,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 		return false;
 	}
 
-	private void process(ItemStack input, ItemStack output) {
+	private void process(ItemStack input, ItemStack output)
+	{
 		ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input.getItem());
 
 		waterTank.drain(recipe.getWaterUse(), true);
@@ -105,7 +108,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 		super.writeToNBT(nbt);
 		NBTTagCompound compound = new NBTTagCompound();
 		waterTank.writeToNBT(compound);
@@ -113,113 +117,134 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 		super.readFromNBT(nbt);
 		NBTTagCompound compound = (NBTTagCompound) nbt.getTag("Tank");
 		waterTank.readFromNBT(compound);
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(operatingTicks);
 		dataList.add(waterTank.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		operatingTicks = buf.readInt();
 		waterTank.readFromNBT(ByteBufUtils.readTag(buf));
 	}
 
-	public int getOperatingTicks() {
+	public int getOperatingTicks()
+	{
 		return operatingTicks;
 	}
 
-	public FluidTank getTank() {
+	public FluidTank getTank()
+	{
 		return waterTank;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 3;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return slot != SLOT_OUTPUT && stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem
 				: slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack.getItem()));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiChemicalExtractor(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerChemicalExtractor(player, this);
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return getEnergyUsage() * 2;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return true;
 	}
 
 	@Override
-	public int getEnergyUsage() {
+	public int getEnergyUsage()
+	{
 		return 300;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return true;
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	{
 		return waterTank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+	{
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+	{
 		return null;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(ForgeDirection from, Fluid fluid)
+	{
 		return fluid == FluidRegistry.WATER;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	{
 		return false;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(ForgeDirection from)
+	{
 		return new FluidTankInfo[] { waterTank.getInfo() };
 	}
 }

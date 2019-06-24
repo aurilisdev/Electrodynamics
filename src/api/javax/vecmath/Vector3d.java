@@ -116,7 +116,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	 * @param v2
 	 *            the second vector
 	 */
-	public final void cross(Vector3d v1, Vector3d v2) {
+	public final void cross(Vector3d v1, Vector3d v2)
+	{
 		double x, y;
 
 		x = v1.y * v2.z - v1.z * v2.y;
@@ -132,7 +133,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	 * @param v1
 	 *            the un-normalized vector
 	 */
-	public final void normalize(Vector3d v1) {
+	public final void normalize(Vector3d v1)
+	{
 		double norm;
 
 		norm = 1.0 / Math.sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
@@ -144,7 +146,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	/**
 	 * Normalizes this vector in place.
 	 */
-	public final void normalize() {
+	public final void normalize()
+	{
 		double norm;
 
 		norm = 1.0 / Math.sqrt(x * x + y * y + z * z);
@@ -160,7 +163,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	 *            the other vector
 	 * @return the dot product of this and v1
 	 */
-	public final double dot(Vector3d v1) {
+	public final double dot(Vector3d v1)
+	{
 		return x * v1.x + y * v1.y + z * v1.z;
 	}
 
@@ -169,7 +173,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	 *
 	 * @return the squared length of this vector
 	 */
-	public final double lengthSquared() {
+	public final double lengthSquared()
+	{
 		return x * x + y * y + z * z;
 	}
 
@@ -178,7 +183,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	 *
 	 * @return the length of this vector
 	 */
-	public final double length() {
+	public final double length()
+	{
 		return Math.sqrt(x * x + y * y + z * z);
 	}
 
@@ -190,7 +196,8 @@ public class Vector3d extends Tuple3d implements java.io.Serializable {
 	 *            the other vector
 	 * @return the angle in radians in the range [0,PI]
 	 */
-	public final double angle(Vector3d v1) {
+	public final double angle(Vector3d v1)
+	{
 		double vDot = dot(v1) / (length() * v1.length());
 		if (vDot < -1.0) {
 			vDot = -1.0;

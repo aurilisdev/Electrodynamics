@@ -12,7 +12,8 @@ public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
 	public static final int VISIBLE_STORAGE = Integer.MAX_VALUE - 100;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		if (ConfigCore.DISABLE_INFINITE_ENERGY_CUBE) {
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
@@ -31,22 +32,26 @@ public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return true;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	{
 		return maxExtract;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(ForgeDirection from)
+	{
 		return VISIBLE_STORAGE;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return VISIBLE_STORAGE;
 	}
 

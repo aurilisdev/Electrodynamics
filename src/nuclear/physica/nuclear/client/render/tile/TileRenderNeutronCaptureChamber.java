@@ -21,7 +21,8 @@ public class TileRenderNeutronCaptureChamber extends TileRenderObjModel<TileNeut
 	}
 
 	@Override
-	public void renderTileAt(TileNeutronCaptureChamber tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(TileNeutronCaptureChamber tile, double x, double y, double z, float deltaFrame)
+	{
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);

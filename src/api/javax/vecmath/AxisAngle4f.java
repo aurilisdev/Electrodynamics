@@ -159,7 +159,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param angle
 	 *            the angle of rotation in radians
 	 */
-	public final void set(float x, float y, float z, float angle) {
+	public final void set(float x, float y, float z, float angle)
+	{
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -173,7 +174,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param a
 	 *            the array of length 4 containing x,y,z,angle in order
 	 */
-	public final void set(float[] a) {
+	public final void set(float[] a)
+	{
 		x = a[0];
 		y = a[1];
 		z = a[2];
@@ -186,7 +188,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param a1
 	 *            the axis-angle to be copied
 	 */
-	public final void set(AxisAngle4f a1) {
+	public final void set(AxisAngle4f a1)
+	{
 		x = a1.x;
 		y = a1.y;
 		z = a1.z;
@@ -199,7 +202,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param a1
 	 *            the axis-angle to be copied
 	 */
-	public final void set(AxisAngle4d a1) {
+	public final void set(AxisAngle4d a1)
+	{
 		x = (float) a1.x;
 		y = (float) a1.y;
 		z = (float) a1.z;
@@ -217,7 +221,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.2
 	 */
-	public final void set(Vector3f axis, float angle) {
+	public final void set(Vector3f axis, float angle)
+	{
 		x = axis.x;
 		y = axis.y;
 		z = axis.z;
@@ -230,7 +235,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param a
 	 *            the array
 	 */
-	public final void get(float[] a) {
+	public final void get(float[] a)
+	{
 		a[0] = x;
 		a[1] = y;
 		a[2] = z;
@@ -246,7 +252,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param q1
 	 *            the Quat4f
 	 */
-	public final void set(Quat4f q1) {
+	public final void set(Quat4f q1)
+	{
 		double mag = q1.x * q1.x + q1.y * q1.y + q1.z * q1.z;
 
 		if (mag > EPS) {
@@ -274,7 +281,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param q1
 	 *            the Quat4d
 	 */
-	public final void set(Quat4d q1) {
+	public final void set(Quat4d q1)
+	{
 		double mag = q1.x * q1.x + q1.y * q1.y + q1.z * q1.z;
 
 		if (mag > EPS) {
@@ -302,7 +310,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param m1
 	 *            the matrix4f
 	 */
-	public final void set(Matrix4f m1) {
+	public final void set(Matrix4f m1)
+	{
 		Matrix3f m3f = new Matrix3f();
 
 		m1.get(m3f);
@@ -340,7 +349,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param m1
 	 *            the matrix4d
 	 */
-	public final void set(Matrix4d m1) {
+	public final void set(Matrix4d m1)
+	{
 		Matrix3d m3d = new Matrix3d();
 
 		m1.get(m3d);
@@ -378,7 +388,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param m1
 	 *            the matrix3f
 	 */
-	public final void set(Matrix3f m1) {
+	public final void set(Matrix3f m1)
+	{
 		x = m1.m21 - m1.m12;
 		y = m1.m02 - m1.m20;
 		z = m1.m10 - m1.m01;
@@ -412,7 +423,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param m1
 	 *            the matrix3d
 	 */
-	public final void set(Matrix3d m1) {
+	public final void set(Matrix3d m1)
+	{
 
 		x = (float) (m1.m21 - m1.m12);
 		y = (float) (m1.m02 - m1.m20);
@@ -445,7 +457,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @return the String representation
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "(" + x + ", " + y + ", " + z + ", " + angle + ")";
 	}
 
@@ -457,7 +470,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *            the axis-angle with which the comparison is made
 	 * @return true or false
 	 */
-	public boolean equals(AxisAngle4f a1) {
+	public boolean equals(AxisAngle4f a1)
+	{
 		try {
 			return x == a1.x && y == a1.y && z == a1.z
 					&& angle == a1.angle;
@@ -477,7 +491,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @return true or false
 	 */
 	@Override
-	public boolean equals(Object o1) {
+	public boolean equals(Object o1)
+	{
 		try {
 			AxisAngle4f a2 = (AxisAngle4f) o1;
 			return x == a2.x && y == a2.y && z == a2.z
@@ -502,7 +517,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @param epsilon
 	 *            the threshold value
 	 */
-	public boolean epsilonEquals(AxisAngle4f a1, float epsilon) {
+	public boolean epsilonEquals(AxisAngle4f a1, float epsilon)
+	{
 		float diff;
 
 		diff = x - a1.x;
@@ -539,7 +555,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @return the integer hash code value
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		long bits = 1L;
 		bits = VecMathUtil.hashFloatBits(bits, x);
 		bits = VecMathUtil.hashFloatBits(bits, y);
@@ -558,7 +575,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 * @since vecmath 1.3
 	 */
 	@Override
-	public Object clone() {
+	public Object clone()
+	{
 		// Since there are no arrays we can just use Object.clone()
 		try {
 			return super.clone();
@@ -576,7 +594,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final float getAngle() {
+	public final float getAngle()
+	{
 		return angle;
 	}
 
@@ -589,7 +608,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setAngle(float angle) {
+	public final void setAngle(float angle)
+	{
 		this.angle = angle;
 	}
 
@@ -600,7 +620,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final float getX() {
+	public final float getX()
+	{
 		return x;
 	}
 
@@ -612,7 +633,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setX(float x) {
+	public final void setX(float x)
+	{
 		this.x = x;
 	}
 
@@ -623,7 +645,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final float getY() {
+	public final float getY()
+	{
 		return y;
 	}
 
@@ -635,7 +658,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setY(float y) {
+	public final void setY(float y)
+	{
 		this.y = y;
 	}
 
@@ -646,7 +670,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final float getZ() {
+	public final float getZ()
+	{
 		return z;
 	}
 
@@ -658,7 +683,8 @@ public class AxisAngle4f implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setZ(float z) {
+	public final void setZ(float z)
+	{
 		this.z = z;
 	}
 

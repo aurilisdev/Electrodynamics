@@ -48,7 +48,8 @@ public class Physica {
 	public static ConfigCore config;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event)
+	{
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + CoreReferences.DOMAIN);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, sidedProxy);
@@ -85,23 +86,27 @@ public class Physica {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event)
+	{
 		proxyLoader.init();
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event)
+	{
 		proxyLoader.postInit();
 	}
 
 	@EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event) {
+	public void loadComplete(FMLLoadCompleteEvent event)
+	{
 		proxyLoader.loadComplete();
 		IRecipeRegister.InitializeSide(RecipeSide.Core);
 	}
 
 	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event) {
+	public void serverStarting(FMLServerStartingEvent event)
+	{
 		event.registerServerCommand(new CommandPhysica());
 	}
 }

@@ -20,7 +20,8 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		double ticksLeft = 0;
 		if (host.hasFuelRod()) {
@@ -35,7 +36,8 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawTexturedModalRect(containerWidth + (xSize - electricityMeterWidth) / 2, containerHeight + 18, 54, 0, electricityMeterWidth, electricityMeterHeight);

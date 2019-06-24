@@ -24,7 +24,8 @@ public class TileMeltedReactor extends TileBase {
 	public int temperature = 6000;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (ticks % 10 == 0) {
 			if (worldObj.getBlock(xCoord, yCoord - 1, zCoord).getMaterial().isReplaceable()) {
@@ -106,7 +107,8 @@ public class TileMeltedReactor extends TileBase {
 	}
 
 	@Override
-	public void updateClient(int ticks) {
+	public void updateClient(int ticks)
+	{
 		super.updateClient(ticks);
 		if (radiation > 0) {
 			@SuppressWarnings("unchecked")
@@ -139,26 +141,30 @@ public class TileMeltedReactor extends TileBase {
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(radiation);
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readSynchronizationPacket(buf, player);
 		radiation = buf.readInt();
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		tag.setInteger("radiation", radiation);
 		tag.setInteger("heatTime", temperature);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		radiation = tag.getInteger("radiation");
 		temperature = tag.getInteger("heatTime");

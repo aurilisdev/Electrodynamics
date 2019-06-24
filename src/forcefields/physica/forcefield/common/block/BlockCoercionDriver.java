@@ -23,17 +23,20 @@ public class BlockCoercionDriver extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileCoercionDriver();
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "SES", "FBF", "SES", 'S', "plateSteel", 'F', ForcefieldItemRegister.itemFocusMatrix, 'B', "phyBattery", 'E', "circuitElite");
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Forcefield;
 	}
 }

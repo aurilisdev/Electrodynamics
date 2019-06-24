@@ -115,7 +115,8 @@ public class Point3f extends Tuple3f implements java.io.Serializable {
 	 *            the other point
 	 * @return the square of the distance
 	 */
-	public final float distanceSquared(Point3f p1) {
+	public final float distanceSquared(Point3f p1)
+	{
 		float dx, dy, dz;
 
 		dx = x - p1.x;
@@ -131,7 +132,8 @@ public class Point3f extends Tuple3f implements java.io.Serializable {
 	 *            the other point
 	 * @return the distance
 	 */
-	public final float distance(Point3f p1) {
+	public final float distance(Point3f p1)
+	{
 		float dx, dy, dz;
 
 		dx = x - p1.x;
@@ -149,7 +151,8 @@ public class Point3f extends Tuple3f implements java.io.Serializable {
 	 *            the other point
 	 * @return the L-1 distance
 	 */
-	public final float distanceL1(Point3f p1) {
+	public final float distanceL1(Point3f p1)
+	{
 		return Math.abs(x - p1.x) + Math.abs(y - p1.y) + Math.abs(z - p1.z);
 	}
 
@@ -162,7 +165,8 @@ public class Point3f extends Tuple3f implements java.io.Serializable {
 	 *            the other point
 	 * @return the L-infinite distance
 	 */
-	public final float distanceLinf(Point3f p1) {
+	public final float distanceLinf(Point3f p1)
+	{
 		float tmp;
 		tmp = Math.max(Math.abs(x - p1.x), Math.abs(y - p1.y));
 		return Math.max(tmp, Math.abs(z - p1.z));
@@ -176,7 +180,8 @@ public class Point3f extends Tuple3f implements java.io.Serializable {
 	 * @param p1
 	 *            the source Point4f, which is not modified
 	 */
-	public final void project(Point4f p1) {
+	public final void project(Point4f p1)
+	{
 		float oneOw;
 
 		oneOw = 1 / p1.w;

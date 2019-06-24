@@ -14,7 +14,8 @@ public class CommonProxy implements IGuiHandler, IContent {
 	public static final int SLOT_GUI_ID = 5003;
 
 	@Override
-	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+	{
 		switch (id) {
 		case TILE_GUI_ID:
 			return world.getTileEntity(x, y, z) instanceof IGuiInterface ? ((IGuiInterface) world.getTileEntity(x, y, z)).getClientGuiElement(id, player) : null;
@@ -29,7 +30,8 @@ public class CommonProxy implements IGuiHandler, IContent {
 	}
 
 	@Override
-	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+	{
 		switch (id) {
 		case TILE_GUI_ID:
 			return world.getTileEntity(x, y, z) instanceof IGuiInterface ? ((IGuiInterface) world.getTileEntity(x, y, z)).getServerGuiElement(id, player) : null;
@@ -43,13 +45,16 @@ public class CommonProxy implements IGuiHandler, IContent {
 		}
 	}
 
-	public void onInit() {
+	public void onInit()
+	{
 	}
 
-	public void onPostInit() {
+	public void onPostInit()
+	{
 	}
 
-	public void onPreInit() {
+	public void onPreInit()
+	{
 	}
 
 }

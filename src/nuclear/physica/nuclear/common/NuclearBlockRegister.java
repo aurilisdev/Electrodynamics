@@ -64,7 +64,8 @@ public class NuclearBlockRegister implements IContent {
 	public static BlockRadioactiveDirt blockRadioactiveDirt;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		GameRegistry.registerBlock(blockParticleAccelerator = new BlockParticleAccelerator(), "accelerator");
 		GameRegistry.registerTileEntity(TileParticleAccelerator.class, NuclearReferences.PREFIX + "accelerator");
 		GameRegistry.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), "assembler");

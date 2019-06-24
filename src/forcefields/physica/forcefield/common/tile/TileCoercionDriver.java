@@ -38,34 +38,40 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxEnergyStored());
 	protected Set<ITileBase> fortronConnections = new HashSet<>();
 
-	public int getMaxEnergyStored() {
+	public int getMaxEnergyStored()
+	{
 		return (int) (BASE_ENERGY + BASE_ENERGY * 10 * Math.pow(1.02, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3)) +
 				BASE_ENERGY * 10 * Math.pow(1.02, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
 	}
 
 	@Override
-	public Set<ITileBase> getFortronConnections() {
+	public Set<ITileBase> getFortronConnections()
+	{
 		return fortronConnections;
 	}
 
 	@Override
-	public boolean canRecieveFortron(IInvFortronTile from) {
+	public boolean canRecieveFortron(IInvFortronTile from)
+	{
 		return false;
 	}
 
-	public int getFortronTransferRate() {
+	public int getFortronTransferRate()
+	{
 		return (int) (BASE_ENERGY + BASE_ENERGY * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))) / 3;
 	}
 
 	@Override
-	public void onFirstUpdate() {
+	public void onFirstUpdate()
+	{
 		invalidateConnections();
 		fortronConnections.clear();
 		findNearbyConnections(TileFortronCapacitor.class);
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (ticks % 20 == 0) {
 			validateConnections();
@@ -79,12 +85,14 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox()
+	{
 		return canSendBeam() ? super.getRenderBoundingBox().expand(5, 5, 5) : super.getRenderBoundingBox();
 	}
 
 	@Override
-	public void updateCommon(int ticks) {
+	public void updateCommon(int ticks)
+	{
 		super.updateCommon(ticks);
 		fortronTank.setCapacity(getMaxEnergyStored());
 		if (fortronTank.getCapacity() < fortronTank.getFluidAmount()) {
@@ -99,19 +107,22 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public void invalidate() {
+	public void invalidate()
+	{
 		super.invalidate();
 		invalidateConnections();
 	}
 	private int frequency;
 
 	@Override
-	public int getFrequency() {
+	public int getFrequency()
+	{
 		return frequency;
 	}
 
 	@Override
-	public void setFrequency(int freq) {
+	public void setFrequency(int freq)
+	{
 		int oldFrequency = frequency;
 		frequency = freq;
 		if (oldFrequency != freq) {
@@ -120,7 +131,8 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(isActivated);
 		dataList.add(frequency);
@@ -128,7 +140,8 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		isActivated = buf.readBoolean();
 		frequency = buf.readInt();
@@ -136,79 +149,93 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		tag.setInteger("frequency", frequency);
 		fortronTank.writeToNBT(tag);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		frequency = tag.getInteger("frequency");
 		fortronTank.readFromNBT(tag);
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
+	{
 		return ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return stack == null ? false
 				: stack.getItem() == null ? false : slot >= SLOT_MODULE1 && slot <= SLOT_MODULE3 ? stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule
 						: slot == SLOT_CARD ? stack.getItem() == ForcefieldItemRegister.itemFrequency : true;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 4;
 	}
 
 	@Override
-	public boolean isActivated() {
+	public boolean isActivated()
+	{
 		return isActivated;
 	}
 
 	@Override
-	public int getEnergyUsage() {
+	public int getEnergyUsage()
+	{
 		return getFortronTransferRate();
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return getMaxEnergyStored();
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return true;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiCoercionDriver(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerCoercionDriver(player, this);
 	}
 
 	@Override
-	public FluidTank getFortronTank() {
+	public FluidTank getFortronTank()
+	{
 		return fortronTank;
 	}
 

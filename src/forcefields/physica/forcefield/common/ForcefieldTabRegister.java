@@ -10,11 +10,13 @@ public class ForcefieldTabRegister implements IContent {
 	public static CreativeTabs forcefieldTab;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield") {
 
 			@Override
-			public Item getTabIconItem() {
+			public Item getTabIconItem()
+			{
 				return Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor);
 			}
 		};

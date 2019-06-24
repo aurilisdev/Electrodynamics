@@ -116,7 +116,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @return a String with the values
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "(" + (x & 0xff) +
 				", " + (y & 0xff) +
 				", " + (z & 0xff) + ")";
@@ -129,7 +130,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            array of length 3 into which the component values are copied
 	 */
-	public final void get(byte[] t) {
+	public final void get(byte[] t)
+	{
 
 		t[0] = x;
 		t[1] = y;
@@ -143,7 +145,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the tuple into which the values are placed
 	 */
-	public final void get(Tuple3b t1) {
+	public final void get(Tuple3b t1)
+	{
 		t1.x = x;
 		t1.y = y;
 		t1.z = z;
@@ -156,7 +159,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @param t1
 	 *            the source tuple for the memberwise copy
 	 */
-	public final void set(Tuple3b t1) {
+	public final void set(Tuple3b t1)
+	{
 		x = t1.x;
 		y = t1.y;
 		z = t1.z;
@@ -169,7 +173,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @param t
 	 *            array of length 3 which is the source for the memberwise copy
 	 */
-	public final void set(byte[] t) {
+	public final void set(byte[] t)
+	{
 		x = t[0];
 		y = t[1];
 		z = t[2];
@@ -183,7 +188,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *            the tuple with which the comparison is made
 	 * @return true or false
 	 */
-	public boolean equals(Tuple3b t1) {
+	public boolean equals(Tuple3b t1)
+	{
 		try {
 			return x == t1.x && y == t1.y && z == t1.z;
 		} catch (NullPointerException e2) {
@@ -201,7 +207,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *            the object with which the comparison is made
 	 */
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object t1)
+	{
 		try {
 			Tuple3b t2 = (Tuple3b) t1;
 			return x == t2.x && y == t2.y && z == t2.z;
@@ -223,7 +230,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @return the integer hash code value
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return (x & 0xff) << 0 |
 				(y & 0xff) << 8 |
 				(z & 0xff) << 16;
@@ -239,7 +247,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 * @since vecmath 1.3
 	 */
 	@Override
-	public Object clone() {
+	public Object clone()
+	{
 		// Since there are no arrays we can just use Object.clone()
 		try {
 			return super.clone();
@@ -256,7 +265,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final byte getX() {
+	public final byte getX()
+	{
 		return x;
 	}
 
@@ -268,7 +278,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setX(byte x) {
+	public final void setX(byte x)
+	{
 		this.x = x;
 	}
 
@@ -279,7 +290,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final byte getY() {
+	public final byte getY()
+	{
 		return y;
 	}
 
@@ -291,7 +303,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setY(byte y) {
+	public final void setY(byte y)
+	{
 		this.y = y;
 	}
 
@@ -302,7 +315,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final byte getZ() {
+	public final byte getZ()
+	{
 		return z;
 	}
 
@@ -314,7 +328,8 @@ public abstract class Tuple3b implements java.io.Serializable, Cloneable {
 	 *
 	 * @since vecmath 1.5
 	 */
-	public final void setZ(byte z) {
+	public final void setZ(byte z)
+	{
 		this.z = z;
 	}
 

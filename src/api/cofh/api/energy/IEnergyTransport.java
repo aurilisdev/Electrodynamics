@@ -55,7 +55,8 @@ public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 		 * {@link #BALANCE} is considered its own opposite.<br>
 		 * {@link #SEND} is the opposite of {@link #RECEIVE} and visa versa.
 		 */
-		public InterfaceType getOpposite() {
+		public InterfaceType getOpposite()
+		{
 
 			return this == BALANCE ? BALANCE : this == SEND ? RECEIVE : SEND;
 		}
@@ -64,7 +65,8 @@ public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 		 * Returns the next InterfaceType as described in
 		 * {@link IEnergyTransport#getTransportState}
 		 */
-		public InterfaceType rotate() {
+		public InterfaceType rotate()
+		{
 
 			return rotate(true);
 		}
@@ -78,7 +80,8 @@ public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 		 *            {@link IEnergyTransport#getTransportState} (<tt>true</tt>)
 		 *            or to step in the opposite direction
 		 */
-		public InterfaceType rotate(boolean forward) {
+		public InterfaceType rotate(boolean forward)
+		{
 
 			if (forward) {
 				return this == BALANCE ? RECEIVE : this == RECEIVE ? SEND : BALANCE;

@@ -30,7 +30,8 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	private boolean hasDeuterium;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (canProcess()) {
 			hasDeuterium = true;
@@ -46,13 +47,15 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 		}
 	}
 
-	private float getTicksAddition() {
+	private float getTicksAddition()
+	{
 		ForgeDirection facing = getFacing().getOpposite();
 		TileFissionReactor reactor = (TileFissionReactor) worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		return reactor.temperature / TICKS_REQUIRED;
 	}
 
-	public boolean canProcess() {
+	public boolean canProcess()
+	{
 		ForgeDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor) {
@@ -68,7 +71,8 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 		}
 	}
 
-	private void process() {
+	private void process()
+	{
 		ItemStack output = getStackInSlot(SLOT_OUTPUT);
 		getStackInSlot(SLOT_INPUT).stackSize--;
 		if (getStackInSlot(SLOT_INPUT).stackSize <= 0) {
@@ -82,60 +86,71 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(operatingTicks);
 		dataList.add(hasDeuterium);
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		operatingTicks = buf.readFloat();
 		hasDeuterium = buf.readBoolean();
 	}
 
-	public float getOperatingTicks() {
+	public float getOperatingTicks()
+	{
 		return operatingTicks;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 2;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return slot == SLOT_INPUT ? stack != null && stack.getItem() == NuclearItemRegister.itemDeuteriumCell : false;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiNeutronCaptureChamber(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerNeutronCaptureChamber(player, this);
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
 		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_DOWN;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return true;
 	}
 
-	public boolean hasDeuterium() {
+	public boolean hasDeuterium()
+	{
 		return hasDeuterium;
 	}
 }

@@ -52,7 +52,8 @@ public class PhysicaForcefields {
 	public static int DEFAULT_COLOR = Color.CYAN.brighter().brighter().getRGB();
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event)
+	{
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + ForcefieldReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
@@ -89,31 +90,37 @@ public class PhysicaForcefields {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event)
+	{
 		proxyLoader.init();
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event)
+	{
 		proxyLoader.postInit();
 	}
 
 	@EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event) {
+	public void loadComplete(FMLLoadCompleteEvent event)
+	{
 		proxyLoader.loadComplete();
 		IRecipeRegister.InitializeSide(RecipeSide.Forcefield);
 	}
 
 	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event) {
+	public void serverStarting(FMLServerStartingEvent event)
+	{
 		event.registerServerCommand(new SetIdentityCommand());
 	}
 
-	public static ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z) {
+	public static ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z)
+	{
 		return ForcefieldEventHandler.INSTANCE.getRelevantConstructors(world, x, y, z);
 	}
 
-	public static boolean isInForcefields(ArrayList<TileFortronFieldConstructor> constructors, double x, double y, double z) {
+	public static boolean isInForcefields(ArrayList<TileFortronFieldConstructor> constructors, double x, double y, double z)
+	{
 		for (TileFortronFieldConstructor constructor : constructors) {
 			if (constructor.isInForcefield(x, y, z)) {
 				return true;

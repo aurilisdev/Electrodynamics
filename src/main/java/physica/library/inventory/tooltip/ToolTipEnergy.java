@@ -15,7 +15,8 @@ public class ToolTipEnergy extends ToolTip {
 	}
 
 	@Override
-	public String getLocalizedTooltip() {
+	public String getLocalizedTooltip()
+	{
 		if (reciever.getEnergyStored(ForgeDirection.UNKNOWN) <= 0) {
 			return "Empty";
 		}

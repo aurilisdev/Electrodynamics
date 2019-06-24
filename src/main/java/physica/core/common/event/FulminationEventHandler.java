@@ -20,22 +20,26 @@ public class FulminationEventHandler {
 	public static final FulminationEventHandler INSTANCE = new FulminationEventHandler();
 	private static final Set<TileFulmination> set = new HashSet<>();
 
-	public void register(TileFulmination tile) {
+	public void register(TileFulmination tile)
+	{
 		if (!set.contains(tile)) {
 			set.add(tile);
 		}
 	}
 
-	public boolean isRegistered(TileFulmination tile) {
+	public boolean isRegistered(TileFulmination tile)
+	{
 		return set.contains(tile);
 	}
 
-	public void unregister(TileFulmination tile) {
+	public void unregister(TileFulmination tile)
+	{
 		set.remove(tile);
 	}
 
 	@SubscribeEvent
-	public void onPreExplosion(PostExplosionEvent event) {
+	public void onPreExplosion(PostExplosionEvent event)
+	{
 		if (event.explosion != null) {
 			float size = event.explosion.explosionSize;
 			onExplosionImpl(event.iExplosion.getEnergy(), size, event.world, event.x, event.y, event.z);
@@ -43,14 +47,16 @@ public class FulminationEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onExplosionEvent(resonant.api.explosion.ExplosionEvent event) {
+	public void onExplosionEvent(resonant.api.explosion.ExplosionEvent event)
+	{
 		if (event.explosion != null) {
 			float size = event.explosion.explosionSize;
 			onExplosionImpl(event.iExplosion.getEnergy(), size, event.world, event.x, event.y, event.z);
 		}
 	}
 
-	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z) {
+	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z)
+	{
 		if (size > 0 && energy > 0) {
 			Iterator<TileFulmination> iterator = set.iterator();
 			while (iterator.hasNext()) {
@@ -71,7 +77,8 @@ public class FulminationEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onExplosion(ExplosionEvent.Detonate event) {
+	public void onExplosion(ExplosionEvent.Detonate event)
+	{
 		if (event.explosion != null) {
 			float size = event.explosion.explosionSize;
 			if (size > 0.0F) {

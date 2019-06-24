@@ -29,7 +29,8 @@ public class ItemMetaHolder extends ItemUpdateable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
+	public void registerIcons(IIconRegister register)
+	{
 		subIcons = new IIcon[subItems.size()];
 		for (int i = 0; i < subItems.size(); i++) {
 			subIcons[i] = register.registerIcon(CoreReferences.PREFIX + subItems.get(i));
@@ -38,24 +39,28 @@ public class ItemMetaHolder extends ItemUpdateable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int meta) {
+	public IIcon getIconFromDamage(int meta)
+	{
 		return subIcons[meta];
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack) {
+	public String getUnlocalizedName(ItemStack stack)
+	{
 		return "item." + subItems.get(stack.getItemDamage());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list) {
+	public void getSubItems(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
+	{
 		for (int i = 0; i < subItems.size(); i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
-	public ItemMetaHolder addSubItem(String name) {
+	public ItemMetaHolder addSubItem(String name)
+	{
 		subItems.add(name);
 		return this;
 	}

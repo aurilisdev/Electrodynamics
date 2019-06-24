@@ -32,7 +32,8 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 	}
 
 	@Override
-	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame)
+	{
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -60,7 +61,8 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 
 	}
 
-	public static void drawBeams(Set<Location> beams, Location start, float width, float deltaFrame) {
+	public static void drawBeams(Set<Location> beams, Location start, float width, float deltaFrame)
+	{
 		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 		float xx = (float) (player.prevPosX + (player.posX - player.prevPosX) * deltaFrame - EntityFX.interpPosX);
 		float yy = (float) (player.prevPosY + (player.posY - player.prevPosY) * deltaFrame - EntityFX.interpPosY);
@@ -79,7 +81,8 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-	public static void addBeamToTesselator(Location Start, Location End, Location Player, float width) {
+	public static void addBeamToTesselator(Location Start, Location End, Location Player, float width)
+	{
 		Location PlayerStart = Location.Sub(Start, Player);
 		Location StartEnd = Location.Sub(End, Start);
 
@@ -98,7 +101,8 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 
 	}
 
-	private static void addQuadVertex(Location p1, Location p2, Location p3, Location p4) {
+	private static void addQuadVertex(Location p1, Location p2, Location p3, Location p4)
+	{
 		Random rand = new Random();
 		Tessellator.instance.addVertexWithUV(p1.getX(), p1.getY(), p1.getZ(), 0.0D + rand.nextDouble(), 0.0D + rand.nextDouble());
 		Tessellator.instance.addVertexWithUV(p2.getX(), p2.getY(), p2.getZ(), 1.0D - rand.nextDouble(), 0.0D + rand.nextDouble());

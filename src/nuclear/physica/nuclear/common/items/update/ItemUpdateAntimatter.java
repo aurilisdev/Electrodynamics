@@ -12,13 +12,15 @@ public class ItemUpdateAntimatter implements IItemUpdate, IBaseUtilities {
 	public static int FULMINATION_ANTIMATTER_ENERGY_SCALE = 1000;
 	protected float scale = 1;
 
-	public ItemUpdateAntimatter setScale(float scale) {
+	public ItemUpdateAntimatter setScale(float scale)
+	{
 		this.scale = scale;
 		return this;
 	}
 
 	@Override
-	public void onEntityItemUpdate(ItemStack stack, EntityItem entity) {
+	public void onEntityItemUpdate(ItemStack stack, EntityItem entity)
+	{
 		World world = entity.worldObj;
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
 			return;

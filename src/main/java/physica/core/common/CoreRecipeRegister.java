@@ -10,7 +10,8 @@ import physica.api.core.IContent;
 public class CoreRecipeRegister implements IContent, IBaseUtilities {
 
 	@Override
-	public void loadComplete() {
+	public void loadComplete()
+	{
 		//Circuits
 		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CRC", "RPR", "CRC", 'C', "ingotCopper", 'R', Items.redstone, 'P', "plateSteel");
 		addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CRC", "RPR", "CRC", 'C', "ingotCopper", 'R', Items.redstone, 'P', "plateIron");

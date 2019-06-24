@@ -31,27 +31,32 @@ import physica.nuclear.common.tile.TileChemicalExtractor;
 public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	@Override
-	public String getRecipeName() {
+	public String getRecipeName()
+	{
 		return "Chemical Extractor";
 	}
 
-	public String getRecipeID() {
+	public String getRecipeID()
+	{
 		return "Physica.ChemicalExtractor";
 	}
 
 	@Override
-	public Class<GuiChemicalExtractor> getGuiClass() {
+	public Class<GuiChemicalExtractor> getGuiClass()
+	{
 		return GuiChemicalExtractor.class;
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate()
+	{
 		super.onUpdate();
 		cycleticks += TileChemicalExtractor.TICKS_REQUIRED / 50;
 	}
 
 	@Override
-	public void drawBackground(int i) {
+	public void drawBackground(int i)
+	{
 		recipe theRecipe = (recipe) arecipes.get(i);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -68,23 +73,27 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void drawExtras(int recipe) {
+	public void drawExtras(int recipe)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawProgressBar(36, 24, 18, 15, 22, 15, TileChemicalExtractor.TICKS_REQUIRED, 0);
 	}
 
 	@Override
-	public void loadTransferRects() {
+	public void loadTransferRects()
+	{
 		this.transferRects.add(new RecipeTransferRect(new Rectangle(36, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
-	public int recipiesPerPage() {
+	public int recipiesPerPage()
+	{
 		return 2;
 	}
 
 	@Override
-	public void loadCraftingRecipes(String outputId, Object... results) {
+	public void loadCraftingRecipes(String outputId, Object... results)
+	{
 		if (outputId.equals(getRecipeID())) {
 			for (ChemicalExtractorRecipe newRecipe : NuclearCustomRecipeHelper.getExtractorRecipes()) {
 				if (newRecipe.getInput() != null) {
@@ -107,7 +116,8 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadUsageRecipes(String inputId, Object... ingredients) {
+	public void loadUsageRecipes(String inputId, Object... ingredients)
+	{
 		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && NuclearCustomRecipeHelper.getExtractorRecipe(((ItemStack) ingredients[0]).getItem()) != null) {
 			ChemicalExtractorRecipe newRecipe = NuclearCustomRecipeHelper.getExtractorRecipe(((ItemStack) ingredients[0]).getItem());
 			if (newRecipe.getInput() != null) {
@@ -129,7 +139,8 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public java.util.List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe) {
+	public java.util.List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
+	{
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
@@ -144,7 +155,8 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public boolean mouseClicked(GuiRecipe gui, int button, int recipe) {
+	public boolean mouseClicked(GuiRecipe gui, int button, int recipe)
+	{
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
@@ -164,7 +176,8 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe) {
+	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe)
+	{
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
@@ -203,12 +216,14 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 		}
 
 		@Override
-		public PositionedStack getIngredient() {
+		public PositionedStack getIngredient()
+		{
 			return new PositionedStack(new ItemStack(iteminput), 82, 22);
 		}
 
 		@Override
-		public List<PositionedStack> getIngredients() {
+		public List<PositionedStack> getIngredients()
+		{
 			List<PositionedStack> ingredients = new ArrayList<>();
 			if (oreDict != null) {
 				List<ItemStack> items = new ArrayList<>(OreDictionary.getOres(oreDict));
@@ -220,7 +235,8 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 		}
 
 		@Override
-		public PositionedStack getResult() {
+		public PositionedStack getResult()
+		{
 			return new PositionedStack(itemoutput, 102, 22);
 		}
 	}

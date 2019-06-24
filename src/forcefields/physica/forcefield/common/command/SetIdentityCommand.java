@@ -15,22 +15,26 @@ import physica.forcefield.common.ForcefieldItemRegister;
 public class SetIdentityCommand extends CommandBase {
 
 	@Override
-	public String getCommandName() {
+	public String getCommandName()
+	{
 		return "setid";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getCommandUsage(ICommandSender sender)
+	{
 		return "/setid <username/uuid>";
 	}
 
 	@Override
-	public int getRequiredPermissionLevel() {
+	public int getRequiredPermissionLevel()
+	{
 		return 2;
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void processCommand(ICommandSender sender, String[] args)
+	{
 		if (args.length == 0) {
 			sender.addChatMessage(new ChatComponentText("\u00A7cUsage: " + getCommandUsage(sender)));
 			return;

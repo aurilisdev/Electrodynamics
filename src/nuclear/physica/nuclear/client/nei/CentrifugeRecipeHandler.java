@@ -30,27 +30,32 @@ import physica.nuclear.common.tile.TileCentrifuge;
 public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	@Override
-	public String getRecipeName() {
+	public String getRecipeName()
+	{
 		return "Gas Centrifuge";
 	}
 
-	public String getRecipeID() {
+	public String getRecipeID()
+	{
 		return "Physica.GasCentrifuge";
 	}
 
 	@Override
-	public Class<GuiCentrifuge> getGuiClass() {
+	public Class<GuiCentrifuge> getGuiClass()
+	{
 		return GuiCentrifuge.class;
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate()
+	{
 		super.onUpdate();
 		cycleticks += TileCentrifuge.TICKS_REQUIRED / 50;
 	}
 
 	@Override
-	public void drawBackground(int i) {
+	public void drawBackground(int i)
+	{
 		recipe theRecipe = (recipe) arecipes.get(i);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -68,7 +73,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadCraftingRecipes(String outputId, Object... results) {
+	public void loadCraftingRecipes(String outputId, Object... results)
+	{
 
 		if (outputId.equals(getRecipeID())) {
 			arecipes.add(new recipe(2500, NuclearItemRegister.itemUranium238, .828f));
@@ -83,23 +89,27 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void drawExtras(int recipe) {
+	public void drawExtras(int recipe)
+	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawProgressBar(36, 24, 18, 15, 22, 15, TileCentrifuge.TICKS_REQUIRED, 0);
 	}
 
 	@Override
-	public void loadTransferRects() {
+	public void loadTransferRects()
+	{
 		this.transferRects.add(new RecipeTransferRect(new Rectangle(36, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
-	public int recipiesPerPage() {
+	public int recipiesPerPage()
+	{
 		return 2;
 	}
 
 	@Override
-	public java.util.List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe) {
+	public java.util.List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
+	{
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
@@ -114,7 +124,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public boolean mouseClicked(GuiRecipe gui, int button, int recipe) {
+	public boolean mouseClicked(GuiRecipe gui, int button, int recipe)
+	{
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
@@ -134,7 +145,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe) {
+	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe)
+	{
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
@@ -160,7 +172,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 		public float chance;
 
 		@Override
-		public PositionedStack getResult() {
+		public PositionedStack getResult()
+		{
 			if (itemOutput.getItem() == NuclearItemRegister.itemUranium238) {
 				return new PositionedStack(itemOutput, 102, 25);
 			} else {
@@ -176,7 +189,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 		}
 
 		@Override
-		public PositionedStack getIngredient() {
+		public PositionedStack getIngredient()
+		{
 			return null;
 		}
 	}

@@ -10,11 +10,13 @@ public class CoreTabRegister implements IContent {
 	public static CreativeTabs coreTab;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core") {
 
 			@Override
-			public Item getTabIconItem() {
+			public Item getTabIconItem()
+			{
 				return CoreItemRegister.itemWrench;
 			}
 		};

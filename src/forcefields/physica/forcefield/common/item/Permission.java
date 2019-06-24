@@ -27,11 +27,13 @@ public class Permission {
 		LIST.add(this);
 	}
 
-	public static Set<Permission> getPermissions() {
+	public static Set<Permission> getPermissions()
+	{
 		return LIST;
 	}
 
-	public static Permission getPermission(int id) {
+	public static Permission getPermission(int id)
+	{
 		Permission perm = null;
 		for (Permission permission : LIST) {
 			if (permission.id == id) {

@@ -33,7 +33,8 @@ public class PacketSystem implements IContent {
 	}
 
 	@Override
-	public void init() {
+	public void init()
+	{
 		channelEnumMap = NetworkRegistry.INSTANCE.newChannel(channel, new PacketEncoderDecoderHandler(), new PacketChannelInboundHandler());
 	}
 
@@ -43,7 +44,8 @@ public class PacketSystem implements IContent {
 	 * @param packet
 	 *            the packet to send.
 	 */
-	public void sendToAll(IPacket packet) {
+	public void sendToAll(IPacket packet)
+	{
 		// Null check is for JUnit
 		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
@@ -53,7 +55,8 @@ public class PacketSystem implements IContent {
 		}
 	}
 
-	public void sendToAllAround(IPacket message, NetworkRegistry.TargetPoint point) {
+	public void sendToAllAround(IPacket message, NetworkRegistry.TargetPoint point)
+	{
 		// Null check is for JUnit
 		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
@@ -64,15 +67,18 @@ public class PacketSystem implements IContent {
 		}
 	}
 
-	public void sendToAllAround(IPacket message, TileEntity tile) {
+	public void sendToAllAround(IPacket message, TileEntity tile)
+	{
 		sendToAllAround(message, tile, 64);
 	}
 
-	public void sendToAllAround(IPacket message, TileEntity tile, double range) {
+	public void sendToAllAround(IPacket message, TileEntity tile, double range)
+	{
 		sendToAllAround(message, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, range);
 	}
 
-	public void sendToAllAround(IPacket message, World world, double x, double y, double z, double range) {
+	public void sendToAllAround(IPacket message, World world, double x, double y, double z, double range)
+	{
 		if (world != null) {
 			sendToAllAround(message, new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, range));
 		}
@@ -84,7 +90,8 @@ public class PacketSystem implements IContent {
 	 * @param dimId
 	 *            the dimension ID to send to.
 	 */
-	public void sendToAllInDimension(IPacket packet, int dimId) {
+	public void sendToAllInDimension(IPacket packet, int dimId)
+	{
 		// Null check is for JUnit
 		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
@@ -95,7 +102,8 @@ public class PacketSystem implements IContent {
 		}
 	}
 
-	public void sendToAllInDimension(IPacket packet, World world) {
+	public void sendToAllInDimension(IPacket packet, World world)
+	{
 		sendToAllInDimension(packet, world.provider.dimensionId);
 	}
 
@@ -105,7 +113,8 @@ public class PacketSystem implements IContent {
 	 * @param player
 	 *            the player MP object
 	 */
-	public void sendToPlayer(IPacket packet, EntityPlayerMP player) {
+	public void sendToPlayer(IPacket packet, EntityPlayerMP player)
+	{
 		// Null check is for JUnit
 		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
@@ -116,7 +125,8 @@ public class PacketSystem implements IContent {
 		}
 	}
 
-	public void sendToServer(IPacket packet) {
+	public void sendToServer(IPacket packet)
+	{
 		// Null check is for JUnit
 		if (channelEnumMap != null) {
 			if (channelEnumMap.get(Side.CLIENT) != null) {
@@ -130,7 +140,8 @@ public class PacketSystem implements IContent {
 		}
 	}
 
-	public Packet toMCPacket(IPacket packet) {
+	public Packet toMCPacket(IPacket packet)
+	{
 		return channelEnumMap.get(FMLCommonHandler.instance().getEffectiveSide()).generatePacketFrom(packet);
 	}
 }

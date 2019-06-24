@@ -28,12 +28,14 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	protected boolean isMain = false;
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox()
+	{
 		return isMain ? super.getRenderBoundingBox().expand(1, 1, 1)
 				: hasMain ? AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0) : super.getRenderBoundingBox();
 	}
 
-	public void attemptConstruct() {
+	public void attemptConstruct()
+	{
 		boolean canConstruct = true;
 		int radius = 1;
 		for (int i = -radius; i <= radius; i++) {
@@ -66,7 +68,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		}
 	}
 
-	public void tryDeconstruct() {
+	public void tryDeconstruct()
+	{
 		if (isMain) {
 			int radius = 1;
 			for (int i = -radius; i <= radius; i++) {
@@ -97,18 +100,21 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 
 	}
 
-	protected void addToConstruction(TileTurbine main) {
+	protected void addToConstruction(TileTurbine main)
+	{
 		mainX = main.xCoord;
 		mainY = main.yCoord;
 		mainZ = main.zCoord;
 		hasMain = true;
 	}
 
-	public boolean hasMain() {
+	public boolean hasMain()
+	{
 		return hasMain;
 	}
 
-	public boolean isMain() {
+	public boolean isMain()
+	{
 		return isMain;
 	}
 
@@ -116,7 +122,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	public boolean clientSpin = false;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		if (hasMain && !isMain) {
 			return;
 		}
@@ -155,12 +162,14 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public int getSyncRate() {
+	public int getSyncRate()
+	{
 		return 1;
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(steam);
 		dataList.add(isGenerating);
@@ -173,7 +182,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readSynchronizationPacket(buf, player);
 		steam = buf.readInt();
 		isGenerating = buf.readBoolean();
@@ -186,12 +196,14 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return from.equals(ForgeDirection.UP) && !hasMain || isMain;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	{
 		int energyExtracted = Math.min(energyStored, Math.min(getMaxEnergyStored(from), maxExtract));
 		energyStored -= simulate ? 0 : energyExtracted;
 		int radius = 1;
@@ -212,7 +224,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(ForgeDirection from)
+	{
 		if (!isMain && hasMain) {
 			TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
 			if (tile instanceof TileTurbine) {
@@ -223,12 +236,14 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return !isMain && !hasMain ? 320000000 : Integer.MAX_VALUE - 1;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 		super.readFromNBT(nbt);
 		energyStored = nbt.getInteger("Energy");
 		steam = nbt.getInteger("Steam");
@@ -240,7 +255,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 		super.writeToNBT(nbt);
 		nbt.setInteger("Energy", energyStored);
 		nbt.setInteger("Steam", steam);
@@ -251,7 +267,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		nbt.setInteger("mainZ", mainZ);
 	}
 
-	public void addSteam(int steam) {
+	public void addSteam(int steam)
+	{
 		this.steam = Math.min(MAX_STEAM, this.steam + steam);
 		if (!isMain && hasMain) {
 			TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
@@ -264,15 +281,18 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		}
 	}
 
-	public boolean isGenerating() {
+	public boolean isGenerating()
+	{
 		return isGenerating;
 	}
 
-	public boolean hasClientSpin() {
+	public boolean hasClientSpin()
+	{
 		return clientSpin;
 	}
 
-	public int getSteam() {
+	public int getSteam()
+	{
 		return steam;
 	}
 }

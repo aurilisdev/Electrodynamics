@@ -22,22 +22,26 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 	private ForgeDirection lastReceive = ForgeDirection.UNKNOWN;
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox()
+	{
 		return INFINITE_EXTENT_AABB;
 	}
 
 	@Override
-	public int getEnergyStored() {
+	public int getEnergyStored()
+	{
 		return energyStored;
 	}
 
 	@Override
-	public void setEnergyStored(int energy) {
+	public void setEnergyStored(int energy)
+	{
 		energyStored = Math.min(energy, MAX_ENERGY_STORED);
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (energyStored > 0) {
 			boolean found = false;
@@ -84,7 +88,8 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+	{
 		lastReceive = from;
 		int count = 0;
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -113,29 +118,34 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(ForgeDirection from)
+	{
 		return MAX_ENERGY_STORED;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from)
+	{
 		return true;
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(lastReceive.ordinal());
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readSynchronizationPacket(buf, player);
 		lastReceive = ForgeDirection.getOrientation(buf.readInt());
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	{
 		int remove = Math.max(0, Math.min(maxExtract, energyStored));
 		if (!simulate) {
 			energyStored -= remove;
@@ -144,12 +154,14 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int getEnergyUsage() {
+	public int getEnergyUsage()
+	{
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(ForgeDirection from)
+	{
 		return ITileBasePowered.super.getEnergyStored(from);
 	}
 }

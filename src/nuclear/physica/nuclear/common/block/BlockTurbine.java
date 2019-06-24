@@ -38,13 +38,15 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	{
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
 		float minX = 0;
 		float minY = 0;
 		float minZ = 0;
@@ -55,12 +57,14 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "PAP", "BMB", "PBP", 'P', "plateSteel", 'A', "circuitAdvanced", 'B', Blocks.iron_bars, 'M', "motor");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		if (!world.isRemote) {
 			ItemStack stack = player.getHeldItem();
 			if (stack != null) {
@@ -82,7 +86,8 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
+	public void breakBlock(World world, int x, int y, int z, Block block, int par6)
+	{
 		if (world.getTileEntity(x, y, z) instanceof TileTurbine) {
 			TileTurbine turbine = (TileTurbine) world.getTileEntity(x, y, z);
 			turbine.tryDeconstruct();
@@ -91,33 +96,39 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileTurbine();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister reg) {
+	public void registerBlockIcons(IIconRegister reg)
+	{
 		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "siren");
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean renderAsNormalBlock()
+	{
 		return false;
 	}
 
 	@Override
-	public int getRenderType() {
+	public int getRenderType()
+	{
 		return -1;
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube()
+	{
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube() {
+	public boolean isNormalCube()
+	{
 		return false;
 	}
 }

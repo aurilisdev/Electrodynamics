@@ -23,7 +23,8 @@ public class ItemInformationHolder extends ItemUpdateable {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List lines, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List lines, boolean par4)
+	{
 		lines.addAll(lineList);
 	}
 }

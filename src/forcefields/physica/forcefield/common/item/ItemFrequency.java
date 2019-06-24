@@ -25,7 +25,8 @@ public class ItemFrequency extends ItemInformationHolder {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	{
 		if (!world.isRemote) {
 			Vec3 posVec = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 			Vec3 lookVec = player.getLookVec();
@@ -60,7 +61,8 @@ public class ItemFrequency extends ItemInformationHolder {
 	}
 
 	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+	{
 		if (stack.hasTagCompound()) {
 			if (stack.getTagCompound().hasKey("frequency")) {
 				TileEntity tile = world.getTileEntity(x, y, z);
@@ -77,7 +79,8 @@ public class ItemFrequency extends ItemInformationHolder {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List infoList, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List infoList, boolean par4)
+	{
 		if (stack.hasTagCompound()) {
 			if (stack.getTagCompound().hasKey("frequency")) {
 				infoList.add("Frequency: " + stack.getTagCompound().getInteger("frequency"));

@@ -11,7 +11,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseContainer {
 
-	default void drainBattery(int slot) {
+	default void drainBattery(int slot)
+	{
 		if (receiveEnergy(ForgeDirection.UNKNOWN, 1, true) > 0) {
 			ItemStack itemStack = getStackInSlot(slot);
 
@@ -30,39 +31,45 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 	}
 
 	@Override
-	default void handleWriteToNBT(NBTTagCompound nbt) {
+	default void handleWriteToNBT(NBTTagCompound nbt)
+	{
 		ITileBaseContainer.super.handleWriteToNBT(nbt);
 		ITileBasePowered.super.handleWriteToNBT(nbt);
 	}
 
 	@Override
-	default void handleReadFromNBT(NBTTagCompound nbt) {
+	default void handleReadFromNBT(NBTTagCompound nbt)
+	{
 		ITileBaseContainer.super.handleReadFromNBT(nbt);
 		ITileBasePowered.super.handleReadFromNBT(nbt);
 	}
 
 	@Override
-	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		ITileBasePowered.super.writeSynchronizationPacket(dataList, player);
 		ITileBaseContainer.super.writeSynchronizationPacket(dataList, player);
 		writeClientGuiPacket(dataList, player);
 	}
 
 	@Override
-	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		ITileBasePowered.super.readSynchronizationPacket(buf, player);
 		ITileBaseContainer.super.readSynchronizationPacket(buf, player);
 		readClientGuiPacket(buf, player);
 	}
 
 	@Override
-	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		ITileBaseContainer.super.writeClientGuiPacket(dataList, player);
 		dataList.add(getEnergyStored());
 	}
 
 	@Override
-	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		ITileBaseContainer.super.readClientGuiPacket(buf, player);
 		setEnergyStored(buf.readInt());
 	}

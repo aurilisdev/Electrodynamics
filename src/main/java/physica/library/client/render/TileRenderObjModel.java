@@ -23,7 +23,8 @@ public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRe
 		model_texture = new ResourceLocation(domain, modelTextureDirectory + textureFile);
 	}
 
-	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame) {
+	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame)
+	{
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -49,11 +50,13 @@ public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRe
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame) {
+	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame)
+	{
 		this.renderTileAt((T) tile, x, y, z, deltaFrame);
 	}
 
-	public static void renderFloatingText(String text, float x, float y, float z, int color) {
+	public static void renderFloatingText(String text, float x, float y, float z, int color)
+	{
 		RenderManager renderManager = RenderManager.instance;
 		FontRenderer fontRenderer = renderManager.getFontRenderer();
 		float scale = 0.027F;

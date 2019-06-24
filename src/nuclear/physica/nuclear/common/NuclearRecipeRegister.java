@@ -11,7 +11,8 @@ import physica.nuclear.common.recipe.NuclearCustomRecipeHelper;
 public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 
 	@Override
-	public void loadComplete() {
+	public void loadComplete()
+	{
 		// 1 Gram Antimatter cell
 		addShapeless(NuclearItemRegister.itemAntimatterCell1Gram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
 				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,

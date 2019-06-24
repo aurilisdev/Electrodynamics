@@ -17,7 +17,8 @@ import physica.nuclear.common.effect.damage.DamageSourcePlasma;
 
 public class TilePlasma extends TileBase {
 
-	public static boolean canPlace(Block block, World world, int x, int y, int z) {
+	public static boolean canPlace(Block block, World world, int x, int y, int z)
+	{
 		if (block == NuclearBlockRegister.blockFusionReactor) {
 			return false;
 		}
@@ -29,7 +30,8 @@ public class TilePlasma extends TileBase {
 	public static final int TARGET_TEMPERATURE = 4407;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		if (ticks == 20) {
 			if (isServer()) {

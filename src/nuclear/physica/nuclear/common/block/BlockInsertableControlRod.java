@@ -29,18 +29,21 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileInsertableControlRod();
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	{
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
 		float minX = 0.25f;
 		float minY = 0;
 		float minZ = 0.25f;
@@ -62,7 +65,8 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
+	{
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (dir.ordinal() <= 1) {
@@ -78,24 +82,28 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+	{
 		ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
 		return side <= 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor
 				&& !(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod);
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(this, "SMS", "IAI", "SSS", 'I', NuclearBlockRegister.blockControlRod, 'S', "plateSteel", 'A', "circuitElite", 'M', "motor");
 	}
 
 	@Override
-	public boolean canRotate(int ordinal) {
+	public boolean canRotate(int ordinal)
+	{
 		return false;
 	}
 
 	@Override
-	public RecipeSide getSide() {
+	public RecipeSide getSide()
+	{
 		return RecipeSide.Nuclear;
 	}
 

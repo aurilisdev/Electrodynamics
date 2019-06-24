@@ -15,7 +15,8 @@ public class ConfigForcefields implements IContent {
 	public static float FORCEFIELD_INTERIOR_MODULE_DOWNSIZE = 4;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		Configuration configuration = new Configuration(new File(PhysicaForcefields.configFolder, "ForceFields.cfg"), CoreReferences.VERSION);
 		configuration.load();
 		FORCEFIELD_HEALTHLOSS_MODIFIER = configuration.getFloat("forcefieldHealthLossModifier", CATEGORY, FORCEFIELD_HEALTHLOSS_MODIFIER, 0.01f, 10000f,

@@ -33,7 +33,8 @@ public class ConfigNuclearPhysics implements IContent {
 	public static int DARK_MATTER_USES = 8;
 
 	@Override
-	public void preInit() {
+	public void preInit()
+	{
 		Configuration configuration = new Configuration(new File(PhysicaNuclearPhysics.configFolder, "NuclearPhysics.cfg"), CoreReferences.VERSION);
 		configuration.load();
 

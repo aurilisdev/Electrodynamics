@@ -46,7 +46,8 @@ public class PacketTile extends PacketBase {
 	}
 
 	@Override
-	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
+	{
 		id = buffer.readInt();
 		x = buffer.readInt();
 		y = buffer.readInt();
@@ -56,7 +57,8 @@ public class PacketTile extends PacketBase {
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
+	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
+	{
 		buffer.writeInt(id);
 		buffer.writeInt(x);
 		buffer.writeInt(y);
@@ -65,7 +67,8 @@ public class PacketTile extends PacketBase {
 		super.encodeInto(ctx, buffer);
 	}
 
-	public void handle(EntityPlayer player) {
+	public void handle(EntityPlayer player)
+	{
 		if (player.getEntityWorld() == null) {
 			if (PhysicaAPI.isDebugMode) {
 				PhysicaAPI.logger.error("PacketTile#handle(" + player.getDisplayName() + ") - world is null for player while handling packet. ", new NullPointerException());
@@ -81,7 +84,8 @@ public class PacketTile extends PacketBase {
 		}
 	}
 
-	public void handle(EntityPlayer player, TileEntity tile) {
+	public void handle(EntityPlayer player, TileEntity tile)
+	{
 		if (tile == null) {
 			if (PhysicaAPI.isDebugMode) {
 				PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", null) - Null tile"));
@@ -121,7 +125,8 @@ public class PacketTile extends PacketBase {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleClientSide(EntityPlayer player) {
+	public void handleClientSide(EntityPlayer player)
+	{
 		if (player != null) {
 			handle(player);
 		} else {
@@ -132,7 +137,8 @@ public class PacketTile extends PacketBase {
 	}
 
 	@Override
-	public void handleServerSide(EntityPlayer player) {
+	public void handleServerSide(EntityPlayer player)
+	{
 		if (player != null) {
 			handle(player);
 		} else {

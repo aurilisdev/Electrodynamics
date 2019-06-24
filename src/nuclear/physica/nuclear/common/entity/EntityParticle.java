@@ -55,11 +55,13 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(double distance)
+	{
 		return true;
 	}
 
-	protected void accelerateParticle(float acceleration) {
+	protected void accelerateParticle(float acceleration)
+	{
 		double accelerationX = movementDirection.offsetX * acceleration;
 		double accelerationY = movementDirection.offsetY * acceleration;
 		double accelerationZ = movementDirection.offsetZ * acceleration;
@@ -68,7 +70,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		motionZ = Math.min(motionZ + accelerationZ, ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED + 0.1);
 	}
 
-	public static boolean canSpawnParticle(World world, int x, int y, int z) {
+	public static boolean canSpawnParticle(World world, int x, int y, int z)
+	{
 		if (world.isAirBlock(x, y, z)) {
 			int electromagnetCount = 0;
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -83,12 +86,14 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		return false;
 	}
 
-	public static boolean isElectromagnet(World world, int x, int y, int z, ForgeDirection facing) {
+	public static boolean isElectromagnet(World world, int x, int y, int z, ForgeDirection facing)
+	{
 		return world.getBlock(x + facing.offsetX, y + facing.offsetY, z + facing.offsetZ) instanceof IElectromagnet;
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf data) {
+	public void writeSpawnData(ByteBuf data)
+	{
 		data.writeInt(hostLocationX);
 		data.writeInt(hostLocationY);
 		data.writeInt(hostLocationZ);
@@ -96,7 +101,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf data) {
+	public void readSpawnData(ByteBuf data)
+	{
 		hostLocationX = data.readInt();
 		hostLocationY = data.readInt();
 		hostLocationZ = data.readInt();
@@ -104,7 +110,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate()
+	{
 		TileEntity tile = worldObj.getTileEntity(hostLocationX, hostLocationY, hostLocationZ);
 		if (tile instanceof TileParticleAccelerator) {
 			int flPosX = (int) Math.floor(posX);
@@ -194,7 +201,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	public double lastCheckX, lastCheckY, lastCheckZ;
 
 	@SuppressWarnings("unchecked")
-	private void onParticleSmash(EntityParticle entityParticle) {
+	private void onParticleSmash(EntityParticle entityParticle)
+	{
 		int radius = (int) ((getTotalVelocity() + entityParticle.getTotalVelocity()) * 2.5f);
 		if (!worldObj.isRemote) {
 			entityParticle.setDead();
@@ -212,7 +220,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	protected void entityInit() {
+	protected void entityInit()
+	{
 		dataWatcher.addObject(movementTicketUpdateId, (byte) EnumFacing.SOUTH.ordinal());
 		if (updateTicket == null) {
 			updateTicket = ForgeChunkManager.requestTicket(Physica.INSTANCE, worldObj, Type.ENTITY);
@@ -224,7 +233,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag) {
+	protected void readEntityFromNBT(NBTTagCompound tag)
+	{
 		hostLocationX = tag.getInteger("tileLocationX");
 		hostLocationY = tag.getInteger("tileLocationY");
 		hostLocationZ = tag.getInteger("tileLocationZ");
@@ -232,7 +242,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag) {
+	protected void writeEntityToNBT(NBTTagCompound tag)
+	{
 		tag.setDouble("tileLocationX", hostLocationX);
 		tag.setDouble("tileLocationY", hostLocationY);
 		tag.setDouble("tileLocationZ", hostLocationZ);
@@ -240,19 +251,22 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	public void applyEntityCollision(Entity entity) {
+	public void applyEntityCollision(Entity entity)
+	{
 		if (entity != this) {
 			handleCollisionWithEntity();
 		}
 	}
 
 	@Override
-	public void setDead() {
+	public void setDead()
+	{
 		super.setDead();
 		ForgeChunkManager.releaseTicket(updateTicket);
 	}
 
-	public double turn() {
+	public double turn()
+	{
 		ForgeDirection leftDirection = RotationUtility.getRelativeSide(ForgeDirection.WEST, movementDirection);
 		ForgeDirection rightDirection = RotationUtility.getRelativeSide(ForgeDirection.EAST, movementDirection);
 		ForgeDirection upDirection = RotationUtility.getRelativeSide(ForgeDirection.UP, movementDirection);
@@ -276,7 +290,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@SuppressWarnings("unchecked")
-	private void handleCollisionWithEntity() {
+	private void handleCollisionWithEntity()
+	{
 		if (!worldObj.isRemote) {
 			worldObj.createExplosion(this, posX, posY, posZ, (float) (ticksExisted > 20 ? getTotalVelocity() * 2.5F : 0), true);
 		}
@@ -289,11 +304,13 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		setDead();
 	}
 
-	public double getTotalVelocity() {
+	public double getTotalVelocity()
+	{
 		return Math.abs(motionX) + Math.abs(motionY) + Math.abs(motionZ);
 	}
 
-	public boolean didCollide() {
+	public boolean didCollide()
+	{
 		return didCollide;
 	}
 }

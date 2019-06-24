@@ -14,7 +14,8 @@ public class NuclearEntityRegister implements IContent {
 	public static final int MOD_ID = 120;
 
 	@Override
-	public void init() {
+	public void init()
+	{
 		registerEntity(EntityParticle.class, "particle", 80, 3, true);
 		ForgeChunkManager.setForcedChunkLoadingCallback(Physica.INSTANCE, (tickets, world) -> {
 			for (Ticket ticket : tickets) {
@@ -29,7 +30,8 @@ public class NuclearEntityRegister implements IContent {
 		});
 	}
 
-	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
+	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
+	{
 		EntityRegistry.registerGlobalEntityID(entityClass, entityName, EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(entityClass, entityName, MOD_ID, Physica.INSTANCE, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}

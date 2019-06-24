@@ -8,7 +8,8 @@ public abstract class TileBaseContainer extends TileBaseRotateable implements IT
 	private ItemStack[] _inventoryArray;
 
 	@Override
-	public ItemStack[] getInventoryArray() {
+	public ItemStack[] getInventoryArray()
+	{
 		if (_inventoryArray == null) {
 			_inventoryArray = new ItemStack[getSizeInventory()];
 		}
@@ -16,7 +17,8 @@ public abstract class TileBaseContainer extends TileBaseRotateable implements IT
 	}
 
 	@Override
-	public void nullifyInventoryArray() {
+	public void nullifyInventoryArray()
+	{
 		_inventoryArray = null;
 	}
 

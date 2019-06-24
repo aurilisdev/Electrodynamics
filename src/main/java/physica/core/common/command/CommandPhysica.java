@@ -18,22 +18,26 @@ import physica.nuclear.PhysicaNuclearPhysics;
 public class CommandPhysica extends CommandBase {
 
 	@Override
-	public String getCommandName() {
+	public String getCommandName()
+	{
 		return CoreReferences.DOMAIN;
 	}
 
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getCommandAliases()
+	{
 		return Arrays.asList("phys");
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getCommandUsage(ICommandSender sender)
+	{
 		return "/" + getCommandName();
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void processCommand(ICommandSender sender, String[] args)
+	{
 		if (args.length == 0) {
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.GOLD + CoreReferences.NAME + EnumChatFormatting.DARK_GRAY + "]"));
 			sender.addChatMessage(new ChatComponentText(" A Mod focused around science and technology that introduces many new machines/blocks and items into the game"));

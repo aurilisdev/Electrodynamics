@@ -17,7 +17,8 @@ public class WrenchEventHandler {
 
 	public static final WrenchEventHandler INSTANCE = new WrenchEventHandler();
 
-	public static boolean canWrench(ItemStack item, int x, int y, int z, EntityPlayer player) {
+	public static boolean canWrench(ItemStack item, int x, int y, int z, EntityPlayer player)
+	{
 		if (item != null) {
 			Item type = item.getItem();
 			if (type instanceof IMekWrench) {
@@ -43,7 +44,8 @@ public class WrenchEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onClick(PlayerInteractEvent event) {
+	public void onClick(PlayerInteractEvent event)
+	{
 		if (event.action == Action.RIGHT_CLICK_BLOCK) {
 			if (event.entityPlayer.isSneaking()) {
 				if (canWrench(event.entityPlayer.getCurrentEquippedItem(), event.x, event.y, event.z, event.entityPlayer)) {

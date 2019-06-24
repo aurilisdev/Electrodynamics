@@ -15,12 +15,14 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	int[] ACCESSIBLE_SLOTS_NONE = new int[] {};
 
 	@Override
-	default ItemStack getStackInSlot(int slot) {
+	default ItemStack getStackInSlot(int slot)
+	{
 		return getInventoryArray()[slot];
 	}
 
 	@Override
-	default ItemStack decrStackSize(int slot, int amount) {
+	default ItemStack decrStackSize(int slot, int amount)
+	{
 		if (getInventoryArray()[slot] != null) {
 			ItemStack itemstack;
 			if (getInventoryArray()[slot].stackSize <= amount) {
@@ -44,7 +46,8 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default ItemStack getStackInSlotOnClosing(int slot) {
+	default ItemStack getStackInSlotOnClosing(int slot)
+	{
 		if (getInventoryArray()[slot] != null) {
 			ItemStack itemstack = getInventoryArray()[slot];
 			getInventoryArray()[slot] = null;
@@ -56,7 +59,8 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default void setInventorySlotContents(int slot, ItemStack stack) {
+	default void setInventorySlotContents(int slot, ItemStack stack)
+	{
 		getInventoryArray()[slot] = stack;
 		onInventoryChanged();
 
@@ -65,22 +69,26 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 		}
 	}
 
-	default void onInventoryChanged() {
+	default void onInventoryChanged()
+	{
 		markDirty();
 	}
 
 	@Override
-	default String getInventoryName() {
+	default String getInventoryName()
+	{
 		return "container.physica.base";
 	}
 
 	@Override
-	default boolean hasCustomInventoryName() {
+	default boolean hasCustomInventoryName()
+	{
 		return false;
 	}
 
 	@Override
-	default void handleReadFromNBT(NBTTagCompound nbt) {
+	default void handleReadFromNBT(NBTTagCompound nbt)
+	{
 		ITileBase.super.handleReadFromNBT(nbt);
 		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 		nullifyInventoryArray();
@@ -95,7 +103,8 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default void handleWriteToNBT(NBTTagCompound nbt) {
+	default void handleWriteToNBT(NBTTagCompound nbt)
+	{
 		ITileBase.super.handleWriteToNBT(nbt);
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int slotIndex = 0; slotIndex < getInventoryArray().length; ++slotIndex) {
@@ -110,14 +119,16 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		ITileBase.super.readSynchronizationPacket(buf, player);
 		readClientGuiPacket(buf, player);
 		handleReadFromNBT(ByteBufUtils.readTag(buf));
 	}
 
 	@Override
-	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		ITileBase.super.writeSynchronizationPacket(dataList, player);
 		writeClientGuiPacket(dataList, player);
 		NBTTagCompound tag = new NBTTagCompound();
@@ -126,26 +137,31 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default int getInventoryStackLimit() {
+	default int getInventoryStackLimit()
+	{
 		return 64;
 	}
 
 	@Override
-	default boolean isUseableByPlayer(EntityPlayer player) {
+	default boolean isUseableByPlayer(EntityPlayer player)
+	{
 		return This().getWorldObj().getTileEntity(This().xCoord, This().yCoord, This().zCoord) != this ? false
 				: player.getDistanceSq(This().xCoord + 0.5D, This().yCoord + 0.5D, This().zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
-	default void openInventory() {
+	default void openInventory()
+	{
 	}
 
 	@Override
-	default void closeInventory() {
+	default void closeInventory()
+	{
 	}
 
 	@Override
-	default boolean isItemValidForSlot(int slot, ItemStack stack) {
+	default boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return false;
 	}
 

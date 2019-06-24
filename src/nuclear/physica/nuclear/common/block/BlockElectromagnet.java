@@ -45,7 +45,8 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	}
 
 	@Override
-	public void initialize() {
+	public void initialize()
+	{
 		addRecipe(new ItemStack(this, 2), "BSB", "SMS", "BSB", 'B',
 				OreDictionaryUtilities.getAlternatingOreItem("ingotBronze", "ingotCopper"),
 				'M',
@@ -58,19 +59,22 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderBlockPass() {
+	public int getRenderBlockPass()
+	{
 		return 0;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube()
+	{
 		return false;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister)
+	{
 		super.registerBlockIcons(iconRegister);
 		iconTop = iconRegister.registerIcon(CoreReferences.PREFIX + "electromagnetTop");
 		iconGlass = iconRegister.registerIcon(CoreReferences.PREFIX + "electromagnetGlass");
@@ -81,7 +85,8 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int metadata) {
+	public IIcon getIcon(int side, int metadata)
+	{
 		if (metadata == EnumElectromagnet.NORMAL.ordinal() || metadata == EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()) {
 			if (side == 0 || side == 1) {
 				return metadata == EnumElectromagnet.NORMAL.ordinal() ? iconTop : containmentIconTop;
@@ -97,13 +102,15 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean renderAsNormalBlock() {
+	public boolean renderAsNormalBlock()
+	{
 		return true;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+	{
 		Block block = world.getBlock(x, y, z);
 		int metadata = world.getBlockMetadata(x, y, z);
 		ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
@@ -118,31 +125,36 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
+	{
 		for (EnumElectromagnet type : EnumElectromagnet.values()) {
 			list.add(new ItemStack(item, 1, type.ordinal()));
 		}
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
+	{
 		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 2);
 	}
 
 	@Override
-	public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+	public int getLightOpacity(IBlockAccess world, int x, int y, int z)
+	{
 		return EnumElectromagnet.values()[world.getBlockMetadata(x, y, z)] == EnumElectromagnet.GLASS ? 0 : super.getLightOpacity(world, x, y, z);
 	}
 
 	@Override
-	public int damageDropped(int metadata) {
+	public int damageDropped(int metadata)
+	{
 		return metadata;
 	}
 
 	public enum EnumElectromagnet {
 		NORMAL, GLASS, CONTAINMENT_NORMAL, CONTAINMENT_GLASS;
 
-		public String getName() {
+		public String getName()
+		{
 			return name().toLowerCase();
 		}
 	}
