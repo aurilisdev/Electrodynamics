@@ -27,31 +27,40 @@ public class ItemFrequency extends ItemInformationHolder {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			Vec3 posVec = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 			Vec3 lookVec = player.getLookVec();
 			MovingObjectPosition mop = world.rayTraceBlocks(posVec, lookVec);
 			Block blockHit = mop == null ? null : world.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 			if (blockHit != ForcefieldBlockRegister.blockCoercionDriver && blockHit != ForcefieldBlockRegister.blockFortronCapacitor && blockHit != ForcefieldBlockRegister.blockFortronConstructor
-					&& blockHit != ForcefieldBlockRegister.blockInterdictionMatrix) {
-				if (!stack.hasTagCompound()) {
+					&& blockHit != ForcefieldBlockRegister.blockInterdictionMatrix)
+			{
+				if (!stack.hasTagCompound())
+				{
 					stack.setTagCompound(stack.writeToNBT(new NBTTagCompound()));
 				}
-				if (stack.getTagCompound().hasKey("frequency")) {
+				if (stack.getTagCompound().hasKey("frequency"))
+				{
 					int frequency = stack.getTagCompound().getInteger("frequency");
-					if (player.isSneaking()) {
+					if (player.isSneaking())
+					{
 						frequency--;
-						if (frequency < 0) {
+						if (frequency < 0)
+						{
 							frequency = 20;
 						}
-					} else {
+					} else
+					{
 						frequency++;
-						if (frequency > 20) {
+						if (frequency > 20)
+						{
 							frequency = 0;
 						}
 					}
 					stack.getTagCompound().setInteger("frequency", frequency);
-				} else {
+				} else
+				{
 					stack.getTagCompound().setInteger("frequency", 0);
 				}
 				player.addChatMessage(new ChatComponentText("Frequency: " + stack.getTagCompound().getInteger("frequency")));
@@ -63,12 +72,16 @@ public class ItemFrequency extends ItemInformationHolder {
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 	{
-		if (stack.hasTagCompound()) {
-			if (stack.getTagCompound().hasKey("frequency")) {
+		if (stack.hasTagCompound())
+		{
+			if (stack.getTagCompound().hasKey("frequency"))
+			{
 				TileEntity tile = world.getTileEntity(x, y, z);
-				if (tile != null && tile instanceof IInvFortronTile) {
+				if (tile != null && tile instanceof IInvFortronTile)
+				{
 					((IInvFortronTile) tile).setFrequency(stack.getTagCompound().getInteger("frequency"));
-					if (!world.isRemote) {
+					if (!world.isRemote)
+					{
 						player.addChatMessage(new ChatComponentText("Set tile frequency: " + stack.getTagCompound().getInteger("frequency")));
 					}
 				}
@@ -81,8 +94,10 @@ public class ItemFrequency extends ItemInformationHolder {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List infoList, boolean par4)
 	{
-		if (stack.hasTagCompound()) {
-			if (stack.getTagCompound().hasKey("frequency")) {
+		if (stack.hasTagCompound())
+		{
+			if (stack.getTagCompound().hasKey("frequency"))
+			{
 				infoList.add("Frequency: " + stack.getTagCompound().getInteger("frequency"));
 			}
 		}

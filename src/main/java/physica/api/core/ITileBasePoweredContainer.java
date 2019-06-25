@@ -13,14 +13,18 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 
 	default void drainBattery(int slot)
 	{
-		if (receiveEnergy(ForgeDirection.UNKNOWN, 1, true) > 0) {
+		if (receiveEnergy(ForgeDirection.UNKNOWN, 1, true) > 0)
+		{
 			ItemStack itemStack = getStackInSlot(slot);
 
-			if (itemStack != null) {
-				if (itemStack.getItem() instanceof IEnergyContainerItem) {
+			if (itemStack != null)
+			{
+				if (itemStack.getItem() instanceof IEnergyContainerItem)
+				{
 					IEnergyContainerItem energized = (IEnergyContainerItem) itemStack.getItem();
 					int power = energized.getEnergyStored(itemStack);
-					if (power > 0) {
+					if (power > 0)
+					{
 						power = energized.extractEnergy(itemStack, power, true);
 						energized.extractEnergy(itemStack, receiveEnergy(ForgeDirection.UNKNOWN, power, false), false);
 						setInventorySlotContents(slot, itemStack);

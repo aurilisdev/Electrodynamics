@@ -50,9 +50,11 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	public boolean canWrench(World worldObj, int x, int y, int z)
 	{
 		TileEntity tile = worldObj.getTileEntity(x, y, z);
-		if (tile instanceof TileFortronFieldConstructor) {
+		if (tile instanceof TileFortronFieldConstructor)
+		{
 			TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) tile;
-			if (constructor.isCalculating) {
+			if (constructor.isCalculating)
+			{
 				return false;
 			}
 		}
@@ -62,80 +64,103 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
 	{
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			ItemStack itemStack = player.getCurrentEquippedItem();
-			if (itemStack == null) {
+			if (itemStack == null)
+			{
 				return super.onBlockActivated(world, x, y, z, player, side, xHit, yHit, zHit);
 			}
 
 			String defaultDisplayName = itemStack.getItem().getItemStackDisplayName(itemStack).toLowerCase();
-			if (itemStack.getItem() == Items.dye || defaultDisplayName.contains("dye")) {
+			if (itemStack.getItem() == Items.dye || defaultDisplayName.contains("dye"))
+			{
 				TileEntity tile = world.getTileEntity(x, y, z);
-				if (tile instanceof TileFortronFieldConstructor) {
+				if (tile instanceof TileFortronFieldConstructor)
+				{
 					TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) tile;
 					if (constructor.getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeColorChange"), TileFortronFieldConstructor.SLOT_UPGRADES[0],
-							TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]) > 0) {
+							TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]) > 0)
+					{
 						int color = constructor.fieldColorMultiplier();
 						int saveColor = color;
 						String colorName = null;
 
 						boolean vanilla = itemStack.getItem() == Items.dye;
 						int damage = itemStack.getItemDamage();
-						if (vanilla && damage == 0 || defaultDisplayName.contains("black")) {
+						if (vanilla && damage == 0 || defaultDisplayName.contains("black"))
+						{
 							color = Color.BLACK.brighter().getRGB();
 							colorName = "black";
-						} else if (vanilla && damage == 1 || defaultDisplayName.contains("red")) {
+						} else if (vanilla && damage == 1 || defaultDisplayName.contains("red"))
+						{
 							color = Color.RED.getRGB();
 							colorName = "red";
-						} else if (vanilla && damage == 2 || defaultDisplayName.contains("green")) {
+						} else if (vanilla && damage == 2 || defaultDisplayName.contains("green"))
+						{
 							color = Color.GREEN.darker().darker().getRGB();
 							colorName = "green";
-						} else if (vanilla && damage == 3 || defaultDisplayName.contains("brown")) {
+						} else if (vanilla && damage == 3 || defaultDisplayName.contains("brown"))
+						{
 							color = new Color(255, 255, 0).getRGB();
 							colorName = "brown";
-						} else if (vanilla && damage == 4 || defaultDisplayName.contains("blue")) {
+						} else if (vanilla && damage == 4 || defaultDisplayName.contains("blue"))
+						{
 							color = Color.BLUE.brighter().brighter().brighter().brighter().getRGB();
 							colorName = "blue";
-						} else if (vanilla && damage == 5 || defaultDisplayName.contains("purple")) {
+						} else if (vanilla && damage == 5 || defaultDisplayName.contains("purple"))
+						{
 							color = Color.MAGENTA.darker().darker().getRGB();
 							colorName = "purple";
-						} else if (vanilla && damage == 6 || defaultDisplayName.contains("cyan")) {
+						} else if (vanilla && damage == 6 || defaultDisplayName.contains("cyan"))
+						{
 							color = Color.CYAN.darker().getRGB();
 							colorName = "cyan";
-						} else if (vanilla && damage == 7 || defaultDisplayName.contains("light gray")) {
+						} else if (vanilla && damage == 7 || defaultDisplayName.contains("light gray"))
+						{
 							color = Color.LIGHT_GRAY.getRGB();
 							colorName = "light gray";
-						} else if (vanilla && damage == 8 || defaultDisplayName.contains("gray")) {
+						} else if (vanilla && damage == 8 || defaultDisplayName.contains("gray"))
+						{
 							color = Color.GRAY.getRGB();
 							colorName = "gray";
-						} else if (vanilla && damage == 9 || defaultDisplayName.contains("pink")) {
+						} else if (vanilla && damage == 9 || defaultDisplayName.contains("pink"))
+						{
 							color = Color.PINK.getRGB();
 							colorName = "pink";
-						} else if (vanilla && damage == 10 || defaultDisplayName.contains("lime")) {
+						} else if (vanilla && damage == 10 || defaultDisplayName.contains("lime"))
+						{
 							color = Color.GREEN.brighter().getRGB();
 							colorName = "green";
-						} else if (vanilla && damage == 11 || defaultDisplayName.contains("yellow")) {
+						} else if (vanilla && damage == 11 || defaultDisplayName.contains("yellow"))
+						{
 							color = Color.YELLOW.getRGB();
 							colorName = "yellow";
-						} else if (vanilla && damage == 12 || defaultDisplayName.contains("default")) {
+						} else if (vanilla && damage == 12 || defaultDisplayName.contains("default"))
+						{
 							color = PhysicaForcefields.DEFAULT_COLOR;
 							colorName = "default";
-						} else if (vanilla && damage == 13 || defaultDisplayName.contains("magenta")) {
+						} else if (vanilla && damage == 13 || defaultDisplayName.contains("magenta"))
+						{
 							color = Color.MAGENTA.getRGB();
 							colorName = "magenta";
-						} else if (vanilla && damage == 14 || defaultDisplayName.contains("orange")) {
+						} else if (vanilla && damage == 14 || defaultDisplayName.contains("orange"))
+						{
 							color = Color.ORANGE.getRGB();
 							colorName = "orange";
-						} else if (vanilla && damage == 15 || defaultDisplayName.contains("white")) {
+						} else if (vanilla && damage == 15 || defaultDisplayName.contains("white"))
+						{
 							color = super.colorMultiplier(world, x, y, z);
 							colorName = "white";
 						}
 						constructor.setFieldColorMultiplier(color);
 
-						if (color != saveColor) {
+						if (color != saveColor)
+						{
 							constructor.destroyField(false);
 							player.addChatMessage(new ChatComponentText("Changed force field color to: " + colorName));
-						} else if (colorName != null) {
+						} else if (colorName != null)
+						{
 							player.addChatMessage(new ChatComponentText("\u00A77The force field is already this color"));
 						}
 						return false;
@@ -149,9 +174,11 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
 	{
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			TileEntity tile = world.getTileEntity(x, y, z);
-			if (tile instanceof TileFortronFieldConstructor) {
+			if (tile instanceof TileFortronFieldConstructor)
+			{
 				((TileFortronFieldConstructor) tile).destroyField(true);
 			}
 		}

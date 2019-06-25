@@ -61,12 +61,15 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	{
 		super.updateCommon(ticks);
 		fortronTank.setCapacity(getMaxFortron());
-		if (fortronTank.getCapacity() < fortronTank.getFluidAmount()) {
+		if (fortronTank.getCapacity() < fortronTank.getFluidAmount())
+		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
 		isActivated = isPoweredByRedstone();
-		if (getStackInSlot(SLOT_CARD) != null) {
-			if (getStackInSlot(SLOT_CARD).stackTagCompound != null) {
+		if (getStackInSlot(SLOT_CARD) != null)
+		{
+			if (getStackInSlot(SLOT_CARD).stackTagCompound != null)
+			{
 				setFrequency(getStackInSlot(SLOT_CARD).stackTagCompound.getInteger("frequency"));
 			}
 		}
@@ -76,12 +79,15 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (ticks % 20 == 0) {
+		if (ticks % 20 == 0)
+		{
 			validateConnections();
 		}
-		if (canSendBeam()) {
+		if (canSendBeam())
+		{
 			fortronTank.getFluid().amount -= sendFortronTo(fortronTank.getFluidAmount() - 1, TileFortronFieldConstructor.class, TileInterdictionMatrix.class);
-			if (fortronTank.getFluid().amount > 1) {
+			if (fortronTank.getFluid().amount > 1)
+			{
 				fortronTank.getFluid().amount -= sendFortronTo(Math.min(fortronTank.getFluidAmount(), getFortronTransferRate()) - 1, TileFortronCapacitor.class);
 			}
 		}
@@ -132,7 +138,8 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	{
 		int oldFrequency = frequency;
 		frequency = freq;
-		if (oldFrequency != freq) {
+		if (oldFrequency != freq)
+		{
 			onFirstUpdate();
 		}
 	}

@@ -36,28 +36,36 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 		boolean finished = false;
 		int connections = 0;
 		ForgeDirection last = ForgeDirection.UNKNOWN;
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
 			TileEntity sideTile = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
-			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite())) {
+			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite()))
+			{
 				drawConnection(dir);
 				connections++;
-				if (!finished) {
-					if (isCross) {
-						if (dir != last.getOpposite()) {
+				if (!finished)
+				{
+					if (isCross)
+					{
+						if (dir != last.getOpposite())
+						{
 							isCross = false;
 							finished = true;
 						}
-					} else {
+					} else
+					{
 						last = dir;
 						isCross = true;
 					}
 				}
 			}
 		}
-		if (isCross && connections != 1) {
+		if (isCross && connections != 1)
+		{
 			GL11.glTranslated(last.offsetX * pixelElevenTwo, last.offsetY * pixelElevenTwo, last.offsetZ * pixelElevenTwo);
 			drawConnection(last.getOpposite());
-		} else {
+		} else
+		{
 			drawCore();
 		}
 		GL11.glPopAttrib();
@@ -67,15 +75,20 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 	public static void drawConnection(ForgeDirection direction)
 	{
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == ForgeDirection.DOWN) {
+		if (direction == ForgeDirection.DOWN)
+		{
 			GL11.glRotatef(180, 1, 0, 0);
-		} else if (direction == ForgeDirection.NORTH) {
+		} else if (direction == ForgeDirection.NORTH)
+		{
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == ForgeDirection.SOUTH) {
+		} else if (direction == ForgeDirection.SOUTH)
+		{
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == ForgeDirection.EAST) {
+		} else if (direction == ForgeDirection.EAST)
+		{
 			GL11.glRotatef(-90, 0, 0, 1);
-		} else if (direction == ForgeDirection.WEST) {
+		} else if (direction == ForgeDirection.WEST)
+		{
 			GL11.glRotatef(90, 0, 0, 1);
 		}
 		GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
@@ -106,15 +119,20 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 
 		tess.draw();
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == ForgeDirection.DOWN) {
+		if (direction == ForgeDirection.DOWN)
+		{
 			GL11.glRotatef(-180, 1, 0, 0);
-		} else if (direction == ForgeDirection.NORTH) {
+		} else if (direction == ForgeDirection.NORTH)
+		{
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == ForgeDirection.SOUTH) {
+		} else if (direction == ForgeDirection.SOUTH)
+		{
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == ForgeDirection.EAST) {
+		} else if (direction == ForgeDirection.EAST)
+		{
 			GL11.glRotatef(90, 0, 0, 1);
-		} else if (direction == ForgeDirection.WEST) {
+		} else if (direction == ForgeDirection.WEST)
+		{
 			GL11.glRotatef(-90, 0, 0, 1);
 		}
 		GL11.glTranslatef(-0.5f, -0.5f, -0.5f);

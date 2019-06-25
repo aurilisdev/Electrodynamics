@@ -19,9 +19,11 @@ public abstract class PhysicaDamageSource extends DamageSource {
 	protected void setDeathMessages(String... deathMessages)
 	{
 		this.deathMessages = deathMessages;
-		for (int i = 0; i < deathMessages.length; i++) {
+		for (int i = 0; i < deathMessages.length; i++)
+		{
 			String current = deathMessages[i];
-			if (current.isEmpty()) {
+			if (current.isEmpty())
+			{
 				continue;
 			}
 			deathMessages[i] = current.startsWith(" ") || current.startsWith("'s") ? current : " " + current;
@@ -31,7 +33,8 @@ public abstract class PhysicaDamageSource extends DamageSource {
 	@Override
 	public IChatComponent func_151519_b(EntityLivingBase entity)
 	{
-		if (entity instanceof EntityPlayer && deathMessages != null && deathMessages.length > 0) {
+		if (entity instanceof EntityPlayer && deathMessages != null && deathMessages.length > 0)
+		{
 			String message = deathMessages[ThreadLocalRandom.current().nextInt(0, deathMessages.length)];
 			return new ChatComponentText(((EntityPlayer) entity).getDisplayName() + message);
 		}

@@ -46,7 +46,8 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 		float maxY = 1;
 		float maxZ = 1;
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileNeutronCaptureChamber) {
+		if (tile instanceof TileNeutronCaptureChamber)
+		{
 			TileNeutronCaptureChamber neutronChamber = (TileNeutronCaptureChamber) tile;
 			minY = 0.05f;
 			maxY = 0.95f;
@@ -88,9 +89,12 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
 	{
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			if (dir.ordinal() > 1) {
-				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			if (dir.ordinal() > 1)
+			{
+				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor)
+				{
 					tile.setFacing(dir.getOpposite());
 				}
 			}

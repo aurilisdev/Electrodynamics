@@ -10,15 +10,18 @@ public interface IRecipeRegister {
 
 	public static void InitializeSide(RecipeSide side)
 	{
-		for (IRecipeRegister reg : REGISTER.get(side)) {
+		for (IRecipeRegister reg : REGISTER.get(side))
+		{
 			reg.initialize();
 		}
 	}
 
 	default void addToRegister(RecipeSide side, IRecipeRegister reg)
 	{
-		if (REGISTER.isEmpty()) {
-			for (RecipeSide recipeSide : RecipeSide.values()) {
+		if (REGISTER.isEmpty())
+		{
+			for (RecipeSide recipeSide : RecipeSide.values())
+			{
 				REGISTER.put(recipeSide, new HashSet<>());
 			}
 		}

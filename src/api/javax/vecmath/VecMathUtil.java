@@ -48,7 +48,8 @@ class VecMathUtil {
 	{
 		hash *= 31L;
 		// Treat 0.0d and -0.0d the same (all zero bits)
-		if (f == 0.0f) {
+		if (f == 0.0f)
+		{
 			return hash;
 		}
 
@@ -59,7 +60,8 @@ class VecMathUtil {
 	{
 		hash *= 31L;
 		// Treat 0.0d and -0.0d the same (all zero bits)
-		if (d == 0.0d) {
+		if (d == 0.0d)
+		{
 			return hash;
 		}
 

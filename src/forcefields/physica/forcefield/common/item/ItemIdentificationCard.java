@@ -27,10 +27,12 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	@Override
 	public boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase hitter)
 	{
-		if (target instanceof EntityPlayer) {
+		if (target instanceof EntityPlayer)
+		{
 			setUsername(itemStack, target.getCommandSenderName());
 			setUniqueId(itemStack, target.getUniqueID());
-			if (hitter instanceof EntityPlayer) {
+			if (hitter instanceof EntityPlayer)
+			{
 				notifyIdentificationChange((EntityPlayer) hitter, target.getCommandSenderName());
 			}
 		}
@@ -41,23 +43,29 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean b)
 	{
-		if (getUsername(itemStack) != null && !getUsername(itemStack).isEmpty()) {
+		if (getUsername(itemStack) != null && !getUsername(itemStack).isEmpty())
+		{
 			info.add("Username: " + getUsername(itemStack));
-		} else {
+		} else
+		{
 			info.add("Unidentified");
 		}
 		String tooltip = "";
 		boolean isFirst = true;
-		for (Permission permission : Permission.getPermissions()) {
-			if (hasPermission(itemStack, permission)) {
-				if (!isFirst) {
+		for (Permission permission : Permission.getPermissions())
+		{
+			if (hasPermission(itemStack, permission))
+			{
+				if (!isFirst)
+				{
 					tooltip = tooltip + ", ";
 				}
 				isFirst = false;
 				tooltip = tooltip + permission.name;
 			}
 		}
-		if (!isFirst) {
+		if (!isFirst)
+		{
 			info.add(tooltip);
 		}
 	}
@@ -67,7 +75,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	{
 		setUsername(itemStack, entityPlayer.getCommandSenderName());
 		setUniqueId(itemStack, entityPlayer.getUniqueID());
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			notifyIdentificationChange(entityPlayer, entityPlayer.getCommandSenderName());
 		}
 		return itemStack;
@@ -97,8 +106,10 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	public String getUsername(ItemStack itemStack)
 	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
-		if (nbtTagCompound != null) {
-			if (!nbtTagCompound.getString("username").isEmpty()) {
+		if (nbtTagCompound != null)
+		{
+			if (!nbtTagCompound.getString("username").isEmpty())
+			{
 				return nbtTagCompound.getString("username");
 			}
 		}
@@ -109,10 +120,12 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	public UUID getUniqueId(ItemStack itemStack)
 	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
-		if (nbtTagCompound != null) {
+		if (nbtTagCompound != null)
+		{
 			long least = nbtTagCompound.getLong("uuid_least");
 			long most = nbtTagCompound.getLong("uuid_most");
-			if (least != 0 && most != 0) {
+			if (least != 0 && most != 0)
+			{
 				return new UUID(most, least);
 			}
 		}
@@ -123,7 +136,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	public boolean hasPermission(ItemStack itemStack, Permission permission)
 	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null || nbt == null) {
+		if (permission == null || nbt == null)
+		{
 			return true;
 		}
 		return nbt.getBoolean(NBT_PERM_PREFIX + permission.id);
@@ -133,7 +147,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	public boolean addPermission(ItemStack itemStack, Permission permission)
 	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null || nbt == null) {
+		if (permission == null || nbt == null)
+		{
 			return false;
 		}
 		nbt.setBoolean(NBT_PERM_PREFIX + permission.id, true);
@@ -144,7 +159,8 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	public boolean removePermission(ItemStack itemStack, Permission permission)
 	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null || nbt == null) {
+		if (permission == null || nbt == null)
+		{
 			return false;
 		}
 		nbt.setBoolean(NBT_PERM_PREFIX + permission.id, false);
@@ -153,8 +169,10 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 
 	public NBTTagCompound getSafeTagCompound(ItemStack itemStack)
 	{
-		if (itemStack != null) {
-			if (itemStack.getTagCompound() == null) {
+		if (itemStack != null)
+		{
+			if (itemStack.getTagCompound() == null)
+			{
 				itemStack.setTagCompound(new NBTTagCompound());
 			}
 			return itemStack.getTagCompound();

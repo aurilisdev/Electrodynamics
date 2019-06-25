@@ -34,7 +34,8 @@ public abstract class AbstractOreGenerator implements IWorldGenerator {
 		chunkX = chunkX << 4;
 		chunkZ = chunkZ << 4;
 
-		if (isOreGeneratedInWorld(world, chunkGenerator)) {
+		if (isOreGeneratedInWorld(world, chunkGenerator))
+		{
 			generate(world, rand, chunkX, chunkZ);
 		}
 	}

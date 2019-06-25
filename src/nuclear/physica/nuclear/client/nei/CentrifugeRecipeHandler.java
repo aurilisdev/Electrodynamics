@@ -76,13 +76,17 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	public void loadCraftingRecipes(String outputId, Object... results)
 	{
 
-		if (outputId.equals(getRecipeID())) {
+		if (outputId.equals(getRecipeID()))
+		{
 			arecipes.add(new recipe(2500, NuclearItemRegister.itemUranium238, .828f));
 			arecipes.add(new recipe(2500, NuclearItemRegister.itemUranium235, .172f));
-		} else if (outputId.equals("item") && results[0] instanceof ItemStack) {
-			if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemUranium238) {
+		} else if (outputId.equals("item") && results[0] instanceof ItemStack)
+		{
+			if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemUranium238)
+			{
 				arecipes.add(new recipe(2500, NuclearItemRegister.itemUranium238, .828f));
-			} else if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemUranium235) {
+			} else if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemUranium235)
+			{
 				arecipes.add(new recipe(2500, NuclearItemRegister.itemUranium235, .172f));
 			}
 		}
@@ -116,7 +120,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 
 		recipe theRecipe = (recipe) arecipes.get(recipe);
 
-		if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
+		if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
+		{
 			currenttip.add("Hexafluoride: " + theRecipe.hexaCost + "/5000ml");
 		}
 
@@ -130,13 +135,17 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
 
-		if (button == 0) {
-			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
+		if (button == 0)
+		{
+			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
+			{
 				GuiCraftingRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
 			}
-		} else if (button == 1) {
-			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
+		} else if (button == 1)
+		{
+			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
+			{
 				GuiUsageRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
 			}
@@ -150,13 +159,17 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
-		if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
-			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
+		if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
+		{
+			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
+			{
 				GuiCraftingRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
 			}
-		} else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
-			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
+		} else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
+		{
+			if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
+			{
 				GuiUsageRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
 			}
@@ -174,9 +187,11 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 		@Override
 		public PositionedStack getResult()
 		{
-			if (itemOutput.getItem() == NuclearItemRegister.itemUranium238) {
+			if (itemOutput.getItem() == NuclearItemRegister.itemUranium238)
+			{
 				return new PositionedStack(itemOutput, 102, 25);
-			} else {
+			} else
+			{
 				return new PositionedStack(itemOutput, 82, 25);
 			}
 

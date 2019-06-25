@@ -47,28 +47,35 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (hasEnoughEnergy()) {
-			if (canProcess()) {
-				if (operatingTicks < TICKS_REQUIRED) {
+		if (hasEnoughEnergy())
+		{
+			if (canProcess())
+			{
+				if (operatingTicks < TICKS_REQUIRED)
+				{
 					operatingTicks++;
 					ItemStack input = getStackInSlot(SLOT_INPUT2);
 					ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
 					waterTank.drain(recipe.getWaterUse() / TICKS_REQUIRED, true);
-				} else {
+				} else
+				{
 					process();
 					operatingTicks = 0;
 				}
 				extractEnergy();
-			} else {
+			} else
+			{
 				operatingTicks = 0;
 			}
 			drainBattery(SLOT_ENERGY);
-		} else {
+		} else
+		{
 			drainBattery(SLOT_ENERGY);
 			operatingTicks = 0;
 		}
 		ItemStack waterInput = getStackInSlot(SLOT_INPUT1);
-		if (waterInput != null && waterInput.getItem() == Items.water_bucket && waterTank.getFluidAmount() < waterTank.getCapacity()) {
+		if (waterInput != null && waterInput.getItem() == Items.water_bucket && waterTank.getFluidAmount() < waterTank.getCapacity())
+		{
 			setInventorySlotContents(SLOT_INPUT1, new ItemStack(Items.bucket));
 			waterTank.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
 		}
@@ -77,10 +84,13 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	public boolean canProcess()
 	{
 		ItemStack input = getStackInSlot(SLOT_INPUT2);
-		if (input != null) {
-			if (NuclearCustomRecipeHelper.isBoilerInput(input.getItem())) {
+		if (input != null)
+		{
+			if (NuclearCustomRecipeHelper.isBoilerInput(input.getItem()))
+			{
 				ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
-				if (recipe.getWaterUse() / TICKS_REQUIRED <= waterTank.getFluidAmount()) {
+				if (recipe.getWaterUse() / TICKS_REQUIRED <= waterTank.getFluidAmount())
+				{
 					return hexaTank.getFluidAmount() < hexaTank.getCapacity();
 				}
 			}

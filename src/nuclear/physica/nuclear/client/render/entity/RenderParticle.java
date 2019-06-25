@@ -22,7 +22,8 @@ public class RenderParticle extends Render {
 
 		float age = entity.ticksExisted;
 
-		while (age > 150) {
+		while (age > 150)
+		{
 			age -= 100;
 		}
 
@@ -30,7 +31,8 @@ public class RenderParticle extends Render {
 		final float f = (5 + age) / 200;
 		float f1 = 0;
 
-		if (f > 0.8) {
+		if (f > 0.8)
+		{
 			f1 = (f - 0.8F) / 0.2F;
 		}
 
@@ -50,7 +52,8 @@ public class RenderParticle extends Render {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0, -1, -2);
 
-		for (int i = 0; i < (f + f * f) / 2 * 60; i++) {
+		for (int i = 0; i < (f + f * f) / 2 * 60; i++)
+		{
 			GL11.glRotated(random.nextFloat() * 360, 1, 0, 0);
 			GL11.glRotated(random.nextFloat() * 360, 0, 1, 0);
 			GL11.glRotated(random.nextFloat() * 360, 0, 0, 1);

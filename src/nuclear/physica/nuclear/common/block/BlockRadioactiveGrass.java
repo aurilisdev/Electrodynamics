@@ -55,8 +55,10 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand)
 	{
-		if (!world.isRemote) {
-			if (world.rand.nextFloat() < 0.666f) {
+		if (!world.isRemote)
+		{
+			if (world.rand.nextFloat() < 0.666f)
+			{
 				RadiationSystem.spreadRadioactiveBlock(world, x, y, z);
 			}
 		}
@@ -65,7 +67,8 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public void onEntityWalking(World world, int x, int y, int z, Entity ent)
 	{
-		if (ent instanceof EntityLivingBase) {
+		if (ent instanceof EntityLivingBase)
+		{
 			int meta = world.getBlockMetadata(x, y, z);
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 7.5f, meta, 1, 1);
 		}
@@ -87,11 +90,14 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
-		if (side == 1) {
+		if (side == 1)
+		{
 			return this.topIcon;
-		} else if (side == 0) {
+		} else if (side == 0)
+		{
 			return Blocks.dirt.getBlockTextureFromSide(side);
-		} else {
+		} else
+		{
 			Material material = world.getBlock(x, y + 1, z).getMaterial();
 			return material != Material.snow && material != Material.craftedSnow ? this.blockIcon : this.snowVersion;
 		}
@@ -116,7 +122,8 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	{
 		super.randomDisplayTick(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_, p_149734_5_);
 
-		if (p_149734_5_.nextInt(10) == 0) {
+		if (p_149734_5_.nextInt(10) == 0)
+		{
 			p_149734_1_.spawnParticle("reddust", p_149734_2_ + p_149734_5_.nextFloat(), p_149734_3_ + 1.1F,
 					p_149734_4_ + p_149734_5_.nextFloat(), 0.01f, 1.0f, 0.01f);
 		}

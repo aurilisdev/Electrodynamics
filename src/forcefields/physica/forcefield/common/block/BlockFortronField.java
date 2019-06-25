@@ -60,7 +60,8 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	{
 		BlockLocation loc = new BlockLocation(x, y, z);
 		TileEntity tile = loc.getTile(world);
-		if (tile instanceof TileFortronField) {
+		if (tile instanceof TileFortronField)
+		{
 			TileFortronField field = (TileFortronField) tile;
 			return field.fieldColor;
 		}
@@ -91,9 +92,12 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 		float bound = world.isRemote ? 0.01f : 0.0625F;
 		@SuppressWarnings("unchecked")
 		List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x - bound, y - bound, z - bound, x + 1 + bound, y + 0.9 + bound, z + 1 + bound));
-		for (EntityPlayer player : entities) {
-			if (player.isSneaking()) {
-				if (player.capabilities.isCreativeMode) {
+		for (EntityPlayer player : entities)
+		{
+			if (player.isSneaking())
+			{
+				if (player.capabilities.isCreativeMode)
+				{
 					return null;
 				}
 			}
@@ -126,33 +130,42 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
-		if (!world.isRemote && entity instanceof EntityLivingBase) {
+		if (!world.isRemote && entity instanceof EntityLivingBase)
+		{
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
-			if (tileEntity instanceof TileFortronField) {
+			if (tileEntity instanceof TileFortronField)
+			{
 				TileFortronField field = (TileFortronField) tileEntity;
 				TileEntity possibleConstructor = field.getConstructorCoord().getTile(world);
-				if (!(possibleConstructor instanceof TileFortronFieldConstructor)) {
+				if (!(possibleConstructor instanceof TileFortronFieldConstructor))
+				{
 					world.setBlockToAir(x, y, z);
-				} else {
+				} else
+				{
 					TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) possibleConstructor;
-					if (!constructor.isActivated()) {
+					if (!constructor.isActivated())
+					{
 						HashSet<BlockLocation> removed = new HashSet<>();
 						LinkedList<TileFortronField> invalidQueue = new LinkedList<>();
 						invalidQueue.push(field);
 
-						while (!invalidQueue.isEmpty() && removed.size() < 1000) {
+						while (!invalidQueue.isEmpty() && removed.size() < 1000)
+						{
 							TileFortronField element = invalidQueue.pop();
 							BlockLocation blockLocation = new BlockLocation(element.xCoord, element.yCoord, element.zCoord);
-							if (removed.contains(blockLocation)) {
+							if (removed.contains(blockLocation))
+							{
 								continue;
 							}
 
 							world.setBlock(element.xCoord, element.yCoord, element.zCoord, Blocks.air, 0, 2);
 							removed.add(blockLocation);
 
-							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+							{
 								TileEntity tile = world.getTileEntity(element.xCoord + direction.offsetX, element.yCoord + direction.offsetY, element.zCoord + direction.offsetZ);
-								if (tile instanceof TileFortronField && !((TileFortronField) tile).isValidField()) {
+								if (tile instanceof TileFortronField && !((TileFortronField) tile).isValidField())
+								{
 									invalidQueue.add((TileFortronField) tile);
 								}
 							}
@@ -160,15 +173,18 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 						return;
 					}
 					float volatilityPercent = (float) constructor.getHealthLost() / TileFortronFieldConstructor.MAX_HEALTH_LOSS;
-					if (volatilityPercent > 0.5) {
+					if (volatilityPercent > 0.5)
+					{
 						world.createExplosion(null, entity.posX, entity.posY, entity.posZ, PhysicaMath.map(volatilityPercent, 0.5F, 1F, 0.5F, 5F), true);
 					}
 					int shockAmount = constructor.getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"),
 							TileFortronFieldConstructor.SLOT_UPGRADES[0], TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]);
-					if (shockAmount > 0) {
+					if (shockAmount > 0)
+					{
 						@SuppressWarnings("unchecked")
 						List<EntityLiving> entities = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x - 1, y - 1, z - 1, x + 2, y + 2, z + 2));
-						for (Entity living : entities) {
+						for (Entity living : entities)
+						{
 							living.attackEntityFrom(DamageSourceForcefield.INSTANCE, shockAmount);
 						}
 					}

@@ -325,9 +325,11 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public boolean equals(Tuple2d t1)
 	{
-		try {
+		try
+		{
 			return x == t1.x && y == t1.y;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
 		}
 
@@ -345,12 +347,15 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	@Override
 	public boolean equals(Object t1)
 	{
-		try {
+		try
+		{
 			Tuple2d t2 = (Tuple2d) t1;
 			return x == t2.x && y == t2.y;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
-		} catch (ClassCastException e1) {
+		} catch (ClassCastException e1)
+		{
 			return false;
 		}
 
@@ -373,18 +378,22 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 		double diff;
 
 		diff = x - t1.x;
-		if (Double.isNaN(diff)) {
+		if (Double.isNaN(diff))
+		{
 			return false;
 		}
-		if ((diff < 0 ? -diff : diff) > epsilon) {
+		if ((diff < 0 ? -diff : diff) > epsilon)
+		{
 			return false;
 		}
 
 		diff = y - t1.y;
-		if (Double.isNaN(diff)) {
+		if (Double.isNaN(diff))
+		{
 			return false;
 		}
-		if ((diff < 0 ? -diff : diff) > epsilon) {
+		if ((diff < 0 ? -diff : diff) > epsilon)
+		{
 			return false;
 		}
 
@@ -416,19 +425,25 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public final void clamp(double min, double max, Tuple2d t)
 	{
-		if (t.x > max) {
+		if (t.x > max)
+		{
 			x = max;
-		} else if (t.x < min) {
+		} else if (t.x < min)
+		{
 			x = min;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y > max) {
+		if (t.y > max)
+		{
 			y = max;
-		} else if (t.y < min) {
+		} else if (t.y < min)
+		{
 			y = min;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
@@ -445,15 +460,19 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMin(double min, Tuple2d t)
 	{
-		if (t.x < min) {
+		if (t.x < min)
+		{
 			x = min;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y < min) {
+		if (t.y < min)
+		{
 			y = min;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
@@ -470,15 +489,19 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMax(double max, Tuple2d t)
 	{
-		if (t.x > max) {
+		if (t.x > max)
+		{
 			x = max;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y > max) {
+		if (t.y > max)
+		{
 			y = max;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
@@ -507,15 +530,19 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public final void clamp(double min, double max)
 	{
-		if (x > max) {
+		if (x > max)
+		{
 			x = max;
-		} else if (x < min) {
+		} else if (x < min)
+		{
 			x = min;
 		}
 
-		if (y > max) {
+		if (y > max)
+		{
 			y = max;
-		} else if (y < min) {
+		} else if (y < min)
+		{
 			y = min;
 		}
 
@@ -529,10 +556,12 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMin(double min)
 	{
-		if (x < min) {
+		if (x < min)
+		{
 			x = min;
 		}
-		if (y < min) {
+		if (y < min)
+		{
 			y = min;
 		}
 	}
@@ -545,10 +574,12 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMax(double max)
 	{
-		if (x > max) {
+		if (x > max)
+		{
 			x = max;
 		}
-		if (y > max) {
+		if (y > max)
+		{
 			y = max;
 		}
 	}
@@ -608,9 +639,11 @@ public abstract class Tuple2d implements java.io.Serializable, Cloneable {
 	public Object clone()
 	{
 		// Since there are no arrays we can just use Object.clone()
-		try {
+		try
+		{
 			return super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
 			// this shouldn't happen, since we are Cloneable
 			throw new InternalError();
 		}

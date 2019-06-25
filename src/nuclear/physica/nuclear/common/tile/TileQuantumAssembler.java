@@ -36,15 +36,19 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	public boolean canProcess()
 	{
 		ItemStack itemStack = getStackInSlot(6);
-		if (isRestricted(itemStack)) {
+		if (isRestricted(itemStack))
+		{
 			return false;
 		}
-		for (int i = 0; i <= 5; i++) {
+		for (int i = 0; i <= 5; i++)
+		{
 			ItemStack itemStackInSlot = getStackInSlot(i);
-			if (itemStackInSlot == null) {
+			if (itemStackInSlot == null)
+			{
 				return false;
 			}
-			if (itemStackInSlot.getItem() != NuclearItemRegister.itemDarkmatterCell) {
+			if (itemStackInSlot.getItem() != NuclearItemRegister.itemDarkmatterCell)
+			{
 				return false;
 			}
 		}
@@ -62,15 +66,19 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (canProcess() && hasEnoughEnergy()) {
-			if (operatingTicks < TICKS_REQUIRED) {
+		if (canProcess() && hasEnoughEnergy())
+		{
+			if (operatingTicks < TICKS_REQUIRED)
+			{
 				operatingTicks++;
-			} else {
+			} else
+			{
 				process();
 				operatingTicks = 0;
 			}
 			extractEnergy();
-		} else if (getStackInSlot(SLOT_OUTPUT) == null || !canProcess()) {
+		} else if (getStackInSlot(SLOT_OUTPUT) == null || !canProcess())
+		{
 			operatingTicks = 0;
 		}
 	}
@@ -82,11 +90,14 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 		super.updateClient(ticks);
 		ItemStack itemStack = getStackInSlot(SLOT_OUTPUT);
 
-		if (itemStack != null) {
-			if (entityItem == null || !itemStack.isItemEqual(entityItem.getEntityItem())) {
+		if (itemStack != null)
+		{
+			if (entityItem == null || !itemStack.isItemEqual(entityItem.getEntityItem()))
+			{
 				entityItem = getEntityForItem(itemStack);
 			}
-		} else {
+		} else
+		{
 			entityItem = null;
 		}
 	}
@@ -101,15 +112,18 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 
 	private void process()
 	{
-		for (int i = 0; i <= 5; i++) {
+		for (int i = 0; i <= 5; i++)
+		{
 			ItemStack itemStackInSlot = getStackInSlot(i);
 			itemStackInSlot.setItemDamage(itemStackInSlot.getItemDamage() + 1);
-			if (itemStackInSlot.getItemDamage() >= itemStackInSlot.getMaxDamage()) {
+			if (itemStackInSlot.getItemDamage() >= itemStackInSlot.getMaxDamage())
+			{
 				decrStackSize(i, 1);
 			}
 		}
 		ItemStack itemStack = getStackInSlot(SLOT_OUTPUT);
-		if (itemStack != null) {
+		if (itemStack != null)
+		{
 			itemStack.stackSize++;
 		}
 	}

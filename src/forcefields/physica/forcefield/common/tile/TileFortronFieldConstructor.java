@@ -60,7 +60,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public static final Integer[] SLOT_DOWN = new Integer[] { 3, 11 };
 	public static final HashMap<List<Integer>, String> SLOT_MAP = new HashMap<>();
 
-	static {
+	static
+	{
 		SLOT_MAP.put(Arrays.asList(SLOT_NORTH), "North");
 		SLOT_MAP.put(Arrays.asList(SLOT_SOUTH), "South");
 		SLOT_MAP.put(Arrays.asList(SLOT_EAST), "East");
@@ -132,14 +133,17 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void damageForcefield(int amount)
 	{
 		int fortronUse = getFortronUse();
-		if (fortronUse == 0) {
+		if (fortronUse == 0)
+		{
 			return;
 		}
 		this.healthLost += amount / fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
-		if (this.healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS) {
+		if (this.healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS)
+		{
 			destroyField(true);
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics")) {
+			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
+			{
 				EntityItem antimatter = new EntityItem(worldObj, xCoord, yCoord, zCoord, new ItemStack(physica.nuclear.common.NuclearItemRegister.itemAntimatterCell1Gram));
 				worldObj.spawnEntityInWorld(antimatter);
 			}
@@ -177,18 +181,23 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		super.onInventoryChanged();
 		updateFieldTerms();
 		int ret = 0;
-		for (int i = 0; i < getSizeInventory(); i++) {
-			if (i != SLOT_FREQUENCY) {
+		for (int i = 0; i < getSizeInventory(); i++)
+		{
+			if (i != SLOT_FREQUENCY)
+			{
 				ItemStack stack = getStackInSlot(i);
-				if (stack != null) {
+				if (stack != null)
+				{
 					if (stack.getItem() == ForcefieldItemRegister.itemMetaManipulationModule || stack.getItem() == ForcefieldItemRegister.itemMetaShapeModule
-							|| stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule && stack.getItemDamage() >= 3 && stack.getItemDamage() <= 6) {
+							|| stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule && stack.getItemDamage() >= 3 && stack.getItemDamage() <= 6)
+					{
 						ret += stack.stackSize;
 					}
 				}
 			}
 		}
-		if (ret != moduleCount) {
+		if (ret != moduleCount)
+		{
 			moduleCount = ret;
 			destroyField(false);
 		}
@@ -229,13 +238,16 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void updateCommon(int ticks)
 	{
 		super.updateCommon(ticks);
-		if (getStackInSlot(SLOT_FREQUENCY) != null) {
-			if (getStackInSlot(SLOT_FREQUENCY).stackTagCompound != null) {
+		if (getStackInSlot(SLOT_FREQUENCY) != null)
+		{
+			if (getStackInSlot(SLOT_FREQUENCY).stackTagCompound != null)
+			{
 				setFrequency(getStackInSlot(SLOT_FREQUENCY).stackTagCompound.getInteger("frequency"));
 			}
 		}
 		fortronTank.setCapacity(getMaxFortron());
-		if (fortronTank.getCapacity() < fortronTank.getFluidAmount()) {
+		if (fortronTank.getCapacity() < fortronTank.getFluidAmount())
+		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
 		isActivated = isPoweredByRedstone();
@@ -244,11 +256,13 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	@Override
 	public boolean isInForcefield(double x, double y, double z)
 	{
-		if (!isFullySealed) {
+		if (!isFullySealed)
+		{
 			return false;
 		}
 		int index = getProjectorMode();
-		if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeCube").getItemDamage()) {
+		if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeCube").getItemDamage())
+		{
 			int xRadiusPos = cachedInformation[0];
 			int yRadiusPos = cachedInformation[1];
 			int zRadiusPos = cachedInformation[2];
@@ -257,36 +271,43 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			int zRadiusNeg = cachedInformation[5];
 			return x >= xRadiusNeg && x <= xRadiusPos && y >= yRadiusNeg && y <= yRadiusPos && z >= zRadiusNeg && z <= zRadiusPos;
 		} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeSphere").getItemDamage()
-				|| index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage()) {
-					float radius = cachedInformation[6] + 0.4F;
-					if (hasInterior) {
-						radius /= ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE;
-					}
-					if (y < 0 || y > 255) {
-						return false;
-					} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage()) {
-						return getLocation().getDistance(x, y, z) <= radius && y >= yCoordShifted();
-					} else {
-						return getLocation().getDistance(x, y, z) <= radius;
-					}
-				} else
-			if (index == ForcefieldItemRegister.moduleMap.get("moduleShapePyramid").getItemDamage()) {
-				int xPos = cachedInformation[0];
-				int yPos = cachedInformation[1];
-				int zPos = cachedInformation[2];
-				int xNeg = cachedInformation[3];
-				int yNeg = cachedInformation[4];
-				int zNeg = cachedInformation[5];
-				yPos += yCoordShifted() - yNeg;
-				if (y >= yNeg && y <= yPos) {
-					double diff = y - yNeg + 1;
-					xNeg += diff;
-					xPos -= diff;
-					zNeg += diff;
-					zPos -= diff;
-					return x >= xNeg && x <= xPos && z >= zNeg && z <= zPos;
-				}
+				|| index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage())
+		{
+			float radius = cachedInformation[6] + 0.4F;
+			if (hasInterior)
+			{
+				radius /= ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE;
 			}
+			if (y < 0 || y > 255)
+			{
+				return false;
+			} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage())
+			{
+				return getLocation().getDistance(x, y, z) <= radius && y >= yCoordShifted();
+			} else
+			{
+				return getLocation().getDistance(x, y, z) <= radius;
+			}
+		} else
+			if (index == ForcefieldItemRegister.moduleMap.get("moduleShapePyramid").getItemDamage())
+		{
+			int xPos = cachedInformation[0];
+			int yPos = cachedInformation[1];
+			int zPos = cachedInformation[2];
+			int xNeg = cachedInformation[3];
+			int yNeg = cachedInformation[4];
+			int zNeg = cachedInformation[5];
+			yPos += yCoordShifted() - yNeg;
+			if (y >= yNeg && y <= yPos)
+			{
+				double diff = y - yNeg + 1;
+				xNeg += diff;
+				xPos -= diff;
+				zNeg += diff;
+				zPos -= diff;
+				return x >= xNeg && x <= xPos && z >= zNeg && z <= zPos;
+			}
+		}
 		return false;
 	}
 
@@ -314,29 +335,38 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (!ForcefieldEventHandler.INSTANCE.isConstructorRegistered(this)) {
+		if (!ForcefieldEventHandler.INSTANCE.isConstructorRegistered(this))
+		{
 			ForcefieldEventHandler.INSTANCE.registerConstructor(this);
 		}
 		isFullySealed = isFinishedConstructing() && activeFields.size() >= maximumForceFieldCount;
 		ItemStack type = getStackInSlot(SLOT_TYPE);
-		if (type != null) {
-			if (forcefieldType != type.getItemDamage()) {
+		if (type != null)
+		{
+			if (forcefieldType != type.getItemDamage())
+			{
 				destroyField(false);
 				forcefieldType = type.getItemDamage();
 			}
 		}
-		if (ticks % 20 == 0) {
+		if (ticks % 20 == 0)
+		{
 			validateConnections();
 		}
-		if (isDestroying) {
-			if (activeFields.isEmpty()) {
+		if (isDestroying)
+		{
+			if (activeFields.isEmpty())
+			{
 				isDestroying = false;
 				delay = 40;
-			} else {
+			} else
+			{
 				int size = 0;
 				Iterator<TileFortronField> iterator = activeFields.iterator();
-				while (iterator.hasNext()) {
-					if (size++ > 250) {
+				while (iterator.hasNext())
+				{
+					if (size++ > 250)
+					{
 						break;
 					}
 					TileFortronField field = iterator.next();
@@ -346,18 +376,25 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				}
 			}
 		}
-		if (ticks > 5) {
+		if (ticks > 5)
+		{
 			int fortronUse = getFortronUse();
-			if (isActivated() && type != null && fortronTank.getFluidAmount() > fortronUse && fortronUse > 0) {
+			if (isActivated() && type != null && fortronTank.getFluidAmount() > fortronUse && fortronUse > 0)
+			{
 				fortronTank.drain(fortronUse, true);
-				if (!isDestroying) {
+				if (!isDestroying)
+				{
 					healthLost = Math.max(0, healthLost - 1);
-					if (!isCalculating && calculatedFieldPoints.isEmpty() && activeFields.isEmpty() && !isCurrentlyConstructing) {
-						if (delay > 0) {
-							if (getFortronTank().getFluidAmount() >= fortronUse) {
+					if (!isCalculating && calculatedFieldPoints.isEmpty() && activeFields.isEmpty() && !isCurrentlyConstructing)
+					{
+						if (delay > 0)
+						{
+							if (getFortronTank().getFluidAmount() >= fortronUse)
+							{
 								delay--;
 							}
-						} else {
+						} else
+						{
 							delay = 40;
 							setCalculating(true);
 							calculationThread = new ConstructorCalculationThread(this);
@@ -365,13 +402,16 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							Logger.getGlobal().log(Level.INFO, "Started forcefield generation at: " + getLocation());
 						}
 
-					} else if (!isCalculating && !calculatedFieldPoints.isEmpty()) {
+					} else if (!isCalculating && !calculatedFieldPoints.isEmpty())
+					{
 						projectField();
 						isCurrentlyConstructing = true;
 					}
 				}
-			} else {
-				if (fortronTank.getFluidAmount() < fortronUse) {
+			} else
+			{
+				if (fortronTank.getFluidAmount() < fortronUse)
+				{
 					delay = 100;
 				}
 				destroyField(false);
@@ -392,14 +432,17 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		isCurrentlyConstructing = false;
 		maximumForceFieldCount = 0;
 
-		if (calculationThread != null) {
+		if (calculationThread != null)
+		{
 			calculationThread.interrupt();
 			calculationThread = null;
 		}
 		calculatedFieldPoints.clear();
 
-		if (instant) {
-			for (TileFortronField field : activeFields) {
+		if (instant)
+		{
+			for (TileFortronField field : activeFields)
+			{
 				worldObj.setBlock(field.xCoord, field.yCoord, field.zCoord, Blocks.air, 0, 2);
 			}
 			activeFields.clear();
@@ -414,11 +457,14 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		hasCollectionModule = hasUpgrade("moduleUpgradeCollection");
 		totalGeneratedPerTick = 1 + 2 * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1])
 				/ ((shouldSponge ? 2 : 5) / (shouldStabilize ? 2 : 1));
-		if (shouldSponge) {
+		if (shouldSponge)
+		{
 			totalGeneratedPerTick /= 2;
-		} else if (shouldDisintegrate) {
+		} else if (shouldDisintegrate)
+		{
 			totalGeneratedPerTick /= hasCollectionModule ? 5 : 4;
-		} else if (shouldStabilize) {
+		} else if (shouldStabilize)
+		{
 			totalGeneratedPerTick /= 3;
 		}
 	}
@@ -427,45 +473,61 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		Set<BlockLocation> finishedQueueItems = new HashSet<>();
 		int currentlyGenerated = 0, currentlyMissed = 0;
-		for (BlockLocation fieldPoint : calculatedFieldPoints) {
-			if (currentlyGenerated >= totalGeneratedPerTick) {
+		for (BlockLocation fieldPoint : calculatedFieldPoints)
+		{
+			if (currentlyGenerated >= totalGeneratedPerTick)
+			{
 				break;
 			}
-			if (currentlyMissed >= 500) {
+			if (currentlyMissed >= 500)
+			{
 				break;
 			}
 			finishedQueueItems.add(fieldPoint);
 			Block block = fieldPoint.getBlock(worldObj);
-			if (block == ForcefieldBlockRegister.blockFortronField) {
+			if (block == ForcefieldBlockRegister.blockFortronField)
+			{
 				TileFortronField field = (TileFortronField) fieldPoint.getTile(worldObj);
-				if (field != null && field.getConstructorCoord().equals(location)) {
+				if (field != null && field.getConstructorCoord().equals(location))
+				{
 					activeFields.add(field);
 					currentlyGenerated++;
 					continue;
 				}
 			}
-			if (shouldSponge) {
-				if (block.getMaterial().isLiquid()) {
+			if (shouldSponge)
+			{
+				if (block.getMaterial().isLiquid())
+				{
 					fieldPoint.setBlockAir(worldObj);
-					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+					{
 						Block adjacentBlock = worldObj.getBlock(fieldPoint.x + direction.offsetX, fieldPoint.y + direction.offsetY, fieldPoint.z + direction.offsetZ);
-						if (adjacentBlock.getMaterial().isLiquid()) {
+						if (adjacentBlock.getMaterial().isLiquid())
+						{
 							fieldPoint.setBlockAir(worldObj);
 						}
 					}
 					currentlyGenerated++;
-				} else if (block.getMaterial() == Material.air) {
+				} else if (block.getMaterial() == Material.air)
+				{
 					currentlyMissed++;
 				}
-			} else {
-				if (shouldDisintegrate) {
-					if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) != -1) { //Location usually has no effect
-						if (hasCollectionModule) {
-							for (ItemStack stack : block.getDrops(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z, fieldPoint.getMetadata(worldObj), 0)) {
+			} else
+			{
+				if (shouldDisintegrate)
+				{
+					if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) != -1)
+					{ //Location usually has no effect
+						if (hasCollectionModule)
+						{
+							for (ItemStack stack : block.getDrops(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z, fieldPoint.getMetadata(worldObj), 0))
+							{
 								TileInterdictionMatrix.mergeIntoInventory(this, stack);
 							}
 						}
-						if (block.getMaterial() == Material.air) {
+						if (block.getMaterial() == Material.air)
+						{
 							currentlyMissed++;
 							continue;
 						}
@@ -473,20 +535,27 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 
 						currentlyGenerated++;
 					}
-				} else if (block.getMaterial().isReplaceable()) {
-					if (shouldStabilize) {
-						for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				} else if (block.getMaterial().isReplaceable())
+				{
+					if (shouldStabilize)
+					{
+						for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+						{
 							TileEntity entity = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-							if (entity != null && entity instanceof IInventory) {
+							if (entity != null && entity instanceof IInventory)
+							{
 								IInventory inv = (IInventory) entity;
 								boolean didPlace = false;
-								for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
+								for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+								{
 									ItemStack stack = inv.getStackInSlot(slot);
-									if (stack != null) {
+									if (stack != null)
+									{
 										if (stack.getItem() instanceof ItemBlock
 												&& entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.x,
 														fieldPoint.y, fieldPoint.z,
-														false, 0, null, stack)) {
+														false, 0, null, stack))
+										{
 											int meta = stack.getHasSubtypes() ? stack.getItemDamage() : 0;
 											((ItemBlock) stack.getItem()).placeBlockAt(stack, null, entity.getWorldObj(), fieldPoint.x,
 													fieldPoint.y, fieldPoint.z, 0, 0, 0, 0, meta);
@@ -496,23 +565,27 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 										}
 									}
 								}
-								if (didPlace) {
+								if (didPlace)
+								{
 									currentlyGenerated++;
 									break;
 								}
 							}
 						}
-					} else {
+					} else
+					{
 						fieldPoint.setBlockNonUpdate(worldObj, ForcefieldBlockRegister.blockFortronField);
 						TileEntity tile = fieldPoint.getTile(worldObj);
-						if (tile instanceof TileFortronField) {
+						if (tile instanceof TileFortronField)
+						{
 							TileFortronField field = (TileFortronField) tile;
 							field.setConstructor(this);
 							activeFields.add(field);
 						}
 						currentlyGenerated++;
 					}
-				} else if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) == -1) {
+				} else if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) == -1)
+				{
 					maximumForceFieldCount--;
 				}
 			}
@@ -546,7 +619,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		int oldFrequency = frequency;
 		frequency = freq;
-		if (oldFrequency != freq) {
+		if (oldFrequency != freq)
+		{
 			onFirstUpdate();
 		}
 	}
@@ -613,19 +687,24 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		if (stack == null || stack.getItem() == null) {
+		if (stack == null || stack.getItem() == null)
+		{
 			return false;
 		}
-		if (slot >= 0 && slot <= 11) {
+		if (slot >= 0 && slot <= 11)
+		{
 			return stack.getItem() == ForcefieldItemRegister.itemMetaManipulationModule;
 		}
-		if (slot >= 12 && slot <= 17) {
+		if (slot >= 12 && slot <= 17)
+		{
 			return stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule;
 		}
-		if (slot == SLOT_FREQUENCY) {
+		if (slot == SLOT_FREQUENCY)
+		{
 			return stack.getItem() == ForcefieldItemRegister.itemFrequency;
 		}
-		if (slot == SLOT_TYPE) {
+		if (slot == SLOT_TYPE)
+		{
 			return stack.getItem() == ForcefieldItemRegister.itemMetaShapeModule;
 		}
 		return true;
@@ -686,7 +765,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	@Override
 	public BlockLocation getLocation()
 	{
-		if (location == null) {
+		if (location == null)
+		{
 			location = super.getLocation();
 		}
 		return location;

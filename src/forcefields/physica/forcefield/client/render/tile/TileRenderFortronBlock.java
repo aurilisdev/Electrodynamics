@@ -42,13 +42,16 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		model_base.renderAll();
 		GL11.glScaled(1 / 0.0625f, 1 / 0.0625f, 1 / 0.0625f);
 		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
-		if (tile.isActivated() && tile.canSendBeam()) {
+		if (tile.isActivated() && tile.canSendBeam())
+		{
 			Location start = new Location((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
 			Set<Location> renders = new HashSet<>();
-			for (ITileBase base : tile.getFortronConnections()) {
+			for (ITileBase base : tile.getFortronConnections())
+			{
 				Location vector = base.getLocation().Location();
 				TileEntity vectorTile = tile.This().getWorldObj().getTileEntity((int) vector.x, (int) vector.y, (int) vector.z);
-				if (vectorTile instanceof IInvFortronTile) {
+				if (vectorTile instanceof IInvFortronTile)
+				{
 					double diffX = vector.x - tile.This().xCoord;
 					double diffY = vector.y - tile.This().yCoord;
 					double diffZ = vector.z - tile.This().zCoord;
@@ -74,7 +77,8 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		GL11.glBlendFunc(1, 1);
 		GL11.glColor3f(1.5f, 1.2f, 1.5f);
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png"));
-		for (Location end : beams) {
+		for (Location end : beams)
+		{
 			addBeamToTesselator(start, end, playerPos, width);
 		}
 		Tessellator.instance.draw();

@@ -17,7 +17,8 @@ public class NuclearCustomRecipeRegister {
 
 	public static NuclearCustomRecipeRegister getInstance()
 	{
-		if (instance == null) {
+		if (instance == null)
+		{
 			instance = new NuclearCustomRecipeRegister();
 		}
 

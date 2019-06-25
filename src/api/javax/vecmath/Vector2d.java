@@ -174,10 +174,12 @@ public class Vector2d extends Tuple2d implements java.io.Serializable {
 	public final double angle(Vector2d v1)
 	{
 		double vDot = dot(v1) / (length() * v1.length());
-		if (vDot < -1.0) {
+		if (vDot < -1.0)
+		{
 			vDot = -1.0;
 		}
-		if (vDot > 1.0) {
+		if (vDot > 1.0)
+		{
 			vDot = 1.0;
 		}
 		return Math.acos(vDot);

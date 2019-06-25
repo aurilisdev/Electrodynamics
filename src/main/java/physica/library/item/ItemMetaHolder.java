@@ -32,7 +32,8 @@ public class ItemMetaHolder extends ItemUpdateable {
 	public void registerIcons(IIconRegister register)
 	{
 		subIcons = new IIcon[subItems.size()];
-		for (int i = 0; i < subItems.size(); i++) {
+		for (int i = 0; i < subItems.size(); i++)
+		{
 			subIcons[i] = register.registerIcon(CoreReferences.PREFIX + subItems.get(i));
 		}
 	}
@@ -54,7 +55,8 @@ public class ItemMetaHolder extends ItemUpdateable {
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
 	{
-		for (int i = 0; i < subItems.size(); i++) {
+		for (int i = 0; i < subItems.size(); i++)
+		{
 			list.add(new ItemStack(item, 1, i));
 		}
 	}

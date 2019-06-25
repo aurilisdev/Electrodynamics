@@ -45,7 +45,8 @@ public class TileRenderCentrifuge extends TileRenderObjModel<TileCentrifuge> {
 
 		bindTexture(model_texture);
 		model_base.renderAll();
-		if (tile.getOperatingTicks() > 0) {
+		if (tile.getOperatingTicks() > 0)
+		{
 			GL11.glRotatef(tile.getTicksRunning() * 18 % 360, 0.0f, 1.0f, 0.0f);
 		}
 		model_middle.renderAll();

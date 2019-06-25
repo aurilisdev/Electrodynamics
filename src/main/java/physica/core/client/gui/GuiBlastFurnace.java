@@ -34,7 +34,8 @@ public class GuiBlastFurnace extends GuiContainerBase<TileBlastFurnace> {
 		containerHeight = (height - ySize) / 2;
 		mc.renderEngine.bindTexture(GUI_FURNACE);
 		drawTexturedModalRect(containerWidth, containerHeight, 0, 0, xSize, ySize);
-		if (host.isBurning()) {
+		if (host.isBurning())
+		{
 
 			int i1 = host.getBurnTimeRemainingScaled(13);
 			drawTexturedModalRect(containerWidth + 56, containerHeight + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);

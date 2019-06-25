@@ -174,10 +174,12 @@ public class Vector2f extends Tuple2f implements java.io.Serializable {
 	public final float angle(Vector2f v1)
 	{
 		double vDot = dot(v1) / (length() * v1.length());
-		if (vDot < -1.0) {
+		if (vDot < -1.0)
+		{
 			vDot = -1.0;
 		}
-		if (vDot > 1.0) {
+		if (vDot > 1.0)
+		{
 			vDot = 1.0;
 		}
 		return (float) Math.acos(vDot);

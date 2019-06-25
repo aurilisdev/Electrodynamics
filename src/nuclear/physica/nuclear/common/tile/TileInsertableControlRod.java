@@ -39,7 +39,8 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 		super.updateServer(ticks);
 		ForgeDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
-		if (!(tile instanceof TileFissionReactor)) {
+		if (!(tile instanceof TileFissionReactor))
+		{
 			worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, new ItemStack(getBlockType())));
 			getLocation().setBlockAir(worldObj);
 
@@ -110,7 +111,8 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 
 	public void actionPerformed(int amount, Side side)
 	{
-		if (side == Side.CLIENT) {
+		if (side == Side.CLIENT)
+		{
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", CONTROL_ROD_PACKET_ID, xCoord, yCoord, zCoord, amount));
 		}
 		insertion = Math.max(0, Math.min(100, insertion + amount));
@@ -119,7 +121,8 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	@Override
 	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
 	{
-		if (id == CONTROL_ROD_PACKET_ID && side.isServer() && type instanceof PacketTile) {
+		if (id == CONTROL_ROD_PACKET_ID && side.isServer() && type instanceof PacketTile)
+		{
 			actionPerformed(((PacketTile) type).customInteger, side);
 		}
 	}

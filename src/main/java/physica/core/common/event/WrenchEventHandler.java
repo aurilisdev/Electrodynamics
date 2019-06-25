@@ -19,23 +19,31 @@ public class WrenchEventHandler {
 
 	public static boolean canWrench(ItemStack item, int x, int y, int z, EntityPlayer player)
 	{
-		if (item != null) {
+		if (item != null)
+		{
 			Item type = item.getItem();
-			if (type instanceof IMekWrench) {
-				if (!((IMekWrench) type).canUseWrench(player, x, y, z)) {
+			if (type instanceof IMekWrench)
+			{
+				if (!((IMekWrench) type).canUseWrench(player, x, y, z))
+				{
 					return false;
-				} else if (!(type instanceof IToolWrench) && !(type instanceof IAEWrench)) {
+				} else if (!(type instanceof IToolWrench) && !(type instanceof IAEWrench))
+				{
 					return true;
 				}
 			}
-			if (type instanceof IToolWrench) {
-				if (((IToolWrench) type).canWrench(player, x, y, z)) {
+			if (type instanceof IToolWrench)
+			{
+				if (((IToolWrench) type).canWrench(player, x, y, z))
+				{
 					((IToolWrench) type).wrenchUsed(player, x, y, z);
 					return true;
 				}
 			}
-			if (type instanceof IAEWrench) {
-				if (((IAEWrench) type).canWrench(item, player, x, y, z)) {
+			if (type instanceof IAEWrench)
+			{
+				if (((IAEWrench) type).canWrench(item, player, x, y, z))
+				{
 					return true;
 				}
 			}
@@ -46,13 +54,19 @@ public class WrenchEventHandler {
 	@SubscribeEvent
 	public void onClick(PlayerInteractEvent event)
 	{
-		if (event.action == Action.RIGHT_CLICK_BLOCK) {
-			if (event.entityPlayer.isSneaking()) {
-				if (canWrench(event.entityPlayer.getCurrentEquippedItem(), event.x, event.y, event.z, event.entityPlayer)) {
+		if (event.action == Action.RIGHT_CLICK_BLOCK)
+		{
+			if (event.entityPlayer.isSneaking())
+			{
+				if (canWrench(event.entityPlayer.getCurrentEquippedItem(), event.x, event.y, event.z, event.entityPlayer))
+				{
 					Block block = event.world.getBlock(event.x, event.y, event.z);
-					if (block instanceof BlockBaseContainer || block instanceof BlockCopperCable) {
-						if (!event.world.isRemote) {
-							if (((BlockBaseContainer) block).canWrench(event.world, event.x, event.y, event.z)) {
+					if (block instanceof BlockBaseContainer || block instanceof BlockCopperCable)
+					{
+						if (!event.world.isRemote)
+						{
+							if (((BlockBaseContainer) block).canWrench(event.world, event.x, event.y, event.z))
+							{
 								block.breakBlock(event.world, event.x, event.y, event.z, block, event.world.getBlockMetadata(event.x, event.y, event.z));
 								block.dropBlockAsItem(event.world, event.x, event.y, event.z, 0, 0);
 								event.world.setBlockToAir(event.x, event.y, event.z);

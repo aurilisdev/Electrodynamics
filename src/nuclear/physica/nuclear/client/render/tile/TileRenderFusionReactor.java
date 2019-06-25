@@ -19,7 +19,8 @@ public class TileRenderFusionReactor extends TileRenderObjModel<TileFusionReacto
 	public void renderTileAt(TileFusionReactor tile, double x, double y, double z, float deltaFrame)
 	{
 		super.renderTileAt(tile, x, y, z, deltaFrame);
-		if (Minecraft.getMinecraft().thePlayer.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord) <= 64) {
+		if (Minecraft.getMinecraft().thePlayer.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord) <= 64)
+		{
 			GL11.glPushMatrix();
 			int deuterium = tile.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM) != null ? tile.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM).stackSize : 0;
 			TileRenderObjModel.renderFloatingText("Deuterium: " + deuterium / 0.04 + "ml", (float) x + 0.5F, (float) y + 0.25F - 2.0F + 1.25f, (float) z + 0.5F, 16777215);

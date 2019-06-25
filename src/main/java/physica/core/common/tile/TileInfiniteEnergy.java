@@ -14,16 +14,21 @@ public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
 	@Override
 	public void updateServer(int ticks)
 	{
-		if (ConfigCore.DISABLE_INFINITE_ENERGY_CUBE) {
+		if (ConfigCore.DISABLE_INFINITE_ENERGY_CUBE)
+		{
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
 		}
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-			if (tile != null) {
-				if (tile instanceof IEnergyReceiver) {
+			if (tile != null)
+			{
+				if (tile instanceof IEnergyReceiver)
+				{
 					IEnergyReceiver reciever = (IEnergyReceiver) tile;
-					if (reciever.canConnectEnergy(dir.getOpposite())) {
+					if (reciever.canConnectEnergy(dir.getOpposite()))
+					{
 						reciever.receiveEnergy(dir.getOpposite(), VISIBLE_STORAGE, false);
 					}
 				}

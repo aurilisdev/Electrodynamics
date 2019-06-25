@@ -21,8 +21,10 @@ public interface IRecipeUtilities {
 
 	default void addShapeless(ItemStack output, Object... params)
 	{
-		for (Object obj : params) {
-			if (obj == null) {
+		for (Object obj : params)
+		{
+			if (obj == null)
+			{
 				return;
 			}
 		}
@@ -41,7 +43,8 @@ public interface IRecipeUtilities {
 
 	default void addRecipe(ItemStack output, Object... params)
 	{
-		if (output.getItem() == null) {
+		if (output.getItem() == null)
+		{
 			return;
 		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(output, params));

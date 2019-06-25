@@ -64,7 +64,8 @@ public class NeutronCaptureRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results)
 	{
-		if (outputId.equals(getRecipeID()) || outputId.equals("item") && results[0] instanceof ItemStack && ((ItemStack) results[0]).getItem() == NuclearItemRegister.itemTritiumCell) {
+		if (outputId.equals(getRecipeID()) || outputId.equals("item") && results[0] instanceof ItemStack && ((ItemStack) results[0]).getItem() == NuclearItemRegister.itemTritiumCell)
+		{
 			arecipes.add(new recipe(NuclearItemRegister.itemDeuteriumCell, NuclearItemRegister.itemTritiumCell));
 		}
 	}
@@ -79,7 +80,8 @@ public class NeutronCaptureRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients)
 	{
-		if (inputId.equals(getRecipeID()) || inputId.equals("item") && ingredients[0] instanceof ItemStack && ((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemDeuteriumCell) {
+		if (inputId.equals(getRecipeID()) || inputId.equals("item") && ingredients[0] instanceof ItemStack && ((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemDeuteriumCell)
+		{
 			arecipes.add(new recipe(NuclearItemRegister.itemDeuteriumCell, NuclearItemRegister.itemTritiumCell));
 		}
 	}

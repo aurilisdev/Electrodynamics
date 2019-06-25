@@ -69,16 +69,21 @@ public class PacketTile extends PacketBase {
 
 	public void handle(EntityPlayer player)
 	{
-		if (player.getEntityWorld() == null) {
-			if (PhysicaAPI.isDebugMode) {
+		if (player.getEntityWorld() == null)
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				PhysicaAPI.logger.error("PacketTile#handle(" + player.getDisplayName() + ") - world is null for player while handling packet. ", new NullPointerException());
 				return;
 			}
 		}
-		if (player.getEntityWorld().blockExists(x, y, z)) {
+		if (player.getEntityWorld().blockExists(x, y, z))
+		{
 			handle(player, player.getEntityWorld().getTileEntity(x, y, z));
-		} else {
-			if (PhysicaAPI.isDebugMode) {
+		} else
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				PhysicaAPI.logger.error("PacketTile#handle(" + player.getDisplayName() + ") - block is not loaded for player while handling packet. ");
 			}
 		}
@@ -86,39 +91,52 @@ public class PacketTile extends PacketBase {
 
 	public void handle(EntityPlayer player, TileEntity tile)
 	{
-		if (tile == null) {
-			if (PhysicaAPI.isDebugMode) {
+		if (tile == null)
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", null) - Null tile"));
 			}
-		} else if (tile.isInvalid()) {
-			if (PhysicaAPI.isDebugMode) {
+		} else if (tile.isInvalid())
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", "
 						+ tile.yCoord + ", " + tile.zCoord + "]) - Invalidated tile"));
 			}
-		} else if (tile instanceof IPacketReciever) {
-			try {
+		} else if (tile instanceof IPacketReciever)
+		{
+			try
+			{
 				IPacketReciever receiver = (IPacketReciever) tile;
 				receiver.read(readData, id, player, this);
-			} catch (IndexOutOfBoundsException e) {
-				if (PhysicaAPI.isDebugMode) {
+			} catch (IndexOutOfBoundsException e)
+			{
+				if (PhysicaAPI.isDebugMode)
+				{
 					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord
 							+ ", " + tile.yCoord + ", " + tile.zCoord + "Packet was read past it's size."));
 					PhysicaAPI.logger.error("Error: ", e);
 				}
-			} catch (NullPointerException e) {
-				if (PhysicaAPI.isDebugMode) {
+			} catch (NullPointerException e)
+			{
+				if (PhysicaAPI.isDebugMode)
+				{
 					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord
 							+ ", " + tile.yCoord + ", " + tile.zCoord + "Null pointer while reading data", e));
 					PhysicaAPI.logger.error("Error: ", e);
 				}
-			} catch (Exception e) {
-				if (PhysicaAPI.isDebugMode) {
+			} catch (Exception e)
+			{
+				if (PhysicaAPI.isDebugMode)
+				{
 					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord
 							+ ", " + tile.yCoord + ", " + tile.zCoord + "Failed to read packet", e));
 					PhysicaAPI.logger.error("Error: ", e);
 				}
 			}
-		} else if (PhysicaAPI.isDebugMode) {
+		} else if (PhysicaAPI.isDebugMode)
+		{
 			PhysicaAPI.logger.error("Error: " + tile + " rejected packet " + this + " due to invalid conditions.");
 		}
 	}
@@ -127,10 +145,13 @@ public class PacketTile extends PacketBase {
 	@SideOnly(Side.CLIENT)
 	public void handleClientSide(EntityPlayer player)
 	{
-		if (player != null) {
+		if (player != null)
+		{
 			handle(player);
-		} else {
-			if (PhysicaAPI.isDebugMode) {
+		} else
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				PhysicaAPI.logger.error("PacketTile#handleClientSide(null) - player was null for packet", new NullPointerException());
 			}
 		}
@@ -139,10 +160,13 @@ public class PacketTile extends PacketBase {
 	@Override
 	public void handleServerSide(EntityPlayer player)
 	{
-		if (player != null) {
+		if (player != null)
+		{
 			handle(player);
-		} else {
-			if (PhysicaAPI.isDebugMode) {
+		} else
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				PhysicaAPI.logger.error("PacketTile#handleServerSide(null) - player was null for packet", new NullPointerException());
 			}
 		}

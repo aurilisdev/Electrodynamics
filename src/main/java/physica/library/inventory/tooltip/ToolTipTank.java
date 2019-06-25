@@ -16,9 +16,11 @@ public class ToolTipTank extends ToolTip {
 	@Override
 	public String getLocalizedTooltip()
 	{
-		if (tank.getFluid() != null && tank.getFluidAmount() > 0) {
+		if (tank.getFluid() != null && tank.getFluidAmount() > 0)
+		{
 			return tank.getFluid().getLocalizedName() + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + "ml";
-		} else {
+		} else
+		{
 			return "Empty";
 		}
 	}

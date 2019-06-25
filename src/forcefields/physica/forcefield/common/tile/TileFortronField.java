@@ -19,8 +19,10 @@ public class TileFortronField extends TileBase {
 
 	public void setConstructor(TileFortronFieldConstructor constructor)
 	{
-		if (isServer()) {
-			if (constructor != null) {
+		if (isServer())
+		{
+			if (constructor != null)
+			{
 				constructorCoord = constructor.getLocation();
 				constructor.activeFields.add(this);
 				fieldColor = constructor.fieldColorMultiplier();
@@ -36,14 +38,17 @@ public class TileFortronField extends TileBase {
 	public boolean isForcefieldActive()
 	{
 		TileEntity tile = constructorCoord.getTile(worldObj);
-		if (!(tile instanceof TileFortronFieldConstructor)) {
+		if (!(tile instanceof TileFortronFieldConstructor))
+		{
 			return false;
 		}
 		TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) tile;
-		if (constructor.getTicksRunning() <= 1) {
+		if (constructor.getTicksRunning() <= 1)
+		{
 			return true;
 		}
-		if (!constructor.isActivated || constructor.isDestroying) {
+		if (!constructor.isActivated || constructor.isDestroying)
+		{
 			return false;
 		}
 		return true;

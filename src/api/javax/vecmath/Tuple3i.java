@@ -341,12 +341,15 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	@Override
 	public boolean equals(Object t1)
 	{
-		try {
+		try
+		{
 			Tuple3i t2 = (Tuple3i) t1;
 			return x == t2.x && y == t2.y && z == t2.z;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
-		} catch (ClassCastException e1) {
+		} catch (ClassCastException e1)
+		{
 			return false;
 		}
 	}
@@ -383,27 +386,36 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 */
 	public final void clamp(int min, int max, Tuple3i t)
 	{
-		if (t.x > max) {
+		if (t.x > max)
+		{
 			x = max;
-		} else if (t.x < min) {
+		} else if (t.x < min)
+		{
 			x = min;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y > max) {
+		if (t.y > max)
+		{
 			y = max;
-		} else if (t.y < min) {
+		} else if (t.y < min)
+		{
 			y = min;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
-		if (t.z > max) {
+		if (t.z > max)
+		{
 			z = max;
-		} else if (t.z < min) {
+		} else if (t.z < min)
+		{
 			z = min;
-		} else {
+		} else
+		{
 			z = t.z;
 		}
 	}
@@ -419,21 +431,27 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMin(int min, Tuple3i t)
 	{
-		if (t.x < min) {
+		if (t.x < min)
+		{
 			x = min;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y < min) {
+		if (t.y < min)
+		{
 			y = min;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
-		if (t.z < min) {
+		if (t.z < min)
+		{
 			z = min;
-		} else {
+		} else
+		{
 			z = t.z;
 		}
 	}
@@ -449,21 +467,27 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMax(int max, Tuple3i t)
 	{
-		if (t.x > max) {
+		if (t.x > max)
+		{
 			x = max;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y > max) {
+		if (t.y > max)
+		{
 			y = max;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
-		if (t.z > max) {
+		if (t.z > max)
+		{
 			z = max;
-		} else {
+		} else
+		{
 			z = t.z;
 		}
 	}
@@ -492,21 +516,27 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 */
 	public final void clamp(int min, int max)
 	{
-		if (x > max) {
+		if (x > max)
+		{
 			x = max;
-		} else if (x < min) {
+		} else if (x < min)
+		{
 			x = min;
 		}
 
-		if (y > max) {
+		if (y > max)
+		{
 			y = max;
-		} else if (y < min) {
+		} else if (y < min)
+		{
 			y = min;
 		}
 
-		if (z > max) {
+		if (z > max)
+		{
 			z = max;
-		} else if (z < min) {
+		} else if (z < min)
+		{
 			z = min;
 		}
 	}
@@ -519,15 +549,18 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMin(int min)
 	{
-		if (x < min) {
+		if (x < min)
+		{
 			x = min;
 		}
 
-		if (y < min) {
+		if (y < min)
+		{
 			y = min;
 		}
 
-		if (z < min) {
+		if (z < min)
+		{
 			z = min;
 		}
 	}
@@ -540,15 +573,18 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMax(int max)
 	{
-		if (x > max) {
+		if (x > max)
+		{
 			x = max;
 		}
 
-		if (y > max) {
+		if (y > max)
+		{
 			y = max;
 		}
 
-		if (z > max) {
+		if (z > max)
+		{
 			z = max;
 		}
 	}
@@ -576,9 +612,11 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	public Object clone()
 	{
 		// Since there are no arrays we can just use Object.clone()
-		try {
+		try
+		{
 			return super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
 			// this shouldn't happen, since we are Cloneable
 			throw new InternalError();
 		}

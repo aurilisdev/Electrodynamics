@@ -345,19 +345,23 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void getRow(int row, Vector3f v)
 	{
-		if (row == 0) {
+		if (row == 0)
+		{
 			v.x = m00;
 			v.y = m01;
 			v.z = m02;
-		} else if (row == 1) {
+		} else if (row == 1)
+		{
 			v.x = m10;
 			v.y = m11;
 			v.z = m12;
-		} else if (row == 2) {
+		} else if (row == 2)
+		{
 			v.x = m20;
 			v.y = m21;
 			v.z = m22;
-		} else {
+		} else
+		{
 			throw new ArrayIndexOutOfBoundsException(VecMathI18N.getString("Matrix3f1"));
 		}
 
@@ -373,19 +377,23 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void getRow(int row, float v[])
 	{
-		if (row == 0) {
+		if (row == 0)
+		{
 			v[0] = m00;
 			v[1] = m01;
 			v[2] = m02;
-		} else if (row == 1) {
+		} else if (row == 1)
+		{
 			v[0] = m10;
 			v[1] = m11;
 			v[2] = m12;
-		} else if (row == 2) {
+		} else if (row == 2)
+		{
 			v[0] = m20;
 			v[1] = m21;
 			v[2] = m22;
-		} else {
+		} else
+		{
 			throw new ArrayIndexOutOfBoundsException(VecMathI18N.getString("Matrix3f1"));
 		}
 
@@ -402,19 +410,23 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void getColumn(int column, Vector3f v)
 	{
-		if (column == 0) {
+		if (column == 0)
+		{
 			v.x = m00;
 			v.y = m10;
 			v.z = m20;
-		} else if (column == 1) {
+		} else if (column == 1)
+		{
 			v.x = m01;
 			v.y = m11;
 			v.z = m21;
-		} else if (column == 2) {
+		} else if (column == 2)
+		{
 			v.x = m02;
 			v.y = m12;
 			v.z = m22;
-		} else {
+		} else
+		{
 			throw new ArrayIndexOutOfBoundsException(VecMathI18N.getString("Matrix3f3"));
 		}
 
@@ -431,19 +443,23 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void getColumn(int column, float v[])
 	{
-		if (column == 0) {
+		if (column == 0)
+		{
 			v[0] = m00;
 			v[1] = m10;
 			v[2] = m20;
-		} else if (column == 1) {
+		} else if (column == 1)
+		{
 			v[0] = m01;
 			v[1] = m11;
 			v[2] = m21;
-		} else if (column == 2) {
+		} else if (column == 2)
+		{
 			v[0] = m02;
 			v[1] = m12;
 			v[2] = m22;
-		} else {
+		} else
+		{
 			throw new ArrayIndexOutOfBoundsException(VecMathI18N.getString("Matrix3f3"));
 		}
 	}
@@ -896,7 +912,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void transpose(Matrix3f m1)
 	{
-		if (this != m1) {
+		if (this != m1)
+		{
 			m00 = m1.m00;
 			m01 = m1.m10;
 			m02 = m1.m20;
@@ -908,7 +925,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = m1.m02;
 			m21 = m1.m12;
 			m22 = m1.m22;
-		} else {
+		} else
+		{
 			this.transpose();
 		}
 	}
@@ -945,7 +963,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	public final void set(AxisAngle4f a1)
 	{
 		float mag = (float) Math.sqrt(a1.x * a1.x + a1.y * a1.y + a1.z * a1.z);
-		if (mag < EPS) {
+		if (mag < EPS)
+		{
 			m00 = 1.0f;
 			m01 = 0.0f;
 			m02 = 0.0f;
@@ -957,7 +976,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = 0.0f;
 			m21 = 0.0f;
 			m22 = 1.0f;
-		} else {
+		} else
+		{
 			mag = 1.0f / mag;
 			float ax = a1.x * mag;
 			float ay = a1.y * mag;
@@ -996,7 +1016,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	public final void set(AxisAngle4d a1)
 	{
 		double mag = Math.sqrt(a1.x * a1.x + a1.y * a1.y + a1.z * a1.z);
-		if (mag < EPS) {
+		if (mag < EPS)
+		{
 			m00 = 1.0f;
 			m01 = 0.0f;
 			m02 = 0.0f;
@@ -1008,7 +1029,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = 0.0f;
 			m21 = 0.0f;
 			m22 = 1.0f;
-		} else {
+		} else
+		{
 			mag = 1.0 / mag;
 			double ax = a1.x * mag;
 			double ay = a1.y * mag;
@@ -1184,13 +1206,15 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 		temp[8] = m1.m22;
 
 		// Calculate LU decomposition: Is the matrix singular?
-		if (!luDecomposition(temp, row_perm)) {
+		if (!luDecomposition(temp, row_perm))
+		{
 			// Matrix has no inverse
 			throw new SingularMatrixException(VecMathI18N.getString("Matrix3f12"));
 		}
 
 		// Perform back substitution on the identity matrix
-		for (i = 0; i < 9; i++) {
+		for (i = 0; i < 9; i++)
+		{
 			result[i] = 0.0;
 		}
 		result[0] = 1.0;
@@ -1248,21 +1272,25 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 
 			// For each row ...
 			i = 3;
-			while (i-- != 0) {
+			while (i-- != 0)
+			{
 				big = 0.0;
 
 				// For each column, find the largest element in the row
 				j = 3;
-				while (j-- != 0) {
+				while (j-- != 0)
+				{
 					temp = matrix0[ptr++];
 					temp = Math.abs(temp);
-					if (temp > big) {
+					if (temp > big)
+					{
 						big = temp;
 					}
 				}
 
 				// Is the matrix singular?
-				if (big == 0.0) {
+				if (big == 0.0)
+				{
 					return false;
 				}
 				row_scale[rs++] = 1.0 / big;
@@ -1276,19 +1304,22 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			mtx = 0;
 
 			// For all columns, execute Crout's method
-			for (j = 0; j < 3; j++) {
+			for (j = 0; j < 3; j++)
+			{
 				int i, imax, k;
 				int target, p1, p2;
 				double sum, big, temp;
 
 				// Determine elements of upper diagonal matrix U
-				for (i = 0; i < j; i++) {
+				for (i = 0; i < j; i++)
+				{
 					target = mtx + 3 * i + j;
 					sum = matrix0[target];
 					k = i;
 					p1 = mtx + 3 * i;
 					p2 = mtx + j;
-					while (k-- != 0) {
+					while (k-- != 0)
+					{
 						sum -= matrix0[p1] * matrix0[p2];
 						p1++;
 						p2 += 3;
@@ -1300,13 +1331,15 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 				// intermediate elements of lower diagonal matrix L.
 				big = 0.0;
 				imax = -1;
-				for (i = j; i < 3; i++) {
+				for (i = j; i < 3; i++)
+				{
 					target = mtx + 3 * i + j;
 					sum = matrix0[target];
 					k = j;
 					p1 = mtx + 3 * i;
 					p2 = mtx + j;
-					while (k-- != 0) {
+					while (k-- != 0)
+					{
 						sum -= matrix0[p1] * matrix0[p2];
 						p1++;
 						p2 += 3;
@@ -1314,23 +1347,27 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 					matrix0[target] = sum;
 
 					// Is this the best pivot so far?
-					if ((temp = row_scale[i] * Math.abs(sum)) >= big) {
+					if ((temp = row_scale[i] * Math.abs(sum)) >= big)
+					{
 						big = temp;
 						imax = i;
 					}
 				}
 
-				if (imax < 0) {
+				if (imax < 0)
+				{
 					throw new RuntimeException(VecMathI18N.getString("Matrix3f13"));
 				}
 
 				// Is a row exchange necessary?
-				if (j != imax) {
+				if (j != imax)
+				{
 					// Yes: exchange rows
 					k = 3;
 					p1 = mtx + 3 * imax;
 					p2 = mtx + 3 * j;
-					while (k-- != 0) {
+					while (k-- != 0)
+					{
 						temp = matrix0[p1];
 						matrix0[p1++] = matrix0[p2];
 						matrix0[p2++] = temp;
@@ -1344,16 +1381,19 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 				row_perm[j] = imax;
 
 				// Is the matrix singular
-				if (matrix0[mtx + 3 * j + j] == 0.0) {
+				if (matrix0[mtx + 3 * j + j] == 0.0)
+				{
 					return false;
 				}
 
 				// Divide elements of lower diagonal matrix L by pivot
-				if (j != 3 - 1) {
+				if (j != 3 - 1)
+				{
 					temp = 1.0 / matrix0[mtx + 3 * j + j];
 					target = mtx + 3 * (j + 1) + j;
 					i = 2 - j;
-					while (i-- != 0) {
+					while (i-- != 0)
+					{
 						matrix0[target] *= temp;
 						target += 3;
 					}
@@ -1393,25 +1433,30 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 		rp = 0;
 
 		// For each column vector of matrix2 ...
-		for (k = 0; k < 3; k++) {
+		for (k = 0; k < 3; k++)
+		{
 			//	    cv = &(matrix2[0][k]);
 			cv = k;
 			ii = -1;
 
 			// Forward substitution
-			for (i = 0; i < 3; i++) {
+			for (i = 0; i < 3; i++)
+			{
 				double sum;
 
 				ip = row_perm[rp + i];
 				sum = matrix2[cv + 3 * ip];
 				matrix2[cv + 3 * ip] = matrix2[cv + 3 * i];
-				if (ii >= 0) {
+				if (ii >= 0)
+				{
 					//		    rv = &(matrix1[i][0]);
 					rv = i * 3;
-					for (j = ii; j <= i - 1; j++) {
+					for (j = ii; j <= i - 1; j++)
+					{
 						sum -= matrix1[rv + j] * matrix2[cv + 3 * j];
 					}
-				} else if (sum != 0.0) {
+				} else if (sum != 0.0)
+				{
 					ii = i;
 				}
 				matrix2[cv + 3 * i] = sum;
@@ -1644,7 +1689,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void mul(Matrix3f m1, Matrix3f m2)
 	{
-		if (this != m1 && this != m2) {
+		if (this != m1 && this != m2)
+		{
 			m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20;
 			m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21;
 			m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22;
@@ -1656,7 +1702,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20;
 			m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21;
 			m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22;
-		} else {
+		} else
+		{
 			float m00, m01, m02,
 					m10, m11, m12,
 					m20, m21, m22;
@@ -1783,7 +1830,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void mulTransposeBoth(Matrix3f m1, Matrix3f m2)
 	{
-		if (this != m1 && this != m2) {
+		if (this != m1 && this != m2)
+		{
 			m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01 + m1.m20 * m2.m02;
 			m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11 + m1.m20 * m2.m12;
 			m02 = m1.m00 * m2.m20 + m1.m10 * m2.m21 + m1.m20 * m2.m22;
@@ -1795,7 +1843,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = m1.m02 * m2.m00 + m1.m12 * m2.m01 + m1.m22 * m2.m02;
 			m21 = m1.m02 * m2.m10 + m1.m12 * m2.m11 + m1.m22 * m2.m12;
 			m22 = m1.m02 * m2.m20 + m1.m12 * m2.m21 + m1.m22 * m2.m22;
-		} else {
+		} else
+		{
 			float m00, m01, m02,
 					m10, m11, m12,
 					m20, m21, m22; // vars for temp result matrix
@@ -1836,7 +1885,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void mulTransposeRight(Matrix3f m1, Matrix3f m2)
 	{
-		if (this != m1 && this != m2) {
+		if (this != m1 && this != m2)
+		{
 			m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01 + m1.m02 * m2.m02;
 			m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11 + m1.m02 * m2.m12;
 			m02 = m1.m00 * m2.m20 + m1.m01 * m2.m21 + m1.m02 * m2.m22;
@@ -1848,7 +1898,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = m1.m20 * m2.m00 + m1.m21 * m2.m01 + m1.m22 * m2.m02;
 			m21 = m1.m20 * m2.m10 + m1.m21 * m2.m11 + m1.m22 * m2.m12;
 			m22 = m1.m20 * m2.m20 + m1.m21 * m2.m21 + m1.m22 * m2.m22;
-		} else {
+		} else
+		{
 			float m00, m01, m02,
 					m10, m11, m12,
 					m20, m21, m22; // vars for temp result matrix
@@ -1888,7 +1939,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public final void mulTransposeLeft(Matrix3f m1, Matrix3f m2)
 	{
-		if (this != m1 && this != m2) {
+		if (this != m1 && this != m2)
+		{
 			m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10 + m1.m20 * m2.m20;
 			m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11 + m1.m20 * m2.m21;
 			m02 = m1.m00 * m2.m02 + m1.m10 * m2.m12 + m1.m20 * m2.m22;
@@ -1900,7 +1952,8 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 			m20 = m1.m02 * m2.m00 + m1.m12 * m2.m10 + m1.m22 * m2.m20;
 			m21 = m1.m02 * m2.m01 + m1.m12 * m2.m11 + m1.m22 * m2.m21;
 			m22 = m1.m02 * m2.m02 + m1.m12 * m2.m12 + m1.m22 * m2.m22;
-		} else {
+		} else
+		{
 			float m00, m01, m02,
 					m10, m11, m12,
 					m20, m21, m22; // vars for temp result matrix
@@ -2050,12 +2103,14 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	 */
 	public boolean equals(Matrix3f m1)
 	{
-		try {
+		try
+		{
 
 			return m00 == m1.m00 && m01 == m1.m01 && m02 == m1.m02
 					&& m10 == m1.m10 && m11 == m1.m11 && m12 == m1.m12
 					&& m20 == m1.m20 && m21 == m1.m21 && m22 == m1.m22;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
 		}
 
@@ -2073,15 +2128,18 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	@Override
 	public boolean equals(Object o1)
 	{
-		try {
+		try
+		{
 
 			Matrix3f m2 = (Matrix3f) o1;
 			return m00 == m2.m00 && m01 == m2.m01 && m02 == m2.m02
 					&& m10 == m2.m10 && m11 == m2.m11 && m12 == m2.m12
 					&& m20 == m2.m20 && m21 == m2.m21 && m22 == m2.m22;
-		} catch (ClassCastException e1) {
+		} catch (ClassCastException e1)
+		{
 			return false;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
 		}
 	}
@@ -2102,33 +2160,42 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	{
 		boolean status = true;
 
-		if (Math.abs(m00 - m1.m00) > epsilon) {
+		if (Math.abs(m00 - m1.m00) > epsilon)
+		{
 			status = false;
 		}
-		if (Math.abs(m01 - m1.m01) > epsilon) {
+		if (Math.abs(m01 - m1.m01) > epsilon)
+		{
 			status = false;
 		}
-		if (Math.abs(m02 - m1.m02) > epsilon) {
-			status = false;
-		}
-
-		if (Math.abs(m10 - m1.m10) > epsilon) {
-			status = false;
-		}
-		if (Math.abs(m11 - m1.m11) > epsilon) {
-			status = false;
-		}
-		if (Math.abs(m12 - m1.m12) > epsilon) {
+		if (Math.abs(m02 - m1.m02) > epsilon)
+		{
 			status = false;
 		}
 
-		if (Math.abs(m20 - m1.m20) > epsilon) {
+		if (Math.abs(m10 - m1.m10) > epsilon)
+		{
 			status = false;
 		}
-		if (Math.abs(m21 - m1.m21) > epsilon) {
+		if (Math.abs(m11 - m1.m11) > epsilon)
+		{
 			status = false;
 		}
-		if (Math.abs(m22 - m1.m22) > epsilon) {
+		if (Math.abs(m12 - m1.m12) > epsilon)
+		{
+			status = false;
+		}
+
+		if (Math.abs(m20 - m1.m20) > epsilon)
+		{
+			status = false;
+		}
+		if (Math.abs(m21 - m1.m21) > epsilon)
+		{
+			status = false;
+		}
+		if (Math.abs(m22 - m1.m22) > epsilon)
+		{
 			status = false;
 		}
 
@@ -2293,9 +2360,11 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	public Object clone()
 	{
 		Matrix3f m1 = null;
-		try {
+		try
+		{
 			m1 = (Matrix3f) super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
 			// this shouldn't happen, since we are Cloneable
 			throw new InternalError();
 		}

@@ -42,11 +42,14 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (ticks % 10 == 0) {
+		if (ticks % 10 == 0)
+		{
 			isActivated = false;
-			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+			{
 				BlockLocation loc = new BlockLocation(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-				if (loc.getTile(worldObj) instanceof TileInterdictionMatrix) {
+				if (loc.getTile(worldObj) instanceof TileInterdictionMatrix)
+				{
 					isActivated = true;
 				}
 			}
@@ -55,15 +58,20 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 
 	public void actionPerformed(Permission perm, Side side)
 	{
-		if (side == Side.CLIENT) {
+		if (side == Side.CLIENT)
+		{
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", BIOMETRIC_IDENTIFIER_PACKET_ID, xCoord, yCoord, zCoord, perm.id));
-		} else {
+		} else
+		{
 			ItemStack card = getStackInSlot(SLOT_INPUT_CARD);
-			if (card != null && card.getItem() instanceof ItemIdentificationCard) {
+			if (card != null && card.getItem() instanceof ItemIdentificationCard)
+			{
 				ItemIdentificationCard id = (ItemIdentificationCard) card.getItem();
-				if (id.hasPermission(card, perm)) {
+				if (id.hasPermission(card, perm))
+				{
 					id.removePermission(card, perm);
-				} else {
+				} else
+				{
 					id.addPermission(card, perm);
 				}
 			}
@@ -73,19 +81,24 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 	public boolean isPlayerValidated(EntityPlayer player, Permission perm)
 	{
 		ItemStack stack = getStackInSlot(SLOT_MASTER_CARD);
-		if (stack != null && stack.getItem() instanceof ItemIdentificationCard) {
+		if (stack != null && stack.getItem() instanceof ItemIdentificationCard)
+		{
 			ItemIdentificationCard id = (ItemIdentificationCard) stack.getItem();
 			UUID itemSavedId = id.getUniqueId(stack);
-			if (itemSavedId != null && itemSavedId.equals(player.getUniqueID())) {
+			if (itemSavedId != null && itemSavedId.equals(player.getUniqueID()))
+			{
 				return true;
 			}
 		}
-		for (int i = 2; i < getSizeInventory(); i++) {
+		for (int i = 2; i < getSizeInventory(); i++)
+		{
 			stack = getStackInSlot(i);
-			if (stack != null && stack.getItem() instanceof ItemIdentificationCard) {
+			if (stack != null && stack.getItem() instanceof ItemIdentificationCard)
+			{
 				ItemIdentificationCard id = (ItemIdentificationCard) stack.getItem();
 				UUID itemSavedId = id.getUniqueId(stack);
-				if (itemSavedId != null && itemSavedId.equals(player.getUniqueID()) && id.hasPermission(stack, perm)) {
+				if (itemSavedId != null && itemSavedId.equals(player.getUniqueID()) && id.hasPermission(stack, perm))
+				{
 					return true;
 				}
 			}
@@ -102,7 +115,8 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 	@Override
 	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
 	{
-		if (id == BIOMETRIC_IDENTIFIER_PACKET_ID && side.isServer() && type instanceof PacketTile) {
+		if (id == BIOMETRIC_IDENTIFIER_PACKET_ID && side.isServer() && type instanceof PacketTile)
+		{
 			actionPerformed(Permission.getPermission(((PacketTile) type).customInteger), side);
 		}
 	}

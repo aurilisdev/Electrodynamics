@@ -42,38 +42,49 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (hasEnoughEnergy()) {
-			if (canProcess()) {
-				if (operatingTicks < TICKS_REQUIRED) {
+		if (hasEnoughEnergy())
+		{
+			if (canProcess())
+			{
+				if (operatingTicks < TICKS_REQUIRED)
+				{
 					operatingTicks++;
-				} else {
+				} else
+				{
 					process();
 					operatingTicks = 0;
 				}
 				extractEnergy();
-			} else {
+			} else
+			{
 				operatingTicks = 0;
 			}
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+			{
 				TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-				if (tile instanceof TileChemicalBoiler) {
+				if (tile instanceof TileChemicalBoiler)
+				{
 					TileChemicalBoiler boiler = (TileChemicalBoiler) tile;
-					if (boiler.hexaTank.getFluidAmount() > 0) {
+					if (boiler.hexaTank.getFluidAmount() > 0)
+					{
 						tank.fill(boiler.hexaTank.drain(Math.min(10, boiler.hexaTank.getFluidAmount()), true), true);
 					}
 				}
 			}
 			drainBattery(SLOT_ENERGY);
-		} else {
+		} else
+		{
 			drainBattery(SLOT_ENERGY);
 		}
 	}
 
 	public boolean canProcess()
 	{
-		if (getStackInSlot(SLOT_OUTPUT1) != null && getStackInSlot(SLOT_OUTPUT1).stackSize == getStackInSlot(SLOT_OUTPUT1).getMaxStackSize()) {
+		if (getStackInSlot(SLOT_OUTPUT1) != null && getStackInSlot(SLOT_OUTPUT1).stackSize == getStackInSlot(SLOT_OUTPUT1).getMaxStackSize())
+		{
 			return false;
-		} else if (getStackInSlot(SLOT_OUTPUT2) != null && getStackInSlot(SLOT_OUTPUT2).stackSize == getStackInSlot(SLOT_OUTPUT2).getMaxStackSize()) {
+		} else if (getStackInSlot(SLOT_OUTPUT2) != null && getStackInSlot(SLOT_OUTPUT2).stackSize == getStackInSlot(SLOT_OUTPUT2).getMaxStackSize())
+		{
 			return false;
 		}
 		return tank.getFluidAmount() >= 2500;
@@ -85,10 +96,12 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 		boolean isEnriched = worldObj.rand.nextFloat() > 0.828f;
 		int slot = isEnriched ? SLOT_OUTPUT1 : SLOT_OUTPUT2;
 		ItemStack itemStack = getStackInSlot(slot);
-		if (itemStack != null) {
+		if (itemStack != null)
+		{
 			itemStack.stackSize++;
 			setInventorySlotContents(slot, itemStack);
-		} else {
+		} else
+		{
 			setInventorySlotContents(slot, new ItemStack(isEnriched ? NuclearItemRegister.itemUranium235 : NuclearItemRegister.itemUranium238));
 		}
 	}

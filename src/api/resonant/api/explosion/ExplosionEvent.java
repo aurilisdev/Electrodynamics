@@ -21,7 +21,8 @@ public class ExplosionEvent extends Event {
 		x = ((Explosion) iExplosion).explosionX;
 		y = ((Explosion) iExplosion).explosionY;
 		z = ((Explosion) iExplosion).explosionZ;
-		if (this.iExplosion instanceof Explosion) {
+		if (this.iExplosion instanceof Explosion)
+		{
 			explosion = (Explosion) this.iExplosion;
 		}
 	}

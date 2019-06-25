@@ -19,39 +19,55 @@ public class RadiationSystem {
 
 	public static void applyRontgenEntity(EntityLivingBase base, float kiloRoentgen, float durationMultiplier, float distanceFromSource, float maxRadius)
 	{
-		if (base != null) {
-			if (base.worldObj.rand.nextFloat() < kiloRoentgen) {
-				if (base.worldObj.isRemote) {
-					if (base == Minecraft.getMinecraft().thePlayer) {
+		if (base != null)
+		{
+			if (base.worldObj.rand.nextFloat() < kiloRoentgen)
+			{
+				if (base.worldObj.isRemote)
+				{
+					if (base == Minecraft.getMinecraft().thePlayer)
+					{
 						long worldTime = Minecraft.getMinecraft().thePlayer.worldObj.getTotalWorldTime();
 						int amplifier = (int) ((maxRadius - distanceFromSource) / maxRadius * 5 - 1);
 						RoentgenOverlay.storeDataValue(worldTime, kiloRoentgen * Math.max(1, amplifier));
 					}
-				} else {
+				} else
+				{
 					float protection = 1;
 					distanceFromSource = Math.max(0.5f, distanceFromSource);
 					boolean isPlayer = base instanceof EntityPlayer;
-					playerCheck: {
-						if (isPlayer) {
+					playerCheck:
+					{
+						if (isPlayer)
+						{
 							EntityPlayer player = (EntityPlayer) base;
-							if (player.capabilities.isCreativeMode) {
+							if (player.capabilities.isCreativeMode)
+							{
 								break playerCheck;
 							}
 							boolean hasArmor = true;
-							for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-								if (!(player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor)) {
+							for (int i = 0; i < player.inventory.armorInventory.length; i++)
+							{
+								if (!(player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor))
+								{
 									hasArmor = false;
-								} else {
+								} else
+								{
 									protection++;
 								}
 							}
-							if (!hasArmor && protection == 0) {
+							if (!hasArmor && protection == 0)
+							{
 								break playerCheck;
-							} else {
-								for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-									if (player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor) {
+							} else
+							{
+								for (int i = 0; i < player.inventory.armorInventory.length; i++)
+								{
+									if (player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor)
+									{
 										if (player.getCurrentArmor(i).getItemDamage() > player.getCurrentArmor(i).getMaxDamage()
-												|| player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, kiloRoentgen * 2.15), base.worldObj.rand)) {
+												|| player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, kiloRoentgen * 2.15), base.worldObj.rand))
+										{
 											player.setCurrentItemOrArmor(i + 1, null);
 										}
 									}
@@ -61,13 +77,16 @@ public class RadiationSystem {
 					}
 					int duration = (int) (durationMultiplier * 20 * kiloRoentgen / protection / distanceFromSource);
 					int amplifier = (int) ((maxRadius - distanceFromSource) / maxRadius * 5 - protection);
-					if (protection < 5 && !(isPlayer && ((EntityPlayer) base).capabilities.isCreativeMode)) {
+					if (protection < 5 && !(isPlayer && ((EntityPlayer) base).capabilities.isCreativeMode))
+					{
 						base.addPotionEffect(new PotionEffect(PotionRadiation.INSTANCE.getId(), duration, Math.max(0, amplifier)));
 					}
-					if (isPlayer && (maxRadius - distanceFromSource) / maxRadius * 75 > 0) {
+					if (isPlayer && (maxRadius - distanceFromSource) / maxRadius * 75 > 0)
+					{
 						EntityPlayer player = (EntityPlayer) base;
 						ItemStack stack = player.inventory.getCurrentItem();
-						if (stack != null && stack.getItem() instanceof IEnergyContainerItem) {
+						if (stack != null && stack.getItem() instanceof IEnergyContainerItem)
+						{
 							IEnergyContainerItem item = (IEnergyContainerItem) stack.getItem();
 							int electricity = (int) (item.getMaxEnergyStored(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
 							item.extractEnergy(stack, electricity, false);
@@ -81,19 +100,25 @@ public class RadiationSystem {
 	public static void spreadRadioactiveBlock(World world, int x, int y, int z)
 	{
 		int currentMeta = world.getBlockMetadata(x, y, z);
-		if (currentMeta > 1) {
-			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		if (currentMeta > 1)
+		{
+			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+			{
 				int i1 = x + dir.offsetX;
 				int j1 = y + dir.offsetY;
 				int k1 = z + dir.offsetZ;
-				if (currentMeta > 1) {
-					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0) {
+				if (currentMeta > 1)
+				{
+					if (world.getBlock(i1, j1, k1) == Blocks.dirt && world.getBlockMetadata(i1, j1, k1) == 0)
+					{
 						world.setBlock(i1, j1, k1, NuclearBlockRegister.blockRadioactiveDirt, currentMeta - 1, 3);
 						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
-					} else if (world.getBlock(i1, j1, k1) == Blocks.grass && world.getBlockMetadata(i1, j1, k1) == 0) {
+					} else if (world.getBlock(i1, j1, k1) == Blocks.grass && world.getBlockMetadata(i1, j1, k1) == 0)
+					{
 						world.setBlock(i1, j1, k1, NuclearBlockRegister.blockRadioactiveGrass, currentMeta - 1, 3);
 						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
-					} else if (world.getBlock(i1, j1, k1) == Blocks.stone && world.getBlockMetadata(i1, j1, k1) == 0) {
+					} else if (world.getBlock(i1, j1, k1) == Blocks.stone && world.getBlockMetadata(i1, j1, k1) == 0)
+					{
 						world.setBlockMetadataWithNotify(x, y, z, currentMeta - 1, 3);
 						world.setBlock(i1, j1, k1, NuclearBlockRegister.blockRadioactiveStone, currentMeta - 1, 3);
 					}

@@ -87,14 +87,18 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata)
 	{
-		if (metadata == EnumElectromagnet.NORMAL.ordinal() || metadata == EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()) {
-			if (side == 0 || side == 1) {
+		if (metadata == EnumElectromagnet.NORMAL.ordinal() || metadata == EnumElectromagnet.CONTAINMENT_NORMAL.ordinal())
+		{
+			if (side == 0 || side == 1)
+			{
 				return metadata == EnumElectromagnet.NORMAL.ordinal() ? iconTop : containmentIconTop;
-			} else if (metadata == EnumElectromagnet.NORMAL.ordinal()) {
+			} else if (metadata == EnumElectromagnet.NORMAL.ordinal())
+			{
 				return blockIcon;
 			}
 			return containment;
-		} else if (metadata == EnumElectromagnet.GLASS.ordinal()) {
+		} else if (metadata == EnumElectromagnet.GLASS.ordinal())
+		{
 			return iconGlass;
 		}
 		return containmentIconGlass;
@@ -127,7 +131,8 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
 	{
-		for (EnumElectromagnet type : EnumElectromagnet.values()) {
+		for (EnumElectromagnet type : EnumElectromagnet.values())
+		{
 			list.add(new ItemStack(item, 1, type.ordinal()));
 		}
 	}

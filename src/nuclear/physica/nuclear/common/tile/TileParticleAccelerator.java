@@ -40,7 +40,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	@Override
 	public void onChunkUnload()
 	{
-		if (particle != null) {
+		if (particle != null)
+		{
 			particle.setDead();
 			particle = null;
 			velocity = 0;
@@ -55,61 +56,81 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		ItemStack stackMatter = getStackInSlot(SLOT_INPUTMATTER);
 		ItemStack stackEmptyCell = getStackInSlot(SLOT_INPUTCELLS);
 		ItemStack stackOutputSlot = getStackInSlot(SLOT_OUTPUT);
-		if (particle != null) {
-			if (hasEnoughEnergy() && isPoweredByRedstone()) {
+		if (particle != null)
+		{
+			if (hasEnoughEnergy() && isPoweredByRedstone())
+			{
 				velocity = particle.getTotalVelocity();
 
-				if (stackEmptyCell != null) {
-					if (antimatterAmount >= 125) {
+				if (stackEmptyCell != null)
+				{
+					if (antimatterAmount >= 125)
+					{
 						decrStackSize(SLOT_INPUTCELLS, 1);
 						antimatterAmount -= 125;
-						if (stackOutputSlot != null) {
-							if (stackOutputSlot.getItem() == NuclearItemRegister.itemAntimatterCell125Milligram) {
+						if (stackOutputSlot != null)
+						{
+							if (stackOutputSlot.getItem() == NuclearItemRegister.itemAntimatterCell125Milligram)
+							{
 								stackOutputSlot.stackSize++;
 							}
-						} else {
+						} else
+						{
 							setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemAntimatterCell125Milligram));
 						}
 					}
 				}
-				if (currentSessionUse + 1 == Integer.MAX_VALUE) {
+				if (currentSessionUse + 1 == Integer.MAX_VALUE)
+				{
 					currentSessionUse = 1;
 				}
 				currentSessionUse += extractEnergy();
-				if (particle.isDead) {
-					if (particle.didCollide()) {
-						if (stackEmptyCell != null) {
-							if (worldObj.rand.nextFloat() > 0.666f) {
+				if (particle.isDead)
+				{
+					if (particle.didCollide())
+					{
+						if (stackEmptyCell != null)
+						{
+							if (worldObj.rand.nextFloat() > 0.666f)
+							{
 								antimatterAmount = Math.min(1000, antimatterAmount + 7 + worldObj.rand.nextInt(5));
 								particle.setDead();
-							} else if (antimatterAmount > 100) {
+							} else if (antimatterAmount > 100)
+							{
 								decrStackSize(SLOT_INPUTCELLS, 1);
 								antimatterAmount = 0;
-								if (stackOutputSlot != null) {
-									if (stackOutputSlot.getItem() == NuclearItemRegister.itemDarkmatterCell) {
+								if (stackOutputSlot != null)
+								{
+									if (stackOutputSlot.getItem() == NuclearItemRegister.itemDarkmatterCell)
+									{
 										stackOutputSlot.stackSize++;
 									}
-								} else if (stackEmptyCell.getItem() == NuclearItemRegister.itemEmptyQuantumCell) {
+								} else if (stackEmptyCell.getItem() == NuclearItemRegister.itemEmptyQuantumCell)
+								{
 									setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemDarkmatterCell));
 								}
 							}
 						}
 					}
 					particle = null;
-				} else if (velocity >= ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED) {
+				} else if (velocity >= ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)
+				{
 					antimatterAmount = Math.min(1000, antimatterAmount + 7 + worldObj.rand.nextInt(5));
 					particle.setDead();
 					particle = null;
 				}
-			} else {
+			} else
+			{
 				particle.setDead();
 				particle = null;
 				velocity = 0;
 				currentSessionUse = 0;
 			}
-		} else if (isPoweredByRedstone() && hasEnoughEnergy()) {
+		} else if (isPoweredByRedstone() && hasEnoughEnergy())
+		{
 			ForgeDirection opposite = getFacing().getOpposite();
-			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ)) {
+			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ))
+			{
 				currentSessionUse = extractEnergy();
 				particle = new EntityParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ, opposite);
 				worldObj.spawnEntityInWorld(particle);
@@ -125,18 +146,22 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		double travelled = 0.5f;
 		int ticks = 0;
 		int stopped = 0;
-		while (speed < 1) {
+		while (speed < 1)
+		{
 			speed += 0.002;
 			travelled += speed;
-			if ((int) travelled % 50 == 49) {
+			if ((int) travelled % 50 == 49)
+			{
 				speed *= 0.9075f;
 				stopped++;
-				if (stopped > 32) {
+				if (stopped > 32)
+				{
 					System.out.println("Never hit a max.");
 					break;
 				}
 			}
-			if (speed > 1) {
+			if (speed > 1)
+			{
 				break;
 			}
 			ticks++;
@@ -149,8 +174,10 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		if (particle != null) {
-			if (particle.isDead) {
+		if (particle != null)
+		{
+			if (particle.isDead)
+			{
 				particle = null;
 			}
 		}
@@ -158,30 +185,41 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 
 	public AcceleratorStatus getAcceleratorStatus()
 	{
-		if (particle != null) {
-			if (hasEnoughEnergy() && isPoweredByRedstone()) {
-				if (particle.isDead) {
-					if (particle.didCollide()) {
+		if (particle != null)
+		{
+			if (hasEnoughEnergy() && isPoweredByRedstone())
+			{
+				if (particle.isDead)
+				{
+					if (particle.didCollide())
+					{
 						return AcceleratorStatus.Done;
 					}
 					return AcceleratorStatus.Failure;
-				} else if (velocity > ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED) {
+				} else if (velocity > ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)
+				{
 					return AcceleratorStatus.Done;
-				} else {
+				} else
+				{
 					return AcceleratorStatus.Accelerating;
 				}
-			} else {
+			} else
+			{
 				return AcceleratorStatus.Failure;
 			}
-		} else if (isPoweredByRedstone() && hasEnoughEnergy()) {
+		} else if (isPoweredByRedstone() && hasEnoughEnergy())
+		{
 			ForgeDirection opposite = getFacing().getOpposite();
-			if (EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ)) {
+			if (EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ))
+			{
 				return AcceleratorStatus.Ready;
 			}
 			return AcceleratorStatus.Failure;
-		} else if (!hasEnoughEnergy()) {
+		} else if (!hasEnoughEnergy())
+		{
 			return AcceleratorStatus.Disabled;
-		} else {
+		} else
+		{
 			return AcceleratorStatus.Idle;
 		}
 	}
@@ -190,7 +228,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void invalidate()
 	{
 		super.invalidate();
-		if (particle != null) {
+		if (particle != null)
+		{
 			particle.setDead();
 		}
 	}

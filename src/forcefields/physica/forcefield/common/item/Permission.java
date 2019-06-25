@@ -35,8 +35,10 @@ public class Permission {
 	public static Permission getPermission(int id)
 	{
 		Permission perm = null;
-		for (Permission permission : LIST) {
-			if (permission.id == id) {
+		for (Permission permission : LIST)
+		{
+			if (permission.id == id)
+			{
 				perm = permission;
 			}
 		}

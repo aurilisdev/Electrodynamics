@@ -10,7 +10,8 @@ public abstract class TileBaseContainer extends TileBaseRotateable implements IT
 	@Override
 	public ItemStack[] getInventoryArray()
 	{
-		if (_inventoryArray == null) {
+		if (_inventoryArray == null)
+		{
 			_inventoryArray = new ItemStack[getSizeInventory()];
 		}
 		return _inventoryArray;

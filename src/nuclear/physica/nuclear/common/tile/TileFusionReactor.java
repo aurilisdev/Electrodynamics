@@ -37,28 +37,35 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 		super.updateServer(ticks);
 		ItemStack deuterium = getStackInSlot(SLOT_DEUTERIUM);
 		ItemStack tritium = getStackInSlot(SLOT_TRITIUM);
-		if (hasEnoughEnergy() && deuterium != null && deuterium.stackSize > 0 && tritium != null && tritium.stackSize > 0) {
+		if (hasEnoughEnergy() && deuterium != null && deuterium.stackSize > 0 && tritium != null && tritium.stackSize > 0)
+		{
 			ticksRunning++;
-			if (ticksRunning % (20 * 15) == 0) {
+			if (ticksRunning % (20 * 15) == 0)
+			{
 				deuterium.stackSize--;
 				tritium.stackSize--;
 			}
 			isRunning = true;
 			extractEnergy();
 
-			if (ticks % 2 != 0) {
+			if (ticks % 2 != 0)
+			{
 				return;
 			}
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-				if (direction == ForgeDirection.DOWN || direction == ForgeDirection.UP) {
+			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+			{
+				if (direction == ForgeDirection.DOWN || direction == ForgeDirection.UP)
+				{
 					continue;
 				}
 				Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-				if (block.getMaterial() == Material.air || block.getMaterial() == Material.fire) {
+				if (block.getMaterial() == Material.air || block.getMaterial() == Material.fire)
+				{
 					NuclearBlockRegister.blockPlasma.spawn(worldObj, block, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, 10);
 				}
 			}
-		} else {
+		} else
+		{
 			isRunning = false;
 			ticksRunning = 0;
 		}
@@ -101,19 +108,25 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 		super.readSynchronizationPacket(buf, player);
 		energyStored = buf.readInt();
 		isRunning = buf.readBoolean();
-		if (getStackInSlot(SLOT_DEUTERIUM) != null) {
+		if (getStackInSlot(SLOT_DEUTERIUM) != null)
+		{
 			getStackInSlot(SLOT_DEUTERIUM).stackSize = buf.readInt();
-		} else {
+		} else
+		{
 			int size = buf.readInt();
-			if (size > 0) {
+			if (size > 0)
+			{
 				setInventorySlotContents(SLOT_DEUTERIUM, new ItemStack(NuclearItemRegister.itemDeuteriumCell, size));
 			}
 		}
-		if (getStackInSlot(SLOT_TRITIUM) != null) {
+		if (getStackInSlot(SLOT_TRITIUM) != null)
+		{
 			getStackInSlot(SLOT_TRITIUM).stackSize = buf.readInt();
-		} else {
+		} else
+		{
 			int size = buf.readInt();
-			if (size > 0) {
+			if (size > 0)
+			{
 				setInventorySlotContents(SLOT_TRITIUM, new ItemStack(NuclearItemRegister.itemTritiumCell, size));
 			}
 		}
@@ -147,21 +160,29 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		ItemStack slotStack = getStackInSlot(slot);
-		if (slot == SLOT_DEUTERIUM && stack != null && stack.getItem() == NuclearItemRegister.itemDeuteriumCell) {
-			if (slotStack != null) {
-				if (slotStack.stackSize + stack.stackSize <= getInventoryStackLimit()) {
+		if (slot == SLOT_DEUTERIUM && stack != null && stack.getItem() == NuclearItemRegister.itemDeuteriumCell)
+		{
+			if (slotStack != null)
+			{
+				if (slotStack.stackSize + stack.stackSize <= getInventoryStackLimit())
+				{
 					return true;
 				}
-			} else {
+			} else
+			{
 				return true;
 			}
 		}
-		if (slot == SLOT_TRITIUM && stack != null && stack.getItem() == NuclearItemRegister.itemTritiumCell) {
-			if (slotStack != null) {
-				if (slotStack.stackSize + stack.stackSize <= getInventoryStackLimit()) {
+		if (slot == SLOT_TRITIUM && stack != null && stack.getItem() == NuclearItemRegister.itemTritiumCell)
+		{
+			if (slotStack != null)
+			{
+				if (slotStack.stackSize + stack.stackSize <= getInventoryStackLimit())
+				{
 					return true;
 				}
-			} else {
+			} else
+			{
 				return true;
 			}
 		}

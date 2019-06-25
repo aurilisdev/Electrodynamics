@@ -62,7 +62,8 @@ public class PhysicaNuclearPhysics {
 		proxyLoader.addContent(new NuclearItemRegister());
 		proxyLoader.addContent(new NuclearEntityRegister());
 
-		if (event.getSide() == Side.CLIENT) {
+		if (event.getSide() == Side.CLIENT)
+		{
 			proxyLoader.addContent(new NuclearClientRegister());
 			RoentgenOverlay overlay = new RoentgenOverlay();
 			MinecraftForge.EVENT_BUS.register(overlay);

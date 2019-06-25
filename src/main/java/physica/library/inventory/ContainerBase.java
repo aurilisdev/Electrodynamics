@@ -32,7 +32,8 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer)
 	{
-		if (host instanceof IPlayerUsing && entityplayer.openContainer != this) {
+		if (host instanceof IPlayerUsing && entityplayer.openContainer != this)
+		{
 			((IPlayerUsing) host).removePlayerUsingGui(entityplayer);
 		}
 		super.onContainerClosed(entityplayer);
@@ -44,15 +45,18 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	{
 		ItemStack toReturn = super.slotClick(slot, p_75144_2_, p_75144_3_, player);
 
-		if (slot >= 0 && slot < inventorySlots.size()) {
+		if (slot >= 0 && slot < inventorySlots.size())
+		{
 			ItemStack itemstack = ((Slot) inventorySlots.get(slot)).getStack();
 			ItemStack itemstack1 = (ItemStack) inventoryItemStacks.get(slot);
 
-			if (!ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+			if (!ItemStack.areItemStacksEqual(itemstack1, itemstack))
+			{
 				itemstack1 = itemstack == null ? null : itemstack.copy();
 				((List<ItemStack>) inventoryItemStacks).set(slot, itemstack1);
 
-				for (int j = 0; j < crafters.size(); ++j) {
+				for (int j = 0; j < crafters.size(); ++j)
+				{
 					((ICrafting) crafters.get(j)).sendSlotContents(this, slot, itemstack1);
 				}
 			}
@@ -63,7 +67,8 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	@Override
 	public Slot getSlot(int index)
 	{
-		if (index < this.inventorySlots.size()) {
+		if (index < this.inventorySlots.size())
+		{
 			return (Slot) this.inventorySlots.get(index);
 		}
 		return new SlotNull(null, 0, 0, 0);
@@ -74,12 +79,15 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 		host.addPlayerUsingGui(player);
 
 		int defaultx = 8, defaultY = 84 + offset;
-		for (int row = 0; row < 3; ++row) {
-			for (int slot = 0; slot < 9; ++slot) {
+		for (int row = 0; row < 3; ++row)
+		{
+			for (int slot = 0; slot < 9; ++slot)
+			{
 				addSlotToContainer(new Slot(player.inventory, slot + row * 9 + 9, slot * 18 + defaultx, row * 18 + defaultY));
 			}
 		}
-		for (int slot = 0; slot < 9; ++slot) {
+		for (int slot = 0; slot < 9; ++slot)
+		{
 			addSlotToContainer(new Slot(player.inventory, slot, slot * 18 + defaultx, 58 + defaultY));
 		}
 	}
@@ -91,22 +99,27 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 		int k = negative ? max - 1 : min;
 		Slot slot;
 		ItemStack itemstack1;
-		if (stack.isStackable()) {
-			while (stack.stackSize > 0 && (!negative && k < max || negative && k >= min)) {
+		if (stack.isStackable())
+		{
+			while (stack.stackSize > 0 && (!negative && k < max || negative && k >= min))
+			{
 				slot = (Slot) inventorySlots.get(k);
 				itemstack1 = slot.getStack();
 
 				if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage())
-						&& ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
+						&& ItemStack.areItemStackTagsEqual(stack, itemstack1))
+				{
 
 					int l = itemstack1.stackSize + stack.stackSize;
 
-					if (l <= stack.getMaxStackSize()) {
+					if (l <= stack.getMaxStackSize())
+					{
 						stack.stackSize = 0;
 						itemstack1.stackSize = l;
 						slot.onSlotChanged();
 						flag1 = true;
-					} else if (itemstack1.stackSize < stack.getMaxStackSize()) {
+					} else if (itemstack1.stackSize < stack.getMaxStackSize())
+					{
 						stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
 						itemstack1.stackSize = stack.getMaxStackSize();
 						slot.onSlotChanged();
@@ -114,22 +127,28 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 					}
 				}
 
-				if (negative) {
+				if (negative)
+				{
 					--k;
-				} else {
+				} else
+				{
 					++k;
 				}
 			}
 		}
 
-		if (stack.stackSize > 0) {
+		if (stack.stackSize > 0)
+		{
 			k = negative ? max - 1 : min;
-			while (!negative && k < max || negative && k >= min) {
+			while (!negative && k < max || negative && k >= min)
+			{
 				slot = (Slot) inventorySlots.get(k);
 				itemstack1 = slot.getStack();
 
-				if (itemstack1 == null) {
-					if (slot.isItemValid(stack)) {
+				if (itemstack1 == null)
+				{
+					if (slot.isItemValid(stack))
+					{
 						slot.putStack(stack.copy());
 						slot.onSlotChanged();
 						stack.stackSize = 0;
@@ -138,14 +157,17 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 					}
 				}
 
-				if (negative) {
+				if (negative)
+				{
 					--k;
-				} else {
+				} else
+				{
 					++k;
 				}
 			}
 		}
-		if (flag1 && host instanceof ITileBaseContainer) {
+		if (flag1 && host instanceof ITileBaseContainer)
+		{
 			((ITileBaseContainer) host).onInventoryChanged();
 		}
 		return flag1;
@@ -156,21 +178,27 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	{
 		Slot slot = (Slot) inventorySlots.get(index);
 
-		if (slot != null && slot.getStack() != null) {
+		if (slot != null && slot.getStack() != null)
+		{
 			ItemStack itemStack = slot.getStack();
 			ItemStack originalStack = itemStack.copy();
 
-			if (index < slotCount) {
-				if (!mergeItemStack(itemStack, slotCount, inventorySlots.size(), true)) {
+			if (index < slotCount)
+			{
+				if (!mergeItemStack(itemStack, slotCount, inventorySlots.size(), true))
+				{
 					return null;
 				}
-			} else if (!mergeItemStack(itemStack, 0, slotCount, false)) {
+			} else if (!mergeItemStack(itemStack, 0, slotCount, false))
+			{
 				return null;
 			}
 
-			if (itemStack.stackSize == 0) {
+			if (itemStack.stackSize == 0)
+			{
 				slot.putStack(null);
-			} else {
+			} else
+			{
 				slot.onSlotChanged();
 			}
 

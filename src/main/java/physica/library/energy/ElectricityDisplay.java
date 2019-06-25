@@ -9,24 +9,32 @@ public class ElectricityDisplay implements IBaseUtilities {
 	public static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort)
 	{
 		String unitName = unit.name;
-		if (isShort) {
+		if (isShort)
+		{
 			unitName = unit.symbol;
-		} else if (value > 1.0D) {
+		} else if (value > 1.0D)
+		{
 			unitName = unit.getPlural();
 		}
-		if (value == 0.0D) {
+		if (value == 0.0D)
+		{
 			return value + " " + unitName;
 		}
-		if (value <= Measurement.MILLI.value) {
+		if (value <= Measurement.MILLI.value)
+		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MICRO.process(value), decimalPlaces) + " " + Measurement.MICRO.getName(isShort) + unitName;
 		}
-		if (value < 1.0D) {
+		if (value < 1.0D)
+		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MILLI.process(value), decimalPlaces) + " " + Measurement.MILLI.getName(isShort) + unitName;
-		} else if (value > Measurement.MEGA.value) {
+		} else if (value > Measurement.MEGA.value)
+		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MEGA.process(value), decimalPlaces) + " " + Measurement.MEGA.getName(isShort) + unitName;
-		} else if (value > Measurement.KILO.value) {
+		} else if (value > Measurement.KILO.value)
+		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.KILO.process(value), decimalPlaces) + " " + Measurement.KILO.getName(isShort) + unitName;
-		} else if (value > Measurement.GIGA.value) {
+		} else if (value > Measurement.GIGA.value)
+		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.GIGA.process(value), decimalPlaces) + " " + Measurement.GIGA.getName(isShort) + unitName;
 		}
 		return IBaseUtilities.roundPreciseStatic(value, decimalPlaces) + " " + unitName;
@@ -49,13 +57,16 @@ public class ElectricityDisplay implements IBaseUtilities {
 
 	public static String getDisplaySimple(double value, Unit unit, int decimalPlaces)
 	{
-		if (value > 1.0D) {
-			if (decimalPlaces < 1) {
+		if (value > 1.0D)
+		{
+			if (decimalPlaces < 1)
+			{
 				return (int) value + " " + unit.getPlural();
 			}
 			return IBaseUtilities.roundPreciseStatic(value, decimalPlaces) + " " + unit.getPlural();
 		}
-		if (decimalPlaces < 1) {
+		if (decimalPlaces < 1)
+		{
 			return (int) value + " " + unit.name;
 		}
 		return IBaseUtilities.roundPreciseStatic(value, decimalPlaces) + " " + unit.name;

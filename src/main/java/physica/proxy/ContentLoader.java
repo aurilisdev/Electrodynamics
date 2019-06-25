@@ -21,28 +21,32 @@ public class ContentLoader {
 
 	public void init()
 	{
-		for (IContent proxy : contentList) {
+		for (IContent proxy : contentList)
+		{
 			proxy.init();
 		}
 	}
 
 	public void loadComplete()
 	{
-		for (IContent proxy : contentList) {
+		for (IContent proxy : contentList)
+		{
 			proxy.loadComplete();
 		}
 	}
 
 	public void postInit()
 	{
-		for (IContent proxy : contentList) {
+		for (IContent proxy : contentList)
+		{
 			proxy.postInit();
 		}
 	}
 
 	public void preInit()
 	{
-		for (IContent proxy : contentList) {
+		for (IContent proxy : contentList)
+		{
 			proxy.preInit();
 		}
 	}

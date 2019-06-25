@@ -81,12 +81,14 @@ public class NuclearItemRegister implements IContent {
 		GameRegistry.registerItem(itemYellowcake = (ItemInformationHolder) new ItemInformationHolder("yellowcake").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 				itemYellowcake.getUnlocalizedName());
 
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
 			GameRegistry.registerItem(itemHazmatHelmet = new ItemHazmatArmor("HazmatHelmet", RenderingRegistry.addNewArmourRendererPrefix("HazmatHelmet"), 0), itemHazmatHelmet.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatPlate = new ItemHazmatArmor("HazmatPlate", RenderingRegistry.addNewArmourRendererPrefix("HazmatPlate"), 1), itemHazmatPlate.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatLegs = new ItemHazmatArmor("HazmatLegs", RenderingRegistry.addNewArmourRendererPrefix("HazmatLegs"), 2), itemHazmatLegs.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatBoots = new ItemHazmatArmor("HazmatBoots", RenderingRegistry.addNewArmourRendererPrefix("HazmatBoots"), 3), itemHazmatBoots.getUnlocalizedName());
-		} else {
+		} else
+		{
 			GameRegistry.registerItem(itemHazmatHelmet = new ItemHazmatArmor("HazmatHelmet", 0, 0), itemHazmatHelmet.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatPlate = new ItemHazmatArmor("HazmatPlate", 0, 1), itemHazmatPlate.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatLegs = new ItemHazmatArmor("HazmatLegs", 0, 2), itemHazmatLegs.getUnlocalizedName());

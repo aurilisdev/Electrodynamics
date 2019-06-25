@@ -29,14 +29,17 @@ public abstract class BlockRotatable extends BlockContainer {
 
 	public int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
 	{
-		if (MathHelper.abs((float) entity.posX - x) < 2 && MathHelper.abs((float) entity.posZ - z) < 2) {
+		if (MathHelper.abs((float) entity.posX - x) < 2 && MathHelper.abs((float) entity.posZ - z) < 2)
+		{
 			double d0 = entity.posY + 1.82D - entity.yOffset;
 
-			if (canRotate(1) && d0 - y > 2) {
+			if (canRotate(1) && d0 - y > 2)
+			{
 				return 1;
 			}
 
-			if (canRotate(0) && y - d0 > 0) {
+			if (canRotate(0) && y - d0 > 0)
+			{
 				return 0;
 			}
 		}
@@ -44,7 +47,8 @@ public abstract class BlockRotatable extends BlockContainer {
 		int playerSide = MathHelper.floor_double(entity.rotationYaw * 4 / 360 + 0.5) & 0x3;
 		int returnSide = playerSide == 3 && canRotate(4) ? 4 : playerSide == 2 && canRotate(3) ? 3 : playerSide == 1 && canRotate(5) ? 5 : playerSide == 0 && canRotate(2) ? 2 : 0;
 
-		if (isFlipPlacement) {
+		if (isFlipPlacement)
+		{
 			return ForgeDirection.getOrientation(returnSide).getOpposite().ordinal();
 		}
 
@@ -62,8 +66,10 @@ public abstract class BlockRotatable extends BlockContainer {
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof IRotatable) {
-			if (PhysicaAPI.isDebugMode) {
+		if (tile instanceof IRotatable)
+		{
+			if (PhysicaAPI.isDebugMode)
+			{
 				player.addChatComponentMessage(new ChatComponentText("Server: " + !world.isRemote + ", Rotation: " + ((IRotatable) tile).getFacing()));
 			}
 		}
@@ -75,7 +81,8 @@ public abstract class BlockRotatable extends BlockContainer {
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof IRotatable) {
+		if (tile instanceof IRotatable)
+		{
 			IRotatable tileRotatable = (IRotatable) tile;
 
 			tileRotatable.setFacing(ForgeDirection.VALID_DIRECTIONS[determineOrientation(world, x, y, z, entity)]);
@@ -87,7 +94,8 @@ public abstract class BlockRotatable extends BlockContainer {
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof IRotatable) {
+		if (tile instanceof IRotatable)
+		{
 			IRotatable tileRotatable = (IRotatable) tile;
 
 			tileRotatable.setFacing(side);

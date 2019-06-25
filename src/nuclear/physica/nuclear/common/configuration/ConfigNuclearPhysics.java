@@ -50,7 +50,8 @@ public class ConfigNuclearPhysics implements IContent {
 						"Multiplier for an antimatter explosion's energy generation in a fulmination generator.");
 
 		String[] protectedWorlds = configuration.getStringList("protected_worlds", CATEGORY, PROTECTED_WORLDS.toArray(new String[0]), "Worlds that are protected from typical explosions and such");
-		for (String world : protectedWorlds) {
+		for (String world : protectedWorlds)
+		{
 			PROTECTED_WORLDS.add(world.toLowerCase());
 		}
 

@@ -22,7 +22,8 @@ public class BlockInfiniteEnergy extends Block implements ITileEntityProvider {
 		setLightLevel(0.1f);
 		setHarvestLevel("pickaxe", 2);
 		setBlockName(CoreReferences.PREFIX + "infEnergy");
-		if (!ConfigCore.DISABLE_INFINITE_ENERGY_CUBE) {
+		if (!ConfigCore.DISABLE_INFINITE_ENERGY_CUBE)
+		{
 			setCreativeTab(CoreTabRegister.coreTab);
 		}
 	}

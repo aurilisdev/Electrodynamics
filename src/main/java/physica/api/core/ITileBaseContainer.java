@@ -23,24 +23,29 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	@Override
 	default ItemStack decrStackSize(int slot, int amount)
 	{
-		if (getInventoryArray()[slot] != null) {
+		if (getInventoryArray()[slot] != null)
+		{
 			ItemStack itemstack;
-			if (getInventoryArray()[slot].stackSize <= amount) {
+			if (getInventoryArray()[slot].stackSize <= amount)
+			{
 				itemstack = getInventoryArray()[slot];
 				getInventoryArray()[slot] = null;
 				markDirty();
 				onInventoryChanged();
 				return itemstack;
-			} else {
+			} else
+			{
 				itemstack = getInventoryArray()[slot].splitStack(amount);
-				if (getInventoryArray()[slot].stackSize == 0) {
+				if (getInventoryArray()[slot].stackSize == 0)
+				{
 					getInventoryArray()[slot] = null;
 				}
 				markDirty();
 				onInventoryChanged();
 				return itemstack;
 			}
-		} else {
+		} else
+		{
 			return null;
 		}
 	}
@@ -48,12 +53,14 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	@Override
 	default ItemStack getStackInSlotOnClosing(int slot)
 	{
-		if (getInventoryArray()[slot] != null) {
+		if (getInventoryArray()[slot] != null)
+		{
 			ItemStack itemstack = getInventoryArray()[slot];
 			getInventoryArray()[slot] = null;
 			onInventoryChanged();
 			return itemstack;
-		} else {
+		} else
+		{
 			return null;
 		}
 	}
@@ -64,7 +71,8 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 		getInventoryArray()[slot] = stack;
 		onInventoryChanged();
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
+		if (stack != null && stack.stackSize > getInventoryStackLimit())
+		{
 			stack.stackSize = getInventoryStackLimit();
 		}
 	}
@@ -92,11 +100,13 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 		ITileBase.super.handleReadFromNBT(nbt);
 		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 		nullifyInventoryArray();
-		for (int index = 0; index < nbttaglist.tagCount(); ++index) {
+		for (int index = 0; index < nbttaglist.tagCount(); ++index)
+		{
 			NBTTagCompound save = nbttaglist.getCompoundTagAt(index);
 			int slotIndex = save.getByte("Slot") & 255;
 
-			if (slotIndex >= 0 && slotIndex < getInventoryArray().length) {
+			if (slotIndex >= 0 && slotIndex < getInventoryArray().length)
+			{
 				getInventoryArray()[slotIndex] = ItemStack.loadItemStackFromNBT(save);
 			}
 		}
@@ -107,8 +117,10 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	{
 		ITileBase.super.handleWriteToNBT(nbt);
 		NBTTagList nbttaglist = new NBTTagList();
-		for (int slotIndex = 0; slotIndex < getInventoryArray().length; ++slotIndex) {
-			if (getInventoryArray()[slotIndex] != null) {
+		for (int slotIndex = 0; slotIndex < getInventoryArray().length; ++slotIndex)
+		{
+			if (getInventoryArray()[slotIndex] != null)
+			{
 				NBTTagCompound save = new NBTTagCompound();
 				save.setByte("Slot", (byte) slotIndex);
 				getInventoryArray()[slotIndex].writeToNBT(save);

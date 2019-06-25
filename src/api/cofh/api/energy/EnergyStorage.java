@@ -39,7 +39,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 
-		if (!simulate) {
+		if (!simulate)
+		{
 			energy -= energyExtracted;
 		}
 		return energyExtracted;
@@ -84,9 +85,11 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.energy += energy;
 
-		if (this.energy > capacity) {
+		if (this.energy > capacity)
+		{
 			this.energy = capacity;
-		} else if (this.energy < 0) {
+		} else if (this.energy < 0)
+		{
 			this.energy = 0;
 		}
 	}
@@ -96,7 +99,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		energy = nbt.getInteger("Energy");
 
-		if (energy > capacity) {
+		if (energy > capacity)
+		{
 			energy = capacity;
 		}
 		return this;
@@ -109,7 +113,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
 
-		if (!simulate) {
+		if (!simulate)
+		{
 			energy += energyReceived;
 		}
 		return energyReceived;
@@ -120,7 +125,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.capacity = capacity;
 
-		if (energy > capacity) {
+		if (energy > capacity)
+		{
 			energy = capacity;
 		}
 	}
@@ -138,9 +144,11 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.energy = energy;
 
-		if (this.energy > capacity) {
+		if (this.energy > capacity)
+		{
 			this.energy = capacity;
-		} else if (this.energy < 0) {
+		} else if (this.energy < 0)
+		{
 			this.energy = 0;
 		}
 	}
@@ -167,7 +175,8 @@ public class EnergyStorage implements IEnergyStorage {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 
-		if (energy < 0) {
+		if (energy < 0)
+		{
 			energy = 0;
 		}
 		nbt.setInteger("Energy", energy);

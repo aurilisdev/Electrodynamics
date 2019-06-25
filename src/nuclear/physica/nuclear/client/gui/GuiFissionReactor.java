@@ -24,7 +24,8 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		double ticksLeft = 0;
-		if (host.hasFuelRod()) {
+		if (host.hasFuelRod())
+		{
 			ticksLeft = (host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage()
 					- host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
 					/ (+1 + Math.round(host.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
@@ -41,7 +42,8 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawTexturedModalRect(containerWidth + (xSize - electricityMeterWidth) / 2, containerHeight + 18, 54, 0, electricityMeterWidth, electricityMeterHeight);
-		if (host.getTemperature() > 0) {
+		if (host.getTemperature() > 0)
+		{
 			drawGradientRect(
 					(int) (containerWidth + (xSize - electricityMeterWidth) / 2
 							+ Math.min(host.getTemperature(), TileFissionReactor.MELTDOWN_TEMPERATURE) / TileFissionReactor.MELTDOWN_TEMPERATURE * electricityMeterWidth - 1),

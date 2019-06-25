@@ -204,10 +204,12 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	 */
 	public boolean equals(Tuple4b t1)
 	{
-		try {
+		try
+		{
 			return x == t1.x && y == t1.y &&
 					z == t1.z && w == t1.w;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
 		}
 
@@ -224,13 +226,16 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	@Override
 	public boolean equals(Object t1)
 	{
-		try {
+		try
+		{
 			Tuple4b t2 = (Tuple4b) t1;
 			return x == t2.x && y == t2.y &&
 					z == t2.z && w == t2.w;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
-		} catch (ClassCastException e1) {
+		} catch (ClassCastException e1)
+		{
 			return false;
 		}
 
@@ -267,9 +272,11 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	public Object clone()
 	{
 		// Since there are no arrays we can just use Object.clone()
-		try {
+		try
+		{
 			return super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
 			// this shouldn't happen, since we are Cloneable
 			throw new InternalError();
 		}

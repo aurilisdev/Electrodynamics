@@ -34,7 +34,8 @@ public class PacketChannelInboundHandler extends SimpleChannelInboundHandler<IPa
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, IPacket packet) throws Exception
 	{
-		try {
+		try
+		{
 			INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
 
 			switch (FMLCommonHandler.instance().getEffectiveSide()) {
@@ -47,7 +48,8 @@ public class PacketChannelInboundHandler extends SimpleChannelInboundHandler<IPa
 			default:
 				break;
 			}
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			PhysicaAPI.logger.error("Failed to handle packet " + packet, e);
 		}
 	}

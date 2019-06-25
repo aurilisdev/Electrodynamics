@@ -51,12 +51,15 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 		float maxY = 1;
 		float maxZ = 0.75f;
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileInsertableControlRod) {
+		if (tile instanceof TileInsertableControlRod)
+		{
 			TileInsertableControlRod controlRod = (TileInsertableControlRod) tile;
 			ForgeDirection dir = controlRod.getFacing().getOpposite();
-			if (dir == ForgeDirection.DOWN) {
+			if (dir == ForgeDirection.DOWN)
+			{
 				maxY = (float) (0.25f + (100 - controlRod.getInsertion()) / 120.0);
-			} else {
+			} else
+			{
 				minY = 1 - (float) (0.25f + (100 - controlRod.getInsertion()) / 120.0);
 				maxY = 1;
 			}
@@ -68,14 +71,19 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
 	{
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			if (dir.ordinal() <= 1) {
-				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor) {
-					if (!(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod)) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			if (dir.ordinal() <= 1)
+			{
+				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor)
+				{
+					if (!(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod))
+					{
 						tile.setFacing(dir.getOpposite());
 					}
 				}
-			} else {
+			} else
+			{
 				break;
 			}
 		}

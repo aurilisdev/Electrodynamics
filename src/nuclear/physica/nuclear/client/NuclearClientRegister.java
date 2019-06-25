@@ -103,7 +103,8 @@ public class NuclearClientRegister implements IContent {
 	@SubscribeEvent
 	public void textureStitchEventPre(TextureStitchEvent.Pre event)
 	{
-		if (event.map.getTextureType() == 0) {
+		if (event.map.getTextureType() == 0)
+		{
 			NuclearFluidRegister.textureStitchEventPre(event);
 		}
 	}
@@ -111,7 +112,8 @@ public class NuclearClientRegister implements IContent {
 	@SubscribeEvent
 	public void textureStitchEventPost(TextureStitchEvent.Post event)
 	{
-		if (event.map.getTextureType() == 0) {
+		if (event.map.getTextureType() == 0)
+		{
 			NuclearFluidRegister.textureStitchEventPost(event);
 		}
 	}

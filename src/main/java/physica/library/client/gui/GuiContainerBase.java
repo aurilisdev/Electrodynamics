@@ -66,9 +66,11 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		this.tooltips.clear();
 
 		inventorySlots.inventorySlots.stream().forEach(s -> {
-			if (s instanceof IToolTipContainer) {
+			if (s instanceof IToolTipContainer)
+			{
 				ToolTip toolTip = ((IToolTipContainer) s).getToolTip();
-				if (toolTip != null) {
+				if (toolTip != null)
+				{
 					tooltips.add(toolTip);
 				}
 			}
@@ -159,10 +161,12 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	{
 		super.drawScreen(mouseX, mouseY, p_73863_3_);
 
-		if (fields != null && fields.size() > 0) {
+		if (fields != null && fields.size() > 0)
+		{
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_BLEND);
-			for (GuiTextField field : fields) {
+			for (GuiTextField field : fields)
+			{
 				field.drawTextBox();
 			}
 		}
@@ -174,14 +178,17 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 		ToolTip fetched = null;
 
-		for (ToolTip toolTip : this.tooltips) {
-			if (toolTip.shouldShowAt(mouseX - guiLeft, mouseY - guiTop)) {
+		for (ToolTip toolTip : this.tooltips)
+		{
+			if (toolTip.shouldShowAt(mouseX - guiLeft, mouseY - guiTop))
+			{
 				fetched = toolTip;
 				break;
 			}
 		}
 
-		if (fetched != null && fetched.shouldShow()) {
+		if (fetched != null && fetched.shouldShow())
+		{
 			this.drawTooltip(mouseX, mouseY, fetched.getLocalizedTooltip().split(";"));
 		}
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -194,13 +201,16 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	protected void keyTyped(char c, int id)
 	{
 		boolean f = false;
-		for (GuiTextField field : fields) {
+		for (GuiTextField field : fields)
+		{
 			field.textboxKeyTyped(c, id);
-			if (field.isFocused()) {
+			if (field.isFocused())
+			{
 				return;
 			}
 		}
-		if (!f) {
+		if (!f)
+		{
 			super.keyTyped(c, id);
 		}
 	}
@@ -209,7 +219,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	protected void mouseClicked(int p_73864_1_, int p_73864_2_, int p_73864_3_)
 	{
 		super.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
-		for (GuiTextField field : fields) {
+		for (GuiTextField field : fields)
+		{
 			field.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
 		}
 	}
@@ -236,7 +247,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	protected void drawContainerSlots()
 	{
-		for (Object object : inventorySlots.inventorySlots) {
+		for (Object object : inventorySlots.inventorySlots)
+		{
 			drawSlot((Slot) object);
 		}
 	}
@@ -244,9 +256,11 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	protected void drawSlot(Slot slot)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		if (slot instanceof IRenderableSlot) {
+		if (slot instanceof IRenderableSlot)
+		{
 			((IRenderableSlot) slot).renderSlotOverlay(this, this.containerWidth + slot.xDisplayPosition - 1, this.containerHeight + slot.yDisplayPosition - 1);
-		} else {
+		} else
+		{
 			drawSlot(slot.xDisplayPosition - 1, slot.yDisplayPosition - 1);
 		}
 
@@ -303,8 +317,10 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	protected void drawRectWithScaledWidth(int x, int y, int u, int v, int width, int height, int newWidth)
 	{
-		if (width > 0) {
-			if (newWidth <= 0 || width == newWidth) {
+		if (width > 0)
+		{
+			if (newWidth <= 0 || width == newWidth)
+			{
 				drawTexturedModalRect(x, y, u, v, width, height);
 			}
 
@@ -313,22 +329,26 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 			drawTexturedModalRect(x, y, u, v, 3, height);
 			x += 3;
 
-			if (newWidth > 6) {
+			if (newWidth > 6)
+			{
 				int loops = newWidth / width;
-				while (loops > 0) {
+				while (loops > 0)
+				{
 					drawTexturedModalRect(x, y, u + 3, v, midWidth, height);
 					x += midWidth;
 					loops -= 1;
 				}
 
 				loops = newWidth % width;
-				if (loops != 0) {
+				if (loops != 0)
+				{
 					drawTexturedModalRect(x, y, u + 3, v, loops, height);
 					x += loops;
 				}
 			}
 
-			if (width > 3) {
+			if (width > 3)
+			{
 				drawTexturedModalRect(x, y, u + width - 3, v, 3, height);
 			}
 		}
@@ -336,9 +356,11 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	protected void setColor(Color color)
 	{
-		if (color == null) {
+		if (color == null)
+		{
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		} else {
+		} else
+		{
 			GL11.glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 		}
 	}
@@ -350,7 +372,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 		drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 54, 0, electricityMeterWidth, electricityMeterHeight);
 
-		if (scale > 0) {
+		if (scale > 0)
+		{
 			drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 54, 22, (int) (scale * electricityMeterWidth), electricityMeterHeight);
 		}
 	}
@@ -367,17 +390,20 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if (edgeColor != null) {
+		if (edgeColor != null)
+		{
 			GL11.glColor4f(edgeColor.getRed() / 255f, edgeColor.getGreen() / 255f, edgeColor.getBlue() / 255f, edgeColor.getAlpha() / 255f);
 			drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 40, 0, meterWidth, meterHeight);
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			drawTexturedModalRect(this.containerWidth + x + 1, this.containerHeight + y + 1, 41, 1, meterWidth - 2, meterHeight - 2);
-		} else {
+		} else
+		{
 			drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 40, 0, meterWidth, meterHeight);
 		}
 
-		if (fluidStack != null) {
+		if (fluidStack != null)
+		{
 			this.drawFluid(this.containerWidth + x, this.containerHeight + y, -10, 1, 12, (int) ((meterHeight - 1) * scale), fluidStack);
 		}
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
@@ -398,13 +424,15 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack)
 	{
-		if (fluidStack != null && fluidStack.getFluid() != null) {
+		if (fluidStack != null && fluidStack.getFluid() != null)
+		{
 			drawSize -= 1;
 
 			IIcon fluidIcon = null;
 			Fluid fluid = fluidStack.getFluid();
 
-			if (fluid != null && fluid.getStillIcon() != null) {
+			if (fluid != null && fluid.getStillIcon() != null)
+			{
 				fluidIcon = fluid.getStillIcon();
 			}
 
@@ -412,13 +440,17 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 			int textureSize = 16;
 			int start = 0;
-			if (fluidIcon != null) {
+			if (fluidIcon != null)
+			{
 				int renderY = textureSize;
-				while (renderY != 0 && drawSize != 0) {
-					if (drawSize > textureSize) {
+				while (renderY != 0 && drawSize != 0)
+				{
+					if (drawSize > textureSize)
+					{
 						renderY = textureSize;
 						drawSize -= textureSize;
-					} else {
+					} else
+					{
 						renderY = drawSize;
 						drawSize = 0;
 					}
@@ -439,7 +471,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 	{
 		cookTime = Math.min(cookTime, maxCookTime);
 		drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 0, 22, 15);
-		if (cookTime > 0) {
+		if (cookTime > 0)
+		{
 			double progress = cookTime / maxCookTime;
 			drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 15, (int) Math.floor(22 * progress), 15);
 		}

@@ -39,14 +39,17 @@ public interface IInvFortronTile extends ITileBase {
 	{
 		int ret = 0;
 		Set<IInvFortronTile> send = new HashSet<>();
-		for (ITileBase base : getFortronConnections()) {
+		for (ITileBase base : getFortronConnections())
+		{
 			IInvFortronTile fortron = (IInvFortronTile) base;
-			if (fortron.canRecieveFortron(this) && Arrays.asList(types).contains(base.getClass())) {
+			if (fortron.canRecieveFortron(this) && Arrays.asList(types).contains(base.getClass()))
+			{
 				send.add(fortron);
 			}
 		}
 		int size = send.size();
-		for (IInvFortronTile tile : send) {
+		for (IInvFortronTile tile : send)
+		{
 			int sent = tile.recieveFortron(maxSend / size);
 			ret += sent;
 			maxSend -= sent;
@@ -57,8 +60,10 @@ public interface IInvFortronTile extends ITileBase {
 
 	default void invalidateConnections()
 	{
-		for (ITileBase base : getFortronConnections()) {
-			if (base instanceof IInvFortronTile) {
+		for (ITileBase base : getFortronConnections())
+		{
+			if (base instanceof IInvFortronTile)
+			{
 				((IInvFortronTile) base).getFortronConnections().remove(this);
 			}
 		}
@@ -68,9 +73,12 @@ public interface IInvFortronTile extends ITileBase {
 	default void validateConnections()
 	{
 		Set<ITileBase> invalid = new HashSet<>();
-		for (ITileBase base : getFortronConnections()) {
-			if (base instanceof IInvFortronTile) {
-				if (((IInvFortronTile) base).getFrequency() != getFrequency()) {
+		for (ITileBase base : getFortronConnections())
+		{
+			if (base instanceof IInvFortronTile)
+			{
+				if (((IInvFortronTile) base).getFrequency() != getFrequency())
+				{
 					((IInvFortronTile) base).getFortronConnections().remove(this);
 					invalid.add(base);
 				}
@@ -91,12 +99,16 @@ public interface IInvFortronTile extends ITileBase {
 
 	default void findNearbyConnections(Class<?>... classes)
 	{
-		for (TileEntity tile : getNearbyTiles(5)) {
-			if (tile instanceof IInvFortronTile && !tile.isInvalid() && Arrays.asList(classes).contains(tile.getClass())) {
+		for (TileEntity tile : getNearbyTiles(5))
+		{
+			if (tile instanceof IInvFortronTile && !tile.isInvalid() && Arrays.asList(classes).contains(tile.getClass()))
+			{
 				IInvFortronTile fortronTile = (IInvFortronTile) tile;
-				if (fortronTile.getFrequency() == getFrequency()) {
+				if (fortronTile.getFrequency() == getFrequency())
+				{
 					getFortronConnections().add((ITileBase) tile);
-					if (!fortronTile.getFortronConnections().contains(this)) {
+					if (!fortronTile.getFortronConnections().contains(this))
+					{
 						fortronTile.getFortronConnections().add(this);
 					}
 				}
@@ -107,11 +119,14 @@ public interface IInvFortronTile extends ITileBase {
 	default int getModuleCount(ItemStack compare, int fromSlot, int toSlot)
 	{
 		int ret = 0;
-		if (compare != null) {
+		if (compare != null)
+		{
 			IInventory inv = (IInventory) this;
-			for (int i = fromSlot; i <= toSlot; i++) {
+			for (int i = fromSlot; i <= toSlot; i++)
+			{
 				ItemStack stack = inv.getStackInSlot(i);
-				if (stack != null && compare.getItem() == stack.getItem() && stack.getItemDamage() == compare.getItemDamage()) {
+				if (stack != null && compare.getItem() == stack.getItem() && stack.getItemDamage() == compare.getItemDamage())
+				{
 					ret += stack.stackSize;
 				}
 			}
@@ -121,11 +136,14 @@ public interface IInvFortronTile extends ITileBase {
 
 	default boolean findModule(ItemStack compare, int fromSlot, int toSlot)
 	{
-		if (compare != null) {
+		if (compare != null)
+		{
 			IInventory inv = (IInventory) this;
-			for (int i = fromSlot; i <= toSlot; i++) {
+			for (int i = fromSlot; i <= toSlot; i++)
+			{
 				ItemStack stack = inv.getStackInSlot(i);
-				if (stack != null && compare.getItem() == stack.getItem() && stack.getItemDamage() == compare.getItemDamage()) {
+				if (stack != null && compare.getItem() == stack.getItem() && stack.getItemDamage() == compare.getItemDamage())
+				{
 					return true;
 				}
 			}
@@ -136,12 +154,16 @@ public interface IInvFortronTile extends ITileBase {
 	default int getModuleCountIn(ItemStack compare, int... slots)
 	{
 		int ret = 0;
-		if (compare != null && slots.length > 0) {
+		if (compare != null && slots.length > 0)
+		{
 			IInventory inv = (IInventory) this;
-			for (int slot : slots) {
-				if (slot < inv.getSizeInventory()) {
+			for (int slot : slots)
+			{
+				if (slot < inv.getSizeInventory())
+				{
 					ItemStack stack = inv.getStackInSlot(slot);
-					if (stack != null && compare.getItem() == stack.getItem() && stack.getItemDamage() == compare.getItemDamage()) {
+					if (stack != null && compare.getItem() == stack.getItem() && stack.getItemDamage() == compare.getItemDamage())
+					{
 						ret += stack.stackSize;
 					}
 				}

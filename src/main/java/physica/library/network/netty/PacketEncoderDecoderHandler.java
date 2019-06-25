@@ -30,12 +30,16 @@ public class PacketEncoderDecoderHandler extends FMLIndexedMessageToMessageCodec
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket packet)
 	{
-		try {
+		try
+		{
 			packet.decodeInto(ctx, source);
-		} catch (Exception e) {
-			if (!silenceStackTrace) {
+		} catch (Exception e)
+		{
+			if (!silenceStackTrace)
+			{
 				PhysicaAPI.logger.error("Failed to decode packet " + packet, e);
-			} else {
+			} else
+			{
 				PhysicaAPI.logger.error("Failed to decode packet " + packet + " Exception: " + e.getMessage());
 			}
 		}
@@ -44,12 +48,16 @@ public class PacketEncoderDecoderHandler extends FMLIndexedMessageToMessageCodec
 	@Override
 	public void encodeInto(ChannelHandlerContext ctx, IPacket packet, ByteBuf target) throws Exception
 	{
-		try {
+		try
+		{
 			packet.encodeInto(ctx, target);
-		} catch (Exception e) {
-			if (!silenceStackTrace) {
+		} catch (Exception e)
+		{
+			if (!silenceStackTrace)
+			{
 				PhysicaAPI.logger.error("Failed to encode packet " + packet, e);
-			} else {
+			} else
+			{
 				PhysicaAPI.logger.error("Failed to encode packet " + packet + " Exception: " + e.getMessage());
 			}
 		}

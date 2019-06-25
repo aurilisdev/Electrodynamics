@@ -78,13 +78,15 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	@Override
 	public int extractEnergy(ItemStack container, int amount, boolean simulate)
 	{
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA)) {
+		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA))
+		{
 			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
 		int energyExtracted = Math.min(energy, Math.min(this.extractRate, amount));
 
-		if (!simulate) {
+		if (!simulate)
+		{
 			energy -= energyExtracted;
 			setEnergyStored(container, energy);
 		}
@@ -93,7 +95,8 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 
 	public void setEnergyStored(ItemStack container, int amount)
 	{
-		if (container.stackTagCompound == null) {
+		if (container.stackTagCompound == null)
+		{
 			container.stackTagCompound = new NBTTagCompound();
 		}
 
@@ -105,7 +108,8 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	@Override
 	public int getEnergyStored(ItemStack container)
 	{
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA)) {
+		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA))
+		{
 			return 0;
 		}
 		return container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
@@ -120,13 +124,15 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	@Override
 	public int receiveEnergy(ItemStack container, int amount, boolean simulate)
 	{
-		if (container.stackTagCompound == null) {
+		if (container.stackTagCompound == null)
+		{
 			container.stackTagCompound = new NBTTagCompound();
 		}
 		int energy = container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
 		int energyReceived = Math.min(capacity - energy, Math.min(this.receiveRate, amount));
 
-		if (!simulate) {
+		if (!simulate)
+		{
 			energy += energyReceived;
 			setEnergyStored(container, energy);
 		}

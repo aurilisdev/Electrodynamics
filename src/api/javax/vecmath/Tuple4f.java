@@ -391,10 +391,12 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public boolean equals(Tuple4f t1)
 	{
-		try {
+		try
+		{
 			return x == t1.x && y == t1.y && z == t1.z
 					&& w == t1.w;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
 		}
 	}
@@ -411,13 +413,16 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	@Override
 	public boolean equals(Object t1)
 	{
-		try {
+		try
+		{
 			Tuple4f t2 = (Tuple4f) t1;
 			return x == t2.x && y == t2.y &&
 					z == t2.z && w == t2.w;
-		} catch (NullPointerException e2) {
+		} catch (NullPointerException e2)
+		{
 			return false;
-		} catch (ClassCastException e1) {
+		} catch (ClassCastException e1)
+		{
 			return false;
 		}
 	}
@@ -440,34 +445,42 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 		float diff;
 
 		diff = x - t1.x;
-		if (Float.isNaN(diff)) {
+		if (Float.isNaN(diff))
+		{
 			return false;
 		}
-		if ((diff < 0 ? -diff : diff) > epsilon) {
+		if ((diff < 0 ? -diff : diff) > epsilon)
+		{
 			return false;
 		}
 
 		diff = y - t1.y;
-		if (Float.isNaN(diff)) {
+		if (Float.isNaN(diff))
+		{
 			return false;
 		}
-		if ((diff < 0 ? -diff : diff) > epsilon) {
+		if ((diff < 0 ? -diff : diff) > epsilon)
+		{
 			return false;
 		}
 
 		diff = z - t1.z;
-		if (Float.isNaN(diff)) {
+		if (Float.isNaN(diff))
+		{
 			return false;
 		}
-		if ((diff < 0 ? -diff : diff) > epsilon) {
+		if ((diff < 0 ? -diff : diff) > epsilon)
+		{
 			return false;
 		}
 
 		diff = w - t1.w;
-		if (Float.isNaN(diff)) {
+		if (Float.isNaN(diff))
+		{
 			return false;
 		}
-		if ((diff < 0 ? -diff : diff) > epsilon) {
+		if ((diff < 0 ? -diff : diff) > epsilon)
+		{
 			return false;
 		}
 
@@ -507,35 +520,47 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public final void clamp(float min, float max, Tuple4f t)
 	{
-		if (t.x > max) {
+		if (t.x > max)
+		{
 			x = max;
-		} else if (t.x < min) {
+		} else if (t.x < min)
+		{
 			x = min;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y > max) {
+		if (t.y > max)
+		{
 			y = max;
-		} else if (t.y < min) {
+		} else if (t.y < min)
+		{
 			y = min;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
-		if (t.z > max) {
+		if (t.z > max)
+		{
 			z = max;
-		} else if (t.z < min) {
+		} else if (t.z < min)
+		{
 			z = min;
-		} else {
+		} else
+		{
 			z = t.z;
 		}
 
-		if (t.w > max) {
+		if (t.w > max)
+		{
 			w = max;
-		} else if (t.w < min) {
+		} else if (t.w < min)
+		{
 			w = min;
-		} else {
+		} else
+		{
 			w = t.w;
 		}
 
@@ -552,27 +577,35 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMin(float min, Tuple4f t)
 	{
-		if (t.x < min) {
+		if (t.x < min)
+		{
 			x = min;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y < min) {
+		if (t.y < min)
+		{
 			y = min;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
-		if (t.z < min) {
+		if (t.z < min)
+		{
 			z = min;
-		} else {
+		} else
+		{
 			z = t.z;
 		}
 
-		if (t.w < min) {
+		if (t.w < min)
+		{
 			w = min;
-		} else {
+		} else
+		{
 			w = t.w;
 		}
 
@@ -589,27 +622,35 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMax(float max, Tuple4f t)
 	{
-		if (t.x > max) {
+		if (t.x > max)
+		{
 			x = max;
-		} else {
+		} else
+		{
 			x = t.x;
 		}
 
-		if (t.y > max) {
+		if (t.y > max)
+		{
 			y = max;
-		} else {
+		} else
+		{
 			y = t.y;
 		}
 
-		if (t.z > max) {
+		if (t.z > max)
+		{
 			z = max;
-		} else {
+		} else
+		{
 			z = t.z;
 		}
 
-		if (t.w > max) {
+		if (t.w > max)
+		{
 			w = max;
-		} else {
+		} else
+		{
 			w = t.z;
 		}
 
@@ -640,27 +681,35 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public final void clamp(float min, float max)
 	{
-		if (x > max) {
+		if (x > max)
+		{
 			x = max;
-		} else if (x < min) {
+		} else if (x < min)
+		{
 			x = min;
 		}
 
-		if (y > max) {
+		if (y > max)
+		{
 			y = max;
-		} else if (y < min) {
+		} else if (y < min)
+		{
 			y = min;
 		}
 
-		if (z > max) {
+		if (z > max)
+		{
 			z = max;
-		} else if (z < min) {
+		} else if (z < min)
+		{
 			z = min;
 		}
 
-		if (w > max) {
+		if (w > max)
+		{
 			w = max;
-		} else if (w < min) {
+		} else if (w < min)
+		{
 			w = min;
 		}
 
@@ -674,16 +723,20 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMin(float min)
 	{
-		if (x < min) {
+		if (x < min)
+		{
 			x = min;
 		}
-		if (y < min) {
+		if (y < min)
+		{
 			y = min;
 		}
-		if (z < min) {
+		if (z < min)
+		{
 			z = min;
 		}
-		if (w < min) {
+		if (w < min)
+		{
 			w = min;
 		}
 
@@ -697,16 +750,20 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	 */
 	public final void clampMax(float max)
 	{
-		if (x > max) {
+		if (x > max)
+		{
 			x = max;
 		}
-		if (y > max) {
+		if (y > max)
+		{
 			y = max;
 		}
-		if (z > max) {
+		if (z > max)
+		{
 			z = max;
 		}
-		if (w > max) {
+		if (w > max)
+		{
 			w = max;
 		}
 
@@ -774,9 +831,11 @@ public abstract class Tuple4f implements java.io.Serializable, Cloneable {
 	public Object clone()
 	{
 		// Since there are no arrays we can just use Object.clone()
-		try {
+		try
+		{
 			return super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
 			// this shouldn't happen, since we are Cloneable
 			throw new InternalError();
 		}

@@ -67,7 +67,8 @@ public class PhysicaForcefields {
 
 		proxyLoader.addContent(new ForcefieldFluidRegister());
 
-		if (event.getSide() == Side.CLIENT) {
+		if (event.getSide() == Side.CLIENT)
+		{
 			proxyLoader.addContent(new ForcefieldClientRegister());
 		}
 
@@ -121,8 +122,10 @@ public class PhysicaForcefields {
 
 	public static boolean isInForcefields(ArrayList<TileFortronFieldConstructor> constructors, double x, double y, double z)
 	{
-		for (TileFortronFieldConstructor constructor : constructors) {
-			if (constructor.isInForcefield(x, y, z)) {
+		for (TileFortronFieldConstructor constructor : constructors)
+		{
+			if (constructor.isInForcefield(x, y, z))
+			{
 				return true;
 			}
 		}

@@ -61,7 +61,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	@SideOnly(Side.CLIENT)
 	public int getBurnTimeRemainingScaled(int scale)
 	{
-		if (currentItemBurnTime == 0) {
+		if (currentItemBurnTime == 0)
+		{
 			currentItemBurnTime = TOTAL_BURN_TIME;
 		}
 
@@ -77,10 +78,13 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		if (isBurning()) {
-			if (worldObj.rand.nextFloat() < 0.25f) {
+		if (isBurning())
+		{
+			if (worldObj.rand.nextFloat() < 0.25f)
+			{
 				worldObj.spawnParticle("smoke", xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 0, 0.05f, 0);
-			} else if (worldObj.rand.nextFloat() < 0.025f) {
+			} else if (worldObj.rand.nextFloat() < 0.025f)
+			{
 				worldObj.spawnParticle("lava", xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 0, 0.05f, 0);
 			}
 		}
@@ -90,34 +94,44 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (furnaceBurnTime > 0) {
+		if (furnaceBurnTime > 0)
+		{
 			--furnaceBurnTime;
 		}
 		ItemStack stackInputFuel = getStackInSlot(SLOT_INPUTFUEL);
-		if (!worldObj.isRemote) {
-			if (furnaceBurnTime != 0 || stackInputFuel != null && getStackInSlot(SLOT_INPUT) != null) {
-				if (furnaceBurnTime == 0 && canSmelt()) {
+		if (!worldObj.isRemote)
+		{
+			if (furnaceBurnTime != 0 || stackInputFuel != null && getStackInSlot(SLOT_INPUT) != null)
+			{
+				if (furnaceBurnTime == 0 && canSmelt())
+				{
 					currentItemBurnTime = furnaceBurnTime = TileEntityFurnace.getItemBurnTime(stackInputFuel);
 
-					if (furnaceBurnTime > 0) {
-						if (stackInputFuel != null) {
+					if (furnaceBurnTime > 0)
+					{
+						if (stackInputFuel != null)
+						{
 							--stackInputFuel.stackSize;
 
-							if (stackInputFuel.stackSize == 0) {
+							if (stackInputFuel.stackSize == 0)
+							{
 								setInventorySlotContents(SLOT_INPUTFUEL, stackInputFuel.getItem().getContainerItem(stackInputFuel));
 							}
 						}
 					}
 				}
 
-				if (isBurning() && canSmelt()) {
+				if (isBurning() && canSmelt())
+				{
 					++furnaceCookTime;
 
-					if (furnaceCookTime == TOTAL_BURN_TIME) {
+					if (furnaceCookTime == TOTAL_BURN_TIME)
+					{
 						furnaceCookTime = 0;
 						smeltItem();
 					}
-				} else {
+				} else
+				{
 					furnaceCookTime = 0;
 				}
 			}
@@ -152,18 +166,23 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	private boolean canSmelt()
 	{
 		ItemStack input = getStackInSlot(SLOT_INPUT);
-		if (input == null) {
+		if (input == null)
+		{
 			return false;
-		} else {
+		} else
+		{
 			ItemStack recipe = input.getItem() == Items.iron_ingot ? new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2) : null;
-			if (recipe == null) {
+			if (recipe == null)
+			{
 				return false;
 			}
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
-			if (output == null) {
+			if (output == null)
+			{
 				return true;
 			}
-			if (!output.isItemEqual(recipe)) {
+			if (!output.isItemEqual(recipe))
+			{
 				return false;
 			}
 			int result = output.stackSize + recipe.stackSize;
@@ -173,18 +192,22 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 
 	public void smeltItem()
 	{
-		if (canSmelt()) {
+		if (canSmelt())
+		{
 			ItemStack input = getStackInSlot(SLOT_INPUT);
 			ItemStack recipe = input.getItem() == Items.iron_ingot ? new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2) : null;
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
-			if (output == null) {
+			if (output == null)
+			{
 				setInventorySlotContents(SLOT_OUTPUT, recipe.copy());
-			} else if (output.getItem() == recipe.getItem()) {
+			} else if (output.getItem() == recipe.getItem())
+			{
 				output.stackSize += recipe.stackSize;
 			}
 
 			--input.stackSize;
-			if (input.stackSize <= 0) {
+			if (input.stackSize <= 0)
+			{
 				setInventorySlotContents(SLOT_INPUT, null);
 			}
 		}

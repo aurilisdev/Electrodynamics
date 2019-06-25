@@ -41,35 +41,47 @@ public class BlockFusionReactor extends BlockBaseContainerModelled {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
 	{
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			TileEntity tile = world.getTileEntity(x, y, z);
-			if (tile instanceof TileFusionReactor) {
+			if (tile instanceof TileFusionReactor)
+			{
 				TileFusionReactor reactor = (TileFusionReactor) tile;
-				if (reactor.canInsertItem(TileFusionReactor.SLOT_DEUTERIUM, player.getCurrentEquippedItem(), side)) {
-					if (reactor.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM) != null) {
+				if (reactor.canInsertItem(TileFusionReactor.SLOT_DEUTERIUM, player.getCurrentEquippedItem(), side))
+				{
+					if (reactor.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM) != null)
+					{
 						reactor.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM).stackSize += player.getCurrentEquippedItem().stackSize;
-					} else {
+					} else
+					{
 						reactor.setInventorySlotContents(TileFusionReactor.SLOT_DEUTERIUM, player.getCurrentEquippedItem());
 					}
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-					for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+					for (int i = 0; i < player.inventory.mainInventory.length; i++)
+					{
 						ItemStack stack = player.inventory.mainInventory[i];
-						if (reactor.canInsertItem(TileFusionReactor.SLOT_DEUTERIUM, stack, side)) {
+						if (reactor.canInsertItem(TileFusionReactor.SLOT_DEUTERIUM, stack, side))
+						{
 							reactor.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM).stackSize += stack.stackSize;
 							player.inventory.setInventorySlotContents(i, null);
 						}
 					}
 					player.inventoryContainer.detectAndSendChanges();
-				} else if (reactor.canInsertItem(TileFusionReactor.SLOT_TRITIUM, player.getCurrentEquippedItem(), side)) {
-					if (reactor.getStackInSlot(TileFusionReactor.SLOT_TRITIUM) != null) {
+				} else if (reactor.canInsertItem(TileFusionReactor.SLOT_TRITIUM, player.getCurrentEquippedItem(), side))
+				{
+					if (reactor.getStackInSlot(TileFusionReactor.SLOT_TRITIUM) != null)
+					{
 						reactor.getStackInSlot(TileFusionReactor.SLOT_TRITIUM).stackSize += player.getCurrentEquippedItem().stackSize;
-					} else {
+					} else
+					{
 						reactor.setInventorySlotContents(TileFusionReactor.SLOT_TRITIUM, player.getCurrentEquippedItem());
 					}
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-					for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+					for (int i = 0; i < player.inventory.mainInventory.length; i++)
+					{
 						ItemStack stack = player.inventory.mainInventory[i];
-						if (reactor.canInsertItem(TileFusionReactor.SLOT_TRITIUM, stack, side)) {
+						if (reactor.canInsertItem(TileFusionReactor.SLOT_TRITIUM, stack, side))
+						{
 							reactor.getStackInSlot(TileFusionReactor.SLOT_TRITIUM).stackSize += stack.stackSize;
 							player.inventory.setInventorySlotContents(i, null);
 						}

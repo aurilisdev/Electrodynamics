@@ -13,7 +13,8 @@ public enum ExplosiveType {
 
 	public static ExplosiveType get(int id)
 	{
-		if (id >= 0 && id < ExplosiveType.values().length) {
+		if (id >= 0 && id < ExplosiveType.values().length)
+		{
 			return ExplosiveType.values()[id];
 		}
 

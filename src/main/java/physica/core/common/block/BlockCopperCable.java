@@ -61,9 +61,11 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 		float tempMaxX = 1 - TileRenderCopperCable.pixelElevenTwo;
 		float tempMaxY = 1 - TileRenderCopperCable.pixelElevenTwo;
 		float tempMaxZ = 1 - TileRenderCopperCable.pixelElevenTwo;
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
 			TileEntity sideTile = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite())) {
+			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite()))
+			{
 				switch (dir) {
 				case DOWN:
 					tempMinY -= TileRenderCopperCable.pixelElevenTwo;

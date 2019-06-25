@@ -174,12 +174,14 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	 */
 	public final void mul(Quat4d q1, Quat4d q2)
 	{
-		if (this != q1 && this != q2) {
+		if (this != q1 && this != q2)
+		{
 			w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
 			x = q1.w * q2.x + q2.w * q1.x + q1.y * q2.z - q1.z * q2.y;
 			y = q1.w * q2.y + q2.w * q1.y - q1.x * q2.z + q1.z * q2.x;
 			z = q1.w * q2.z + q2.w * q1.z + q1.x * q2.y - q1.y * q2.x;
-		} else {
+		} else
+		{
 			double x, y, w;
 
 			w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
@@ -290,13 +292,15 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		norm = q1.x * q1.x + q1.y * q1.y + q1.z * q1.z + q1.w * q1.w;
 
-		if (norm > 0.0) {
+		if (norm > 0.0)
+		{
 			norm = 1.0 / Math.sqrt(norm);
 			x = norm * q1.x;
 			y = norm * q1.y;
 			z = norm * q1.z;
 			w = norm * q1.w;
-		} else {
+		} else
+		{
 			x = 0.0;
 			y = 0.0;
 			z = 0.0;
@@ -313,13 +317,15 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		norm = x * x + y * y + z * z + w * w;
 
-		if (norm > 0.0) {
+		if (norm > 0.0)
+		{
 			norm = 1.0 / Math.sqrt(norm);
 			x *= norm;
 			y *= norm;
 			z *= norm;
 			w *= norm;
-		} else {
+		} else
+		{
 			x = 0.0;
 			y = 0.0;
 			z = 0.0;
@@ -338,8 +344,10 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	{
 		double ww = 0.25 * (m1.m00 + m1.m11 + m1.m22 + m1.m33);
 
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				w = Math.sqrt(ww);
 				ww = 0.25 / w;
 				x = (m1.m21 - m1.m12) * ww;
@@ -347,7 +355,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 				z = (m1.m10 - m1.m01) * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			w = 0;
 			x = 0;
 			y = 0;
@@ -357,15 +366,18 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		w = 0;
 		ww = -0.5 * (m1.m11 + m1.m22);
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				x = Math.sqrt(ww);
 				ww = 1.0 / (2.0 * x);
 				y = m1.m10 * ww;
 				z = m1.m20 * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			x = 0;
 			y = 0;
 			z = 1;
@@ -374,7 +386,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		x = 0;
 		ww = 0.5 * (1.0 - m1.m22);
-		if (ww >= EPS2) {
+		if (ww >= EPS2)
+		{
 			y = Math.sqrt(ww);
 			z = m1.m21 / (2.0 * y);
 			return;
@@ -395,8 +408,10 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	{
 		double ww = 0.25 * (m1.m00 + m1.m11 + m1.m22 + m1.m33);
 
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				w = Math.sqrt(ww);
 				ww = 0.25 / w;
 				x = (m1.m21 - m1.m12) * ww;
@@ -404,7 +419,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 				z = (m1.m10 - m1.m01) * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			w = 0;
 			x = 0;
 			y = 0;
@@ -414,15 +430,18 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		w = 0;
 		ww = -0.5 * (m1.m11 + m1.m22);
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				x = Math.sqrt(ww);
 				ww = 0.5 / x;
 				y = m1.m10 * ww;
 				z = m1.m20 * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			x = 0;
 			y = 0;
 			z = 1;
@@ -431,7 +450,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		x = 0.0;
 		ww = 0.5 * (1.0 - m1.m22);
-		if (ww >= EPS2) {
+		if (ww >= EPS2)
+		{
 			y = Math.sqrt(ww);
 			z = m1.m21 / (2.0 * y);
 			return;
@@ -452,8 +472,10 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	{
 		double ww = 0.25 * (m1.m00 + m1.m11 + m1.m22 + 1.0);
 
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				w = Math.sqrt(ww);
 				ww = 0.25 / w;
 				x = (m1.m21 - m1.m12) * ww;
@@ -461,7 +483,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 				z = (m1.m10 - m1.m01) * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			w = 0;
 			x = 0;
 			y = 0;
@@ -471,15 +494,18 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		w = 0;
 		ww = -0.5 * (m1.m11 + m1.m22);
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				x = Math.sqrt(ww);
 				ww = 0.5 / x;
 				y = m1.m10 * ww;
 				z = m1.m20 * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			x = 0;
 			y = 0;
 			z = 1;
@@ -488,7 +514,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		x = 0;
 		ww = 0.5 * (1.0 - m1.m22);
-		if (ww >= EPS2) {
+		if (ww >= EPS2)
+		{
 			y = Math.sqrt(ww);
 			z = m1.m21 / (2.0 * y);
 		}
@@ -508,8 +535,10 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	{
 		double ww = 0.25 * (m1.m00 + m1.m11 + m1.m22 + 1.0);
 
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				w = Math.sqrt(ww);
 				ww = 0.25 / w;
 				x = (m1.m21 - m1.m12) * ww;
@@ -517,7 +546,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 				z = (m1.m10 - m1.m01) * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			w = 0;
 			x = 0;
 			y = 0;
@@ -527,15 +557,18 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		w = 0;
 		ww = -0.5 * (m1.m11 + m1.m22);
-		if (ww >= 0) {
-			if (ww >= EPS2) {
+		if (ww >= 0)
+		{
+			if (ww >= EPS2)
+			{
 				x = Math.sqrt(ww);
 				ww = 0.5 / x;
 				y = m1.m10 * ww;
 				z = m1.m20 * ww;
 				return;
 			}
-		} else {
+		} else
+		{
 			x = 0;
 			y = 0;
 			z = 1;
@@ -544,7 +577,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		x = 0;
 		ww = 0.5 * (1.0 - m1.m22);
-		if (ww >= EPS2) {
+		if (ww >= EPS2)
+		{
 			y = Math.sqrt(ww);
 			z = m1.m21 / (2.0 * y);
 			return;
@@ -567,12 +601,14 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 		// Quat = cos(theta/2) + sin(theta/2)(roation_axis)
 
 		amag = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-		if (amag < EPS) {
+		if (amag < EPS)
+		{
 			w = 0.0;
 			x = 0.0;
 			y = 0.0;
 			z = 0.0;
-		} else {
+		} else
+		{
 			mag = Math.sin(a.angle / 2.0);
 			amag = 1.0 / amag;
 			w = Math.cos(a.angle / 2.0);
@@ -596,12 +632,14 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 		// Quat = cos(theta/2) + sin(theta/2)(roation_axis)
 
 		amag = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-		if (amag < EPS) {
+		if (amag < EPS)
+		{
 			w = 0.0;
 			x = 0.0;
 			y = 0.0;
 			z = 0.0;
-		} else {
+		} else
+		{
 			amag = 1.0 / amag;
 			mag = Math.sin(a.angle / 2.0);
 			w = Math.cos(a.angle / 2.0);
@@ -634,7 +672,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		dot = x * q1.x + y * q1.y + z * q1.z + w * q1.w;
 
-		if (dot < 0) {
+		if (dot < 0)
+		{
 			// negate quaternion
 			q1.x = -q1.x;
 			q1.y = -q1.y;
@@ -643,12 +682,14 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 			dot = -dot;
 		}
 
-		if (1.0 - dot > EPS) {
+		if (1.0 - dot > EPS)
+		{
 			om = Math.acos(dot);
 			sinom = Math.sin(om);
 			s1 = Math.sin((1.0 - alpha) * om) / sinom;
 			s2 = Math.sin(alpha * om) / sinom;
-		} else {
+		} else
+		{
 			s1 = 1.0 - alpha;
 			s2 = alpha;
 		}
@@ -682,7 +723,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 		dot = q2.x * q1.x + q2.y * q1.y + q2.z * q1.z + q2.w * q1.w;
 
-		if (dot < 0) {
+		if (dot < 0)
+		{
 			// negate quaternion
 			q1.x = -q1.x;
 			q1.y = -q1.y;
@@ -691,12 +733,14 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 			dot = -dot;
 		}
 
-		if (1.0 - dot > EPS) {
+		if (1.0 - dot > EPS)
+		{
 			om = Math.acos(dot);
 			sinom = Math.sin(om);
 			s1 = Math.sin((1.0 - alpha) * om) / sinom;
 			s2 = Math.sin(alpha * om) / sinom;
-		} else {
+		} else
+		{
 			s1 = 1.0 - alpha;
 			s2 = alpha;
 		}

@@ -44,28 +44,36 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (hasEnoughEnergy()) {
+		if (hasEnoughEnergy())
+		{
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
 			ItemStack input = getStackInSlot(SLOT_INPUT);
-			if (canProcess(output, input)) {
-				if (operatingTicks < TICKS_REQUIRED) {
+			if (canProcess(output, input))
+			{
+				if (operatingTicks < TICKS_REQUIRED)
+				{
 					operatingTicks++;
-				} else {
+				} else
+				{
 					process(input, output);
 					operatingTicks = 0;
 				}
 				extractEnergy();
-			} else {
+			} else
+			{
 				operatingTicks = 0;
 			}
 			drainBattery(SLOT_ENERGY);
-		} else {
+		} else
+		{
 			drainBattery(SLOT_ENERGY);
 			operatingTicks = 0;
 		}
 		ItemStack input = getStackInSlot(SLOT_INPUT);
-		if (input != null) {
-			if (input.getItem() == Items.water_bucket && waterTank.getFluidAmount() < waterTank.getCapacity()) {
+		if (input != null)
+		{
+			if (input.getItem() == Items.water_bucket && waterTank.getFluidAmount() < waterTank.getCapacity())
+			{
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(Items.bucket));
 				waterTank.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
 			}
@@ -74,11 +82,14 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 
 	public boolean canProcess(ItemStack output, ItemStack input)
 	{
-		if (input != null) {
+		if (input != null)
+		{
 			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input.getItem());
-			if (recipe != null) {
+			if (recipe != null)
+			{
 				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null
-						|| output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize()) {
+						|| output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())
+				{
 					return true;
 				}
 			}
@@ -93,15 +104,19 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 		waterTank.drain(recipe.getWaterUse(), true);
 
 		input.stackSize--;
-		if (input.stackSize <= 0) {
+		if (input.stackSize <= 0)
+		{
 			setInventorySlotContents(SLOT_INPUT, null);
-		} else {
+		} else
+		{
 			setInventorySlotContents(SLOT_INPUT, input);
 		}
 
-		if (output != null) {
+		if (output != null)
+		{
 			output.stackSize = output.stackSize + recipe.getOutput().stackSize;
-		} else {
+		} else
+		{
 			setInventorySlotContents(SLOT_OUTPUT, new ItemStack(recipe.getOutput().getItem(), recipe.getOutput().stackSize));
 		}
 

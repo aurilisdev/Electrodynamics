@@ -222,10 +222,12 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	public final double angle(Vector4d v1)
 	{
 		double vDot = dot(v1) / (length() * v1.length());
-		if (vDot < -1.0) {
+		if (vDot < -1.0)
+		{
 			vDot = -1.0;
 		}
-		if (vDot > 1.0) {
+		if (vDot > 1.0)
+		{
 			vDot = 1.0;
 		}
 		return Math.acos(vDot);

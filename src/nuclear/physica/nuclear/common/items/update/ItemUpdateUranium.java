@@ -26,17 +26,20 @@ public class ItemUpdateUranium implements IItemUpdate {
 	public void onEntityItemUpdate(ItemStack stack, EntityItem entity)
 	{
 		World world = entity.worldObj;
-		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
+		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase()))
+		{
 			return;
 		}
-		if (rand.nextFloat() < 0.015f * scale) {
+		if (rand.nextFloat() < 0.015f * scale)
+		{
 			world.spawnParticle("reddust", entity.posX + rand.nextDouble() - 0.5, entity.posY + rand.nextDouble() - 0.5, entity.posZ + rand.nextDouble() - 0.5, 0.01f, 1, 0.01f);
 		}
 		@SuppressWarnings("unchecked")
 		List<EntityLivingBase> entities = entity.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
 				AxisAlignedBB.getBoundingBox(entity.posX - scale, entity.posY - scale, entity.posZ - scale, entity.posX + scale, entity.posY + scale,
 						entity.posZ + scale));
-		for (EntityLivingBase ent : entities) {
+		for (EntityLivingBase ent : entities)
+		{
 			float dist = (float) (scale - ent.getDistance(entity.posX, entity.posY, entity.posZ));
 			RadiationSystem.applyRontgenEntity(ent, dist, dist * 4.5f, entity.getDistanceToEntity(ent),
 					dist);
@@ -46,10 +49,12 @@ public class ItemUpdateUranium implements IItemUpdate {
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean p_77663_5_)
 	{
-		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
+		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase()))
+		{
 			return;
 		}
-		if (entity instanceof EntityLivingBase) {
+		if (entity instanceof EntityLivingBase)
+		{
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, scale, 15, 0.1f, 1);
 		}
 	}

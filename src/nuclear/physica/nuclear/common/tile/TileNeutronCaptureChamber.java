@@ -33,15 +33,19 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (canProcess()) {
+		if (canProcess())
+		{
 			hasDeuterium = true;
-			if (operatingTicks < TICKS_REQUIRED) {
+			if (operatingTicks < TICKS_REQUIRED)
+			{
 				operatingTicks += getTicksAddition();
-			} else {
+			} else
+			{
 				process();
 				operatingTicks = 0;
 			}
-		} else {
+		} else
+		{
 			hasDeuterium = false;
 			operatingTicks = 0;
 		}
@@ -58,13 +62,16 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	{
 		ForgeDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
-		if (tile instanceof TileFissionReactor) {
-			if (getStackInSlot(SLOT_INPUT) == null || getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit()) {
+		if (tile instanceof TileFissionReactor)
+		{
+			if (getStackInSlot(SLOT_INPUT) == null || getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit())
+			{
 				return false;
 			}
 			TileFissionReactor reactor = (TileFissionReactor) tile;
 			return reactor.hasFuelRod() && reactor.temperature > 1000;
-		} else {
+		} else
+		{
 			worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, new ItemStack(getBlockType())));
 			getLocation().setBlockAir(worldObj);
 			return false;
@@ -75,12 +82,15 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	{
 		ItemStack output = getStackInSlot(SLOT_OUTPUT);
 		getStackInSlot(SLOT_INPUT).stackSize--;
-		if (getStackInSlot(SLOT_INPUT).stackSize <= 0) {
+		if (getStackInSlot(SLOT_INPUT).stackSize <= 0)
+		{
 			setInventorySlotContents(SLOT_INPUT, null);
 		}
-		if (output != null) {
+		if (output != null)
+		{
 			output.stackSize++;
-		} else {
+		} else
+		{
 			setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemTritiumCell));
 		}
 	}

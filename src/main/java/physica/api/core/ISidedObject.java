@@ -18,9 +18,11 @@ public interface ISidedObject {
 
 	default void handleUpdate(World world, int ticks)
 	{
-		if (world.isRemote) {
+		if (world.isRemote)
+		{
 			updateClient(ticks);
-		} else {
+		} else
+		{
 			updateServer(ticks);
 		}
 		updateCommon(ticks);

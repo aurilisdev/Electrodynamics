@@ -88,7 +88,8 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	{
 		int oldFrequency = frequency;
 		frequency = freq;
-		if (oldFrequency != freq) {
+		if (oldFrequency != freq)
+		{
 			onFirstUpdate();
 		}
 	}
@@ -106,11 +107,14 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	{
 		super.updateCommon(ticks);
 		fortronTank.setCapacity(getMaxFortron());
-		if (fortronTank.getCapacity() < fortronTank.getFluidAmount()) {
+		if (fortronTank.getCapacity() < fortronTank.getFluidAmount())
+		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
-		if (getStackInSlot(SLOT_FREQUENCY) != null) {
-			if (getStackInSlot(SLOT_FREQUENCY).stackTagCompound != null) {
+		if (getStackInSlot(SLOT_FREQUENCY) != null)
+		{
+			if (getStackInSlot(SLOT_FREQUENCY).stackTagCompound != null)
+			{
 				setFrequency(getStackInSlot(SLOT_FREQUENCY).stackTagCompound.getInteger("frequency"));
 			}
 		}
@@ -118,15 +122,19 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public boolean isPlayerValidated(EntityPlayer player, Permission perm)
 	{
-		if (player.capabilities.isCreativeMode || player.isEntityInvulnerable()) {
+		if (player.capabilities.isCreativeMode || player.isEntityInvulnerable())
+		{
 			return true;
 		}
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+		{
 			BlockLocation loc = new BlockLocation(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 			TileEntity tile = loc.getTile(worldObj);
-			if (tile instanceof TileBiometricIdentifier) {
+			if (tile instanceof TileBiometricIdentifier)
+			{
 				TileBiometricIdentifier identifier = (TileBiometricIdentifier) tile;
-				if (identifier.isPlayerValidated(player, perm)) {
+				if (identifier.isPlayerValidated(player, perm))
+				{
 					return true;
 				}
 			}
@@ -136,12 +144,15 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public boolean isValidatedItem(ItemStack stack)
 	{
-		for (int index = SLOT_STARTBANLIST; index <= SLOT_ENDBANLIST; index++) {
+		for (int index = SLOT_STARTBANLIST; index <= SLOT_ENDBANLIST; index++)
+		{
 			ItemStack stack2 = getStackInSlot(index);
-			if (stack2 == null) {
+			if (stack2 == null)
+			{
 				continue;
 			}
-			if (stack == null || stack2.getItem() != stack.getItem()) {
+			if (stack == null || stack2.getItem() != stack.getItem())
+			{
 				return false;
 			}
 		}
@@ -153,10 +164,13 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public Set<ItemStack> getBlacklistedItems()
 	{
 		HashSet<ItemStack> set = new HashSet<>();
-		if (isBlackList) {
-			for (int index = SLOT_STARTBANLIST; index <= SLOT_ENDBANLIST; index++) {
+		if (isBlackList)
+		{
+			for (int index = SLOT_STARTBANLIST; index <= SLOT_ENDBANLIST; index++)
+			{
 				ItemStack stack = getStackInSlot(index);
-				if (stack != null) {
+				if (stack != null)
+				{
 					set.add(stack);
 				}
 			}
@@ -168,40 +182,52 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (!ForcefieldEventHandler.INSTANCE.isMatrixRegistered(this)) {
+		if (!ForcefieldEventHandler.INSTANCE.isMatrixRegistered(this))
+		{
 			ForcefieldEventHandler.INSTANCE.registerMatrix(this);
 		}
-		if (ticks % 20 == 0) {
+		if (ticks % 20 == 0)
+		{
 			validateConnections();
 		}
 		isActivated = isPoweredByRedstone();
 
-		if (isActivated() && fortronTank.getFluidAmount() > getFortronUse()) {
+		if (isActivated() && fortronTank.getFluidAmount() > getFortronUse())
+		{
 			fortronTank.drain(getFortronUse(), true);
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> activeBBEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getActiveBB());
 			boolean confiscate = hasModule("moduleUpgradeConfiscate"), antiHostile = hasModule("moduleUpgradeAntiHostile"), antiFriendly = hasModule("moduleUpgradeAntiFriendly"),
 					antiPersonnel = hasModule("moduleUpgradeAntiPersonnel");
-			if (ticks % 3 == 0) {
-				for (EntityLivingBase living : activeBBEntities) {
-					if (antiFriendly) {
+			if (ticks % 3 == 0)
+			{
+				for (EntityLivingBase living : activeBBEntities)
+				{
+					if (antiFriendly)
+					{
 						onDefendAntiFriendly(living);
 					}
-					if (antiHostile) {
+					if (antiHostile)
+					{
 						onDefendAntiHostile(living);
 					}
-					if (antiPersonnel || confiscate) {
+					if (antiPersonnel || confiscate)
+					{
 						onDefendAntiPersonnel(living, confiscate);
 					}
 				}
 			}
-			if (ticks % 30 == 0) {
+			if (ticks % 30 == 0)
+			{
 				@SuppressWarnings("unchecked")
 				List<Object> warnBBEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getActiveWarnBB());
-				for (Object obj : warnBBEntities) {
-					if (obj instanceof EntityPlayer) {
+				for (Object obj : warnBBEntities)
+				{
+					if (obj instanceof EntityPlayer)
+					{
 						EntityPlayer player = (EntityPlayer) obj;
-						if (!isPlayerValidated(player, null)) {
+						if (!isPlayerValidated(player, null))
+						{
 							player.addChatMessage(new ChatComponentText("Warning! Leave this zone immediately. You have no right to enter."));
 						}
 					}
@@ -212,53 +238,69 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public void onDefendAntiFriendly(EntityLivingBase living)
 	{
-		if ((!(living instanceof IMob) || living instanceof INpc) && !(living instanceof EntityPlayer)) {
+		if ((!(living instanceof IMob) || living instanceof INpc) && !(living instanceof EntityPlayer))
+		{
 			living.attackEntityFrom(DamageSource.magic, 200);
 		}
 	}
 
 	public void onDefendAntiHostile(EntityLivingBase living)
 	{
-		if (living instanceof IMob && !(living instanceof INpc) && !(living instanceof EntityPlayer)) {
+		if (living instanceof IMob && !(living instanceof INpc) && !(living instanceof EntityPlayer))
+		{
 			living.attackEntityFrom(DamageSource.magic, 750);
 		}
 	}
 
 	public void onDefendAntiPersonnel(EntityLivingBase living, boolean confiscate)
 	{
-		if (living instanceof EntityPlayer) {
+		if (living instanceof EntityPlayer)
+		{
 			EntityPlayer player = (EntityPlayer) living;
-			if (!isPlayerValidated(player, Permission.BYPASS_INTERDICTION_MATRIX)) {
+			if (!isPlayerValidated(player, Permission.BYPASS_INTERDICTION_MATRIX))
+			{
 				player.addChatMessage(new ChatComponentText("Warning! Leave this zone immediately. You are in the scan zone!"));
-				if (confiscate && !isPlayerValidated(player, Permission.BYPASS_CONFISCATION)) {
+				if (confiscate && !isPlayerValidated(player, Permission.BYPASS_CONFISCATION))
+				{
 					Set<ItemStack> list_items = getBlacklistedItems();
-					for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++) {
+					for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++)
+					{
 						ItemStack stack = player.inventory.getStackInSlot(slot);
-						if (stack == null) {
+						if (stack == null)
+						{
 							continue;
 						}
-						if (list_items.isEmpty()) {
-							if (mergeIntoInventory(this, stack)) {
+						if (list_items.isEmpty())
+						{
+							if (mergeIntoInventory(this, stack))
+							{
 								player.inventory.setInventorySlotContents(slot, null);
 							}
 							continue;
 						}
-						for (ItemStack blacklisted : list_items) {
-							if (isBlackList) {
-								if (blacklisted.isItemEqual(stack)) {
-									if (mergeIntoInventory(this, stack)) {
+						for (ItemStack blacklisted : list_items)
+						{
+							if (isBlackList)
+							{
+								if (blacklisted.isItemEqual(stack))
+								{
+									if (mergeIntoInventory(this, stack))
+									{
 										player.inventory.setInventorySlotContents(slot, null);
 									}
 								}
-							} else {
-								if (blacklisted.isItemEqual(stack)) {
+							} else
+							{
+								if (blacklisted.isItemEqual(stack))
+								{
 									break;
 								}
 							}
 						}
 					}
 				}
-				if (hasModule("moduleUpgradeAntiPersonnel")) {
+				if (hasModule("moduleUpgradeAntiPersonnel"))
+				{
 					living.attackEntityFrom(DamageSourceForcefield.INSTANCE, 20);
 				}
 			}
@@ -267,9 +309,11 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public static boolean mergeIntoInventory(TileEntity from, ItemStack stack)
 	{
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
 			stack = placeAdjInv(from, stack, dir);
-			if (stack == null || stack.stackSize <= 0) {
+			if (stack == null || stack.stackSize <= 0)
+			{
 				return true;
 			}
 		}
@@ -279,22 +323,29 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	private static ItemStack placeAdjInv(TileEntity tile, ItemStack stack, ForgeDirection dir)
 	{
 		TileEntity tileEntity = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
-		if (stack != null && tileEntity != null) {
-			if (tileEntity instanceof TileEntityChest) {
+		if (stack != null && tileEntity != null)
+		{
+			if (tileEntity instanceof TileEntityChest)
+			{
 				TileEntityChest chest1 = (TileEntityChest) tileEntity;
 				return addToInv_first(chest1, stack);
-			} else if (tileEntity instanceof ISidedInventory) {
+			} else if (tileEntity instanceof ISidedInventory)
+			{
 				ISidedInventory inv = (ISidedInventory) tileEntity;
 				int[] slot = inv.getAccessibleSlotsFromSide(dir.ordinal());
-				for (int s : slot) {
-					if (inv.canInsertItem(s, stack, dir.ordinal())) {
+				for (int s : slot)
+				{
+					if (inv.canInsertItem(s, stack, dir.ordinal()))
+					{
 						stack = addToInv_slot(inv, stack, s);
-						if (stack == null || stack.stackSize <= 0) {
+						if (stack == null || stack.stackSize <= 0)
+						{
 							return null;
 						}
 					}
 				}
-			} else if (tileEntity instanceof IInventory) {
+			} else if (tileEntity instanceof IInventory)
+			{
 				IInventory inv = (IInventory) tileEntity;
 				return addToInv_first(inv, stack);
 			}
@@ -304,12 +355,15 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	private static ItemStack addToInv_first(IInventory inv, ItemStack stack)
 	{
-		if (stack == null || stack.stackSize <= 0) {
+		if (stack == null || stack.stackSize <= 0)
+		{
 			return null;
 		}
-		for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
+		for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+		{
 			ItemStack item = addToInv_slot(inv, stack, slot);
-			if (item == null || item.stackSize <= 0) {
+			if (item == null || item.stackSize <= 0)
+			{
 				return null;
 			}
 		}
@@ -318,14 +372,17 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	private static ItemStack addToInv_slot(IInventory inv, ItemStack stack, int slot)
 	{
-		if (stack == null || stack.stackSize <= 0) {
+		if (stack == null || stack.stackSize <= 0)
+		{
 			return null;
 		}
 		ItemStack item = inv.getStackInSlot(slot);
-		if (item == null) {
+		if (item == null)
+		{
 			inv.setInventorySlotContents(slot, stack);
 			return null;
-		} else if (add_stack(item, stack, Math.min(inv.getInventoryStackLimit(), item.getMaxStackSize())) && stack.stackSize <= 0) {
+		} else if (add_stack(item, stack, Math.min(inv.getInventoryStackLimit(), item.getMaxStackSize())) && stack.stackSize <= 0)
+		{
 			return null;
 		}
 		return stack;
@@ -333,7 +390,8 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	private static boolean add_stack(ItemStack item, ItemStack stack, int maxStackSize)
 	{
-		if (item != null && item.isItemEqual(stack) && item.isStackable()) {
+		if (item != null && item.isItemEqual(stack) && item.isStackable())
+		{
 			int newSize = Math.min(item.stackSize + stack.stackSize, maxStackSize);
 			stack.stackSize -= newSize - item.stackSize;
 			item.stackSize = newSize;
@@ -430,11 +488,14 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		if (slot == 0) {
+		if (slot == 0)
+		{
 			return stack != null && stack.getItem() instanceof ItemFrequency;
-		} else if (slot <= SLOT_ENDMODULEINDEX) {
+		} else if (slot <= SLOT_ENDMODULEINDEX)
+		{
 			return stack != null && (stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule || stack.getItem() == ForcefieldItemRegister.itemMetaManipulationModule);
-		} else {
+		} else
+		{
 			return true;
 		}
 	}

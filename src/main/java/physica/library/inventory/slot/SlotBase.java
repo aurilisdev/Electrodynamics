@@ -53,17 +53,21 @@ public class SlotBase extends Slot implements IRenderableSlot, IToolTipContainer
 	public void renderSlotOverlay(Gui gui, int x, int y)
 	{
 		Minecraft.getMinecraft().renderEngine.bindTexture(GuiContainerBase.GUI_COMPONENTS);
-		if (edgeColor != null) {
+		if (edgeColor != null)
+		{
 			GL11.glColor4f(edgeColor.getRed() / 255f, edgeColor.getGreen() / 255f, edgeColor.getBlue() / 255f, edgeColor.getAlpha() / 255f);
 			gui.drawTexturedModalRect(x, y, 0, 0, 18, 18);
-		} else {
+		} else
+		{
 			gui.drawTexturedModalRect(x, y, 0, 0, 18, 18);
 		}
-		if (baseColor != null) {
+		if (baseColor != null)
+		{
 			GL11.glColor4f(baseColor.getRed() / 255f + 0.2f, baseColor.getGreen() / 255f + 0.2f, baseColor.getBlue() / 255f + 0.2f, baseColor.getAlpha() / 255f);
 			gui.drawTexturedModalRect(x + 1, y + 1, 1, 1, 16, 16);
 		}
-		if (!getHasStack()) {
+		if (!getHasStack())
+		{
 			drawIcon(gui, x, y);
 		}
 	}
@@ -75,7 +79,8 @@ public class SlotBase extends Slot implements IRenderableSlot, IToolTipContainer
 	@Override
 	public ToolTip getToolTip()
 	{
-		if (toolTip != null) {
+		if (toolTip != null)
+		{
 			return new ToolTipSlot(this, toolTip);
 		}
 		return null;

@@ -242,9 +242,11 @@ public class BlockLocation {
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) {
+		if (this == obj)
+		{
 			return true;
-		} else if (obj == null || getClass() != obj.getClass()) {
+		} else if (obj == null || getClass() != obj.getClass())
+		{
 			return false;
 		}
 		BlockLocation other = (BlockLocation) obj;

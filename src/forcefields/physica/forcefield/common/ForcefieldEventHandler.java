@@ -47,7 +47,8 @@ public class ForcefieldEventHandler {
 
 	public void registerMatrix(TileInterdictionMatrix tile)
 	{
-		if (!set.contains(tile)) {
+		if (!set.contains(tile))
+		{
 			set.add(tile);
 		}
 	}
@@ -66,13 +67,17 @@ public class ForcefieldEventHandler {
 	{
 		ArrayList<TileFortronFieldConstructor> list = new ArrayList<>();
 		Iterator<TileFortronFieldConstructor> iterator = forceFieldConstructors.iterator();
-		while (iterator.hasNext()) {
+		while (iterator.hasNext())
+		{
 			TileFortronFieldConstructor constructor = iterator.next();
-			if (constructor.isInvalid()) {
+			if (constructor.isInvalid())
+			{
 				iterator.remove();
-			} else if (constructor.getWorldObj().equals(world)) {
+			} else if (constructor.getWorldObj().equals(world))
+			{
 				double distSquared = Math.pow(constructor.xCoord - x, 2) + Math.pow(constructor.yCoord - y, 2) + Math.pow(constructor.zCoord - z, 2);
-				if (distSquared < 400 * 400) {
+				if (distSquared < 400 * 400)
+				{
 					list.add(constructor);
 				}
 			}
@@ -83,20 +88,26 @@ public class ForcefieldEventHandler {
 	@SubscribeEvent
 	public void interactEvent(PlayerInteractEvent evt)
 	{
-		if (evt.action == Action.RIGHT_CLICK_BLOCK || evt.action == Action.LEFT_CLICK_BLOCK) {
+		if (evt.action == Action.RIGHT_CLICK_BLOCK || evt.action == Action.LEFT_CLICK_BLOCK)
+		{
 			TileEntity tile = evt.world.getTileEntity(evt.x, evt.y, evt.z);
-			if (tile instanceof TileFortronFieldConstructor) {
+			if (tile instanceof TileFortronFieldConstructor)
+			{
 				TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) tile;
-				if (constructor.isCalculating) {
+				if (constructor.isCalculating)
+				{
 					evt.setCanceled(true);
 					evt.setResult(Result.DENY);
 					return;
 				}
 			}
-			if (evt.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && evt.world.getBlock(evt.x, evt.y, evt.z) == ForcefieldBlockRegister.blockFortronField) {
-				if (tile instanceof TileFortronField) {
+			if (evt.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && evt.world.getBlock(evt.x, evt.y, evt.z) == ForcefieldBlockRegister.blockFortronField)
+			{
+				if (tile instanceof TileFortronField)
+				{
 					TileFortronField field = (TileFortronField) tile;
-					if (field.isForcefieldActive()) {
+					if (field.isForcefieldActive())
+					{
 						evt.setCanceled(true);
 						evt.setResult(Result.DENY);
 						evt.world.markBlockForUpdate(evt.x, evt.y, evt.z);
@@ -104,25 +115,34 @@ public class ForcefieldEventHandler {
 					}
 				}
 			}
-			if (evt.entityPlayer.capabilities.isCreativeMode) {
+			if (evt.entityPlayer.capabilities.isCreativeMode)
+			{
 				return;
 			}
 			Iterator<TileInterdictionMatrix> iterator = set.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				TileInterdictionMatrix matrix = iterator.next();
-				if (matrix.isInvalid()) {
+				if (matrix.isInvalid())
+				{
 					iterator.remove();
-				} else if (matrix.isActivated()) {
-					if (matrix.getActiveBB().isVecInside(Vec3.createVectorHelper(evt.x, evt.y, evt.z))) {
-						if (evt.action == Action.RIGHT_CLICK_BLOCK && matrix.hasModule("moduleUpgradeBlockAccess")) {
-							if (!matrix.isPlayerValidated(evt.entityPlayer, Permission.BLOCK_ACCESS)) {
+				} else if (matrix.isActivated())
+				{
+					if (matrix.getActiveBB().isVecInside(Vec3.createVectorHelper(evt.x, evt.y, evt.z)))
+					{
+						if (evt.action == Action.RIGHT_CLICK_BLOCK && matrix.hasModule("moduleUpgradeBlockAccess"))
+						{
+							if (!matrix.isPlayerValidated(evt.entityPlayer, Permission.BLOCK_ACCESS))
+							{
 								evt.entityPlayer.addChatMessage(new ChatComponentText("You have no permission to do that!"));
 								evt.setResult(Result.DENY);
 								evt.setCanceled(true);
 								return;
 							}
-						} else if (evt.action == Action.LEFT_CLICK_BLOCK && matrix.hasModule("moduleUpgradeBlockAlter")) {
-							if (!matrix.isPlayerValidated(evt.entityPlayer, Permission.BLOCK_ALTER)) {
+						} else if (evt.action == Action.LEFT_CLICK_BLOCK && matrix.hasModule("moduleUpgradeBlockAlter"))
+						{
+							if (!matrix.isPlayerValidated(evt.entityPlayer, Permission.BLOCK_ALTER))
+							{
 								evt.entityPlayer.addChatMessage(new ChatComponentText("You have no permission to do that!"));
 								evt.setCanceled(true);
 								evt.setResult(Result.DENY);
@@ -138,11 +158,16 @@ public class ForcefieldEventHandler {
 	@SubscribeEvent
 	public void livingSpawnEvent(LivingSpawnEvent evt)
 	{
-		for (TileInterdictionMatrix matrix : set) {
-			if (matrix.isActivated()) {
-				if (matrix.getActiveBB().isVecInside(Vec3.createVectorHelper(evt.x, evt.y, evt.z))) {
-					if (matrix.hasModule("moduleUpgradeAntiSpawn")) {
-						if (evt.isCancelable()) {
+		for (TileInterdictionMatrix matrix : set)
+		{
+			if (matrix.isActivated())
+			{
+				if (matrix.getActiveBB().isVecInside(Vec3.createVectorHelper(evt.x, evt.y, evt.z)))
+				{
+					if (matrix.hasModule("moduleUpgradeAntiSpawn"))
+					{
+						if (evt.isCancelable())
+						{
 							evt.setCanceled(true);
 						}
 						evt.setResult(Result.DENY);
@@ -156,7 +181,8 @@ public class ForcefieldEventHandler {
 	@SubscribeEvent
 	public void onDefenseExplosion(PostExplosionEvent event)
 	{
-		if (event.explosion != null) {
+		if (event.explosion != null)
+		{
 			onExplosionImpl(event.iExplosion.getEnergy(), event.explosion.explosionSize, event.world, event.x, event.y, event.z);
 		}
 	}
@@ -164,7 +190,8 @@ public class ForcefieldEventHandler {
 	@SubscribeEvent
 	public void onResonantExplosion(resonant.api.explosion.ExplosionEvent.PreExplosionEvent event)
 	{
-		if (event.explosion != null) {
+		if (event.explosion != null)
+		{
 			onExplosionImpl(event.iExplosion.getEnergy(), event.explosion.explosionSize, event.world, event.x, event.y, event.z);
 		}
 	}
@@ -172,12 +199,14 @@ public class ForcefieldEventHandler {
 	@SubscribeEvent
 	public void onExplosion(ExplosionEvent.Detonate event)
 	{
-		if (event.explosion != null) {
+		if (event.explosion != null)
+		{
 			float size = event.explosion.explosionSize;
 			long energy = (long) size * 50;
 
 			if (event.explosion.exploder instanceof EntityItem
-					&& ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram) {
+					&& ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+			{
 				energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
 			}
 			onExplosionImpl(energy, size, event.world, event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
@@ -186,9 +215,12 @@ public class ForcefieldEventHandler {
 
 	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z)
 	{
-		if (size > 0 && energy > 0) {
-			for (TileFortronFieldConstructor tile : forceFieldConstructors) {
-				if (tile != null && !tile.isInvalid() && world == tile.getWorldObj()) {
+		if (size > 0 && energy > 0)
+		{
+			for (TileFortronFieldConstructor tile : forceFieldConstructors)
+			{
+				if (tile != null && !tile.isInvalid() && world == tile.getWorldObj())
+				{
 					double distance = tile.getDistanceFrom(x, y, z);
 					double electricity = Math.min(energy, energy / (distance / size));
 					tile.receiveExplosionEnergy((int) electricity);

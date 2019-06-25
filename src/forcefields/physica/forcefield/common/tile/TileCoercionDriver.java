@@ -73,13 +73,16 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (ticks % 20 == 0) {
+		if (ticks % 20 == 0)
+		{
 			validateConnections();
 		}
-		if (getEnergyStored() > 1) {
+		if (getEnergyStored() > 1)
+		{
 			setEnergyStored(getEnergyStored() - fortronTank.fill(new FluidStack(ForcefieldFluidRegister.LIQUID_FORTRON, Math.min(getEnergyUsage(), getEnergyStored()) - 1), true));
 		}
-		if (canSendBeam()) {
+		if (canSendBeam())
+		{
 			fortronTank.getFluid().amount -= sendFortronTo(fortronTank.getFluidAmount(), TileFortronCapacitor.class);
 		}
 	}
@@ -95,12 +98,15 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	{
 		super.updateCommon(ticks);
 		fortronTank.setCapacity(getMaxEnergyStored());
-		if (fortronTank.getCapacity() < fortronTank.getFluidAmount()) {
+		if (fortronTank.getCapacity() < fortronTank.getFluidAmount())
+		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
 		isActivated = isPoweredByRedstone();
-		if (getStackInSlot(SLOT_CARD) != null) {
-			if (getStackInSlot(SLOT_CARD).stackTagCompound != null) {
+		if (getStackInSlot(SLOT_CARD) != null)
+		{
+			if (getStackInSlot(SLOT_CARD).stackTagCompound != null)
+			{
 				setFrequency(getStackInSlot(SLOT_CARD).stackTagCompound.getInteger("frequency"));
 			}
 		}
@@ -125,7 +131,8 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	{
 		int oldFrequency = frequency;
 		frequency = freq;
-		if (oldFrequency != freq) {
+		if (oldFrequency != freq)
+		{
 			onFirstUpdate();
 		}
 	}

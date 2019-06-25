@@ -33,14 +33,18 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 	{
 		GL11.glPushMatrix();
 		GL11.glScalef(1.25f, 1.25f, 1.25f);
-		if (type.equals(ItemRenderType.INVENTORY)) {
+		if (type.equals(ItemRenderType.INVENTORY))
+		{
 			GL11.glTranslatef(-0.5f, -2.3f, -0.5f);
 			GL11.glRotatef(180f, 0, 1, 0);
-		} else if (type.equals(ItemRenderType.EQUIPPED)) {
+		} else if (type.equals(ItemRenderType.EQUIPPED))
+		{
 			GL11.glTranslatef(0, -1f, 0);
-		} else if (type.equals(ItemRenderType.EQUIPPED_FIRST_PERSON)) {
+		} else if (type.equals(ItemRenderType.EQUIPPED_FIRST_PERSON))
+		{
 			GL11.glTranslatef(0, -1f, 0);
-		} else if (type.equals(ItemRenderType.ENTITY)) {
+		} else if (type.equals(ItemRenderType.ENTITY))
+		{
 			GL11.glTranslatef(-0.66f, -1.66f, -0.66F);
 			GL11.glScalef(1.25f, 1.25f, 1.25f);
 		}

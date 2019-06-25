@@ -93,7 +93,8 @@ public class BlastFurnaceRecipeHelper extends PhysicaRecipeHandlerBase {
 	public void loadCraftingRecipes(String outputId, Object... results)
 	{
 		if (outputId.equals(getRecipeID()) || outputId.equals("item") && results[0] != null && results[0] instanceof ItemStack
-				&& ((ItemStack) results[0]).getUnlocalizedName().equals("item." + CoreItemRegister.itemMetaIngot.subItems.get(2))) {
+				&& ((ItemStack) results[0]).getUnlocalizedName().equals("item." + CoreItemRegister.itemMetaIngot.subItems.get(2)))
+		{
 			findFuels();
 			arecipes.add(new SmeltingPair(new ItemStack(Items.iron_ingot), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2)));
 		}
@@ -103,7 +104,8 @@ public class BlastFurnaceRecipeHelper extends PhysicaRecipeHandlerBase {
 	public void loadUsageRecipes(String inputId, Object... ingredients)
 	{
 		if (inputId.equals(getRecipeID()) || inputId.equals("fuel") || inputId.equals("item") && ingredients[0] != null && ingredients[0] instanceof ItemStack
-				&& ((ItemStack) ingredients[0]).getUnlocalizedName().equals("item." + CoreItemRegister.itemMetaIngot.subItems.get(2))) {
+				&& ((ItemStack) ingredients[0]).getUnlocalizedName().equals("item." + CoreItemRegister.itemMetaIngot.subItems.get(2)))
+		{
 			findFuels();
 			arecipes.add(new SmeltingPair(new ItemStack(Items.iron_ingot), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2)));
 		}
@@ -138,10 +140,13 @@ public class BlastFurnaceRecipeHelper extends PhysicaRecipeHandlerBase {
 	{
 		afuels = new ArrayList<>();
 		Set<Item> efuels = excludedFuels();
-		for (ItemStack item : ItemList.items) {
-			if (!efuels.contains(item.getItem())) {
+		for (ItemStack item : ItemList.items)
+		{
+			if (!efuels.contains(item.getItem()))
+			{
 				int burnTime = TileEntityFurnace.getItemBurnTime(item);
-				if (burnTime > 0) {
+				if (burnTime > 0)
+				{
 					afuels.add(new FuelPair(item.copy(), burnTime));
 				}
 			}

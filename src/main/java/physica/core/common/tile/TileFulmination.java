@@ -29,15 +29,20 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (!FulminationEventHandler.INSTANCE.isRegistered(this)) {
+		if (!FulminationEventHandler.INSTANCE.isRegistered(this))
+		{
 			FulminationEventHandler.INSTANCE.register(this);
 		}
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-			if (tile != null) {
-				if (tile instanceof IEnergyReceiver) {
+			if (tile != null)
+			{
+				if (tile instanceof IEnergyReceiver)
+				{
 					IEnergyReceiver reciever = (IEnergyReceiver) tile;
-					if (reciever.canConnectEnergy(dir.getOpposite())) {
+					if (reciever.canConnectEnergy(dir.getOpposite()))
+					{
 						energyStored -= reciever.receiveEnergy(dir.getOpposite(), Math.min(5000, energyStored), false);
 					}
 				}
@@ -60,7 +65,8 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 	{
-		if (!simulate) {
+		if (!simulate)
+		{
 			energyStored -= Math.min(5000, energyStored);
 		}
 		return Math.min(5000, energyStored);

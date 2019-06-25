@@ -51,7 +51,8 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 		drawTexturedModalRect(x, y, 40, 0, meterWidth, meterHeight);
 
-		if (fluidStack != null) {
+		if (fluidStack != null)
+		{
 			this.drawFluid(x, y, -10, 1, 12, (int) ((meterHeight - 1) * scale), fluidStack);
 		}
 
@@ -63,13 +64,15 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack)
 	{
-		if (fluidStack != null && fluidStack.getFluid() != null) {
+		if (fluidStack != null && fluidStack.getFluid() != null)
+		{
 			drawSize -= 1;
 
 			IIcon fluidIcon = null;
 			Fluid fluid = fluidStack.getFluid();
 
-			if (fluid != null && fluid.getStillIcon() != null) {
+			if (fluid != null && fluid.getStillIcon() != null)
+			{
 				fluidIcon = fluid.getStillIcon();
 			}
 
@@ -77,13 +80,17 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 			int textureSize = 16;
 			int start = 0;
-			if (fluidIcon != null) {
+			if (fluidIcon != null)
+			{
 				int renderY = textureSize;
-				while (renderY != 0 && drawSize != 0) {
-					if (drawSize > textureSize) {
+				while (renderY != 0 && drawSize != 0)
+				{
+					if (drawSize > textureSize)
+					{
 						renderY = textureSize;
 						drawSize -= textureSize;
-					} else {
+					} else
+					{
 						renderY = drawSize;
 						drawSize = 0;
 					}
@@ -99,7 +106,8 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 	{
 		cookTime = Math.min(cookTime, maxCookTime);
 		drawTexturedModalRect(x, y, 18, 0, 22, 15);
-		if (cookTime > 0) {
+		if (cookTime > 0)
+		{
 			double progress = cookTime / maxCookTime;
 			drawTexturedModalRect(x, y, 18, 15, (int) Math.floor(22 * progress), 15);
 		}
@@ -109,17 +117,20 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawTexturedModalRect(x, y, 0, 0, 18, 18);
-		if (powered) {
+		if (powered)
+		{
 			drawTexturedModalRect(x, y, 0, 18, 18, 18);
 		}
 	}
 
 	public void drawDoubleProgressBar(int x, int y, int tx, int ty, int w, int h, int ticks, int direction, boolean first)
 	{
-		if (first) {
+		if (first)
+		{
 			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.min(ticks / 2, this.cycleticks % ticks) / (float) (ticks / 2), direction);
 
-		} else {
+		} else
+		{
 			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.max(0, this.cycleticks % ticks - ticks / 2) / (float) (ticks / 2), direction);
 		}
 	}

@@ -15,7 +15,8 @@ public enum Measurement {
 
 	public String getName(boolean isSymbol)
 	{
-		if (isSymbol) {
+		if (isSymbol)
+		{
 			return symbol;
 		}
 		return name;

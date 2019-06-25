@@ -37,11 +37,14 @@ public class BlockSiren extends Block implements IBaseUtilities, IRecipeRegister
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
 	{
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			int pitch = world.getBlockMetadata(x, y, z);
-			if (player.isSneaking()) {
+			if (player.isSneaking())
+			{
 				pitch--;
-			} else {
+			} else
+			{
 				pitch++;
 			}
 			pitch = Math.max(pitch % 16, 0);

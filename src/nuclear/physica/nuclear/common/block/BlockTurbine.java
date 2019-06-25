@@ -65,16 +65,22 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
 	{
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			ItemStack stack = player.getHeldItem();
-			if (stack != null) {
+			if (stack != null)
+			{
 				Item item = stack.getItem();
-				if (item instanceof IToolWrench || item instanceof IToolHammer || item instanceof IMekWrench) {
-					if (world.getTileEntity(x, y, z) instanceof TileTurbine) {
+				if (item instanceof IToolWrench || item instanceof IToolHammer || item instanceof IMekWrench)
+				{
+					if (world.getTileEntity(x, y, z) instanceof TileTurbine)
+					{
 						TileTurbine turbine = (TileTurbine) world.getTileEntity(x, y, z);
-						if (turbine.isMain()) {
+						if (turbine.isMain())
+						{
 							turbine.tryDeconstruct();
-						} else {
+						} else
+						{
 							turbine.attemptConstruct();
 						}
 					}
@@ -88,7 +94,8 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int par6)
 	{
-		if (world.getTileEntity(x, y, z) instanceof TileTurbine) {
+		if (world.getTileEntity(x, y, z) instanceof TileTurbine)
+		{
 			TileTurbine turbine = (TileTurbine) world.getTileEntity(x, y, z);
 			turbine.tryDeconstruct();
 		}

@@ -27,12 +27,15 @@ public class TileMeltedReactor extends TileBase {
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (ticks % 10 == 0) {
-			if (worldObj.getBlock(xCoord, yCoord - 1, zCoord).getMaterial().isReplaceable()) {
+		if (ticks % 10 == 0)
+		{
+			if (worldObj.getBlock(xCoord, yCoord - 1, zCoord).getMaterial().isReplaceable())
+			{
 				worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 				worldObj.setBlock(xCoord, yCoord - 1, zCoord, NuclearBlockRegister.blockMeltedReactor);
 				TileEntity entity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
-				if (entity instanceof TileMeltedReactor) {
+				if (entity instanceof TileMeltedReactor)
+				{
 					TileMeltedReactor tile = (TileMeltedReactor) entity;
 					tile.radiation = radiation;
 					tile.temperature = temperature;
@@ -40,7 +43,8 @@ public class TileMeltedReactor extends TileBase {
 				return;
 			}
 		}
-		if (temperature > 0) {
+		if (temperature > 0)
+		{
 			temperature--;
 			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
 			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
@@ -49,36 +53,47 @@ public class TileMeltedReactor extends TileBase {
 			double d4 = yCoord - y2;
 			double d5 = zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS) {
+			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
+			{
 				int x = (int) Math.floor(x2);
 				int y = (int) Math.floor(y2);
 				int z = (int) Math.floor(z2);
 				Block block = worldObj.getBlock(x, y, z);
-				if (block.getMaterial() == Material.air) {
-					if (worldObj.getBlock(x, y - 1, z).getMaterial() != Material.air) {
+				if (block.getMaterial() == Material.air)
+				{
+					if (worldObj.getBlock(x, y - 1, z).getMaterial() != Material.air)
+					{
 						worldObj.setBlock(x, y, z, Blocks.fire);
 					}
-				} else if (block == Blocks.stone) {
-					if (temperature < 2100) {
+				} else if (block == Blocks.stone)
+				{
+					if (temperature < 2100)
+					{
 						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveStone, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
-					} else {
+					} else
+					{
 						worldObj.setBlock(x, y, z, Blocks.cobblestone);
 					}
-				} else if (block == Blocks.cobblestone) {
+				} else if (block == Blocks.cobblestone)
+				{
 					worldObj.setBlock(x, y, z, Blocks.lava);
-				} else if (block == Blocks.water || block == Blocks.flowing_water) {
+				} else if (block == Blocks.water || block == Blocks.flowing_water)
+				{
 					worldObj.setBlockToAir(x, y, z);
-				} else if (block == Blocks.sand) {
+				} else if (block == Blocks.sand)
+				{
 					worldObj.setBlock(x, y, z, Blocks.glass);
 				}
 			}
 		}
-		if (radiation > 0) {
+		if (radiation > 0)
+		{
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
 					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
 							zCoord + RADIATION_RADIUS));
-			for (EntityLivingBase entity : entities) {
+			for (EntityLivingBase entity : entities)
+			{
 				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
 				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 2f) * (radiation / 8766000.0f), (float) scale * 2f,
 						(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
@@ -92,14 +107,17 @@ public class TileMeltedReactor extends TileBase {
 			double d4 = yCoord - y2;
 			double d5 = zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS) {
+			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
+			{
 				int x = (int) Math.floor(x2);
 				int y = (int) Math.floor(y2);
 				int z = (int) Math.floor(z2);
 				Block block = worldObj.getBlock(x, y, z);
-				if (block == Blocks.grass) {
+				if (block == Blocks.grass)
+				{
 					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveGrass, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
-				} else if (block == Blocks.dirt) {
+				} else if (block == Blocks.dirt)
+				{
 					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveDirt, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
 				}
 			}
@@ -110,19 +128,22 @@ public class TileMeltedReactor extends TileBase {
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		if (radiation > 0) {
+		if (radiation > 0)
+		{
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
 					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
 							zCoord + RADIATION_RADIUS));
-			for (EntityLivingBase entity : entities) {
+			for (EntityLivingBase entity : entities)
+			{
 				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
 				RadiationSystem.applyRontgenEntity(entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
 						RADIATION_RADIUS);
 			}
 		}
 		int i = 0;
-		while (true) {
+		while (true)
+		{
 			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
 			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
 			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
@@ -130,11 +151,13 @@ public class TileMeltedReactor extends TileBase {
 			double d4 = yCoord - y2;
 			double d5 = zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS) {
+			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
+			{
 				worldObj.spawnParticle("reddust", x2, y2, z2, 0.01f, 1, 0.01f);
 				i++;
 			}
-			if (i > RADIATION_RADIUS) {
+			if (i > RADIATION_RADIUS)
+			{
 				break;
 			}
 		}

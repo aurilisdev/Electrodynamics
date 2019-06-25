@@ -48,16 +48,19 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		super.updateServer(ticks);
 
 		Block[] adjacentBlocks = new Block[ForgeDirection.VALID_DIRECTIONS.length];
-		for (int i = 0; i < adjacentBlocks.length; i++) {
+		for (int i = 0; i < adjacentBlocks.length; i++)
+		{
 			ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
 			adjacentBlocks[i] = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
 		produceSteam();
 		insertion = 0;
-		if (hasFuelRod() && !isBeingControlled(adjacentBlocks)) {
+		if (hasFuelRod() && !isBeingControlled(adjacentBlocks))
+		{
 			processFuelRod();
-			if (temperature > MELTDOWN_TEMPERATURE + 101 + worldObj.rand.nextInt(5) && hasFuelRod()) {
+			if (temperature > MELTDOWN_TEMPERATURE + 101 + worldObj.rand.nextInt(5) && hasFuelRod())
+			{
 				performMeltdown();
 			}
 		}
@@ -67,14 +70,17 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public void updateCommon(int ticks)
 	{
 		super.updateCommon(ticks);
-		if (hasFuelRod() && temperature > 400) {
+		if (hasFuelRod() && temperature > 400)
+		{
 			double radius = temperature / 400.0;
 
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
 					AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
-			for (Entity entity : entities) {
-				if (entity instanceof EntityLivingBase) {
+			for (Entity entity : entities)
+			{
+				if (entity instanceof EntityLivingBase)
+				{
 					double scale = (radius - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
 					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale * 1.5f, (float) scale * 15, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
 							(float) radius);
@@ -86,16 +92,21 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	private boolean isBeingControlled(Block[] adjacentBlocks)
 	{
 		boolean beingControlled = false;
-		for (int i = 0; i < adjacentBlocks.length; i++) {
+		for (int i = 0; i < adjacentBlocks.length; i++)
+		{
 			Block block = adjacentBlocks[i];
 			ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
-			if (block == NuclearBlockRegister.blockControlRod) {
+			if (block == NuclearBlockRegister.blockControlRod)
+			{
 				beingControlled = true;
-			} else if (block == NuclearBlockRegister.blockThermometer) {
+			} else if (block == NuclearBlockRegister.blockThermometer)
+			{
 				block.updateTick(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, worldObj.rand);
-			} else if (block == NuclearBlockRegister.blockInsertableControlRod) {
+			} else if (block == NuclearBlockRegister.blockInsertableControlRod)
+			{
 				TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-				if (tile instanceof TileInsertableControlRod) {
+				if (tile instanceof TileInsertableControlRod)
+				{
 					TileInsertableControlRod rod = (TileInsertableControlRod) tile;
 					insertion = rod.getInsertion();
 				}
@@ -119,23 +130,29 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		if (worldObj.getWorldTime() % 100 == 0 && temperature >= 100) {
+		if (worldObj.getWorldTime() % 100 == 0 && temperature >= 100)
+		{
 			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
 		}
 		float radius = 0.15f;
-		for (int k = 0; k < 4; k++) {
+		for (int k = 0; k < 4; k++)
+		{
 			float outerRods = 0.15f;
 			float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
 			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
-			for (float i = 0.175f; i < 0.8; i += 0.1) {
-				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3)) {
+			for (float i = 0.175f; i < 0.8; i += 0.1)
+			{
+				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3))
+				{
 					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2,
 							yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
 							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
 				}
 			}
-			for (int i = 0; i < 2; i++) {
-				if (temperature > MELTDOWN_TEMPERATURE - 50) {
+			for (int i = 0; i < 2; i++)
+			{
+				if (temperature > MELTDOWN_TEMPERATURE - 50)
+				{
 					radius = 0.05f + (temperature - MELTDOWN_TEMPERATURE) / 20;
 					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
 							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
@@ -143,9 +160,12 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			}
 		}
 		radius = temperature / 400.0f;
-		if (radius > 0.5) {
-			for (int i = 0; i < (int) (Math.pow(radius, 1.5) / 10f); i++) {
-				for (int k = 0; k < 4; k++) {
+		if (radius > 0.5)
+		{
+			for (int i = 0; i < (int) (Math.pow(radius, 1.5) / 10f); i++)
+			{
+				for (int k = 0; k < 4; k++)
+				{
 					float outerRods = 0.15f;
 					float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
 					float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
@@ -166,19 +186,24 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	public void performMeltdown()
 	{
-		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase())) {
+		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
+		{
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
 		}
 		int power = (isFissileRod() ? 20 : isBreederRod() ? 7 : 0) / 2;
 		setInventorySlotContents(SLOT_INPUT, null);
 		BlockLocation location = new BlockLocation(xCoord, yCoord, zCoord);
-		for (int i = -power; i <= power; i++) {
-			for (int j = -power; j <= power; j++) {
-				for (int k = -power; k <= power; k++) {
+		for (int i = -power; i <= power; i++)
+		{
+			for (int j = -power; j <= power; j++)
+			{
+				for (int k = -power; k <= power; k++)
+				{
 					location.set(xCoord + i, yCoord + j, zCoord + k);
 					Block block = location.getBlock(worldObj);
-					if (block == Blocks.water || block == Blocks.flowing_water) {
+					if (block == Blocks.water || block == Blocks.flowing_water)
+					{
 						location.setBlockAirNonUpdate(worldObj);
 					}
 				}
@@ -191,24 +216,31 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	private void cooldownReactor(Block[] adjacentBlocks)
 	{
 		double decrease = (temperature - AIR_TEMPERATURE) / 3000f;
-		if (!hasFuelRod()) {
+		if (!hasFuelRod())
+		{
 			decrease *= 25;
 		}
 		surroundingWater = 0;
-		for (Block block : adjacentBlocks) {
-			if (block == Blocks.water || block == Blocks.flowing_water) {
+		for (Block block : adjacentBlocks)
+		{
+			if (block == Blocks.water || block == Blocks.flowing_water)
+			{
 				surroundingWater++;
 				decrease += (temperature - WATER_TEMPERATURE) / 20000f;
-			} else if (block == Blocks.lava) {
-				if (temperature < 1165) {
+			} else if (block == Blocks.lava)
+			{
+				if (temperature < 1165)
+				{
 					decrease -= (1165 - temperature) / 10f;
-				} else if (hasFuelRod()) {
+				} else if (hasFuelRod())
+				{
 					decrease += (1165 - temperature) / 1000f;
 				}
 				break;
 			}
 		}
-		if (decrease != 0) {
+		if (decrease != 0)
+		{
 			temperature -= decrease < 0.001 && decrease > 0 ? 0.001 : decrease > -0.001 && decrease < 0 ? -0.001 : decrease;
 		}
 	}
@@ -217,17 +249,22 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		ItemStack fuelRod = getStackInSlot(SLOT_INPUT);
 		double insertDecimal = (100 - insertion) / 100.0;
-		if (worldObj.rand.nextFloat() < insertDecimal) {
+		if (worldObj.rand.nextFloat() < insertDecimal)
+		{
 			fuelRod.setItemDamage(fuelRod.getItemDamage() + 1 + Math.round(temperature / (MELTDOWN_TEMPERATURE / 2)));
 		}
-		if (isFissileRod()) {
-			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
+		if (isFissileRod())
+		{
+			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
+			{
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(NuclearItemRegister.itemLowEnrichedFuelCell, 1,
 						(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + worldObj.rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
 			}
 			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
-		} else if (isBreederRod()) {
-			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage()) {
+		} else if (isBreederRod())
+		{
+			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
+			{
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(CoreItemRegister.itemEmptyCell));
 			}
 			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
@@ -240,45 +277,60 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	private void produceSteam()
 	{
-		if (temperature <= 100) {
+		if (temperature <= 100)
+		{
 			return;
 		}
-		for (int i = 0; i < STEAM_GEN_DIAMETER; i++) {
-			for (int j = 0; j < STEAM_GEN_HEIGHT; j++) {
-				for (int k = 0; k < STEAM_GEN_DIAMETER; k++) {
+		for (int i = 0; i < STEAM_GEN_DIAMETER; i++)
+		{
+			for (int j = 0; j < STEAM_GEN_HEIGHT; j++)
+			{
+				for (int k = 0; k < STEAM_GEN_DIAMETER; k++)
+				{
 					boolean isReactor2d = i - STEAM_GEN_DIAMETER / 2 == 0 && k - STEAM_GEN_DIAMETER / 2 == 0;
-					if (isReactor2d && j == 0) {
+					if (isReactor2d && j == 0)
+					{
 						continue;
 					}
 					int offsetX = xCoord + i - STEAM_GEN_DIAMETER / 2;
 					int offsetY = yCoord + j;
 					int offsetZ = zCoord + k - STEAM_GEN_DIAMETER / 2;
 					Block offset = worldObj.getBlock(offsetX, offsetY, offsetZ);
-					if (offset == Blocks.water) {
+					if (offset == Blocks.water)
+					{
 						boolean isFaceWater = worldObj.getBlock(offsetX, yCoord, zCoord) == Blocks.water || worldObj.getBlock(xCoord, yCoord, offsetZ) == Blocks.water || isReactor2d;
-						if (isFaceWater) {
-							if (isServer()) {
+						if (isFaceWater)
+						{
+							if (isServer())
+							{
 								float temperatureVarient = temperature / MELTDOWN_TEMPERATURE / 2400;
-								if (worldObj.rand.nextFloat() < temperatureVarient + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250)) {
+								if (worldObj.rand.nextFloat() < temperatureVarient + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250))
+								{
 									worldObj.setBlockToAir(xCoord + i, yCoord + j, zCoord + k);
 									continue;
 								}
 								TileTurbine turbine = cachedTurbines[i][j][k];
-								if (turbine == null || !worldObj.loadedTileEntityList.contains(turbine)) {
+								if (turbine == null || !worldObj.loadedTileEntityList.contains(turbine))
+								{
 									TileEntity above = worldObj.getTileEntity(offsetX, offsetY + 1, offsetZ);
-									if (above instanceof TileTurbine) {
+									if (above instanceof TileTurbine)
+									{
 										cachedTurbines[i][j][k] = (TileTurbine) above;
 										turbine = (TileTurbine) above;
-									} else {
+									} else
+									{
 										cachedTurbines[i][j][k] = null;
 										turbine = null;
 									}
 								}
-								if (turbine != null) {
+								if (turbine != null)
+								{
 									turbine.addSteam((int) ((temperature - 100) / 10 * 0.65f) * 20);
 								}
-							} else if (isClient()) {
-								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE) {
+							} else if (isClient())
+							{
+								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE)
+								{
 									float steamRadius = 0.5f;
 									worldObj.spawnParticle("bubble", offsetX + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
 											offsetY + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,

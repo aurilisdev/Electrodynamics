@@ -27,13 +27,18 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 	{
 		TileEntity tile = world.getTileEntity(x, y, z);
 		ItemStack item = player.getCurrentEquippedItem();
-		if (WrenchEventHandler.canWrench(item, x, y, z, player)) {
-			if (tile instanceof IRotatable) {
+		if (WrenchEventHandler.canWrench(item, x, y, z, player))
+		{
+			if (tile instanceof IRotatable)
+			{
 				((IRotatable) tile).setFacing(ForgeDirection.VALID_DIRECTIONS[determineOrientation(world, x, y, z, player)]);
 			}
-		} else {
-			if (!world.isRemote) {
-				if (tile instanceof IGuiInterface) {
+		} else
+		{
+			if (!world.isRemote)
+			{
+				if (tile instanceof IGuiInterface)
+				{
 					player.openGui(getModInstance(), CommonProxy.TILE_GUI_ID, world, x, y, z);
 				}
 			}
@@ -51,19 +56,24 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 	public void breakBlock(World worldObj, int x, int y, int z, Block block, int meta)
 	{
 		TileEntity tile = worldObj.getTileEntity(x, y, z);
-		if (tile instanceof IInventory) {
+		if (tile instanceof IInventory)
+		{
 			IInventory inv = (IInventory) tile;
-			for (int index = 0; index < inv.getSizeInventory(); ++index) {
+			for (int index = 0; index < inv.getSizeInventory(); ++index)
+			{
 				ItemStack itemstack = inv.getStackInSlot(index);
 
-				if (itemstack != null) {
+				if (itemstack != null)
+				{
 					float f = worldObj.rand.nextFloat() * 0.8F + 0.1F;
 					float f1 = worldObj.rand.nextFloat() * 0.8F + 0.1F;
 					EntityItem entityitem;
 
-					for (float f2 = worldObj.rand.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; worldObj.spawnEntityInWorld(entityitem)) {
+					for (float f2 = worldObj.rand.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; worldObj.spawnEntityInWorld(entityitem))
+					{
 						int remove = worldObj.rand.nextInt(21) + 10;
-						if (remove > itemstack.stackSize) {
+						if (remove > itemstack.stackSize)
+						{
 							remove = itemstack.stackSize;
 						}
 						itemstack.stackSize -= remove;
@@ -71,7 +81,8 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 						entityitem.motionX = (float) worldObj.rand.nextGaussian() * 0.05F;
 						entityitem.motionY = (float) worldObj.rand.nextGaussian() * 0.05F + 0.2F;
 						entityitem.motionZ = (float) worldObj.rand.nextGaussian() * 0.05F;
-						if (itemstack.hasTagCompound()) {
+						if (itemstack.hasTagCompound())
+						{
 							entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
 						}
 					}

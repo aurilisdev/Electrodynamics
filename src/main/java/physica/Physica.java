@@ -62,7 +62,8 @@ public class Physica {
 		proxyLoader.addContent(new CoreBlockRegister());
 		proxyLoader.addContent(new CoreItemRegister());
 
-		if (event.getSide() == Side.CLIENT) {
+		if (event.getSide() == Side.CLIENT)
+		{
 			proxyLoader.addContent(new ClientRegister());
 		}
 

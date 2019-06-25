@@ -6,9 +6,11 @@ public class ElectricityUtilities {
 
 	public static double convertEnergy(double amount, Unit from, Unit to)
 	{
-		if (from == Unit.RF) {
+		if (from == Unit.RF)
+		{
 			return to.ratio * amount;
-		} else {
+		} else
+		{
 			return amount / from.ratio * to.ratio;
 		}
 	}

@@ -83,9 +83,11 @@ public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 		public InterfaceType rotate(boolean forward)
 		{
 
-			if (forward) {
+			if (forward)
+			{
 				return this == BALANCE ? RECEIVE : this == RECEIVE ? SEND : BALANCE;
-			} else {
+			} else
+			{
 				return this == BALANCE ? SEND : this == SEND ? RECEIVE : BALANCE;
 			}
 		}
