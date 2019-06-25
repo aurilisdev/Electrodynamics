@@ -14,7 +14,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
 import physica.library.recipe.IRecipeRegister;

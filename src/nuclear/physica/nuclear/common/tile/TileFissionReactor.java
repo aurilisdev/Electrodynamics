@@ -20,6 +20,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.IGuiInterface;
+import physica.api.core.PhysicaAPI;
 import physica.core.common.CoreItemRegister;
 import physica.library.location.BlockLocation;
 import physica.library.tile.TileBaseContainer;
@@ -186,8 +187,16 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	public void performMeltdown()
 	{
+		if (PhysicaAPI.isDebugMode)
+		{
+			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
+		}
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
 		{
+			if (PhysicaAPI.isDebugMode)
+			{
+				PhysicaAPI.logger.info("World " + worldObj.getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
+			}
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
 		}

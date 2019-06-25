@@ -273,4 +273,9 @@ public class BlockLocation {
 		z = tag.getInteger(vectorName + "-Z");
 	}
 
+	@Override
+	public String toString()
+	{
+		return "BlockLocation [" + x + ", " + y + ", " + z + "]";
+	}
 }
