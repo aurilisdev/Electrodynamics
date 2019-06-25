@@ -14,8 +14,8 @@ public class BlockCoercionDriver extends BlockBaseContainerModelled {
 
 	public BlockCoercionDriver() {
 		super(Material.iron);
-		setHardness(1);
-		setResistance(5);
+		setHardness(10);
+		setResistance(500);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
 		setBlockName(ForcefieldReferences.PREFIX + "coercionDriver");

@@ -9,16 +9,28 @@ import physica.nuclear.common.effect.damage.DamageSourceRadiation;
 
 public class PotionRadiation extends Potion {
 
-	public static final PotionRadiation INSTANCE = new PotionRadiation(31, true, Color.GREEN.getRGB(), "radiation");
+	public static final PotionRadiation INSTANCE = new PotionRadiation(getIdNew(), true, Color.GREEN.getRGB(), "radiation");
 
 	public PotionRadiation(int id, boolean isBadEffect, int color) {
 		super(id, isBadEffect, color);
 	}
 
+	private static int getIdNew()
+	{
+		for(int i = 0; i < potionTypes.length; i++)
+		{
+			if(potionTypes[i] == null)
+			{
+				return i;
+			}
+		}
+		return 31;
+	}
+
 	public PotionRadiation(int id, boolean isBadEffect, int color, String name) {
 		this(id, isBadEffect, color);
 		setPotionName("potion." + name);
-		Potion.potionTypes[getId()] = this;
+		Potion.potionTypes[id] = this;
 		setIconIndex(6, 0);
 	}
 

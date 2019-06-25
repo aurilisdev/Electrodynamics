@@ -14,6 +14,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
 import physica.library.recipe.IRecipeRegister;
@@ -27,6 +28,7 @@ import physica.nuclear.common.NuclearRecipeRegister;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.NuclearWorldGenRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
+import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.radiation.RoentgenOverlay;
 import physica.proxy.ContentLoader;
 import physica.proxy.sided.CommonProxy;
@@ -49,6 +51,7 @@ public class PhysicaNuclearPhysics {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		System.out.println("Radiation potion id: " + PotionRadiation.INSTANCE.id);
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + NuclearReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
