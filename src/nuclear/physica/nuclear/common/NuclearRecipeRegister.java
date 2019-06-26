@@ -49,6 +49,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 		NuclearCustomRecipeHelper.addExtractorRecipe(4800, CoreItemRegister.itemEmptyCell, new ItemStack(NuclearItemRegister.itemHeavyWaterCell));
 		NuclearCustomRecipeHelper.addExtractorRecipe(4800, NuclearItemRegister.itemHeavyWaterCell, new ItemStack(NuclearItemRegister.itemDeuteriumCell));
 		NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
+
 	}
 
 }

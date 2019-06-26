@@ -50,7 +50,6 @@ public class PhysicaNuclearPhysics {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		System.out.println("Radiation potion id: " + PotionRadiation.INSTANCE.id);
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + NuclearReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
@@ -97,6 +96,7 @@ public class PhysicaNuclearPhysics {
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		proxyLoader.postInit();
+		System.out.println("Radiation potion id: " + PotionRadiation.INSTANCE.id); // To initialize the potion...
 	}
 
 	@EventHandler

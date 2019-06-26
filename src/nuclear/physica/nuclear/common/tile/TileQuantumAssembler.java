@@ -20,9 +20,11 @@ import physica.nuclear.common.inventory.ContainerQuantumAssembler;
 
 public class TileQuantumAssembler extends TileBasePoweredContainer implements IGuiInterface {
 
-	public static final int TICKS_REQUIRED = 1200;
-	public static final int SLOT_OUTPUT = 6;
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_OUTPUT };
+	public static final int TICKS_REQUIRED = 120;
+	public static final int SLOT_INPUT = 6;
+	public static final int SLOT_OUTPUT = 7;
+	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
+	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
 	private static final int[] ACCESSIBLE_SLOTS_ELSE = new int[] { 0, 1, 2, 3, 4, 5 };
 	protected int operatingTicks = 0;
 	protected EntityItem entityItem = null;
@@ -30,12 +32,12 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack)
 	{
-		return slot == 6 ? !isRestricted(itemStack) : itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell;
+		return slot == SLOT_INPUT ? !isRestricted(itemStack) : slot == SLOT_OUTPUT ? false : itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell;
 	}
 
 	public boolean canProcess()
 	{
-		ItemStack itemStack = getStackInSlot(6);
+		ItemStack itemStack = getStackInSlot(SLOT_INPUT);
 		if (isRestricted(itemStack))
 		{
 			return false;
@@ -52,12 +54,13 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 				return false;
 			}
 		}
-		return itemStack.stackSize < 64;
+		ItemStack output = getStackInSlot(SLOT_OUTPUT);
+		return itemStack != null && output != null ? output.stackSize < output.getMaxStackSize() : true;
 	}
 
 	public boolean isRestricted(ItemStack itemStack)
 	{
-		return itemStack == null || itemStack.stackSize <= 0 || !itemStack.isStackable() || itemStack.hasTagCompound()
+		return itemStack == null || itemStack.stackSize <= 0
 				|| itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell
 				|| ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName());
 	}
@@ -77,7 +80,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 				operatingTicks = 0;
 			}
 			extractEnergy();
-		} else if (getStackInSlot(SLOT_OUTPUT) == null || !canProcess())
+		} else if (getStackInSlot(SLOT_INPUT) == null || !canProcess())
 		{
 			operatingTicks = 0;
 		}
@@ -88,7 +91,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		ItemStack itemStack = getStackInSlot(SLOT_OUTPUT);
+		ItemStack itemStack = getStackInSlot(SLOT_INPUT);
 
 		if (itemStack != null)
 		{
@@ -121,10 +124,24 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 				decrStackSize(i, 1);
 			}
 		}
-		ItemStack itemStack = getStackInSlot(SLOT_OUTPUT);
-		if (itemStack != null)
+		ItemStack output = getStackInSlot(SLOT_OUTPUT);
+		ItemStack input = getStackInSlot(SLOT_INPUT);
+		if (output != null)
 		{
-			itemStack.stackSize++;
+			if (input != null && input.hasTagCompound())
+			{
+				ItemStack clone = input.copy();
+				clone.stackTagCompound = null;
+				if (ItemStack.areItemStacksEqual(clone, output))
+				{
+					output.stackSize++;
+				}
+			}
+		} else if (input != null)
+		{
+			ItemStack clone = input.copy();
+			clone.stackTagCompound = null;
+			setInventorySlotContents(SLOT_OUTPUT, clone);
 		}
 	}
 
@@ -167,7 +184,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side != ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_ELSE : ACCESSIBLE_SLOTS_UP;
+		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side != ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_ELSE : ACCESSIBLE_SLOTS_DOWN;
 	}
 
 	@Override
@@ -185,7 +202,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	@Override
 	public int getSizeInventory()
 	{
-		return 7;
+		return 8;
 	}
 
 	@Override

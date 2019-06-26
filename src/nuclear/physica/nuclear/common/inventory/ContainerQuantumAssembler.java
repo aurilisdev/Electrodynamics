@@ -16,7 +16,8 @@ public class ContainerQuantumAssembler extends ContainerBase<TileQuantumAssemble
 		addSlotToContainer(new SlotBase(tile, 3, 53, 88));
 		addSlotToContainer(new SlotBase(tile, 4, 107, 88));
 		addSlotToContainer(new SlotBase(tile, 5, 80, 103));
-		addSlotToContainer(new SlotBase(tile, TileQuantumAssembler.SLOT_OUTPUT, 80, 72));
+		addSlotToContainer(new SlotBase(tile, TileQuantumAssembler.SLOT_INPUT, 80, 72));
+		addSlotToContainer(new SlotBase(tile, TileQuantumAssembler.SLOT_OUTPUT, 20, 72));
 		setSlotCount(TileQuantumAssembler.SLOT_OUTPUT + 1);
 		addDefaultPlayerInventory(player, 230 - GuiContainerBase.defaultYSize);
 	}

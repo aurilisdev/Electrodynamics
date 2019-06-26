@@ -26,8 +26,7 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 
 		// Plates
 		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 0), Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot);
-		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 1), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2),
-				new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2));
+		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 1), "ingotSteel", "ingotSteel", "ingotSteel", "ingotSteel");
 		// Wrench
 		addRecipe(CoreItemRegister.itemWrench, "SS ", "SS ", "  S", 'S', "ingotSteel");
 

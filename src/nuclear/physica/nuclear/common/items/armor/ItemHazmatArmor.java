@@ -14,7 +14,7 @@ public class ItemHazmatArmor extends ItemArmor {
 	public ItemHazmatArmor(String type, int id, int type2) {
 		super(armorMaterial, id, type2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
-		setMaxDamage(40000);
+		setMaxDamage(50000);
 		canRepair = false;
 		setUnlocalizedName(type);
 		setTextureName(CoreReferences.PREFIX + type);

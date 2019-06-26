@@ -17,9 +17,9 @@ public class PotionRadiation extends Potion {
 
 	private static int getIdNew()
 	{
-		for(int i = 0; i < potionTypes.length; i++)
+		for (int i = 0; i < potionTypes.length; i++)
 		{
-			if(potionTypes[i] == null)
+			if (potionTypes[i] == null)
 			{
 				return i;
 			}

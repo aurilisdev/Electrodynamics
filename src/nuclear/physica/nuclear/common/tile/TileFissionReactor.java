@@ -73,7 +73,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		super.updateCommon(ticks);
 		if (hasFuelRod() && temperature > 400)
 		{
-			double radius = temperature / 400.0;
+			double radius = temperature / 300.0;
 
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,

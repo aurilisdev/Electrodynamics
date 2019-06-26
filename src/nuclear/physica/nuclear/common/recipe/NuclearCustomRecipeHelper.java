@@ -60,7 +60,7 @@ public class NuclearCustomRecipeHelper {
 		{
 			for (ChemicalBoilerRecipe recipe : NuclearCustomRecipeRegister.getInstance().getBoilerRecipes())
 			{
-				if (recipe.getInput() != null && recipe.getInput() == input || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName()))
+				if (recipe.getInput() == input || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(new ItemStack(input), recipe.getOreDictName()))
 				{
 					return true;
 				}
