@@ -189,13 +189,13 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		if (PhysicaAPI.isDebugMode)
 		{
-			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
+			System.out.println("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
 		}
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
 		{
 			if (PhysicaAPI.isDebugMode)
 			{
-				PhysicaAPI.logger.info("World " + worldObj.getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
+				System.out.println("World " + worldObj.getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
 			}
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
@@ -315,7 +315,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 								float temperatureVarient = temperature / MELTDOWN_TEMPERATURE / 2400;
 								if (worldObj.rand.nextFloat() < temperatureVarient + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250))
 								{
-									worldObj.setBlockToAir(xCoord + i, yCoord + j, zCoord + k);
+									worldObj.setBlockToAir(offsetX, offsetY, offsetZ);
 									continue;
 								}
 								TileTurbine turbine = cachedTurbines[i][j][k];
