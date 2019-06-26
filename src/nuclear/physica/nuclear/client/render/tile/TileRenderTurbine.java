@@ -41,27 +41,27 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 				model_base.renderAll();
 				if (tile.hasClientSpin())
 				{
-					GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
+					GL11.glRotatef(tile.getTicksRunning() % 360 * 10, 0.0f, 1.0f, 0.0f);
 				}
 				model_middle.renderAll();
 				if (tile.hasClientSpin())
 				{
-					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
+					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 10), 0.0f, 1.0f, 0.0f);
 				}
 				GL11.glScaled(1 / 0.0925, 1 / 0.0525, 1 / 0.0925);
 			} else if (tile.isMain())
 			{
 				GL11.glScaled(0.0725 * 4, 0.0525, 0.0725 * 4);
 				bindTexture(model_texture);
-				model_big.renderAll();
-				if (tile.isGenerating())
+				model_base.renderAll();
+				if (tile.hasClientSpin())
 				{
-					GL11.glRotatef(tile.getTicksRunning() % 360 * 15, 0.0f, 1.0f, 0.0f);
+					GL11.glRotatef(tile.getTicksRunning() % 360 * 5, 0.0f, 1.0f, 0.0f);
 				}
 				model_middle.renderAll();
-				if (tile.isGenerating())
+				if (tile.hasClientSpin())
 				{
-					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 15), 0.0f, 1.0f, 0.0f);
+					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 5), 0.0f, 1.0f, 0.0f);
 				}
 				GL11.glScaled(1 / (0.0725 * 4), 1 / 0.0525, 1 / (0.0725 * 4));
 

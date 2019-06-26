@@ -13,7 +13,7 @@ public class BlockChemicalExtractor extends BlockBaseContainerModelled {
 
 	public BlockChemicalExtractor() {
 		super(Material.iron);
-		setHardness(1);
+		setHardness(10);
 		setResistance(5);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);

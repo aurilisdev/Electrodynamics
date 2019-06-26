@@ -29,7 +29,7 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 
 	public BlockTurbine() {
 		super(Material.iron);
-		setHardness(1);
+		setHardness(10);
 		setResistance(5);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setHarvestLevel("pickaxe", 2);

@@ -19,7 +19,7 @@ public class BlockParticleAccelerator extends BlockBaseContainer implements IBas
 
 	public BlockParticleAccelerator() {
 		super(Material.iron);
-		setHardness(1);
+		setHardness(7.5f);
 		setResistance(5);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setHarvestLevel("pickaxe", 2);

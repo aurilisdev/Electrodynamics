@@ -35,7 +35,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	public static final int SLOT_INPUT = 0;
 	public static final int MELTDOWN_TEMPERATURE = 4407;
-	public static final int AIR_TEMPERATURE = 25;
+	public static final int AIR_TEMPERATURE = 15;
 	public static final int WATER_TEMPERATURE = 10;
 	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
 
@@ -55,7 +55,10 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			adjacentBlocks[i] = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
-		produceSteam();
+		if (ticks % 4 == 0)
+		{
+			produceSteam();
+		}
 		insertion = 0;
 		if (hasFuelRod() && !isBeingControlled(adjacentBlocks))
 		{
@@ -143,20 +146,11 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
 			for (float i = 0.175f; i < 0.8; i += 0.1)
 			{
-				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3))
+				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3) / 4.0)
 				{
 					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2,
 							yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
-							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
-				}
-			}
-			for (int i = 0; i < 2; i++)
-			{
-				if (temperature > MELTDOWN_TEMPERATURE - 50)
-				{
-					radius = 0.05f + (temperature - MELTDOWN_TEMPERATURE) / 20;
-					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 0.4f, 0.01f);
 				}
 			}
 		}
@@ -167,11 +161,14 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			{
 				for (int k = 0; k < 4; k++)
 				{
-					float outerRods = 0.15f;
-					float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
-					float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
-					worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-							zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 1, 0.01f);
+					if (worldObj.rand.nextFloat() < 1.0 / 16.0)
+					{
+						float outerRods = 0.15f;
+						float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
+						float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
+						worldObj.spawnParticle("reddust", xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
+								zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 0.5f, 0.01f);
+					}
 				}
 			}
 		}
@@ -278,9 +275,10 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			}
 			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		}
+		temperature = Math.max(AIR_TEMPERATURE, temperature);
 	}
 
-	public static final int STEAM_GEN_DIAMETER = 3;
+	public static final int STEAM_GEN_DIAMETER = 5;
 	public static final int STEAM_GEN_HEIGHT = 2;
 	private TileTurbine[][][] cachedTurbines = new TileTurbine[STEAM_GEN_DIAMETER][STEAM_GEN_HEIGHT][STEAM_GEN_DIAMETER];
 
@@ -334,7 +332,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 								}
 								if (turbine != null)
 								{
-									turbine.addSteam((int) ((temperature - 100) / 10 * 0.65f) * 20);
+									turbine.addSteam((int) ((temperature - 100) / 10 * 0.65f) * 20 * 20);
 								}
 							} else if (isClient())
 							{

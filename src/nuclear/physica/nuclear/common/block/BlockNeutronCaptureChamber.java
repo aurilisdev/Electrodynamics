@@ -22,7 +22,7 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 
 	public BlockNeutronCaptureChamber() {
 		super(Material.iron);
-		setHardness(1);
+		setHardness(5);
 		setResistance(5);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);

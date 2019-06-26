@@ -16,7 +16,7 @@ public class BlockQuantumAssembler extends BlockBaseContainerModelled {
 
 	public BlockQuantumAssembler() {
 		super(Material.iron);
-		setHardness(1);
+		setHardness(10);
 		setResistance(5);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setHarvestLevel("pickaxe", 2);

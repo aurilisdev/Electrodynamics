@@ -16,7 +16,7 @@ public class BlockFusionReactor extends BlockBaseContainerModelled {
 
 	public BlockFusionReactor() {
 		super(Material.iron);
-		setHardness(1);
+		setHardness(15);
 		setResistance(5);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
