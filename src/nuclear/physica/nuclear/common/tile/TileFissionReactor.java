@@ -22,7 +22,6 @@ import physica.CoreReferences;
 import physica.api.core.IGuiInterface;
 import physica.api.core.PhysicaAPI;
 import physica.core.common.CoreBlockRegister;
-import physica.core.common.CoreItemRegister;
 import physica.library.location.BlockLocation;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.client.gui.GuiFissionReactor;
@@ -98,7 +97,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 						{
 							for (int k = -radius; k <= radius; k++)
 							{
-								if ((i == -radius || i == radius) || (k == radius || k == -radius))
+								if (i == -radius || i == radius || k == radius || k == -radius)
 								{
 									if (worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != CoreBlockRegister.blockLead)
 									{
@@ -309,7 +308,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		{
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
 			{
-				setInventorySlotContents(SLOT_INPUT, new ItemStack(CoreItemRegister.itemEmptyCell));
+				setInventorySlotContents(SLOT_INPUT, null);
 			}
 			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		}
@@ -390,7 +389,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 									double offsetFY = offsetY + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
 									double offsetFZ = offsetZ + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
 									worldObj.spawnParticle("bubble", offsetFX + 0.5D, offsetFY + 0.20000000298023224D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
-									if (worldObj.rand.nextInt(5) == 0)
+									if (worldObj.rand.nextInt(3) == 0)
 									{
 										worldObj.spawnParticle("smoke", offsetFX + 0.5D, offsetFY + 0.5D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
 									}

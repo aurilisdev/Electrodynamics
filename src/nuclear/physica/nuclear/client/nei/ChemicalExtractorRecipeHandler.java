@@ -127,9 +127,9 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients)
 	{
-		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && NuclearCustomRecipeHelper.getExtractorRecipe(((ItemStack) ingredients[0])) != null)
+		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && NuclearCustomRecipeHelper.getExtractorRecipe((ItemStack) ingredients[0]) != null)
 		{
-			ChemicalExtractorRecipe newRecipe = NuclearCustomRecipeHelper.getExtractorRecipe(((ItemStack) ingredients[0]));
+			ChemicalExtractorRecipe newRecipe = NuclearCustomRecipeHelper.getExtractorRecipe((ItemStack) ingredients[0]);
 			if (newRecipe.getInput() != null)
 			{
 				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getInput(), newRecipe.getOutput()));
