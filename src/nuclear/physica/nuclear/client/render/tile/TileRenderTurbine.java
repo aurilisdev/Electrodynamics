@@ -64,7 +64,6 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 5), 0.0f, 1.0f, 0.0f);
 				}
 				GL11.glScaled(1 / (0.0725 * 4), 1 / 0.0525, 1 / (0.0725 * 4));
-
 			}
 			GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
