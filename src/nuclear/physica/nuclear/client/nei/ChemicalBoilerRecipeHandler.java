@@ -124,9 +124,9 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients)
 	{
-		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && NuclearCustomRecipeHelper.getBoilerRecipe(((ItemStack) ingredients[0]).getItem()) != null)
+		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && NuclearCustomRecipeHelper.getBoilerRecipe(((ItemStack) ingredients[0])) != null)
 		{
-			ChemicalBoilerRecipe newRecipe = NuclearCustomRecipeHelper.getBoilerRecipe(((ItemStack) ingredients[0]).getItem());
+			ChemicalBoilerRecipe newRecipe = NuclearCustomRecipeHelper.getBoilerRecipe(((ItemStack) ingredients[0]));
 			if (newRecipe.getInput() != null)
 			{
 				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput()));

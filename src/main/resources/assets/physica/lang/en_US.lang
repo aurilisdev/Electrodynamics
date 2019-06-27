@@ -5,7 +5,9 @@ tile.physica:fulmination.name=Fulmination Generator
 tile.physica:blastFurnace.name=Blast Furnace
 tile.physica:tinOre.name=Tin Ore
 tile.physica:copperOre.name=Copper Ore
+tile.physica:leadOre.name=Lead Ore
 tile.physica:copperCable.name=Copper Cable
+tile.physica:blockLead.name=Block of Lead
 #### GUI
 tile.physica:blastFurnace.gui=Blast Furnace
 #### ITEMS
@@ -14,8 +16,10 @@ item.motor.name=Motor
 item.tinIngot.name=Tin Ingot
 item.copperIngot.name=Copper Ingot
 item.steelIngot.name=Steel Ingot
+item.leadIngot.name=Lead Ingot
 item.plateIron.name=Iron Plate
 item.plateSteel.name=Steel Plate
+item.plateLead.name=Lead Plate
 item.wrench.name=Wrench
 item.phyBattery.name=Battery
 item.circuit_basic.name=Basic Circuit

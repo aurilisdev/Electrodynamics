@@ -1,6 +1,5 @@
 package physica.nuclear.common.tile;
 
-import java.util.HashSet;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -22,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.IGuiInterface;
 import physica.api.core.PhysicaAPI;
+import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreItemRegister;
 import physica.library.location.BlockLocation;
 import physica.library.tile.TileBaseContainer;
@@ -57,10 +57,6 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			adjacentBlocks[i] = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
-		if (ticks % 4 == 0)
-		{
-			produceSteam();
-		}
 		insertion = 0;
 		if (hasFuelRod() && !isBeingControlled(adjacentBlocks))
 		{
@@ -76,43 +72,44 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public void updateCommon(int ticks)
 	{
 		super.updateCommon(ticks);
-		if (hasFuelRod() && temperature > 400)
+		if (hasFuelRod() && temperature > 300)
 		{
 
-			if (ticks % 10 == 0)
+			if (ticks % 100 == 0)
 			{
 				int radius = 3;
-				HashSet<BlockLocation> locations = new HashSet<BlockLocation>();
-				for (int i = -radius; i <= radius; i++)
+				isIncased = true;
+				loops:
 				{
-					for (int k = -radius; k <= radius; k++)
-					{
-						locations.add(new BlockLocation(xCoord + i, yCoord - radius, zCoord + k));
-					}
-				}
-				for (int i = -radius; i <= radius; i++)
-				{
-					for (int j = -radius + 1; j <= radius - 1; j++)
+					for (int i = -radius; i <= radius; i++)
 					{
 						for (int k = -radius; k <= radius; k++)
 						{
-							if ((i == -radius || i == radius) || (k == radius || k == -radius))
+							if (worldObj.getBlock(xCoord + i, yCoord - radius, zCoord + k) != CoreBlockRegister.blockLead)
 							{
-								locations.add(new BlockLocation(xCoord + i, yCoord + j, zCoord + k));
+								isIncased = false;
+								break loops;
+							}
+						}
+					}
+					for (int i = -radius; i <= radius; i++)
+					{
+						for (int j = -radius + 1; j <= radius - 1; j++)
+						{
+							for (int k = -radius; k <= radius; k++)
+							{
+								if ((i == -radius || i == radius) || (k == radius || k == -radius))
+								{
+									if (worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != CoreBlockRegister.blockLead)
+									{
+										isIncased = false;
+										break loops;
+									}
+								}
 							}
 						}
 					}
 				}
-				isIncased = true;
-				for (BlockLocation location : locations)
-				{
-					if (location.getBlock(worldObj) != Blocks.iron_block)
-					{
-						isIncased = false;
-					}
-				}
-				locations.clear();
-				System.out.println("Encased: " + isIncased);
 			}
 			double tempScale = temperature / 300.0;
 			double dRadius = isIncased ? Math.min(tempScale, 3) : tempScale;
@@ -129,6 +126,10 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							(float) tempScale);
 				}
 			}
+		}
+		if (ticks % 4 == 0)
+		{
+			produceSteam();
 		}
 	}
 
@@ -193,7 +194,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
-		radius = temperature / 400.0f;
+		radius = temperature / 300.0f;
 		if (radius > 0.5)
 		{
 			for (int i = 0; i < (int) (Math.pow(radius, 1.5) / 10f); i++)
@@ -211,8 +212,6 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
-
-		produceSteam();
 	}
 
 	@Override
@@ -225,13 +224,13 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		if (PhysicaAPI.isDebugMode)
 		{
-			System.out.println("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
+			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
 		}
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
 		{
 			if (PhysicaAPI.isDebugMode)
 			{
-				System.out.println("World " + worldObj.getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
+				PhysicaAPI.logger.info("World " + worldObj.getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
 			}
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
@@ -377,10 +376,24 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							{
 								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE)
 								{
-									float steamRadius = 0.5f;
-									worldObj.spawnParticle("bubble", offsetX + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
-											offsetY + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2,
-											offsetZ + steamRadius + worldObj.rand.nextDouble() * steamRadius - steamRadius / 2, 0, 0, 0);
+									if (worldObj.rand.nextInt(80) == 0)
+									{
+										worldObj.playSoundEffect(offsetX + 0.5D, offsetY + 0.5D, offsetZ + 0.5D, "liquid.lava", 0.5F,
+												2.1F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.85F);
+									}
+									if (worldObj.rand.nextInt(40) == 0)
+									{
+										worldObj.playSoundEffect(offsetX + 0.5D, offsetY + 0.5D, offsetZ + 0.5D, "liquid.lavapop", 0.5F,
+												2.6F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.8F);
+									}
+									double offsetFX = offsetX + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
+									double offsetFY = offsetY + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
+									double offsetFZ = offsetZ + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
+									worldObj.spawnParticle("bubble", offsetFX + 0.5D, offsetFY + 0.20000000298023224D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
+									if (worldObj.rand.nextInt(5) == 0)
+									{
+										worldObj.spawnParticle("smoke", offsetFX + 0.5D, offsetFY + 0.5D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
+									}
 								}
 							}
 						}

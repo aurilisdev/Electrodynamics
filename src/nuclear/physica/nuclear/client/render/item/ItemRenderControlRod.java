@@ -31,7 +31,7 @@ public class ItemRenderControlRod extends ItemRenderObjModel {
 		GL11.glScaled(0.0625f, 0.0625f, 0.0625f);
 		if (type.equals(ItemRenderType.INVENTORY))
 		{
-			GL11.glTranslatef(-0.5f, -0.8f, -0.5f);
+			GL11.glTranslatef(-0.5f, -4f, -0.5f);
 			GL11.glRotatef(180f, 0, 1, 0);
 		} else if (type.equals(ItemRenderType.EQUIPPED_FIRST_PERSON))
 		{

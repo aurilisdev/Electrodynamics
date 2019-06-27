@@ -55,7 +55,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 				{
 					operatingTicks++;
 					ItemStack input = getStackInSlot(SLOT_INPUT2);
-					ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
+					ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input);
 					waterTank.drain(recipe.getWaterUse() / TICKS_REQUIRED, true);
 				} else
 				{
@@ -86,9 +86,9 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 		ItemStack input = getStackInSlot(SLOT_INPUT2);
 		if (input != null)
 		{
-			if (NuclearCustomRecipeHelper.isBoilerInput(input.getItem()))
+			if (NuclearCustomRecipeHelper.isBoilerInput(input))
 			{
-				ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
+				ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input);
 				if (recipe.getWaterUse() / TICKS_REQUIRED <= waterTank.getFluidAmount())
 				{
 					return hexaTank.getFluidAmount() < hexaTank.getCapacity();
@@ -101,7 +101,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	private void process()
 	{
 		ItemStack input = getStackInSlot(SLOT_INPUT2);
-		ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input.getItem());
+		ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input);
 		hexaTank.fill(new FluidStack(NuclearFluidRegister.LIQUID_HE, recipe.getHexafluorideGenerated()), true);
 		decrStackSize(SLOT_INPUT2, 1);
 
@@ -172,7 +172,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		return stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem
-				: slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack.getItem())
+				: slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack)
 						: slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
 	}
 

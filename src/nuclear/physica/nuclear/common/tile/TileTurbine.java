@@ -21,7 +21,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 	protected int energyStored;
 	protected int lastEnergyStored;
 	protected boolean isGenerating = false;
-	protected int delayGeneration = 10;
+	public int delayGeneration = 10;
 	protected int steam;
 	protected int mainX, mainY, mainZ;
 	protected boolean hasMain = false;

@@ -27,6 +27,7 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 		// Plates
 		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 0), Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot);
 		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 1), "ingotSteel", "ingotSteel", "ingotSteel", "ingotSteel");
+		addShapeless(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 2), "ingotLead", "ingotLead", "ingotLead", "ingotLead");
 		// Wrench
 		addRecipe(CoreItemRegister.itemWrench, "SS ", "SS ", "  S", 'S', "ingotSteel");
 
@@ -36,5 +37,6 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 		// Smeltings
 		GameRegistry.addSmelting(CoreBlockRegister.blockTinOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 0), 0.7f);
 		GameRegistry.addSmelting(CoreBlockRegister.blockCopperOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 1), 0.7f);
+		GameRegistry.addSmelting(CoreBlockRegister.blockLeadOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2), 1.2f);
 	}
 }

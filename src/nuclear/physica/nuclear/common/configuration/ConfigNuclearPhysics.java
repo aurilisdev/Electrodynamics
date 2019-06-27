@@ -22,12 +22,11 @@ public class ConfigNuclearPhysics implements IContent {
 	public static HashSet<String> PROTECTED_WORLDS = new HashSet<>(Arrays.asList("spawn", "creative"));
 	public static HashSet<String> QUANTUM_ASSEMBLER_BLACKLIST = new HashSet<>();
 
-	public static boolean ENABLE_URANIUM_ORE = true;
 	public static int URANIUM_ORE_MIN_Y = 10;
 	public static int URANIUM_ORE_MAX_Y = 40;
 	public static int URANIUM_ORE_COUNT = 20;
 	public static int URANIUM_ORE_BRANCH_SIZE = 3;
-	public static int URANIUM_ORE_HARVEST_LEVEL = 2;
+	public static int URANIUM_ORE_HARVEST_LEVEL = 3;
 
 	public static int PLASMA_STRENGTH = 5;
 	public static int DARK_MATTER_USES = 8;
@@ -61,7 +60,6 @@ public class ConfigNuclearPhysics implements IContent {
 		TURBINE_STEAM_TO_RF_RATIO = configuration.getFloat("turbineSteamToRfRatio", CATEGORY, TURBINE_STEAM_TO_RF_RATIO, 0.01f, 100f,
 				"Ratio for turbines to convert one ml of steam into rf.");
 
-		ENABLE_URANIUM_ORE = configuration.getBoolean("uranium_ore_enable", CATEGORY, ENABLE_URANIUM_ORE, "Should world generation be enabled? True to allow ore to spawn; False to disable");
 		URANIUM_ORE_MIN_Y = configuration.getInt("uranium_min_y", CATEGORY, URANIUM_ORE_MIN_Y, 0, 255, "Lowest y level/height that ore can spawn");
 		URANIUM_ORE_MAX_Y = configuration.getInt("uranium_max_y", CATEGORY, URANIUM_ORE_MAX_Y, 0, 255, "Highest y level/height that ore can spawn");
 		URANIUM_ORE_COUNT = configuration.getInt("uranium_chunk_count", CATEGORY, URANIUM_ORE_COUNT, 1, 100,

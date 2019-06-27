@@ -20,7 +20,7 @@ public class BlockUraniumOre extends Block {
 	public BlockUraniumOre() {
 		super(Material.rock);
 		setHardness(3f);
-		setResistance(5f);
+		setResistance(15f);
 		setLightLevel(0.1f);
 		setStepSound(soundTypeStone);
 		setHarvestLevel("pickaxe", ConfigNuclearPhysics.URANIUM_ORE_HARVEST_LEVEL);
