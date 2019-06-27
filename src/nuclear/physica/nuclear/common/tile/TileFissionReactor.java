@@ -1,5 +1,6 @@
 package physica.nuclear.common.tile;
 
+import java.util.HashSet;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -42,6 +43,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	protected float temperature = AIR_TEMPERATURE;
 	protected int surroundingWater;
 	private int insertion;
+	private boolean isIncased;
 
 	@Override
 	public void updateServer(int ticks)
@@ -76,18 +78,55 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		super.updateCommon(ticks);
 		if (hasFuelRod() && temperature > 400)
 		{
-			double radius = temperature / 300.0;
+
+			if (ticks % 10 == 0)
+			{
+				int radius = 3;
+				HashSet<BlockLocation> locations = new HashSet<BlockLocation>();
+				for (int i = -radius; i <= radius; i++)
+				{
+					for (int k = -radius; k <= radius; k++)
+					{
+						locations.add(new BlockLocation(xCoord + i, yCoord - radius, zCoord + k));
+					}
+				}
+				for (int i = -radius; i <= radius; i++)
+				{
+					for (int j = -radius + 1; j <= radius - 1; j++)
+					{
+						for (int k = -radius; k <= radius; k++)
+						{
+							if ((i == -radius || i == radius) || (k == radius || k == -radius))
+							{
+								locations.add(new BlockLocation(xCoord + i, yCoord + j, zCoord + k));
+							}
+						}
+					}
+				}
+				isIncased = true;
+				for (BlockLocation location : locations)
+				{
+					if (location.getBlock(worldObj) != Blocks.iron_block)
+					{
+						isIncased = false;
+					}
+				}
+				locations.clear();
+				System.out.println("Encased: " + isIncased);
+			}
+			double tempScale = temperature / 300.0;
+			double dRadius = isIncased ? Math.min(tempScale, 3) : tempScale;
 
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
-					AxisAlignedBB.getBoundingBox(xCoord - radius, yCoord - radius, zCoord - radius, xCoord + radius, yCoord + radius, zCoord + radius));
+					AxisAlignedBB.getBoundingBox(xCoord - dRadius, yCoord - dRadius, zCoord - dRadius, xCoord + dRadius + 1, yCoord + tempScale, zCoord + dRadius + 1));
 			for (Entity entity : entities)
 			{
 				if (entity instanceof EntityLivingBase)
 				{
-					double scale = (radius - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
+					double scale = (tempScale - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)) / 3.0;
 					RadiationSystem.applyRontgenEntity((EntityLivingBase) entity, (float) scale * 1.5f, (float) scale * 15, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
-							(float) radius);
+							(float) tempScale);
 				}
 			}
 		}

@@ -185,7 +185,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		}
 		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain))
 		{
-			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", (isMain ? 0.75f : 0.1f) * (delayGeneration / 60.0f), 1F);
+			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
 		}
 	}
 

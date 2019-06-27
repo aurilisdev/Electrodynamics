@@ -98,8 +98,9 @@ public class NuclearItemRegister implements IContent {
 		itemAntimatterCell125Milligram.addOreDictionaryInput("antimatter125Milligram", 0);
 		itemAntimatterCell1Gram.addOreDictionaryInput("antimatterGram", 0);
 		itemDarkmatterCell.addOreDictionaryInput("darkMatter", 0).addOreDictionaryInput("strangeMatter", 0);
-		itemUranium235.addOreDictionaryInput("ingotUranium235", 0);
-		itemUranium238.addOreDictionaryInput("ingotUranium238", 0);
-
+		itemUranium235.addOreDictionaryInput("uranium235", 0);
+		itemUranium238.addOreDictionaryInput("uranium238", 0);
+		itemLowEnrichedFuelCell.addOreDictionaryInput("ingotUranium238", 0);
+		itemHighEnrichedFuelCell.addOreDictionaryInput("ingotUranium235", 0);
 	}
 }
