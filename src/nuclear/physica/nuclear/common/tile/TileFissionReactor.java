@@ -234,7 +234,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
 		}
-		int power = (isFissileRod() ? 20 : isBreederRod() ? 7 : 0) / 2;
+		int power = (int) (temperature / 125.0f);
 		setInventorySlotContents(SLOT_INPUT, null);
 		BlockLocation location = new BlockLocation(xCoord, yCoord, zCoord);
 		for (int i = -power; i <= power; i++)

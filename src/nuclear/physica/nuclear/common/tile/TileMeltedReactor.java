@@ -18,7 +18,7 @@ import physica.nuclear.common.radiation.RadiationSystem;
 
 public class TileMeltedReactor extends TileBase {
 
-	public static final float RADIATION_RADIUS = 20;
+	public static final float RADIATION_RADIUS = 30;
 	public static final float RADIATION_PARTICLES = 10;
 	public int radiation = 8766000 * 5;
 	public int temperature = 6000;
