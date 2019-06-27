@@ -1,0 +1,41 @@
+Version 1.0.0.3
+Fix issue with radiation potion where it would show another potion.
+Update PhysicaAPI
+Optimize the turbine model and its render class
+Update radioactive dirt, grass and stone spread code so they all share the same code. It is also more dynamic and works better.
+Add the radioactive grass to the ore dictionary. Can now be integrated into other mods like ICBM
+Optimize fission reactor steam generation a lot.
+Made the fission reactor steam generation radius bigger. Is now a 5x5 area like in the old Atomic Science.
+Remove laggy code in the fusion reactor.
+Fix crash in insertable control rods. Move client code to the client only.
+Optimize plasma and make it degenerate slower. Won't spread until 1 second has passed now.
+Improve turbine power generation. Will now work more dynamically and only generate what it should generate. Was producing power for all turbines even though only one was actually getting steam.
+All turbines that are part of a big turbine will now show the main turbine's power storage instead of its own.
+Fix crashes with the radiation potion for other mods.
+Update hardness for all blocks in the forcefield mod. They are now harder and will survive more.
+Add more debug code and made it so that only operators can see debug messages.
+Fix steel plate recipe so you can use steel from other mods as well.
+Add another slot to the quantum assembler. There will now be one input and one output slot. This will make it possible for you to "dupe" items that have nbt tags. However, when you do this the nbt will be removed. Examples of this can be a block with an inventory or an item with a custom inventory when you use it.
+Fix crash with the chemical boiler recipe.
+Increase radiation radius. Is now calculated by "temperature / 300.0".
+Buff hazmat suit durability.
+Improve turbine texture so that the turbine blades have a contrast in comparison with the rest.
+Made turbine spin slower.
+Buff hardness on the gas centrifuge, chemical boiler, chemical extractor, fission reactor, fusion reactor, insertable control rod, neutron capture chamber, particle accelerator, quantum assembler and turbine blocks.
+Remove the "ingotUranium" key from the ore dictionary for uranium-235. This made uranium processable in other mods. This is not supposed to be the purpose.
+Optimize and improve fission reactor particle generation alot.
+Made radiation last longer for the melted reactor. 
+Added incasement code for the fission reactor so now it won't irradiate if it encased by a suitable block. The only ones that work currently are lead blocks.
+Add lead ingots.
+Add a block of lead.
+Add lead ore.
+Add lead ore generation options in the config.
+Add lead plate.
+Fix that uranium ore from other mods wouldn't work with Physica if the metadata was higher than 0.
+Change turbine sound slightly so they work better with minecraft.
+Improve the control rod's item render in the player inventory.
+Update thermometer so it will show what it signals at every time you right click it and not just when you change it.
+Change fission reactor water boiling particle generation. Will now create smoke particles and sounds.
+Revert commit "926954b150af7fc45c925272624309900271067f".
+Update code formatting to C style.
+Cleanup code.
