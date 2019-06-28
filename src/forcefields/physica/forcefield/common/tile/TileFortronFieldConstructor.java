@@ -27,6 +27,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 import physica.CoreReferences;
@@ -176,6 +178,14 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
+	public AxisAlignedBB getRenderBoundingBox()
+	{
+		AxisAlignedBB bb = super.getRenderBoundingBox();
+		bb.maxY += 1;
+		return bb;
+	}
+
+	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();
@@ -251,6 +261,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
 		isActivated = isPoweredByRedstone();
+		if (ticks % 20 == 0)
+		{
+			worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+		}
 	}
 
 	@Override

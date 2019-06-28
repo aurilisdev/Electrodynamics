@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.PhysicaForcefields;
@@ -37,6 +38,17 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileFortronFieldConstructor();
+	}
+
+	@Override
+	public int getLightValue(IBlockAccess world, int x, int y, int z)
+	{
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if (tile instanceof TileFortronFieldConstructor)
+		{
+			return ((TileFortronFieldConstructor) tile).getProjectorMode() == -1 ? 0 : 6;
+		}
+		return super.getLightValue(world, x, y, z);
 	}
 
 	@Override
@@ -104,7 +116,7 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 						{
 							color = new Color(255, 255, 0).getRGB();
 							colorName = "brown";
-						} else if (vanilla && damage == 4 || defaultDisplayName.contains("blue"))
+						} else if (vanilla && damage == 4 || defaultDisplayName.contains("blue") && !defaultDisplayName.contains("light blue"))
 						{
 							color = Color.BLUE.brighter().brighter().brighter().brighter().getRGB();
 							colorName = "blue";
