@@ -73,10 +73,9 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		super.updateCommon(ticks);
 		if (hasFuelRod() && temperature > 300)
 		{
-
+			int radius = 4;
 			if (ticks % 200 == 0)
 			{
-				int radius = 4;
 				isIncased = true;
 				loops:
 				{
@@ -93,7 +92,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 					}
 					for (int i = -radius; i <= radius; i++)
 					{
-						for (int j = -radius + 1; j <= radius - 1; j++)
+						for (int j = -radius + 1; j <= 2; j++)
 						{
 							for (int k = -radius; k <= radius; k++)
 							{
@@ -111,7 +110,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 			double tempScale = temperature / 300.0;
-			double dRadius = isIncased ? Math.min(tempScale, 3) : tempScale;
+			double dRadius = isIncased ? Math.min(tempScale, radius) : tempScale;
 			@SuppressWarnings("unchecked")
 			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
 					AxisAlignedBB.getBoundingBox(xCoord - dRadius, yCoord - dRadius, zCoord - dRadius, xCoord + dRadius + 1, yCoord + tempScale, zCoord + dRadius + 1));
