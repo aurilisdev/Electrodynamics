@@ -47,5 +47,7 @@ public class CoreBlockRegister implements IContent {
 		OreDictionary.registerOre("oreLead", blockLeadOre);
 		OreDictionary.registerOre("oreTin", blockTinOre);
 		OreDictionary.registerOre("oreCopper", blockCopperOre);
+
+		OreDictionary.registerOre("blockLead", blockLead);
 	}
 }

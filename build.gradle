@@ -35,7 +35,7 @@ sourceSets {
         }
     }
 }
-version="1.0.0.3"
+version="1.0.0.4 dev build"
 group= "physica"
 archivesBaseName = "PhysicaAll"
 sourceCompatibility = 1.8
