@@ -346,7 +346,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							if (isServer())
 							{
 								float temperatureVarient = temperature / MELTDOWN_TEMPERATURE / 2400;
-								if (worldObj.rand.nextFloat() < temperatureVarient + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250))
+								if (worldObj.rand.nextFloat() < temperatureVarient / 2.0f + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250))
 								{
 									worldObj.setBlockToAir(offsetX, offsetY, offsetZ);
 									continue;
