@@ -232,7 +232,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		cachedInformation[6] = Math.min(64, getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0],
 				TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
 		cachedInformation[7] = BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), 0, 11);
-		cachedInformation[8] = BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
+		cachedInformation[8] = 1 + BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
 	}
 
 	@Override
