@@ -1,6 +1,7 @@
 package physica.nuclear.common;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IContent;
 import physica.library.item.ItemBlockMetadata;
@@ -104,6 +105,9 @@ public class NuclearBlockRegister implements IContent {
 		GameRegistry.registerBlock(blockRadioactiveDirt = new BlockRadioactiveDirt(), "radioactiveDirt");
 
 		OreDictionary.registerOre("oreUranium", blockUraniumOre);
-		OreDictionary.registerOre("blockRadioactive", blockRadioactiveDirt);
+		OreDictionary.registerOre("blockRadioactive", new ItemStack(blockRadioactiveDirt, 1, 15));
+		OreDictionary.registerOre("blockRadioactiveDirt", new ItemStack(blockRadioactiveDirt, 1, 15));
+		OreDictionary.registerOre("blockRadioactiveStone", new ItemStack(blockRadioactiveStone, 1, 15));
+		OreDictionary.registerOre("blockRadioactiveGrass", new ItemStack(blockRadioactiveGrass, 1, 15));
 	}
 }

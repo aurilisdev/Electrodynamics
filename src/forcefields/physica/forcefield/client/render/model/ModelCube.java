@@ -15,7 +15,7 @@ public class ModelCube extends ModelBase {
 	public ModelCube() {
 		this.cube = new ModelRenderer(this);
 		int size = 16;
-		this.cube.addBox((-size / 2), (-size / 2), (-size / 2), size, size, size);
+		this.cube.addBox(-size / 2, -size / 2, -size / 2, size, size, size);
 		this.cube.setTextureSize(112, 70);
 		this.cube.mirror = true;
 	}

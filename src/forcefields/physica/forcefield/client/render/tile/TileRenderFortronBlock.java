@@ -78,15 +78,15 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 				GL11.glEnable(3042);
 				GL11.glBlendFunc(770, 771);
 				int coulour = ((TileFortronFieldConstructor) tile).fieldColorMultiplier();
-				int r = (coulour >> 16) & 0xff;
-				int g = (coulour >> 8) & 0xff;
+				int r = coulour >> 16 & 0xff;
+				int g = coulour >> 8 & 0xff;
 				int b = coulour & 0xff;
 				Minecraft.getMinecraft().renderEngine.bindTexture(previewTexture);
 				GL11.glColor4f(r, g, b,
 						(float) Math.sin(tile.getTicksRunning() / 10.0D) / 2.0F + 0.8F);
-				GL11.glTranslatef(0.0F, (float) Math.sin(Math.toRadians((tile.getTicksRunning() * 3L))) / 7.0F, 0.0F);
-				GL11.glRotatef((float) (tile.getTicksRunning() * 4L), 0.0F, 1.0F, 0.0F);
-				GL11.glRotatef(36.0F + (float) (tile.getTicksRunning() * 4L), 0.0F, 1.0F, 1.0F);
+				GL11.glTranslatef(0.0F, (float) Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, 0.0F);
+				GL11.glRotatef(tile.getTicksRunning() * 4L, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(36.0F + tile.getTicksRunning() * 4L, 0.0F, 1.0F, 1.0F);
 				if (mode == 0 || mode == 1)
 				{
 					Sphere sphere = new Sphere();
