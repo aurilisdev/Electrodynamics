@@ -237,6 +237,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
 		cachedInformation[7] = BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), 0, 11);
 		cachedInformation[8] = 1 + BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
+		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -263,10 +264,6 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		if (fortronTank.getCapacity() < fortronTank.getFluidAmount())
 		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
-		}
-		if (ticks % 20 == 0)
-		{
-			worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
 		}
 	}
 
