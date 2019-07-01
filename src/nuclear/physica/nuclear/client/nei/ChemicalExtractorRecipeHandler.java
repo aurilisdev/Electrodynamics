@@ -110,7 +110,7 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 		{
 			for (ChemicalExtractorRecipe newRecipe : NuclearCustomRecipeHelper.getExtractorRecipes())
 			{
-				if (newRecipe.getOutput().getItem() == ((ItemStack) results[0]).getItem())
+				if (newRecipe.getOutput().getItem() == ((ItemStack) results[0]).getItem() && newRecipe.getOutput().getItemDamage() == ((ItemStack) results[0]).getItemDamage())
 				{
 					if (newRecipe.getInput() != null)
 					{
@@ -253,13 +253,12 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 			List<PositionedStack> ingredients = new ArrayList<>();
 			if (oreDict != null)
 			{
-				List<ItemStack> items = new ArrayList<>(OreDictionary.getOres(oreDict));
-				ingredients.add(new PositionedStack(items, 82, 22));
+				ingredients.add(new PositionedStack(OreDictionary.getOres(oreDict), 82, 22));
 			} else
 			{
 				ingredients.add(new PositionedStack(new ItemStack(iteminput), 82, 22));
 			}
-			return getCycledIngredients(cycleticks / 48, ingredients);
+			return getCycledIngredients(cycleticks / TileChemicalExtractor.TICKS_REQUIRED, ingredients);
 		}
 
 		@Override

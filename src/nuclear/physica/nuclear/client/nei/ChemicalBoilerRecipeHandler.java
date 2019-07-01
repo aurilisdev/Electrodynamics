@@ -282,15 +282,12 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 			List<PositionedStack> ingredients = new ArrayList<>();
 			if (oreDict != null)
 			{
-				for (ItemStack item : OreDictionary.getOres(oreDict))
-				{
-					ingredients.add(new PositionedStack(item, 89, 14));
-				}
+				ingredients.add(new PositionedStack(OreDictionary.getOres(oreDict), 89, 14));
 			} else
 			{
 				ingredients.add(new PositionedStack(new ItemStack(iteminput), 89, 14));
 			}
-			return getCycledIngredients(cycleticks / 48, ingredients);
+			return getCycledIngredients(cycleticks / TileChemicalBoiler.TICKS_REQUIRED, ingredients);
 		}
 	}
 }
