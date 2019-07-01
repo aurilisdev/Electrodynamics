@@ -4,12 +4,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import defense.api.ExplosionEvent.PostExplosionEvent;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.ExplosionEvent;
+import physica.CoreReferences;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.tile.TileFulmination;
 import physica.nuclear.common.NuclearItemRegister;
@@ -105,10 +107,13 @@ public class FulminationEventHandler {
 						if (distance <= size && distance > 0.0D)
 						{
 							double energy = event.explosion.explosionSize * 50;
-							if (event.explosion.exploder instanceof EntityItem
-									&& ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+							if (Loader.isModLoaded(CoreReferences.DOMAIN + "NuclearPhysics"))
 							{
-								energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
+								if (event.explosion.exploder instanceof EntityItem
+										&& ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+								{
+									energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
+								}
 							}
 							double electricity = Math.min(energy, energy / (distance / size));
 							electricity = Math.max(electricity - event.world.getBlockDensity(

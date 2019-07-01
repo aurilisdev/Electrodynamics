@@ -48,11 +48,11 @@ public class CommandPhysica extends CommandBase {
 		} else if (args[0].equalsIgnoreCase("reload"))
 		{
 			Physica.config.preInit();
-			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
+			if (Loader.isModLoaded(CoreReferences.DOMAIN + "NuclearPhysics"))
 			{
 				PhysicaNuclearPhysics.config.preInit();
 			}
-			if (Loader.isModLoaded(CoreReferences.DOMAIN + "forcefields"))
+			if (Loader.isModLoaded(CoreReferences.DOMAIN + "Forcefields"))
 			{
 				PhysicaForcefields.config.preInit();
 			}
