@@ -47,6 +47,9 @@ import physica.forcefield.common.calculations.ConstructorCalculationThread;
 import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.inventory.ContainerFortronFieldConstructor;
 import physica.library.location.BlockLocation;
+import physica.library.network.IPacket;
+import physica.library.network.netty.PacketSystem;
+import physica.library.network.packet.PacketTile;
 import physica.library.tile.TileBaseContainer;
 
 public class TileFortronFieldConstructor extends TileBaseContainer implements IInvFortronTile, IGuiInterface, IFortronConstructor, IExplosionHandler {
@@ -120,6 +123,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		return cachedInformation[7] + cachedInformation[8] + (shouldDisintegrate ? 25000 : 0);
 	}
 	private int healthLost = 0;
+	private boolean isOverriden;
 
 	public int getHealthLost()
 	{
@@ -260,7 +264,6 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
-		isActivated = isPoweredByRedstone();
 		if (ticks % 20 == 0)
 		{
 			worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
@@ -349,6 +352,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
+		isActivated = isOverriden ? true : isPoweredByRedstone();
 		if (!ForcefieldEventHandler.INSTANCE.isConstructorRegistered(this))
 		{
 			ForcefieldEventHandler.INSTANCE.registerConstructor(this);
@@ -667,6 +671,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
+		tag.setBoolean("override", isOverriden);
 		tag.setInteger("frequency", frequency);
 		tag.setBoolean("isCalculating", isCalculating);
 		tag.setBoolean("isCurrentlyConstructing", isCurrentlyConstructing);
@@ -682,6 +687,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
+		isOverriden = tag.getBoolean("override");
 		frequency = tag.getInteger("frequency");
 		isActivated = tag.getBoolean("isActivated");
 		isCurrentlyConstructing = false;
@@ -784,5 +790,26 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			location = super.getLocation();
 		}
 		return location;
+	}
+	public static final int GUI_BUTTON_PACKET_ID = 22;
+
+	public void actionPerformed(int buttonId, Side side)
+	{
+		if (side == Side.CLIENT)
+		{
+			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, xCoord, yCoord, zCoord, buttonId));
+		} else if (side == Side.SERVER)
+		{
+			isOverriden = !isOverriden;
+		}
+	}
+
+	@Override
+	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
+	{
+		if (id == GUI_BUTTON_PACKET_ID && side.isServer() && type instanceof PacketTile)
+		{
+			actionPerformed(((PacketTile) type).customInteger, side);
+		}
 	}
 }

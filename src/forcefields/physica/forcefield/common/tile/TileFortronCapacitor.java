@@ -22,6 +22,9 @@ import physica.forcefield.client.gui.GuiFortronCapacitor;
 import physica.forcefield.common.ForcefieldFluidRegister;
 import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.inventory.ContainerFortronCapacitor;
+import physica.library.network.IPacket;
+import physica.library.network.netty.PacketSystem;
+import physica.library.network.packet.PacketTile;
 import physica.library.tile.TileBaseContainer;
 
 public class TileFortronCapacitor extends TileBaseContainer implements IInvFortronTile, IGuiInterface {
@@ -34,6 +37,7 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	public static final int SLOT_MODULE3 = 3;
 
 	public boolean isActivated = false;
+	private boolean isOverriden = false;
 	protected Set<ITileBase> fortronConnections = new HashSet<>();
 	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
 
@@ -65,7 +69,7 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 		{
 			fortronTank.getFluid().amount = fortronTank.getCapacity();
 		}
-		isActivated = isPoweredByRedstone();
+
 		if (getStackInSlot(SLOT_CARD) != null)
 		{
 			if (getStackInSlot(SLOT_CARD).stackTagCompound != null)
@@ -79,6 +83,7 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
+		isActivated = isOverriden ? true : isPoweredByRedstone();
 		if (ticks % 20 == 0)
 		{
 			validateConnections();
@@ -167,6 +172,7 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	{
 		super.writeToNBT(tag);
 		tag.setInteger("frequency", frequency);
+		tag.setBoolean("override", isOverriden);
 		fortronTank.writeToNBT(tag);
 	}
 
@@ -175,6 +181,7 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	{
 		super.readFromNBT(tag);
 		frequency = tag.getInteger("frequency");
+		isOverriden = tag.getBoolean("override");
 		fortronTank.readFromNBT(tag);
 	}
 
@@ -219,6 +226,28 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	public Container getServerGuiElement(int id, EntityPlayer player)
 	{
 		return new ContainerFortronCapacitor(player, this);
+	}
+
+	public static final int GUI_BUTTON_PACKET_ID = 22;
+
+	public void actionPerformed(int amount, Side side)
+	{
+		if (side == Side.CLIENT)
+		{
+			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, xCoord, yCoord, zCoord, amount));
+		} else if (side == Side.SERVER)
+		{
+			isOverriden = !isOverriden;
+		}
+	}
+
+	@Override
+	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
+	{
+		if (id == GUI_BUTTON_PACKET_ID && side.isServer() && type instanceof PacketTile)
+		{
+			actionPerformed(((PacketTile) type).customInteger, side);
+		}
 	}
 
 }

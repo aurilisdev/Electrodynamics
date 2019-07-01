@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import physica.api.core.IBaseUtilities;
@@ -26,6 +27,14 @@ public class GuiFortronCapacitor extends GuiContainerBase<TileFortronCapacitor> 
 	{
 		super.initGui();
 		addToolTip(new ToolTipTank(new Rectangle(8, 115, electricityMeterWidth, electricityMeterHeight), "gui.fortronCapacitor.fortron_tank", host.getFortronTank()));
+		addButton(new GuiButton(1, width / 2 - 80, height / 2 - 100, "Toggle".length() * 8, 20, "Toggle"));
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button)
+	{
+		super.actionPerformed(button);
+		host.actionPerformed(button.id, Side.CLIENT);
 	}
 
 	@Override
@@ -36,7 +45,7 @@ public class GuiFortronCapacitor extends GuiContainerBase<TileFortronCapacitor> 
 		drawString("Linked Devices: " + host.getFortronConnections().size(), 8, 95);
 		drawString("Status: " + (host.isActivated() ? "Active" : "Disabled"), 8, 85);
 		drawString("Frequency: " + host.getFrequency(), 8, 65);
-		drawStringCentered(StatCollector.translateToLocal("tile." + ForcefieldReferences.PREFIX + "fortronCapacitor.gui"), xSize / 2, 5);
+		drawStringCentered(StatCollector.translateToLocal("tile." + ForcefieldReferences.PREFIX + "fortronCapacitor.gui"), (int) (xSize / 1.65), 15);
 
 	}
 

@@ -37,6 +37,9 @@ import physica.forcefield.common.inventory.ContainerInterdictionMatrix;
 import physica.forcefield.common.item.ItemFrequency;
 import physica.forcefield.common.item.Permission;
 import physica.library.location.BlockLocation;
+import physica.library.network.IPacket;
+import physica.library.network.netty.PacketSystem;
+import physica.library.network.packet.PacketTile;
 import physica.library.tile.TileBaseContainer;
 
 public class TileInterdictionMatrix extends TileBaseContainer implements IInvFortronTile, IGuiInterface {
@@ -52,6 +55,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public static final int SLOT_STARTBANLIST = 9;
 	public static final int SLOT_ENDBANLIST = 17;
 	private int frequency;
+	private boolean isOverriden;
 
 	public int getMaxFortron()
 	{
@@ -164,15 +168,12 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public Set<ItemStack> getBlacklistedItems()
 	{
 		HashSet<ItemStack> set = new HashSet<>();
-		if (isBlackList)
+		for (int index = SLOT_STARTBANLIST; index <= SLOT_ENDBANLIST; index++)
 		{
-			for (int index = SLOT_STARTBANLIST; index <= SLOT_ENDBANLIST; index++)
+			ItemStack stack = getStackInSlot(index);
+			if (stack != null)
 			{
-				ItemStack stack = getStackInSlot(index);
-				if (stack != null)
-				{
-					set.add(stack);
-				}
+				set.add(stack);
 			}
 		}
 		return set;
@@ -190,8 +191,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		{
 			validateConnections();
 		}
-		isActivated = isPoweredByRedstone();
-
+		isActivated = isOverriden ? true : isPoweredByRedstone();
 		if (isActivated() && fortronTank.getFluidAmount() > getFortronUse())
 		{
 			fortronTank.drain(getFortronUse(), true);
@@ -418,35 +418,54 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	}
 
 	@Override
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
+		super.writeClientGuiPacket(dataList, player);
+		dataList.add(isActivated);
+		dataList.add(isBlackList);
+	}
+
+	@Override
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
+		super.readClientGuiPacket(buf, player);
+		isActivated = buf.readBoolean();
+		isBlackList = buf.readBoolean();
+	}
+
+	@Override
 	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
 	{
-		dataList.add(isActivated);
+		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(frequency);
 		dataList.add(fortronTank.writeToNBT(new NBTTagCompound()));
-		super.writeSynchronizationPacket(dataList, player);
+
 	}
 
 	@Override
 	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
 	{
-		isActivated = buf.readBoolean();
+		super.readSynchronizationPacket(buf, player);
 		frequency = buf.readInt();
 		fortronTank.readFromNBT(ByteBufUtils.readTag(buf));
-		super.readSynchronizationPacket(buf, player);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag)
 	{
-		tag.setInteger("frequency", frequency);
 		super.writeToNBT(tag);
+		tag.setInteger("frequency", frequency);
+		tag.setBoolean("override", isOverriden);
+		tag.setBoolean("blacklist", isBlackList);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
-		frequency = tag.getInteger("frequency");
 		super.readFromNBT(tag);
+		frequency = tag.getInteger("frequency");
+		isOverriden = tag.getBoolean("override");
+		isBlackList = tag.getBoolean("blacklist");
 	}
 
 	@Override
@@ -527,6 +546,34 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public int getActionRange()
 	{
 		return Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
+	}
+	public static final int GUI_BUTTON_PACKET_ID = 22;
+
+	public void actionPerformed(int buttonId, Side side)
+	{
+		if (side == Side.CLIENT)
+		{
+			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, xCoord, yCoord, zCoord, buttonId));
+		} else if (side == Side.SERVER)
+		{
+			if (buttonId == 1)
+			{
+				isOverriden = !isOverriden;
+			}
+		}
+		if (buttonId == 2)
+		{
+			isBlackList = !isBlackList;
+		}
+	}
+
+	@Override
+	public void readCustomPacket(int id, EntityPlayer player, Side side, IPacket type)
+	{
+		if (id == GUI_BUTTON_PACKET_ID && side.isServer() && type instanceof PacketTile)
+		{
+			actionPerformed(((PacketTile) type).customInteger, side);
+		}
 	}
 
 }

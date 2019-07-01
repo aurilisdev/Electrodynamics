@@ -40,7 +40,7 @@ public class ContainerFortronFieldConstructor extends ContainerBase<TileFortronF
 		{
 			for (int ySlot = 0; ySlot < 2; ySlot++)
 			{
-				addSlotToContainer(new SlotBase(host, slotIndex, 19 + 18 * xSlot, 48 + 18 * ySlot));
+				addSlotToContainer(new SlotBase(host, slotIndex, 19 + 18 * xSlot, 52 + 18 * ySlot));
 				slotIndex++;
 			}
 		}

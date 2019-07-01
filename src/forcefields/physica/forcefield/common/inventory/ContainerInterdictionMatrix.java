@@ -21,7 +21,7 @@ public class ContainerInterdictionMatrix extends ContainerBase<TileInterdictionM
 		}
 		for (int var4 = 0; var4 < 9; var4++)
 		{
-			addSlotToContainer(new SlotBase(host, var4 + 8 + 1, 9 + var4 * 18, 69).setBaseColor(tile.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY)
+			addSlotToContainer(new SlotBase(host, var4 + TileInterdictionMatrix.SLOT_STARTBANLIST, 9 + var4 * 18, 69).setBaseColor(tile.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY)
 					.setEdgeColor(tile.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY));
 		}
 		setSlotCount(TileInterdictionMatrix.SLOT_ENDBANLIST + 1);

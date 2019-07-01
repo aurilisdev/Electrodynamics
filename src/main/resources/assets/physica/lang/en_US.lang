@@ -93,7 +93,7 @@ tile.physicaforcefields:fortronField.name=Fortron Field
 tile.physicaforcefields:interdictionMatrix.name=Interdiction Matrix
 tile.physicaforcefields:biometricIdentifier.name=Biometric Identifier
 #### GUI
-tile.physicaforcefields:fortronFieldConstructor.gui=Fortron Field Constructor
+tile.physicaforcefields:fortronFieldConstructor.gui=Field Constructor
 tile.physicaforcefields:fortronCapacitor.gui=Fortron Capacitor
 tile.physicaforcefields:coercionDriver.gui=Coercion Driver
 tile.physicaforcefields:interdictionMatrix.gui=Interdiction Matrix
