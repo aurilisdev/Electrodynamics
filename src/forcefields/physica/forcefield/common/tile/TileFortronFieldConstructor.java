@@ -434,7 +434,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		}
 	}
 	private boolean shouldSponge = false;
-	private boolean shouldDisintegrate = false;
+	public boolean shouldDisintegrate = false;
 	private boolean shouldStabilize = false;
 	private boolean hasCollectionModule = false;
 	private int totalGeneratedPerTick = 0;

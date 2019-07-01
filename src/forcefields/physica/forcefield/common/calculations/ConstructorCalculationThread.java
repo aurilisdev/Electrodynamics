@@ -51,20 +51,22 @@ public class ConstructorCalculationThread extends Thread {
 				constructor.calculatedFieldPoints.clear();
 			} else
 			{
-				constructor.maximumForceFieldCount = constructor.calculatedFieldPoints.size();
-
-				List<BlockLocation> exclude = new ArrayList<>();
-				for (int dx = -EXCLUDE_RADIUS; dx <= EXCLUDE_RADIUS; dx++)
+				if (constructor.shouldDisintegrate)
 				{
-					for (int dz = -EXCLUDE_RADIUS; dz <= EXCLUDE_RADIUS; dz++)
+					List<BlockLocation> exclude = new ArrayList<>();
+					for (int dx = -EXCLUDE_RADIUS; dx <= EXCLUDE_RADIUS; dx++)
 					{
-						for (int dy = -EXCLUDE_RADIUS; dy <= EXCLUDE_RADIUS; dy++)
+						for (int dz = -EXCLUDE_RADIUS; dz <= EXCLUDE_RADIUS; dz++)
 						{
-							exclude.add(new BlockLocation(constructor.xCoord + dx, constructor.yCoord + dy, constructor.zCoord + dz));
+							for (int dy = -EXCLUDE_RADIUS; dy <= EXCLUDE_RADIUS; dy++)
+							{
+								exclude.add(new BlockLocation(constructor.xCoord + dx, constructor.yCoord + dy, constructor.zCoord + dz));
+							}
 						}
 					}
+					constructor.calculatedFieldPoints.removeAll(exclude);
 				}
-				constructor.calculatedFieldPoints.removeAll(exclude);
+				constructor.maximumForceFieldCount = constructor.calculatedFieldPoints.size();
 			}
 
 			constructor.setCalculating(false);
