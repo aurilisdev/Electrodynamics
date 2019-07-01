@@ -29,13 +29,28 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	private IIcon snowVersion;
 
 	public BlockRadioactiveGrass() {
-		super();
 		this.setTickRandomly(true);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setBlockName(NuclearReferences.PREFIX + "radioactiveGrass");
 		setHardness(0.6F);
 		setStepSound(soundTypeGrass);
 		setBlockTextureName("grass");
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, int x, int y, int z, Random random)
+	{
+		if (random.nextFloat() < 0.1667)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				if (random.nextFloat() < 0.666)
+				{
+					world.spawnParticle("reddust", x + random.nextDouble() * 3 - 1.5, y + random.nextDouble() * 3 - 1.5, z + random.nextDouble() * 3 - 1.5, 0.01f, 1, 0.01f);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -70,7 +85,7 @@ public class BlockRadioactiveGrass extends BlockGrass {
 		if (ent instanceof EntityLivingBase)
 		{
 			int meta = world.getBlockMetadata(x, y, z);
-			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 7.5f, meta, 1, 1);
+			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 2.5f, meta, 1, 1);
 		}
 	}
 
@@ -112,20 +127,4 @@ public class BlockRadioactiveGrass extends BlockGrass {
 		this.snowVersion = p_149651_1_.registerIcon("grass_side_snowed");
 	}
 
-	/**
-	 * A randomly called display update to be able to add particles or other
-	 * items for display
-	 */
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_)
-	{
-		super.randomDisplayTick(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_, p_149734_5_);
-
-		if (p_149734_5_.nextInt(10) == 0)
-		{
-			p_149734_1_.spawnParticle("reddust", p_149734_2_ + p_149734_5_.nextFloat(), p_149734_3_ + 1.1F,
-					p_149734_4_ + p_149734_5_.nextFloat(), 0.01f, 1.0f, 0.01f);
-		}
-	}
 }

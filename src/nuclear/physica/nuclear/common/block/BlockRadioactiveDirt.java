@@ -2,6 +2,8 @@ package physica.nuclear.common.block;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -24,6 +26,22 @@ public class BlockRadioactiveDirt extends Block {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, int x, int y, int z, Random random)
+	{
+		if (random.nextFloat() < 0.1667)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				if (random.nextFloat() < 0.666)
+				{
+					world.spawnParticle("reddust", x + random.nextDouble() * 3 - 1.5, y + random.nextDouble() * 3 - 1.5, z + random.nextDouble() * 3 - 1.5, 0.01f, 1, 0.01f);
+				}
+			}
+		}
+	}
+
+	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand)
 	{
 		if (!world.isRemote)
@@ -41,7 +59,7 @@ public class BlockRadioactiveDirt extends Block {
 		if (ent instanceof EntityLivingBase)
 		{
 			int meta = world.getBlockMetadata(x, y, z);
-			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 7.5f, meta, 1, 1);
+			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 2.5f, meta, 1, 1);
 		}
 	}
 
