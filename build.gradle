@@ -35,7 +35,16 @@ sourceSets {
         }
     }
 }
-version="1.0.0.4 dev build"
+// define the properties file
+ext.configFile = file "build.properties"
+configFile.withReader {
+	// read config.
+	def prop = new Properties()
+	prop.load(it)
+	ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.minecraft_version}-${config.version_major}.${config.version_minor}.${config.version_revision}-${config.version_build}"
 group= "physica"
 archivesBaseName = "PhysicaAll"
 sourceCompatibility = 1.8
@@ -93,7 +102,23 @@ task forcefieldJar(type: Jar) {
         include 'physica/forcefield/**'
     }
 }
-
+task incrementBuildNumber() {
+    doLast {
+        config.version_build = (config.version_build.toString().toInteger()) + 1
+        configFile.withWriter {
+            config.toProperties().store(it, "")
+        }
+     }
+}
 coreJar.dependsOn('reobf')
 nuclearJar.dependsOn('reobf')
 forcefieldJar.dependsOn('reobf')
+incrementBuildNumber.dependsOn('reobf')
+task releaseJars(type: Copy) {
+	dependsOn "reobf"
+	destinationDir= new File('../output')
+	from incrementBuildNumber
+	from coreJar
+	from nuclearJar
+	from forcefieldJar
+}
