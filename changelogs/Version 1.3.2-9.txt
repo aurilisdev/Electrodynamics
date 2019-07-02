@@ -1,0 +1,19 @@
+Version 1.3.2 build 9
+Increase the melted reactor radioactivity size
+Optimize lead incasement and increase the radius. The lead must now be at the fourth layer away from the reactor.
+Add more support for radioactive blocks in the oredictionary including metadata. This will make sure that mods that support this actually uses the most radioactive versions of the block. An example is ICBM-Classic.
+Tripled the radiation emitted from radioactive blocks and add particle effects.
+Fix NEI integration for the chemical extractor. Shows uranium ores properly now from every mod in the game that is running.
+Fix NEI integration for the chemical boiler. Shows uranium ores properly now from every mod in the game that is running.
+Update fortron field texture so that the top actually tiles with the sides properly.
+Update fortron field texture.
+Add a preview to the fortron field constructor so it shows an illustration of the mode selected above itself. It also glows at this stage.
+Update the fortron machine block's GUIs so they have toggle buttons.
+Add proper support for physica nuclear physics in the fulmination handler. Can be used without having nuclear physics installed.
+Add blockLead to the oredictionary. This adds support for other mods to use the lead blocks in Physica.
+Update the block lead recipe so it uses lead plates as well.
+Actually add whitelist/blacklist toggle in the interdiction matrix.
+Optimize rendering for the fortron field constructor.
+Add custom status message in the fortron field constructor. Now shows what it is doing currently.
+Optimize memory consuption in the beam renderer ALOT. This is by 1000% or more by default and if you are using more than just a couple machines this helps the memory consuption that these blocks use ALOT.
+Add better build scripts. Only important for developers.
