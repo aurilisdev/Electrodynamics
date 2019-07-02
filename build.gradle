@@ -116,7 +116,7 @@ forcefieldJar.dependsOn('reobf')
 incrementBuildNumber.dependsOn('reobf')
 task releaseJars(type: Copy) {
 	dependsOn "reobf"
-	destinationDir= new File('../output')
+	destinationDir= new File('/output')
 	from incrementBuildNumber
 	from coreJar
 	from nuclearJar
