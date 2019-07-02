@@ -166,7 +166,6 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 							colorName = "white";
 						}
 						constructor.setFieldColorMultiplier(color);
-
 						if (color != saveColor)
 						{
 							constructor.destroyField(false);

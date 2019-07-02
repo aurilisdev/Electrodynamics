@@ -645,7 +645,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(isActivated);
-		dataList.add(isCurrentlyConstructing);
+		dataList.add(isCurrentlyConstructing && !calculatedFieldPoints.isEmpty());
 		dataList.add(frequency);
 		dataList.add(healthLost);
 		dataList.add(fieldColorMultiplier);

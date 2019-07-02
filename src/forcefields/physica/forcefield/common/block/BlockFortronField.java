@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +36,9 @@ import physica.library.util.PhysicaMath;
 
 public class BlockFortronField extends Block implements ITileEntityProvider, IFortronBlock {
 
+	@SideOnly(Side.CLIENT)
+	private IIcon blockIconTop;
+
 	public BlockFortronField() {
 		super(Material.glass);
 		setBlockUnbreakable();
@@ -41,6 +46,14 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 		setBlockTextureName(CoreReferences.PREFIX + "fortronField");
 		setBlockName(ForcefieldReferences.PREFIX + "fortronField");
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister reg)
+	{
+		this.blockIcon = reg.registerIcon(this.getTextureName());
+		this.blockIconTop = reg.registerIcon(this.getTextureName() + "Top");
 	}
 
 	@Override
@@ -125,6 +138,12 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	{
 		Block block = world.getBlock(x, y, z);
 		return block != this && super.shouldSideBeRendered(world, x, y, z, side);
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta)
+	{
+		return side <= 1 ? blockIconTop : blockIcon;
 	}
 
 	@Override

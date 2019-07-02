@@ -52,7 +52,6 @@ public class ForcefieldClientRegister implements IContent {
 				new TileRenderFortronBlock<TileBiometricIdentifier>("biometricIdentifier.obj"));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockBiometricIdentifier),
 				new ItemRenderObjModel("biometricIdentifier.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
-
 	}
 
 	@SubscribeEvent
