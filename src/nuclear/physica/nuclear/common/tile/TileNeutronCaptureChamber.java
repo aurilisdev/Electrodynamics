@@ -73,7 +73,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 		} else
 		{
 			worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, new ItemStack(getBlockType())));
-			getLocation().setBlockAir(worldObj);
+			getBlockLocation().setBlockAir(worldObj);
 			return false;
 		}
 	}

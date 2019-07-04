@@ -43,7 +43,7 @@ public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFiel
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Linked to: " + host.getFortronConnections().size(), 8, 40);
 		drawString("Status: " + (host.isActivated() ? "Active" : "Disabled"), 8, 30);
-		drawString("Usage: " + host.getFortronUse() / 1000.0 + "L/t", 8, 105);
+		drawString("Usage: " + roundPrecise(host.getFortronUse() / 1000.0, 2) + "L/t", 8, 105);
 		String stats = host.isFullySealed ? "Sealed"
 				: host.isCurrentlyConstructing ? "Constructing" : host.isCalculating ? "Calculating" : host.getFortronTank().getFluidAmount() > host.getFortronUse() ? "Unsealed" : "Needs fortron";
 		drawString(stats, 8, 92);

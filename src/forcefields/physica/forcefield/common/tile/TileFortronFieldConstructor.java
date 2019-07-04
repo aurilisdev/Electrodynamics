@@ -297,10 +297,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				return false;
 			} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage())
 			{
-				return getLocation().getDistance(x, y, z) <= radius && y >= yCoordShifted();
+				return getBlockLocation().getDistance(x, y, z) <= radius && y >= yCoordShifted();
 			} else
 			{
-				return getLocation().getDistance(x, y, z) <= radius;
+				return getBlockLocation().getDistance(x, y, z) <= radius;
 			}
 		} else
 			if (index == ForcefieldItemRegister.moduleMap.get("moduleShapePyramid").getItemDamage())
@@ -414,7 +414,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							setCalculating(true);
 							calculationThread = new ConstructorCalculationThread(this);
 							calculationThread.start();
-							Logger.getGlobal().log(Level.INFO, "Started forcefield generation at: " + getLocation());
+							Logger.getGlobal().log(Level.INFO, "Started forcefield generation at: " + getBlockLocation());
 						}
 
 					} else if (!isCalculating && !calculatedFieldPoints.isEmpty())
@@ -782,11 +782,11 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public BlockLocation getLocation()
+	public BlockLocation getBlockLocation()
 	{
 		if (location == null)
 		{
-			location = super.getLocation();
+			location = super.getBlockLocation();
 		}
 		return location;
 	}

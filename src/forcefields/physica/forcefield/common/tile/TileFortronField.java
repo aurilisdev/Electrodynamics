@@ -23,7 +23,7 @@ public class TileFortronField extends TileBase {
 		{
 			if (constructor != null)
 			{
-				constructorCoord = constructor.getLocation();
+				constructorCoord = constructor.getBlockLocation();
 				constructor.activeFields.add(this);
 				fieldColor = constructor.fieldColorMultiplier();
 			}

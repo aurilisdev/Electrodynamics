@@ -8,7 +8,7 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.location.BlockLocation;
-import physica.library.location.Location;
+import physica.library.location.VectorLocation;
 
 public class ConstructorCalculationThread extends Thread {
 
@@ -127,7 +127,7 @@ public class ConstructorCalculationThread extends Thread {
 					{
 						return;
 					}
-					Location vector = new Location(i + 0.5f, j + 0.5f, k + 0.5f);
+					VectorLocation vector = new VectorLocation(i + 0.5f, j + 0.5f, k + 0.5f);
 					int distance = (int) vector.getDistance(constructor.xCoordShifted() + 0.5f, constructor.yCoordShifted() + 0.5f, constructor.zCoordShifted() + 0.5f);
 					if (interior ? distance <= radius : distance == radius)
 					{

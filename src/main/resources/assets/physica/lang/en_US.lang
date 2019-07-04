@@ -77,6 +77,10 @@ item.HazmatHelmet.name=Hazmat Suit Helmet
 item.HazmatPlate.name=Hazmat Suit Chestplate
 item.HazmatLegs.name=Hazmat Suit Leggings
 item.HazmatBoots.name=Hazmat Suit Boots
+item.ReinforcedHazmatHelmet.name=Reinforced Hazmat Suit Helmet
+item.ReinforcedHazmatPlate.name=Reinforced Hazmat Suit Chestplate
+item.ReinforcedHazmatLegs.name=Reinforced Hazmat Suit Leggings
+item.ReinforcedHazmatBoots.name=Reinforced Hazmat Suit Boots
 #### FLUIDS
 fluid.physicanuclearphysics:uranium_hexafluoride=Uranium Hexafluoride
 #### TABS

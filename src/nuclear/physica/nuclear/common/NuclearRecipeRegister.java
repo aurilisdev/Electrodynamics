@@ -18,11 +18,17 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
 				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram);
 
-		//Hazmat Suit
+		// Hazmat Suit
 		addRecipe(NuclearItemRegister.itemHazmatHelmet, "SSS", "BAB", "SCS", 'A', Items.leather_helmet, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
 		addRecipe(NuclearItemRegister.itemHazmatPlate, "SSS", "BAB", "SCS", 'A', Items.leather_chestplate, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
 		addRecipe(NuclearItemRegister.itemHazmatLegs, "SSS", "BAB", "SCS", 'A', Items.leather_leggings, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
 		addRecipe(NuclearItemRegister.itemHazmatBoots, "SSS", "BAB", "SCS", 'A', Items.leather_boots, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
+
+		// Reinforced Hazmat Suit
+		addRecipe(NuclearItemRegister.itemReinforcedHazmatHelmet, "ILI", "LAL", "ILI", 'A', NuclearItemRegister.itemHazmatHelmet, 'I', "ingotLead", 'L', "plateLead");
+		addRecipe(NuclearItemRegister.itemReinforcedHazmatLegs, "ILI", "LAL", "ILI", 'A', NuclearItemRegister.itemHazmatLegs, 'I', "ingotLead", 'L', "plateLead");
+		addRecipe(NuclearItemRegister.itemReinforcedHazmatPlate, "ILI", "LAL", "ILI", 'A', NuclearItemRegister.itemHazmatPlate, 'I', "ingotLead", 'L', "plateLead");
+		addRecipe(NuclearItemRegister.itemReinforcedHazmatBoots, "ILI", "LAL", "ILI", 'A', NuclearItemRegister.itemHazmatBoots, 'I', "ingotLead", 'L', "plateLead");
 
 		// Fissile Fuel cell
 		addRecipe(NuclearItemRegister.itemHighEnrichedFuelCell, "CUC", "CUC", "CUC", 'U', NuclearItemRegister.itemUranium235, 'C', CoreItemRegister.itemEmptyCell);

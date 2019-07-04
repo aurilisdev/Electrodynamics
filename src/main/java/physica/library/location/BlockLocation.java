@@ -55,10 +55,10 @@ public class BlockLocation {
 		return (float) Math.sqrt(x * x + y * y + z * z);
 	}
 
-	public Location normalize()
+	public VectorLocation normalize()
 	{
 		float n = norm();
-		return new Location(x / n, y / n, z / n);
+		return new VectorLocation(x / n, y / n, z / n);
 	}
 
 	public float getDistance(float x2, float y2, float z2)
@@ -77,7 +77,7 @@ public class BlockLocation {
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
-	public float getDistance(Location vector)
+	public float getDistance(VectorLocation vector)
 	{
 		double d3 = x - vector.x;
 		double d4 = y - vector.y;
@@ -153,7 +153,7 @@ public class BlockLocation {
 		return world.isAirBlock(x, y, z);
 	}
 
-	public BlockLocation sub(Location b)
+	public BlockLocation sub(VectorLocation b)
 	{
 		x -= b.x;
 		y -= b.y;
@@ -169,7 +169,7 @@ public class BlockLocation {
 		return this;
 	}
 
-	public BlockLocation add(Location b)
+	public BlockLocation add(VectorLocation b)
 	{
 		x += b.x;
 		y += b.y;
@@ -185,7 +185,7 @@ public class BlockLocation {
 		return this;
 	}
 
-	public BlockLocation mul(Location b)
+	public BlockLocation mul(VectorLocation b)
 	{
 		x *= b.x;
 		y *= b.y;
@@ -214,9 +214,9 @@ public class BlockLocation {
 		return new BlockLocation(x, y, z);
 	}
 
-	public Location Location()
+	public VectorLocation Location()
 	{
-		return new Location(x, y, z);
+		return new VectorLocation(x, y, z);
 	}
 
 	public static BlockLocation Sub(BlockLocation a, BlockLocation b)

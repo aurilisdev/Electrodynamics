@@ -48,30 +48,28 @@ public class RadiationSystem {
 							boolean hasArmor = true;
 							for (int i = 0; i < player.inventory.armorInventory.length; i++)
 							{
-								if (!(player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor))
+								ItemStack armor = player.getCurrentArmor(i);
+								if (!(armor != null && armor.getItem() instanceof ItemHazmatArmor))
 								{
 									hasArmor = false;
 								} else
 								{
 									protection++;
-								}
-							}
-							if (!hasArmor && protection == 0)
-							{
-								break playerCheck;
-							} else
-							{
-								for (int i = 0; i < player.inventory.armorInventory.length; i++)
-								{
-									if (player.getCurrentArmor(i) != null && player.getCurrentArmor(i).getItem() instanceof ItemHazmatArmor)
+									float damage = kiloRoentgen * 2.15f / ((ItemHazmatArmor) armor.getItem()).getPlatingProtection();
+									if (Math.random() < damage)
 									{
+										int integerDamage = (int) (Math.max(1, kiloRoentgen * 2.15) / ((ItemHazmatArmor) armor.getItem()).getPlatingProtection());
 										if (player.getCurrentArmor(i).getItemDamage() > player.getCurrentArmor(i).getMaxDamage()
-												|| player.getCurrentArmor(i).attemptDamageItem((int) Math.max(1, kiloRoentgen * 2.15), base.worldObj.rand))
+												|| player.getCurrentArmor(i).attemptDamageItem(integerDamage, base.worldObj.rand))
 										{
 											player.setCurrentItemOrArmor(i + 1, null);
 										}
 									}
 								}
+							}
+							if (!hasArmor && protection == 0)
+							{
+								break playerCheck;
 							}
 						}
 					}

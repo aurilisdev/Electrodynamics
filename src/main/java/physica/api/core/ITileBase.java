@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.library.location.BlockLocation;
+import physica.library.location.VectorLocation;
 import physica.library.network.IPacket;
 import physica.library.network.IPacketReciever;
 import physica.library.network.netty.PacketSystem;
@@ -53,9 +54,14 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 		return 20;
 	}
 
-	default BlockLocation getLocation()
+	default BlockLocation getBlockLocation()
 	{
-		return new BlockLocation(This().xCoord, This().yCoord, This().zCoord);
+		return new BlockLocation(This());
+	}
+
+	default VectorLocation getLocation()
+	{
+		return new VectorLocation(This());
 	}
 
 	default boolean shouldSendGuiPacket(EntityPlayerMP playerMP)

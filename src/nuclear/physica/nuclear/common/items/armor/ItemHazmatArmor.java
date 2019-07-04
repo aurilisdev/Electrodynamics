@@ -10,6 +10,7 @@ import physica.nuclear.common.NuclearTabRegister;
 public class ItemHazmatArmor extends ItemArmor {
 
 	public static final ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("HAZMAT", 0, new int[] { 2, 4, 2, 1 }, 0);
+	private float platingProtection = 1;
 
 	public ItemHazmatArmor(String type, int id, int type2) {
 		super(armorMaterial, id, type2);
@@ -18,12 +19,28 @@ public class ItemHazmatArmor extends ItemArmor {
 		canRepair = false;
 		setUnlocalizedName(type);
 		setTextureName(CoreReferences.PREFIX + type);
+		if (type.contains("Reinforced"))
+		{
+			setPlatingProtection(5);
+		}
 	}
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-		return CoreReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + "hazmatArmor.png";
+		return CoreReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + (getUnlocalizedName().contains("Reinforced") ? "reinforcedHazmatArmor" : "hazmatArmor") + ".png";
+	}
+
+	public ItemHazmatArmor setPlatingProtection(float protection)
+	{
+		platingProtection = protection;
+		return this;
+
+	}
+
+	public float getPlatingProtection()
+	{
+		return platingProtection;
 	}
 
 }

@@ -36,6 +36,10 @@ public class NuclearItemRegister implements IContent {
 	public static ItemHazmatArmor itemHazmatPlate;
 	public static ItemHazmatArmor itemHazmatLegs;
 	public static ItemHazmatArmor itemHazmatBoots;
+	public static ItemHazmatArmor itemReinforcedHazmatHelmet;
+	public static ItemHazmatArmor itemReinforcedHazmatPlate;
+	public static ItemHazmatArmor itemReinforcedHazmatLegs;
+	public static ItemHazmatArmor itemReinforcedHazmatBoots;
 
 	@Override
 	public void preInit()
@@ -87,12 +91,27 @@ public class NuclearItemRegister implements IContent {
 			GameRegistry.registerItem(itemHazmatPlate = new ItemHazmatArmor("HazmatPlate", RenderingRegistry.addNewArmourRendererPrefix("HazmatPlate"), 1), itemHazmatPlate.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatLegs = new ItemHazmatArmor("HazmatLegs", RenderingRegistry.addNewArmourRendererPrefix("HazmatLegs"), 2), itemHazmatLegs.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatBoots = new ItemHazmatArmor("HazmatBoots", RenderingRegistry.addNewArmourRendererPrefix("HazmatBoots"), 3), itemHazmatBoots.getUnlocalizedName());
+
+			GameRegistry.registerItem(itemReinforcedHazmatHelmet = new ItemHazmatArmor("ReinforcedHazmatHelmet", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatHelmet"), 0),
+					itemReinforcedHazmatHelmet.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatPlate = new ItemHazmatArmor("ReinforcedHazmatPlate", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatPlate"), 1),
+					itemReinforcedHazmatPlate.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatLegs = new ItemHazmatArmor("ReinforcedHazmatLegs", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatLegs"), 2),
+					itemReinforcedHazmatLegs.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatBoots = new ItemHazmatArmor("ReinforcedHazmatBoots", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatBoots"), 3),
+					itemReinforcedHazmatBoots.getUnlocalizedName());
 		} else
 		{
 			GameRegistry.registerItem(itemHazmatHelmet = new ItemHazmatArmor("HazmatHelmet", 0, 0), itemHazmatHelmet.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatPlate = new ItemHazmatArmor("HazmatPlate", 0, 1), itemHazmatPlate.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatLegs = new ItemHazmatArmor("HazmatLegs", 0, 2), itemHazmatLegs.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatBoots = new ItemHazmatArmor("HazmatBoots", 0, 3), itemHazmatBoots.getUnlocalizedName());
+
+			GameRegistry.registerItem(itemReinforcedHazmatHelmet = new ItemHazmatArmor("ReinforcedHazmatHelmet", 0, 0), itemReinforcedHazmatHelmet.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatPlate = new ItemHazmatArmor("ReinforcedHazmatPlate", 0, 1), itemReinforcedHazmatPlate.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatLegs = new ItemHazmatArmor("ReinforcedHazmatLegs", 0, 2), itemReinforcedHazmatLegs.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatBoots = new ItemHazmatArmor("ReinforcedHazmatBoots", 0, 3), itemReinforcedHazmatBoots.getUnlocalizedName());
+
 		}
 
 		itemAntimatterCell125Milligram.addOreDictionaryInput("antimatter125Milligram", 0);

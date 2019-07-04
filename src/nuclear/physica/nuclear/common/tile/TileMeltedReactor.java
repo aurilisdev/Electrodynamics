@@ -20,7 +20,8 @@ public class TileMeltedReactor extends TileBase {
 
 	public static final float RADIATION_RADIUS = 30;
 	public static final float RADIATION_PARTICLES = 10;
-	public int radiation = 8766000 * 5;
+	public static final float START_RADIATION = 8766000 * 5;
+	public int radiation = (int) START_RADIATION;
 	public int temperature = 6000;
 
 	@Override
@@ -53,39 +54,77 @@ public class TileMeltedReactor extends TileBase {
 			double d4 = yCoord - y2;
 			double d5 = zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
+			if (distance <= RADIATION_RADIUS)
 			{
-				int x = (int) Math.floor(x2);
-				int y = (int) Math.floor(y2);
-				int z = (int) Math.floor(z2);
-				Block block = worldObj.getBlock(x, y, z);
-				if (block.getMaterial() == Material.air)
+				if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
 				{
-					if (worldObj.getBlock(x, y - 1, z).getMaterial() != Material.air)
+					int x = (int) Math.floor(x2);
+					int y = (int) Math.floor(y2);
+					int z = (int) Math.floor(z2);
+					Block block = worldObj.getBlock(x, y, z);
+					if (block.getMaterial() == Material.air)
 					{
-						worldObj.setBlock(x, y, z, Blocks.fire);
+						if (worldObj.getBlock(x, y - 1, z).getMaterial() != Material.air)
+						{
+							worldObj.setBlock(x, y, z, Blocks.fire);
+						}
+					} else if (block == Blocks.stone)
+					{
+						if (temperature < 2100)
+						{
+							worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveStone, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
+						} else
+						{
+							worldObj.setBlock(x, y, z, Blocks.cobblestone);
+						}
+					} else if (block == Blocks.cobblestone)
+					{
+						worldObj.setBlock(x, y, z, Blocks.lava);
+					} else if (block == Blocks.water || block == Blocks.flowing_water)
+					{
+						worldObj.setBlockToAir(x, y, z);
+					} else if (block == Blocks.sand)
+					{
+						worldObj.setBlock(x, y, z, Blocks.glass);
 					}
-				} else if (block == Blocks.stone)
-				{
-					if (temperature < 2100)
-					{
-						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveStone, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
-					} else
-					{
-						worldObj.setBlock(x, y, z, Blocks.cobblestone);
-					}
-				} else if (block == Blocks.cobblestone)
-				{
-					worldObj.setBlock(x, y, z, Blocks.lava);
-				} else if (block == Blocks.water || block == Blocks.flowing_water)
-				{
-					worldObj.setBlockToAir(x, y, z);
-				} else if (block == Blocks.sand)
-				{
-					worldObj.setBlock(x, y, z, Blocks.glass);
 				}
 			}
 		}
+		if (radiation > 0)
+		{
+
+			radiation--;
+			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2;
+			double y2 = Math.min(255, Math.max(0, yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2));
+			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2;
+			double d3 = xCoord - x2;
+			double d4 = yCoord - y2;
+			double d5 = zCoord - z2;
+			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
+			if (distance <= RADIATION_RADIUS)
+			{
+				if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
+				{
+					int x = (int) Math.floor(x2);
+					int y = (int) Math.floor(y2);
+					int z = (int) Math.floor(z2);
+					Block block = worldObj.getBlock(x, y, z);
+					if (block == Blocks.grass)
+					{
+						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveGrass, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
+					} else if (block == Blocks.dirt)
+					{
+						worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveDirt, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void updateCommon(int ticks)
+	{
+		super.updateCommon(ticks);
 		if (radiation > 0)
 		{
 			@SuppressWarnings("unchecked")
@@ -95,31 +134,9 @@ public class TileMeltedReactor extends TileBase {
 			for (EntityLivingBase entity : entities)
 			{
 				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 2f) * (radiation / 8766000.0f), (float) scale * 2f,
+				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 1.75f) * (radiation / START_RADIATION), (float) scale * 2f,
 						(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
 						RADIATION_RADIUS);
-			}
-			radiation--;
-			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
-			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
-			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / 8766000) * 2;
-			double d3 = xCoord - x2;
-			double d4 = yCoord - y2;
-			double d5 = zCoord - z2;
-			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
-			{
-				int x = (int) Math.floor(x2);
-				int y = (int) Math.floor(y2);
-				int z = (int) Math.floor(z2);
-				Block block = worldObj.getBlock(x, y, z);
-				if (block == Blocks.grass)
-				{
-					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveGrass, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
-				} else if (block == Blocks.dirt)
-				{
-					worldObj.setBlock(x, y, z, NuclearBlockRegister.blockRadioactiveDirt, (int) Math.min(15, RADIATION_RADIUS - distance), 3);
-				}
 			}
 		}
 	}
@@ -128,19 +145,7 @@ public class TileMeltedReactor extends TileBase {
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		if (radiation > 0)
-		{
-			@SuppressWarnings("unchecked")
-			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
-							zCoord + RADIATION_RADIUS));
-			for (EntityLivingBase entity : entities)
-			{
-				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-				RadiationSystem.applyRontgenEntity(entity, (float) scale / 2f, (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
-						RADIATION_RADIUS);
-			}
-		}
+
 		int i = 0;
 		while (true)
 		{

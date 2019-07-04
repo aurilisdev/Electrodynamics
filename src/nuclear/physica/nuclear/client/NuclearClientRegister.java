@@ -16,6 +16,7 @@ import physica.library.client.render.TileRenderObjModel;
 import physica.nuclear.client.render.entity.RenderParticle;
 import physica.nuclear.client.render.item.ItemRenderCentrifuge;
 import physica.nuclear.client.render.item.ItemRenderControlRod;
+import physica.nuclear.client.render.item.ItemRenderNeutronCaptureChamber;
 import physica.nuclear.client.render.item.ItemRenderTurbine;
 import physica.nuclear.client.render.tile.TileRenderAssembler;
 import physica.nuclear.client.render.tile.TileRenderCentrifuge;
@@ -60,7 +61,7 @@ public class NuclearClientRegister implements IContent {
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockNeutronCaptureChamber),
 				new ItemRenderObjModel("neutronCapturer.obj", "neutronCaptureEmpty.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockNeutronCaptureChamber),
-				new ItemRenderObjModel("neutronCapturer.obj", "neutronCaptureEmpty.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+				new ItemRenderNeutronCaptureChamber("neutronCapturer.obj", "neutronCaptureEmpty.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileChemicalBoiler.class,
 				new TileRenderObjModel<TileChemicalBoiler>("chemicalBoiler.obj", "chemicalBoiler.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));

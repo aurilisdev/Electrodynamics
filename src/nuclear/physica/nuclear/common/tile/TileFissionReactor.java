@@ -221,7 +221,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		if (PhysicaAPI.isDebugMode)
 		{
-			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
+			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getBlockLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
 		}
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
 		{

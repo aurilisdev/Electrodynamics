@@ -8,18 +8,15 @@ import codechicken.lib.vec.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.api.core.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
+import physica.forcefield.client.ForcefieldRenderHandler;
 import physica.forcefield.client.render.model.ModelCube;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.client.render.TileRenderObjModel;
-import physica.library.location.Location;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> extends TileRenderObjModel<T> {
@@ -45,32 +42,7 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
 		if (tile.isActivated() && tile.canSendBeam())
 		{
-			Location start = new Location((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
-			Location poolObject = new Location();
-			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-			float xx = (float) (player.prevPosX + (player.posX - player.prevPosX) * deltaFrame - EntityFX.interpPosX);
-			float yy = (float) (player.prevPosY + (player.posY - player.prevPosY) * deltaFrame - EntityFX.interpPosY);
-			float zz = (float) (player.prevPosZ + (player.posZ - player.prevPosZ) * deltaFrame - EntityFX.interpPosZ);
-			Location playerPos = new Location(xx, yy, zz);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(1, 1);
-			GL11.glColor3f(1.5f, 1.2f, 1.5f);
-			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png"));
-			Tessellator.instance.startDrawingQuads();
-			for (ITileBase base : tile.getFortronConnections())
-			{
-				TileEntity baseTile = (TileEntity) base;
-				if (baseTile instanceof IInvFortronTile)
-				{
-					double diffX = baseTile.xCoord - tile.This().xCoord;
-					double diffY = baseTile.yCoord - tile.This().yCoord;
-					double diffZ = baseTile.zCoord - tile.This().zCoord;
-					poolObject.set(start.x + diffX, start.y + diffY, start.z + diffZ);
-					addBeamToTesselator(start, poolObject, playerPos, 0.15f);
-				}
-			}
-			Tessellator.instance.draw();
-			GL11.glDisable(GL11.GL_BLEND);
+			ForcefieldRenderHandler.renderSet.add(new RenderFortronBlockInfo(tile, x, y, z, deltaFrame));
 		}
 		GL11.glPopMatrix();
 		if (tile instanceof TileFortronFieldConstructor)
@@ -92,14 +64,13 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 				GL11.glColor4f(r, g, b,
 						(float) Math.sin(tile.getTicksRunning() / 10.0D) / 2.0F + 0.8F);
 				GL11.glTranslatef(0.0F, (float) Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, 0.0F);
-				GL11.glRotatef(tile.getTicksRunning() * 4L, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(36.0F + tile.getTicksRunning() * 4L, 0.0F, 1.0F, 1.0F);
+				GL11.glRotatef(tile.getTicksRunning(), 0.0F, 1.0F, 0.0F);
 				if (mode == 0 || mode == 1)
 				{
 					Sphere sphere = new Sphere();
 					sphere.setTextureFlag(true);
-					sphere.draw(0.3f, 20, 10);
-
+					sphere.draw(0.3f, 30, 30);
 				} else if (mode == 2)
 				{
 					GL11.glScalef(0.5F, 0.5F, 0.5F);
@@ -144,37 +115,4 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
 	}
-
-	public static void addBeamToTesselator(Location Start, Location End, Location Player, float width)
-	{
-		Start.sub(Player);
-		double cachedX = Player.x;
-		double cachedY = Player.y;
-		double cachedZ = Player.z;
-		double crossX = Start.y * End.z - Start.z * End.y;
-		double crossY = Start.z * End.x - Start.x * End.z;
-		double crossZ = Start.x * End.y - Start.y * End.x;
-		Player.set(crossX, crossY, crossZ);
-		float fl = Player.norm();
-		Player.set(Player.x / fl, Player.y / fl, Player.z / fl);
-		Player.mul(width);
-		Start.add(Player);
-		Tessellator.instance.addVertexWithUV(Start.getX(), Start.getY(), Start.getZ(), 0.0D, 0.0D);
-		Start.sub(Player);
-
-		End.add(Player);
-		Tessellator.instance.addVertexWithUV(End.getX(), End.getY(), End.getZ(), 1.0D, 1.0D);
-		End.sub(Player);
-
-		End.sub(Player);
-		Tessellator.instance.addVertexWithUV(End.getX(), End.getY(), End.getZ(), 0.0D, 1.0D);
-		End.add(Player);
-
-		Start.sub(Player);
-		Tessellator.instance.addVertexWithUV(Start.getX(), Start.getY(), Start.getZ(), 1.0D, 0.0D);
-		Start.add(Player);
-		Player.set(cachedX, cachedY, cachedZ);
-		Start.add(Player);
-	}
-
 }

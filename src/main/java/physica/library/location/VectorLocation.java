@@ -8,29 +8,29 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Location {
+public class VectorLocation {
 
 	public double x;
 	public double y;
 	public double z;
 
-	public Location() {
+	public VectorLocation() {
 		this(0, 0, 0);
 	}
 
-	public Location(double x, double y, double z) {
+	public VectorLocation(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 
-	public Location(Entity entity) {
+	public VectorLocation(Entity entity) {
 		x = entity.posX;
 		y = entity.posY;
 		z = entity.posZ;
 	}
 
-	public Location(TileEntity tile) {
+	public VectorLocation(TileEntity tile) {
 		x = tile.xCoord;
 		y = tile.yCoord;
 		z = tile.zCoord;
@@ -78,10 +78,16 @@ public class Location {
 		return (float) Math.sqrt(x * x + y * y + z * z);
 	}
 
-	public Location normalize()
+	public VectorLocation normalize()
 	{
 		float n = norm();
-		return new Location(x / n, y / n, z / n);
+		return div(n);
+	}
+
+	public VectorLocation createNormalized()
+	{
+		float n = norm();
+		return new VectorLocation(x / n, y / n, z / n);
 	}
 
 	public float getDistance(float x2, float y2, float z2)
@@ -92,7 +98,7 @@ public class Location {
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
-	public float getDistance(Location vector)
+	public float getDistance(VectorLocation vector)
 	{
 		double d3 = x - vector.x;
 		double d4 = y - vector.y;
@@ -158,7 +164,7 @@ public class Location {
 		return world.isAirBlock(floorX(), floorY(), floorZ());
 	}
 
-	public Location cross(Location b)
+	public VectorLocation cross(VectorLocation b)
 	{
 		x = y * b.z - z * b.y;
 		y = z * b.x - x * b.z;
@@ -166,7 +172,7 @@ public class Location {
 		return this;
 	}
 
-	public Location sub(Location b)
+	public VectorLocation sub(VectorLocation b)
 	{
 		x -= b.x;
 		y -= b.y;
@@ -174,7 +180,7 @@ public class Location {
 		return this;
 	}
 
-	public Location sub(int sub)
+	public VectorLocation sub(int sub)
 	{
 		x -= sub;
 		y -= sub;
@@ -182,7 +188,7 @@ public class Location {
 		return this;
 	}
 
-	public Location add(Location b)
+	public VectorLocation add(VectorLocation b)
 	{
 		x += b.x;
 		y += b.y;
@@ -190,7 +196,7 @@ public class Location {
 		return this;
 	}
 
-	public Location add(int add)
+	public VectorLocation add(int add)
 	{
 		x += add;
 		y += add;
@@ -198,7 +204,7 @@ public class Location {
 		return this;
 	}
 
-	public Location mul(Location b)
+	public VectorLocation mul(VectorLocation b)
 	{
 		x *= b.x;
 		y *= b.y;
@@ -206,7 +212,7 @@ public class Location {
 		return this;
 	}
 
-	public Location mul(float mul)
+	public VectorLocation mul(float mul)
 	{
 		x *= mul;
 		y *= mul;
@@ -214,7 +220,23 @@ public class Location {
 		return this;
 	}
 
-	public Location abs()
+	public VectorLocation div(VectorLocation b)
+	{
+		x /= b.x;
+		y /= b.y;
+		z /= b.z;
+		return this;
+	}
+
+	public VectorLocation div(float div)
+	{
+		x /= div;
+		y /= div;
+		z /= div;
+		return this;
+	}
+
+	public VectorLocation abs()
 	{
 		x = Math.abs(x);
 		y = Math.abs(y);
@@ -222,7 +244,7 @@ public class Location {
 		return this;
 	}
 
-	public Location floor()
+	public VectorLocation floor()
 	{
 		x = Math.floor(x);
 		y = Math.floor(y);
@@ -230,9 +252,9 @@ public class Location {
 		return this;
 	}
 
-	public Location Copy()
+	public VectorLocation Copy()
 	{
-		return new Location(x, y, z);
+		return new VectorLocation(x, y, z);
 	}
 
 	public BlockLocation BlockLocation()
@@ -240,37 +262,37 @@ public class Location {
 		return new BlockLocation(floorX(), floorY(), floorZ());
 	}
 
-	public static Location Cross(Location a, Location b)
+	public static VectorLocation Cross(VectorLocation a, VectorLocation b)
 	{
 		double x = a.y * b.z - a.z * b.y;
 		double y = a.z * b.x - a.x * b.z;
 		double z = a.x * b.y - a.y * b.x;
-		return new Location(x, y, z);
+		return new VectorLocation(x, y, z);
 	}
 
-	public static Location Sub(Location a, Location b)
+	public static VectorLocation Sub(VectorLocation a, VectorLocation b)
 	{
-		return new Location(a.x - b.x, a.y - b.y, a.z - b.z);
+		return new VectorLocation(a.x - b.x, a.y - b.y, a.z - b.z);
 	}
 
-	public static Location Add(Location a, Location b)
+	public static VectorLocation Add(VectorLocation a, VectorLocation b)
 	{
-		return new Location(a.x + b.x, a.y + b.y, a.z + b.z);
+		return new VectorLocation(a.x + b.x, a.y + b.y, a.z + b.z);
 	}
 
-	public static Location Mul(Location a, float f)
+	public static VectorLocation Mul(VectorLocation a, float f)
 	{
-		return new Location(a.x * f, a.y * f, a.z * f);
+		return new VectorLocation(a.x * f, a.y * f, a.z * f);
 	}
 
-	public static Location Abs(Location a)
+	public static VectorLocation Abs(VectorLocation a)
 	{
-		return new Location(Math.abs(a.x), Math.abs(a.y), Math.abs(a.z));
+		return new VectorLocation(Math.abs(a.x), Math.abs(a.y), Math.abs(a.z));
 	}
 
-	public static Location Floor(Location a)
+	public static VectorLocation Floor(VectorLocation a)
 	{
-		return new Location(Math.floor(a.x), Math.floor(a.y), Math.floor(a.z));
+		return new VectorLocation(Math.floor(a.x), Math.floor(a.y), Math.floor(a.z));
 	}
 
 	@Override
@@ -288,7 +310,7 @@ public class Location {
 		{
 			return false;
 		}
-		Location other = (Location) obj;
+		VectorLocation other = (VectorLocation) obj;
 		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
 		{
 			return false;

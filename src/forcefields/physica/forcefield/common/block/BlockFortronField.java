@@ -10,7 +10,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,28 +31,18 @@ import physica.forcefield.common.effect.damage.DamageSourceForcefield;
 import physica.forcefield.common.tile.TileFortronField;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.location.BlockLocation;
+import physica.library.location.VectorLocation;
 import physica.library.util.PhysicaMath;
 
 public class BlockFortronField extends Block implements ITileEntityProvider, IFortronBlock {
-
-	@SideOnly(Side.CLIENT)
-	private IIcon blockIconTop;
 
 	public BlockFortronField() {
 		super(Material.glass);
 		setBlockUnbreakable();
 		setResistance(Float.MAX_VALUE);
-		setBlockTextureName(CoreReferences.PREFIX + "fortronField");
+		setBlockTextureName(CoreReferences.PREFIX + "animatedFortronField");
 		setBlockName(ForcefieldReferences.PREFIX + "fortronField");
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister reg)
-	{
-		this.blockIcon = reg.registerIcon(this.getTextureName());
-		this.blockIconTop = reg.registerIcon(this.getTextureName() + "Top");
 	}
 
 	@Override
@@ -143,68 +132,97 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
-		return side <= 1 ? blockIconTop : blockIcon;
+		return blockIcon;
 	}
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
-		if (!world.isRemote && entity instanceof EntityLivingBase)
+		if (entity instanceof EntityLivingBase)
 		{
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			if (tileEntity instanceof TileFortronField)
 			{
 				TileFortronField field = (TileFortronField) tileEntity;
 				TileEntity possibleConstructor = field.getConstructorCoord().getTile(world);
-				if (!(possibleConstructor instanceof TileFortronFieldConstructor))
+				if (world.getChunkProvider().chunkExists(x >> 4, z >> 4))
 				{
-					world.setBlockToAir(x, y, z);
-				} else
-				{
-					TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) possibleConstructor;
-					if (!constructor.isActivated())
+					if (!(possibleConstructor instanceof TileFortronFieldConstructor))
 					{
-						HashSet<BlockLocation> removed = new HashSet<>();
-						LinkedList<TileFortronField> invalidQueue = new LinkedList<>();
-						invalidQueue.push(field);
-
-						while (!invalidQueue.isEmpty() && removed.size() < 1000)
+						if (!world.isRemote)
 						{
-							TileFortronField element = invalidQueue.pop();
-							BlockLocation blockLocation = new BlockLocation(element.xCoord, element.yCoord, element.zCoord);
-							if (removed.contains(blockLocation))
+							world.setBlockToAir(x, y, z);
+						}
+					} else
+					{
+						TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) possibleConstructor;
+						if (!world.isRemote)
+						{
+							if (!constructor.isActivated())
 							{
-								continue;
-							}
+								HashSet<BlockLocation> removed = new HashSet<>();
+								LinkedList<TileFortronField> invalidQueue = new LinkedList<>();
+								invalidQueue.push(field);
 
-							world.setBlock(element.xCoord, element.yCoord, element.zCoord, Blocks.air, 0, 2);
-							removed.add(blockLocation);
-
-							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-							{
-								TileEntity tile = world.getTileEntity(element.xCoord + direction.offsetX, element.yCoord + direction.offsetY, element.zCoord + direction.offsetZ);
-								if (tile instanceof TileFortronField && !((TileFortronField) tile).isValidField())
+								while (!invalidQueue.isEmpty() && removed.size() < 1000)
 								{
-									invalidQueue.add((TileFortronField) tile);
+									TileFortronField element = invalidQueue.pop();
+									BlockLocation blockLocation = new BlockLocation(element.xCoord, element.yCoord, element.zCoord);
+									if (removed.contains(blockLocation))
+									{
+										continue;
+									}
+
+									world.setBlock(element.xCoord, element.yCoord, element.zCoord, Blocks.air, 0, 2);
+									removed.add(blockLocation);
+
+									for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+									{
+										TileEntity tile = world.getTileEntity(element.xCoord + direction.offsetX, element.yCoord + direction.offsetY, element.zCoord + direction.offsetZ);
+										if (tile instanceof TileFortronField && !((TileFortronField) tile).isValidField())
+										{
+											invalidQueue.add((TileFortronField) tile);
+										}
+									}
 								}
+								return;
+							}
+							float volatilityPercent = (float) constructor.getHealthLost() / TileFortronFieldConstructor.MAX_HEALTH_LOSS;
+							if (volatilityPercent > 0.5)
+							{
+								world.createExplosion(null, entity.posX, entity.posY, entity.posZ, PhysicaMath.map(volatilityPercent, 0.5F, 1F, 0.5F, 5F), true);
 							}
 						}
-						return;
-					}
-					float volatilityPercent = (float) constructor.getHealthLost() / TileFortronFieldConstructor.MAX_HEALTH_LOSS;
-					if (volatilityPercent > 0.5)
-					{
-						world.createExplosion(null, entity.posX, entity.posY, entity.posZ, PhysicaMath.map(volatilityPercent, 0.5F, 1F, 0.5F, 5F), true);
-					}
-					int shockAmount = constructor.getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"),
-							TileFortronFieldConstructor.SLOT_UPGRADES[0], TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]);
-					if (shockAmount > 0)
-					{
-						@SuppressWarnings("unchecked")
-						List<EntityLiving> entities = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x - 1, y - 1, z - 1, x + 2, y + 2, z + 2));
-						for (Entity living : entities)
+						int shockAmount = constructor.getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"),
+								TileFortronFieldConstructor.SLOT_UPGRADES[0], TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]);
+						if (shockAmount > 0)
 						{
-							living.attackEntityFrom(DamageSourceForcefield.INSTANCE, shockAmount);
+							if (!world.isRemote)
+							{
+								@SuppressWarnings("unchecked")
+								List<EntityLiving> entities = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x - 1, y - 1, z - 1, x + 2, y + 2, z + 2));
+								for (Entity living : entities)
+								{
+									VectorLocation pos = new VectorLocation(entity);
+									pos.sub(((TileFortronField) tileEntity).getLocation());
+
+									pos.floor();
+									pos.y = 1;
+									float norm = pos.norm();
+									if (norm > 0.5f)
+									{
+										pos.div(norm);
+									}
+									double knockback = 0.2;
+									entity.motionX += pos.x * knockback;
+									entity.motionZ += pos.z * knockback;
+									living.attackEntityFrom(DamageSourceForcefield.INSTANCE, shockAmount);
+								}
+							}
+							if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode))
+							{
+
+							}
 						}
 					}
 				}

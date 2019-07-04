@@ -27,7 +27,7 @@ public class ForcefieldClientRegister implements IContent {
 	public void preInit()
 	{
 		MinecraftForge.EVENT_BUS.register(this);
-
+		MinecraftForge.EVENT_BUS.register(new ForcefieldRenderHandler());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCoercionDriver.class,
 				new TileRenderFortronBlock<TileCoercionDriver>("coercionDriver.obj"));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockCoercionDriver),

@@ -42,7 +42,7 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 		if (!(tile instanceof TileFissionReactor))
 		{
 			worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, new ItemStack(getBlockType())));
-			getLocation().setBlockAir(worldObj);
+			getBlockLocation().setBlockAir(worldObj);
 
 		}
 	}
