@@ -7,7 +7,7 @@ All Rights Reserved unless otherwise explicitly stated.
 
 The following license is subject to change at any time with or without notice and will take effect immediately. By using this license, you agree to all the following terms below.
 
-If you would like to request permission to distribute this software please send an e-mail to aurilisdev@gmail.com
+If you would like to request permission to distribute a modified version of this software please send an e-mail to aurilisdev@gmail.com or contact aurilisdev#4673 on discord.
 
 You are allowed to 
 
@@ -40,7 +40,7 @@ Modpacks
 
 Terms of distribution
 
-> If the software is to be distributed it cannot be modified without permission from the owner. The software must be provided with no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
+> If the software is distributed it cannot be modified without permission from the owner. The software must be provided with no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
 
 Terms if distribution permission is granted by the owner. This applies to modified versions of the software
 
