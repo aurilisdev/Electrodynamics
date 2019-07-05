@@ -268,16 +268,6 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			{
 				surroundingWater++;
 				decrease += (temperature - WATER_TEMPERATURE) / 20000f;
-			} else if (block == Blocks.lava)
-			{
-				if (temperature < 1165)
-				{
-					decrease -= (1165 - temperature) / 10f;
-				} else if (hasFuelRod())
-				{
-					decrease += (1165 - temperature) / 1000f;
-				}
-				break;
 			}
 		}
 		if (decrease != 0)
