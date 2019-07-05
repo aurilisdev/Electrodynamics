@@ -36,8 +36,12 @@ The software is provided ‘as is’ with no warranties, implied or otherwise. T
 
 Modpacks
 
-> An exception to the restrictions of distribution is a private modpack. A private modpack is defined as a set of mods distributed as a collection. In which the pack is only distributed for personal use or for small server usage. The user is allowed to distribute this software as a part of such a private modpack if the user provides proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the download page for the modpack. The user is hereby warned that the pack should never be publically accessible for download if it is to be considered as private. The user may distribute this software as a part of a public modpack if explicit permission is granted by the owner
+> An exception to the restrictions of distribution is a modpack. A modpack is defined as a set of mods distributed as a collection. The user is allowed to distribute this software as a part of such a modpack if the user follows the terms below.
 
-Terms if distribution permission is granted by the owner
+Terms of distribution
+
+> If the software is to be distributed it cannot be modified without permission from the owner. The software must be provided with no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
+
+Terms if distribution permission is granted by the owner. This applies to modified versions of the software
 
 > A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
