@@ -5,16 +5,13 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import physica.CoreReferences;
 import physica.core.client.render.tile.TileRenderCopperCable;
 
 @SideOnly(Side.CLIENT)
 public class ItemRenderEnergyCable implements IItemRenderer {
-
-	protected static final ResourceLocation model_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "copperCable.png");
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
@@ -32,6 +29,7 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
 	{
 		GL11.glPushMatrix();
+		RenderHelper.disableStandardItemLighting();
 		GL11.glScalef(1.25f, 1.25f, 1.25f);
 		if (type.equals(ItemRenderType.INVENTORY))
 		{
@@ -49,8 +47,10 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 			GL11.glScalef(1.25f, 1.25f, 1.25f);
 		}
 		GL11.glScalef(1, 3f, 1f);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(model_texture);
+		FMLClientHandler.instance().getClient().renderEngine
+				.bindTexture(TileRenderCopperCable.model_texture[Math.max(0, Math.min(TileRenderCopperCable.model_texture.length - 1, item.getItemDamage()))]);
 		render();
+		RenderHelper.enableStandardItemLighting();
 		GL11.glPopMatrix();
 	}
 

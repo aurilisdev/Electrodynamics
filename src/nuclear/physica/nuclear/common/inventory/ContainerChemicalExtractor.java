@@ -14,6 +14,6 @@ public class ContainerChemicalExtractor extends ContainerBase<TileChemicalExtrac
 		addSlotToContainer(new SlotBase(tile, TileChemicalExtractor.SLOT_INPUT, 81, 36));
 		addSlotToContainer(new SlotBase(tile, TileChemicalExtractor.SLOT_OUTPUT, 101, 36));
 		setSlotCount(TileChemicalExtractor.SLOT_OUTPUT + 1);
-		addDefaultPlayerInventory(player, 0);
+		addDefaultPlayerInventory(player, 10);
 	}
 }

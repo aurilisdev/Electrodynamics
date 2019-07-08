@@ -20,13 +20,16 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.IGuiInterface;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Measurement;
+import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiCentrifuge;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.NuclearItemRegister;
 import physica.nuclear.common.inventory.ContainerCentrifuge;
 
-public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
+public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
 	public static final int TICKS_REQUIRED = 800;
 	public static final int SLOT_ENERGY = 0;
@@ -65,7 +68,7 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 				if (tile instanceof TileChemicalBoiler)
 				{
 					TileChemicalBoiler boiler = (TileChemicalBoiler) tile;
-					if (boiler.hexaTank.getFluidAmount() > 0)
+					if (boiler.hexaTank.getFluidAmount() > 0 && tank.getFluidAmount() < tank.getCapacity())
 					{
 						tank.fill(boiler.hexaTank.drain(Math.min(10, boiler.hexaTank.getFluidAmount()), true), true);
 					}
@@ -175,12 +178,6 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
-	{
-		return getEnergyUsage() * 2;
-	}
-
-	@Override
 	public boolean canConnectEnergy(ForgeDirection from)
 	{
 		return from == ForgeDirection.DOWN || from.equals(getFacing().getOpposite());
@@ -189,7 +186,7 @@ public class TileCentrifuge extends TileBasePoweredContainer implements IGuiInte
 	@Override
 	public int getEnergyUsage()
 	{
-		return 300;
+		return (int) ElectricityUtilities.convertEnergy(1.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}
 
 	@Override

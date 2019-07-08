@@ -1,4 +1,4 @@
-package physica.core.common.tile;
+package physica.core.common.tile.cable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +13,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.ITileBasePowered;
+import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 import physica.library.tile.TileBase;
 
-public class TileCopperCable extends TileBase implements ITileBasePowered, IEnergyProvider {
+public class TileEnergyCable extends TileBase implements ITileBasePowered, IEnergyProvider {
 
-	public static final int MAX_ENERGY_STORED = 10240;
+	public static final int MAX_ENERGY_STORED_BASE = 10240;
 	private int energyStored;
 	private ForgeDirection lastReceive = ForgeDirection.UNKNOWN;
+	private int lastVoltage;
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox()
@@ -36,7 +38,7 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 	@Override
 	public void setEnergyStored(int energy)
 	{
-		energyStored = Math.min(energy, MAX_ENERGY_STORED);
+		energyStored = Math.min(energy, getMaxEnergyStored(ForgeDirection.UNKNOWN));
 	}
 
 	@Override
@@ -55,7 +57,8 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 					if (tile instanceof IEnergyReceiver)
 					{
 						IEnergyReceiver receiver = (IEnergyReceiver) tile;
-						if (receiver.canConnectEnergy(dir.getOpposite()) && receiver.getEnergyStored(dir.getOpposite()) < receiver.getMaxEnergyStored(dir.getOpposite()))
+						int max = receiver.getMaxEnergyStored(dir.getOpposite());
+						if (receiver.canConnectEnergy(dir.getOpposite()) && (tile instanceof TileEnergyCable ? receiver.getEnergyStored(dir.getOpposite()) < max : true))
 						{
 							receivers.put((IEnergyReceiver) tile, dir);
 						}
@@ -80,17 +83,17 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 					}
 				}
 			}
-			if (energyStored > MAX_ENERGY_STORED)
+			if (lastVoltage > getVoltage() && getBlockMetadata() != EnumEnergyCable.superConductor.ordinal())
 			{
 				for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
 					TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-					if (tile instanceof IEnergyReceiver)
+					if (tile instanceof TileEnergyCable)
 					{
-						IEnergyReceiver receiver = (IEnergyReceiver) tile;
-						if (receiver.canConnectEnergy(dir.getOpposite()) && receiver.getEnergyStored(dir.getOpposite()) < receiver.getMaxEnergyStored(dir.getOpposite()))
+						TileEnergyCable cable = (TileEnergyCable) tile;
+						if (cable.getVoltage() < lastVoltage)
 						{
-							worldObj.setBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, Blocks.fire);
+							((TileEnergyCable) tile).lastVoltage = lastVoltage;
 						}
 					}
 				}
@@ -100,38 +103,25 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 
 	}
 
+	public int getVoltage()
+	{
+		return getBlockMetadata() == EnumEnergyCable.superConductor.ordinal() ? 0 : 120 * (getBlockMetadata() + 1);
+	}
+
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
 		lastReceive = from;
-		int count = 0;
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-		{
-			if (dir != lastReceive)
-			{
-				TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-				if (tile instanceof IEnergyReceiver)
-				{
-					IEnergyReceiver receiver = (IEnergyReceiver) tile;
-					if (receiver.canConnectEnergy(dir.getOpposite()) && receiver.getEnergyStored(dir.getOpposite()) < receiver.getMaxEnergyStored(dir.getOpposite()))
-					{
-						count++;
-					}
-				}
-			}
-		}
-		maxReceive = count > 0 ? maxReceive : 0;
 		int capacityLeft = getMaxEnergyStored(from) - getEnergyStored();
 		int setCount = simulate ? getEnergyStored() : capacityLeft >= maxReceive ? getEnergyStored() + maxReceive : getMaxEnergyStored(from);
 
 		setEnergyStored(setCount);
-		if (!simulate && maxReceive > 0)
+		if (getVoltage() > 0)
 		{
-			double lim = Math.pow(1.0005, maxReceive);
-			if (lim > setCount)
-			{
-				energyStored = Integer.MAX_VALUE / 2;
-			}
+			lastVoltage = maxReceive / (getMaxEnergyStored(ForgeDirection.UNKNOWN) / getVoltage());
+		} else
+		{
+			lastVoltage = -10;
 		}
 		return capacityLeft >= maxReceive ? maxReceive : capacityLeft;
 	}
@@ -139,7 +129,17 @@ public class TileCopperCable extends TileBase implements ITileBasePowered, IEner
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from)
 	{
-		return MAX_ENERGY_STORED;
+		if (hasWorldObj())
+		{
+			if (getBlockMetadata() == EnumEnergyCable.superConductor.ordinal())
+			{
+				return MAX_ENERGY_STORED_BASE * 60;
+			}
+			return (int) (MAX_ENERGY_STORED_BASE * Math.pow(getBlockMetadata() + 1, 2) * 3);
+		} else
+		{
+			return Integer.MAX_VALUE; // The section above has a worldObj which is null when the tile is loaded at first.
+		}
 	}
 
 	@Override

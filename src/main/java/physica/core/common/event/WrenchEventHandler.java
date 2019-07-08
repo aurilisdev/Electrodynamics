@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import physica.core.common.block.BlockCopperCable;
+import physica.core.common.block.BlockEnergyCable;
 import physica.library.block.BlockBaseContainer;
 
 public class WrenchEventHandler {
@@ -61,7 +61,7 @@ public class WrenchEventHandler {
 				if (canWrench(event.entityPlayer.getCurrentEquippedItem(), event.x, event.y, event.z, event.entityPlayer))
 				{
 					Block block = event.world.getBlock(event.x, event.y, event.z);
-					if (block instanceof BlockBaseContainer || block instanceof BlockCopperCable)
+					if (block instanceof BlockBaseContainer)
 					{
 						if (!event.world.isRemote)
 						{
@@ -71,6 +71,15 @@ public class WrenchEventHandler {
 								block.dropBlockAsItem(event.world, event.x, event.y, event.z, 0, 0);
 								event.world.setBlockToAir(event.x, event.y, event.z);
 							}
+						}
+						event.entityPlayer.swingItem();
+					} else if (block instanceof BlockEnergyCable)
+					{
+						if (!event.world.isRemote)
+						{
+							block.breakBlock(event.world, event.x, event.y, event.z, block, event.world.getBlockMetadata(event.x, event.y, event.z));
+							block.dropBlockAsItem(event.world, event.x, event.y, event.z, 0, 0);
+							event.world.setBlockToAir(event.x, event.y, event.z);
 						}
 						event.entityPlayer.swingItem();
 					}

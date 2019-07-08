@@ -25,7 +25,7 @@ import physica.core.client.nei.PhysicaRecipeHandlerBase;
 import physica.nuclear.client.gui.GuiCentrifuge;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.NuclearItemRegister;
-import physica.nuclear.common.tile.TileCentrifuge;
+import physica.nuclear.common.tile.TileGasCentrifuge;
 
 public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 
@@ -50,7 +50,7 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	public void onUpdate()
 	{
 		super.onUpdate();
-		cycleticks += TileCentrifuge.TICKS_REQUIRED / 50;
+		cycleticks += TileGasCentrifuge.TICKS_REQUIRED / 50;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 		drawTexturedModalRect(-1, 0, xOffset, yOffset, 169, 62);
 
 		drawFluidTank(8, 8, new FluidStack(NuclearFluidRegister.LIQUID_HE, theRecipe.hexaCost));
-		renderFurnaceCookArrow(36, 24, 0, TileCentrifuge.TICKS_REQUIRED);
+		renderFurnaceCookArrow(36, 24, 0, TileGasCentrifuge.TICKS_REQUIRED);
 
 		drawSlot(131, 24, true);
 		drawSlot(81, 24, false);
@@ -96,7 +96,7 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	public void drawExtras(int recipe)
 	{
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
-		drawProgressBar(36, 24, 18, 15, 22, 15, TileCentrifuge.TICKS_REQUIRED, 0);
+		drawProgressBar(36, 24, 18, 15, 22, 15, TileGasCentrifuge.TICKS_REQUIRED, 0);
 	}
 
 	@Override

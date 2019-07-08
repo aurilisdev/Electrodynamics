@@ -14,6 +14,6 @@ public class ContainerChemicalBoiler extends ContainerBase<TileChemicalBoiler> {
 		addSlotToContainer(new SlotBase(tile, TileChemicalBoiler.SLOT_INPUT1, 68, 26));
 		addSlotToContainer(new SlotBase(tile, TileChemicalBoiler.SLOT_INPUT2, 88, 26));
 		setSlotCount(TileChemicalBoiler.SLOT_INPUT2 + 1);
-		addDefaultPlayerInventory(player, 0);
+		addDefaultPlayerInventory(player, 10);
 	}
 }

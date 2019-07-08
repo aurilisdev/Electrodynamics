@@ -12,6 +12,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.IGuiInterface;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Measurement;
+import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiQuantumAssembler;
 import physica.nuclear.common.NuclearItemRegister;
@@ -170,12 +173,6 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
-	{
-		return getEnergyUsage() * 2;
-	}
-
-	@Override
 	public boolean canConnectEnergy(ForgeDirection from)
 	{
 		return from.equals(ForgeDirection.DOWN) || from.equals(ForgeDirection.UP);
@@ -221,6 +218,6 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	@Override
 	public int getEnergyUsage()
 	{
-		return 13250;
+		return (int) ElectricityUtilities.convertEnergy(35.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}
 }

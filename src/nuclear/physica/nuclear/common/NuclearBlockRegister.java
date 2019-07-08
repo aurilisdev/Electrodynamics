@@ -22,21 +22,23 @@ import physica.nuclear.common.block.BlockQuantumAssembler;
 import physica.nuclear.common.block.BlockRadioactiveDirt;
 import physica.nuclear.common.block.BlockRadioactiveGrass;
 import physica.nuclear.common.block.BlockRadioactiveStone;
+import physica.nuclear.common.block.BlockReactorControlPanel;
 import physica.nuclear.common.block.BlockSiren;
 import physica.nuclear.common.block.BlockThermometer;
 import physica.nuclear.common.block.BlockTurbine;
 import physica.nuclear.common.block.BlockUraniumOre;
-import physica.nuclear.common.tile.TileCentrifuge;
 import physica.nuclear.common.tile.TileChemicalBoiler;
 import physica.nuclear.common.tile.TileChemicalExtractor;
 import physica.nuclear.common.tile.TileFissionReactor;
 import physica.nuclear.common.tile.TileFusionReactor;
+import physica.nuclear.common.tile.TileGasCentrifuge;
 import physica.nuclear.common.tile.TileInsertableControlRod;
 import physica.nuclear.common.tile.TileMeltedReactor;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 import physica.nuclear.common.tile.TileParticleAccelerator;
 import physica.nuclear.common.tile.TilePlasma;
 import physica.nuclear.common.tile.TileQuantumAssembler;
+import physica.nuclear.common.tile.TileReactorControlPanel;
 import physica.nuclear.common.tile.TileSiren;
 import physica.nuclear.common.tile.TileTurbine;
 
@@ -59,6 +61,8 @@ public class NuclearBlockRegister implements IContent {
 	public static BlockUraniumOre blockUraniumOre;
 	public static BlockPlasma blockPlasma;
 	public static BlockInsertableControlRod blockInsertableControlRod;
+	public static BlockReactorControlPanel blockReactorControlPanel;
+
 	public static BlockMeltedReactor blockMeltedReactor;
 	public static BlockRadioactiveGrass blockRadioactiveGrass;
 	public static BlockRadioactiveStone blockRadioactiveStone;
@@ -72,7 +76,7 @@ public class NuclearBlockRegister implements IContent {
 		GameRegistry.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), "assembler");
 		GameRegistry.registerTileEntity(TileQuantumAssembler.class, NuclearReferences.PREFIX + "assembler");
 		GameRegistry.registerBlock(blockCentrifuge = new BlockCentrifuge(), "centrifuge");
-		GameRegistry.registerTileEntity(TileCentrifuge.class, NuclearReferences.PREFIX + "centrifuge");
+		GameRegistry.registerTileEntity(TileGasCentrifuge.class, NuclearReferences.PREFIX + "centrifuge");
 		GameRegistry.registerBlock(blockChemicalBoiler = new BlockChemicalBoiler(), "chemicalBoiler");
 		GameRegistry.registerTileEntity(TileChemicalBoiler.class, NuclearReferences.PREFIX + "chemicalBoiler");
 		GameRegistry.registerBlock(blockChemicalExtractor = new BlockChemicalExtractor(), "chemicalExtractor");
@@ -96,6 +100,9 @@ public class NuclearBlockRegister implements IContent {
 
 		GameRegistry.registerBlock(blockInsertableControlRod = new BlockInsertableControlRod(), "insertableControlRod");
 		GameRegistry.registerTileEntity(TileInsertableControlRod.class, NuclearReferences.PREFIX + "insertableControlRod");
+
+		GameRegistry.registerBlock(blockReactorControlPanel = new BlockReactorControlPanel(), "reactorControlPanel");
+		GameRegistry.registerTileEntity(TileReactorControlPanel.class, NuclearReferences.PREFIX + "reactorControlPanel");
 
 		GameRegistry.registerBlock(blockMeltedReactor = new BlockMeltedReactor(), "meltedReactor");
 		GameRegistry.registerTileEntity(TileMeltedReactor.class, NuclearReferences.PREFIX + "meltedReactor");

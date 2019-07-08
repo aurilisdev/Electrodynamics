@@ -13,15 +13,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
+import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 
-	protected static final ResourceLocation model_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "copperCable.png");
+	public static final ResourceLocation[] model_texture = new ResourceLocation[EnumEnergyCable.values().length];
 
 	public static final float pixel = 1 / 16f;
 	public static final float pixelElevenTwo = 11 * pixel / 2;
 	public static final float texPixel = 1 / 32f;
+	static
+	{
+		for (EnumEnergyCable type : EnumEnergyCable.values())
+		{
+			model_texture[type.ordinal()] = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + type.getName() + "Cable.png");
+		}
+	}
 
 	@Override
 	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame)
@@ -31,10 +39,12 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glTranslated(x, y, z);
-		bindTexture(model_texture);
+		int meta = tile.getBlockMetadata();
+		bindTexture(model_texture[Math.max(0, Math.min(model_texture.length - 1, meta))]);
 		boolean isCross = false;
 		boolean finished = false;
 		int connections = 0;
+		int differentLocations = 0;
 		ForgeDirection last = ForgeDirection.UNKNOWN;
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
@@ -42,7 +52,13 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite()))
 			{
 				drawConnection(dir);
-				connections++;
+				if (sideTile.getBlockMetadata() == meta)
+				{
+					connections++;
+				} else
+				{
+					differentLocations++;
+				}
 				if (!finished)
 				{
 					if (isCross)
@@ -60,7 +76,7 @@ public class TileRenderCopperCable extends TileEntitySpecialRenderer {
 				}
 			}
 		}
-		if (isCross && connections != 1)
+		if (isCross && connections != 1 && differentLocations <= 0)
 		{
 			GL11.glTranslated(last.offsetX * pixelElevenTwo, last.offsetY * pixelElevenTwo, last.offsetZ * pixelElevenTwo);
 			drawConnection(last.getOpposite());

@@ -28,11 +28,11 @@ import physica.nuclear.client.render.tile.TileRenderTurbine;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.entity.EntityParticle;
-import physica.nuclear.common.tile.TileCentrifuge;
 import physica.nuclear.common.tile.TileChemicalBoiler;
 import physica.nuclear.common.tile.TileChemicalExtractor;
 import physica.nuclear.common.tile.TileFissionReactor;
 import physica.nuclear.common.tile.TileFusionReactor;
+import physica.nuclear.common.tile.TileGasCentrifuge;
 import physica.nuclear.common.tile.TileInsertableControlRod;
 import physica.nuclear.common.tile.TileMeltedReactor;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
@@ -50,8 +50,8 @@ public class NuclearClientRegister implements IContent {
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockQuantumAssembler),
 				new ItemRenderObjModel("assembler.obj", "assembler.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCentrifuge.class, new TileRenderCentrifuge("centrifuge.obj", "centrifuge.png"));
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockCentrifuge), new ItemRenderCentrifuge("centrifuge.obj", "centrifuge.png"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileGasCentrifuge.class, new TileRenderCentrifuge("centrifugeStand.obj", "gasCentrifuge.png"));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockCentrifuge), new ItemRenderCentrifuge("centrifugeStand.obj", "gasCentrifuge.png"));
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileFissionReactor.class, new TileRenderFissionReactor("fissionReactor.obj", "fissionReactor.png"));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockFissionReactor),

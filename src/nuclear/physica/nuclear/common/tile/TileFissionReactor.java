@@ -42,7 +42,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	protected float temperature = AIR_TEMPERATURE;
 	protected int surroundingWater;
 	private int insertion;
-	private boolean isIncased;
+	boolean isIncased;
 
 	@Override
 	public void updateServer(int ticks)
@@ -71,38 +71,60 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public void updateCommon(int ticks)
 	{
 		super.updateCommon(ticks);
-		if (hasFuelRod() && temperature > 300)
+		int radius = 4;
+		if (ticks % 50 == 0)
 		{
-			int radius = 4;
-			if (ticks % 200 == 0)
+			isIncased = true;
+			loops:
 			{
-				isIncased = true;
-				loops:
+				for (int i = -radius; i <= radius; i++)
 				{
-					for (int i = -radius; i <= radius; i++)
+					for (int k = -radius; k <= radius; k++)
 					{
-						for (int k = -radius; k <= radius; k++)
+						Block block = worldObj.getBlock(xCoord + i, yCoord - radius, zCoord + k);
+						if (block == NuclearBlockRegister.blockReactorControlPanel)
 						{
-							if (worldObj.getBlock(xCoord + i, yCoord - radius, zCoord + k) != CoreBlockRegister.blockLead)
+							TileReactorControlPanel control = (TileReactorControlPanel) worldObj.getTileEntity(xCoord + i, yCoord - radius, zCoord + k);
+							if (control != null)
+							{
+								control.reactor = this;
+								worldObj.markBlockRangeForRenderUpdate(control.xCoord, control.yCoord, control.zCoord, control.xCoord, control.yCoord, control.zCoord);
+							} else
 							{
 								isIncased = false;
 								break loops;
 							}
+						} else if (block != CoreBlockRegister.blockLead)
+						{
+							isIncased = false;
+							break loops;
 						}
 					}
-					for (int i = -radius; i <= radius; i++)
+				}
+				for (int i = -radius; i <= radius; i++)
+				{
+					for (int j = -radius + 1; j <= 2; j++)
 					{
-						for (int j = -radius + 1; j <= 2; j++)
+						for (int k = -radius; k <= radius; k++)
 						{
-							for (int k = -radius; k <= radius; k++)
+							if (i == -radius || i == radius || k == radius || k == -radius)
 							{
-								if (i == -radius || i == radius || k == radius || k == -radius)
+								Block block = worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k);
+								if (block == NuclearBlockRegister.blockReactorControlPanel)
 								{
-									if (worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != CoreBlockRegister.blockLead)
+									TileReactorControlPanel control = (TileReactorControlPanel) worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
+									if (control != null)
+									{
+										control.reactor = this;
+									} else
 									{
 										isIncased = false;
 										break loops;
 									}
+								} else if (block != CoreBlockRegister.blockLead)
+								{
+									isIncased = false;
+									break loops;
 								}
 							}
 						}
@@ -164,6 +186,11 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public boolean isBreederRod()
 	{
 		return hasFuelRod() && getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemLowEnrichedFuelCell;
+	}
+
+	public int getInsertion()
+	{
+		return insertion;
 	}
 
 	@Override
@@ -406,6 +433,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(temperature);
+		dataList.add(insertion);
 	}
 
 	@Override
@@ -413,6 +441,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		super.readClientGuiPacket(buf, player);
 		temperature = buf.readFloat();
+		insertion = buf.readInt();
 	}
 
 	@Override

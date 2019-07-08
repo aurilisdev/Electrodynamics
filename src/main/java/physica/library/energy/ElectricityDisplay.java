@@ -72,4 +72,9 @@ public class ElectricityDisplay implements IBaseUtilities {
 		return IBaseUtilities.roundPreciseStatic(value, decimalPlaces) + " " + unit.name;
 	}
 
+	public static String getDisplayShortTicked(double value, Unit unit)
+	{
+		return getDisplayShort(value, unit) + "/t";
+	}
+
 }

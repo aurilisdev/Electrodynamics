@@ -21,6 +21,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.IGuiInterface;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiChemicalExtractor;
 import physica.nuclear.common.inventory.ContainerChemicalExtractor;
@@ -192,12 +194,6 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
-	{
-		return getEnergyUsage() * 2;
-	}
-
-	@Override
 	public boolean canConnectEnergy(ForgeDirection from)
 	{
 		return true;
@@ -206,7 +202,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	@Override
 	public int getEnergyUsage()
 	{
-		return 300;
+		return ElectricityUtilities.convertEnergy(750, Unit.WATT, Unit.RF);
 	}
 
 	@Override

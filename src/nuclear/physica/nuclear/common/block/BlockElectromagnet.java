@@ -140,7 +140,7 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
 	{
-		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 2);
+		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 3);
 	}
 
 	@Override

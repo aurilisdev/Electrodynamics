@@ -8,11 +8,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import physica.api.core.IBaseUtilities;
 import physica.library.client.gui.GuiContainerBase;
+import physica.library.energy.ElectricityDisplay;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Unit;
 import physica.library.inventory.tooltip.ToolTipTank;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.inventory.ContainerChemicalBoiler;
-import physica.nuclear.common.tile.TileCentrifuge;
 import physica.nuclear.common.tile.TileChemicalBoiler;
+import physica.nuclear.common.tile.TileGasCentrifuge;
 
 @SideOnly(Side.CLIENT)
 public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> implements IBaseUtilities {
@@ -22,6 +25,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 
 	public GuiChemicalBoiler(EntityPlayer player, TileChemicalBoiler host) {
 		super(new ContainerChemicalBoiler(player, host), host);
+		ySize += 10;
 	}
 
 	@Override
@@ -39,6 +43,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 		drawString("Status: "
 				+ (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting" : host.canProcess() ? "Insufficient power" : "Invalid input"), 8,
 				73);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "chemicalBoiler.gui"), xSize / 2, 5);
 	}
 
@@ -48,7 +53,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_WATER_TANK.x, AREA_WATER_TANK.y, host.getWaterTank());
 		drawFluidTank(AREA_HEX_TANK.x, AREA_HEX_TANK.y, host.getHexTank());
-		renderFurnaceCookArrow(30, 36, Math.min(TileCentrifuge.TICKS_REQUIRED / 2, host.getOperatingTicks()), TileCentrifuge.TICKS_REQUIRED / 2);
-		renderFurnaceCookArrow(118, 36, Math.max(0, host.getOperatingTicks() - TileCentrifuge.TICKS_REQUIRED / 2), TileCentrifuge.TICKS_REQUIRED / 2);
+		renderFurnaceCookArrow(30, 36, Math.min(TileGasCentrifuge.TICKS_REQUIRED / 2, host.getOperatingTicks()), TileGasCentrifuge.TICKS_REQUIRED / 2);
+		renderFurnaceCookArrow(118, 36, Math.max(0, host.getOperatingTicks() - TileGasCentrifuge.TICKS_REQUIRED / 2), TileGasCentrifuge.TICKS_REQUIRED / 2);
 	}
 }

@@ -8,6 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import physica.api.core.IBaseUtilities;
 import physica.library.client.gui.GuiContainerBase;
+import physica.library.energy.ElectricityDisplay;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Unit;
 import physica.library.inventory.tooltip.ToolTipTank;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.inventory.ContainerChemicalExtractor;
@@ -20,6 +23,7 @@ public class GuiChemicalExtractor extends GuiContainerBase<TileChemicalExtractor
 
 	public GuiChemicalExtractor(EntityPlayer player, TileChemicalExtractor host) {
 		super(new ContainerChemicalExtractor(player, host), host);
+		ySize += 10;
 	}
 
 	@Override
@@ -37,6 +41,7 @@ public class GuiChemicalExtractor extends GuiContainerBase<TileChemicalExtractor
 				+ (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting"
 						: host.canProcess(host.getStackInSlot(TileChemicalExtractor.SLOT_OUTPUT), host.getStackInSlot(TileChemicalExtractor.SLOT_INPUT)) ? "Insufficient power" : "Invalid input"),
 				8, 73);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "chemicalExtractor.gui"), xSize / 2, 5);
 	}
 

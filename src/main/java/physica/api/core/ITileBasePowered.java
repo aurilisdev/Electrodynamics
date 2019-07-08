@@ -63,6 +63,12 @@ public interface ITileBasePowered extends ITileBase, IEnergyReceiver {
 		return capacityLeft >= maxReceive ? maxReceive : capacityLeft;
 	}
 
+	@Override
+	default int getMaxEnergyStored(ForgeDirection from)
+	{
+		return getEnergyUsage() * 20;
+	}
+
 	abstract int getEnergyUsage();
 
 	abstract int getEnergyStored();

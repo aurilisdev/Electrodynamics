@@ -34,9 +34,14 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 		// Battery
 		addRecipe(CoreItemRegister.itemBattery, " T ", "TRT", "TCT", 'T', "ingotTin", 'R', Items.redstone, 'C', Items.coal);
 
+		// Superconductive Blend
+		addRecipe(new ItemStack(CoreItemRegister.itemMetaBlend, 1, 0), "SGS", "GEG", "SGS", 'S', "ingotSilver", 'G', "ingotGold", 'E', Items.ender_pearl);
+
 		// Smeltings
 		GameRegistry.addSmelting(CoreBlockRegister.blockTinOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 0), 0.7f);
 		GameRegistry.addSmelting(CoreBlockRegister.blockCopperOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 1), 0.7f);
-		GameRegistry.addSmelting(CoreBlockRegister.blockLeadOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 3), 1.2f);
+		GameRegistry.addSmelting(CoreBlockRegister.blockLeadOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 3), 1.0f);
+		GameRegistry.addSmelting(CoreBlockRegister.blockSilverOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 4), 1.2f);
+		GameRegistry.addSmelting(new ItemStack(CoreItemRegister.itemMetaBlend, 1, 0), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 5), 1.9f);
 	}
 }

@@ -17,6 +17,12 @@ public class CoreWorldGenRegister implements IContent {
 		GameRegistry.registerWorldGenerator(new OreGenReplace(CoreBlockRegister.blockCopperOre, 0,
 				new OreGeneratorSettings(ConfigCore.COPPER_ORE_MIN_Y, ConfigCore.COPPER_ORE_MAX_Y, ConfigCore.COPPER_ORE_BRANCH_SIZE, ConfigCore.COPPER_ORE_COUNT), "pickaxe",
 				ConfigCore.COPPER_ORE_HARVEST_LEVEL), 1);
+		GameRegistry.registerWorldGenerator(new OreGenReplace(CoreBlockRegister.blockLead, 0,
+				new OreGeneratorSettings(ConfigCore.LEAD_ORE_MIN_Y, ConfigCore.LEAD_ORE_MAX_Y, ConfigCore.LEAD_ORE_BRANCH_SIZE, ConfigCore.LEAD_ORE_COUNT), "pickaxe",
+				ConfigCore.LEAD_ORE_HARVEST_LEVEL), 1);
+		GameRegistry.registerWorldGenerator(new OreGenReplace(CoreBlockRegister.blockCopperOre, 0,
+				new OreGeneratorSettings(ConfigCore.SILVER_ORE_MIN_Y, ConfigCore.SILVER_ORE_MAX_Y, ConfigCore.SILVER_ORE_BRANCH_SIZE, ConfigCore.SILVER_ORE_COUNT), "pickaxe",
+				ConfigCore.SILVER_ORE_HARVEST_LEVEL), 1);
 	}
 
 }

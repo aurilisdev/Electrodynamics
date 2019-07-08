@@ -30,8 +30,9 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 					- host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
 					/ (+1 + Math.round(host.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
 		}
-		drawString("Time Left: " + roundPrecise(ticksLeft / 20, 1) + " seconds", 9, 59);
-		drawString("Temperature: " + roundPrecise(host.getTemperature(), 2) + " C", 9, 70);
+		drawString("Temperature: " + roundPrecise(host.getTemperature(), 2) + " C", 9, 59);
+		drawString("Time Left: " + roundPrecise(ticksLeft / 20, 1) + " seconds", 9, 70);
+
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "fissionReactor.gui"), xSize / 2, 5);
 
 	}

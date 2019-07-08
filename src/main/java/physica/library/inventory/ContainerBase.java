@@ -24,6 +24,12 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 		this.player = player;
 	}
 
+	public ContainerBase(EntityPlayer player, T node, Object fillerNull) {
+		host = node;
+		this.player = player;
+		addDefaultPlayerInventory(player, 0);
+	}
+
 	public void setSlotCount(int count)
 	{
 		this.slotCount = count;

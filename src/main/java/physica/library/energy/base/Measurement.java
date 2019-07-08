@@ -22,6 +22,11 @@ public enum Measurement {
 		return name;
 	}
 
+	public int integerValue()
+	{
+		return (int) value;
+	}
+
 	public double process(double value)
 	{
 		return value / this.value;

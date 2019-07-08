@@ -1,5 +1,8 @@
 package physica.core.common.block;
 
+import java.awt.Color;
+import java.util.List;
+
 import cofh.api.energy.IEnergyConnection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -7,8 +10,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -20,19 +26,18 @@ import physica.api.core.IBaseUtilities;
 import physica.core.client.render.tile.TileRenderCopperCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
-import physica.core.common.tile.TileCopperCable;
+import physica.core.common.tile.cable.TileEnergyCable;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
 
-public class BlockCopperCable extends Block implements ITileEntityProvider, IBaseUtilities, IRecipeRegister {
+public class BlockEnergyCable extends Block implements ITileEntityProvider, IBaseUtilities, IRecipeRegister {
 
-	public BlockCopperCable() {
-		super(Material.iron);
+	public BlockEnergyCable() {
+		super(Material.cloth);
 		setHardness(3.5F);
-		setResistance(20);
-		setLightLevel(0.1f);
-		setHarvestLevel("pickaxe", 2);
-		setBlockName(CoreReferences.PREFIX + "copperCable");
+		setStepSound(soundTypeCloth);
+		setResistance(0.2F);
+		setBlockName(CoreReferences.PREFIX + "energyCable");
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockBounds(TileRenderCopperCable.pixelElevenTwo, TileRenderCopperCable.pixelElevenTwo, TileRenderCopperCable.pixelElevenTwo, 1 - TileRenderCopperCable.pixelElevenTwo,
 				1 - TileRenderCopperCable.pixelElevenTwo, 1 - TileRenderCopperCable.pixelElevenTwo);
@@ -40,9 +45,34 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
+	{
+		return Color.GRAY.darker().darker().darker().getRGB();
+	}
+
+	@Override
 	public void initialize()
 	{
-		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6), "SIS", "SIS", "SIS", 'S', "ingotSteel", 'I', "ingotCopper");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 0), "WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', "ingotCopper");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 0), "LIL", "LIL", "LIL", 'L', Items.leather, 'I', "ingotCopper");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 0), "WWW", "III", "WWW", 'W', Blocks.wool, 'I', "ingotCopper");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 0), "LLL", "III", "LLL", 'L', Items.leather, 'I', "ingotCopper");
+
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 1), "WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', "ingotSilver");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 1), "LIL", "LIL", "LIL", 'L', Items.leather, 'I', "ingotSilver");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 1), "WWW", "III", "WWW", 'W', Blocks.wool, 'I', "ingotCopper");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 1), "LLL", "III", "LLL", 'L', Items.leather, 'I', "ingotCopper");
+
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 2), "WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', "ingotGold");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 2), "LIL", "LIL", "LIL", 'L', Items.leather, 'I', "ingotGold");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 2), "WWW", "III", "WWW", 'W', Blocks.wool, 'I', "ingotCopper");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 2), "LLL", "III", "LLL", 'L', Items.leather, 'I', "ingotCopper");
+
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 3), "WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', "ingotSuperConductive");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 3), "LIL", "LIL", "LIL", 'L', Items.leather, 'I', "ingotSuperConductive");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 3), "WWW", "III", "WWW", 'W', Blocks.wool, 'I', "ingotSuperConductive");
+		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 3), "LLL", "III", "LLL", 'L', Items.leather, 'I', "ingotSuperConductive");
+
 	}
 
 	@Override
@@ -94,16 +124,10 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
-	{
-		return true;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = Blocks.iron_block.getIcon(0, 0);
+		blockIcon = Blocks.wool.getIcon(0, 0);
 	}
 
 	@Override
@@ -115,7 +139,7 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata)
 	{
-		return new TileCopperCable();
+		return new TileEnergyCable();
 	}
 
 	@Override
@@ -140,6 +164,38 @@ public class BlockCopperCable extends Block implements ITileEntityProvider, IBas
 	public boolean isNormalCube()
 	{
 		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
+	{
+		for (EnumEnergyCable type : EnumEnergyCable.values())
+		{
+			list.add(new ItemStack(item, 1, type.ordinal()));
+		}
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
+	{
+		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 3);
+	}
+
+	@Override
+	public int damageDropped(int metadata)
+	{
+		return metadata;
+	}
+
+	public enum EnumEnergyCable {
+		copper, silver, gold, superConductor;
+
+		public String getName()
+		{
+			return name().toLowerCase();
+		}
 	}
 
 }

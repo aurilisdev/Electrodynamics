@@ -35,15 +35,20 @@ public class FieldTools {
 		public SyncSendType type();
 	}
 
-	public static void attemptWriteNBTSave(NBTTagCompound compound, Field field, Object instance) {
+	public static void attemptWriteNBTSave(NBTTagCompound compound, Field field, Object instance)
+	{
 		Annotation[] annotations = field.getAnnotations();
 		boolean isAccessible = field.isAccessible();
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(true);
 		}
-		try {
-			for (Annotation anno : annotations) {
-				if (anno instanceof NBTSaveField) {
+		try
+		{
+			for (Annotation anno : annotations)
+			{
+				if (anno instanceof NBTSaveField)
+				{
 					NBTSaveField save = (NBTSaveField) anno;
 					String name = save.name();
 					switch (save.type()) {
@@ -83,23 +88,30 @@ public class FieldTools {
 					break;
 				}
 			}
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e)
+		{
 			e.printStackTrace();
 		}
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(false);
 		}
 	}
 
-	public static void attemptReadNBTSave(NBTTagCompound compound, Field field, Object instance) {
+	public static void attemptReadNBTSave(NBTTagCompound compound, Field field, Object instance)
+	{
 		Annotation[] annotations = field.getAnnotations();
 		boolean isAccessible = field.isAccessible();
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(true);
 		}
-		try {
-			for (Annotation anno : annotations) {
-				if (anno instanceof NBTSaveField) {
+		try
+		{
+			for (Annotation anno : annotations)
+			{
+				if (anno instanceof NBTSaveField)
+				{
 					NBTSaveField save = (NBTSaveField) anno;
 					String name = save.name();
 					switch (save.type()) {
@@ -139,52 +151,68 @@ public class FieldTools {
 					break;
 				}
 			}
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e)
+		{
 			e.printStackTrace();
 		}
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(false);
 		}
 	}
 
-	public static void attemptWriteSync(List<Object> data, Field field, Object instance) {
+	public static void attemptWriteSync(List<Object> data, Field field, Object instance)
+	{
 		Annotation[] annotations = field.getAnnotations();
 		boolean isAccessible = field.isAccessible();
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(true);
 		}
-		try {
-			for (Annotation anno : annotations) {
-				if (anno instanceof SyncSendField) {
+		try
+		{
+			for (Annotation anno : annotations)
+			{
+				if (anno instanceof SyncSendField)
+				{
 					data.add(field.get(instance));
 					break;
 				}
 			}
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e)
+		{
 			e.printStackTrace();
 		}
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(false);
 		}
 	}
 
-	public static void attemptReadSync(List<Object> data, Field field, Object instance) {
+	public static void attemptReadSync(List<Object> data, Field field, Object instance)
+	{
 		Annotation[] annotations = field.getAnnotations();
 		boolean isAccessible = field.isAccessible();
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(true);
 		}
-		try {
-			for (Annotation anno : annotations) {
-				if (anno instanceof SyncSendField) {
+		try
+		{
+			for (Annotation anno : annotations)
+			{
+				if (anno instanceof SyncSendField)
+				{
 					data.add(field.get(instance));
 					break;
 				}
 			}
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e)
+		{
 			e.printStackTrace();
 		}
-		if (!isAccessible) {
+		if (!isAccessible)
+		{
 			field.setAccessible(false);
 		}
 	}

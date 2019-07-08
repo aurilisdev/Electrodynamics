@@ -1,0 +1,84 @@
+package physica.nuclear.common.block;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import physica.CoreReferences;
+import physica.api.core.IBaseUtilities;
+import physica.core.common.CoreBlockRegister;
+import physica.library.block.BlockBaseContainer;
+import physica.library.recipe.IRecipeRegister;
+import physica.library.recipe.RecipeSide;
+import physica.nuclear.NuclearReferences;
+import physica.nuclear.common.NuclearTabRegister;
+import physica.nuclear.common.tile.TileReactorControlPanel;
+
+public class BlockReactorControlPanel extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
+
+	@SideOnly(Side.CLIENT)
+	protected IIcon blockIconOff;
+
+	public BlockReactorControlPanel() {
+		super(Material.iron);
+		setHardness(10);
+		setResistance(5);
+		setHarvestLevel("pickaxe", 2);
+		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
+		setBlockName(NuclearReferences.PREFIX + "reactorControlPanel");
+		setBlockTextureName(CoreReferences.PREFIX + "reactorControlPanel");
+		addToRegister(RecipeSide.Nuclear, this);
+	}
+
+	@Override
+	public void registerBlockIcons(IIconRegister register)
+	{
+		this.blockIcon = register.registerIcon(this.getTextureName());
+		this.blockIconOff = register.registerIcon(this.getTextureName() + "Off");
+	}
+
+	@Override
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+	{
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if (tile instanceof TileReactorControlPanel)
+		{
+			TileReactorControlPanel control = (TileReactorControlPanel) tile;
+			if (control.getFacing().ordinal() == side)
+			{
+				return control.reactor == null ? blockIconOff : blockIcon;
+			}
+		}
+		return CoreBlockRegister.blockLead.getIcon(side, 0);
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta)
+	{
+		if (side == 4)
+		{
+			return super.getIcon(side, meta);
+		} else
+		{
+			return CoreBlockRegister.blockLead.getIcon(side, 0);
+		}
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
+		return new TileReactorControlPanel();
+	}
+
+	@Override
+	public void initialize()
+	{
+		addRecipe(this, "IPI", "PCP", "IPI", 'I', CoreBlockRegister.blockLead, 'P',
+				"plateLead", 'C', "circuitElite");
+	}
+
+}

@@ -19,7 +19,7 @@ public class ItemRenderCentrifuge extends ItemRenderObjModel {
 
 	public ItemRenderCentrifuge(String objFile, String textureFile) {
 		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_middle = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
+		model_middle = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Stand.obj", "Spin.obj")));
 	}
 
 	@Override

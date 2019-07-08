@@ -8,18 +8,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import physica.api.core.IBaseUtilities;
 import physica.library.client.gui.GuiContainerBase;
+import physica.library.energy.ElectricityDisplay;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Unit;
 import physica.library.inventory.tooltip.ToolTipTank;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.inventory.ContainerCentrifuge;
-import physica.nuclear.common.tile.TileCentrifuge;
+import physica.nuclear.common.tile.TileGasCentrifuge;
 
 @SideOnly(Side.CLIENT)
-public class GuiCentrifuge extends GuiContainerBase<TileCentrifuge> implements IBaseUtilities {
+public class GuiCentrifuge extends GuiContainerBase<TileGasCentrifuge> implements IBaseUtilities {
 
 	public Rectangle AREA_HEX_TANK = new Rectangle(8, 18, meterWidth, meterHeight);
 
-	public GuiCentrifuge(EntityPlayer player, TileCentrifuge host) {
+	public GuiCentrifuge(EntityPlayer player, TileGasCentrifuge host) {
 		super(new ContainerCentrifuge(player, host), host);
+		ySize += 10;
 	}
 
 	@Override
@@ -36,6 +40,7 @@ public class GuiCentrifuge extends GuiContainerBase<TileCentrifuge> implements I
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: " + (host.hasEnoughEnergy() ? host.canProcess() ? "Processing" : "Lacking hexafluoride" : "Insufficient Power"), 8,
 				73);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "centrifuge.gui"), xSize / 2, 5);
 	}
 
@@ -44,6 +49,6 @@ public class GuiCentrifuge extends GuiContainerBase<TileCentrifuge> implements I
 	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_HEX_TANK.x, AREA_HEX_TANK.y, host.getTank());
-		renderFurnaceCookArrow(36, 36, host.getOperatingTicks(), TileCentrifuge.TICKS_REQUIRED);
+		renderFurnaceCookArrow(36, 36, host.getOperatingTicks(), TileGasCentrifuge.TICKS_REQUIRED);
 	}
 }

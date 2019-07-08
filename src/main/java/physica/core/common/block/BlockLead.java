@@ -2,7 +2,6 @@ package physica.core.common.block;
 
 import net.minecraft.block.BlockCompressed;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.world.IBlockAccess;
 import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
 import physica.core.common.CoreTabRegister;
@@ -18,20 +17,8 @@ public class BlockLead extends BlockCompressed implements IBaseUtilities, IRecip
 		setStepSound(soundTypeMetal);
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockName(CoreReferences.PREFIX + "blockLead");
-		setBlockTextureName("iron_block");
+		setBlockTextureName(CoreReferences.PREFIX + "blockLead");
 		addToRegister(RecipeSide.Core, this);
-	}
-
-	@Override
-	public int getRenderColor(int par1)
-	{
-		return (int) (3559534 * 0.47999999);
-	}
-
-	@Override
-	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
-	{
-		return getRenderColor(0);
 	}
 
 	@Override

@@ -9,6 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Measurement;
+import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
@@ -16,7 +19,6 @@ import physica.nuclear.common.NuclearItemRegister;
 public class TileFusionReactor extends TileBasePoweredContainer {
 
 	public static final float PLASMA_SPAWN_STRENGTH = 13;
-	public static final int ENERGY_USAGE = 750;
 	public static final int MAX_DEUTERIUM = 1024;
 	public static final int SLOT_DEUTERIUM = 0;
 	public static final int SLOT_TRITIUM = 1;
@@ -141,13 +143,7 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	@Override
 	public int getEnergyUsage()
 	{
-		return ENERGY_USAGE;
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
-	{
-		return ENERGY_USAGE * 2;
+		return (int) ElectricityUtilities.convertEnergy(125.0 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}
 
 	@Override

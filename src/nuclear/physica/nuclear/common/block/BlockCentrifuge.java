@@ -8,7 +8,7 @@ import physica.library.block.BlockBaseContainerModelled;
 import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
-import physica.nuclear.common.tile.TileCentrifuge;
+import physica.nuclear.common.tile.TileGasCentrifuge;
 
 public class BlockCentrifuge extends BlockBaseContainerModelled {
 
@@ -24,7 +24,7 @@ public class BlockCentrifuge extends BlockBaseContainerModelled {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return new TileCentrifuge();
+		return new TileGasCentrifuge();
 	}
 
 	@Override

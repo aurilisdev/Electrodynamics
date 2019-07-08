@@ -14,6 +14,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
+import physica.library.energy.ElectricityUtilities;
+import physica.library.energy.base.Measurement;
+import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiParticleAccelerator;
 import physica.nuclear.common.NuclearItemRegister;
@@ -300,12 +303,6 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
-	{
-		return getEnergyUsage() * 5;
-	}
-
-	@Override
 	public boolean canConnectEnergy(ForgeDirection from)
 	{
 		return !from.equals(getFacing().getOpposite());
@@ -314,7 +311,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	@Override
 	public int getEnergyUsage()
 	{
-		return 14000;
+		return (int) ElectricityUtilities.convertEnergy(169.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}
 
 	public float getParticleVelocity()
