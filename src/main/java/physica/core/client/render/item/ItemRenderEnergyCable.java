@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-import physica.core.client.render.tile.TileRenderCopperCable;
+import physica.core.client.render.tile.TileRenderEnergyCable;
 
 @SideOnly(Side.CLIENT)
 public class ItemRenderEnergyCable implements IItemRenderer {
@@ -48,7 +48,7 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 		}
 		GL11.glScalef(1, 3f, 1f);
 		FMLClientHandler.instance().getClient().renderEngine
-				.bindTexture(TileRenderCopperCable.model_texture[Math.max(0, Math.min(TileRenderCopperCable.model_texture.length - 1, item.getItemDamage()))]);
+				.bindTexture(TileRenderEnergyCable.model_texture[Math.max(0, Math.min(TileRenderEnergyCable.model_texture.length - 1, item.getItemDamage()))]);
 		render();
 		RenderHelper.enableStandardItemLighting();
 		GL11.glPopMatrix();
@@ -56,6 +56,6 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 
 	public void render()
 	{
-		TileRenderCopperCable.drawCore();
+		TileRenderEnergyCable.drawCore();
 	}
 }

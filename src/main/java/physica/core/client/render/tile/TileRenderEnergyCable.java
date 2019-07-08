@@ -16,7 +16,7 @@ import physica.CoreReferences;
 import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 
 @SideOnly(Side.CLIENT)
-public class TileRenderCopperCable extends TileEntitySpecialRenderer {
+public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
 	public static final ResourceLocation[] model_texture = new ResourceLocation[EnumEnergyCable.values().length];
 

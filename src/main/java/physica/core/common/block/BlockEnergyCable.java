@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
-import physica.core.client.render.tile.TileRenderCopperCable;
+import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.cable.TileEnergyCable;
@@ -39,8 +39,8 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		setResistance(0.2F);
 		setBlockName(CoreReferences.PREFIX + "energyCable");
 		setCreativeTab(CoreTabRegister.coreTab);
-		setBlockBounds(TileRenderCopperCable.pixelElevenTwo, TileRenderCopperCable.pixelElevenTwo, TileRenderCopperCable.pixelElevenTwo, 1 - TileRenderCopperCable.pixelElevenTwo,
-				1 - TileRenderCopperCable.pixelElevenTwo, 1 - TileRenderCopperCable.pixelElevenTwo);
+		setBlockBounds(TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo,
+				1 - TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo);
 		addToRegister(RecipeSide.Core, this);
 	}
 
@@ -85,12 +85,12 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
-		float tempMinX = TileRenderCopperCable.pixelElevenTwo;
-		float tempMinY = TileRenderCopperCable.pixelElevenTwo;
-		float tempMinZ = TileRenderCopperCable.pixelElevenTwo;
-		float tempMaxX = 1 - TileRenderCopperCable.pixelElevenTwo;
-		float tempMaxY = 1 - TileRenderCopperCable.pixelElevenTwo;
-		float tempMaxZ = 1 - TileRenderCopperCable.pixelElevenTwo;
+		float tempMinX = TileRenderEnergyCable.pixelElevenTwo;
+		float tempMinY = TileRenderEnergyCable.pixelElevenTwo;
+		float tempMinZ = TileRenderEnergyCable.pixelElevenTwo;
+		float tempMaxX = 1 - TileRenderEnergyCable.pixelElevenTwo;
+		float tempMaxY = 1 - TileRenderEnergyCable.pixelElevenTwo;
+		float tempMaxZ = 1 - TileRenderEnergyCable.pixelElevenTwo;
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity sideTile = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
@@ -98,22 +98,22 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 			{
 				switch (dir) {
 				case DOWN:
-					tempMinY -= TileRenderCopperCable.pixelElevenTwo;
+					tempMinY -= TileRenderEnergyCable.pixelElevenTwo;
 					break;
 				case EAST:
-					tempMaxX += TileRenderCopperCable.pixelElevenTwo;
+					tempMaxX += TileRenderEnergyCable.pixelElevenTwo;
 					break;
 				case NORTH:
-					tempMinZ -= TileRenderCopperCable.pixelElevenTwo;
+					tempMinZ -= TileRenderEnergyCable.pixelElevenTwo;
 					break;
 				case SOUTH:
-					tempMaxZ += TileRenderCopperCable.pixelElevenTwo;
+					tempMaxZ += TileRenderEnergyCable.pixelElevenTwo;
 					break;
 				case UP:
-					tempMaxY += TileRenderCopperCable.pixelElevenTwo;
+					tempMaxY += TileRenderEnergyCable.pixelElevenTwo;
 					break;
 				case WEST:
-					tempMinX -= TileRenderCopperCable.pixelElevenTwo;
+					tempMinX -= TileRenderEnergyCable.pixelElevenTwo;
 					break;
 				default:
 					break;
