@@ -194,7 +194,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 
 		public String getName()
 		{
-			return name().toLowerCase();
+			return name();
 		}
 	}
 

@@ -133,9 +133,9 @@ public class TileEnergyCable extends TileBase implements ITileBasePowered, IEner
 		{
 			if (getBlockMetadata() == EnumEnergyCable.superConductor.ordinal())
 			{
-				return MAX_ENERGY_STORED_BASE * 60;
+				return (int) (MAX_ENERGY_STORED_BASE * 20 * 1.5);
 			}
-			return (int) (MAX_ENERGY_STORED_BASE * Math.pow(getBlockMetadata() + 1, 2) * 3);
+			return (int) (MAX_ENERGY_STORED_BASE * Math.pow(getBlockMetadata() + 1, 2) * 1.5);
 		} else
 		{
 			return Integer.MAX_VALUE; // The section above has a worldObj which is null when the tile is loaded at first.

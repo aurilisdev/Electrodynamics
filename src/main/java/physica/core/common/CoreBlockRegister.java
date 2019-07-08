@@ -48,21 +48,21 @@ public class CoreBlockRegister implements IContent {
 		instanceMap.put(0,
 				new String[] {
 						"Max Transfer: "
-								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(1, 2), Unit.RF, Unit.WATT), Unit.WATT),
+								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(1, 2) * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
 						"Max Voltage: " + 120 * 1 });
 		instanceMap.put(1,
 				new String[] {
 						"Max Transfer: "
-								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(2, 2), Unit.RF, Unit.WATT), Unit.WATT),
+								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(2, 2) * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
 						"Max Voltage: " + 120 * 2 });
 		instanceMap.put(2,
 				new String[] {
 						"Max Transfer: "
-								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(3, 2), Unit.RF, Unit.WATT), Unit.WATT),
+								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(3, 2) * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
 						"Max Voltage: " + 120 * 3 });
 		instanceMap.put(3,
 				new String[] {
-						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * 20, Unit.RF, Unit.WATT), Unit.WATT),
+						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * 20 * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
 						"Max Voltage: infinite" });
 		ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);
 		GameRegistry.registerBlock(blockCable, ItemBlockMetadata.class, "energyCable");

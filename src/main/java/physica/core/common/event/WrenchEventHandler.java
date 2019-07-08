@@ -61,14 +61,15 @@ public class WrenchEventHandler {
 				if (canWrench(event.entityPlayer.getCurrentEquippedItem(), event.x, event.y, event.z, event.entityPlayer))
 				{
 					Block block = event.world.getBlock(event.x, event.y, event.z);
+					int data = event.world.getBlockMetadata(event.x, event.y, event.z);
 					if (block instanceof BlockBaseContainer)
 					{
 						if (!event.world.isRemote)
 						{
 							if (((BlockBaseContainer) block).canWrench(event.world, event.x, event.y, event.z))
 							{
-								block.breakBlock(event.world, event.x, event.y, event.z, block, event.world.getBlockMetadata(event.x, event.y, event.z));
-								block.dropBlockAsItem(event.world, event.x, event.y, event.z, 0, 0);
+								block.breakBlock(event.world, event.x, event.y, event.z, block, data);
+								block.dropBlockAsItem(event.world, event.x, event.y, event.z, data, 0);
 								event.world.setBlockToAir(event.x, event.y, event.z);
 							}
 						}
@@ -77,8 +78,8 @@ public class WrenchEventHandler {
 					{
 						if (!event.world.isRemote)
 						{
-							block.breakBlock(event.world, event.x, event.y, event.z, block, event.world.getBlockMetadata(event.x, event.y, event.z));
-							block.dropBlockAsItem(event.world, event.x, event.y, event.z, 0, 0);
+							block.breakBlock(event.world, event.x, event.y, event.z, block, data);
+							block.dropBlockAsItem(event.world, event.x, event.y, event.z, data, 0);
 							event.world.setBlockToAir(event.x, event.y, event.z);
 						}
 						event.entityPlayer.swingItem();
