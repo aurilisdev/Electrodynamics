@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockLocation {
 
@@ -59,6 +60,11 @@ public class BlockLocation {
 	{
 		float n = norm();
 		return new VectorLocation(x / n, y / n, z / n);
+	}
+
+	public BlockLocation TranslateTo(ForgeDirection direction)
+	{
+		return new BlockLocation(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
 	}
 
 	public float getDistance(float x2, float y2, float z2)

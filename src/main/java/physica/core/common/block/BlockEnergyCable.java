@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import cofh.api.energy.IEnergyConnection;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -26,6 +27,7 @@ import physica.api.core.IBaseUtilities;
 import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
+import physica.core.common.network.ITransferNode;
 import physica.core.common.tile.cable.TileEnergyCable;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
@@ -148,6 +150,36 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		return false;
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+	{
+		super.onNeighborBlockChange(world, x, y, z, block);
+		if (!world.isRemote)
+		{
+			TileEntity tile = world.getTileEntity(x, y, z);
+			if (tile instanceof ITransferNode)
+			{
+				((ITransferNode) tile).getTransferNetwork().validateNetwork();
+			}
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
+	{
+		super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+		if (FMLCommonHandler.instance().getSide().isServer())
+		{
+			TileEntity tile = world.getTileEntity(x, y, z);
+			if (tile instanceof ITransferNode)
+			{
+				((ITransferNode) tile).getTransferNetwork().validateNetwork();
+			}
+		}
+	}
+
 	@Override
 	public int getRenderType()
 	{
@@ -190,11 +222,28 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	public enum EnumEnergyCable {
-		copper, silver, gold, superConductor;
+		copper(120, 15360), silver(240, 61440), gold(360, 138240), superConductor(-1, 307200);
 
 		public String getName()
 		{
 			return name();
+		}
+		private int voltage;
+		private int transferRate;
+
+		private EnumEnergyCable(int voltage, int transferRate) {
+			this.voltage = voltage;
+			this.transferRate = transferRate;
+		}
+
+		public int getVoltage()
+		{
+			return voltage;
+		}
+
+		public int getTransferRate()
+		{
+			return transferRate;
 		}
 	}
 

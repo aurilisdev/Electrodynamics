@@ -8,6 +8,7 @@ import physica.CoreReferences;
 import physica.api.core.IContent;
 import physica.core.common.block.BlockBlastFurnace;
 import physica.core.common.block.BlockEnergyCable;
+import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 import physica.core.common.block.BlockFulmination;
 import physica.core.common.block.BlockInfiniteEnergy;
 import physica.core.common.block.BlockLead;
@@ -45,25 +46,20 @@ public class CoreBlockRegister implements IContent {
 		GameRegistry.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
 
 		HashMap<Integer, String[]> instanceMap = new HashMap<>();
-		instanceMap.put(0,
-				new String[] {
-						"Max Transfer: "
-								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(1, 2) * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
-						"Max Voltage: " + 120 * 1 });
-		instanceMap.put(1,
-				new String[] {
-						"Max Transfer: "
-								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(2, 2) * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
-						"Max Voltage: " + 120 * 2 });
-		instanceMap.put(2,
-				new String[] {
-						"Max Transfer: "
-								+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * Math.pow(3, 2) * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
-						"Max Voltage: " + 120 * 3 });
-		instanceMap.put(3,
-				new String[] {
-						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileEnergyCable.MAX_ENERGY_STORED_BASE * 20 * 1.5, Unit.RF, Unit.WATT), Unit.WATT),
+		for (EnumEnergyCable en : EnumEnergyCable.values())
+		{
+			if (en == EnumEnergyCable.superConductor)
+			{
+				instanceMap.put(en.ordinal(), new String[] {
+						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
 						"Max Voltage: infinite" });
+			} else
+			{
+				instanceMap.put(en.ordinal(), new String[] {
+						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
+						"Max Voltage: " + en.getVoltage() });
+			}
+		}
 		ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);
 		GameRegistry.registerBlock(blockCable, ItemBlockMetadata.class, "energyCable");
 		GameRegistry.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
