@@ -14,4 +14,6 @@ public interface ITransferNode<T> {
 	public World getWorld();
 
 	public BlockLocation getNodeLocation();
+
+	public void destroyNode();
 }

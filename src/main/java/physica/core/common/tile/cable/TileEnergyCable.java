@@ -1,6 +1,7 @@
 package physica.core.common.tile.cable;
 
 import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,6 +13,8 @@ import physica.library.location.BlockLocation;
 import physica.library.tile.TileBase;
 
 public class TileEnergyCable extends TileBase implements ITileBasePowered, ITransferNode<IEnergyReceiver> {
+
+	public boolean shouldFlame = false;
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox()
@@ -29,6 +32,19 @@ public class TileEnergyCable extends TileBase implements ITileBasePowered, ITran
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
+		if (ticks % 20 == 0)
+		{
+			if (shouldFlame)
+			{
+				worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
+			}
+		}
+	}
+
+	@Override
+	public void destroyNode()
+	{
+		shouldFlame = true;
 	}
 
 	@Override
@@ -40,13 +56,13 @@ public class TileEnergyCable extends TileBase implements ITileBasePowered, ITran
 	@Override
 	public boolean canUpdate()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from)
 	{
-		return getTransferNetwork().getTransferRate();
+		return getTransferNetwork().getVisualTransferRate();
 	}
 
 	@Override
@@ -59,7 +75,10 @@ public class TileEnergyCable extends TileBase implements ITileBasePowered, ITran
 	public void invalidate()
 	{
 		super.invalidate();
-		getTransferNetwork().validateNetwork();
+		if (!shouldFlame)
+		{
+			getTransferNetwork().validateNetwork();
+		}
 	}
 
 	@Override

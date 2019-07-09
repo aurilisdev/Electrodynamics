@@ -17,6 +17,7 @@ public class EnergyTransferNetwork {
 	public HashSet<ITransferNode<IEnergyReceiver>> transferNodeSet = new HashSet<>();
 	public ITransferNode<IEnergyReceiver> ownerNode;
 	public EnumEnergyCable type;
+	public boolean isValidating;
 
 	public int energyBuffer = 0;
 
@@ -48,12 +49,16 @@ public class EnergyTransferNetwork {
 			transferNodeSet.clear();
 			receiverMap.clear();
 			transferNodeSet.add(ownerNode);
-			findNetwork(ownerNode.getNodeLocation(), ForgeDirection.UNKNOWN);
+			if (!isValidating)
+			{
+				isValidating = true;
+				EnergyNetworkHandler.queueNetworkForValidation(this);
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void findNetwork(BlockLocation startLocation, ForgeDirection from)
+	public void findNetwork(BlockLocation startLocation, ForgeDirection from)
 	{
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
@@ -61,29 +66,47 @@ public class EnergyTransferNetwork {
 			{
 				ForgeDirection receivedDirection = dir.getOpposite();
 				BlockLocation check = startLocation.TranslateTo(dir);
-				TileEntity tile = check.getTile(ownerNode.getWorld());
-				if (tile instanceof ITransferNode<?>)
+				if (ownerNode != null)
 				{
-					ITransferNode<IEnergyReceiver> node = (ITransferNode<IEnergyReceiver>) tile;
-					if (!transferNodeSet.contains(node))
+					TileEntity tile = check.getTile(ownerNode.getWorld());
+					if (tile instanceof ITransferNode<?>)
 					{
-						transferNodeSet.add(node);
-						node.setTransferNetwork(this);
-						findNetwork(check, receivedDirection);
-					}
-				} else if (tile instanceof IEnergyReceiver)
-				{
-					IEnergyReceiver receiver = (IEnergyReceiver) tile;
-					if (receiver.canConnectEnergy(receivedDirection) && receiver.receiveEnergy(receivedDirection, 10, true) > 0)
+						ITransferNode<IEnergyReceiver> node = (ITransferNode<IEnergyReceiver>) tile;
+						if (node.getTransferNetwork().type == type)
+						{
+							if (!transferNodeSet.contains(node))
+							{
+								transferNodeSet.add(node);
+								node.setTransferNetwork(this);
+								findNetwork(check, receivedDirection);
+							}
+						} else if (node.getTransferNetwork().type.ordinal() > type.ordinal())
+						{
+							IEnergyReceiver receiver = (IEnergyReceiver) node;
+							if (receiverMap.containsKey(receiver))
+							{
+								receiverMap.get(receiver).add(receivedDirection);
+							} else
+							{
+								HashSet<ForgeDirection> set = new HashSet<>();
+								set.add(receivedDirection);
+								receiverMap.put(receiver, set);
+							}
+						}
+					} else if (tile instanceof IEnergyReceiver)
 					{
-						if (receiverMap.containsKey(receiver))
+						IEnergyReceiver receiver = (IEnergyReceiver) tile;
+						if (receiver.canConnectEnergy(receivedDirection) && receiver.receiveEnergy(receivedDirection, 10, true) > 0)
 						{
-							receiverMap.get(receiver).add(receivedDirection);
-						} else
-						{
-							HashSet<ForgeDirection> set = new HashSet<>();
-							set.add(receivedDirection);
-							receiverMap.put(receiver, set);
+							if (receiverMap.containsKey(receiver))
+							{
+								receiverMap.get(receiver).add(receivedDirection);
+							} else
+							{
+								HashSet<ForgeDirection> set = new HashSet<>();
+								set.add(receivedDirection);
+								receiverMap.put(receiver, set);
+							}
 						}
 					}
 				}
@@ -93,52 +116,68 @@ public class EnergyTransferNetwork {
 
 	public int receiveAndDistributeEnergy(int maxEnergy, ITransferNode<IEnergyReceiver> sender, boolean simulate)
 	{
-		HashMap<IEnergyReceiver, ForgeDirection> cached = new HashMap<>();
-		int size = 0;
-		Iterator<IEnergyReceiver> it = receiverMap.keySet().iterator();
-		while (it.hasNext())
+		int calculatedVoltage = type.getVoltage() > 0 ? maxEnergy / (type.getTransferRate() / type.getVoltage()) : -10;
+		if (calculatedVoltage < type.getVoltage())
 		{
-			IEnergyReceiver next = it.next();
-
-			if (!((TileEntity) next).isInvalid())
+			HashMap<IEnergyReceiver, ForgeDirection> cached = new HashMap<>();
+			int size = 0;
+			Iterator<IEnergyReceiver> it = receiverMap.keySet().iterator();
+			while (it.hasNext())
 			{
-				Iterator<ForgeDirection> connectedIterator = receiverMap.get(next).iterator();
-				while (connectedIterator.hasNext())
+				IEnergyReceiver next = it.next();
+
+				if (!((TileEntity) next).isInvalid())
 				{
-					ForgeDirection check = connectedIterator.next();
-					if (next.canConnectEnergy(check))
+					Iterator<ForgeDirection> connectedIterator = receiverMap.get(next).iterator();
+					while (connectedIterator.hasNext())
 					{
-						if (next.getEnergyStored(check) < next.getMaxEnergyStored(check))
+						ForgeDirection check = connectedIterator.next();
+						if (next.canConnectEnergy(check))
 						{
-							cached.put(next, check);
-							size++;
+							if (next.getEnergyStored(check) < next.getMaxEnergyStored(check))
+							{
+								cached.put(next, check);
+								size++;
+							}
+						} else
+						{
+							it.remove();
 						}
-					} else
+					}
+				} else
+				{
+					it.remove();
+				}
+			}
+			int totalReceived = 0;
+			if (size > 0);
+			{
+				maxEnergy = Math.min(getTransferRate(), maxEnergy);
+				if (maxEnergy > 0)
+				{
+					int perEnergy = size == 0 ? 0 : maxEnergy / size;
+
+					for (IEnergyReceiver receiver : cached.keySet())
 					{
-						it.remove();
+						totalReceived += receiver.receiveEnergy(cached.get(receiver), perEnergy, simulate);
 					}
 				}
-			} else
-			{
-				it.remove();
 			}
-		}
-		int totalReceived = 0;
-		if (size > 0);
+			energyBuffer += totalReceived;
+			return totalReceived;
+		} else
 		{
-			maxEnergy = Math.min(getTransferRate(), maxEnergy);
-			if (maxEnergy > 0)
+			for (ITransferNode<IEnergyReceiver> node : transferNodeSet)
 			{
-				int perEnergy = size == 0 ? 0 : maxEnergy / size;
-
-				for (IEnergyReceiver receiver : cached.keySet())
-				{
-					totalReceived += receiver.receiveEnergy(cached.get(receiver), perEnergy, simulate);
-				}
+				node.destroyNode();
 			}
+			return 0;
 		}
-		energyBuffer += totalReceived;
-		return totalReceived;
+	}
+
+	public int getVisualTransferRate()
+	{
+		return Math.max(0, getType().getTransferRate() * transferNodeSet.size());
 	}
 
 	public int getTransferRate()
