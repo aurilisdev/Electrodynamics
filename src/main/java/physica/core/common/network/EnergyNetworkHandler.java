@@ -26,7 +26,6 @@ public class EnergyNetworkHandler {
 			{
 				thread.queue = oldThread.queue;
 			}
-
 			thread.start();
 		}
 		if (event.phase == Phase.START)

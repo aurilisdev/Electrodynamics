@@ -7,6 +7,7 @@ import java.util.Set;
 
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 import physica.library.location.BlockLocation;
@@ -37,6 +38,10 @@ public class EnergyTransferNetwork {
 	{
 		if (ownerNode == null || !ownerNode.isValid())
 		{
+			while (isValidating)
+			{
+				// Wait for network to validate. Can we do this better perhaps?
+			}
 			for (ITransferNode<IEnergyReceiver> node : transferNodeSet)
 			{
 				node.setTransferNetwork(null);
@@ -51,14 +56,14 @@ public class EnergyTransferNetwork {
 			transferNodeSet.add(ownerNode);
 			if (!isValidating)
 			{
-				isValidating = true;
 				EnergyNetworkHandler.queueNetworkForValidation(this);
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public void findNetwork(BlockLocation startLocation, ForgeDirection from)
+	public static void findNetwork(EnergyTransferNetwork network, BlockLocation startLocation, ForgeDirection from, World world, EnumEnergyCable type, HashSet<ITransferNode<IEnergyReceiver>> transferNodeSet,
+			HashMap<IEnergyReceiver, Set<ForgeDirection>> receiverMap)
 	{
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
@@ -66,47 +71,44 @@ public class EnergyTransferNetwork {
 			{
 				ForgeDirection receivedDirection = dir.getOpposite();
 				BlockLocation check = startLocation.TranslateTo(dir);
-				if (ownerNode != null)
+				TileEntity tile = check.getTile(world);
+				if (tile instanceof ITransferNode<?>)
 				{
-					TileEntity tile = check.getTile(ownerNode.getWorld());
-					if (tile instanceof ITransferNode<?>)
+					ITransferNode<IEnergyReceiver> node = (ITransferNode<IEnergyReceiver>) tile;
+					if (node.getTransferNetwork().type == type)
 					{
-						ITransferNode<IEnergyReceiver> node = (ITransferNode<IEnergyReceiver>) tile;
-						if (node.getTransferNetwork().type == type)
+						if (!transferNodeSet.contains(node))
 						{
-							if (!transferNodeSet.contains(node))
-							{
-								transferNodeSet.add(node);
-								node.setTransferNetwork(this);
-								findNetwork(check, receivedDirection);
-							}
-						} else if (node.getTransferNetwork().type.ordinal() > type.ordinal())
-						{
-							IEnergyReceiver receiver = (IEnergyReceiver) node;
-							if (receiverMap.containsKey(receiver))
-							{
-								receiverMap.get(receiver).add(receivedDirection);
-							} else
-							{
-								HashSet<ForgeDirection> set = new HashSet<>();
-								set.add(receivedDirection);
-								receiverMap.put(receiver, set);
-							}
+							transferNodeSet.add(node);
+							node.setTransferNetwork(network);
+							findNetwork(network, check, receivedDirection, world, type, transferNodeSet, receiverMap);
 						}
-					} else if (tile instanceof IEnergyReceiver)
+					} else if (node.getTransferNetwork().type.ordinal() > type.ordinal())
 					{
-						IEnergyReceiver receiver = (IEnergyReceiver) tile;
-						if (receiver.canConnectEnergy(receivedDirection) && receiver.receiveEnergy(receivedDirection, 10, true) > 0)
+						IEnergyReceiver receiver = (IEnergyReceiver) node;
+						if (receiverMap.containsKey(receiver))
 						{
-							if (receiverMap.containsKey(receiver))
-							{
-								receiverMap.get(receiver).add(receivedDirection);
-							} else
-							{
-								HashSet<ForgeDirection> set = new HashSet<>();
-								set.add(receivedDirection);
-								receiverMap.put(receiver, set);
-							}
+							receiverMap.get(receiver).add(receivedDirection);
+						} else
+						{
+							HashSet<ForgeDirection> set = new HashSet<>();
+							set.add(receivedDirection);
+							receiverMap.put(receiver, set);
+						}
+					}
+				} else if (tile instanceof IEnergyReceiver)
+				{
+					IEnergyReceiver receiver = (IEnergyReceiver) tile;
+					if (receiver.canConnectEnergy(receivedDirection) && receiver.receiveEnergy(receivedDirection, 10, true) > 0)
+					{
+						if (receiverMap.containsKey(receiver))
+						{
+							receiverMap.get(receiver).add(receivedDirection);
+						} else
+						{
+							HashSet<ForgeDirection> set = new HashSet<>();
+							set.add(receivedDirection);
+							receiverMap.put(receiver, set);
 						}
 					}
 				}

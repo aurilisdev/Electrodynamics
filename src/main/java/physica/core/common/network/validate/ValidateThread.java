@@ -19,7 +19,8 @@ public class ValidateThread extends Thread {
 				EnergyTransferNetwork network = queue.element();
 				if (network.ownerNode != null)
 				{
-					network.findNetwork(network.ownerNode.getNodeLocation(), ForgeDirection.UNKNOWN);
+					network.isValidating = true;
+					EnergyTransferNetwork.findNetwork(network, network.ownerNode.getNodeLocation(), ForgeDirection.UNKNOWN, network.ownerNode.getWorld(), network.getType(), network.transferNodeSet, network.receiverMap);
 				}
 				queue.remove();
 				network.isValidating = false;
@@ -27,7 +28,7 @@ public class ValidateThread extends Thread {
 			{
 				try
 				{
-					sleep(40);
+					sleep(25);
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
