@@ -90,7 +90,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 		{
 			return false;
 		}
-		return tank.getFluidAmount() >= 2500;
+		return tank.getFluid() != null && tank.getFluid().getFluid() == NuclearFluidRegister.LIQUID_HE && tank.getFluidAmount() >= 2500;
 	}
 
 	private void process()
