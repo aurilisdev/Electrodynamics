@@ -22,7 +22,6 @@ output/
 logs/
 html/downloads/
 downloads/
-*.xml
 banned-ips.json
 banned-players.json
 ops.json
@@ -32,19 +31,11 @@ libs.ink
 options.txt
 usernamecache.json
 screenshots/
-
 *.log
-
 asm/
-
 \.ReAuth\.cfg
-
 shaderpacks/
-
 Working Directory/
-
 lib/
-
 libs/
-
 outputSplitOnly/
