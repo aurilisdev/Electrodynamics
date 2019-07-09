@@ -102,7 +102,7 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadTransferRects()
 	{
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(36, 24, 22, 15), getRecipeID(), new Object[0]));
+		transferRects.add(new RecipeTransferRect(new Rectangle(36, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
@@ -180,9 +180,9 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	class recipe extends TemplateRecipeHandler.CachedRecipe {
 
-		public int hexaCost;
-		public ItemStack itemOutput;
-		public float chance;
+		public int			hexaCost;
+		public ItemStack	itemOutput;
+		public float		chance;
 
 		@Override
 		public PositionedStack getResult()

@@ -31,16 +31,16 @@ import physica.nuclear.common.recipe.type.ChemicalExtractorRecipe;
 
 public class TileChemicalExtractor extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
-	public static final int TICKS_REQUIRED = 400;
-	public static final int SLOT_ENERGY = 0;
-	public static final int SLOT_INPUT = 1;
-	public static final int SLOT_OUTPUT = 2;
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
+	public static final int		TICKS_REQUIRED			= 400;
+	public static final int		SLOT_ENERGY				= 0;
+	public static final int		SLOT_INPUT				= 1;
+	public static final int		SLOT_OUTPUT				= 2;
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
 
-	protected FluidTank waterTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 0), 5000);
+	protected FluidTank			waterTank				= new FluidTank(new FluidStack(FluidRegistry.WATER, 0), 5000);
 
-	protected int operatingTicks = 0;
+	protected int				operatingTicks			= 0;
 
 	@Override
 	public void updateServer(int ticks)
@@ -89,8 +89,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input);
 			if (recipe != null)
 			{
-				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null
-						|| output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())
+				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null || output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())
 				{
 					return true;
 				}
@@ -176,8 +175,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return slot != SLOT_OUTPUT && stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem
-				: slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
+		return slot != SLOT_OUTPUT && stack != null
+				&& (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
 	}
 
 	@Override

@@ -30,9 +30,7 @@ public class BlockCentrifuge extends BlockBaseContainerModelled {
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "ICI", "TMT", "TPT", 'I', "ingotSteel", 'T',
-				CoreItemRegister.itemEmptyCell, 'M',
-				"motor", 'P', "plateSteel", 'C', "circuitAdvanced");
+		addRecipe(this, "ICI", "TMT", "TPT", 'I', "ingotSteel", 'T', CoreItemRegister.itemEmptyCell, 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced");
 
 	}
 

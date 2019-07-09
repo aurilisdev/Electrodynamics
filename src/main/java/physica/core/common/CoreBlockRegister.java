@@ -25,15 +25,15 @@ import physica.library.item.ItemBlockMetadata;
 
 public class CoreBlockRegister implements IContent {
 
-	public static BlockInfiniteEnergy blockInfEnergy;
-	public static BlockFulmination blockFulmination;
-	public static BlockBlastFurnace blockBlastFurnace;
-	public static BlockEnergyCable blockCable;
-	public static BlockLead blockLead;
-	public static BlockOre blockTinOre;
-	public static BlockOre blockCopperOre;
-	public static BlockOre blockLeadOre;
-	public static BlockOre blockSilverOre;
+	public static BlockInfiniteEnergy	blockInfEnergy;
+	public static BlockFulmination		blockFulmination;
+	public static BlockBlastFurnace		blockBlastFurnace;
+	public static BlockEnergyCable		blockCable;
+	public static BlockLead				blockLead;
+	public static BlockOre				blockTinOre;
+	public static BlockOre				blockCopperOre;
+	public static BlockOre				blockLeadOre;
+	public static BlockOre				blockSilverOre;
 
 	@Override
 	public void preInit()
@@ -50,14 +50,10 @@ public class CoreBlockRegister implements IContent {
 		{
 			if (en == EnumEnergyCable.superConductor)
 			{
-				instanceMap.put(en.ordinal(), new String[] {
-						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
-						"Max Voltage: infinite" });
+				instanceMap.put(en.ordinal(), new String[] { "Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: infinite" });
 			} else
 			{
-				instanceMap.put(en.ordinal(), new String[] {
-						"Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
-						"Max Voltage: " + en.getVoltage() });
+				instanceMap.put(en.ordinal(), new String[] { "Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: " + en.getVoltage() });
 			}
 		}
 		ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);

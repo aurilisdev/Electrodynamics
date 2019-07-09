@@ -16,74 +16,59 @@ import physica.nuclear.common.items.update.ItemUpdateUranium;
 
 public class NuclearItemRegister implements IContent {
 
-	public static ItemInformationHolder itemAntimatterCell125Milligram;
-	public static ItemInformationHolder itemAntimatterCell1Gram;
-	public static ItemInformationHolder itemDarkmatterCell;
-	public static ItemInformationHolder itemHighEnrichedFuelCell;
-	public static ItemInformationHolder itemLowEnrichedFuelCell;
-	public static ItemInformationHolder itemHeavyWaterCell;
-	public static ItemInformationHolder itemDeuteriumCell;
-	public static ItemInformationHolder itemTritiumCell;
-	public static ItemInformationHolder itemEmptyElectromagneticCell;
-	public static ItemInformationHolder itemEmptyQuantumCell;
-	public static ItemGeigerCounter itemGeigerCounter;
+	public static ItemInformationHolder	itemAntimatterCell125Milligram;
+	public static ItemInformationHolder	itemAntimatterCell1Gram;
+	public static ItemInformationHolder	itemDarkmatterCell;
+	public static ItemInformationHolder	itemHighEnrichedFuelCell;
+	public static ItemInformationHolder	itemLowEnrichedFuelCell;
+	public static ItemInformationHolder	itemHeavyWaterCell;
+	public static ItemInformationHolder	itemDeuteriumCell;
+	public static ItemInformationHolder	itemTritiumCell;
+	public static ItemInformationHolder	itemEmptyElectromagneticCell;
+	public static ItemInformationHolder	itemEmptyQuantumCell;
+	public static ItemGeigerCounter		itemGeigerCounter;
 
-	public static ItemInformationHolder itemUranium235;
-	public static ItemInformationHolder itemUranium238;
-	public static ItemInformationHolder itemYellowcake;
+	public static ItemInformationHolder	itemUranium235;
+	public static ItemInformationHolder	itemUranium238;
+	public static ItemInformationHolder	itemYellowcake;
 
-	public static ItemHazmatArmor itemHazmatHelmet;
-	public static ItemHazmatArmor itemHazmatPlate;
-	public static ItemHazmatArmor itemHazmatLegs;
-	public static ItemHazmatArmor itemHazmatBoots;
-	public static ItemHazmatArmor itemReinforcedHazmatHelmet;
-	public static ItemHazmatArmor itemReinforcedHazmatPlate;
-	public static ItemHazmatArmor itemReinforcedHazmatLegs;
-	public static ItemHazmatArmor itemReinforcedHazmatBoots;
+	public static ItemHazmatArmor		itemHazmatHelmet;
+	public static ItemHazmatArmor		itemHazmatPlate;
+	public static ItemHazmatArmor		itemHazmatLegs;
+	public static ItemHazmatArmor		itemHazmatBoots;
+	public static ItemHazmatArmor		itemReinforcedHazmatHelmet;
+	public static ItemHazmatArmor		itemReinforcedHazmatPlate;
+	public static ItemHazmatArmor		itemReinforcedHazmatLegs;
+	public static ItemHazmatArmor		itemReinforcedHazmatBoots;
 
 	@Override
 	public void preInit()
 	{
-		GameRegistry.registerItem(itemAntimatterCell125Milligram = (ItemInformationHolder) ((ItemUpdateable) new ItemInformationHolder("antimatterCell100Milligram", "125 Milligrams")
-				.setTextureName(CoreReferences.PREFIX + "antimatterCell")).setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemAntimatterCell125Milligram.getUnlocalizedName());
-		GameRegistry.registerItem(itemAntimatterCell1Gram = (ItemInformationHolder) ((ItemUpdateable) new ItemInformationHolder("antimatterCell1Gram", "1 Gram")
-				.setTextureName(CoreReferences.PREFIX + "antimatterCell")).setUpdate(new ItemUpdateAntimatter().setScale(3))
-						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemAntimatterCell1Gram.getUnlocalizedName());
-		GameRegistry.registerItem(itemDarkmatterCell =
-				(ItemInformationHolder) new ItemInformationHolder("darkmatterCell").setUpdate(new ItemUpdateDarkMatter()).setMaxDamage(ConfigNuclearPhysics.DARK_MATTER_USES).setMaxStackSize(1)
-						.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemDarkmatterCell.getUnlocalizedName());
-		GameRegistry.registerItem(itemHighEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "High-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(4.5f))
-				.setMaxDamage(24000).setTextureName(CoreReferences.PREFIX + "fissileFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1),
-				itemHighEnrichedFuelCell.getUnlocalizedName() + "Fissile");
-		GameRegistry.registerItem(itemLowEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "Low-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(1.25f))
-				.setMaxDamage(26000).setTextureName(CoreReferences.PREFIX + "breederFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1),
-				itemLowEnrichedFuelCell.getUnlocalizedName() + "Breeder");
-		GameRegistry.registerItem(
-				itemEmptyElectromagneticCell = (ItemInformationHolder) new ItemInformationHolder("emptyElectromagneticCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
+		GameRegistry.registerItem(itemAntimatterCell125Milligram = (ItemInformationHolder) ((ItemUpdateable) new ItemInformationHolder("antimatterCell100Milligram", "125 Milligrams").setTextureName(CoreReferences.PREFIX + "antimatterCell"))
+				.setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell125Milligram.getUnlocalizedName());
+		GameRegistry.registerItem(itemAntimatterCell1Gram = (ItemInformationHolder) ((ItemUpdateable) new ItemInformationHolder("antimatterCell1Gram", "1 Gram").setTextureName(CoreReferences.PREFIX + "antimatterCell"))
+				.setUpdate(new ItemUpdateAntimatter().setScale(3)).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell1Gram.getUnlocalizedName());
+		GameRegistry.registerItem(itemDarkmatterCell = (ItemInformationHolder) new ItemInformationHolder("darkmatterCell").setUpdate(new ItemUpdateDarkMatter()).setMaxDamage(ConfigNuclearPhysics.DARK_MATTER_USES).setMaxStackSize(1)
+				.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemDarkmatterCell.getUnlocalizedName());
+		GameRegistry.registerItem(itemHighEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "High-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(4.5f)).setMaxDamage(24000)
+				.setTextureName(CoreReferences.PREFIX + "fissileFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1), itemHighEnrichedFuelCell.getUnlocalizedName() + "Fissile");
+		GameRegistry.registerItem(itemLowEnrichedFuelCell = (ItemInformationHolder) new ItemInformationHolder("fuelCell", "Low-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(1.25f)).setMaxDamage(26000)
+				.setTextureName(CoreReferences.PREFIX + "breederFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1), itemLowEnrichedFuelCell.getUnlocalizedName() + "Breeder");
+		GameRegistry.registerItem(itemEmptyElectromagneticCell = (ItemInformationHolder) new ItemInformationHolder("emptyElectromagneticCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
 				itemEmptyElectromagneticCell.getUnlocalizedName());
-		GameRegistry.registerItem(
-				itemEmptyQuantumCell = (ItemInformationHolder) new ItemInformationHolder("emptyQuantumCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
+		GameRegistry.registerItem(itemEmptyQuantumCell = (ItemInformationHolder) new ItemInformationHolder("emptyQuantumCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
 				itemEmptyQuantumCell.getUnlocalizedName());
 
-		GameRegistry.registerItem(
-				itemGeigerCounter = new ItemGeigerCounter("geigerCounter"),
-				itemGeigerCounter.getUnlocalizedName());
+		GameRegistry.registerItem(itemGeigerCounter = new ItemGeigerCounter("geigerCounter"), itemGeigerCounter.getUnlocalizedName());
 
-		GameRegistry.registerItem(itemHeavyWaterCell = (ItemInformationHolder) new ItemInformationHolder("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemHeavyWaterCell.getUnlocalizedName());
-		GameRegistry.registerItem(itemDeuteriumCell = (ItemInformationHolder) new ItemInformationHolder("deuteriumCell", "25ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemDeuteriumCell.getUnlocalizedName());
-		GameRegistry.registerItem(itemTritiumCell = (ItemInformationHolder) new ItemInformationHolder("tritiumCell", "12.5ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemTritiumCell.getUnlocalizedName());
-		GameRegistry.registerItem(itemUranium235 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 235").setUpdate(new ItemUpdateUranium().setScale(8.1f))
-				.setTextureName(CoreReferences.PREFIX + "uranium235").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium235.getUnlocalizedName() + "235");
-		GameRegistry.registerItem(itemUranium238 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 238").setUpdate(new ItemUpdateUranium().setScale(2.25f))
-				.setTextureName(CoreReferences.PREFIX + "uranium238").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium238.getUnlocalizedName() + "238");
-		GameRegistry.registerItem(itemYellowcake = (ItemInformationHolder) new ItemInformationHolder("yellowcake").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-				itemYellowcake.getUnlocalizedName());
+		GameRegistry.registerItem(itemHeavyWaterCell = (ItemInformationHolder) new ItemInformationHolder("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemHeavyWaterCell.getUnlocalizedName());
+		GameRegistry.registerItem(itemDeuteriumCell = (ItemInformationHolder) new ItemInformationHolder("deuteriumCell", "25ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemDeuteriumCell.getUnlocalizedName());
+		GameRegistry.registerItem(itemTritiumCell = (ItemInformationHolder) new ItemInformationHolder("tritiumCell", "12.5ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemTritiumCell.getUnlocalizedName());
+		GameRegistry.registerItem(itemUranium235 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 235").setUpdate(new ItemUpdateUranium().setScale(8.1f)).setTextureName(CoreReferences.PREFIX + "uranium235")
+				.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium235.getUnlocalizedName() + "235");
+		GameRegistry.registerItem(itemUranium238 = (ItemInformationHolder) new ItemInformationHolder("uranium", "Isotope 238").setUpdate(new ItemUpdateUranium().setScale(2.25f)).setTextureName(CoreReferences.PREFIX + "uranium238")
+				.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium238.getUnlocalizedName() + "238");
+		GameRegistry.registerItem(itemYellowcake = (ItemInformationHolder) new ItemInformationHolder("yellowcake").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemYellowcake.getUnlocalizedName());
 
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
@@ -92,14 +77,10 @@ public class NuclearItemRegister implements IContent {
 			GameRegistry.registerItem(itemHazmatLegs = new ItemHazmatArmor("HazmatLegs", RenderingRegistry.addNewArmourRendererPrefix("HazmatLegs"), 2), itemHazmatLegs.getUnlocalizedName());
 			GameRegistry.registerItem(itemHazmatBoots = new ItemHazmatArmor("HazmatBoots", RenderingRegistry.addNewArmourRendererPrefix("HazmatBoots"), 3), itemHazmatBoots.getUnlocalizedName());
 
-			GameRegistry.registerItem(itemReinforcedHazmatHelmet = new ItemHazmatArmor("ReinforcedHazmatHelmet", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatHelmet"), 0),
-					itemReinforcedHazmatHelmet.getUnlocalizedName());
-			GameRegistry.registerItem(itemReinforcedHazmatPlate = new ItemHazmatArmor("ReinforcedHazmatPlate", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatPlate"), 1),
-					itemReinforcedHazmatPlate.getUnlocalizedName());
-			GameRegistry.registerItem(itemReinforcedHazmatLegs = new ItemHazmatArmor("ReinforcedHazmatLegs", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatLegs"), 2),
-					itemReinforcedHazmatLegs.getUnlocalizedName());
-			GameRegistry.registerItem(itemReinforcedHazmatBoots = new ItemHazmatArmor("ReinforcedHazmatBoots", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatBoots"), 3),
-					itemReinforcedHazmatBoots.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatHelmet = new ItemHazmatArmor("ReinforcedHazmatHelmet", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatHelmet"), 0), itemReinforcedHazmatHelmet.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatPlate = new ItemHazmatArmor("ReinforcedHazmatPlate", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatPlate"), 1), itemReinforcedHazmatPlate.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatLegs = new ItemHazmatArmor("ReinforcedHazmatLegs", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatLegs"), 2), itemReinforcedHazmatLegs.getUnlocalizedName());
+			GameRegistry.registerItem(itemReinforcedHazmatBoots = new ItemHazmatArmor("ReinforcedHazmatBoots", RenderingRegistry.addNewArmourRendererPrefix("ReinforcedHazmatBoots"), 3), itemReinforcedHazmatBoots.getUnlocalizedName());
 		} else
 		{
 			GameRegistry.registerItem(itemHazmatHelmet = new ItemHazmatArmor("HazmatHelmet", 0, 0), itemHazmatHelmet.getUnlocalizedName());

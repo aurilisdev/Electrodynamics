@@ -9,12 +9,12 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 public abstract class AbstractOreGenerator implements IWorldGenerator {
 
-	public Block oreBlock;
+	public Block	oreBlock;
 
-	public int oreMeta;
-	public int harvestLevel;
+	public int		oreMeta;
+	public int		harvestLevel;
 
-	public String harvestTool;
+	public String	harvestTool;
 
 	public AbstractOreGenerator(Block block, int meta, String harvestTool, int harvestLevel) {
 		this.harvestTool = harvestTool;

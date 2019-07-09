@@ -12,8 +12,7 @@ package cofh.api.energy;
 public interface IEnergyStorage {
 
 	/**
-	 * Removes energy from the storage. Returns quantity of energy that was
-	 * removed.
+	 * Removes energy from the storage. Returns quantity of energy that was removed.
 	 *
 	 * @param maxExtract
 	 *            Maximum amount of energy to be extracted.
@@ -41,8 +40,8 @@ public interface IEnergyStorage {
 	 *            Maximum amount of energy to be inserted.
 	 * @param simulate
 	 *            If TRUE, the insertion will only be simulated.
-	 * @return Amount of energy that was (or would have been, if simulated)
-	 *         accepted by the storage.
+	 * @return Amount of energy that was (or would have been, if simulated) accepted
+	 *         by the storage.
 	 */
 	int receiveEnergy(int maxReceive, boolean simulate);
 

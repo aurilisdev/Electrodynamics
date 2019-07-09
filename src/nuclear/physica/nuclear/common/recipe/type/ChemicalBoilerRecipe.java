@@ -4,10 +4,10 @@ import net.minecraft.item.Item;
 
 public class ChemicalBoilerRecipe {
 
-	private int waterRequired;
-	private Item inputItem;
-	private String oreDictName;
-	private int hexaFluorideGenerated;
+	private int		waterRequired;
+	private Item	inputItem;
+	private String	oreDictName;
+	private int		hexaFluorideGenerated;
 
 	public ChemicalBoilerRecipe(int waterRequired, Item inputItem, int hexaFluorideGenerated) {
 		this.waterRequired = waterRequired;

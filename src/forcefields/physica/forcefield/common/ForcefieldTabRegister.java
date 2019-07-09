@@ -12,7 +12,8 @@ public class ForcefieldTabRegister implements IContent {
 	@Override
 	public void preInit()
 	{
-		forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield") {
+		forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield")
+		{
 
 			@Override
 			public Item getTabIconItem()

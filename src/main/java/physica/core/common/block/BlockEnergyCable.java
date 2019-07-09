@@ -41,8 +41,8 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		setResistance(0.2F);
 		setBlockName(CoreReferences.PREFIX + "energyCable");
 		setCreativeTab(CoreTabRegister.coreTab);
-		setBlockBounds(TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo,
-				1 - TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo);
+		setBlockBounds(TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo,
+				1 - TileRenderEnergyCable.pixelElevenTwo);
 		addToRegister(RecipeSide.Core, this);
 	}
 
@@ -228,8 +228,9 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		{
 			return name();
 		}
-		private int voltage;
-		private int transferRate;
+
+		private int	voltage;
+		private int	transferRate;
 
 		private EnumEnergyCable(int voltage, int transferRate) {
 			this.voltage = voltage;

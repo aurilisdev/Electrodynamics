@@ -27,8 +27,7 @@
 package javax.vecmath;
 
 /**
- * A 2-element point represented by signed integer x,y
- * coordinates.
+ * A 2-element point represented by signed integer x,y coordinates.
  *
  * @since vecmath 1.4
  */
@@ -37,8 +36,7 @@ public class Point2i extends Tuple2i implements java.io.Serializable {
 	static final long serialVersionUID = 9208072376494084954L;
 
 	/**
-	 * Constructs and initializes a Point2i from the specified
-	 * x and y coordinates.
+	 * Constructs and initializes a Point2i from the specified x and y coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -63,8 +61,7 @@ public class Point2i extends Tuple2i implements java.io.Serializable {
 	 * Constructs and initializes a Point2i from the specified Tuple2i.
 	 *
 	 * @param t1
-	 *            the Tuple2i containing the initialization x and y
-	 *            data.
+	 *            the Tuple2i containing the initialization x and y data.
 	 */
 	public Point2i(Tuple2i t1) {
 		super(t1);

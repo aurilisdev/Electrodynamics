@@ -11,8 +11,8 @@ import net.minecraftforge.client.model.IModelCustom;
 
 public class ItemRenderObjModel implements IItemRenderer {
 
-	protected IModelCustom model_base;
-	protected ResourceLocation model_texture;
+	protected IModelCustom		model_base;
+	protected ResourceLocation	model_texture;
 
 	public ItemRenderObjModel(String objFile, String textureFile, String domain, String modelDirectory, String modelTextureDirectory) {
 		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(domain, modelDirectory + objFile));

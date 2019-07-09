@@ -19,15 +19,15 @@ import physica.nuclear.common.tile.TileQuantumAssembler;
 @SideOnly(Side.CLIENT)
 public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler> implements IBaseUtilities {
 
-	protected static final ResourceLocation enderDragonCrystalBeamTextures = new ResourceLocation("textures/entity/endercrystal/endercrystal_beam.png");
-	protected static final RenderItem renderItem = (RenderItem) RenderManager.instance.getEntityClassRenderObject(EntityItem.class);
+	protected static final ResourceLocation	enderDragonCrystalBeamTextures	= new ResourceLocation("textures/entity/endercrystal/endercrystal_beam.png");
+	protected static final RenderItem		renderItem						= (RenderItem) RenderManager.instance.getEntityClassRenderObject(EntityItem.class);
 
 	public TileRenderAssembler(String objFile, String textureFile) {
 		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
 	}
 
-	protected float current = 0, lastOperating = 0;
-	protected boolean goesDown = false;
+	protected float		current		= 0, lastOperating = 0;
+	protected boolean	goesDown	= false;
 
 	@Override
 	public void renderTileAt(TileQuantumAssembler tile, double x, double y, double z, float deltaFrame)
@@ -48,11 +48,9 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 			GL11.glScalef(1 / down, 0.333f, 1 / down);
 			if (tile.getOperatingTicks() > 0)
 			{
-				double centerX = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down, centerY = tile.yCoord + 0.4 * down,
-						centerZ = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down;
+				double centerX = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down, centerY = tile.yCoord + 0.4 * down, centerZ = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down;
 
-				double targetX = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333,
-						targetY = tile.yCoord + 0.9 * down * 2,
+				double targetX = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333, targetY = tile.yCoord + 0.9 * down * 2,
 						targetZ = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333;
 
 				double relX = tile.getFacing().offsetX * down * forward, relY = 0.6 + tile.getWorldObj().rand.nextFloat() / down, relZ = tile.getFacing().offsetZ * down * forward;

@@ -9,9 +9,9 @@ import physica.api.core.IGuiInterface;
 
 public class CommonProxy implements IGuiHandler, IContent {
 
-	public static final int TILE_GUI_ID = 5000;
-	public static final int ENTITY_GUI_ID = 5002;
-	public static final int SLOT_GUI_ID = 5003;
+	public static final int	TILE_GUI_ID		= 5000;
+	public static final int	ENTITY_GUI_ID	= 5002;
+	public static final int	SLOT_GUI_ID		= 5003;
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)

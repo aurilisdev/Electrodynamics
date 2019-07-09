@@ -8,21 +8,21 @@ import net.minecraft.client.model.ModelRenderer;
 @SideOnly(Side.CLIENT)
 public class ModelCube extends ModelBase {
 
-	public static final ModelCube INSTANCE = new ModelCube();
+	public static final ModelCube	INSTANCE	= new ModelCube();
 
-	private ModelRenderer cube;
+	private ModelRenderer			cube;
 
 	public ModelCube() {
-		this.cube = new ModelRenderer(this);
+		cube = new ModelRenderer(this);
 		int size = 16;
-		this.cube.addBox(-size / 2, -size / 2, -size / 2, size, size, size);
-		this.cube.setTextureSize(112, 70);
-		this.cube.mirror = true;
+		cube.addBox(-size / 2, -size / 2, -size / 2, size, size, size);
+		cube.setTextureSize(112, 70);
+		cube.mirror = true;
 	}
 
 	public void render()
 	{
 		float f = 0.0625F;
-		this.cube.render(f);
+		cube.render(f);
 	}
 }

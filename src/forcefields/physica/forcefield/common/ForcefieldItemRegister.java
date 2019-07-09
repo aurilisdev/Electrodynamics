@@ -12,41 +12,31 @@ import physica.library.item.ItemMetaHolder;
 
 public class ForcefieldItemRegister implements IContent {
 
-	public static ItemMetaHolder itemMetaShapeModule;
-	public static ItemMetaHolder itemMetaManipulationModule;
-	public static ItemMetaHolder itemMetaUpgradeModule;
+	public static ItemMetaHolder				itemMetaShapeModule;
+	public static ItemMetaHolder				itemMetaManipulationModule;
+	public static ItemMetaHolder				itemMetaUpgradeModule;
 
-	public static ItemInformationHolder itemFocusMatrix;
+	public static ItemInformationHolder			itemFocusMatrix;
 
-	public static ItemFrequency itemFrequency;
-	public static ItemIdentificationCard itemIdentifcationCard;
+	public static ItemFrequency					itemFrequency;
+	public static ItemIdentificationCard		itemIdentifcationCard;
 
-	public static HashMap<String, ItemStack> moduleMap = new HashMap<>();
+	public static HashMap<String, ItemStack>	moduleMap	= new HashMap<>();
 
 	@Override
 	public void preInit()
 	{
-		GameRegistry.registerItem(
-				itemMetaShapeModule =
-						(ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere").addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube").addSubItem("moduleShapePyramid")
-								.setCreativeTab(ForcefieldTabRegister.forcefieldTab).setMaxStackSize(1),
-				"item.metaShapeModule");
-		GameRegistry.registerItem(
-				itemMetaUpgradeModule =
-						(ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed").addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock").addSubItem("moduleUpgradeDisintegration")
-								.addSubItem("moduleUpgradeInterior").addSubItem("moduleUpgradeSponge").addSubItem("moduleUpgradeStabilize").addSubItem("moduleUpgradeColorChange")
-								.addSubItem("moduleUpgradeAntiHostile").addSubItem("moduleUpgradeAntiFriendly")
-								.addSubItem("moduleUpgradeAntiPersonnel").addSubItem("moduleUpgradeAntiSpawn").addSubItem("moduleUpgradeBlockAccess").addSubItem("moduleUpgradeBlockAlter")
-								.addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
-				"item.metaUpgradeModule");
+		GameRegistry.registerItem(itemMetaShapeModule = (ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere").addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube").addSubItem("moduleShapePyramid")
+				.setCreativeTab(ForcefieldTabRegister.forcefieldTab).setMaxStackSize(1), "item.metaShapeModule");
+		GameRegistry.registerItem(itemMetaUpgradeModule = (ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed").addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock").addSubItem("moduleUpgradeDisintegration")
+				.addSubItem("moduleUpgradeInterior").addSubItem("moduleUpgradeSponge").addSubItem("moduleUpgradeStabilize").addSubItem("moduleUpgradeColorChange").addSubItem("moduleUpgradeAntiHostile")
+				.addSubItem("moduleUpgradeAntiFriendly").addSubItem("moduleUpgradeAntiPersonnel").addSubItem("moduleUpgradeAntiSpawn").addSubItem("moduleUpgradeBlockAccess").addSubItem("moduleUpgradeBlockAlter")
+				.addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").setCreativeTab(ForcefieldTabRegister.forcefieldTab), "item.metaUpgradeModule");
 
-		GameRegistry.registerItem(
-				itemMetaManipulationModule =
-						(ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale").addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
+		GameRegistry.registerItem(itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale").addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
 				"item.metaManipulationModule");
 
-		GameRegistry.registerItem(itemFocusMatrix = (ItemInformationHolder) new ItemInformationHolder("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
-				itemFocusMatrix.getUnlocalizedName());
+		GameRegistry.registerItem(itemFocusMatrix = (ItemInformationHolder) new ItemInformationHolder("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab), itemFocusMatrix.getUnlocalizedName());
 
 		GameRegistry.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
 		GameRegistry.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());

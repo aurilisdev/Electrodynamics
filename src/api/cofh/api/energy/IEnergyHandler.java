@@ -17,8 +17,8 @@ public interface IEnergyHandler extends IEnergyProvider, IEnergyReceiver {
 	// here for back-compat via compiler doing things)
 
 	/**
-	 * Remove energy from an IEnergyProvider, internal distribution is left
-	 * entirely to the IEnergyProvider.
+	 * Remove energy from an IEnergyProvider, internal distribution is left entirely
+	 * to the IEnergyProvider.
 	 *
 	 * @param from
 	 *            Orientation the energy is extracted from.
@@ -45,8 +45,8 @@ public interface IEnergyHandler extends IEnergyProvider, IEnergyReceiver {
 	int getMaxEnergyStored(ForgeDirection from);
 
 	/**
-	 * Add energy to an IEnergyReceiver, internal distribution is left entirely
-	 * to the IEnergyReceiver.
+	 * Add energy to an IEnergyReceiver, internal distribution is left entirely to
+	 * the IEnergyReceiver.
 	 *
 	 * @param from
 	 *            Orientation the energy is received from.

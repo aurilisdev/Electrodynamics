@@ -17,8 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 public interface IToolWrench {
 
 	/***
-	 * Called to ensure that the wrench can be used. To get the ItemStack that
-	 * is used, check player.inventory.getCurrentItem()
+	 * Called to ensure that the wrench can be used. To get the ItemStack that is
+	 * used, check player.inventory.getCurrentItem()
 	 *
 	 * @param player
 	 *            - The player doing the wrenching
@@ -31,8 +31,7 @@ public interface IToolWrench {
 
 	/***
 	 * Callback after the wrench has been used. This can be used to decrease
-	 * durability or for other purposes. To get the ItemStack that was used,
-	 * check
+	 * durability or for other purposes. To get the ItemStack that was used, check
 	 * player.inventory.getCurrentItem()
 	 *
 	 * @param player

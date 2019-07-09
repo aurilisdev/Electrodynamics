@@ -29,9 +29,7 @@ public class BlockChemicalExtractor extends BlockBaseContainerModelled {
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "IPI", "MCM", "IPI", 'I', "ingotSteel", 'M',
-				"motor", 'P',
-				"plateSteel", 'C', "circuitAdvanced");
+		addRecipe(this, "IPI", "MCM", "IPI", 'I', "ingotSteel", 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced");
 	}
 
 	@Override

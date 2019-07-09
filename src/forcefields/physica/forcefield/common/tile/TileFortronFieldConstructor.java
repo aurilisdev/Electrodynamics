@@ -54,16 +54,16 @@ import physica.library.tile.TileBaseContainer;
 
 public class TileFortronFieldConstructor extends TileBaseContainer implements IInvFortronTile, IGuiInterface, IFortronConstructor, IExplosionHandler {
 
-	public static final int[] SLOT_UPGRADES = new int[] { 12, 13, 14, 15, 16, 17 };
-	public static final int[] SLOT_MODULES = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+	public static final int[]							SLOT_UPGRADES	= new int[] { 12, 13, 14, 15, 16, 17 };
+	public static final int[]							SLOT_MODULES	= new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-	public static final Integer[] SLOT_NORTH = new Integer[] { 4, 6 };
-	public static final Integer[] SLOT_SOUTH = new Integer[] { 5, 7 };
-	public static final Integer[] SLOT_EAST = new Integer[] { 9, 10 };
-	public static final Integer[] SLOT_WEST = new Integer[] { 1, 2 };
-	public static final Integer[] SLOT_UP = new Integer[] { 0, 8 };
-	public static final Integer[] SLOT_DOWN = new Integer[] { 3, 11 };
-	public static final HashMap<List<Integer>, String> SLOT_MAP = new HashMap<>();
+	public static final Integer[]						SLOT_NORTH		= new Integer[] { 4, 6 };
+	public static final Integer[]						SLOT_SOUTH		= new Integer[] { 5, 7 };
+	public static final Integer[]						SLOT_EAST		= new Integer[] { 9, 10 };
+	public static final Integer[]						SLOT_WEST		= new Integer[] { 1, 2 };
+	public static final Integer[]						SLOT_UP			= new Integer[] { 0, 8 };
+	public static final Integer[]						SLOT_DOWN		= new Integer[] { 3, 11 };
+	public static final HashMap<List<Integer>, String>	SLOT_MAP		= new HashMap<>();
 
 	static
 	{
@@ -75,23 +75,23 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		SLOT_MAP.put(Arrays.asList(SLOT_DOWN), "Down");
 	}
 
-	public static final int SLOT_FREQUENCY = 18;
-	public static final int SLOT_TYPE = 19;
+	public static final int					SLOT_FREQUENCY			= 18;
+	public static final int					SLOT_TYPE				= 19;
 
-	public static final int BASE_FORTRON = 1300;
-	public static final int MAX_HEALTH_LOSS = 10000;
-	protected boolean isActivated = false;
-	protected Set<ITileBase> fortronConnections = new HashSet<>();
+	public static final int					BASE_FORTRON			= 1300;
+	public static final int					MAX_HEALTH_LOSS			= 10000;
+	protected boolean						isActivated				= false;
+	protected Set<ITileBase>				fortronConnections		= new HashSet<>();
 
-	public Set<BlockLocation> calculatedFieldPoints = Collections.synchronizedSet(new HashSet<>());
-	public Set<TileFortronField> activeFields = new HashSet<>();
+	public Set<BlockLocation>				calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
+	public Set<TileFortronField>			activeFields			= new HashSet<>();
 
-	private BlockLocation location;
-	private ConstructorCalculationThread calculationThread;
-	private int[] cachedCoordinates = new int[3];
-	private int[] cachedInformation = new int[9];
-	private boolean hasInterior = false;
-	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
+	private BlockLocation					location;
+	private ConstructorCalculationThread	calculationThread;
+	private int[]							cachedCoordinates		= new int[3];
+	private int[]							cachedInformation		= new int[9];
+	private boolean							hasInterior				= false;
+	protected FluidTank						fortronTank				= new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
 
 	public boolean hasUpgrade(String name)
 	{
@@ -122,8 +122,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		return cachedInformation[7] + cachedInformation[8] + (shouldDisintegrate ? 25000 : 0);
 	}
-	private int healthLost = 0;
-	private boolean isOverriden;
+
+	private int		healthLost	= 0;
+	private boolean	isOverriden;
 
 	public int getHealthLost()
 	{
@@ -133,7 +134,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	@Override
 	public void receiveExplosionEnergy(double energy)
 	{
-		this.damageForcefield((int) energy);
+		damageForcefield((int) energy);
 	}
 
 	public void damageForcefield(int amount)
@@ -143,8 +144,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			return;
 		}
-		this.healthLost += amount / fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
-		if (this.healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS)
+		healthLost += amount / fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
+		if (healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS)
 		{
 			destroyField(true);
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -221,20 +222,19 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		cachedCoordinates[2] = zCoord + getModuleCountIn(translate, SLOT_SOUTH[0], SLOT_SOUTH[1]) - getModuleCountIn(translate, SLOT_NORTH[0], SLOT_NORTH[1]);
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
 		hasInterior = hasUpgrade("moduleUpgradeInterior");
-		cachedInformation[0] = (int) (cachedCoordinates[0] + Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1]))
-				/ (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		cachedInformation[1] = (int) Math.min(255, Math.max(0, cachedCoordinates[1] + getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_UP[0], TileFortronFieldConstructor.SLOT_UP[1])
-				/ (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1)));
-		cachedInformation[2] = (int) (cachedCoordinates[2] + Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_SOUTH[0], TileFortronFieldConstructor.SLOT_SOUTH[1]))
-				/ (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		cachedInformation[3] = (int) (cachedCoordinates[0] - Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_WEST[0], TileFortronFieldConstructor.SLOT_WEST[1]))
-				/ (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		cachedInformation[4] = (int) Math.max(0, cachedCoordinates[1] - getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_DOWN[0], TileFortronFieldConstructor.SLOT_DOWN[1])
-				/ (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		cachedInformation[5] = (int) (cachedCoordinates[2] - Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_NORTH[0], TileFortronFieldConstructor.SLOT_NORTH[1]))
-				/ (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		cachedInformation[6] = Math.min(64, getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0],
-				TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
+		cachedInformation[0] = (int) (cachedCoordinates[0]
+				+ Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1])) / (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		cachedInformation[1] = (int) Math.min(255,
+				Math.max(0, cachedCoordinates[1] + getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_UP[0], TileFortronFieldConstructor.SLOT_UP[1]) / (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1)));
+		cachedInformation[2] = (int) (cachedCoordinates[2]
+				+ Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_SOUTH[0], TileFortronFieldConstructor.SLOT_SOUTH[1])) / (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		cachedInformation[3] = (int) (cachedCoordinates[0]
+				- Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_WEST[0], TileFortronFieldConstructor.SLOT_WEST[1])) / (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		cachedInformation[4] = (int) Math.max(0,
+				cachedCoordinates[1] - getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_DOWN[0], TileFortronFieldConstructor.SLOT_DOWN[1]) / (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		cachedInformation[5] = (int) (cachedCoordinates[2]
+				- Math.min(64, getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_NORTH[0], TileFortronFieldConstructor.SLOT_NORTH[1])) / (hasInterior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		cachedInformation[6] = Math.min(64, getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0], TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
 		cachedInformation[7] = BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), 0, 11);
 		cachedInformation[8] = 1 + BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
 		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
@@ -284,8 +284,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			int yRadiusNeg = cachedInformation[4];
 			int zRadiusNeg = cachedInformation[5];
 			return x >= xRadiusNeg && x <= xRadiusPos && y >= yRadiusNeg && y <= yRadiusPos && z >= zRadiusNeg && z <= zRadiusPos;
-		} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeSphere").getItemDamage()
-				|| index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage())
+		} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeSphere").getItemDamage() || index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage())
 		{
 			float radius = cachedInformation[6] + 0.4F;
 			if (hasInterior)
@@ -302,8 +301,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			{
 				return getBlockLocation().getDistance(x, y, z) <= radius;
 			}
-		} else
-			if (index == ForcefieldItemRegister.moduleMap.get("moduleShapePyramid").getItemDamage())
+		} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapePyramid").getItemDamage())
 		{
 			int xPos = cachedInformation[0];
 			int yPos = cachedInformation[1];
@@ -328,22 +326,22 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	@Override
 	public boolean isFinishedConstructing()
 	{
-		return !isDestroying && calculatedFieldPoints.isEmpty() && isActivated() && getStackInSlot(SLOT_TYPE) != null && fortronTank.getFluidAmount() > getFortronUse() && getFortronUse() > 0
-				&& activeFields.size() > 0;
+		return !isDestroying && calculatedFieldPoints.isEmpty() && isActivated() && getStackInSlot(SLOT_TYPE) != null && fortronTank.getFluidAmount() > getFortronUse() && getFortronUse() > 0 && activeFields.size() > 0;
 	}
 
-	public boolean isCalculating;
-	public boolean isCurrentlyConstructing;
-	public boolean isDestroying;
-	public int moduleCount;
-	public int forcefieldType = -1;
+	public boolean	isCalculating;
+	public boolean	isCurrentlyConstructing;
+	public boolean	isDestroying;
+	public int		moduleCount;
+	public int		forcefieldType	= -1;
 
 	public void setCalculating(boolean b)
 	{
 		isCalculating = b;
 	}
-	public int delay = 0;
-	public boolean isFullySealed = false;
+
+	public int		delay			= 0;
+	public boolean	isFullySealed	= false;
 
 	@Override
 	public void updateServer(int ticks)
@@ -433,12 +431,13 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			}
 		}
 	}
-	private boolean shouldSponge = false;
-	public boolean shouldDisintegrate = false;
-	private boolean shouldStabilize = false;
-	private boolean hasCollectionModule = false;
-	private int totalGeneratedPerTick = 0;
-	public int maximumForceFieldCount = 0;
+
+	private boolean	shouldSponge			= false;
+	public boolean	shouldDisintegrate		= false;
+	private boolean	shouldStabilize			= false;
+	private boolean	hasCollectionModule		= false;
+	private int		totalGeneratedPerTick	= 0;
+	public int		maximumForceFieldCount	= 0;
 
 	public void destroyField(boolean instant)
 	{
@@ -470,8 +469,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		shouldDisintegrate = hasUpgrade("moduleUpgradeDisintegration");
 		shouldStabilize = hasUpgrade("moduleUpgradeStabilize");
 		hasCollectionModule = hasUpgrade("moduleUpgradeCollection");
-		totalGeneratedPerTick = 1 + 2 * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1])
-				/ ((shouldSponge ? 2 : 5) / (shouldStabilize ? 2 : 1));
+		totalGeneratedPerTick = 1 + 2 * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]) / ((shouldSponge ? 2 : 5) / (shouldStabilize ? 2 : 1));
 		if (shouldSponge)
 		{
 			totalGeneratedPerTick /= 2;
@@ -533,7 +531,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				if (shouldDisintegrate)
 				{
 					if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) != -1)
-					{ //Location usually has no effect
+					{ // Location usually has no effect
 						if (hasCollectionModule)
 						{
 							for (ItemStack stack : block.getDrops(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z, fieldPoint.getMetadata(worldObj), 0))
@@ -566,14 +564,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 									ItemStack stack = inv.getStackInSlot(slot);
 									if (stack != null)
 									{
-										if (stack.getItem() instanceof ItemBlock
-												&& entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.x,
-														fieldPoint.y, fieldPoint.z,
-														false, 0, null, stack))
+										if (stack.getItem() instanceof ItemBlock && entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.x, fieldPoint.y, fieldPoint.z, false, 0, null, stack))
 										{
 											int meta = stack.getHasSubtypes() ? stack.getItemDamage() : 0;
-											((ItemBlock) stack.getItem()).placeBlockAt(stack, null, entity.getWorldObj(), fieldPoint.x,
-													fieldPoint.y, fieldPoint.z, 0, 0, 0, 0, meta);
+											((ItemBlock) stack.getItem()).placeBlockAt(stack, null, entity.getWorldObj(), fieldPoint.x, fieldPoint.y, fieldPoint.z, 0, 0, 0, 0, meta);
 											inv.decrStackSize(slot, 1);
 											didPlace = true;
 											break;
@@ -620,8 +614,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		return fortronConnections;
 	}
-	private int frequency;
-	private int fieldColorMultiplier = PhysicaForcefields.DEFAULT_COLOR;
+
+	private int	frequency;
+	private int	fieldColorMultiplier	= PhysicaForcefields.DEFAULT_COLOR;
 
 	@Override
 	public int getFrequency()
@@ -790,6 +785,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		}
 		return location;
 	}
+
 	public static final int GUI_BUTTON_PACKET_ID = 22;
 
 	public void actionPerformed(int buttonId, Side side)

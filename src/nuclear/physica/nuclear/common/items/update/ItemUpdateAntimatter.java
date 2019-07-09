@@ -9,8 +9,8 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 
 public class ItemUpdateAntimatter implements IItemUpdate, IBaseUtilities {
 
-	public static int FULMINATION_ANTIMATTER_ENERGY_SCALE = 1000;
-	protected float scale = 1;
+	public static int	FULMINATION_ANTIMATTER_ENERGY_SCALE	= 1000;
+	protected float		scale								= 1;
 
 	public ItemUpdateAntimatter setScale(float scale)
 	{
@@ -31,8 +31,8 @@ public class ItemUpdateAntimatter implements IItemUpdate, IBaseUtilities {
 			for (int i = 0; i < rand.nextFloat() * entity.age / 100; i++)
 			{
 				float distance = (float) Math.sin(entity.ticksExisted / 40F - Math.floor(entity.ticksExisted)) / 3;
-				world.spawnParticle("smoke", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5,
-						switchRandom(distance) / 5, switchRandom(distance) / 5);
+				world.spawnParticle("smoke", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5,
+						switchRandom(distance) / 5);
 			}
 		}
 		if (entity.ticksExisted > 160 + rand.nextInt(entity.ticksExisted))

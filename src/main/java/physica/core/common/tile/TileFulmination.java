@@ -10,8 +10,8 @@ import physica.library.tile.TileBase;
 
 public class TileFulmination extends TileBase implements ITileBasePowered, IEnergyProvider {
 
-	public static int MAX_ENERGY_STORED = 500000;
-	private int energyStored;
+	public static int	MAX_ENERGY_STORED	= 500000;
+	private int			energyStored;
 
 	@Override
 	public int getEnergyStored()

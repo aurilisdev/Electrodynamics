@@ -38,18 +38,18 @@ import physica.proxy.sided.CommonProxy;
 public class PhysicaForcefields {
 
 	@SidedProxy(clientSide = "physica.proxy.sided.ClientProxy", serverSide = "physica.proxy.sided.ServerProxy")
-	public static CommonProxy sidedProxy;
-	public static ContentLoader proxyLoader = new ContentLoader();
+	public static CommonProxy			sidedProxy;
+	public static ContentLoader			proxyLoader		= new ContentLoader();
 
 	@Instance(ForcefieldReferences.NAME)
-	public static PhysicaForcefields INSTANCE;
+	public static PhysicaForcefields	INSTANCE;
 	@Metadata(ForcefieldReferences.DOMAIN)
-	public static ModMetadata metadata;
+	public static ModMetadata			metadata;
 
-	public static File configFolder;
-	public static ConfigForcefields config;
+	public static File					configFolder;
+	public static ConfigForcefields		config;
 
-	public static int DEFAULT_COLOR = Color.CYAN.brighter().brighter().getRGB();
+	public static int					DEFAULT_COLOR	= Color.CYAN.brighter().brighter().getRGB();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

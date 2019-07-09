@@ -15,8 +15,8 @@ import physica.api.core.PhysicaAPI;
 
 public abstract class BlockRotatable extends BlockContainer {
 
-	protected byte rotationMask = Byte.parseByte("111100", 2);
-	protected boolean isFlipPlacement = false;
+	protected byte		rotationMask	= Byte.parseByte("111100", 2);
+	protected boolean	isFlipPlacement	= false;
 
 	protected BlockRotatable(Material material) {
 		super(material);

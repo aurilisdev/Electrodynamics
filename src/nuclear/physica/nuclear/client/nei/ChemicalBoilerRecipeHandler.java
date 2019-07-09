@@ -64,8 +64,7 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 		changeTexture(getGuiTexture());
 		drawTexturedModalRect(-1, 0, xOffset, yOffset, 169, 62);
 
-		drawFluidTank(8, 8,
-				new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - cycleticks % TileChemicalBoiler.TICKS_REQUIRED / (float) TileChemicalBoiler.TICKS_REQUIRED))));
+		drawFluidTank(8, 8, new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - cycleticks % TileChemicalBoiler.TICKS_REQUIRED / (float) TileChemicalBoiler.TICKS_REQUIRED))));
 		drawFluidTank(145, 8, new FluidStack(NuclearFluidRegister.LIQUID_HE, theRecipe.hexaAmount));
 
 		renderFurnaceCookArrow(30, 24, 0, 1000 / 2);
@@ -175,8 +174,8 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadTransferRects()
 	{
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(30, 24, 22, 15), getRecipeID(), new Object[0]));
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(118, 24, 22, 15), getRecipeID(), new Object[0]));
+		transferRects.add(new RecipeTransferRect(new Rectangle(30, 24, 22, 15), getRecipeID(), new Object[0]));
+		transferRects.add(new RecipeTransferRect(new Rectangle(118, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
@@ -247,10 +246,10 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	class recipe extends TemplateRecipeHandler.CachedRecipe {
 
-		public int waterAmount;
-		public int hexaAmount;
-		public Item iteminput;
-		public String oreDict;
+		public int		waterAmount;
+		public int		hexaAmount;
+		public Item		iteminput;
+		public String	oreDict;
 
 		@Override
 		public PositionedStack getResult()

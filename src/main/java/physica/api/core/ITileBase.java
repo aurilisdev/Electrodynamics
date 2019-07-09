@@ -22,8 +22,8 @@ import physica.library.network.packet.PacketTile;
 
 public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, IRotatable {
 
-	int DESC_PACKET_ID = 0;
-	int GUI_PACKET_ID = 1;
+	int	DESC_PACKET_ID	= 0;
+	int	GUI_PACKET_ID	= 1;
 
 	default TileEntity This()
 	{

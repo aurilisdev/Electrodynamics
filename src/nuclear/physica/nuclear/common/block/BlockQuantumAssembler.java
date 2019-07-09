@@ -33,8 +33,7 @@ public class BlockQuantumAssembler extends BlockBaseContainerModelled {
 	public void initialize()
 	{
 		addRecipe(this, "CPC", "QTQ", "CPC", 'C', "circuitElite", 'Q', NuclearItemRegister.itemEmptyQuantumCell, 'P',
-				new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'T',
-				new ItemStack(NuclearBlockRegister.blockCentrifuge));
+				new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'T', new ItemStack(NuclearBlockRegister.blockCentrifuge));
 	}
 
 	@Override

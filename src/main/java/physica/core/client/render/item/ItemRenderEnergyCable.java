@@ -47,8 +47,7 @@ public class ItemRenderEnergyCable implements IItemRenderer {
 			GL11.glScalef(1.25f, 1.25f, 1.25f);
 		}
 		GL11.glScalef(1, 3f, 1f);
-		FMLClientHandler.instance().getClient().renderEngine
-				.bindTexture(TileRenderEnergyCable.model_texture[Math.max(0, Math.min(TileRenderEnergyCable.model_texture.length - 1, item.getItemDamage()))]);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileRenderEnergyCable.model_texture[Math.max(0, Math.min(TileRenderEnergyCable.model_texture.length - 1, item.getItemDamage()))]);
 		render();
 		RenderHelper.enableStandardItemLighting();
 		GL11.glPopMatrix();

@@ -7,7 +7,7 @@ import physica.core.common.network.EnergyTransferNetwork;
 
 public class ValidateThread extends Thread {
 
-	public ConcurrentLinkedQueue<EnergyTransferNetwork> queue = new ConcurrentLinkedQueue<EnergyTransferNetwork>();
+	public ConcurrentLinkedQueue<EnergyTransferNetwork> queue = new ConcurrentLinkedQueue<>();
 
 	@Override
 	public void run()

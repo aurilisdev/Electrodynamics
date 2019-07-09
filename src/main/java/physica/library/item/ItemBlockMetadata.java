@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockMetadata extends ItemBlock {
 
-	public static HashMap<Block, HashMap<Integer, String[]>> descriptionMap = new HashMap<>();
-	public HashMap<Integer, String[]> instanceMap = new HashMap<>();
+	public static HashMap<Block, HashMap<Integer, String[]>>	descriptionMap	= new HashMap<>();
+	public HashMap<Integer, String[]>							instanceMap		= new HashMap<>();
 
 	public ItemBlockMetadata(Block block) {
 		super(block);

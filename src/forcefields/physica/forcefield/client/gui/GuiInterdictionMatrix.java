@@ -48,8 +48,7 @@ public class GuiInterdictionMatrix extends GuiContainerBase<TileInterdictionMatr
 					SlotBase base = (SlotBase) obj;
 					if (base.getSlotIndex() >= TileInterdictionMatrix.SLOT_STARTBANLIST)
 					{
-						base.setBaseColor(host.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY)
-								.setEdgeColor(host.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY);
+						base.setBaseColor(host.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY).setEdgeColor(host.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY);
 					}
 				}
 			}

@@ -11,8 +11,8 @@ import physica.api.core.ITileBase;
 
 public abstract class TileBase extends TileEntity implements ITileBase {
 
-	private int _ticksRunning = 0;
-	protected Set<EntityPlayer> playersUsingGUI = new HashSet<>();
+	private int					_ticksRunning	= 0;
+	protected Set<EntityPlayer>	playersUsingGUI	= new HashSet<>();
 
 	@Override
 	public Collection<EntityPlayer> getPlayersUsingGui()

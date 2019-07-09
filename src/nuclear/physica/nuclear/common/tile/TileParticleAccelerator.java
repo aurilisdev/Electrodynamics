@@ -26,19 +26,19 @@ import physica.nuclear.common.inventory.ContainerParticleAccelerator;
 
 public class TileParticleAccelerator extends TileBasePoweredContainer implements IGuiInterface, IElectromagnet {
 
-	public static final int SLOT_INPUTMATTER = 1;
-	public static final int SLOT_INPUTCELLS = 0;
-	public static final int SLOT_OUTPUT = 2;
+	public static final int		SLOT_INPUTMATTER				= 1;
+	public static final int		SLOT_INPUTCELLS					= 0;
+	public static final int		SLOT_OUTPUT						= 2;
 
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUTMATTER };
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
-	private static final int[] ACCESSIBLE_SLOTS_MIDDLE_SIDES = new int[] { SLOT_INPUTCELLS };
+	private static final int[]	ACCESSIBLE_SLOTS_UP				= new int[] { SLOT_INPUTMATTER };
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN			= new int[] { SLOT_OUTPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_MIDDLE_SIDES	= new int[] { SLOT_INPUTCELLS };
 
-	protected EntityParticle particle = null;
+	protected EntityParticle	particle						= null;
 
-	protected int currentSessionUse = 0;
-	protected double velocity = 0;
-	protected int antimatterAmount = 0;
+	protected int				currentSessionUse				= 0;
+	protected double			velocity						= 0;
+	protected int				antimatterAmount				= 0;
 
 	@Override
 	public void onChunkUnload()
@@ -281,8 +281,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		return stack == null || slot == SLOT_OUTPUT ? false
-				: slot == SLOT_INPUTMATTER && stack.isStackable() ? true
-						: slot == SLOT_INPUTCELLS && (stack.getItem() == NuclearItemRegister.itemEmptyElectromagneticCell || stack.getItem() == NuclearItemRegister.itemEmptyQuantumCell);
+				: slot == SLOT_INPUTMATTER && stack.isStackable() ? true : slot == SLOT_INPUTCELLS && (stack.getItem() == NuclearItemRegister.itemEmptyElectromagneticCell || stack.getItem() == NuclearItemRegister.itemEmptyQuantumCell);
 	}
 
 	@Override
@@ -327,9 +326,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN
-				: side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP
-						: ACCESSIBLE_SLOTS_MIDDLE_SIDES;
+		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_MIDDLE_SIDES;
 	}
 
 	@Override

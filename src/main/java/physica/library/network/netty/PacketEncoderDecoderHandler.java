@@ -15,8 +15,8 @@ import physica.library.network.packet.PacketTile;
  */
 public class PacketEncoderDecoderHandler extends FMLIndexedMessageToMessageCodec<IPacket> {
 
-	public boolean silenceStackTrace = false;
-	private int nextID = 0;
+	public boolean	silenceStackTrace	= false;
+	private int		nextID				= 0;
 
 	public PacketEncoderDecoderHandler() {
 		addPacket(PacketTile.class);

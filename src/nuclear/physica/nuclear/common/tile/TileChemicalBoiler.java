@@ -32,18 +32,18 @@ import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
 
 public class TileChemicalBoiler extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
-	public static final int TICKS_REQUIRED = 800;
-	public static final int SLOT_ENERGY = 0;
-	public static final int SLOT_INPUT1 = 1;
-	public static final int SLOT_INPUT2 = 2;
+	public static final int		TICKS_REQUIRED			= 800;
+	public static final int		SLOT_ENERGY				= 0;
+	public static final int		SLOT_INPUT1				= 1;
+	public static final int		SLOT_INPUT2				= 2;
 
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT1, SLOT_INPUT2 };
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_INPUT1 };
+	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT1, SLOT_INPUT2 };
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_INPUT1 };
 
-	protected FluidTank waterTank = new FluidTank(FluidRegistry.WATER, 0, 5000);
-	protected FluidTank hexaTank = new FluidTank(NuclearFluidRegister.LIQUID_HE, 0, 5000);
+	protected FluidTank			waterTank				= new FluidTank(FluidRegistry.WATER, 0, 5000);
+	protected FluidTank			hexaTank				= new FluidTank(NuclearFluidRegister.LIQUID_HE, 0, 5000);
 
-	protected int operatingTicks = 0;
+	protected int				operatingTicks			= 0;
 
 	@Override
 	public void updateServer(int ticks)
@@ -173,9 +173,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem
-				: slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack)
-						: slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
+		return stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem : slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
 	}
 
 	@Override
@@ -224,8 +222,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
-		return resource != null && resource.getFluid() == FluidRegistry.WATER ? waterTank.fill(resource, doFill)
-				: resource != null && resource.getFluid() == NuclearFluidRegister.LIQUID_HE ? hexaTank.fill(resource, doFill) : 0;
+		return resource != null && resource.getFluid() == FluidRegistry.WATER ? waterTank.fill(resource, doFill) : resource != null && resource.getFluid() == NuclearFluidRegister.LIQUID_HE ? hexaTank.fill(resource, doFill) : 0;
 	}
 
 	@Override

@@ -37,9 +37,9 @@ public class GuiChemicalExtractor extends GuiContainerBase<TileChemicalExtractor
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		drawString("Status: "
-				+ (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting"
-						: host.canProcess(host.getStackInSlot(TileChemicalExtractor.SLOT_OUTPUT), host.getStackInSlot(TileChemicalExtractor.SLOT_INPUT)) ? "Insufficient power" : "Invalid input"),
+		drawString(
+				"Status: " + (host.getOperatingTicks() > 1 ? "Running"
+						: host.getOperatingTicks() == 1 ? "Starting" : host.canProcess(host.getStackInSlot(TileChemicalExtractor.SLOT_OUTPUT), host.getStackInSlot(TileChemicalExtractor.SLOT_INPUT)) ? "Insufficient power" : "Invalid input"),
 				8, 73);
 		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "chemicalExtractor.gui"), xSize / 2, 5);

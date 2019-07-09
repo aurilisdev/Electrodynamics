@@ -12,8 +12,8 @@ import physica.library.location.VectorLocation;
 
 public class ConstructorCalculationThread extends Thread {
 
-	public static final int EXCLUDE_RADIUS = 3;
-	private TileFortronFieldConstructor constructor;
+	public static final int				EXCLUDE_RADIUS	= 3;
+	private TileFortronFieldConstructor	constructor;
 
 	public ConstructorCalculationThread(TileFortronFieldConstructor constructor) {
 		this.constructor = constructor;
@@ -46,7 +46,7 @@ public class ConstructorCalculationThread extends Thread {
 				calculatePyramid(interiorModule, x, y, z);
 			}
 
-			if (this.isInterrupted())
+			if (isInterrupted())
 			{
 				constructor.calculatedFieldPoints.clear();
 			} else
@@ -76,25 +76,25 @@ public class ConstructorCalculationThread extends Thread {
 	private void calculateCube(boolean interior, int x, int y, int z)
 	{
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
-		int xRadiusPos = (int) (x + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		int yRadiusPos = (int) Math.min(255, Math.max(0, y + constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_UP[0], TileFortronFieldConstructor.SLOT_UP[1])
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1)));
-		int zRadiusPos = (int) (z + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_SOUTH[0], TileFortronFieldConstructor.SLOT_SOUTH[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		int xRadiusNeg = (int) (x - Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_WEST[0], TileFortronFieldConstructor.SLOT_WEST[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		int yRadiusNeg = (int) Math.max(0, y - constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_DOWN[0], TileFortronFieldConstructor.SLOT_DOWN[1])
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		int zRadiusNeg = (int) (z - Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_NORTH[0], TileFortronFieldConstructor.SLOT_NORTH[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		int xRadiusPos = (int) (x
+				+ Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		int yRadiusPos = (int) Math.min(255,
+				Math.max(0, y + constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_UP[0], TileFortronFieldConstructor.SLOT_UP[1]) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1)));
+		int zRadiusPos = (int) (z
+				+ Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_SOUTH[0], TileFortronFieldConstructor.SLOT_SOUTH[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		int xRadiusNeg = (int) (x
+				- Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_WEST[0], TileFortronFieldConstructor.SLOT_WEST[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		int yRadiusNeg = (int) Math.max(0,
+				y - constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_DOWN[0], TileFortronFieldConstructor.SLOT_DOWN[1]) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		int zRadiusNeg = (int) (z
+				- Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_NORTH[0], TileFortronFieldConstructor.SLOT_NORTH[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
 		for (int i = xRadiusNeg; i <= xRadiusPos; i++)
 		{
 			for (int j = yRadiusNeg; j <= yRadiusPos; j++)
 			{
 				for (int k = zRadiusNeg; k <= zRadiusPos; k++)
 				{
-					if (this.isInterrupted())
+					if (isInterrupted())
 					{
 						return;
 					}
@@ -111,8 +111,7 @@ public class ConstructorCalculationThread extends Thread {
 	private void calculateSphere(boolean interior, int x, int y, int z, boolean semi)
 	{
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
-		int radius = Math.min(64, constructor.getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0],
-				TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
+		int radius = Math.min(64, constructor.getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0], TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
 		if (interior)
 		{
 			radius /= ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE;
@@ -123,7 +122,7 @@ public class ConstructorCalculationThread extends Thread {
 			{
 				for (int k = z - radius; k <= z + radius; k++)
 				{
-					if (this.isInterrupted())
+					if (isInterrupted())
 					{
 						return;
 					}
@@ -141,18 +140,14 @@ public class ConstructorCalculationThread extends Thread {
 	private void calculatePyramid(boolean interior, int x, int y, int z)
 	{
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
-		double xPos = x + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
-		double yPos = Math.min(255, y + constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_UP[0], TileFortronFieldConstructor.SLOT_UP[1])
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		double zPos = z + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_SOUTH[0], TileFortronFieldConstructor.SLOT_SOUTH[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
-		double xNeg = x - Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_WEST[0], TileFortronFieldConstructor.SLOT_WEST[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
-		double yNeg = Math.max(0, y - constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_DOWN[0], TileFortronFieldConstructor.SLOT_DOWN[1])
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
-		double zNeg = z - Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_NORTH[0], TileFortronFieldConstructor.SLOT_NORTH[1]))
-				/ (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
+		double xPos = x + Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_EAST[0], TileFortronFieldConstructor.SLOT_EAST[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
+		double yPos = Math.min(255, y + constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_UP[0], TileFortronFieldConstructor.SLOT_UP[1]) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		double zPos = z
+				+ Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_SOUTH[0], TileFortronFieldConstructor.SLOT_SOUTH[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
+		double xNeg = x - Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_WEST[0], TileFortronFieldConstructor.SLOT_WEST[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
+		double yNeg = Math.max(0, y - constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_DOWN[0], TileFortronFieldConstructor.SLOT_DOWN[1]) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1));
+		double zNeg = z
+				- Math.min(64, constructor.getModuleCountIn(scaleModule, TileFortronFieldConstructor.SLOT_NORTH[0], TileFortronFieldConstructor.SLOT_NORTH[1])) / (interior ? ConfigForcefields.FORCEFIELD_INTERIOR_MODULE_DOWNSIZE : 1);
 		yPos += constructor.yCoordShifted() - yNeg;
 		yPos = Math.min(255, yPos);
 		for (int j = (int) yNeg; j <= yPos; j++)
@@ -165,7 +160,7 @@ public class ConstructorCalculationThread extends Thread {
 			{
 				for (int k = (int) zNeg; k <= zPos; k++)
 				{
-					if (this.isInterrupted())
+					if (isInterrupted())
 					{
 						return;
 					}

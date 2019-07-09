@@ -15,9 +15,9 @@ import physica.library.inventory.slot.SlotNull;
 
 public class ContainerBase<T extends IPlayerUsing> extends Container {
 
-	protected T host;
-	protected EntityPlayer player;
-	protected int slotCount;
+	protected T				host;
+	protected EntityPlayer	player;
+	protected int			slotCount;
 
 	public ContainerBase(EntityPlayer player, T node) {
 		host = node;
@@ -73,9 +73,9 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 	@Override
 	public Slot getSlot(int index)
 	{
-		if (index < this.inventorySlots.size())
+		if (index < inventorySlots.size())
 		{
-			return (Slot) this.inventorySlots.get(index);
+			return (Slot) inventorySlots.get(index);
 		}
 		return new SlotNull(null, 0, 0, 0);
 	}
@@ -112,8 +112,7 @@ public class ContainerBase<T extends IPlayerUsing> extends Container {
 				slot = (Slot) inventorySlots.get(k);
 				itemstack1 = slot.getStack();
 
-				if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage())
-						&& ItemStack.areItemStackTagsEqual(stack, itemstack1))
+				if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
 				{
 
 					int l = itemstack1.stackSize + stack.stackSize;

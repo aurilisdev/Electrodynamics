@@ -27,29 +27,28 @@
 package javax.vecmath;
 
 /**
- * A double precision, general, dynamically-resizable,
- * two-dimensional matrix class. Row and column numbering begins with
- * zero. The representation is row major.
+ * A double precision, general, dynamically-resizable, two-dimensional matrix
+ * class. Row and column numbering begins with zero. The representation is row
+ * major.
  */
 @SuppressWarnings("unused")
 public class GMatrix implements java.io.Serializable, Cloneable {
 
 	// Compatible with 1.1
-	static final long serialVersionUID = 2777097312029690941L;
-	private static final boolean debug = false;
+	static final long				serialVersionUID	= 2777097312029690941L;
+	private static final boolean	debug				= false;
 
-	int nRow;
-	int nCol;
+	int								nRow;
+	int								nCol;
 
 	// double dereference is slow
-	double[][] values;
+	double[][]						values;
 
-	private static final double EPS = 1.0E-10;
+	private static final double		EPS					= 1.0E-10;
 
 	/**
-	 * Constructs an nRow by NCol identity matrix.
-	 * Note that because row and column numbering begins with
-	 * zero, nRow and nCol will be one larger than the maximum
+	 * Constructs an nRow by NCol identity matrix. Note that because row and column
+	 * numbering begins with zero, nRow and nCol will be one larger than the maximum
 	 * possible matrix index values.
 	 *
 	 * @param nRow
@@ -87,13 +86,11 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs an nRow by nCol matrix initialized to the values
-	 * in the matrix array. The array values are copied in one row at
-	 * a time in row major fashion. The array should be at least
-	 * nRow*nCol in length.
-	 * Note that because row and column numbering begins with
-	 * zero, nRow and nCol will be one larger than the maximum
-	 * possible matrix index values.
+	 * Constructs an nRow by nCol matrix initialized to the values in the matrix
+	 * array. The array values are copied in one row at a time in row major fashion.
+	 * The array should be at least nRow*nCol in length. Note that because row and
+	 * column numbering begins with zero, nRow and nCol will be one larger than the
+	 * maximum possible matrix index values.
 	 *
 	 * @param nRow
 	 *            number of rows in this matrix.
@@ -118,8 +115,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GMatrix and copies the initial values
-	 * from the parameter matrix.
+	 * Constructs a new GMatrix and copies the initial values from the parameter
+	 * matrix.
 	 *
 	 * @param matrix
 	 *            the source of the initial values of the new GMatrix
@@ -140,8 +137,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix to the result of multiplying itself
-	 * with matrix m1 (this = this * m1).
+	 * Sets the value of this matrix to the result of multiplying itself with matrix
+	 * m1 (this = this * m1).
 	 *
 	 * @param m1
 	 *            the other matrix
@@ -173,8 +170,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix to the result of multiplying
-	 * the two argument matrices together (this = m1 * m2).
+	 * Sets the value of this matrix to the result of multiplying the two argument
+	 * matrices together (this = m1 * m2).
 	 *
 	 * @param m1
 	 *            the first matrix
@@ -208,10 +205,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Computes the outer product of the two vectors; multiplies the
-	 * the first vector by the transpose of the second vector and places
-	 * the matrix result into this matrix. This matrix must be
-	 * be as big or bigger than getSize(v1)xgetSize(v2).
+	 * Computes the outer product of the two vectors; multiplies the the first
+	 * vector by the transpose of the second vector and places the matrix result
+	 * into this matrix. This matrix must be be as big or bigger than
+	 * getSize(v1)xgetSize(v2).
 	 *
 	 * @param v1
 	 *            the first vector, treated as a row vector
@@ -307,8 +304,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix to the matrix difference of itself
-	 * and matrix m1 (this = this - m1).
+	 * Sets the value of this matrix to the matrix difference of itself and matrix
+	 * m1 (this = this - m1).
 	 *
 	 * @param m1
 	 *            the other matrix
@@ -336,8 +333,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix to the matrix difference
-	 * of matrices m1 and m2 (this = m1 - m2).
+	 * Sets the value of this matrix to the matrix difference of matrices m1 and m2
+	 * (this = m1 - m2).
 	 *
 	 * @param m1
 	 *            the first matrix
@@ -387,8 +384,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix equal to the negation of
-	 * of the GMatrix parameter.
+	 * Sets the value of this matrix equal to the negation of of the GMatrix
+	 * parameter.
 	 *
 	 * @param m1
 	 *            The source matrix
@@ -455,8 +452,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Subtracts this matrix from the identity matrix and puts the values
-	 * back into this (this = I - this).
+	 * Subtracts this matrix from the identity matrix and puts the values back into
+	 * this (this = I - this).
 	 */
 	public final void identityMinus()
 	{
@@ -494,8 +491,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Inverts matrix m1 and places the new values into this matrix. Matrix
-	 * m1 is not modified.
+	 * Inverts matrix m1 and places the new values into this matrix. Matrix m1 is
+	 * not modified.
 	 *
 	 * @param m1
 	 *            the matrix to be inverted
@@ -506,11 +503,11 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Copies a sub-matrix derived from this matrix into the target matrix.
-	 * The upper left of the sub-matrix is located at (rowSource, colSource);
-	 * the lower right of the sub-matrix is located at
-	 * (lastRowSource,lastColSource). The sub-matrix is copied into the
-	 * the target matrix starting at (rowDest, colDest).
+	 * Copies a sub-matrix derived from this matrix into the target matrix. The
+	 * upper left of the sub-matrix is located at (rowSource, colSource); the lower
+	 * right of the sub-matrix is located at (lastRowSource,lastColSource). The
+	 * sub-matrix is copied into the the target matrix starting at (rowDest,
+	 * colDest).
 	 *
 	 * @param rowSource
 	 *            the top-most row of the sub-matrix
@@ -521,11 +518,11 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	 * @param numCol
 	 *            the number of columns in the sub-matrix
 	 * @param rowDest
-	 *            the top-most row of the position of the copied
-	 *            sub-matrix within the target matrix
+	 *            the top-most row of the position of the copied sub-matrix within
+	 *            the target matrix
 	 * @param colDest
-	 *            the left-most column of the position of the copied
-	 *            sub-matrix within the target matrix
+	 *            the left-most column of the position of the copied sub-matrix
+	 *            within the target matrix
 	 * @param target
 	 *            the matrix into which the sub-matrix will be copied
 	 */
@@ -539,8 +536,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 			{
 				for (j = 0; j < numCol; j++)
 				{
-					target.values[rowDest + i][colDest + j] =
-							values[rowSource + i][colSource + j];
+					target.values[rowDest + i][colDest + j] = values[rowSource + i][colSource + j];
 				}
 			}
 		} else
@@ -564,9 +560,9 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Changes the size of this matrix dynamically. If the size is increased
-	 * no data values will be lost. If the size is decreased, only those data
-	 * values whose matrix positions were eliminated will be lost.
+	 * Changes the size of this matrix dynamically. If the size is increased no data
+	 * values will be lost. If the size is decreased, only those data values whose
+	 * matrix positions were eliminated will be lost.
 	 *
 	 * @param nRow
 	 *            number of desired rows in this matrix
@@ -609,11 +605,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix to the values found in the array parameter.
-	 * The values are copied in one row at a time, in row major
-	 * fashion. The array should be at least equal in length to
-	 * the number of matrix rows times the number of matrix columns
-	 * in this matrix.
+	 * Sets the value of this matrix to the values found in the array parameter. The
+	 * values are copied in one row at a time, in row major fashion. The array
+	 * should be at least equal in length to the number of matrix rows times the
+	 * number of matrix columns in this matrix.
 	 *
 	 * @param matrix
 	 *            the row major source array
@@ -953,8 +948,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Places the values in the upper 3x3 of this GMatrix into
-	 * the matrix m1.
+	 * Places the values in the upper 3x3 of this GMatrix into the matrix m1.
 	 *
 	 * @param m1
 	 *            The matrix that will hold the new values
@@ -1026,8 +1020,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Places the values in the upper 3x3 of this GMatrix into
-	 * the matrix m1.
+	 * Places the values in the upper 3x3 of this GMatrix into the matrix m1.
 	 *
 	 * @param m1
 	 *            The matrix that will hold the new values
@@ -1100,8 +1093,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Places the values in the upper 4x4 of this GMatrix into
-	 * the matrix m1.
+	 * Places the values in the upper 4x4 of this GMatrix into the matrix m1.
 	 *
 	 * @param m1
 	 *            The matrix that will hold the new values
@@ -1213,8 +1205,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Places the values in the upper 4x4 of this GMatrix into
-	 * the matrix m1.
+	 * Places the values in the upper 4x4 of this GMatrix into the matrix m1.
 	 *
 	 * @param m1
 	 *            The matrix that will hold the new values
@@ -1326,8 +1317,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Places the values in the this GMatrix into the matrix m1;
-	 * m1 should be at least as large as this GMatrix.
+	 * Places the values in the this GMatrix into the matrix m1; m1 should be at
+	 * least as large as this GMatrix.
 	 *
 	 * @param m1
 	 *            The matrix that will hold the new values
@@ -1376,12 +1367,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Copy the values from the array into the specified row of this
-	 * matrix.
+	 * Copy the values from the array into the specified row of this matrix.
 	 *
 	 * @param row
-	 *            the row of this matrix into which the array values
-	 *            will be copied.
+	 *            the row of this matrix into which the array values will be copied.
 	 * @param array
 	 *            the source array
 	 */
@@ -1394,12 +1383,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Copy the values from the vector into the specified row of this
-	 * matrix.
+	 * Copy the values from the vector into the specified row of this matrix.
 	 *
 	 * @param row
-	 *            the row of this matrix into which the array values
-	 *            will be copied
+	 *            the row of this matrix into which the array values will be copied
 	 * @param vector
 	 *            the source vector
 	 */
@@ -1412,12 +1399,11 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Copy the values from the array into the specified column of this
-	 * matrix.
+	 * Copy the values from the array into the specified column of this matrix.
 	 *
 	 * @param col
-	 *            the column of this matrix into which the array values
-	 *            will be copied
+	 *            the column of this matrix into which the array values will be
+	 *            copied
 	 * @param array
 	 *            the source array
 	 */
@@ -1430,12 +1416,11 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Copy the values from the vector into the specified column of this
-	 * matrix.
+	 * Copy the values from the vector into the specified column of this matrix.
 	 *
 	 * @param col
-	 *            the column of this matrix into which the array values
-	 *            will be copied
+	 *            the column of this matrix into which the array values will be
+	 *            copied
 	 * @param vector
 	 *            the source vector
 	 */
@@ -1449,8 +1434,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Multiplies the transpose of matrix m1 times the transpose of matrix
-	 * m2, and places the result into this.
+	 * Multiplies the transpose of matrix m1 times the transpose of matrix m2, and
+	 * places the result into this.
 	 *
 	 * @param m1
 	 *            The matrix on the left hand side of the multiplication
@@ -1498,8 +1483,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Multiplies matrix m1 times the transpose of matrix m2, and
-	 * places the result into this.
+	 * Multiplies matrix m1 times the transpose of matrix m2, and places the result
+	 * into this.
 	 *
 	 * @param m1
 	 *            The matrix on the left hand side of the multiplication
@@ -1548,8 +1533,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Multiplies the transpose of matrix m1 times matrix m2, and
-	 * places the result into this.
+	 * Multiplies the transpose of matrix m1 times matrix m2, and places the result
+	 * into this.
 	 *
 	 * @param m1
 	 *            The matrix on the left hand side of the multiplication
@@ -1688,11 +1673,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a hash code value based on the data values in this
-	 * object. Two different GMatrix objects with identical data
-	 * values (i.e., GMatrix.equals returns true) will return the
-	 * same hash number. Two GMatrix objects with different data
-	 * members may return the same hash value, although this is not
+	 * Returns a hash code value based on the data values in this object. Two
+	 * different GMatrix objects with identical data values (i.e., GMatrix.equals
+	 * returns true) will return the same hash number. Two GMatrix objects with
+	 * different data members may return the same hash value, although this is not
 	 * likely.
 	 *
 	 * @return the integer hash code value
@@ -1717,8 +1701,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if all of the data members of GMatrix m1 are
-	 * equal to the corresponding data members in this GMatrix.
+	 * Returns true if all of the data members of GMatrix m1 are equal to the
+	 * corresponding data members in this GMatrix.
 	 *
 	 * @param m1
 	 *            The matrix with which the comparison is made.
@@ -1753,9 +1737,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the Object o1 is of type GMatrix and all of the
-	 * data members of o1 are equal to the corresponding data members in
-	 * this GMatrix.
+	 * Returns true if the Object o1 is of type GMatrix and all of the data members
+	 * of o1 are equal to the corresponding data members in this GMatrix.
 	 *
 	 * @param o1
 	 *            The object with which the comparison is made.
@@ -1803,11 +1786,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the L-infinite distance between this matrix
-	 * and matrix m1 is less than or equal to the epsilon parameter,
-	 * otherwise returns false. The L-infinite
-	 * distance is equal to
-	 * MAX[i=0,1,2, . . .n ; j=0,1,2, . . .n ; abs(this.m(i,j) - m1.m(i,j)]
+	 * Returns true if the L-infinite distance between this matrix and matrix m1 is
+	 * less than or equal to the epsilon parameter, otherwise returns false. The
+	 * L-infinite distance is equal to MAX[i=0,1,2, . . .n ; j=0,1,2, . . .n ;
+	 * abs(this.m(i,j) - m1.m(i,j)]
 	 *
 	 * @param m1
 	 *            The matrix to be compared to this matrix
@@ -1864,16 +1846,14 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Finds the singular value decomposition (SVD) of this matrix
-	 * such that this = U*W*transpose(V); and returns the rank of
-	 * this matrix; the values of U,W,V are all overwritten. Note
-	 * that the matrix V is output as V, and
-	 * not transpose(V). If this matrix is mxn, then U is mxm, W
-	 * is a diagonal matrix that is mxn, and V is nxn. Using the
-	 * notation W = diag(w), then the inverse of this matrix is:
-	 * inverse(this) = V*diag(1/w)*tranpose(U), where diag(1/w)
-	 * is the same matrix as W except that the reciprocal of each
-	 * of the diagonal components is used.
+	 * Finds the singular value decomposition (SVD) of this matrix such that this =
+	 * U*W*transpose(V); and returns the rank of this matrix; the values of U,W,V
+	 * are all overwritten. Note that the matrix V is output as V, and not
+	 * transpose(V). If this matrix is mxn, then U is mxm, W is a diagonal matrix
+	 * that is mxn, and V is nxn. Using the notation W = diag(w), then the inverse
+	 * of this matrix is: inverse(this) = V*diag(1/w)*tranpose(U), where diag(1/w)
+	 * is the same matrix as W except that the reciprocal of each of the diagonal
+	 * components is used.
 	 *
 	 * @param U
 	 *            The computed U matrix in the equation this = U*W*transpose(V)
@@ -1907,10 +1887,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 		// Does *not* fix the following problems reported in 4348562,
 		// which will wait for J3D 1.3:
 		//
-		//   1) no output of W
-		//   2) wrong transposition of U
-		//   3) wrong results for 4x4 matrices
-		//   4) slow performance
+		// 1) no output of W
+		// 2) wrong transposition of U
+		// 3) wrong results for 4x4 matrices
+		// 4) slow performance
 		if (nRow == 2 && nCol == 2)
 		{
 			if (values[1][0] == 0.0)
@@ -1932,8 +1912,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 				single_values[0] = values[0][0];
 				single_values[1] = values[1][1];
 
-				compute_2X2(values[0][0], values[0][1], values[1][1],
-						single_values, sinl, cosl, sinr, cosr, 0);
+				compute_2X2(values[0][0], values[0][1], values[1][1], single_values, sinl, cosl, sinr, cosr, 0);
 
 				update_u(0, U, cosl, sinl);
 				update_v(0, V, cosr, sinr);
@@ -1947,26 +1926,23 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * LU Decomposition: this matrix must be a square matrix and the
-	 * LU GMatrix parameter must be the same size as this matrix.
-	 * The matrix LU will be overwritten as the combination of a
-	 * lower diagonal and upper diagonal matrix decompostion of this
-	 * matrix; the diagonal
-	 * elements of L (unity) are not stored. The GVector parameter
-	 * records the row permutation effected by the partial pivoting,
-	 * and is used as a parameter to the GVector method LUDBackSolve
-	 * to solve sets of linear equations.
-	 * This method returns +/- 1 depending on whether the number
-	 * of row interchanges was even or odd, respectively.
+	 * LU Decomposition: this matrix must be a square matrix and the LU GMatrix
+	 * parameter must be the same size as this matrix. The matrix LU will be
+	 * overwritten as the combination of a lower diagonal and upper diagonal matrix
+	 * decompostion of this matrix; the diagonal elements of L (unity) are not
+	 * stored. The GVector parameter records the row permutation effected by the
+	 * partial pivoting, and is used as a parameter to the GVector method
+	 * LUDBackSolve to solve sets of linear equations. This method returns +/- 1
+	 * depending on whether the number of row interchanges was even or odd,
+	 * respectively.
 	 *
 	 * @param LU
-	 *            The matrix into which the lower and upper decompositions
-	 *            will be placed.
+	 *            The matrix into which the lower and upper decompositions will be
+	 *            placed.
 	 * @param permutation
-	 *            The row permutation effected by the partial
-	 *            pivoting
-	 * @return +-1 depending on whether the number of row interchanges
-	 *         was even or odd respectively
+	 *            The row permutation effected by the partial pivoting
+	 * @return +-1 depending on whether the number of row interchanges was even or
+	 *         odd respectively
 	 */
 	public final int LUD(GMatrix LU, GVector permutation)
 	{
@@ -2028,8 +2004,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets this matrix to a uniform scale matrix; all of the
-	 * values are reset.
+	 * Sets this matrix to a uniform scale matrix; all of the values are reset.
 	 *
 	 * @param scale
 	 *            The new scale value
@@ -2061,12 +2036,11 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * General invert routine. Inverts m1 and places the result in "this".
-	 * Note that this routine handles both the "this" version and the
-	 * non-"this" version.
+	 * General invert routine. Inverts m1 and places the result in "this". Note that
+	 * this routine handles both the "this" version and the non-"this" version.
 	 *
-	 * Also note that since this routine is slow anyway, we won't worry
-	 * about allocating a little bit of garbage.
+	 * Also note that since this routine is slow anyway, we won't worry about
+	 * allocating a little bit of garbage.
 	 */
 	final void invertGeneral(GMatrix m1)
 	{
@@ -2124,21 +2098,20 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Given a nxn array "matrix0", this function replaces it with the
-	 * LU decomposition of a row-wise permutation of itself. The input
-	 * parameters are "matrix0" and "dim". The array "matrix0" is also
-	 * an output parameter. The vector "row_perm[]" is an output
-	 * parameter that contains the row permutations resulting from partial
-	 * pivoting. The output parameter "even_row_xchg" is 1 when the
-	 * number of row exchanges is even, or -1 otherwise. Assumes data
-	 * type is always double.
+	 * Given a nxn array "matrix0", this function replaces it with the LU
+	 * decomposition of a row-wise permutation of itself. The input parameters are
+	 * "matrix0" and "dim". The array "matrix0" is also an output parameter. The
+	 * vector "row_perm[]" is an output parameter that contains the row permutations
+	 * resulting from partial pivoting. The output parameter "even_row_xchg" is 1
+	 * when the number of row exchanges is even, or -1 otherwise. Assumes data type
+	 * is always double.
 	 *
 	 * @return true if the matrix is nonsingular, or false otherwise.
 	 */
 	//
 	// Reference: Press, Flannery, Teukolsky, Vetterling,
-	//	      _Numerical_Recipes_in_C_, Cambridge University Press,
-	//	      1988, pp 40-45.
+	// _Numerical_Recipes_in_C_, Cambridge University Press,
+	// 1988, pp 40-45.
 	//
 	static boolean luDecomposition(int dim, double[] matrix0, int[] row_perm, int[] even_row_xchg)
 	{
@@ -2284,22 +2257,20 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Solves a set of linear equations. The input parameters "matrix1",
-	 * and "row_perm" come from luDecompostion and do not change
-	 * here. The parameter "matrix2" is a set of column vectors assembled
-	 * into a nxn matrix of floating-point values. The procedure takes each
-	 * column of "matrix2" in turn and treats it as the right-hand side of the
-	 * matrix equation Ax = LUx = b. The solution vector replaces the
-	 * original column of the matrix.
+	 * Solves a set of linear equations. The input parameters "matrix1", and
+	 * "row_perm" come from luDecompostion and do not change here. The parameter
+	 * "matrix2" is a set of column vectors assembled into a nxn matrix of
+	 * floating-point values. The procedure takes each column of "matrix2" in turn
+	 * and treats it as the right-hand side of the matrix equation Ax = LUx = b. The
+	 * solution vector replaces the original column of the matrix.
 	 *
-	 * If "matrix2" is the identity matrix, the procedure replaces its contents
-	 * with the inverse of the matrix from which "matrix1" was originally
-	 * derived.
+	 * If "matrix2" is the identity matrix, the procedure replaces its contents with
+	 * the inverse of the matrix from which "matrix1" was originally derived.
 	 */
 	//
 	// Reference: Press, Flannery, Teukolsky, Vetterling,
-	//	      _Numerical_Recipes_in_C_, Cambridge University Press,
-	//	      1988, pp 44-45.
+	// _Numerical_Recipes_in_C_, Cambridge University Press,
+	// 1988, pp 44-45.
 	//
 	static void luBacksubstitution(int dim, double[] matrix1, int[] row_perm, double[] matrix2)
 	{
@@ -2427,8 +2398,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 					mag += m.values[i + si][si] * m.values[i + si][si];
 					if (debug)
 					{
-						System.out.println("mag = " + mag + " matrix.dot = " +
-								m.values[i + si][si] * m.values[i + si][si]);
+						System.out.println("mag = " + mag + " matrix.dot = " + m.values[i + si][si] * m.values[i + si][si]);
 					}
 				}
 
@@ -2534,8 +2504,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 
 				if (debug)
 				{
-					System.out.println("single_values[" + si + "] =\n" +
-							single_values[si]);
+					System.out.println("single_values[" + si + "] =\n" + single_values[si]);
 					System.out.println("m =\n" + m.toString());
 					System.out.println("U =\n" + U.toString());
 				}
@@ -2570,8 +2539,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 					vec[0] = mag;
 				} else
 				{
-					vec[0] = m.values[si][si + 1] +
-							d_sign(mag, m.values[si][si + 1]);
+					vec[0] = m.values[si][si + 1] + d_sign(mag, m.values[si][si + 1]);
 				}
 
 				for (i = 1; i < nc - 1; i++)
@@ -2696,10 +2664,10 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 		// Does *not* fix the following problems reported in 4348562,
 		// which will wait for J3D 1.3:
 		//
-		//   1) no output of W
-		//   2) wrong transposition of U
-		//   3) wrong results for 4x4 matrices
-		//   4) slow performance
+		// 1) no output of W
+		// 2) wrong transposition of U
+		// 3) wrong results for 4x4 matrices
+		// 4) slow performance
 		if (m.nRow == 2 && m.nCol == 2)
 		{
 			double[] cosl = new double[1];
@@ -2707,8 +2675,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 			double[] sinl = new double[1];
 			double[] sinr = new double[1];
 
-			compute_2X2(single_values[0], e[0], single_values[1],
-					single_values, sinl, cosl, sinr, cosr, 0);
+			compute_2X2(single_values[0], e[0], single_values[1], single_values, sinl, cosl, sinr, cosr, 0);
 
 			update_u(0, U, cosl, sinl);
 			update_v(0, V, cosr, sinr);
@@ -2798,8 +2765,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 
 					shift = compute_shift(s[sl - 1], e[end], s[sl]);
 
-					f = (Math.abs(s[i]) - shift) *
-							(d_sign(c_b48, s[i]) + shift / s[i]);
+					f = (Math.abs(s[i]) - shift) * (d_sign(c_b48, s[i]) + shift / s[i]);
 					g = e[i];
 				}
 
@@ -2832,7 +2798,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 					g = sinl[0] * e[i + 1];
 					e[i + 1] = cosl[0] * e[i + 1];
 				}
-				//if (debug) print_se(s,e);
+				// if (debug) print_se(s,e);
 
 				update_u(i, u, cosl, sinl);
 				if (debug)
@@ -2858,8 +2824,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 
 			if (debug)
 			{
-				System.out.println("\n*********************** iteration #" + k +
-						" ***********************\n");
+				System.out.println("\n*********************** iteration #" + k + " ***********************\n");
 				print_svd(s, e, u, v);
 			}
 
@@ -2878,8 +2843,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 					end = n - 1; // do upper matrix
 
 					// check for convergence on off diagonals and reduce
-					while (end - start > 1 &&
-							Math.abs(e[end]) < CONVERGE_TOL)
+					while (end - start > 1 && Math.abs(e[end]) < CONVERGE_TOL)
 					{
 						end--;
 					}
@@ -2908,8 +2872,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 
 		if (Math.abs(e[1]) < CONVERGE_TOL)
 		{
-			compute_2X2(s[start], e[start], s[start + 1], s,
-					sinl, cosl, sinr, cosr, 0);
+			compute_2X2(s[start], e[start], s[start + 1], s, sinl, cosl, sinr, cosr, 0);
 			e[start] = 0.0;
 			e[start + 1] = 0.0;
 		} else
@@ -2937,10 +2900,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 		for (j = 0; j < v.nRow; j++)
 		{
 			vtemp = v.values[j][index];
-			v.values[j][index] =
-					cosr[0] * vtemp + sinr[0] * v.values[j][index + 1];
-			v.values[j][index + 1] =
-					-sinr[0] * vtemp + cosr[0] * v.values[j][index + 1];
+			v.values[j][index] = cosr[0] * vtemp + sinr[0] * v.values[j][index + 1];
+			v.values[j][index + 1] = -sinr[0] * vtemp + cosr[0] * v.values[j][index + 1];
 		}
 	}
 
@@ -2952,10 +2913,8 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 		for (j = 0; j < u.nCol; j++)
 		{
 			utemp = u.values[index][j];
-			u.values[index][j] =
-					cosl[0] * utemp + sinl[0] * u.values[index + 1][j];
-			u.values[index + 1][j] =
-					-sinl[0] * utemp + cosl[0] * u.values[index + 1][j];
+			u.values[index][j] = cosl[0] * utemp + sinl[0] * u.values[index + 1][j];
+			u.values[index + 1][j] = -sinl[0] * utemp + cosl[0] * u.values[index + 1][j];
 		}
 	}
 
@@ -3026,8 +2985,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 		mtmp.mulTransposeLeft(u, mtmp);
 		mtmp.mulTransposeRight(mtmp, v);
 
-		System.out.println(" \n u.transpose*m*v.transpose  = \n" +
-				mtmp.toString());
+		System.out.println(" \n u.transpose*m*v.transpose  = \n" + mtmp.toString());
 	}
 
 	static double max(double a, double b)
@@ -3095,8 +3053,7 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 					at = (fhmx - fhmn) / fhmx;
 					d__1 = as * au;
 					d__2 = at * au;
-					c = 1.0 / (Math.sqrt(d__1 * d__1 + 1.0) +
-							Math.sqrt(d__2 * d__2 + 1.0));
+					c = 1.0 / (Math.sqrt(d__1 * d__1 + 1.0) + Math.sqrt(d__2 * d__2 + 1.0));
 					ssmin = fhmn * c * au;
 					ssmin += ssmin;
 				}
@@ -3304,18 +3261,15 @@ public class GMatrix implements java.io.Serializable, Cloneable {
 
 			if (pmax == 1)
 			{
-				tsign = d_sign(c_b4, csr[0]) *
-						d_sign(c_b4, csl[0]) * d_sign(c_b4, f);
+				tsign = d_sign(c_b4, csr[0]) * d_sign(c_b4, csl[0]) * d_sign(c_b4, f);
 			}
 			if (pmax == 2)
 			{
-				tsign = d_sign(c_b4, snr[0]) *
-						d_sign(c_b4, csl[0]) * d_sign(c_b4, g);
+				tsign = d_sign(c_b4, snr[0]) * d_sign(c_b4, csl[0]) * d_sign(c_b4, g);
 			}
 			if (pmax == 3)
 			{
-				tsign = d_sign(c_b4, snr[0]) *
-						d_sign(c_b4, snl[0]) * d_sign(c_b4, h);
+				tsign = d_sign(c_b4, snr[0]) * d_sign(c_b4, snl[0]) * d_sign(c_b4, h);
 			}
 
 			single_values[index] = d_sign(ssmax, tsign);

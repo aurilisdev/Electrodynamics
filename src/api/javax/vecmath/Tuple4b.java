@@ -27,14 +27,12 @@
 package javax.vecmath;
 
 /**
- * A four byte tuple. Note that Java defines a byte as a signed integer
- * in the range [-128, 127]. However, colors are more typically
- * represented by values in the range [0, 255]. Java 3D recognizes this
- * and, in those cases where Tuple4b is used to represent color, treats
- * the bytes as if the range were [0, 255]---in other words, as if the
- * bytes were unsigned.
- * Values greater than 127 can be assigned to a byte variable using a
- * type cast. For example:
+ * A four byte tuple. Note that Java defines a byte as a signed integer in the
+ * range [-128, 127]. However, colors are more typically represented by values
+ * in the range [0, 255]. Java 3D recognizes this and, in those cases where
+ * Tuple4b is used to represent color, treats the bytes as if the range were [0,
+ * 255]---in other words, as if the bytes were unsigned. Values greater than 127
+ * can be assigned to a byte variable using a type cast. For example:
  * <ul>
  * <li>byteVariable = (byte) intValue; // intValue can be &gt; 127</li>
  * </ul>
@@ -44,27 +42,27 @@ package javax.vecmath;
  */
 public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 
-	static final long serialVersionUID = -8226727741811898211L;
+	static final long	serialVersionUID	= -8226727741811898211L;
 
 	/**
 	 * The first value.
 	 */
-	public byte x;
+	public byte			x;
 
 	/**
 	 * The second value.
 	 */
-	public byte y;
+	public byte			y;
 
 	/**
 	 * The third value.
 	 */
-	public byte z;
+	public byte			z;
 
 	/**
 	 * The fourth value.
 	 */
-	public byte w;
+	public byte			w;
 
 	/**
 	 * Constructs and initializes a Tuple4b from the specified four values.
@@ -129,15 +127,12 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	@Override
 	public String toString()
 	{
-		return "(" + (x & 0xff) +
-				", " + (y & 0xff) +
-				", " + (z & 0xff) +
-				", " + (w & 0xff) + ")";
+		return "(" + (x & 0xff) + ", " + (y & 0xff) + ", " + (z & 0xff) + ", " + (w & 0xff) + ")";
 	}
 
 	/**
-	 * Places the value of the x,y,z,w components of this Tuple4b
-	 * into the array of length 4.
+	 * Places the value of the x,y,z,w components of this Tuple4b into the array of
+	 * length 4.
 	 *
 	 * @param b
 	 *            array of length 4 into which the values are placed
@@ -151,8 +146,7 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Places the value of the x,y,z,w components of this
-	 * Tuple4b into the tuple t1.
+	 * Places the value of the x,y,z,w components of this Tuple4b into the tuple t1.
 	 *
 	 * @param t1
 	 *            tuple into which the values are placed
@@ -166,8 +160,8 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of the data members of this tuple to the value
-	 * of the argument tuple t1.
+	 * Sets the value of the data members of this tuple to the value of the argument
+	 * tuple t1.
 	 *
 	 * @param t1
 	 *            the source tuple
@@ -181,8 +175,8 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of the data members of this tuple to the value
-	 * of the array b of length 4.
+	 * Sets the value of the data members of this tuple to the value of the array b
+	 * of length 4.
 	 *
 	 * @param b
 	 *            the source array of length 4
@@ -196,8 +190,8 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if all of the data members of tuple t1 are equal to
-	 * the corresponding data members in this tuple.
+	 * Returns true if all of the data members of tuple t1 are equal to the
+	 * corresponding data members in this tuple.
 	 *
 	 * @param t1
 	 *            the tuple with which the comparison is made
@@ -206,8 +200,7 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	{
 		try
 		{
-			return x == t1.x && y == t1.y &&
-					z == t1.z && w == t1.w;
+			return x == t1.x && y == t1.y && z == t1.z && w == t1.w;
 		} catch (NullPointerException e2)
 		{
 			return false;
@@ -216,9 +209,8 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the Object t1 is of type Tuple4b and all of the
-	 * data members of t1 are equal to the corresponding data members in
-	 * this Tuple4b.
+	 * Returns true if the Object t1 is of type Tuple4b and all of the data members
+	 * of t1 are equal to the corresponding data members in this Tuple4b.
 	 *
 	 * @param t1
 	 *            the object with which the comparison is made
@@ -229,8 +221,7 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 		try
 		{
 			Tuple4b t2 = (Tuple4b) t1;
-			return x == t2.x && y == t2.y &&
-					z == t2.z && w == t2.w;
+			return x == t2.x && y == t2.y && z == t2.z && w == t2.w;
 		} catch (NullPointerException e2)
 		{
 			return false;
@@ -242,21 +233,18 @@ public abstract class Tuple4b implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a hash code value based on the data values in this
-	 * object. Two different Tuple4b objects with identical data values
-	 * (i.e., Tuple4b.equals returns true) will return the same hash
-	 * code value. Two objects with different data members may return the
-	 * same hash value, although this is not likely.
+	 * Returns a hash code value based on the data values in this object. Two
+	 * different Tuple4b objects with identical data values (i.e., Tuple4b.equals
+	 * returns true) will return the same hash code value. Two objects with
+	 * different data members may return the same hash value, although this is not
+	 * likely.
 	 *
 	 * @return the integer hash code value
 	 */
 	@Override
 	public int hashCode()
 	{
-		return (x & 0xff) << 0 |
-				(y & 0xff) << 8 |
-				(z & 0xff) << 16 |
-				(w & 0xff) << 24;
+		return (x & 0xff) << 0 | (y & 0xff) << 8 | (z & 0xff) << 16 | (w & 0xff) << 24;
 	}
 
 	/**

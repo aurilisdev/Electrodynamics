@@ -28,8 +28,7 @@ public class ClientRegister implements IContent {
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockInfEnergy),
 				new ItemRenderObjModel("infEnergy.obj", "infEnergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileBlastFurnace.class,
-				new TileRenderBlastFurnace("blastFurnace.obj", "blastFurnace.png"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileBlastFurnace.class, new TileRenderBlastFurnace("blastFurnace.obj", "blastFurnace.png"));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockBlastFurnace),
 				new ItemRenderObjModel("blastFurnace.obj", "blastFurnace.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 

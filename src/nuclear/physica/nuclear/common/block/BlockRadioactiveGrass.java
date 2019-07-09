@@ -24,12 +24,12 @@ import physica.nuclear.common.radiation.RadiationSystem;
 public class BlockRadioactiveGrass extends BlockGrass {
 
 	@SideOnly(Side.CLIENT)
-	private IIcon topIcon;
+	private IIcon	topIcon;
 	@SideOnly(Side.CLIENT)
-	private IIcon snowVersion;
+	private IIcon	snowVersion;
 
 	public BlockRadioactiveGrass() {
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setBlockName(NuclearReferences.PREFIX + "radioactiveGrass");
 		setHardness(0.6F);
@@ -64,7 +64,7 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
-		return side == 1 ? this.topIcon : side == 0 ? Blocks.dirt.getBlockTextureFromSide(side) : this.blockIcon;
+		return side == 1 ? topIcon : side == 0 ? Blocks.dirt.getBlockTextureFromSide(side) : blockIcon;
 	}
 
 	@Override
@@ -107,14 +107,14 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	{
 		if (side == 1)
 		{
-			return this.topIcon;
+			return topIcon;
 		} else if (side == 0)
 		{
 			return Blocks.dirt.getBlockTextureFromSide(side);
 		} else
 		{
 			Material material = world.getBlock(x, y + 1, z).getMaterial();
-			return material != Material.snow && material != Material.craftedSnow ? this.blockIcon : this.snowVersion;
+			return material != Material.snow && material != Material.craftedSnow ? blockIcon : snowVersion;
 		}
 	}
 
@@ -122,9 +122,9 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	@Override
 	public void registerBlockIcons(IIconRegister p_149651_1_)
 	{
-		this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
-		this.topIcon = p_149651_1_.registerIcon(this.getTextureName() + "_top");
-		this.snowVersion = p_149651_1_.registerIcon("grass_side_snowed");
+		blockIcon = p_149651_1_.registerIcon(getTextureName() + "_side");
+		topIcon = p_149651_1_.registerIcon(getTextureName() + "_top");
+		snowVersion = p_149651_1_.registerIcon("grass_side_snowed");
 	}
 
 }

@@ -5,10 +5,10 @@ import net.minecraft.item.ItemStack;
 
 public class ChemicalExtractorRecipe {
 
-	private int waterUse;
-	private Item inputItem;
-	private ItemStack outputItem;
-	private String oreDictName;
+	private int			waterUse;
+	private Item		inputItem;
+	private ItemStack	outputItem;
+	private String		oreDictName;
 
 	public ChemicalExtractorRecipe(int waterUse, ItemStack outputItem, String oreDictName) {
 		this.waterUse = waterUse;

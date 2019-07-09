@@ -55,10 +55,7 @@ public class NeutronCaptureRecipeHandler extends PhysicaRecipeHandlerBase {
 
 		drawSlot(38, 24, false);
 		drawSlot(118, 24, false);
-		GuiDraw.drawString("Progress: " + (int) ((float) (cycleticks % TileNeutronCaptureChamber.TICKS_REQUIRED) * 100 / TileNeutronCaptureChamber.TICKS_REQUIRED) + "%",
-				38 + (118 - 38) / 4 - 3, 10,
-				Color.GRAY.getRGB(),
-				false);
+		GuiDraw.drawString("Progress: " + (int) ((float) (cycleticks % TileNeutronCaptureChamber.TICKS_REQUIRED) * 100 / TileNeutronCaptureChamber.TICKS_REQUIRED) + "%", 38 + (118 - 38) / 4 - 3, 10, Color.GRAY.getRGB(), false);
 	}
 
 	@Override
@@ -89,7 +86,7 @@ public class NeutronCaptureRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadTransferRects()
 	{
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(38 + (118 - 38) / 2 - 3, 24, 22, 15), getRecipeID(), new Object[0]));
+		transferRects.add(new RecipeTransferRect(new Rectangle(38 + (118 - 38) / 2 - 3, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
@@ -100,8 +97,8 @@ public class NeutronCaptureRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	class recipe extends CachedRecipe {
 
-		public ItemStack itemInput;
-		public ItemStack itemOutput;
+		public ItemStack	itemInput;
+		public ItemStack	itemOutput;
 
 		@Override
 		public PositionedStack getResult()

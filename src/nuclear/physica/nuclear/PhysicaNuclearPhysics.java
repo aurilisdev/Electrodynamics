@@ -36,16 +36,16 @@ import physica.proxy.sided.CommonProxy;
 public class PhysicaNuclearPhysics {
 
 	@SidedProxy(clientSide = "physica.proxy.sided.ClientProxy", serverSide = "physica.proxy.sided.ServerProxy")
-	public static CommonProxy sidedProxy;
-	public static ContentLoader proxyLoader = new ContentLoader();
+	public static CommonProxy			sidedProxy;
+	public static ContentLoader			proxyLoader	= new ContentLoader();
 
 	@Instance(NuclearReferences.NAME)
-	public static PhysicaNuclearPhysics INSTANCE;
+	public static PhysicaNuclearPhysics	INSTANCE;
 	@Metadata(NuclearReferences.DOMAIN)
-	public static ModMetadata metadata;
+	public static ModMetadata			metadata;
 
-	public static File configFolder;
-	public static ConfigNuclearPhysics config;
+	public static File					configFolder;
+	public static ConfigNuclearPhysics	config;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

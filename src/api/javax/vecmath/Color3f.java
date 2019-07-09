@@ -29,13 +29,12 @@ package javax.vecmath;
 import java.awt.Color;
 
 /**
- * A three-element color value represented by single precision floating
- * point x,y,z values. The x,y,z values represent the red, green, and
- * blue color values, respectively. Color components should be in the
- * range of [0.0, 1.0].
+ * A three-element color value represented by single precision floating point
+ * x,y,z values. The x,y,z values represent the red, green, and blue color
+ * values, respectively. Color components should be in the range of [0.0, 1.0].
  * <p>
- * Java 3D assumes that a linear (gamma-corrected) visual is used for
- * all colors.
+ * Java 3D assumes that a linear (gamma-corrected) visual is used for all
+ * colors.
  *
  */
 public class Color3f extends Tuple3f implements java.io.Serializable {
@@ -98,21 +97,17 @@ public class Color3f extends Tuple3f implements java.io.Serializable {
 	}
 
 	/**
-	 * Constructs and initializes a Color3f from the specified AWT
-	 * Color object. The alpha value of the AWT color is ignored.
-	 * No conversion is done on the color to compensate for
-	 * gamma correction.
+	 * Constructs and initializes a Color3f from the specified AWT Color object. The
+	 * alpha value of the AWT color is ignored. No conversion is done on the color
+	 * to compensate for gamma correction.
 	 *
 	 * @param color
-	 *            the AWT color with which to initialize this
-	 *            Color3f object
+	 *            the AWT color with which to initialize this Color3f object
 	 *
 	 * @since vecmath 1.2
 	 */
 	public Color3f(Color color) {
-		super(color.getRed() / 255.0f,
-				color.getGreen() / 255.0f,
-				color.getBlue() / 255.0f);
+		super(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f);
 	}
 
 	/**
@@ -123,10 +118,9 @@ public class Color3f extends Tuple3f implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the r,g,b values of this Color3f object to those of the
-	 * specified AWT Color object.
-	 * No conversion is done on the color to compensate for
-	 * gamma correction.
+	 * Sets the r,g,b values of this Color3f object to those of the specified AWT
+	 * Color object. No conversion is done on the color to compensate for gamma
+	 * correction.
 	 *
 	 * @param color
 	 *            the AWT color to copy into this Color3f object
@@ -141,8 +135,8 @@ public class Color3f extends Tuple3f implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns a new AWT color object initialized with the r,g,b
-	 * values of this Color3f object.
+	 * Returns a new AWT color object initialized with the r,g,b values of this
+	 * Color3f object.
 	 *
 	 * @return a new AWT Color object
 	 *

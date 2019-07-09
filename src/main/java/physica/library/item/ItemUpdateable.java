@@ -10,7 +10,8 @@ import physica.api.core.IItemUpdate;
 
 public class ItemUpdateable extends Item {
 
-	protected IItemUpdate update = new IItemUpdate() {
+	protected IItemUpdate update = new IItemUpdate()
+	{
 	};
 
 	public ItemUpdateable setUpdate(IItemUpdate update)

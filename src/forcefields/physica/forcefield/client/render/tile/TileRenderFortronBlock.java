@@ -21,8 +21,8 @@ import physica.library.client.render.TileRenderObjModel;
 @SideOnly(Side.CLIENT)
 public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> extends TileRenderObjModel<T> {
 
-	protected ResourceLocation model_texture2;
-	public static final ResourceLocation previewTexture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcePreviewTexture.png");
+	protected ResourceLocation				model_texture2;
+	public static final ResourceLocation	previewTexture	= new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcePreviewTexture.png");
 
 	public TileRenderFortronBlock(String objFile) {
 		super(objFile, "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
@@ -61,8 +61,7 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 				int g = colour >> 8 & 0xff;
 				int b = colour & 0xff;
 				Minecraft.getMinecraft().renderEngine.bindTexture(previewTexture);
-				GL11.glColor4f(r, g, b,
-						(float) Math.sin(tile.getTicksRunning() / 10.0D) / 2.0F + 0.8F);
+				GL11.glColor4f(r, g, b, (float) Math.sin(tile.getTicksRunning() / 10.0D) / 2.0F + 0.8F);
 				GL11.glTranslatef(0.0F, (float) Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, 0.0F);
 				GL11.glRotatef(36.0F + tile.getTicksRunning() * 4L, 0.0F, 1.0F, 1.0F);
 				GL11.glRotatef(tile.getTicksRunning(), 0.0F, 1.0F, 0.0F);

@@ -18,11 +18,11 @@ import physica.nuclear.common.radiation.RadiationSystem;
 
 public class TileMeltedReactor extends TileBase {
 
-	public static final float RADIATION_RADIUS = 30;
-	public static final float RADIATION_PARTICLES = 10;
-	public static final float START_RADIATION = 8766000 * 5;
-	public int radiation = (int) START_RADIATION;
-	public int temperature = 6000;
+	public static final float	RADIATION_RADIUS	= 30;
+	public static final float	RADIATION_PARTICLES	= 10;
+	public static final float	START_RADIATION		= 8766000 * 5;
+	public int					radiation			= (int) START_RADIATION;
+	public int					temperature			= 6000;
 
 	@Override
 	public void updateServer(int ticks)
@@ -129,14 +129,11 @@ public class TileMeltedReactor extends TileBase {
 		{
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS,
-							zCoord + RADIATION_RADIUS));
+					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS, zCoord + RADIATION_RADIUS));
 			for (EntityLivingBase entity : entities)
 			{
 				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 1.75f) * (radiation / START_RADIATION), (float) scale * 2f,
-						(float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5),
-						RADIATION_RADIUS);
+				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 1.75f) * (radiation / START_RADIATION), (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5), RADIATION_RADIUS);
 			}
 		}
 	}

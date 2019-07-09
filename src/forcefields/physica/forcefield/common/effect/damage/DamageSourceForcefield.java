@@ -11,9 +11,6 @@ public class DamageSourceForcefield extends PhysicaDamageSource {
 		setDamageBypassesArmor();
 		setDamageIsAbsolute();
 
-		setDeathMessages(
-				"tried to walk through a force field",
-				"was disintegrated by a forcefield",
-				"walked into an energy field");
+		setDeathMessages("tried to walk through a force field", "was disintegrated by a forcefield", "walked into an energy field");
 	}
 }

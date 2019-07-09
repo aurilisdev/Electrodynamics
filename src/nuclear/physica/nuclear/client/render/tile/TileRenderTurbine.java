@@ -16,10 +16,10 @@ import physica.nuclear.common.tile.TileTurbine;
 @SideOnly(Side.CLIENT)
 public class TileRenderTurbine extends TileEntitySpecialRenderer {
 
-	protected IModelCustom model_middle;
-	protected IModelCustom model_big;
-	protected IModelCustom model_base;
-	protected ResourceLocation model_texture;
+	protected IModelCustom		model_middle;
+	protected IModelCustom		model_big;
+	protected IModelCustom		model_base;
+	protected ResourceLocation	model_texture;
 
 	public TileRenderTurbine(String objFile, String textureFile) {
 		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));

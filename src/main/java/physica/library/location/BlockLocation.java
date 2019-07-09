@@ -11,9 +11,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockLocation {
 
-	public int x;
-	public int y;
-	public int z;
+	public int	x;
+	public int	y;
+	public int	z;
 
 	public BlockLocation() {
 		this(0, 0, 0);

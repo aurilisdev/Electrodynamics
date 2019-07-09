@@ -69,8 +69,7 @@ public class NuclearClientRegister implements IContent {
 				new ItemRenderObjModel("chemicalBoiler.obj", "chemicalBoiler.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileChemicalExtractor.class,
-				new TileRenderObjModel<TileChemicalExtractor>("chemicalExtractor.obj", "chemicalExtractor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY,
-						CoreReferences.MODEL_TEXTURE_DIRECTORY));
+				new TileRenderObjModel<TileChemicalExtractor>("chemicalExtractor.obj", "chemicalExtractor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockChemicalExtractor),
 				new ItemRenderObjModel("chemicalExtractor.obj", "chemicalExtractor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
@@ -83,10 +82,8 @@ public class NuclearClientRegister implements IContent {
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockFusionReactor),
 				new ItemRenderObjModel("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileInsertableControlRod.class,
-				new TileRenderControlRod());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockInsertableControlRod),
-				new ItemRenderControlRod("controlRodStation.obj", "fissionReactor.png"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileInsertableControlRod.class, new TileRenderControlRod());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockInsertableControlRod), new ItemRenderControlRod("controlRodStation.obj", "fissionReactor.png"));
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMeltedReactor.class,
 				new TileRenderObjModel<TileMeltedReactor>("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));

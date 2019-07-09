@@ -29,22 +29,22 @@ import physica.library.tile.TileBaseContainer;
 
 public class TileFortronCapacitor extends TileBaseContainer implements IInvFortronTile, IGuiInterface {
 
-	public static final int BASE_FORTRON = 1000;
+	public static final int		BASE_FORTRON		= 1000;
 
-	public static final int SLOT_CARD = 0;
-	public static final int SLOT_MODULE1 = 1;
-	public static final int SLOT_MODULE2 = 2;
-	public static final int SLOT_MODULE3 = 3;
+	public static final int		SLOT_CARD			= 0;
+	public static final int		SLOT_MODULE1		= 1;
+	public static final int		SLOT_MODULE2		= 2;
+	public static final int		SLOT_MODULE3		= 3;
 
-	public boolean isActivated = false;
-	private boolean isOverriden = false;
-	protected Set<ITileBase> fortronConnections = new HashSet<>();
-	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
+	public boolean				isActivated			= false;
+	private boolean				isOverriden			= false;
+	protected Set<ITileBase>	fortronConnections	= new HashSet<>();
+	protected FluidTank			fortronTank			= new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
 
 	public int getMaxFortron()
 	{
-		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3)) +
-				BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
+		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))
+				+ BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
 	}
 
 	public int getFortronTransferRate()
@@ -127,9 +127,10 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		return stack == null ? false
-				: stack.getItem() == null ? false : slot >= SLOT_MODULE1 && slot <= SLOT_MODULE3 ? stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule
-						: slot == SLOT_CARD ? stack.getItem() == ForcefieldItemRegister.itemFrequency : true;
+				: stack.getItem() == null ? false
+						: slot >= SLOT_MODULE1 && slot <= SLOT_MODULE3 ? stack.getItem() == ForcefieldItemRegister.itemMetaUpgradeModule : slot == SLOT_CARD ? stack.getItem() == ForcefieldItemRegister.itemFrequency : true;
 	}
+
 	private int frequency;
 
 	@Override

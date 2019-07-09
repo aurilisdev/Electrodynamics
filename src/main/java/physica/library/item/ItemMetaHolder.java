@@ -15,9 +15,9 @@ import physica.core.common.CoreTabRegister;
 
 public class ItemMetaHolder extends ItemUpdateable {
 
-	public ArrayList<String> subItems = new ArrayList<>();
+	public ArrayList<String>	subItems	= new ArrayList<>();
 	@SideOnly(Side.CLIENT)
-	public IIcon[] subIcons;
+	public IIcon[]				subIcons;
 
 	public ItemMetaHolder(String name) {
 		setUnlocalizedName(name);

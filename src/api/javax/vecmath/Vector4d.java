@@ -27,8 +27,8 @@
 package javax.vecmath;
 
 /**
- * A 4-element vector represented by double-precision floating point
- * x,y,z,w coordinates.
+ * A 4-element vector represented by double-precision floating point x,y,z,w
+ * coordinates.
  *
  */
 public class Vector4d extends Tuple4d implements java.io.Serializable {
@@ -37,8 +37,7 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	static final long serialVersionUID = 3938123424117448700L;
 
 	/**
-	 * Constructs and initializes a Vector4d from the specified xyzw
-	 * coordinates.
+	 * Constructs and initializes a Vector4d from the specified xyzw coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -54,8 +53,8 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Constructs and initializes a Vector4d from the coordinates contained
-	 * in the array.
+	 * Constructs and initializes a Vector4d from the coordinates contained in the
+	 * array.
 	 *
 	 * @param v
 	 *            the array of length 4 containing xyzw in order
@@ -105,10 +104,9 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Constructs and initializes a Vector4d from the specified Tuple3d.
-	 * The x,y,z components of this vector are set to the corresponding
-	 * components of tuple t1. The w component of this vector
-	 * is set to 0.
+	 * Constructs and initializes a Vector4d from the specified Tuple3d. The x,y,z
+	 * components of this vector are set to the corresponding components of tuple
+	 * t1. The w component of this vector is set to 0.
 	 *
 	 * @param t1
 	 *            the tuple to be copied
@@ -127,9 +125,8 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the x,y,z components of this vector to the corresponding
-	 * components of tuple t1. The w component of this vector
-	 * is set to 0.
+	 * Sets the x,y,z components of this vector to the corresponding components of
+	 * tuple t1. The w component of this vector is set to 0.
 	 *
 	 * @param t1
 	 *            the tuple to be copied
@@ -151,8 +148,7 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	 */
 	public final double length()
 	{
-		return Math.sqrt(x * x + y * y +
-				z * z + w * w);
+		return Math.sqrt(x * x + y * y + z * z + w * w);
 	}
 
 	/**
@@ -162,8 +158,7 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	 */
 	public final double lengthSquared()
 	{
-		return x * x + y * y +
-				z * z + w * w;
+		return x * x + y * y + z * z + w * w;
 	}
 
 	/**
@@ -202,8 +197,7 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	{
 		double norm;
 
-		norm = 1.0 / Math.sqrt(x * x + y * y +
-				z * z + w * w);
+		norm = 1.0 / Math.sqrt(x * x + y * y + z * z + w * w);
 		x *= norm;
 		y *= norm;
 		z *= norm;
@@ -211,9 +205,8 @@ public class Vector4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the (4-space) angle in radians between this vector and
-	 * the vector parameter; the return value is constrained to the
-	 * range [0,PI].
+	 * Returns the (4-space) angle in radians between this vector and the vector
+	 * parameter; the return value is constrained to the range [0,PI].
 	 *
 	 * @param v1
 	 *            the other vector

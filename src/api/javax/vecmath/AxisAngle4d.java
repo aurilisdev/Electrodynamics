@@ -28,41 +28,41 @@ package javax.vecmath;
 
 /**
  * A four-element axis angle represented by double-precision floating point
- * x,y,z,angle components. An axis angle is a rotation of angle (radians)
- * about the vector (x,y,z).
+ * x,y,z,angle components. An axis angle is a rotation of angle (radians) about
+ * the vector (x,y,z).
  *
  */
 public class AxisAngle4d implements java.io.Serializable, Cloneable {
 
 	// Compatible with 1.1
-	static final long serialVersionUID = 3644296204459140589L;
+	static final long	serialVersionUID	= 3644296204459140589L;
 
 	/**
 	 * The x coordinate.
 	 */
-	public double x;
+	public double		x;
 
 	/**
 	 * The y coordinate.
 	 */
-	public double y;
+	public double		y;
 
 	/**
 	 * The z coordinate.
 	 */
-	public double z;
+	public double		z;
 
 	/**
 	 * The angle of rotation in radians.
 	 */
-	public double angle;
+	public double		angle;
 
 	// Fixed to issue 538
-	final static double EPS = 1.0e-12;
+	final static double	EPS					= 1.0e-12;
 
 	/**
-	 * Constructs and initializes an AxisAngle4d from the specified
-	 * x, y, z, and angle.
+	 * Constructs and initializes an AxisAngle4d from the specified x, y, z, and
+	 * angle.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -81,8 +81,8 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs and initializes an AxisAngle4d from the components
-	 * contained in the array.
+	 * Constructs and initializes an AxisAngle4d from the components contained in
+	 * the array.
 	 *
 	 * @param a
 	 *            the array of length 4 containing x,y,z,angle in order
@@ -108,8 +108,7 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs and initializes an AxisAngle4d from the specified
-	 * AxisAngle4f.
+	 * Constructs and initializes an AxisAngle4d from the specified AxisAngle4f.
 	 *
 	 * @param a1
 	 *            the AxisAngle4f containing the initialization x y z angle data
@@ -122,8 +121,7 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs and initializes an AxisAngle4d from the specified
-	 * axis and angle.
+	 * Constructs and initializes an AxisAngle4d from the specified axis and angle.
 	 *
 	 * @param axis
 	 *            the axis
@@ -212,8 +210,7 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this AxisAngle4d to the specified
-	 * axis and angle.
+	 * Sets the value of this AxisAngle4d to the specified axis and angle.
 	 *
 	 * @param axis
 	 *            the axis
@@ -231,8 +228,8 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Gets the value of this axis angle and places it into the array a of
-	 * length four in x,y,z,angle order.
+	 * Gets the value of this axis angle and places it into the array a of length
+	 * four in x,y,z,angle order.
 	 *
 	 * @param a
 	 *            the array of length four
@@ -246,10 +243,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this axis-angle to the rotational component of
-	 * the passed matrix.
-	 * If the specified matrix has no rotational component, the value
-	 * of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
+	 * Sets the value of this axis-angle to the rotational component of the passed
+	 * matrix. If the specified matrix has no rotational component, the value of
+	 * this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
 	 *
 	 * @param m1
 	 *            the matrix4f
@@ -287,10 +283,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this axis-angle to the rotational component of
-	 * the passed matrix.
-	 * If the specified matrix has no rotational component, the value
-	 * of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
+	 * Sets the value of this axis-angle to the rotational component of the passed
+	 * matrix. If the specified matrix has no rotational component, the value of
+	 * this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
 	 *
 	 * @param m1
 	 *            the matrix4d
@@ -329,10 +324,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this axis-angle to the rotational component of
-	 * the passed matrix.
-	 * If the specified matrix has no rotational component, the value
-	 * of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
+	 * Sets the value of this axis-angle to the rotational component of the passed
+	 * matrix. If the specified matrix has no rotational component, the value of
+	 * this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
 	 *
 	 * @param m1
 	 *            the matrix3f
@@ -366,10 +360,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this axis-angle to the rotational component of
-	 * the passed matrix.
-	 * If the specified matrix has no rotational component, the value
-	 * of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
+	 * Sets the value of this axis-angle to the rotational component of the passed
+	 * matrix. If the specified matrix has no rotational component, the value of
+	 * this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
 	 *
 	 * @param m1
 	 *            the matrix3d
@@ -406,10 +399,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this axis-angle to the rotational equivalent
-	 * of the passed quaternion.
-	 * If the specified quaternion has no rotational component, the value
-	 * of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
+	 * Sets the value of this axis-angle to the rotational equivalent of the passed
+	 * quaternion. If the specified quaternion has no rotational component, the
+	 * value of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
 	 *
 	 * @param q1
 	 *            the Quat4f
@@ -437,10 +429,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this axis-angle to the rotational equivalent
-	 * of the passed quaternion.
-	 * If the specified quaternion has no rotational component, the value
-	 * of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
+	 * Sets the value of this axis-angle to the rotational equivalent of the passed
+	 * quaternion. If the specified quaternion has no rotational component, the
+	 * value of this AxisAngle4d is set to an angle of 0 about an axis of (0,1,0).
 	 *
 	 * @param q1
 	 *            the Quat4d
@@ -468,8 +459,8 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a string that contains the values of this AxisAngle4d.
-	 * The form is (x,y,z,angle).
+	 * Returns a string that contains the values of this AxisAngle4d. The form is
+	 * (x,y,z,angle).
 	 *
 	 * @return the String representation
 	 */
@@ -480,8 +471,8 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if all of the data members of AxisAngle4d a1 are
-	 * equal to the corresponding data members in this AxisAngle4d.
+	 * Returns true if all of the data members of AxisAngle4d a1 are equal to the
+	 * corresponding data members in this AxisAngle4d.
 	 *
 	 * @param a1
 	 *            the axis-angle with which the comparison is made
@@ -491,8 +482,7 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	{
 		try
 		{
-			return x == a1.x && y == a1.y && z == a1.z
-					&& angle == a1.angle;
+			return x == a1.x && y == a1.y && z == a1.z && angle == a1.angle;
 		} catch (NullPointerException e2)
 		{
 			return false;
@@ -501,9 +491,9 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the Object o1 is of type AxisAngle4d and all of the
-	 * data members of o1 are equal to the corresponding data members in
-	 * this AxisAngle4d.
+	 * Returns true if the Object o1 is of type AxisAngle4d and all of the data
+	 * members of o1 are equal to the corresponding data members in this
+	 * AxisAngle4d.
 	 *
 	 * @param o1
 	 *            the object with which the comparison is made
@@ -515,8 +505,7 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 		try
 		{
 			AxisAngle4d a2 = (AxisAngle4d) o1;
-			return x == a2.x && y == a2.y && z == a2.z
-					&& angle == a2.angle;
+			return x == a2.x && y == a2.y && z == a2.z && angle == a2.angle;
 		} catch (NullPointerException e2)
 		{
 			return false;
@@ -528,11 +517,10 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the L-infinite distance between this axis-angle
-	 * and axis-angle a1 is less than or equal to the epsilon parameter,
-	 * otherwise returns false. The L-infinite
-	 * distance is equal to
-	 * MAX[abs(x1-x2), abs(y1-y2), abs(z1-z2), abs(angle1-angle2)].
+	 * Returns true if the L-infinite distance between this axis-angle and
+	 * axis-angle a1 is less than or equal to the epsilon parameter, otherwise
+	 * returns false. The L-infinite distance is equal to MAX[abs(x1-x2),
+	 * abs(y1-y2), abs(z1-z2), abs(angle1-angle2)].
 	 *
 	 * @param a1
 	 *            the axis-angle to be compared to this axis-angle
@@ -571,11 +559,11 @@ public class AxisAngle4d implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a hash code value based on the data values in this
-	 * object. Two different AxisAngle4d objects with identical data values
-	 * (i.e., AxisAngle4d.equals returns true) will return the same hash
-	 * code value. Two objects with different data members may return the
-	 * same hash value, although this is not likely.
+	 * Returns a hash code value based on the data values in this object. Two
+	 * different AxisAngle4d objects with identical data values (i.e.,
+	 * AxisAngle4d.equals returns true) will return the same hash code value. Two
+	 * objects with different data members may return the same hash value, although
+	 * this is not likely.
 	 *
 	 * @return the integer hash code value
 	 */

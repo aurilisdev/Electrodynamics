@@ -15,8 +15,8 @@ import physica.api.core.ITileBase;
 
 public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRenderer {
 
-	protected IModelCustom model_base;
-	protected ResourceLocation model_texture;
+	protected IModelCustom		model_base;
+	protected ResourceLocation	model_texture;
 
 	public TileRenderObjModel(String objFile, String textureFile, String domain, String modelDirectory, String modelTextureDirectory) {
 		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(domain, modelDirectory + objFile));

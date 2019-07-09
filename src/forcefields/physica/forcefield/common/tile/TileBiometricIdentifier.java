@@ -30,13 +30,13 @@ import physica.library.tile.TileBaseContainer;
 
 public class TileBiometricIdentifier extends TileBaseContainer implements IGuiInterface, IInvFortronTile {
 
-	public static final int BIOMETRIC_IDENTIFIER_PACKET_ID = 10;
-	public static final int SLOT_INPUT_CARD = 0;
-	public static final int SLOT_MASTER_CARD = 1;
-	protected FluidTank emptyFortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, 10);
-	protected Set<ITileBase> emptyConnections = new HashSet<>();
+	public static final int		BIOMETRIC_IDENTIFIER_PACKET_ID	= 10;
+	public static final int		SLOT_INPUT_CARD					= 0;
+	public static final int		SLOT_MASTER_CARD				= 1;
+	protected FluidTank			emptyFortronTank				= new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, 10);
+	protected Set<ITileBase>	emptyConnections				= new HashSet<>();
 
-	private boolean isActivated;
+	private boolean				isActivated;
 
 	@Override
 	public void updateServer(int ticks)

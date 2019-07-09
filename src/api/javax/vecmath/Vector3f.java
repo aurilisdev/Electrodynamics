@@ -28,8 +28,8 @@ package javax.vecmath;
 
 /**
  * A 3-element vector that is represented by single-precision floating point
- * x,y,z coordinates. If this value represents a normal, then it should
- * be normalized.
+ * x,y,z coordinates. If this value represents a normal, then it should be
+ * normalized.
  *
  */
 public class Vector3f extends Tuple3f implements java.io.Serializable {
@@ -189,8 +189,8 @@ public class Vector3f extends Tuple3f implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the angle in radians between this vector and the vector
-	 * parameter; the return value is constrained to the range [0,PI].
+	 * Returns the angle in radians between this vector and the vector parameter;
+	 * the return value is constrained to the range [0,PI].
 	 *
 	 * @param v1
 	 *            the other vector

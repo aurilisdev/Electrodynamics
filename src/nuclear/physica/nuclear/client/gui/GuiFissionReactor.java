@@ -26,8 +26,7 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 		double ticksLeft = 0;
 		if (host.hasFuelRod())
 		{
-			ticksLeft = (host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage()
-					- host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
+			ticksLeft = (host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage() - host.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
 					/ (+1 + Math.round(host.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
 		}
 		drawString("Temperature: " + roundPrecise(host.getTemperature(), 2) + " C", 9, 59);
@@ -45,9 +44,7 @@ public class GuiFissionReactor extends GuiContainerBase<TileFissionReactor> impl
 		drawTexturedModalRect(containerWidth + (xSize - electricityMeterWidth) / 2, containerHeight + 18, 54, 0, electricityMeterWidth, electricityMeterHeight);
 		if (host.getTemperature() > 0)
 		{
-			drawGradientRect(
-					(int) (containerWidth + (xSize - electricityMeterWidth) / 2
-							+ Math.min(host.getTemperature(), TileFissionReactor.MELTDOWN_TEMPERATURE) / TileFissionReactor.MELTDOWN_TEMPERATURE * electricityMeterWidth - 1),
+			drawGradientRect((int) (containerWidth + (xSize - electricityMeterWidth) / 2 + Math.min(host.getTemperature(), TileFissionReactor.MELTDOWN_TEMPERATURE) / TileFissionReactor.MELTDOWN_TEMPERATURE * electricityMeterWidth - 1),
 					containerHeight + 18 + electricityMeterHeight - 1, containerWidth + (xSize - electricityMeterWidth) / 2 + 1, containerHeight + 18 + 1,
 					host.getTemperature() < TileFissionReactor.MELTDOWN_TEMPERATURE ? Color.yellow.getRGB() : Color.red.getRGB(), Color.red.getRGB());
 		}

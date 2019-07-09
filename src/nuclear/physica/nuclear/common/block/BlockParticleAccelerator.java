@@ -37,8 +37,7 @@ public class BlockParticleAccelerator extends BlockBaseContainer implements IBas
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "PCP", "CMC", "PCP", 'M', "motor", 'C', "circuitElite", 'P',
-				new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()));
+		addRecipe(this, "PCP", "CMC", "PCP", 'M', "motor", 'C', "circuitElite", 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()));
 
 	}
 }

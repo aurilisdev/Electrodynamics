@@ -31,15 +31,15 @@ import physica.nuclear.common.inventory.ContainerCentrifuge;
 
 public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
-	public static final int TICKS_REQUIRED = 800;
-	public static final int SLOT_ENERGY = 0;
-	public static final int SLOT_OUTPUT1 = 1;
-	public static final int SLOT_OUTPUT2 = 2;
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT1, SLOT_OUTPUT2 };
+	public static final int		TICKS_REQUIRED			= 800;
+	public static final int		SLOT_ENERGY				= 0;
+	public static final int		SLOT_OUTPUT1			= 1;
+	public static final int		SLOT_OUTPUT2			= 2;
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT1, SLOT_OUTPUT2 };
 
-	protected FluidTank tank = new FluidTank(new FluidStack(NuclearFluidRegister.LIQUID_HE, 0), 5000);
+	protected FluidTank			tank					= new FluidTank(new FluidStack(NuclearFluidRegister.LIQUID_HE, 0), 5000);
 
-	protected int operatingTicks = 0;
+	protected int				operatingTicks			= 0;
 
 	@Override
 	public void updateServer(int ticks)

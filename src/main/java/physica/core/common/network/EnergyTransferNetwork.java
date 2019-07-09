@@ -13,13 +13,13 @@ import physica.library.location.BlockLocation;
 
 public class EnergyTransferNetwork {
 
-	public HashMap<IEnergyReceiver, Set<ForgeDirection>> receiverMap = new HashMap<>();
-	public HashSet<ITransferNode<IEnergyReceiver>> transferNodeSet = new HashSet<>();
-	public ITransferNode<IEnergyReceiver> ownerNode;
-	public EnumEnergyCable type;
-	public boolean isValidating;
+	public HashMap<IEnergyReceiver, Set<ForgeDirection>>	receiverMap		= new HashMap<>();
+	public HashSet<ITransferNode<IEnergyReceiver>>			transferNodeSet	= new HashSet<>();
+	public ITransferNode<IEnergyReceiver>					ownerNode;
+	public EnumEnergyCable									type;
+	public boolean											isValidating;
 
-	public int energyBuffer = 0;
+	public int												energyBuffer	= 0;
 
 	public EnumEnergyCable getType()
 	{
@@ -150,7 +150,10 @@ public class EnergyTransferNetwork {
 				}
 			}
 			int totalReceived = 0;
-			if (size > 0);
+			if (size > 0)
+			{
+				;
+			}
 			{
 				maxEnergy = Math.min(getTransferRate(), maxEnergy);
 				if (maxEnergy > 0)

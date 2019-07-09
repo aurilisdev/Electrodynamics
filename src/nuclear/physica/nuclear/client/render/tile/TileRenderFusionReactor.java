@@ -27,8 +27,7 @@ public class TileRenderFusionReactor extends TileRenderObjModel<TileFusionReacto
 			GL11.glPopMatrix();
 			GL11.glPushMatrix();
 			int tritium = tile.getStackInSlot(TileFusionReactor.SLOT_TRITIUM) != null ? tile.getStackInSlot(TileFusionReactor.SLOT_TRITIUM).stackSize : 0;
-			TileRenderObjModel.renderFloatingText("Tritium: " + tritium / 0.08 + "ml", (float) x + 0.5F, (float) y + 0.25F - 2.0F + 0.95f,
-					(float) z + 0.5F, 16777215);
+			TileRenderObjModel.renderFloatingText("Tritium: " + tritium / 0.08 + "ml", (float) x + 0.5F, (float) y + 0.25F - 2.0F + 0.95f, (float) z + 0.5F, 16777215);
 			GL11.glPopMatrix();
 		}
 	}

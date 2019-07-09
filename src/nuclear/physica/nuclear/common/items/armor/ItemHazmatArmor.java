@@ -9,8 +9,8 @@ import physica.nuclear.common.NuclearTabRegister;
 
 public class ItemHazmatArmor extends ItemArmor {
 
-	public static final ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("HAZMAT", 0, new int[] { 2, 4, 2, 1 }, 0);
-	private float platingProtection = 1;
+	public static final ArmorMaterial	armorMaterial		= EnumHelper.addArmorMaterial("HAZMAT", 0, new int[] { 2, 4, 2, 1 }, 0);
+	private float						platingProtection	= 1;
 
 	public ItemHazmatArmor(String type, int id, int type2) {
 		super(armorMaterial, id, type2);

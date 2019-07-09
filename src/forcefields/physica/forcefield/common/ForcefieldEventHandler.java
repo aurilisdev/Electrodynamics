@@ -26,9 +26,9 @@ import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
 public class ForcefieldEventHandler {
 
-	public static final ForcefieldEventHandler INSTANCE = new ForcefieldEventHandler();
-	private static final Set<TileInterdictionMatrix> set = new HashSet<>();
-	private static final Set<TileFortronFieldConstructor> forceFieldConstructors = new HashSet<>();
+	public static final ForcefieldEventHandler				INSTANCE				= new ForcefieldEventHandler();
+	private static final Set<TileInterdictionMatrix>		set						= new HashSet<>();
+	private static final Set<TileFortronFieldConstructor>	forceFieldConstructors	= new HashSet<>();
 
 	public void registerConstructor(TileFortronFieldConstructor tile)
 	{
@@ -204,8 +204,7 @@ public class ForcefieldEventHandler {
 			float size = event.explosion.explosionSize;
 			long energy = (long) size * 50;
 
-			if (event.explosion.exploder instanceof EntityItem
-					&& ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+			if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
 			{
 				energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
 			}

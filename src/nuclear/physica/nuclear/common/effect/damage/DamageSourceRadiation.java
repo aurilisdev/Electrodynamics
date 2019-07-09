@@ -11,8 +11,6 @@ public class DamageSourceRadiation extends PhysicaDamageSource {
 		setDamageBypassesArmor();
 		setDamageIsAbsolute();
 
-		setDeathMessages(
-				"died from radiation exposure",
-				"held too much uranium");
+		setDeathMessages("died from radiation exposure", "held too much uranium");
 	}
 }

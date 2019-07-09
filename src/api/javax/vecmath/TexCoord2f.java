@@ -27,8 +27,8 @@
 package javax.vecmath;
 
 /**
- * A 2-element vector that is represented by single-precision floating
- * point x,y coordinates.
+ * A 2-element vector that is represented by single-precision floating point x,y
+ * coordinates.
  *
  */
 public class TexCoord2f extends Tuple2f implements java.io.Serializable {
@@ -37,8 +37,7 @@ public class TexCoord2f extends Tuple2f implements java.io.Serializable {
 	static final long serialVersionUID = 7998248474800032487L;
 
 	/**
-	 * Constructs and initializes a TexCoord2f from the specified xy
-	 * coordinates.
+	 * Constructs and initializes a TexCoord2f from the specified xy coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate

@@ -16,13 +16,13 @@ import physica.CoreReferences;
 
 public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
-	public static final ResourceLocation GUI_COMPONENTS = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_components.png");
-	public static final String GUI_STRING = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png").toString();
-	public int xOffset = 4;
-	public int yOffset = 13;
-	protected int meterHeight = 49;
-	protected int meterWidth = 14;
-	protected Minecraft mc = Minecraft.getMinecraft();
+	public static final ResourceLocation	GUI_COMPONENTS	= new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_components.png");
+	public static final String				GUI_STRING		= new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png").toString();
+	public int								xOffset			= 4;
+	public int								yOffset			= 13;
+	protected int							meterHeight		= 49;
+	protected int							meterWidth		= 14;
+	protected Minecraft						mc				= Minecraft.getMinecraft();
 
 	@Override
 	public String getGuiTexture()
@@ -53,7 +53,7 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 		if (fluidStack != null)
 		{
-			this.drawFluid(x, y, -10, 1, 12, (int) ((meterHeight - 1) * scale), fluidStack);
+			drawFluid(x, y, -10, 1, 12, (int) ((meterHeight - 1) * scale), fluidStack);
 		}
 
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
@@ -127,11 +127,11 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 	{
 		if (first)
 		{
-			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.min(ticks / 2, this.cycleticks % ticks) / (float) (ticks / 2), direction);
+			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.min(ticks / 2, cycleticks % ticks) / (float) (ticks / 2), direction);
 
 		} else
 		{
-			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.max(0, this.cycleticks % ticks - ticks / 2) / (float) (ticks / 2), direction);
+			this.drawProgressBar(x, y, tx, ty, w, h, (float) Math.max(0, cycleticks % ticks - ticks / 2) / (float) (ticks / 2), direction);
 		}
 	}
 }

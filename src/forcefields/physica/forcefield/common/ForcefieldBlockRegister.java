@@ -18,12 +18,12 @@ import physica.forcefield.common.tile.TileInterdictionMatrix;
 
 public class ForcefieldBlockRegister implements IContent {
 
-	public static BlockCoercionDriver blockCoercionDriver;
-	public static BlockFortronFieldConstructor blockFortronConstructor;
-	public static BlockFortronCapacitor blockFortronCapacitor;
-	public static BlockFortronField blockFortronField;
-	public static BlockInterdictionMatrix blockInterdictionMatrix;
-	public static BlockBiometricIdentifier blockBiometricIdentifier;
+	public static BlockCoercionDriver			blockCoercionDriver;
+	public static BlockFortronFieldConstructor	blockFortronConstructor;
+	public static BlockFortronCapacitor			blockFortronCapacitor;
+	public static BlockFortronField				blockFortronField;
+	public static BlockInterdictionMatrix		blockInterdictionMatrix;
+	public static BlockBiometricIdentifier		blockBiometricIdentifier;
 
 	@Override
 	public void preInit()

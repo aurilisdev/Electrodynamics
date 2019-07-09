@@ -12,7 +12,8 @@ public class CoreTabRegister implements IContent {
 	@Override
 	public void preInit()
 	{
-		coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core") {
+		coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core")
+		{
 
 			@Override
 			public Item getTabIconItem()

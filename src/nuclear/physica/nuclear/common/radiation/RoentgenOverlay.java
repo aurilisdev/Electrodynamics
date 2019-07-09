@@ -25,10 +25,10 @@ import physica.nuclear.common.NuclearItemRegister;
 @SideOnly(Side.CLIENT)
 public class RoentgenOverlay implements IBaseUtilities {
 
-	private float cachedRoentgen = 0;
-	private long cachedTime;
+	private float						cachedRoentgen		= 0;
+	private long						cachedTime;
 
-	public static HashMap<Long, Float> cachedRadiationMap = new HashMap<>();
+	public static HashMap<Long, Float>	cachedRadiationMap	= new HashMap<>();
 
 	public static void storeDataValue(long worldTime, float kiloRoentgen)
 	{
@@ -56,18 +56,15 @@ public class RoentgenOverlay implements IBaseUtilities {
 		if (use != null && use.getItem() == NuclearItemRegister.itemGeigerCounter)
 		{
 			GL11.glPushMatrix();
-			double rounded = NuclearItemRegister.itemGeigerCounter.getEnergyStored(use) > 5
-					? roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2) : roundPrecise(Math.min(3.6, cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate), 2);
+			double rounded = NuclearItemRegister.itemGeigerCounter.getEnergyStored(use) > 5 ? roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2)
+					: roundPrecise(Math.min(3.6, cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate), 2);
 			String radiationText = "Roentgen per hour: " + (cachedRoentgen == 0 ? "< 0.01" : rounded);
 			ScaledResolution get = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-			Minecraft.getMinecraft().fontRenderer.drawString(radiationText, get.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(radiationText) / 2,
-					get.getScaledHeight() / 2 + 20,
-					Color.green.getRGB());
+			Minecraft.getMinecraft().fontRenderer.drawString(radiationText, get.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(radiationText) / 2, get.getScaledHeight() / 2 + 20, Color.green.getRGB());
 			GL11.glPopMatrix();
 			if (Minecraft.getMinecraft().thePlayer.worldObj.rand.nextFloat() * 50 * RadiationSystem.toRealRoentgenConversionRate < (rounded == 3.6 ? 180 : rounded))
 			{
-				Minecraft.getMinecraft().getSoundHandler()
-						.playSound(new PositionedSoundRecord(new ResourceLocation(CoreReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
+				Minecraft.getMinecraft().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(CoreReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
 			}
 		}
 	}

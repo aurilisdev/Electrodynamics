@@ -10,10 +10,10 @@ import physica.core.common.network.validate.ValidateThread;
 
 public class EnergyNetworkHandler {
 
-	public static final EnergyNetworkHandler INSTANCE = new EnergyNetworkHandler();
+	public static final EnergyNetworkHandler		INSTANCE	= new EnergyNetworkHandler();
 
-	public static HashSet<EnergyTransferNetwork> networkSet = new HashSet<>();
-	public static ValidateThread thread = new ValidateThread();
+	public static HashSet<EnergyTransferNetwork>	networkSet	= new HashSet<>();
+	public static ValidateThread					thread		= new ValidateThread();
 
 	@SubscribeEvent
 	public void update(ServerTickEvent event)

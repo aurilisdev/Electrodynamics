@@ -12,7 +12,8 @@ public class NuclearTabRegister implements IContent {
 	@Override
 	public void preInit()
 	{
-		nuclearPhysicsTab = new CreativeTabs(NuclearReferences.DOMAIN + "NuclearPhysics") {
+		nuclearPhysicsTab = new CreativeTabs(NuclearReferences.DOMAIN + "NuclearPhysics")
+		{
 
 			@Override
 			public Item getTabIconItem()

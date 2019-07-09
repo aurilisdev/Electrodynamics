@@ -27,8 +27,8 @@
 package javax.vecmath;
 
 /**
- * Indicates that an operation cannot be completed properly because
- * of a mismatch in the sizes of object attributes.
+ * Indicates that an operation cannot be completed properly because of a
+ * mismatch in the sizes of object attributes.
  */
 public class MismatchedSizeException extends RuntimeException {
 

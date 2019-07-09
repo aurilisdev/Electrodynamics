@@ -36,8 +36,7 @@ public class NuclearCustomRecipeHelper {
 		{
 			for (ChemicalBoilerRecipe recipe : NuclearCustomRecipeRegister.getInstance().getBoilerRecipes())
 			{
-				if (recipe.getInput() != null && recipe.getInput() == input.getItem()
-						|| recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(input, recipe.getOreDictName()))
+				if (recipe.getInput() != null && recipe.getInput() == input.getItem() || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(input, recipe.getOreDictName()))
 				{
 					return recipe;
 				}
@@ -52,8 +51,7 @@ public class NuclearCustomRecipeHelper {
 		{
 			for (ChemicalExtractorRecipe recipe : NuclearCustomRecipeRegister.getInstance().getExtractorRecipes())
 			{
-				if (recipe.getInput() != null && recipe.getInput() == input.getItem()
-						|| recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(input, recipe.getOreDictName()))
+				if (recipe.getInput() != null && recipe.getInput() == input.getItem() || recipe.getOreDictName() != null && OreDictionaryUtilities.isSameOre(input, recipe.getOreDictName()))
 				{
 					return recipe;
 				}

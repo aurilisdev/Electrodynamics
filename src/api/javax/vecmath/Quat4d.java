@@ -27,19 +27,19 @@
 package javax.vecmath;
 
 /**
- * A 4-element quaternion represented by double precision floating
- * point x,y,z,w coordinates. The quaternion is always normalized.
+ * A 4-element quaternion represented by double precision floating point x,y,z,w
+ * coordinates. The quaternion is always normalized.
  *
  */
 public class Quat4d extends Tuple4d implements java.io.Serializable {
 
 	// Combatible with 1.1
-	static final long serialVersionUID = 7577479888820201099L;
+	static final long	serialVersionUID	= 7577479888820201099L;
 
 	// Fixed to issue 538
-	final static double EPS = 1.0e-12;
-	final static double EPS2 = 1.0e-30;
-	final static double PIO2 = 1.57079632679;
+	final static double	EPS					= 1.0e-12;
+	final static double	EPS2				= 1.0e-30;
+	final static double	PIO2				= 1.57079632679;
 
 	/**
 	 * Constructs and initializes a Quat4d from the specified xyzw coordinates.
@@ -152,8 +152,7 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Negate the value of of each of this quaternion's x,y,z coordinates
-	 * in place.
+	 * Negate the value of of each of this quaternion's x,y,z coordinates in place.
 	 */
 	public final void conjugate()
 	{
@@ -163,9 +162,9 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the quaternion product of
-	 * quaternions q1 and q2 (this = q1 * q2).
-	 * Note that this is safe for aliasing (e.g. this can be q1 or q2).
+	 * Sets the value of this quaternion to the quaternion product of quaternions q1
+	 * and q2 (this = q1 * q2). Note that this is safe for aliasing (e.g. this can
+	 * be q1 or q2).
 	 *
 	 * @param q1
 	 *            the first quaternion
@@ -195,8 +194,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the quaternion product of
-	 * itself and q1 (this = this * q1).
+	 * Sets the value of this quaternion to the quaternion product of itself and q1
+	 * (this = this * q1).
 	 *
 	 * @param q1
 	 *            the other quaternion
@@ -215,9 +214,9 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Multiplies quaternion q1 by the inverse of quaternion q2 and places
-	 * the value into this quaternion. The value of both argument quaternions
-	 * is preservered (this = q1 * q2^-1).
+	 * Multiplies quaternion q1 by the inverse of quaternion q2 and places the value
+	 * into this quaternion. The value of both argument quaternions is preservered
+	 * (this = q1 * q2^-1).
 	 *
 	 * @param q1
 	 *            the first quaternion
@@ -233,9 +232,9 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Multiplies this quaternion by the inverse of quaternion q1 and places
-	 * the value into this quaternion. The value of the argument quaternion
-	 * is preserved (this = this * q^-1).
+	 * Multiplies this quaternion by the inverse of quaternion q1 and places the
+	 * value into this quaternion. The value of the argument quaternion is preserved
+	 * (this = this * q^-1).
 	 *
 	 * @param q1
 	 *            the other quaternion
@@ -280,8 +279,7 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the normalized value
-	 * of quaternion q1.
+	 * Sets the value of this quaternion to the normalized value of quaternion q1.
 	 *
 	 * @param q1
 	 *            the quaternion to be normalized.
@@ -334,8 +332,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the rotational component of
-	 * the passed matrix.
+	 * Sets the value of this quaternion to the rotational component of the passed
+	 * matrix.
 	 *
 	 * @param m1
 	 *            the matrix4f
@@ -398,8 +396,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the rotational component of
-	 * the passed matrix.
+	 * Sets the value of this quaternion to the rotational component of the passed
+	 * matrix.
 	 *
 	 * @param m1
 	 *            the matrix4d
@@ -462,8 +460,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the rotational component of
-	 * the passed matrix.
+	 * Sets the value of this quaternion to the rotational component of the passed
+	 * matrix.
 	 *
 	 * @param m1
 	 *            the matrix3f
@@ -525,8 +523,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the rotational component of
-	 * the passed matrix.
+	 * Sets the value of this quaternion to the rotational component of the passed
+	 * matrix.
 	 *
 	 * @param m1
 	 *            the matrix3d
@@ -589,8 +587,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the equivalent rotation
-	 * of the AxisAngle argument.
+	 * Sets the value of this quaternion to the equivalent rotation of the AxisAngle
+	 * argument.
 	 *
 	 * @param a
 	 *            the AxisAngle to be emulated
@@ -620,8 +618,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the value of this quaternion to the equivalent rotation
-	 * of the AxisAngle argument.
+	 * Sets the value of this quaternion to the equivalent rotation of the AxisAngle
+	 * argument.
 	 *
 	 * @param a
 	 *            the AxisAngle to be emulated
@@ -651,9 +649,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Performs a great circle interpolation between this quaternion
-	 * and the quaternion parameter and places the result into this
-	 * quaternion.
+	 * Performs a great circle interpolation between this quaternion and the
+	 * quaternion parameter and places the result into this quaternion.
 	 *
 	 * @param q1
 	 *            the other quaternion
@@ -664,7 +661,7 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	{
 		// From "Advanced Animation and Rendering Techniques"
 		// by Watt and Watt pg. 364, function as implemented appeared to be
-		// incorrect.  Fails to choose the same quaternion for the double
+		// incorrect. Fails to choose the same quaternion for the double
 		// covering. Resulting in change of direction for rotations.
 		// Fixed function to negate the first quaternion in the case that the
 		// dot product of q1 and this is negative. Second case was not needed.
@@ -701,8 +698,8 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	}
 
 	/**
-	 * Performs a great circle interpolation between quaternion q1
-	 * and quaternion q2 and places the result into this quaternion.
+	 * Performs a great circle interpolation between quaternion q1 and quaternion q2
+	 * and places the result into this quaternion.
 	 *
 	 * @param q1
 	 *            the first quaternion
@@ -715,7 +712,7 @@ public class Quat4d extends Tuple4d implements java.io.Serializable {
 	{
 		// From "Advanced Animation and Rendering Techniques"
 		// by Watt and Watt pg. 364, function as implemented appeared to be
-		// incorrect.  Fails to choose the same quaternion for the double
+		// incorrect. Fails to choose the same quaternion for the double
 		// covering. Resulting in change of direction for rotations.
 		// Fixed function to negate the first quaternion in the case that the
 		// dot product of q1 and this is negative. Second case was not needed.

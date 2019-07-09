@@ -44,18 +44,18 @@ import physica.library.tile.TileBaseContainer;
 
 public class TileInterdictionMatrix extends TileBaseContainer implements IInvFortronTile, IGuiInterface {
 
-	private Set<ITileBase> connections = new HashSet<>();
-	private boolean isActivated;
-	public static final int BASE_FORTRON = 1000;
-	protected FluidTank fortronTank = new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
-	protected Set<ITileBase> fortronConnections = new HashSet<>();
-	public static final int SLOT_FREQUENCY = 0;
-	public static final int SLOT_STARTMODULEINDEX = 1;
-	public static final int SLOT_ENDMODULEINDEX = 8;
-	public static final int SLOT_STARTBANLIST = 9;
-	public static final int SLOT_ENDBANLIST = 17;
-	private int frequency;
-	private boolean isOverriden;
+	private Set<ITileBase>		connections				= new HashSet<>();
+	private boolean				isActivated;
+	public static final int		BASE_FORTRON			= 1000;
+	protected FluidTank			fortronTank				= new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
+	protected Set<ITileBase>	fortronConnections		= new HashSet<>();
+	public static final int		SLOT_FREQUENCY			= 0;
+	public static final int		SLOT_STARTMODULEINDEX	= 1;
+	public static final int		SLOT_ENDMODULEINDEX		= 8;
+	public static final int		SLOT_STARTBANLIST		= 9;
+	public static final int		SLOT_ENDBANLIST			= 17;
+	private int					frequency;
+	private boolean				isOverriden;
 
 	public int getMaxFortron()
 	{
@@ -72,13 +72,8 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public int getFortronUse()
 	{
 		int extra = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
-		return (int) (45000.91 * extra + (hasModule("moduleUpgradeAntiHostile") ? 100000 : 0)
-				+ (hasModule("moduleUpgradeAntiFriendly") ? 100000 : 0)
-				+ (hasModule("moduleUpgradeAntiPersonnel") ? 100000 : 0)
-				+ (hasModule("moduleUpgradeAntiSpawn") ? 75000 : 0)
-				+ (hasModule("moduleUpgradeBlockAccess") ? 75000 : 0)
-				+ (hasModule("moduleUpgradeBlockAlter") ? 75000 : 0)
-				+ (hasModule("moduleUpgradeConfiscate") ? 50000 : 0));
+		return (int) (45000.91 * extra + (hasModule("moduleUpgradeAntiHostile") ? 100000 : 0) + (hasModule("moduleUpgradeAntiFriendly") ? 100000 : 0) + (hasModule("moduleUpgradeAntiPersonnel") ? 100000 : 0)
+				+ (hasModule("moduleUpgradeAntiSpawn") ? 75000 : 0) + (hasModule("moduleUpgradeBlockAccess") ? 75000 : 0) + (hasModule("moduleUpgradeBlockAlter") ? 75000 : 0) + (hasModule("moduleUpgradeConfiscate") ? 50000 : 0));
 	}
 
 	@Override
@@ -197,8 +192,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 			fortronTank.drain(getFortronUse(), true);
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> activeBBEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getActiveBB());
-			boolean confiscate = hasModule("moduleUpgradeConfiscate"), antiHostile = hasModule("moduleUpgradeAntiHostile"), antiFriendly = hasModule("moduleUpgradeAntiFriendly"),
-					antiPersonnel = hasModule("moduleUpgradeAntiPersonnel");
+			boolean confiscate = hasModule("moduleUpgradeConfiscate"), antiHostile = hasModule("moduleUpgradeAntiHostile"), antiFriendly = hasModule("moduleUpgradeAntiFriendly"), antiPersonnel = hasModule("moduleUpgradeAntiPersonnel");
 			if (ticks % 3 == 0)
 			{
 				for (EntityLivingBase living : activeBBEntities)
@@ -547,6 +541,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	{
 		return Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
 	}
+
 	public static final int GUI_BUTTON_PACKET_ID = 22;
 
 	public void actionPerformed(int buttonId, Side side)

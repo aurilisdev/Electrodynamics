@@ -14,8 +14,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 public interface IEnergyProvider extends IEnergyConnection {
 
 	/**
-	 * Remove energy from an IEnergyProvider, internal distribution is left
-	 * entirely to the IEnergyProvider.
+	 * Remove energy from an IEnergyProvider, internal distribution is left entirely
+	 * to the IEnergyProvider.
 	 *
 	 * @param from
 	 *            Orientation the energy is extracted from.

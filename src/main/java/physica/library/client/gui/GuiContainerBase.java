@@ -35,21 +35,21 @@ import physica.library.inventory.tooltip.ToolTip;
 @SideOnly(Side.CLIENT)
 public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
-	public static final ResourceLocation GUI_COMPONENTS = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_components.png");
-	public static final ResourceLocation GUI_BASE = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png");
-	public static final int defaultYSize = 166;
+	public static final ResourceLocation	GUI_COMPONENTS			= new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_components.png");
+	public static final ResourceLocation	GUI_BASE				= new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.GUI_TEXTURE_DIRECTORY + "gui_base.png");
+	public static final int					defaultYSize			= 166;
 
-	protected Set<ToolTip> tooltips = new HashSet<>();
-	protected Set<GuiTextField> fields = new HashSet<>();
+	protected Set<ToolTip>					tooltips				= new HashSet<>();
+	protected Set<GuiTextField>				fields					= new HashSet<>();
 
-	protected int meterHeight = 49;
-	protected int meterWidth = 14;
-	protected int electricityMeterHeight = 11;
-	protected int electricityMeterWidth = 107;
-	protected int containerWidth;
-	protected int containerHeight;
+	protected int							meterHeight				= 49;
+	protected int							meterWidth				= 14;
+	protected int							electricityMeterHeight	= 11;
+	protected int							electricityMeterWidth	= 107;
+	protected int							containerWidth;
+	protected int							containerHeight;
 
-	protected T host;
+	protected T								host;
 
 	public GuiContainerBase(Container container, T host) {
 		super(container);
@@ -65,7 +65,8 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 		this.fields.clear();
 		this.tooltips.clear();
 
-		inventorySlots.inventorySlots.stream().forEach(s -> {
+		inventorySlots.inventorySlots.stream().forEach(s ->
+		{
 			if (s instanceof IToolTipContainer)
 			{
 				ToolTip toolTip = ((IToolTipContainer) s).getToolTip();

@@ -44,29 +44,29 @@ import physica.nuclear.common.tile.TileTurbine;
 
 public class NuclearBlockRegister implements IContent {
 
-	public static BlockParticleAccelerator blockParticleAccelerator;
-	public static BlockQuantumAssembler blockQuantumAssembler;
-	public static BlockCentrifuge blockCentrifuge;
-	public static BlockChemicalBoiler blockChemicalBoiler;
-	public static BlockChemicalExtractor blockChemicalExtractor;
-	public static BlockFissionReactor blockFissionReactor;
-	public static BlockNeutronCaptureChamber blockNeutronCaptureChamber;
-	public static BlockFusionReactor blockFusionReactor;
-	public static BlockTurbine blockTurbine;
-	public static BlockSiren blockSiren;
+	public static BlockParticleAccelerator		blockParticleAccelerator;
+	public static BlockQuantumAssembler			blockQuantumAssembler;
+	public static BlockCentrifuge				blockCentrifuge;
+	public static BlockChemicalBoiler			blockChemicalBoiler;
+	public static BlockChemicalExtractor		blockChemicalExtractor;
+	public static BlockFissionReactor			blockFissionReactor;
+	public static BlockNeutronCaptureChamber	blockNeutronCaptureChamber;
+	public static BlockFusionReactor			blockFusionReactor;
+	public static BlockTurbine					blockTurbine;
+	public static BlockSiren					blockSiren;
 
-	public static BlockElectromagnet blockElectromagnet;
-	public static BlockThermometer blockThermometer;
-	public static BlockControlRod blockControlRod;
-	public static BlockUraniumOre blockUraniumOre;
-	public static BlockPlasma blockPlasma;
-	public static BlockInsertableControlRod blockInsertableControlRod;
-	public static BlockReactorControlPanel blockReactorControlPanel;
+	public static BlockElectromagnet			blockElectromagnet;
+	public static BlockThermometer				blockThermometer;
+	public static BlockControlRod				blockControlRod;
+	public static BlockUraniumOre				blockUraniumOre;
+	public static BlockPlasma					blockPlasma;
+	public static BlockInsertableControlRod		blockInsertableControlRod;
+	public static BlockReactorControlPanel		blockReactorControlPanel;
 
-	public static BlockMeltedReactor blockMeltedReactor;
-	public static BlockRadioactiveGrass blockRadioactiveGrass;
-	public static BlockRadioactiveStone blockRadioactiveStone;
-	public static BlockRadioactiveDirt blockRadioactiveDirt;
+	public static BlockMeltedReactor			blockMeltedReactor;
+	public static BlockRadioactiveGrass			blockRadioactiveGrass;
+	public static BlockRadioactiveStone			blockRadioactiveStone;
+	public static BlockRadioactiveDirt			blockRadioactiveDirt;
 
 	@Override
 	public void preInit()

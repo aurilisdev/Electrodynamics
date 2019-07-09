@@ -13,9 +13,9 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
-	protected int capacity;
-	protected int maxReceive;
-	protected int maxExtract;
+	protected int	capacity;
+	protected int	maxReceive;
+	protected int	maxExtract;
 
 	public ItemEnergyContainer() {
 

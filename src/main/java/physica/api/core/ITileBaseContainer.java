@@ -157,8 +157,7 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	@Override
 	default boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return This().getWorldObj().getTileEntity(This().xCoord, This().yCoord, This().zCoord) != this ? false
-				: player.getDistanceSq(This().xCoord + 0.5D, This().yCoord + 0.5D, This().zCoord + 0.5D) <= 64.0D;
+		return This().getWorldObj().getTileEntity(This().xCoord, This().yCoord, This().zCoord) != this ? false : player.getDistanceSq(This().xCoord + 0.5D, This().yCoord + 0.5D, This().zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override

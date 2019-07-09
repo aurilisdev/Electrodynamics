@@ -14,8 +14,8 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class PacketBase implements IPacket {
 
-	protected Set<Object> writeData = new HashSet<>();
-	protected ByteBuf readData;
+	protected Set<Object>	writeData	= new HashSet<>();
+	protected ByteBuf		readData;
 
 	@SuppressWarnings("unchecked")
 	@Override

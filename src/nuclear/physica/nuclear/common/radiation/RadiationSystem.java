@@ -59,8 +59,7 @@ public class RadiationSystem {
 									if (Math.random() < damage)
 									{
 										int integerDamage = (int) (Math.max(1, kiloRoentgen * 2.15) / ((ItemHazmatArmor) armor.getItem()).getPlatingProtection());
-										if (player.getCurrentArmor(i).getItemDamage() > player.getCurrentArmor(i).getMaxDamage()
-												|| player.getCurrentArmor(i).attemptDamageItem(integerDamage, base.worldObj.rand))
+										if (player.getCurrentArmor(i).getItemDamage() > player.getCurrentArmor(i).getMaxDamage() || player.getCurrentArmor(i).attemptDamageItem(integerDamage, base.worldObj.rand))
 										{
 											player.setCurrentItemOrArmor(i + 1, null);
 										}

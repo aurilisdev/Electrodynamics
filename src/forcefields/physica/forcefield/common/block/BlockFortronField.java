@@ -193,8 +193,8 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 								world.createExplosion(null, entity.posX, entity.posY, entity.posZ, PhysicaMath.map(volatilityPercent, 0.5F, 1F, 0.5F, 5F), true);
 							}
 						}
-						int shockAmount = constructor.getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"),
-								TileFortronFieldConstructor.SLOT_UPGRADES[0], TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]);
+						int shockAmount = constructor.getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"), TileFortronFieldConstructor.SLOT_UPGRADES[0],
+								TileFortronFieldConstructor.SLOT_UPGRADES[TileFortronFieldConstructor.SLOT_UPGRADES.length - 1]);
 						if (shockAmount > 0)
 						{
 							if (!world.isRemote)

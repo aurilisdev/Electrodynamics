@@ -30,8 +30,7 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C',
-				"circuitAdvanced", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
+		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
 	}
 
 	@Override
@@ -43,8 +42,7 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
 	{
-		if (player.getHeldItem() != null
-				&& (player.getHeldItem().getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || player.getHeldItem().getItem() == NuclearItemRegister.itemLowEnrichedFuelCell))
+		if (player.getHeldItem() != null && (player.getHeldItem().getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || player.getHeldItem().getItem() == NuclearItemRegister.itemLowEnrichedFuelCell))
 		{
 			if (player.getHeldItem().stackSize == 1)
 			{

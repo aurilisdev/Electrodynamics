@@ -16,22 +16,21 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 
 public class TileTurbine extends TileBase implements IEnergyProvider {
 
-	public static final int MAX_STEAM = 3000000;
+	public static final int	MAX_STEAM		= 3000000;
 
-	protected int energyStored;
-	protected int lastEnergyStored;
-	protected boolean isGenerating = false;
-	public int delayGeneration = 10;
-	protected int steam;
-	protected int mainX, mainY, mainZ;
-	protected boolean hasMain = false;
-	protected boolean isMain = false;
+	protected int			energyStored;
+	protected int			lastEnergyStored;
+	protected boolean		isGenerating	= false;
+	public int				delayGeneration	= 10;
+	protected int			steam;
+	protected int			mainX, mainY, mainZ;
+	protected boolean		hasMain			= false;
+	protected boolean		isMain			= false;
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox()
 	{
-		return isMain ? super.getRenderBoundingBox().expand(1, 1, 1)
-				: hasMain ? AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0) : super.getRenderBoundingBox();
+		return isMain ? super.getRenderBoundingBox().expand(1, 1, 1) : hasMain ? AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0) : super.getRenderBoundingBox();
 	}
 
 	public void attemptConstruct()
@@ -136,8 +135,8 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		return isMain;
 	}
 
-	public TileEntity receiver = null;
-	public boolean clientSpin = false;
+	public TileEntity	receiver	= null;
+	public boolean		clientSpin	= false;
 
 	@Override
 	public void updateServer(int ticks)
@@ -162,8 +161,7 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 		if (steam > 0)
 		{
 			float steamToRf = ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO;
-			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN),
-					energyStored + steam * (isMain ? steamToRf * 1.111 : steamToRf));
+			energyStored = (int) Math.min(getMaxEnergyStored(ForgeDirection.UNKNOWN), energyStored + steam * (isMain ? steamToRf * 1.111 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
 			clientSpin = true;
 			delayGeneration = 60;
@@ -311,9 +309,9 @@ public class TileTurbine extends TileBase implements IEnergyProvider {
 			if (tile instanceof TileTurbine)
 			{
 				((TileTurbine) tile).steam = Math.min(MAX_STEAM, ((TileTurbine) tile).steam + this.steam);
-				((TileTurbine) tile).energyStored = Math.min(((TileTurbine) tile).getMaxEnergyStored(ForgeDirection.UNKNOWN), ((TileTurbine) tile).energyStored + this.energyStored);
+				((TileTurbine) tile).energyStored = Math.min(((TileTurbine) tile).getMaxEnergyStored(ForgeDirection.UNKNOWN), ((TileTurbine) tile).energyStored + energyStored);
 				this.steam = 0;
-				this.energyStored = 0;
+				energyStored = 0;
 			}
 		}
 	}

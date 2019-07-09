@@ -29,9 +29,9 @@ import physica.nuclear.common.NuclearTabRegister;
 public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUtilities, IRecipeRegister {
 
 	@SideOnly(Side.CLIENT)
-	private static IIcon iconTop, iconGlass;
+	private static IIcon	iconTop, iconGlass;
 	@SideOnly(Side.CLIENT)
-	private static IIcon containment, containmentIconTop, containmentIconGlass;
+	private static IIcon	containment, containmentIconTop, containmentIconGlass;
 
 	public BlockElectromagnet() {
 		super(Material.iron);
@@ -47,13 +47,9 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	@Override
 	public void initialize()
 	{
-		addRecipe(new ItemStack(this, 2), "BSB", "SMS", "BSB", 'B',
-				OreDictionaryUtilities.getAlternatingOreItem("ingotBronze", "ingotCopper"),
-				'M',
-				"motor", 'S', "ingotSteel");
+		addRecipe(new ItemStack(this, 2), "BSB", "SMS", "BSB", 'B', OreDictionaryUtilities.getAlternatingOreItem("ingotBronze", "ingotCopper"), 'M', "motor", 'S', "ingotSteel");
 		addShapeless(new ItemStack(this, 1, EnumElectromagnet.GLASS.ordinal()), NuclearBlockRegister.blockElectromagnet, Blocks.glass);
-		addRecipe(new ItemStack(this, 2, EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), "ELE", "LEL", "ELE", 'E', "circuitElite", 'L',
-				new ItemStack(this, 1, 0));
+		addRecipe(new ItemStack(this, 2, EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), "ELE", "LEL", "ELE", 'E', "circuitElite", 'L', new ItemStack(this, 1, 0));
 		addShapeless(new ItemStack(this, 1, EnumElectromagnet.CONTAINMENT_GLASS.ordinal()), new ItemStack(this, 1, EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), Blocks.glass);
 	}
 
@@ -122,8 +118,7 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 		Block neighborBlock = world.getBlock(xn, yn, zn);
 		int neighborMetadata = world.getBlockMetadata(xn, yn, zn);
 
-		return block == this && neighborBlock == this && (metadata == 1 && neighborMetadata == 1 || metadata == 3 && neighborMetadata == 3) ? false
-				: super.shouldSideBeRendered(world, x, y, z, side);
+		return block == this && neighborBlock == this && (metadata == 1 && neighborMetadata == 1 || metadata == 3 && neighborMetadata == 3) ? false : super.shouldSideBeRendered(world, x, y, z, side);
 	}
 
 	@SuppressWarnings("unchecked")

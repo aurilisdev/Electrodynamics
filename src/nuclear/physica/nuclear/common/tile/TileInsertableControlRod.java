@@ -24,8 +24,8 @@ import physica.nuclear.client.gui.GuiInsertableControlRod;
 
 public class TileInsertableControlRod extends TileBaseRotateable implements IGuiInterface {
 
-	public static final int CONTROL_ROD_PACKET_ID = 8;
-	private int insertion = 100;
+	public static final int	CONTROL_ROD_PACKET_ID	= 8;
+	private int				insertion				= 100;
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox()

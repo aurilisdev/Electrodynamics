@@ -21,11 +21,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class OreGenReplace extends AbstractOreGenerator {
 
-	public final OreGeneratorSettings settings;
+	public final OreGeneratorSettings	settings;
 
-	public boolean ignoreSurface = false;
-	public boolean ignoreNether = true;
-	public boolean ignoreEnd = true;
+	public boolean						ignoreSurface	= false;
+	public boolean						ignoreNether	= true;
+	public boolean						ignoreEnd		= true;
 
 	public OreGenReplace(Block block, int meta, OreGeneratorSettings settings, String harvestTool, int harvestLevel) {
 		super(block, meta, harvestTool, harvestLevel);
@@ -114,7 +114,6 @@ public class OreGenReplace extends AbstractOreGenerator {
 	@Override
 	public boolean isOreGeneratedInWorld(World world, IChunkProvider chunkGenerator)
 	{
-		return chunkGenerator instanceof ChunkProviderGenerate ? !ignoreSurface
-				: chunkGenerator instanceof ChunkProviderHell ? !ignoreNether : chunkGenerator instanceof ChunkProviderEnd ? !ignoreEnd : false;
+		return chunkGenerator instanceof ChunkProviderGenerate ? !ignoreSurface : chunkGenerator instanceof ChunkProviderHell ? !ignoreNether : chunkGenerator instanceof ChunkProviderEnd ? !ignoreEnd : false;
 	}
 }

@@ -21,19 +21,19 @@ import physica.library.tile.TileBaseContainer;
 
 public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface {
 
-	public static final int TOTAL_BURN_TIME = 500;
+	public static final int		TOTAL_BURN_TIME			= 500;
 
-	public static final int SLOT_INPUT = 0;
-	public static final int SLOT_INPUTFUEL = 1;
-	public static final int SLOT_OUTPUT = 2;
+	public static final int		SLOT_INPUT				= 0;
+	public static final int		SLOT_INPUTFUEL			= 1;
+	public static final int		SLOT_OUTPUT				= 2;
 
-	private static final int[] ACCESSIBLE_SLOTS_TOP = new int[] { SLOT_INPUT };
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
-	private static final int[] ACCESSIBLE_SLOTS_SIDES = new int[] { SLOT_INPUTFUEL };
+	private static final int[]	ACCESSIBLE_SLOTS_TOP	= new int[] { SLOT_INPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_SIDES	= new int[] { SLOT_INPUTFUEL };
 
-	public int furnaceBurnTime;
-	public int currentItemBurnTime;
-	public int furnaceCookTime;
+	public int					furnaceBurnTime;
+	public int					currentItemBurnTime;
+	public int					furnaceCookTime;
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag)

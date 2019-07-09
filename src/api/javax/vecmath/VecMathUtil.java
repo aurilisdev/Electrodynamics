@@ -27,8 +27,8 @@
 package javax.vecmath;
 
 /**
- * Utility vecmath class used when computing the hash code for vecmath
- * objects containing float or double values. This fixes Issue 36.
+ * Utility vecmath class used when computing the hash code for vecmath objects
+ * containing float or double values. This fixes Issue 36.
  */
 class VecMathUtil {
 

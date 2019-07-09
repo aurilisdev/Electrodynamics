@@ -37,8 +37,8 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 	@Override
 	public void registerBlockIcons(IIconRegister register)
 	{
-		this.blockIcon = register.registerIcon(this.getTextureName());
-		this.blockIconOff = register.registerIcon(this.getTextureName() + "Off");
+		blockIcon = register.registerIcon(getTextureName());
+		blockIconOff = register.registerIcon(getTextureName() + "Off");
 	}
 
 	@Override
@@ -77,8 +77,7 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "IPI", "PCP", "IPI", 'I', CoreBlockRegister.blockLead, 'P',
-				"plateLead", 'C', "circuitElite");
+		addRecipe(this, "IPI", "PCP", "IPI", 'I', CoreBlockRegister.blockLead, 'P', "plateLead", 'C', "circuitElite");
 	}
 
 }

@@ -18,15 +18,15 @@ import physica.nuclear.common.NuclearItemRegister;
 
 public class TileFusionReactor extends TileBasePoweredContainer {
 
-	public static final float PLASMA_SPAWN_STRENGTH = 13;
-	public static final int MAX_DEUTERIUM = 1024;
-	public static final int SLOT_DEUTERIUM = 0;
-	public static final int SLOT_TRITIUM = 1;
+	public static final float	PLASMA_SPAWN_STRENGTH	= 13;
+	public static final int		MAX_DEUTERIUM			= 1024;
+	public static final int		SLOT_DEUTERIUM			= 0;
+	public static final int		SLOT_TRITIUM			= 1;
 
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_DEUTERIUM, SLOT_TRITIUM };
-	private int energyStored;
-	private int ticksRunning;
-	private boolean isRunning = false;
+	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_DEUTERIUM, SLOT_TRITIUM };
+	private int					energyStored;
+	private int					ticksRunning;
+	private boolean				isRunning				= false;
 
 	public boolean isRunning()
 	{

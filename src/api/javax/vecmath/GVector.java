@@ -27,21 +27,21 @@
 package javax.vecmath;
 
 /**
- * A double precision, general, dynamically-resizable,
- * one-dimensional vector class. Index numbering begins with zero.
+ * A double precision, general, dynamically-resizable, one-dimensional vector
+ * class. Index numbering begins with zero.
  */
 
 public class GVector implements java.io.Serializable, Cloneable {
 
-	private int length;
-	double[] values;
+	private int			length;
+	double[]			values;
 
 	// Compatible with 1.1
-	static final long serialVersionUID = 1398850036893875112L;
+	static final long	serialVersionUID	= 1398850036893875112L;
 
 	/**
-	 * Constructs a new GVector of the specified
-	 * length with all vector elements initialized to 0.
+	 * Constructs a new GVector of the specified length with all vector elements
+	 * initialized to 0.
 	 *
 	 * @param length
 	 *            the number of elements in this GVector.
@@ -58,10 +58,9 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector from the specified array elements.
-	 * The length of this GVector is set to the length of the
-	 * specified array. The array elements are copied into this new
-	 * GVector.
+	 * Constructs a new GVector from the specified array elements. The length of
+	 * this GVector is set to the length of the specified array. The array elements
+	 * are copied into this new GVector.
 	 *
 	 * @param vector
 	 *            the values for the new GVector.
@@ -78,8 +77,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector from the specified vector.
-	 * The vector elements are copied into this new GVector.
+	 * Constructs a new GVector from the specified vector. The vector elements are
+	 * copied into this new GVector.
 	 *
 	 * @param vector
 	 *            the source GVector for this new GVector.
@@ -96,8 +95,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector and copies the initial values
-	 * from the specified tuple.
+	 * Constructs a new GVector and copies the initial values from the specified
+	 * tuple.
 	 *
 	 * @param tuple
 	 *            the source for the new GVector's initial values
@@ -110,8 +109,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector and copies the initial values
-	 * from the specified tuple.
+	 * Constructs a new GVector and copies the initial values from the specified
+	 * tuple.
 	 *
 	 * @param tuple
 	 *            the source for the new GVector's initial values
@@ -125,8 +124,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector and copies the initial values
-	 * from the specified tuple.
+	 * Constructs a new GVector and copies the initial values from the specified
+	 * tuple.
 	 *
 	 * @param tuple
 	 *            the source for the new GVector's initial values
@@ -140,8 +139,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector and copies the initial values
-	 * from the specified tuple.
+	 * Constructs a new GVector and copies the initial values from the specified
+	 * tuple.
 	 *
 	 * @param tuple
 	 *            the source for the new GVector's initial values
@@ -156,8 +155,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector and copies the initial values
-	 * from the specified tuple.
+	 * Constructs a new GVector and copies the initial values from the specified
+	 * tuple.
 	 *
 	 * @param tuple
 	 *            the source for the new GVector's initial values
@@ -172,12 +171,11 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new GVector of the specified length and
-	 * initializes it by copying the specified number of elements from
-	 * the specified array. The array must contain at least
-	 * <code>length</code> elements (i.e., <code>vector.length</code> &ge;
-	 * <code>length</code>. The length of this new GVector is set to
-	 * the specified length.
+	 * Constructs a new GVector of the specified length and initializes it by
+	 * copying the specified number of elements from the specified array. The array
+	 * must contain at least <code>length</code> elements (i.e.,
+	 * <code>vector.length</code> &ge; <code>length</code>. The length of this new
+	 * GVector is set to the specified length.
 	 *
 	 * @param vector
 	 *            The array from which the values will be copied.
@@ -196,8 +194,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the square root of the sum of the squares of this
-	 * vector (its length in n-dimensional space).
+	 * Returns the square root of the sum of the squares of this vector (its length
+	 * in n-dimensional space).
 	 *
 	 * @return length of this vector
 	 */
@@ -217,8 +215,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the sum of the squares of this
-	 * vector (its length squared in n-dimensional space).
+	 * Returns the sum of the squares of this vector (its length squared in
+	 * n-dimensional space).
 	 *
 	 * @return length squared of this vector
 	 */
@@ -289,8 +287,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to the scalar multiplication
-	 * of the scale factor with the vector v1.
+	 * Sets the value of this vector to the scalar multiplication of the scale
+	 * factor with the vector v1.
 	 *
 	 * @param s
 	 *            the scalar value
@@ -328,8 +326,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to the scalar multiplication by s
-	 * of vector v1 plus vector v2 (this = s*v1 + v2).
+	 * Sets the value of this vector to the scalar multiplication by s of vector v1
+	 * plus vector v2 (this = s*v1 + v2).
 	 *
 	 * @param s
 	 *            the scalar value
@@ -360,8 +358,7 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to sum of itself and the specified
-	 * vector
+	 * Sets the value of this vector to sum of itself and the specified vector
 	 *
 	 * @param vector
 	 *            the second vector
@@ -382,8 +379,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to the vector sum of vectors vector1
-	 * and vector2.
+	 * Sets the value of this vector to the vector sum of vectors vector1 and
+	 * vector2.
 	 *
 	 * @param vector1
 	 *            the first vector
@@ -411,8 +408,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to the vector difference of itself
-	 * and vector (this = this - vector).
+	 * Sets the value of this vector to the vector difference of itself and vector
+	 * (this = this - vector).
 	 *
 	 * @param vector
 	 *            the other vector
@@ -433,8 +430,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to the vector difference
-	 * of vectors vector1 and vector2 (this = vector1 - vector2).
+	 * Sets the value of this vector to the vector difference of vectors vector1 and
+	 * vector2 (this = vector1 - vector2).
 	 *
 	 * @param vector1
 	 *            the first vector
@@ -463,8 +460,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Multiplies matrix m1 times Vector v1 and places the result
-	 * into this vector (this = m1*v1).
+	 * Multiplies matrix m1 times Vector v1 and places the result into this vector
+	 * (this = m1*v1).
 	 *
 	 * @param m1
 	 *            The matrix in the multiplication
@@ -503,12 +500,11 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Multiplies the transpose of vector v1 (ie, v1 becomes a row
-	 * vector with respect to the multiplication) times matrix m1
-	 * and places the result into this vector
-	 * (this = transpose(v1)*m1). The result is technically a
-	 * row vector, but the GVector class only knows about column
-	 * vectors, and so the result is stored as a column vector.
+	 * Multiplies the transpose of vector v1 (ie, v1 becomes a row vector with
+	 * respect to the multiplication) times matrix m1 and places the result into
+	 * this vector (this = transpose(v1)*m1). The result is technically a row
+	 * vector, but the GVector class only knows about column vectors, and so the
+	 * result is stored as a column vector.
 	 *
 	 * @param m1
 	 *            The matrix in the multiplication
@@ -569,9 +565,9 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Changes the size of this vector dynamically. If the size is increased
-	 * no data values will be lost. If the size is decreased, only those data
-	 * values whose vector positions were eliminated will be lost.
+	 * Changes the size of this vector dynamically. If the size is increased no data
+	 * values will be lost. If the size is decreased, only those data values whose
+	 * vector positions were eliminated will be lost.
 	 *
 	 * @param length
 	 *            number of desired elements in this vector
@@ -600,9 +596,9 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this vector to the values found in the array
-	 * parameter. The array should be at least equal in length to
-	 * the number of elements in the vector.
+	 * Sets the value of this vector to the values found in the array parameter. The
+	 * array should be at least equal in length to the number of elements in the
+	 * vector.
 	 *
 	 * @param vector
 	 *            the source array
@@ -815,11 +811,10 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a hash code value based on the data values in this
-	 * object. Two different GVector objects with identical data
-	 * values (i.e., GVector.equals returns true) will return the
-	 * same hash number. Two GVector objects with different data
-	 * members may return the same hash value, although this is not
+	 * Returns a hash code value based on the data values in this object. Two
+	 * different GVector objects with identical data values (i.e., GVector.equals
+	 * returns true) will return the same hash number. Two GVector objects with
+	 * different data members may return the same hash value, although this is not
 	 * likely.
 	 *
 	 * @return the integer hash code value
@@ -838,8 +833,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if all of the data members of GVector vector1 are
-	 * equal to the corresponding data members in this GVector.
+	 * Returns true if all of the data members of GVector vector1 are equal to the
+	 * corresponding data members in this GVector.
 	 *
 	 * @param vector1
 	 *            The vector with which the comparison is made.
@@ -871,9 +866,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the Object o1 is of type GMatrix and all of the
-	 * data members of o1 are equal to the corresponding data members in
-	 * this GMatrix.
+	 * Returns true if the Object o1 is of type GMatrix and all of the data members
+	 * of o1 are equal to the corresponding data members in this GMatrix.
 	 *
 	 * @param o1
 	 *            The object with which the comparison is made.
@@ -910,11 +904,9 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the L-infinite distance between this vector
-	 * and vector v1 is less than or equal to the epsilon parameter,
-	 * otherwise returns false. The L-infinite
-	 * distance is equal to
-	 * MAX[abs(x1-x2), abs(y1-y2), . . . ].
+	 * Returns true if the L-infinite distance between this vector and vector v1 is
+	 * less than or equal to the epsilon parameter, otherwise returns false. The
+	 * L-infinite distance is equal to MAX[abs(x1-x2), abs(y1-y2), . . . ].
 	 *
 	 * @param v1
 	 *            The vector to be compared to this vector
@@ -964,10 +956,9 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Solves for x in Ax = b, where x is this vector (nx1), A is mxn,
-	 * b is mx1, and A = U*W*transpose(V); U,W,V must
-	 * be precomputed and can be found by taking the singular value
-	 * decomposition (SVD) of A using the method SVD found in the
+	 * Solves for x in Ax = b, where x is this vector (nx1), A is mxn, b is mx1, and
+	 * A = U*W*transpose(V); U,W,V must be precomputed and can be found by taking
+	 * the singular value decomposition (SVD) of A using the method SVD found in the
 	 * GMatrix class.
 	 *
 	 * @param U
@@ -981,16 +972,12 @@ public class GVector implements java.io.Serializable, Cloneable {
 	 */
 	public final void SVDBackSolve(GMatrix U, GMatrix W, GMatrix V, GVector b)
 	{
-		if (!(U.nRow == b.getSize() &&
-				U.nRow == U.nCol &&
-				U.nRow == W.nRow))
+		if (!(U.nRow == b.getSize() && U.nRow == U.nCol && U.nRow == W.nRow))
 		{
 			throw new MismatchedSizeException(VecMathI18N.getString("GVector15"));
 		}
 
-		if (!(W.nCol == values.length &&
-				W.nCol == V.nCol &&
-				W.nCol == V.nRow))
+		if (!(W.nCol == values.length && W.nCol == V.nCol && W.nCol == V.nRow))
 		{
 			throw new MismatchedSizeException(VecMathI18N.getString("GVector23"));
 		}
@@ -1004,20 +991,19 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * LU Decomposition Back Solve; this method takes the LU matrix
-	 * and the permutation vector produced by the GMatrix method LUD
-	 * and solves the equation (LU)*x = b by placing the solution vector
-	 * x into this vector. This vector should be the same length or
-	 * longer than b.
+	 * LU Decomposition Back Solve; this method takes the LU matrix and the
+	 * permutation vector produced by the GMatrix method LUD and solves the equation
+	 * (LU)*x = b by placing the solution vector x into this vector. This vector
+	 * should be the same length or longer than b.
 	 *
 	 * @param LU
-	 *            The matrix into which the lower and upper decompostions
-	 *            have been placed
+	 *            The matrix into which the lower and upper decompostions have been
+	 *            placed
 	 * @param b
 	 *            The b vector in the equation (LU)*x = b
 	 * @param permutation
-	 *            The row permuations that were necessary to
-	 *            produce the LU matrix parameter
+	 *            The row permuations that were necessary to produce the LU matrix
+	 *            parameter
 	 */
 	public final void LUDBackSolve(GMatrix LU, GVector b, GVector permutation)
 	{
@@ -1073,9 +1059,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the (n-space) angle in radians between this vector and
-	 * the vector parameter; the return value is constrained to the
-	 * range [0,PI].
+	 * Returns the (n-space) angle in radians between this vector and the vector
+	 * parameter; the return value is constrained to the range [0,PI].
 	 *
 	 * @param v1
 	 *            The other vector
@@ -1105,8 +1090,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Linearly interpolates between vectors v1 and v2 and places the
-	 * result into this tuple: this = (1-alpha)*v1 + alpha*v2.
+	 * Linearly interpolates between vectors v1 and v2 and places the result into
+	 * this tuple: this = (1-alpha)*v1 + alpha*v2.
 	 *
 	 * @param v1
 	 *            the first vector
@@ -1134,8 +1119,8 @@ public class GVector implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Linearly interpolates between this vector and vector v1 and
-	 * places the result into this tuple: this = (1-alpha)*this + alpha*v1.
+	 * Linearly interpolates between this vector and vector v1 and places the result
+	 * into this tuple: this = (1-alpha)*this + alpha*v1.
 	 *
 	 * @param v1
 	 *            the first vector

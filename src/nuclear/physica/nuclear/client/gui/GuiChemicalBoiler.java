@@ -20,8 +20,8 @@ import physica.nuclear.common.tile.TileGasCentrifuge;
 @SideOnly(Side.CLIENT)
 public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> implements IBaseUtilities {
 
-	public Rectangle AREA_WATER_TANK = new Rectangle(8, 18, meterWidth, meterHeight);
-	public Rectangle AREA_HEX_TANK = new Rectangle(xSize - 8 - meterWidth, 18, meterWidth, meterHeight);
+	public Rectangle	AREA_WATER_TANK	= new Rectangle(8, 18, meterWidth, meterHeight);
+	public Rectangle	AREA_HEX_TANK	= new Rectangle(xSize - 8 - meterWidth, 18, meterWidth, meterHeight);
 
 	public GuiChemicalBoiler(EntityPlayer player, TileChemicalBoiler host) {
 		super(new ContainerChemicalBoiler(player, host), host);
@@ -40,9 +40,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		drawString("Status: "
-				+ (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting" : host.canProcess() ? "Insufficient power" : "Invalid input"), 8,
-				73);
+		drawString("Status: " + (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting" : host.canProcess() ? "Insufficient power" : "Invalid input"), 8, 73);
 		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "chemicalBoiler.gui"), xSize / 2, 5);
 	}

@@ -27,15 +27,15 @@ public class ItemUpdateDarkMatter implements IItemUpdate, IBaseUtilities {
 			for (int i = 0; i < rand.nextFloat() * entity.ticksExisted / 80; i++)
 			{
 				float distance = (float) Math.sin(entity.ticksExisted / 40 - Math.floor(entity.ticksExisted));
-				world.spawnParticle("smoke", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5,
-						switchRandom(distance) / 5, switchRandom(distance) / 5);
+				world.spawnParticle("smoke", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5,
+						switchRandom(distance) / 5);
 				if (rand.nextFloat() * 400 < entity.ticksExisted)
 				{
 					if (rand.nextFloat() < 0.016667)
 					{
 						distance = distance / 3 * (entity.ticksExisted / 400);
-						world.spawnParticle("portal", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5,
-								switchRandom(distance) / 5, switchRandom(distance) / 5);
+						world.spawnParticle("portal", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5,
+								switchRandom(distance) / 5);
 					}
 				}
 			}

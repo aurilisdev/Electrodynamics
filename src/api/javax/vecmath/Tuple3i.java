@@ -27,33 +27,32 @@
 package javax.vecmath;
 
 /**
- * A 3-element tuple represented by signed integer x,y,z
- * coordinates.
+ * A 3-element tuple represented by signed integer x,y,z coordinates.
  *
  * @since vecmath 1.2
  */
 public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 
-	static final long serialVersionUID = -732740491767276200L;
+	static final long	serialVersionUID	= -732740491767276200L;
 
 	/**
 	 * The x coordinate.
 	 */
-	public int x;
+	public int			x;
 
 	/**
 	 * The y coordinate.
 	 */
-	public int y;
+	public int			y;
 
 	/**
 	 * The z coordinate.
 	 */
-	public int z;
+	public int			z;
 
 	/**
-	 * Constructs and initializes a Tuple3i from the specified
-	 * x, y, and z coordinates.
+	 * Constructs and initializes a Tuple3i from the specified x, y, and z
+	 * coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -84,8 +83,7 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	 * Constructs and initializes a Tuple3i from the specified Tuple3i.
 	 *
 	 * @param t1
-	 *            the Tuple3i containing the initialization x, y, and z
-	 *            data.
+	 *            the Tuple3i containing the initialization x, y, and z data.
 	 */
 	public Tuple3i(Tuple3i t1) {
 		x = t1.x;
@@ -103,8 +101,7 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the specified x, y, and z
-	 * coordinates.
+	 * Sets the value of this tuple to the specified x, y, and z coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -121,8 +118,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the specified coordinates in the
-	 * array of length 3.
+	 * Sets the value of this tuple to the specified coordinates in the array of
+	 * length 3.
 	 *
 	 * @param t
 	 *            the array of length 3 containing x, y, and z in order.
@@ -202,8 +199,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the difference
-	 * of tuples t1 and t2 (this = t1 - t2).
+	 * Sets the value of this tuple to the difference of tuples t1 and t2 (this = t1
+	 * - t2).
 	 *
 	 * @param t1
 	 *            the first tuple
@@ -218,8 +215,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the difference
-	 * of itself and t1 (this = this - t1).
+	 * Sets the value of this tuple to the difference of itself and t1 (this = this
+	 * - t1).
 	 *
 	 * @param t1
 	 *            the other tuple
@@ -255,8 +252,7 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1.
+	 * Sets the value of this tuple to the scalar multiplication of tuple t1.
 	 *
 	 * @param s
 	 *            the scalar value
@@ -271,8 +267,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the scalar multiplication
-	 * of the scale factor with this.
+	 * Sets the value of this tuple to the scalar multiplication of the scale factor
+	 * with this.
 	 *
 	 * @param s
 	 *            the scalar value
@@ -285,8 +281,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
+	 * Sets the value of this tuple to the scalar multiplication of tuple t1 plus
+	 * tuple t2 (this = s*t1 + t2).
 	 *
 	 * @param s
 	 *            the scalar value
@@ -303,8 +299,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this tuple to the scalar multiplication
-	 * of itself and then adds tuple t1 (this = s*this + t1).
+	 * Sets the value of this tuple to the scalar multiplication of itself and then
+	 * adds tuple t1 (this = s*this + t1).
 	 *
 	 * @param s
 	 *            the scalar value
@@ -319,8 +315,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a string that contains the values of this Tuple3i.
-	 * The form is (x,y,z).
+	 * Returns a string that contains the values of this Tuple3i. The form is
+	 * (x,y,z).
 	 *
 	 * @return the String representation
 	 */
@@ -331,9 +327,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the Object t1 is of type Tuple3i and all of the
-	 * data members of t1 are equal to the corresponding data members in
-	 * this Tuple3i.
+	 * Returns true if the Object t1 is of type Tuple3i and all of the data members
+	 * of t1 are equal to the corresponding data members in this Tuple3i.
 	 *
 	 * @param t1
 	 *            the object with which the comparison is made
@@ -355,11 +350,11 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a hash code value based on the data values in this
-	 * object. Two different Tuple3i objects with identical data values
-	 * (i.e., Tuple3i.equals returns true) will return the same hash
-	 * code value. Two objects with different data members may return the
-	 * same hash value, although this is not likely.
+	 * Returns a hash code value based on the data values in this object. Two
+	 * different Tuple3i objects with identical data values (i.e., Tuple3i.equals
+	 * returns true) will return the same hash code value. Two objects with
+	 * different data members may return the same hash value, although this is not
+	 * likely.
 	 *
 	 * @return the integer hash code value
 	 */
@@ -374,8 +369,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Clamps the tuple parameter to the range [low, high] and
-	 * places the values into this tuple.
+	 * Clamps the tuple parameter to the range [low, high] and places the values
+	 * into this tuple.
 	 *
 	 * @param min
 	 *            the lowest value in the tuple after clamping
@@ -421,8 +416,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Clamps the minimum value of the tuple parameter to the min
-	 * parameter and places the values into this tuple.
+	 * Clamps the minimum value of the tuple parameter to the min parameter and
+	 * places the values into this tuple.
 	 *
 	 * @param min
 	 *            the lowest value in the tuple after clamping
@@ -457,8 +452,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Clamps the maximum value of the tuple parameter to the max
-	 * parameter and places the values into this tuple.
+	 * Clamps the maximum value of the tuple parameter to the max parameter and
+	 * places the values into this tuple.
 	 *
 	 * @param max
 	 *            the highest value in the tuple after clamping
@@ -493,8 +488,8 @@ public abstract class Tuple3i implements java.io.Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets each component of the tuple parameter to its absolute
-	 * value and places the modified values into this tuple.
+	 * Sets each component of the tuple parameter to its absolute value and places
+	 * the modified values into this tuple.
 	 *
 	 * @param t
 	 *            the source tuple, which will not be modified

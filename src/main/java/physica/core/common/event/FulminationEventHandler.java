@@ -19,8 +19,8 @@ import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
 public class FulminationEventHandler {
 
-	public static final FulminationEventHandler INSTANCE = new FulminationEventHandler();
-	private static final Set<TileFulmination> set = new HashSet<>();
+	public static final FulminationEventHandler	INSTANCE	= new FulminationEventHandler();
+	private static final Set<TileFulmination>	set			= new HashSet<>();
 
 	public void register(TileFulmination tile)
 	{
@@ -77,8 +77,8 @@ public class FulminationEventHandler {
 					if (distance <= size && distance > 0)
 					{
 						double electricity = Math.min(energy, energy / (distance / size));
-						electricity = Math.max(electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z),
-								CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
+						electricity = Math.max(
+								electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
 						tile.setEnergyStored((int) (tile.getEnergyStored() + electricity));
 					}
 				}
@@ -109,15 +109,13 @@ public class FulminationEventHandler {
 							double energy = event.explosion.explosionSize * 50;
 							if (Loader.isModLoaded(CoreReferences.DOMAIN + "NuclearPhysics"))
 							{
-								if (event.explosion.exploder instanceof EntityItem
-										&& ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+								if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
 								{
 									energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
 								}
 							}
 							double electricity = Math.min(energy, energy / (distance / size));
-							electricity = Math.max(electricity - event.world.getBlockDensity(
-									Vec3.createVectorHelper(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ),
+							electricity = Math.max(electricity - event.world.getBlockDensity(Vec3.createVectorHelper(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ),
 									CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(event.world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
 							tile.setEnergyStored((int) (tile.getEnergyStored() + electricity));
 						}

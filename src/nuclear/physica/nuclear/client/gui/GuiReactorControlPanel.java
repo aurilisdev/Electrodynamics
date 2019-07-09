@@ -36,8 +36,7 @@ public class GuiReactorControlPanel extends GuiContainerBase<TileReactorControlP
 			double ticksLeft = 0;
 			if (host.reactor.hasFuelRod())
 			{
-				ticksLeft = (host.reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage()
-						- host.reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
+				ticksLeft = (host.reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage() - host.reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
 						/ (+1 + Math.round(host.reactor.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
 			}
 			float temperature = host.reactor.getTemperature();
@@ -68,8 +67,7 @@ public class GuiReactorControlPanel extends GuiContainerBase<TileReactorControlP
 			if (host.reactor.getTemperature() > 0)
 			{
 				drawGradientRect(
-						(int) (containerWidth + (xSize - electricityMeterWidth) / 2
-								+ Math.min(host.reactor.getTemperature(), TileFissionReactor.MELTDOWN_TEMPERATURE) / TileFissionReactor.MELTDOWN_TEMPERATURE * electricityMeterWidth - 1),
+						(int) (containerWidth + (xSize - electricityMeterWidth) / 2 + Math.min(host.reactor.getTemperature(), TileFissionReactor.MELTDOWN_TEMPERATURE) / TileFissionReactor.MELTDOWN_TEMPERATURE * electricityMeterWidth - 1),
 						containerHeight + 18 + electricityMeterHeight - 1, containerWidth + (xSize - electricityMeterWidth) / 2 + 1, containerHeight + 18 + 1,
 						host.reactor.getTemperature() < TileFissionReactor.MELTDOWN_TEMPERATURE ? Color.yellow.getRGB() : Color.red.getRGB(), Color.red.getRGB());
 			}

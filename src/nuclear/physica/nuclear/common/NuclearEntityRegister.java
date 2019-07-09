@@ -17,7 +17,8 @@ public class NuclearEntityRegister implements IContent {
 	public void init()
 	{
 		registerEntity(EntityParticle.class, "particle", 80, 3, true);
-		ForgeChunkManager.setForcedChunkLoadingCallback(Physica.INSTANCE, (tickets, world) -> {
+		ForgeChunkManager.setForcedChunkLoadingCallback(Physica.INSTANCE, (tickets, world) ->
+		{
 			for (Ticket ticket : tickets)
 			{
 				if (ticket.getType() == Type.ENTITY)

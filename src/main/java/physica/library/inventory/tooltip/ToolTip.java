@@ -6,8 +6,8 @@ import net.minecraft.util.StatCollector;
 
 public class ToolTip {
 
-	public Rectangle area;
-	public String info;
+	public Rectangle	area;
+	public String		info;
 
 	public ToolTip(Rectangle area, String info) {
 		this.area = area;

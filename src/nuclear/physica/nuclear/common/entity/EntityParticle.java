@@ -29,12 +29,12 @@ import physica.nuclear.common.tile.TileParticleAccelerator;
 
 public class EntityParticle extends Entity implements IEntityAdditionalSpawnData {
 
-	private static int movementTicketUpdateId = 20;
+	private static int		movementTicketUpdateId	= 20;
 
-	public Ticket updateTicket;
-	private boolean didCollide;
-	private int hostLocationX, hostLocationY, hostLocationZ;
-	private ForgeDirection movementDirection = ForgeDirection.NORTH;
+	public Ticket			updateTicket;
+	private boolean			didCollide;
+	private int				hostLocationX, hostLocationY, hostLocationZ;
+	private ForgeDirection	movementDirection		= ForgeDirection.NORTH;
 
 	public EntityParticle(World world) {
 		super(world);
@@ -129,8 +129,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 			}
 			if (ticksExisted % 10 == 0)
 			{
-				worldObj.playSound(posX, posY, posZ, CoreReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)),
-						true);
+				worldObj.playSound(posX, posY, posZ, CoreReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)), true);
 			}
 			double acceleration = 0.002;
 			if (accelerator.getParticle() == null)

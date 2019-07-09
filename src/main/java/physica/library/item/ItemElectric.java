@@ -15,11 +15,11 @@ import physica.library.energy.base.Unit;
 
 public class ItemElectric extends Item implements IEnergyContainerItem {
 
-	public static final String ENERGY_NBT_DATA = "Energy";
+	public static final String	ENERGY_NBT_DATA	= "Energy";
 
-	protected int capacity;
-	protected int receiveRate;
-	protected int extractRate;
+	protected int				capacity;
+	protected int				receiveRate;
+	protected int				extractRate;
 
 	public ItemElectric() {
 	}
@@ -35,8 +35,8 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 
 	public ItemElectric(int capacity, int maxReceive, int maxExtract) {
 		this.capacity = capacity;
-		this.receiveRate = maxReceive;
-		this.extractRate = maxExtract;
+		receiveRate = maxReceive;
+		extractRate = maxExtract;
 		setNoRepair();
 		setMaxDamage(100);
 		setMaxStackSize(1);
@@ -71,8 +71,7 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean par4)
 	{
 		super.addInformation(stack, player, info, par4);
-		info.add(EnumChatFormatting.AQUA + "Energy Stored: " + EnumChatFormatting.GRAY
-				+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getEnergyStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
+		info.add(EnumChatFormatting.AQUA + "Energy Stored: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getEnergyStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
-		int energyExtracted = Math.min(energy, Math.min(this.extractRate, amount));
+		int energyExtracted = Math.min(energy, Math.min(extractRate, amount));
 
 		if (!simulate)
 		{
@@ -129,7 +128,7 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 			container.stackTagCompound = new NBTTagCompound();
 		}
 		int energy = container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
-		int energyReceived = Math.min(capacity - energy, Math.min(this.receiveRate, amount));
+		int energyReceived = Math.min(capacity - energy, Math.min(receiveRate, amount));
 
 		if (!simulate)
 		{

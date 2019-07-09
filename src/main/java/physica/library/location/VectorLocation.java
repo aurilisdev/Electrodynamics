@@ -10,9 +10,9 @@ import net.minecraft.world.World;
 
 public class VectorLocation {
 
-	public double x;
-	public double y;
-	public double z;
+	public double	x;
+	public double	y;
+	public double	z;
 
 	public VectorLocation() {
 		this(0, 0, 0);

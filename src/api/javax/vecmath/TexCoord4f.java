@@ -38,8 +38,7 @@ public class TexCoord4f extends Tuple4f implements java.io.Serializable {
 	static final long serialVersionUID = -3517736544731446513L;
 
 	/**
-	 * Constructs and initializes a TexCoord4f from the specified xyzw
-	 * coordinates.
+	 * Constructs and initializes a TexCoord4f from the specified xyzw coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate

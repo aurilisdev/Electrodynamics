@@ -37,8 +37,7 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	static final long serialVersionUID = 8749319902347760659L;
 
 	/**
-	 * Constructs and initializes a Vector4f from the specified xyzw
-	 * coordinates.
+	 * Constructs and initializes a Vector4f from the specified xyzw coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -104,10 +103,9 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	}
 
 	/**
-	 * Constructs and initializes a Vector4f from the specified Tuple3f.
-	 * The x,y,z components of this vector are set to the corresponding
-	 * components of tuple t1. The w component of this vector
-	 * is set to 0.
+	 * Constructs and initializes a Vector4f from the specified Tuple3f. The x,y,z
+	 * components of this vector are set to the corresponding components of tuple
+	 * t1. The w component of this vector is set to 0.
 	 *
 	 * @param t1
 	 *            the tuple to be copied
@@ -126,9 +124,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the x,y,z components of this vector to the corresponding
-	 * components of tuple t1. The w component of this vector
-	 * is set to 0.
+	 * Sets the x,y,z components of this vector to the corresponding components of
+	 * tuple t1. The w component of this vector is set to 0.
 	 *
 	 * @param t1
 	 *            the tuple to be copied
@@ -150,8 +147,7 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 */
 	public final float length()
 	{
-		return (float) Math.sqrt(x * x + y * y +
-				z * z + w * w);
+		return (float) Math.sqrt(x * x + y * y + z * z + w * w);
 	}
 
 	/**
@@ -161,8 +157,7 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	 */
 	public final float lengthSquared()
 	{
-		return x * x + y * y +
-				z * z + w * w;
+		return x * x + y * y + z * z + w * w;
 	}
 
 	/**
@@ -187,8 +182,7 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	{
 		float norm;
 
-		norm = (float) (1.0 / Math.sqrt(v1.x * v1.x + v1.y * v1.y +
-				v1.z * v1.z + v1.w * v1.w));
+		norm = (float) (1.0 / Math.sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z + v1.w * v1.w));
 		x = v1.x * norm;
 		y = v1.y * norm;
 		z = v1.z * norm;
@@ -202,8 +196,7 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	{
 		float norm;
 
-		norm = (float) (1.0 / Math.sqrt(x * x + y * y +
-				z * z + w * w));
+		norm = (float) (1.0 / Math.sqrt(x * x + y * y + z * z + w * w));
 		x *= norm;
 		y *= norm;
 		z *= norm;
@@ -211,9 +204,8 @@ public class Vector4f extends Tuple4f implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the (4-space) angle in radians between this vector and
-	 * the vector parameter; the return value is constrained to the
-	 * range [0,PI].
+	 * Returns the (4-space) angle in radians between this vector and the vector
+	 * parameter; the return value is constrained to the range [0,PI].
 	 *
 	 * @param v1
 	 *            the other vector

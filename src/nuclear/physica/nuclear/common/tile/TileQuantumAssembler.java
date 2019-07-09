@@ -23,14 +23,14 @@ import physica.nuclear.common.inventory.ContainerQuantumAssembler;
 
 public class TileQuantumAssembler extends TileBasePoweredContainer implements IGuiInterface {
 
-	public static final int TICKS_REQUIRED = 120;
-	public static final int SLOT_INPUT = 6;
-	public static final int SLOT_OUTPUT = 7;
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
-	private static final int[] ACCESSIBLE_SLOTS_ELSE = new int[] { 0, 1, 2, 3, 4, 5 };
-	protected int operatingTicks = 0;
-	protected EntityItem entityItem = null;
+	public static final int		TICKS_REQUIRED			= 120;
+	public static final int		SLOT_INPUT				= 6;
+	public static final int		SLOT_OUTPUT				= 7;
+	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_ELSE	= new int[] { 0, 1, 2, 3, 4, 5 };
+	protected int				operatingTicks			= 0;
+	protected EntityItem		entityItem				= null;
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack)
@@ -63,9 +63,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 
 	public boolean isRestricted(ItemStack itemStack)
 	{
-		return itemStack == null || itemStack.stackSize <= 0
-				|| itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell
-				|| ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName());
+		return itemStack == null || itemStack.stackSize <= 0 || itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell || ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName());
 	}
 
 	@Override

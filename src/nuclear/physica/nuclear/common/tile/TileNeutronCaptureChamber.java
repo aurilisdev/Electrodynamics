@@ -20,14 +20,14 @@ import physica.nuclear.common.inventory.ContainerNeutronCaptureChamber;
 
 public class TileNeutronCaptureChamber extends TileBaseContainer implements IGuiInterface {
 
-	public static final int TICKS_REQUIRED = 2847;
-	public static final int SLOT_INPUT = 0;
-	public static final int SLOT_OUTPUT = 1;
-	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
+	public static final int		TICKS_REQUIRED			= 2847;
+	public static final int		SLOT_INPUT				= 0;
+	public static final int		SLOT_OUTPUT				= 1;
+	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
 
-	protected float operatingTicks = 0;
-	private boolean hasDeuterium;
+	protected float				operatingTicks			= 0;
+	private boolean				hasDeuterium;
 
 	@Override
 	public void updateServer(int ticks)

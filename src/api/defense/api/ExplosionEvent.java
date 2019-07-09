@@ -8,8 +8,7 @@ import net.minecraft.world.World;
 
 /**
  * Use ForgeSubscribe to subscribe to this event. This event is called every
- * single time when a registered
- * explosion happens.
+ * single time when a registered explosion happens.
  *
  * @author Calclavia
  */
@@ -17,16 +16,15 @@ import net.minecraft.world.World;
 public class ExplosionEvent extends Event {
 
 	/**
-	 * The explosion object. Can be cast into {@link Explosion}. This event can
-	 * be canceled to
-	 * prevent a specific part of an explosion from being executed.
+	 * The explosion object. Can be cast into {@link Explosion}. This event can be
+	 * canceled to prevent a specific part of an explosion from being executed.
 	 */
-	public World world;
-	public double x, y, z;
-	public IExplosion iExplosion;
+	public World		world;
+	public double		x, y, z;
+	public IExplosion	iExplosion;
 
 	/** Pre-cast explosion class. */
-	public Explosion explosion;
+	public Explosion	explosion;
 
 	public ExplosionEvent(World world, IExplosion iExplosion) {
 		this.world = world;
@@ -42,11 +40,9 @@ public class ExplosionEvent extends Event {
 	}
 
 	/**
-	 * Called before an explosive is detonated or a missile is placed to check
-	 * if detonation is
-	 * possible. You may cancel and explosion here if needed. After this it will
-	 * be a bit too late
-	 * to prevent destruction without any losses.
+	 * Called before an explosive is detonated or a missile is placed to check if
+	 * detonation is possible. You may cancel and explosion here if needed. After
+	 * this it will be a bit too late to prevent destruction without any losses.
 	 *
 	 * @author Calclavia
 	 */
@@ -54,15 +50,15 @@ public class ExplosionEvent extends Event {
 	public static class ExplosivePreDetonationEvent extends Event {
 
 		/** The world object */
-		public World world;
+		public World			world;
 		/** The entity causing the explosion. This could be null */
-		public Entity entity;
+		public Entity			entity;
 		/** The position in which the explosion might happen. */
-		public double x, y, z;
+		public double			x, y, z;
 		/** The explosive object. */
-		public IExplosive explosion;
+		public IExplosive		explosion;
 		/** The explosive type. */
-		public ExplosiveType type;
+		public ExplosiveType	type;
 
 		public ExplosivePreDetonationEvent(World world, double x, double y, double z, ExplosiveType type, IExplosive explosion) {
 			this.world = world;
@@ -110,8 +106,7 @@ public class ExplosionEvent extends Event {
 
 	/**
 	 * Called while an explosion happens. May be called every single tick if
-	 * explosion is
-	 * procedural. (E.g: Red matter explosive)
+	 * explosion is procedural. (E.g: Red matter explosive)
 	 *
 	 * @author Calclavia
 	 */

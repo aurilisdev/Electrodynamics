@@ -8,12 +8,12 @@ import net.minecraft.world.World;
 @Cancelable
 public class ExplosionEvent extends Event {
 
-	public World world;
-	public double x;
-	public double y;
-	public double z;
-	public IExplosion iExplosion;
-	public Explosion explosion;
+	public World		world;
+	public double		x;
+	public double		y;
+	public double		z;
+	public IExplosion	iExplosion;
+	public Explosion	explosion;
 
 	public ExplosionEvent(World world, IExplosion iExplosion) {
 		this.world = world;

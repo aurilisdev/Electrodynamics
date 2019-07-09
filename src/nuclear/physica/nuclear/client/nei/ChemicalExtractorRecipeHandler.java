@@ -63,8 +63,7 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 		changeTexture(getGuiTexture());
 		drawTexturedModalRect(-1, 0, xOffset, yOffset, 169, 62);
 
-		drawFluidTank(8, 8,
-				new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - cycleticks % TileChemicalExtractor.TICKS_REQUIRED / (float) TileChemicalExtractor.TICKS_REQUIRED))));
+		drawFluidTank(8, 8, new FluidStack(FluidRegistry.WATER, (int) (theRecipe.waterAmount * (1 - cycleticks % TileChemicalExtractor.TICKS_REQUIRED / (float) TileChemicalExtractor.TICKS_REQUIRED))));
 		renderFurnaceCookArrow(36, 24, 0, TileChemicalExtractor.TICKS_REQUIRED);
 
 		drawSlot(131, 21, true);
@@ -82,7 +81,7 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadTransferRects()
 	{
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(36, 24, 22, 15), getRecipeID(), new Object[0]));
+		transferRects.add(new RecipeTransferRect(new Rectangle(36, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
@@ -224,10 +223,10 @@ public class ChemicalExtractorRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	class recipe extends TemplateRecipeHandler.CachedRecipe {
 
-		public int waterAmount;
-		public ItemStack itemoutput;
-		public Item iteminput;
-		public String oreDict;
+		public int			waterAmount;
+		public ItemStack	itemoutput;
+		public Item			iteminput;
+		public String		oreDict;
 
 		public recipe(int WaterAmount, Item Input, ItemStack Output) {
 			waterAmount = WaterAmount;

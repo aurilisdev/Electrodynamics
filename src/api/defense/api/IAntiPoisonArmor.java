@@ -5,8 +5,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Apply this to all item armors and it will prevent the player from receiving a
- * specific type of
- * poison.
+ * specific type of poison.
  */
 public interface IAntiPoisonArmor {
 

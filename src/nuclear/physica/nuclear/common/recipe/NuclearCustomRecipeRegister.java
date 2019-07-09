@@ -10,10 +10,10 @@ import physica.nuclear.common.recipe.type.ChemicalExtractorRecipe;
 
 public class NuclearCustomRecipeRegister {
 
-	private static NuclearCustomRecipeRegister instance;
+	private static NuclearCustomRecipeRegister	instance;
 
-	private Set<ChemicalBoilerRecipe> boilerRecipes = new HashSet<>();
-	private Set<ChemicalExtractorRecipe> extractorRecipes = new HashSet<>();
+	private Set<ChemicalBoilerRecipe>			boilerRecipes		= new HashSet<>();
+	private Set<ChemicalExtractorRecipe>		extractorRecipes	= new HashSet<>();
 
 	public static NuclearCustomRecipeRegister getInstance()
 	{

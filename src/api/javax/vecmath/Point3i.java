@@ -27,8 +27,7 @@
 package javax.vecmath;
 
 /**
- * A 3 element point represented by signed integer x,y,z
- * coordinates.
+ * A 3 element point represented by signed integer x,y,z coordinates.
  *
  * @since vecmath 1.2
  */
@@ -38,8 +37,8 @@ public class Point3i extends Tuple3i implements java.io.Serializable {
 	static final long serialVersionUID = 6149289077348153921L;
 
 	/**
-	 * Constructs and initializes a Point3i from the specified
-	 * x, y, and z coordinates.
+	 * Constructs and initializes a Point3i from the specified x, y, and z
+	 * coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -66,8 +65,7 @@ public class Point3i extends Tuple3i implements java.io.Serializable {
 	 * Constructs and initializes a Point3i from the specified Tuple3i.
 	 *
 	 * @param t1
-	 *            the Tuple3i containing the initialization x, y, and z
-	 *            data.
+	 *            the Tuple3i containing the initialization x, y, and z data.
 	 */
 	public Point3i(Tuple3i t1) {
 		super(t1);

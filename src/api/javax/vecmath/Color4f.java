@@ -29,13 +29,13 @@ package javax.vecmath;
 import java.awt.Color;
 
 /**
- * A four-element color represented by single precision floating point
- * x, y, z, and w values. The x, y, z, and w values represent the red,
- * blue, green, and alpha color values, respectively. Color and alpha
- * components should be in the range [0.0, 1.0].
+ * A four-element color represented by single precision floating point x, y, z,
+ * and w values. The x, y, z, and w values represent the red, blue, green, and
+ * alpha color values, respectively. Color and alpha components should be in the
+ * range [0.0, 1.0].
  * <p>
- * Java 3D assumes that a linear (gamma-corrected) visual is used for
- * all colors.
+ * Java 3D assumes that a linear (gamma-corrected) visual is used for all
+ * colors.
  *
  */
 public class Color4f extends Tuple4f implements java.io.Serializable {
@@ -44,8 +44,7 @@ public class Color4f extends Tuple4f implements java.io.Serializable {
 	static final long serialVersionUID = 8577680141580006740L;
 
 	/**
-	 * Constructs and initializes a Color4f from the specified xyzw
-	 * coordinates.
+	 * Constructs and initializes a Color4f from the specified xyzw coordinates.
 	 *
 	 * @param x
 	 *            the red color value
@@ -101,22 +100,16 @@ public class Color4f extends Tuple4f implements java.io.Serializable {
 	}
 
 	/**
-	 * Constructs and initializes a Color4f from the specified AWT
-	 * Color object.
-	 * No conversion is done on the color to compensate for
-	 * gamma correction.
+	 * Constructs and initializes a Color4f from the specified AWT Color object. No
+	 * conversion is done on the color to compensate for gamma correction.
 	 *
 	 * @param color
-	 *            the AWT color with which to initialize this
-	 *            Color4f object
+	 *            the AWT color with which to initialize this Color4f object
 	 *
 	 * @since vecmath 1.2
 	 */
 	public Color4f(Color color) {
-		super(color.getRed() / 255.0f,
-				color.getGreen() / 255.0f,
-				color.getBlue() / 255.0f,
-				color.getAlpha() / 255.0f);
+		super(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
 	}
 
 	/**
@@ -127,10 +120,9 @@ public class Color4f extends Tuple4f implements java.io.Serializable {
 	}
 
 	/**
-	 * Sets the r,g,b,a values of this Color4f object to those of the
-	 * specified AWT Color object.
-	 * No conversion is done on the color to compensate for
-	 * gamma correction.
+	 * Sets the r,g,b,a values of this Color4f object to those of the specified AWT
+	 * Color object. No conversion is done on the color to compensate for gamma
+	 * correction.
 	 *
 	 * @param color
 	 *            the AWT color to copy into this Color4f object
@@ -146,8 +138,8 @@ public class Color4f extends Tuple4f implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns a new AWT color object initialized with the r,g,b,a
-	 * values of this Color4f object.
+	 * Returns a new AWT color object initialized with the r,g,b,a values of this
+	 * Color4f object.
 	 *
 	 * @return a new AWT Color object
 	 *

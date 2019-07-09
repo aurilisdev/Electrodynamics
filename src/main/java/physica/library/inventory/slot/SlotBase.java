@@ -16,10 +16,10 @@ import physica.library.inventory.tooltip.ToolTipSlot;
 
 public class SlotBase extends Slot implements IRenderableSlot, IToolTipContainer {
 
-	protected Color edgeColor = null;
-	protected Color baseColor = null;
+	protected Color		edgeColor	= null;
+	protected Color		baseColor	= null;
 
-	protected String toolTip;
+	protected String	toolTip;
 
 	public SlotBase(IInventory inventory, int index, int x, int y) {
 		super(inventory, index, x, y);

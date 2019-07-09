@@ -12,13 +12,13 @@ import physica.library.network.PacketBase;
 
 public class PacketTile extends PacketBase {
 
-	public int x;
-	public int y;
-	public int z;
-	public int id;
-	public int customInteger;
+	public int		x;
+	public int		y;
+	public int		z;
+	public int		id;
+	public int		customInteger;
 
-	public String name;
+	public String	name;
 
 	public PacketTile() {
 		// Required for Forge
@@ -101,8 +101,8 @@ public class PacketTile extends PacketBase {
 		{
 			if (PhysicaAPI.isDebugMode)
 			{
-				PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", "
-						+ tile.yCoord + ", " + tile.zCoord + "]) - Invalidated tile"));
+				PhysicaAPI.logger.error(new RuntimeException(
+						"PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", " + tile.yCoord + ", " + tile.zCoord + "]) - Invalidated tile"));
 			}
 		} else if (tile instanceof IPacketReciever)
 		{
@@ -114,24 +114,25 @@ public class PacketTile extends PacketBase {
 			{
 				if (PhysicaAPI.isDebugMode)
 				{
-					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord
-							+ ", " + tile.yCoord + ", " + tile.zCoord + "Packet was read past it's size."));
+					PhysicaAPI.logger.error(new RuntimeException(
+							"PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", " + tile.yCoord + ", " + tile.zCoord + "Packet was read past it's size."));
 					PhysicaAPI.logger.error("Error: ", e);
 				}
 			} catch (NullPointerException e)
 			{
 				if (PhysicaAPI.isDebugMode)
 				{
-					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord
-							+ ", " + tile.yCoord + ", " + tile.zCoord + "Null pointer while reading data", e));
+					PhysicaAPI.logger.error(new RuntimeException(
+							"PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", " + tile.yCoord + ", " + tile.zCoord + "Null pointer while reading data",
+							e));
 					PhysicaAPI.logger.error("Error: ", e);
 				}
 			} catch (Exception e)
 			{
 				if (PhysicaAPI.isDebugMode)
 				{
-					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord
-							+ ", " + tile.yCoord + ", " + tile.zCoord + "Failed to read packet", e));
+					PhysicaAPI.logger.error(new RuntimeException(
+							"PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", " + tile.yCoord + ", " + tile.zCoord + "Failed to read packet", e));
 					PhysicaAPI.logger.error("Error: ", e);
 				}
 			}

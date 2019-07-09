@@ -19,8 +19,8 @@ import physica.nuclear.client.gui.GuiReactorControlPanel;
 
 public class TileReactorControlPanel extends TileBaseRotateable implements ITileBasePowered, IGuiInterface {
 
-	private int energyStored;
-	public TileFissionReactor reactor;
+	private int					energyStored;
+	public TileFissionReactor	reactor;
 
 	@Override
 	public void updateClient(int ticks)

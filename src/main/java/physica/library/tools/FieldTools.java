@@ -17,20 +17,25 @@ public class FieldTools {
 	public enum NBTSaveType {
 		Boolean, Byte, Double, Float, IntArray, Integer, Long, Short, String, NBTBase
 	}
+
 	@Retention(value = RUNTIME)
 	@Target(value = ElementType.FIELD)
-	public @interface NBTSaveField {
+	public @interface NBTSaveField
+	{
 
 		public String name();
 
 		public NBTSaveType type();
 	}
+
 	public enum SyncSendType {
 		Array, Collection, Byte, Boolean, Enum, Integer, Short, Long, Float, Double, UTF8String, NBTTagCompound, ItemStack, FluidTank
 	}
+
 	@Retention(value = RUNTIME)
 	@Target(value = ElementType.FIELD)
-	public @interface SyncSendField {
+	public @interface SyncSendField
+	{
 
 		public SyncSendType type();
 	}

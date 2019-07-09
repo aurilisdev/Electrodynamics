@@ -27,8 +27,8 @@
 package javax.vecmath;
 
 /**
- * A 2-element vector that is represented by double-precision floating
- * point x,y coordinates.
+ * A 2-element vector that is represented by double-precision floating point x,y
+ * coordinates.
  *
  */
 public class Vector2d extends Tuple2d implements java.io.Serializable {
@@ -164,8 +164,8 @@ public class Vector2d extends Tuple2d implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the angle in radians between this vector and the vector
-	 * parameter; the return value is constrained to the range [0,PI].
+	 * Returns the angle in radians between this vector and the vector parameter;
+	 * the return value is constrained to the range [0,PI].
 	 *
 	 * @param v1
 	 *            the other vector

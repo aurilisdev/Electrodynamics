@@ -26,9 +26,9 @@ public class TilePlasma extends TileBase {
 		return block.getBlockHardness(world, x, y, z) != -1 && !(block instanceof IElectromagnet);
 	}
 
-	public int strength = ConfigNuclearPhysics.PLASMA_STRENGTH;
+	public int				strength			= ConfigNuclearPhysics.PLASMA_STRENGTH;
 
-	public static final int TARGET_TEMPERATURE = 4407;
+	public static final int	TARGET_TEMPERATURE	= 4407;
 
 	@Override
 	public void updateServer(int ticks)
@@ -66,8 +66,7 @@ public class TilePlasma extends TileBase {
 							if (tile instanceof TilePlasma)
 							{
 								int newPower = power + worldObj.rand.nextInt(2) - 1;
-								((TilePlasma) tile).strength = (int) (newPower
-										/ Math.max(1, block.getBlockHardness(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ)));
+								((TilePlasma) tile).strength = (int) (newPower / Math.max(1, block.getBlockHardness(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ)));
 							}
 						}
 					}

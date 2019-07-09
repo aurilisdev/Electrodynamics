@@ -18,11 +18,11 @@ import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 @SideOnly(Side.CLIENT)
 public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
-	public static final ResourceLocation[] model_texture = new ResourceLocation[EnumEnergyCable.values().length];
+	public static final ResourceLocation[]	model_texture	= new ResourceLocation[EnumEnergyCable.values().length];
 
-	public static final float pixel = 1 / 16f;
-	public static final float pixelElevenTwo = 11 * pixel / 2;
-	public static final float texPixel = 1 / 32f;
+	public static final float				pixel			= 1 / 16f;
+	public static final float				pixelElevenTwo	= 11 * pixel / 2;
+	public static final float				texPixel		= 1 / 32f;
 	static
 	{
 		for (EnumEnergyCable type : EnumEnergyCable.values())

@@ -27,8 +27,7 @@
 package javax.vecmath;
 
 /**
- * A 4 element point represented by signed integer x,y,z,w
- * coordinates.
+ * A 4 element point represented by signed integer x,y,z,w coordinates.
  *
  * @since vecmath 1.2
  */
@@ -38,8 +37,8 @@ public class Point4i extends Tuple4i implements java.io.Serializable {
 	static final long serialVersionUID = 620124780244617983L;
 
 	/**
-	 * Constructs and initializes a Point4i from the specified
-	 * x, y, z, and w coordinates.
+	 * Constructs and initializes a Point4i from the specified x, y, z, and w
+	 * coordinates.
 	 *
 	 * @param x
 	 *            the x coordinate
@@ -68,8 +67,7 @@ public class Point4i extends Tuple4i implements java.io.Serializable {
 	 * Constructs and initializes a Point4i from the specified Tuple4i.
 	 *
 	 * @param t1
-	 *            the Tuple4i containing the initialization x, y, z,
-	 *            and w data.
+	 *            the Tuple4i containing the initialization x, y, z, and w data.
 	 */
 	public Point4i(Tuple4i t1) {
 		super(t1);

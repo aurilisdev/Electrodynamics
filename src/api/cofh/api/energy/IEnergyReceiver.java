@@ -24,8 +24,8 @@ public interface IEnergyReceiver extends IEnergyConnection {
 	int getMaxEnergyStored(ForgeDirection from);
 
 	/**
-	 * Add energy to an IEnergyReceiver, internal distribution is left entirely
-	 * to the IEnergyReceiver.
+	 * Add energy to an IEnergyReceiver, internal distribution is left entirely to
+	 * the IEnergyReceiver.
 	 *
 	 * @param from
 	 *            Orientation the energy is received from.

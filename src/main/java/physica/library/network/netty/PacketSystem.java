@@ -23,10 +23,10 @@ import physica.library.network.IPacket;
  */
 public class PacketSystem implements IContent {
 
-	public static PacketSystem INSTANCE = new PacketSystem("physicapacketsystem");
+	public static PacketSystem					INSTANCE	= new PacketSystem("physicapacketsystem");
 
-	public final String channel;
-	protected EnumMap<Side, FMLEmbeddedChannel> channelEnumMap;
+	public final String							channel;
+	protected EnumMap<Side, FMLEmbeddedChannel>	channelEnumMap;
 
 	public PacketSystem(String channel) {
 		this.channel = channel;

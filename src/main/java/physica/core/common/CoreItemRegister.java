@@ -10,14 +10,14 @@ import physica.library.item.ItemMetaHolder;
 
 public class CoreItemRegister implements IContent {
 
-	public static ItemInformationHolder itemEmptyCell;
-	public static ItemMetaHolder itemMetaCircuit;
-	public static ItemMetaHolder itemMetaPlate;
-	public static ItemMetaHolder itemMetaIngot;
-	public static ItemMetaHolder itemMetaBlend;
-	public static ItemInformationHolder itemMotor;
-	public static ItemWrench itemWrench;
-	public static ItemBattery itemBattery;
+	public static ItemInformationHolder	itemEmptyCell;
+	public static ItemMetaHolder		itemMetaCircuit;
+	public static ItemMetaHolder		itemMetaPlate;
+	public static ItemMetaHolder		itemMetaIngot;
+	public static ItemMetaHolder		itemMetaBlend;
+	public static ItemInformationHolder	itemMotor;
+	public static ItemWrench			itemWrench;
+	public static ItemBattery			itemBattery;
 
 	@Override
 	public void preInit()
@@ -25,9 +25,7 @@ public class CoreItemRegister implements IContent {
 		GameRegistry.registerItem(itemEmptyCell = (ItemInformationHolder) new ItemInformationHolder("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
 		GameRegistry.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
 		GameRegistry.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
-		GameRegistry.registerItem(
-				itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"),
-				"item.metaIngot");
+		GameRegistry.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"), "item.metaIngot");
 		GameRegistry.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive"), "item.metaBlend");
 		GameRegistry.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
 		GameRegistry.registerItem(itemMotor = (ItemInformationHolder) new ItemInformationHolder("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());

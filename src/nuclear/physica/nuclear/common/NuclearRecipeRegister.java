@@ -14,9 +14,9 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 	public void loadComplete()
 	{
 		// 1 Gram Antimatter cell
-		addShapeless(NuclearItemRegister.itemAntimatterCell1Gram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
-				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
-				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram);
+		addShapeless(NuclearItemRegister.itemAntimatterCell1Gram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
+				NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
+				NuclearItemRegister.itemAntimatterCell125Milligram);
 
 		// Hazmat Suit
 		addRecipe(NuclearItemRegister.itemHazmatHelmet, "SSS", "BAB", "SCS", 'A', Items.leather_helmet, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
@@ -34,8 +34,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 		addRecipe(NuclearItemRegister.itemHighEnrichedFuelCell, "CUC", "CUC", "CUC", 'U', NuclearItemRegister.itemUranium235, 'C', CoreItemRegister.itemEmptyCell);
 
 		// Breeder Fuel cell
-		addRecipe(NuclearItemRegister.itemLowEnrichedFuelCell, "CUC", "CIC", "CUC", 'I', NuclearItemRegister.itemUranium235, 'U', NuclearItemRegister.itemUranium238, 'C',
-				CoreItemRegister.itemEmptyCell);
+		addRecipe(NuclearItemRegister.itemLowEnrichedFuelCell, "CUC", "CIC", "CUC", 'I', NuclearItemRegister.itemUranium235, 'U', NuclearItemRegister.itemUranium238, 'C', CoreItemRegister.itemEmptyCell);
 
 		// Empty Electromagnetic cell
 		addRecipe(new ItemStack(NuclearItemRegister.itemEmptyElectromagneticCell, 1), " T ", "TGT", " T ", 'G', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, 1), 'T', "ingotTin");

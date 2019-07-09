@@ -26,10 +26,8 @@ public class BlockFusionReactor extends BlockBaseContainerModelled {
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "ECE", "CFC", "ECE",
-				'C', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()),
-				'F', NuclearBlockRegister.blockFissionReactor,
-				'E', "circuitElite");
+		addRecipe(this, "ECE", "CFC", "ECE", 'C', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'F', NuclearBlockRegister.blockFissionReactor, 'E',
+				"circuitElite");
 	}
 
 	@Override

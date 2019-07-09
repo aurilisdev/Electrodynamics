@@ -31,8 +31,7 @@ public class BlockChemicalBoiler extends BlockBaseContainerModelled {
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "PCP", "TFT", "PMP", 'F', CoreBlockRegister.blockBlastFurnace, 'T', CoreItemRegister.itemEmptyCell, 'M', "motor", 'P',
-				"plateSteel", 'C', "circuitAdvanced");
+		addRecipe(this, "PCP", "TFT", "PMP", 'F', CoreBlockRegister.blockBlastFurnace, 'T', CoreItemRegister.itemEmptyCell, 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced");
 	}
 
 	@Override

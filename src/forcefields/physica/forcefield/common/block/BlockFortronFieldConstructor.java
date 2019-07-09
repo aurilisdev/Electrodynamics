@@ -54,8 +54,7 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	@Override
 	public void initialize()
 	{
-		addRecipe(this, "PEP", "EDE", "PEP", 'E', "circuitElite", 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()),
-				'D', Blocks.diamond_block);
+		addRecipe(this, "PEP", "EDE", "PEP", 'E', "circuitElite", 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'D', Blocks.diamond_block);
 	}
 
 	@Override

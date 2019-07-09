@@ -97,11 +97,11 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 
 	class recipe extends CachedRecipe {
 
-		List<PositionedStack> other = new ArrayList<>();
-		ItemStack itemInput;
-		ItemStack itemOutput;
-		int antiMatterAmount;
-		String text;
+		List<PositionedStack>	other	= new ArrayList<>();
+		ItemStack				itemInput;
+		ItemStack				itemOutput;
+		int						antiMatterAmount;
+		String					text;
 
 		@Override
 		public PositionedStack getResult()
