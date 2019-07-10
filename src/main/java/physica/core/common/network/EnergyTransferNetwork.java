@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 import physica.library.location.BlockLocation;
 
+//TODO: REMOVE MULTITHREADED CODE AND TURN THIS INTO A TRULY OPTIMIZED NETWORK THAT WORKS PROPERLY
 public class EnergyTransferNetwork {
 
 	public HashMap<IEnergyReceiver, Set<ForgeDirection>>	receiverMap		= new HashMap<>();
@@ -19,6 +20,7 @@ public class EnergyTransferNetwork {
 	public ITransferNode<IEnergyReceiver>					ownerNode;
 	public EnumEnergyCable									type;
 	public boolean											isValidating;
+	public boolean											shouldValidate	= false;
 
 	public int												energyBuffer	= 0;
 
@@ -32,6 +34,8 @@ public class EnergyTransferNetwork {
 		type = cable;
 		transferNodeSet.add(ownerNode);
 		EnergyNetworkHandler.networkSet.add(this);
+		ownerNode.setTransferNetwork(this);
+		findNetwork(this, ownerNode.getNodeLocation(), ForgeDirection.UNKNOWN, owner.getWorld(), cable, transferNodeSet, receiverMap);
 	}
 
 	public void validateNetwork()
@@ -51,9 +55,6 @@ public class EnergyTransferNetwork {
 			ownerNode = null;
 		} else
 		{
-			transferNodeSet.clear();
-			receiverMap.clear();
-			transferNodeSet.add(ownerNode);
 			if (!isValidating)
 			{
 				EnergyNetworkHandler.queueNetworkForValidation(this);
@@ -79,8 +80,8 @@ public class EnergyTransferNetwork {
 					{
 						if (!transferNodeSet.contains(node))
 						{
-							transferNodeSet.add(node);
 							node.setTransferNetwork(network);
+							transferNodeSet.add(node);
 							findNetwork(network, check, receivedDirection, world, type, transferNodeSet, receiverMap);
 						}
 					} else if (node.getTransferNetwork().type.ordinal() > type.ordinal())
@@ -118,64 +119,81 @@ public class EnergyTransferNetwork {
 
 	public int receiveAndDistributeEnergy(int maxEnergy, ITransferNode<IEnergyReceiver> sender, boolean simulate)
 	{
-		int calculatedVoltage = type.getVoltage() > 0 ? maxEnergy / (type.getTransferRate() / type.getVoltage()) : -10;
-		if (calculatedVoltage < type.getVoltage())
+		if (shouldValidate)
 		{
-			HashMap<IEnergyReceiver, ForgeDirection> cached = new HashMap<>();
-			int size = 0;
-			Iterator<IEnergyReceiver> it = receiverMap.keySet().iterator();
-			while (it.hasNext())
+			validateNetwork();
+			return 0;
+		}
+		try
+		{
+			int calculatedVoltage = type.getVoltage() > 0 ? maxEnergy / (type.getTransferRate() / type.getVoltage()) : -10;
+			if (calculatedVoltage < type.getVoltage())
 			{
-				IEnergyReceiver next = it.next();
-
-				if (!((TileEntity) next).isInvalid())
+				HashMap<IEnergyReceiver, ForgeDirection> cached = new HashMap<>();
+				int size = 0;
+				Iterator<IEnergyReceiver> it = receiverMap.keySet().iterator();
+				while (it.hasNext())
 				{
-					Iterator<ForgeDirection> connectedIterator = receiverMap.get(next).iterator();
-					while (connectedIterator.hasNext())
+					IEnergyReceiver next = it.next();
+
+					if (!((TileEntity) next).isInvalid())
 					{
-						ForgeDirection check = connectedIterator.next();
-						if (next.canConnectEnergy(check))
+						Iterator<ForgeDirection> connectedIterator = receiverMap.get(next).iterator();
+						while (connectedIterator.hasNext())
 						{
-							if (next.getEnergyStored(check) < next.getMaxEnergyStored(check))
+							ForgeDirection check = connectedIterator.next();
+							if (next.canConnectEnergy(check))
 							{
-								cached.put(next, check);
-								size++;
+								if (next.getEnergyStored(check) < next.getMaxEnergyStored(check))
+								{
+									cached.put(next, check);
+									size++;
+								}
+							} else
+							{
+								if (isValidating)
+								{
+									return 0;
+								}
+								it.remove();
 							}
-						} else
+						}
+					} else
+					{
+						if (isValidating)
 						{
-							it.remove();
+							return 0;
+						}
+						it.remove();
+					}
+				}
+				int totalReceived = 0;
+				if (size > 0)
+				{
+					maxEnergy = Math.min(getTransferRate(), maxEnergy);
+					if (maxEnergy > 0)
+					{
+						int perEnergy = size == 0 ? 0 : maxEnergy / size;
+
+						for (IEnergyReceiver receiver : cached.keySet())
+						{
+							totalReceived += receiver.receiveEnergy(cached.get(receiver), perEnergy, simulate);
 						}
 					}
-				} else
-				{
-					it.remove();
 				}
-			}
-			int totalReceived = 0;
-			if (size > 0)
+				energyBuffer += totalReceived;
+				return totalReceived;
+			} else
 			{
-				;
-			}
-			{
-				maxEnergy = Math.min(getTransferRate(), maxEnergy);
-				if (maxEnergy > 0)
+				for (ITransferNode<IEnergyReceiver> node : transferNodeSet)
 				{
-					int perEnergy = size == 0 ? 0 : maxEnergy / size;
-
-					for (IEnergyReceiver receiver : cached.keySet())
-					{
-						totalReceived += receiver.receiveEnergy(cached.get(receiver), perEnergy, simulate);
-					}
+					node.destroyNode();
 				}
+				return 0;
 			}
-			energyBuffer += totalReceived;
-			return totalReceived;
-		} else
+		} catch (Exception e)
 		{
-			for (ITransferNode<IEnergyReceiver> node : transferNodeSet)
-			{
-				node.destroyNode();
-			}
+			shouldValidate = true;
 			return 0;
 		}
 	}
@@ -190,8 +208,11 @@ public class EnergyTransferNetwork {
 		return Math.max(0, getType().getTransferRate() * transferNodeSet.size() - energyBuffer);
 	}
 
+	public int lastEnergyBuffer = 0;
+
 	public void nextTick()
 	{
+		lastEnergyBuffer = energyBuffer;
 		energyBuffer = 0;
 	}
 }

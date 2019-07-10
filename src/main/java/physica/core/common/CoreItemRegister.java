@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IContent;
 import physica.core.common.items.ItemBattery;
+import physica.core.common.items.ItemMultimeter;
 import physica.core.common.items.ItemWrench;
 import physica.library.item.ItemInformationHolder;
 import physica.library.item.ItemMetaHolder;
@@ -18,6 +19,7 @@ public class CoreItemRegister implements IContent {
 	public static ItemInformationHolder	itemMotor;
 	public static ItemWrench			itemWrench;
 	public static ItemBattery			itemBattery;
+	public static ItemMultimeter		itemMultimeter;
 
 	@Override
 	public void preInit()
@@ -30,6 +32,7 @@ public class CoreItemRegister implements IContent {
 		GameRegistry.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
 		GameRegistry.registerItem(itemMotor = (ItemInformationHolder) new ItemInformationHolder("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
 		GameRegistry.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());
+		GameRegistry.registerItem(itemMultimeter = new ItemMultimeter(), itemMultimeter.getUnlocalizedName());
 		itemMetaPlate.addOreDictionaryInput("plateIron", 0);
 		itemMetaPlate.addOreDictionaryInput("plateSteel", 1);
 		itemMetaPlate.addOreDictionaryInput("plateLead", 2);

@@ -17,6 +17,7 @@ tile.physica:blastFurnace.gui=Blast Furnace
 #### ITEMS
 item.emptyCell.name=Empty Cell
 item.motor.name=Motor
+item.multimeter.name=Multimeter
 item.tinIngot.name=Tin Ingot
 item.copperIngot.name=Copper Ingot
 item.steelIngot.name=Steel Ingot

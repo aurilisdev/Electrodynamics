@@ -37,6 +37,9 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 		// Superconductive Blend
 		addRecipe(new ItemStack(CoreItemRegister.itemMetaBlend, 1, 0), "SGS", "GEG", "SGS", 'S', "ingotSilver", 'G', "ingotGold", 'E', Items.ender_pearl);
 
+		// Multimeter
+		addRecipe(CoreItemRegister.itemMultimeter, " B ", "SCS", "SSS", 'B', CoreBlockRegister.blockCable, 'S', "ingotSteel", 'C', "circuitBasic");
+
 		// Smeltings
 		GameRegistry.addSmelting(CoreBlockRegister.blockTinOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 0), 0.7f);
 		GameRegistry.addSmelting(CoreBlockRegister.blockCopperOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 1), 0.7f);

@@ -32,7 +32,7 @@ public class TileEnergyCable extends TileBase implements ITileBasePowered, ITran
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		if (ticks % 20 == 0)
+		if (ticks % 40 == 0)
 		{
 			if (shouldFlame)
 			{
