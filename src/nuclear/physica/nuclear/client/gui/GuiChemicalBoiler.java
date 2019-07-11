@@ -15,7 +15,6 @@ import physica.library.inventory.tooltip.ToolTipTank;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.inventory.ContainerChemicalBoiler;
 import physica.nuclear.common.tile.TileChemicalBoiler;
-import physica.nuclear.common.tile.TileGasCentrifuge;
 
 @SideOnly(Side.CLIENT)
 public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> implements IBaseUtilities {
@@ -51,7 +50,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_WATER_TANK.x, AREA_WATER_TANK.y, host.getWaterTank());
 		drawFluidTank(AREA_HEX_TANK.x, AREA_HEX_TANK.y, host.getHexTank());
-		renderFurnaceCookArrow(30, 36, Math.min(TileGasCentrifuge.TICKS_REQUIRED / 2, host.getOperatingTicks()), TileGasCentrifuge.TICKS_REQUIRED / 2);
-		renderFurnaceCookArrow(118, 36, Math.max(0, host.getOperatingTicks() - TileGasCentrifuge.TICKS_REQUIRED / 2), TileGasCentrifuge.TICKS_REQUIRED / 2);
+		renderFurnaceCookArrow(30, 36, Math.min(TileChemicalBoiler.TICKS_REQUIRED / 2, host.getOperatingTicks()), TileChemicalBoiler.TICKS_REQUIRED / 2);
+		renderFurnaceCookArrow(118, 36, Math.max(0, host.getOperatingTicks() - TileChemicalBoiler.TICKS_REQUIRED / 2), TileChemicalBoiler.TICKS_REQUIRED / 2);
 	}
 }
