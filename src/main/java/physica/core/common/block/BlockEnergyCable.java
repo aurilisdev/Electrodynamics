@@ -132,7 +132,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		if (!world.isRemote)
 		{
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
-			if ((tileEntity instanceof IConductor))
+			if (tileEntity instanceof IConductor)
 			{
 				((IConductor) tileEntity).refreshNetwork();
 			}
@@ -146,7 +146,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		if (!world.isRemote)
 		{
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
-			if ((tileEntity instanceof IConductor))
+			if (tileEntity instanceof IConductor)
 			{
 				((IConductor) tileEntity).refreshNetwork();
 			}

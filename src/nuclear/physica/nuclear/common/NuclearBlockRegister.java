@@ -6,13 +6,13 @@ import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IContent;
 import physica.library.item.ItemBlockMetadata;
 import physica.nuclear.NuclearReferences;
-import physica.nuclear.common.block.BlockGasCentrifuge;
 import physica.nuclear.common.block.BlockChemicalBoiler;
 import physica.nuclear.common.block.BlockChemicalExtractor;
 import physica.nuclear.common.block.BlockControlRod;
 import physica.nuclear.common.block.BlockElectromagnet;
 import physica.nuclear.common.block.BlockFissionReactor;
 import physica.nuclear.common.block.BlockFusionReactor;
+import physica.nuclear.common.block.BlockGasCentrifuge;
 import physica.nuclear.common.block.BlockInsertableControlRod;
 import physica.nuclear.common.block.BlockMeltedReactor;
 import physica.nuclear.common.block.BlockNeutronCaptureChamber;
@@ -46,7 +46,7 @@ public class NuclearBlockRegister implements IContent {
 
 	public static BlockParticleAccelerator		blockParticleAccelerator;
 	public static BlockQuantumAssembler			blockQuantumAssembler;
-	public static BlockGasCentrifuge				blockCentrifuge;
+	public static BlockGasCentrifuge			blockCentrifuge;
 	public static BlockChemicalBoiler			blockChemicalBoiler;
 	public static BlockChemicalExtractor		blockChemicalExtractor;
 	public static BlockFissionReactor			blockFissionReactor;

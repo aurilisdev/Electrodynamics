@@ -75,7 +75,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	@Override
 	public void invalidate()
 	{
-		if (!this.worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
 			getNetwork().split(this);
 		}
@@ -85,22 +85,22 @@ public class TileConductor extends TileEntity implements IConductor {
 	@Override
 	public void setNetwork(EnergyNetwork network)
 	{
-		if (network != this.energyNetwork)
+		if (network != energyNetwork)
 		{
 			removeFromNetwork();
-			this.energyNetwork = network;
+			energyNetwork = network;
 		}
 	}
 
 	@Override
 	public void refreshNetwork()
 	{
-		if (!this.worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 			{
 				TileEntity tileEntity = new BlockLocation(this).TranslateTo(side).getTile(worldObj);
-				if ((tileEntity instanceof IConductor))
+				if (tileEntity instanceof IConductor)
 				{
 					getNetwork().merge(((IConductor) tileEntity).getNetwork());
 				}
@@ -112,9 +112,9 @@ public class TileConductor extends TileEntity implements IConductor {
 	@Override
 	public void removeFromNetwork()
 	{
-		if (this.energyNetwork != null)
+		if (energyNetwork != null)
 		{
-			this.energyNetwork.removeCable(this);
+			energyNetwork.removeCable(this);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class TileConductor extends TileEntity implements IConductor {
 		}
 		ArrayList<TileEntity> ignored = new ArrayList<>();
 		ignored.add(new BlockLocation(this).TranslateTo(from).getTile(worldObj));
-		return (int) getNetwork().emit(maxReceive, ignored);
+		return getNetwork().emit(maxReceive, ignored);
 	}
 
 	@Override
