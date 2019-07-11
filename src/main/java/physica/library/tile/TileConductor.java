@@ -3,6 +3,7 @@ package physica.library.tile;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -170,5 +171,11 @@ public class TileConductor extends TileEntity implements IConductor {
 	public AxisAlignedBB getRenderBoundingBox()
 	{
 		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+	}
+
+	@Override
+	public void destroyNodeViolently()
+	{
+		worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
 	}
 }

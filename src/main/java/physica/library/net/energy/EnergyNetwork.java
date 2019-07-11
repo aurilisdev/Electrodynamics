@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import cofh.api.energy.IEnergyReceiver;
@@ -16,19 +15,32 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
+import physica.api.core.cable.EnumConductorType;
 import physica.api.core.cable.IConductor;
 import physica.library.location.BlockLocation;
 import physica.library.net.EnergyNetworkRegistry;
 
 public class EnergyNetwork {
-	public HashSet<IConductor>				conductorSet				= new HashSet<>();
-	public Set<TileEntity>					acceptorSet					= new HashSet<>();
-	public Map<TileEntity, ForgeDirection>	acceptorInputMap			= new HashMap<>();
-	private int								energyTransmittedBuffer		= 0;
-	private int								energyTransmittedLastTick	= 0;				// TODO: Work on implementing voltage. Is always an concurrent exception???
-	private int								ticksSinceNetworkCreate		= 0;
-	private boolean							fixed						= false;
-	private int								maxPowerRate				= 0;
+	private static final int								DEFAULT_VOLTAGE				= 480;
+	public HashSet<IConductor>								conductorSet				= new HashSet<>();
+	public HashSet<TileEntity>								acceptorSet					= new HashSet<>();
+	public HashMap<TileEntity, ForgeDirection>				acceptorInputMap			= new HashMap<>();
+	private HashMap<EnumConductorType, HashSet<IConductor>>	conductorTypeMap			= new HashMap<>();
+	private int												energyTransmittedBuffer		= 0;
+	private int												energyTransmittedLastTick	= 0;				// TODO: Work on implementing voltage. Is always an concurrent exception???
+	private int												ticksSinceNetworkCreate		= 0;
+	private boolean											fixed						= false;
+	private int												maxPowerTransfer			= 0;
+
+	public int getEnergyTransmittedLastTick()
+	{
+		return energyTransmittedLastTick;
+	}
+
+	public int getMaxPowerTransfer()
+	{
+		return maxPowerTransfer;
+	}
 
 	public EnergyNetwork(IConductor... varCables) {
 		conductorSet.addAll(Arrays.asList(varCables));
@@ -50,7 +62,7 @@ public class EnergyNetwork {
 
 	public int emit(int energyToSend, ArrayList<TileEntity> ignored)
 	{
-		energyToSend = Math.min(maxPowerRate - energyTransmittedBuffer, energyToSend);
+		energyToSend = Math.min(maxPowerTransfer - energyTransmittedBuffer, energyToSend);
 		if (energyToSend > 0)
 		{
 			List<Object> availableAcceptors = Arrays.asList(getEnergyAcceptors().toArray());
@@ -59,6 +71,7 @@ public class EnergyNetwork {
 			int energySent = 0;
 			if (!availableAcceptors.isEmpty())
 			{
+				checkForVoltage(energyToSend);
 				int divider = availableAcceptors.size();
 				int remaining = energyToSend % divider;
 				int sending = (energyToSend - remaining) / divider;
@@ -72,7 +85,7 @@ public class EnergyNetwork {
 						remaining = 0;
 						if (acceptor instanceof IEnergyReceiver)
 						{
-							energySent += currentSending - ((IEnergyReceiver) acceptor).receiveEnergy(acceptorInputMap.get(acceptor).getOpposite(), currentSending, false);
+							energySent += ((IEnergyReceiver) acceptor).receiveEnergy(acceptorInputMap.get(acceptor).getOpposite(), currentSending, false);
 						}
 					}
 				}
@@ -81,6 +94,41 @@ public class EnergyNetwork {
 			return energySent;
 		}
 		return 0;
+	}
+
+	public int getSafeVoltageLevel()
+	{
+		for (EnumConductorType index : EnumConductorType.values())
+		{
+			if (conductorTypeMap.containsKey(index) && !conductorTypeMap.get(index).isEmpty())
+			{
+				return index.getVoltage();
+			}
+		}
+		return 0;
+	}
+
+	private void checkForVoltage(int energyToSend)
+	{
+		HashSet<EnumConductorType> checkList = new HashSet<>();
+		for (EnumConductorType type : EnumConductorType.values())
+		{
+			if (type.getVoltage() > 0)
+			{
+				int calculatedVoltage = energyToSend / (type.getTransferRate() / DEFAULT_VOLTAGE);
+				if (calculatedVoltage > type.getVoltage())
+				{
+					checkList.add(type);
+				}
+			}
+		}
+		for (EnumConductorType index : checkList)
+		{
+			for (IConductor conductor : conductorTypeMap.get(index))
+			{
+				conductor.destroyNodeViolently();
+			}
+		}
 	}
 
 	public Set<TileEntity> getEnergyAcceptors()
@@ -155,10 +203,16 @@ public class EnergyNetwork {
 
 	private void updatePowerRate()
 	{
-		maxPowerRate = 0;
+		maxPowerTransfer = 0;
+		conductorTypeMap.clear();
+		for (EnumConductorType type : EnumConductorType.values())
+		{
+			conductorTypeMap.put(type, new HashSet<>());
+		}
 		for (IConductor cable : conductorSet)
 		{
-			maxPowerRate += cable.getCableType().getTransferRate();
+			conductorTypeMap.get(cable.getCableType()).add(cable);
+			maxPowerTransfer += cable.getCableType().getTransferRate();
 		}
 	}
 
@@ -234,7 +288,6 @@ public class EnergyNetwork {
 
 	public void fixMessedUpNetwork(IConductor cable)
 	{
-		System.out.println("Fixing Network");
 		if (cable instanceof TileEntity)
 		{
 			NetworkFinder finder = new NetworkFinder(((TileEntity) cable).getWorldObj(), new BlockLocation((TileEntity) cable));

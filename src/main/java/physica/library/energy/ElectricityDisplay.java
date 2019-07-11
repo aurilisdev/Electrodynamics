@@ -27,15 +27,15 @@ public class ElectricityDisplay implements IBaseUtilities {
 		if (value < 1.0D)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MILLI.process(value), decimalPlaces) + " " + Measurement.MILLI.getName(isShort) + unitName;
+		} else if (value > Measurement.GIGA.value)
+		{
+			return IBaseUtilities.roundPreciseStatic(Measurement.GIGA.process(value), decimalPlaces) + " " + Measurement.GIGA.getName(isShort) + unitName;
 		} else if (value > Measurement.MEGA.value)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MEGA.process(value), decimalPlaces) + " " + Measurement.MEGA.getName(isShort) + unitName;
 		} else if (value > Measurement.KILO.value)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.KILO.process(value), decimalPlaces) + " " + Measurement.KILO.getName(isShort) + unitName;
-		} else if (value > Measurement.GIGA.value)
-		{
-			return IBaseUtilities.roundPreciseStatic(Measurement.GIGA.process(value), decimalPlaces) + " " + Measurement.GIGA.getName(isShort) + unitName;
 		}
 		return IBaseUtilities.roundPreciseStatic(value, decimalPlaces) + " " + unitName;
 	}

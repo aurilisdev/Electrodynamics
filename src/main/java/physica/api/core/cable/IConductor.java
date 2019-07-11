@@ -3,18 +3,20 @@ package physica.api.core.cable;
 import cofh.api.energy.IEnergyReceiver;
 import physica.library.net.energy.EnergyNetwork;
 
-public abstract interface IConductor extends IEnergyReceiver {
-	public abstract EnergyNetwork getNetwork();
+public interface IConductor extends IEnergyReceiver {
+	public EnergyNetwork getNetwork();
 
-	public abstract EnergyNetwork getNetwork(boolean createIfNull);
+	public EnergyNetwork getNetwork(boolean createIfNull);
 
 	public EnumConductorType getCableType();
 
-	public abstract void setNetwork(EnergyNetwork network);
+	public void setNetwork(EnergyNetwork network);
 
-	public abstract void refreshNetwork();
+	public void refreshNetwork();
 
-	public abstract void removeFromNetwork();
+	public void removeFromNetwork();
 
-	public abstract void fixNetwork();
+	public void fixNetwork();
+
+	public void destroyNodeViolently();
 }
