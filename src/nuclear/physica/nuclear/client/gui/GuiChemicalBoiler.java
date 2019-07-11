@@ -41,7 +41,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: " + (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting" : host.canProcess() ? "Insufficient power" : "Invalid input"), 8, 73);
-		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getEnergyUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "chemicalBoiler.gui"), xSize / 2, 5);
 	}
 

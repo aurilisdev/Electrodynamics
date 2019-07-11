@@ -13,19 +13,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
-import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
+import physica.api.core.cable.EnumConductorType;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
-	public static final ResourceLocation[]	model_texture	= new ResourceLocation[EnumEnergyCable.values().length];
+	public static final ResourceLocation[]	model_texture	= new ResourceLocation[EnumConductorType.values().length];
 
 	public static final float				pixel			= 1 / 16f;
 	public static final float				pixelElevenTwo	= 11 * pixel / 2;
 	public static final float				texPixel		= 1 / 32f;
 	static
 	{
-		for (EnumEnergyCable type : EnumEnergyCable.values())
+		for (EnumConductorType type : EnumConductorType.values())
 		{
 			model_texture[type.ordinal()] = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + type.getName() + "Cable.png");
 		}

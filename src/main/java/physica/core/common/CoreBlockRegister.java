@@ -6,9 +6,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.CoreReferences;
 import physica.api.core.IContent;
+import physica.api.core.cable.EnumConductorType;
 import physica.core.common.block.BlockBlastFurnace;
 import physica.core.common.block.BlockEnergyCable;
-import physica.core.common.block.BlockEnergyCable.EnumEnergyCable;
 import physica.core.common.block.BlockFulmination;
 import physica.core.common.block.BlockInfiniteEnergy;
 import physica.core.common.block.BlockLead;
@@ -46,14 +46,14 @@ public class CoreBlockRegister implements IContent {
 		GameRegistry.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
 
 		HashMap<Integer, String[]> instanceMap = new HashMap<>();
-		for (EnumEnergyCable en : EnumEnergyCable.values())
+		for (EnumConductorType en : EnumConductorType.values())
 		{
-			if (en == EnumEnergyCable.superConductor)
+			if (en == EnumConductorType.superConductor)
 			{
-				instanceMap.put(en.ordinal(), new String[] { "Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: infinite" });
+				instanceMap.put(en.ordinal(), new String[] { "Max Power: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: infinite" });
 			} else
 			{
-				instanceMap.put(en.ordinal(), new String[] { "Max Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: " + en.getVoltage() });
+				instanceMap.put(en.ordinal(), new String[] { "Max Power: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: " + en.getVoltage() });
 			}
 		}
 		ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);

@@ -9,7 +9,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -17,6 +16,7 @@ import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
+import physica.library.util.ChatUtils;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileFissionReactor;
@@ -48,27 +48,24 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
 	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
-		if (!world.isRemote)
+		if (player.isSneaking())
 		{
-			if (player.isSneaking())
-			{
-				int meta = world.getBlockMetadata(x, y, z);
-				world.setBlockMetadataWithNotify(x, y, z, meta = meta == 0 ? 1 : meta == 1 ? 2 : meta == 2 ? 3 : meta == 3 ? 4 : 0, 2);
-				String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
-				player.addChatMessage(new ChatComponentText("Signal at: " + temp + ".0C"));
-			} else if (tile instanceof TileFissionReactor)
-			{
-				player.addChatMessage(new ChatComponentText("Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "C"));
-				int meta = world.getBlockMetadata(x, y, z);
-				String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
-				player.addChatMessage(new ChatComponentText("Signal at: " + temp + ".0C"));
-			} else
-			{
-				player.addChatMessage(new ChatComponentText("Heat: 14.0C"));
-				int meta = world.getBlockMetadata(x, y, z);
-				String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
-				player.addChatMessage(new ChatComponentText("Signal at: " + temp + ".0C"));
-			}
+			int meta = world.getBlockMetadata(x, y, z);
+			world.setBlockMetadataWithNotify(x, y, z, meta = meta == 0 ? 1 : meta == 1 ? 2 : meta == 2 ? 3 : meta == 3 ? 4 : 0, 2);
+			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
+			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
+		} else if (tile instanceof TileFissionReactor)
+		{
+			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "C");
+			int meta = world.getBlockMetadata(x, y, z);
+			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
+			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
+		} else
+		{
+			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: 15.0C");
+			int meta = world.getBlockMetadata(x, y, z);
+			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
+			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
 		}
 		return true;
 	}

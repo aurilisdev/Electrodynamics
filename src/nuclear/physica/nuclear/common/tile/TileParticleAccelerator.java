@@ -36,7 +36,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 
 	protected EntityParticle	particle						= null;
 
-	protected int				currentSessionUse				= 0;
+	protected long				currentSessionUse				= 0;
+	protected int				currentSessionTicks				= 0;
 	protected double			velocity						= 0;
 	protected int				antimatterAmount				= 0;
 
@@ -83,10 +84,11 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 						}
 					}
 				}
-				if (currentSessionUse + 1 == Integer.MAX_VALUE)
+				if (currentSessionUse + 1 >= Long.MAX_VALUE)
 				{
 					currentSessionUse = 1;
 				}
+				currentSessionTicks += 1;
 				currentSessionUse += extractEnergy();
 				if (particle.isDead)
 				{
@@ -128,6 +130,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 				particle = null;
 				velocity = 0;
 				currentSessionUse = 0;
+				currentSessionTicks = 0;
 			}
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
@@ -241,7 +244,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setInteger("currentSessionUse", currentSessionUse);
+		nbt.setLong("currentSessionUse", currentSessionUse);
+		nbt.setInteger("currentSessionTicks", currentSessionTicks);
 		nbt.setInteger("antimatterAmount", antimatterAmount);
 	}
 
@@ -249,7 +253,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		currentSessionUse = nbt.getInteger("currentSessionUse");
+		currentSessionUse = nbt.getLong("currentSessionUse");
+		currentSessionTicks = nbt.getInteger("currentSessionTicks");
 		antimatterAmount = nbt.getInteger("antimatterAmount");
 	}
 
@@ -258,6 +263,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(currentSessionUse);
+		dataList.add(currentSessionTicks);
 		dataList.add(antimatterAmount);
 		dataList.add(velocity);
 	}
@@ -266,7 +272,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
 	{
 		super.readClientGuiPacket(buf, player);
-		currentSessionUse = buf.readInt();
+		currentSessionUse = buf.readLong();
+		currentSessionTicks = buf.readInt();
 		antimatterAmount = buf.readInt();
 		velocity = buf.readDouble();
 	}
@@ -318,9 +325,14 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		return (float) velocity;
 	}
 
-	public double getSessionUse()
+	public long getSessionUse()
 	{
 		return currentSessionUse;
+	}
+
+	public int getCurrentSessionTicks()
+	{
+		return currentSessionTicks;
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.List;
 
 import cofh.api.energy.IEnergyConnection;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -24,10 +23,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.IBaseUtilities;
+import physica.api.core.cable.EnumConductorType;
+import physica.api.core.cable.IConductor;
 import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
-import physica.core.common.network.ITransferNode;
 import physica.core.common.tile.cable.TileEnergyCable;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
@@ -126,6 +126,34 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
+	public void onBlockAdded(World world, int x, int y, int z)
+	{
+		super.onBlockAdded(world, x, y, z);
+		if (!world.isRemote)
+		{
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			if ((tileEntity instanceof IConductor))
+			{
+				((IConductor) tileEntity).refreshNetwork();
+			}
+		}
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+	{
+		super.onNeighborBlockChange(world, x, y, z, block);
+		if (!world.isRemote)
+		{
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			if ((tileEntity instanceof IConductor))
+			{
+				((IConductor) tileEntity).refreshNetwork();
+			}
+		}
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg)
 	{
@@ -148,36 +176,6 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	public boolean renderAsNormalBlock()
 	{
 		return false;
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-	{
-		super.onNeighborBlockChange(world, x, y, z, block);
-		if (!world.isRemote)
-		{
-			TileEntity tile = world.getTileEntity(x, y, z);
-			if (tile instanceof ITransferNode)
-			{
-				((ITransferNode) tile).getTransferNetwork().validateNetwork();
-			}
-		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
-	{
-		super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
-		if (FMLCommonHandler.instance().getSide().isServer())
-		{
-			TileEntity tile = world.getTileEntity(x, y, z);
-			if (tile instanceof ITransferNode)
-			{
-				((ITransferNode) tile).getTransferNetwork().validateNetwork();
-			}
-		}
 	}
 
 	@Override
@@ -203,7 +201,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
 	{
-		for (EnumEnergyCable type : EnumEnergyCable.values())
+		for (EnumConductorType type : EnumConductorType.values())
 		{
 			list.add(new ItemStack(item, 1, type.ordinal()));
 		}
@@ -219,33 +217,6 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	public int damageDropped(int metadata)
 	{
 		return metadata;
-	}
-
-	public enum EnumEnergyCable {
-		copper(120, 15360), silver(240, 61440), gold(360, 138240), superConductor(-1, 307200);
-
-		public String getName()
-		{
-			return name();
-		}
-
-		private int	voltage;
-		private int	transferRate;
-
-		private EnumEnergyCable(int voltage, int transferRate) {
-			this.voltage = voltage;
-			this.transferRate = transferRate;
-		}
-
-		public int getVoltage()
-		{
-			return voltage;
-		}
-
-		public int getTransferRate()
-		{
-			return transferRate;
-		}
 	}
 
 }
