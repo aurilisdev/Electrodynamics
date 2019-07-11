@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import physica.api.core.IBaseUtilities;
@@ -28,7 +29,7 @@ public class GuiReactorControlPanel extends GuiContainerBase<TileReactorControlP
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "reactorControlPanel.gui"), xSize / 2, 5);
-		if (host.reactor == null)
+		if (host.reactor == null || host.reactor.isInvalid())
 		{
 			drawStringCentered("Invalid Reactor", xSize / 2, 35);
 		} else
@@ -37,14 +38,14 @@ public class GuiReactorControlPanel extends GuiContainerBase<TileReactorControlP
 			if (host.reactor.hasFuelRod())
 			{
 				ticksLeft = (host.reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT).getMaxDamage() - host.reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT).getItemDamage())
-						/ (+1 + Math.round(host.reactor.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
+						/ (1 + Math.round(host.reactor.getTemperature() / (TileFissionReactor.MELTDOWN_TEMPERATURE / 2.0f)));
 			}
 			float temperature = host.reactor.getTemperature();
 
 			drawString("Temperature: " + roundPrecise(temperature, 2) + " C", 9, 39);
 			drawString("Time Left: " + roundPrecise(ticksLeft / 20, 1) + " seconds", 9, 50);
 
-			drawString("Rod Insertion: " + host.reactor.getInsertion() + "%", 9, 61);
+			drawString("Rod Insertion: " + (host.rod != null && !host.rod.isInvalid() ? host.rod.getInsertion() : host.reactor.getInsertion()) + "%", 9, 61);
 			int productionFlux = 0;
 			if (host.reactor.getTemperature() > 100)
 			{
@@ -53,6 +54,28 @@ public class GuiReactorControlPanel extends GuiContainerBase<TileReactorControlP
 			}
 			drawString("Theoretical Max", 9, 82);
 			drawString("Power Production: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(productionFlux, Unit.RF, Unit.WATT), Unit.WATT), 9, 93);
+		}
+	}
+
+	@Override
+	public void initGui()
+	{
+		super.initGui();
+		if (host.rod != null && !host.rod.isInvalid())
+		{
+			addButton(new GuiButton(1, width / 2 - 70, height / 2 + 25, "Raise 5%".length() * 8, 20, "Raise 5%"));
+			addButton(new GuiButton(2, width / 2 - 70 + "Raise 5%".length() * 8 + 10, height / 2 + 25, "Lower 5%".length() * 8, 20, "Lower 5%"));
+			addButton(new GuiButton(3, width / 2 - 70, height / 2 + 50, "Emergency Shutdown".length() * 8, 20, "Emergency Shutdown"));
+		}
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button)
+	{
+		super.actionPerformed(button);
+		if (host.rod != null && !host.rod.isInvalid())
+		{
+			host.rod.actionPerformed(button.id == 1 ? -5 : button.id == 2 ? 5 : 100, Side.CLIENT);
 		}
 	}
 

@@ -56,7 +56,6 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			adjacentBlocks[i] = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
-		insertion = 0;
 		if (hasFuelRod() && !isBeingControlled(adjacentBlocks))
 		{
 			processFuelRod();
@@ -91,6 +90,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 								worldObj.markBlockRangeForRenderUpdate(control.xCoord, control.yCoord, control.zCoord, control.xCoord, control.yCoord, control.zCoord);
 							} else
 							{
+
 								isIncased = false;
 								break loops;
 							}
@@ -152,14 +152,14 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 
 	private boolean isBeingControlled(Block[] adjacentBlocks)
 	{
-		boolean beingControlled = false;
+		insertion = 0;
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
 			Block block = adjacentBlocks[i];
 			ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
 			if (block == NuclearBlockRegister.blockControlRod)
 			{
-				beingControlled = true;
+				insertion = 100;
 			} else if (block == NuclearBlockRegister.blockThermometer)
 			{
 				block.updateTick(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, worldObj.rand);
@@ -173,15 +173,15 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
-		return beingControlled;
+		return false;
 	}
 
-	public boolean isFissileRod()
+	public boolean isHighEnriched()
 	{
 		return hasFuelRod() && getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemHighEnrichedFuelCell;
 	}
 
-	public boolean isBreederRod()
+	public boolean isLowEnriched()
 	{
 		return hasFuelRod() && getStackInSlot(SLOT_INPUT).getItem() == NuclearItemRegister.itemLowEnrichedFuelCell;
 	}
@@ -308,7 +308,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		{
 			fuelRod.setItemDamage(fuelRod.getItemDamage() + 1 + Math.round(temperature / (MELTDOWN_TEMPERATURE / 2)));
 		}
-		if (isFissileRod())
+		if (isHighEnriched())
 		{
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
 			{
@@ -316,7 +316,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 						(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + worldObj.rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
 			}
 			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
-		} else if (isBreederRod())
+		} else if (isLowEnriched())
 		{
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
 			{

@@ -8,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.IGuiInterface;
 import physica.api.core.ITileBasePowered;
@@ -19,8 +20,9 @@ import physica.nuclear.client.gui.GuiReactorControlPanel;
 
 public class TileReactorControlPanel extends TileBaseRotateable implements ITileBasePowered, IGuiInterface {
 
-	private int					energyStored;
-	public TileFissionReactor	reactor;
+	private int						energyStored;
+	public TileFissionReactor		reactor;
+	public TileInsertableControlRod	rod;
 
 	@Override
 	public void updateClient(int ticks)
@@ -29,6 +31,22 @@ public class TileReactorControlPanel extends TileBaseRotateable implements ITile
 		if (ticks % 20 == 0)
 		{
 			worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+			rod = null;
+			if (reactor != null)
+			{
+				TileEntity tile = reactor.getBlockLocation().TranslateTo(ForgeDirection.UP).getTile(worldObj);
+				if (tile instanceof TileInsertableControlRod)
+				{
+					rod = (TileInsertableControlRod) tile;
+				} else
+				{
+					tile = reactor.getBlockLocation().TranslateTo(ForgeDirection.DOWN).getTile(worldObj);
+					if (tile instanceof TileInsertableControlRod)
+					{
+						rod = (TileInsertableControlRod) tile;
+					}
+				}
+			}
 		}
 	}
 
