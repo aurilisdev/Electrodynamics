@@ -33,6 +33,7 @@ public class ItemMultimeter extends Item {
 				IConductor conductor = (IConductor) tile;
 				player.addChatMessage(new ChatComponentText("Network Stats"));
 				player.addChatMessage(new ChatComponentText(" - Conductors: " + conductor.getNetwork().conductorSet.size()));
+				player.addChatMessage(new ChatComponentText(" - Acceptors: " + conductor.getNetwork().acceptorInputMap.size()));
 				int voltage = conductor.getNetwork().getSafeVoltageLevel();
 				player.addChatMessage(new ChatComponentText(" - Safe voltage level: " + (voltage < 0 ? "infinite voltage" : voltage)));
 				player.addChatMessage(new ChatComponentText(" - Power Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(conductor.getNetwork().getEnergyTransmittedLastTick(), Unit.RF, Unit.WATT), Unit.WATT)

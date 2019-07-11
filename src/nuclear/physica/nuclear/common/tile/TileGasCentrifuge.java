@@ -31,7 +31,7 @@ import physica.nuclear.common.inventory.ContainerCentrifuge;
 
 public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
-	public static final int		TICKS_REQUIRED			= 800;
+	public static final int		TICKS_REQUIRED			= 2400;
 	public static final int		SLOT_ENERGY				= 0;
 	public static final int		SLOT_OUTPUT1			= 1;
 	public static final int		SLOT_OUTPUT2			= 2;
@@ -62,16 +62,14 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 			{
 				operatingTicks = 0;
 			}
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+			ForgeDirection direction = getFacing().getOpposite();
+			TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			if (tile instanceof TileChemicalBoiler)
 			{
-				TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-				if (tile instanceof TileChemicalBoiler)
+				TileChemicalBoiler boiler = (TileChemicalBoiler) tile;
+				if (boiler.hexaTank.getFluidAmount() > 0 && tank.getFluidAmount() < tank.getCapacity())
 				{
-					TileChemicalBoiler boiler = (TileChemicalBoiler) tile;
-					if (boiler.hexaTank.getFluidAmount() > 0 && tank.getFluidAmount() < tank.getCapacity())
-					{
-						tank.fill(boiler.hexaTank.drain(Math.min(10, boiler.hexaTank.getFluidAmount()), true), true);
-					}
+					tank.fill(boiler.hexaTank.drain(Math.min(10, boiler.hexaTank.getFluidAmount()), true), true);
 				}
 			}
 			drainBattery(SLOT_ENERGY);
@@ -180,7 +178,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from)
 	{
-		return from == ForgeDirection.DOWN || from.equals(getFacing().getOpposite());
+		return from == ForgeDirection.DOWN || from == ForgeDirection.UP;
 	}
 
 	@Override
@@ -228,18 +226,18 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		return fluid == NuclearFluidRegister.LIQUID_HE;
+		return from == getFacing().getOpposite() && fluid == NuclearFluidRegister.LIQUID_HE;
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid)
 	{
-		return fluid == NuclearFluidRegister.LIQUID_HE;
+		return from == getFacing().getOpposite() && fluid == NuclearFluidRegister.LIQUID_HE;
 	}
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
-		return new FluidTankInfo[] { tank.getInfo() };
+		return from == getFacing().getOpposite() ? new FluidTankInfo[] { tank.getInfo() } : new FluidTankInfo[] {};
 	}
 }

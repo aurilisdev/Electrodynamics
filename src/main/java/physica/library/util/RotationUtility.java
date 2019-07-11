@@ -9,6 +9,10 @@ public class RotationUtility {
 
 	public static ForgeDirection getRelativeSide(ForgeDirection relativeDirection, ForgeDirection currentDirection)
 	{
+		if (relativeDirection == ForgeDirection.UNKNOWN || currentDirection == ForgeDirection.UNKNOWN)
+		{
+			return ForgeDirection.UNKNOWN;
+		}
 		return ForgeDirection.getOrientation(relativeMatrix[currentDirection.ordinal()][relativeDirection.ordinal()]);
 	}
 }

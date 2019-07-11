@@ -6,7 +6,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IContent;
 import physica.library.item.ItemBlockMetadata;
 import physica.nuclear.NuclearReferences;
-import physica.nuclear.common.block.BlockCentrifuge;
+import physica.nuclear.common.block.BlockGasCentrifuge;
 import physica.nuclear.common.block.BlockChemicalBoiler;
 import physica.nuclear.common.block.BlockChemicalExtractor;
 import physica.nuclear.common.block.BlockControlRod;
@@ -46,7 +46,7 @@ public class NuclearBlockRegister implements IContent {
 
 	public static BlockParticleAccelerator		blockParticleAccelerator;
 	public static BlockQuantumAssembler			blockQuantumAssembler;
-	public static BlockCentrifuge				blockCentrifuge;
+	public static BlockGasCentrifuge				blockCentrifuge;
 	public static BlockChemicalBoiler			blockChemicalBoiler;
 	public static BlockChemicalExtractor		blockChemicalExtractor;
 	public static BlockFissionReactor			blockFissionReactor;
@@ -75,7 +75,7 @@ public class NuclearBlockRegister implements IContent {
 		GameRegistry.registerTileEntity(TileParticleAccelerator.class, NuclearReferences.PREFIX + "accelerator");
 		GameRegistry.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), "assembler");
 		GameRegistry.registerTileEntity(TileQuantumAssembler.class, NuclearReferences.PREFIX + "assembler");
-		GameRegistry.registerBlock(blockCentrifuge = new BlockCentrifuge(), "centrifuge");
+		GameRegistry.registerBlock(blockCentrifuge = new BlockGasCentrifuge(), "centrifuge");
 		GameRegistry.registerTileEntity(TileGasCentrifuge.class, NuclearReferences.PREFIX + "centrifuge");
 		GameRegistry.registerBlock(blockChemicalBoiler = new BlockChemicalBoiler(), "chemicalBoiler");
 		GameRegistry.registerTileEntity(TileChemicalBoiler.class, NuclearReferences.PREFIX + "chemicalBoiler");

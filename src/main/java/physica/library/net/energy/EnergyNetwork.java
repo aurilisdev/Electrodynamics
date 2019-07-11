@@ -158,7 +158,7 @@ public class EnergyNetwork {
 		for (ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity acceptor = new BlockLocation(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
-			if (acceptor instanceof IEnergyReceiver && !(acceptor instanceof IConductor))
+			if (acceptor instanceof IEnergyReceiver && !(acceptor instanceof IConductor) && ((IEnergyReceiver) acceptor).canConnectEnergy(orientation.getOpposite()))
 			{
 				acceptors[orientation.ordinal()] = acceptor;
 			}
