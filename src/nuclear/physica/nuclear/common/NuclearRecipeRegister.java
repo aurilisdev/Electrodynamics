@@ -3,6 +3,7 @@ package physica.nuclear.common;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.IBaseUtilities;
 import physica.api.core.IContent;
 import physica.core.common.CoreItemRegister;
@@ -48,12 +49,20 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 		// Boiler Recipes
 		NuclearCustomRecipeHelper.addBoilerRecipe(800, NuclearItemRegister.itemUranium238, 1750);
 		NuclearCustomRecipeHelper.addBoilerRecipe(1600, NuclearItemRegister.itemYellowcake, 2000);
-		NuclearCustomRecipeHelper.addBoilerRecipe(2400, "oreUranium", 1250);
+		NuclearCustomRecipeHelper.addBoilerRecipe(2400, "oreUraniumPhysica", 1250);
+		if (OreDictionary.doesOreNameExist("oreUranium"))
+		{
+			NuclearCustomRecipeHelper.addBoilerRecipe(2400, "oreUranium", 1250);
+		}
 
 		// Extractor Recipes
 		NuclearCustomRecipeHelper.addExtractorRecipe(4800, CoreItemRegister.itemEmptyCell, new ItemStack(NuclearItemRegister.itemHeavyWaterCell));
 		NuclearCustomRecipeHelper.addExtractorRecipe(4800, NuclearItemRegister.itemHeavyWaterCell, new ItemStack(NuclearItemRegister.itemDeuteriumCell));
-		NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
+		NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUraniumPhysica", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
+		if (OreDictionary.doesOreNameExist("oreUranium"))
+		{
+			NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
+		}
 
 	}
 

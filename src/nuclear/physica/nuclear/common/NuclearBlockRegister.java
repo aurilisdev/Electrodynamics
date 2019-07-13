@@ -111,7 +111,7 @@ public class NuclearBlockRegister implements IContent {
 		GameRegistry.registerBlock(blockRadioactiveStone = new BlockRadioactiveStone(), "radioactiveStone");
 		GameRegistry.registerBlock(blockRadioactiveDirt = new BlockRadioactiveDirt(), "radioactiveDirt");
 
-		OreDictionary.registerOre("oreUranium", blockUraniumOre);
+		OreDictionary.registerOre("oreUraniumPhysica", blockUraniumOre);
 		OreDictionary.registerOre("blockRadioactive", new ItemStack(blockRadioactiveDirt, 1, 15));
 		OreDictionary.registerOre("blockRadioactiveDirt", new ItemStack(blockRadioactiveDirt, 1, 15));
 		OreDictionary.registerOre("blockRadioactiveStone", new ItemStack(blockRadioactiveStone, 1, 15));
