@@ -45,3 +45,14 @@ Terms of distribution
 Terms if distribution permission is granted by the owner. This applies to modified versions of the software
 
 > A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
+
+Contributions
+
+> Contributions to the software in the form of code, code snippets, pull requests, translations, artwork, sounds or other similiar contributions are welcomed and highly appreciated.
+> Issue reports and comments, editing of the wiki and other user contributions are also welcome and are classed as "contributions" to thiS software for these purposes.
+> Any person contributing in that form (a "contributor") assigns the copyright in that contribution to the software license holder. This contributor also authorises the distribution of that contribution as a part of the software. They also consent to the developer of this software to license that contribution as a part of the software.
+> No contributor shall be entitled, by a claim to copyright relating to 
+their contribution or any other code or material in this software, or by any 
+other means, to interfere with the overriding principle.  In particular, no 
+contributor shall be entitled, by reason of that contribution or otherwise, 
+to attempt to prevent the continuing publication of the software's source code.
