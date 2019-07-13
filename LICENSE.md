@@ -1,5 +1,5 @@
 AURILIS LICENSE
-Version 1.1, July 2019
+Version 1.2, July 2019
 
 Copyright (C) 2019 Sebastian Siljuholtet Johansen
 
