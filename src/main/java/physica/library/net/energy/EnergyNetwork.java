@@ -142,7 +142,7 @@ public class EnergyNetwork {
 				ForgeDirection direction = acceptorInputMap.get(acceptor).getOpposite();
 				if (receiver.canConnectEnergy(direction))
 				{
-					if (receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) > 0)
+					if (receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) > 0 || receiver.getEnergyStored(direction) < receiver.getMaxEnergyStored(direction))
 					{
 						toReturn.add(acceptor);
 					}
@@ -158,7 +158,7 @@ public class EnergyNetwork {
 		for (ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity acceptor = new BlockLocation(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
-			if (acceptor instanceof IEnergyReceiver && !(acceptor instanceof IConductor) && ((IEnergyReceiver) acceptor).canConnectEnergy(orientation.getOpposite()))
+			if (acceptor instanceof IEnergyReceiver && !(acceptor instanceof IConductor))
 			{
 				acceptors[orientation.ordinal()] = acceptor;
 			}
