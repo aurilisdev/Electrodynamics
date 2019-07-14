@@ -74,7 +74,6 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 		} else
 		{
 			drainBattery(SLOT_ENERGY);
-			operatingTicks = 0;
 		}
 		ItemStack waterInput = getStackInSlot(SLOT_INPUT1);
 		if (waterInput != null && waterInput.getItem() == Items.water_bucket && waterTank.getCapacity() - waterTank.getFluidAmount() >= 1000)

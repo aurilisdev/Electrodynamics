@@ -9,7 +9,7 @@ import physica.library.tile.TileBase;
 
 public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
 
-	public static final int VISIBLE_STORAGE = Integer.MAX_VALUE - 100;
+	public static final int VISIBLE_STORAGE = Integer.MAX_VALUE;
 
 	@Override
 	public void updateServer(int ticks)

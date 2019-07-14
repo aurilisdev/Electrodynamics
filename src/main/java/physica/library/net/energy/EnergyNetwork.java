@@ -21,16 +21,17 @@ import physica.library.location.BlockLocation;
 import physica.library.net.EnergyNetworkRegistry;
 
 public class EnergyNetwork {
-	private static final int								DEFAULT_VOLTAGE				= 480;
-	public HashSet<IConductor>								conductorSet				= new HashSet<>();
-	public HashSet<TileEntity>								acceptorSet					= new HashSet<>();
-	public HashMap<TileEntity, ForgeDirection>				acceptorInputMap			= new HashMap<>();
-	private HashMap<EnumConductorType, HashSet<IConductor>>	conductorTypeMap			= new HashMap<>();
-	private int												energyTransmittedBuffer		= 0;
-	private int												energyTransmittedLastTick	= 0;				// TODO: Work on implementing voltage. Is always an concurrent exception???
-	private int												ticksSinceNetworkCreate		= 0;
-	private boolean											fixed						= false;
-	private int												maxPowerTransfer			= 0;
+	private static final int								DEFAULT_VOLTAGE					= 480;
+	public HashSet<IConductor>								conductorSet					= new HashSet<>();
+	public HashSet<TileEntity>								acceptorSet						= new HashSet<>();
+	public HashMap<TileEntity, HashSet<ForgeDirection>>		acceptorInputMap				= new HashMap<>();
+	private HashMap<EnumConductorType, HashSet<IConductor>>	conductorTypeMap				= new HashMap<>();
+	private int												energyTransmittedBuffer			= 0;
+	private int												energyTransmittedLastTick		= 0;
+	private int												fixTimerTicksSinceNetworkCreate	= 0;
+	private int												ticksSinceNetworkRefresh		= 0;
+	private boolean											fixed							= false;
+	private int												maxPowerTransfer				= 0;
 
 	public int getEnergyTransmittedLastTick()
 	{
@@ -85,7 +86,10 @@ public class EnergyNetwork {
 						remaining = 0;
 						if (acceptor instanceof IEnergyReceiver)
 						{
-							energySent += ((IEnergyReceiver) acceptor).receiveEnergy(acceptorInputMap.get(acceptor).getOpposite(), currentSending, false);
+							for (ForgeDirection connection : acceptorInputMap.get(acceptor))
+							{
+								energySent += ((IEnergyReceiver) acceptor).receiveEnergy(connection.getOpposite(), currentSending, false);
+							}
 						}
 					}
 				}
@@ -139,12 +143,15 @@ public class EnergyNetwork {
 			if (acceptor instanceof IEnergyReceiver)
 			{
 				IEnergyReceiver receiver = (IEnergyReceiver) acceptor;
-				ForgeDirection direction = acceptorInputMap.get(acceptor).getOpposite();
-				if (receiver.canConnectEnergy(direction))
+				for (ForgeDirection connection : acceptorInputMap.get(acceptor))
 				{
-					if (receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) > 0 || receiver.getEnergyStored(direction) < receiver.getMaxEnergyStored(direction))
+					ForgeDirection direction = connection.getOpposite();
+					if (receiver.canConnectEnergy(direction))
 					{
-						toReturn.add(acceptor);
+						if (receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) > 0 || receiver.getEnergyStored(direction) < receiver.getMaxEnergyStored(direction))
+						{
+							toReturn.add(acceptor);
+						}
 					}
 				}
 			}
@@ -194,7 +201,9 @@ public class EnergyNetwork {
 				if (acceptor != null && !(acceptor instanceof IConductor))
 				{
 					acceptorSet.add(acceptor);
-					acceptorInputMap.put(acceptor, ForgeDirection.getOrientation(Arrays.asList(acceptors).indexOf(acceptor)));
+					HashSet<ForgeDirection> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
+					directions.add(ForgeDirection.getOrientation(Arrays.asList(acceptors).indexOf(acceptor)));
+					acceptorInputMap.put(acceptor, directions);
 				}
 			}
 		}
@@ -393,14 +402,19 @@ public class EnergyNetwork {
 		clearJoulesTransmitted();
 		if (!fixed)
 		{
-			ticksSinceNetworkCreate += 1;
-			if (ticksSinceNetworkCreate > 1200)
+			fixTimerTicksSinceNetworkCreate += 1;
+			if (fixTimerTicksSinceNetworkCreate > 1200)
 			{
-				ticksSinceNetworkCreate = 0;
+				fixTimerTicksSinceNetworkCreate = 0;
 				fixMessedUpNetwork(conductorSet.toArray(new IConductor[0])[0]);
 			}
 		}
-
+		ticksSinceNetworkRefresh++;
+		if (ticksSinceNetworkRefresh > 1600)
+		{
+			ticksSinceNetworkRefresh = 0;
+			refresh();
+		}
 	}
 
 	public void clearJoulesTransmitted()

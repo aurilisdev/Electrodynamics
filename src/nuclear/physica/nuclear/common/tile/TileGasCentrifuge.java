@@ -58,9 +58,6 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 					operatingTicks = 0;
 				}
 				extractEnergy();
-			} else
-			{
-				operatingTicks = 0;
 			}
 			ForgeDirection direction = getFacing().getOpposite();
 			TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
@@ -76,6 +73,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 		} else
 		{
 			drainBattery(SLOT_ENERGY);
+			operatingTicks = 0;
 		}
 	}
 

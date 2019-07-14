@@ -69,7 +69,6 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 		} else
 		{
 			drainBattery(SLOT_ENERGY);
-			operatingTicks = 0;
 		}
 		ItemStack input = getStackInSlot(SLOT_INPUT);
 		if (input != null)

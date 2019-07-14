@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.cable.EnumConductorType;
+import physica.core.common.tile.cable.TileEnergyCable;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
@@ -52,7 +53,7 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite()))
 			{
 				drawConnection(dir);
-				if (sideTile.getBlockMetadata() == meta)
+				if (sideTile.getBlockMetadata() == meta && sideTile instanceof TileEnergyCable)
 				{
 					connections++;
 				} else
