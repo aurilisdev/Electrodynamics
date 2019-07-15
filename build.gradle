@@ -22,6 +22,7 @@ sourceSets {
             srcDirs = [
                 "$projectDir/src/main/java",
                 "$projectDir/src/api",
+                "$projectDir/src/externalapi",
                 "$projectDir/src/forcefields",
                 "$projectDir/src/nuclear"
             ]

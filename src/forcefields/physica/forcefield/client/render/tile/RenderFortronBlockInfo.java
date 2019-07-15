@@ -2,7 +2,7 @@ package physica.forcefield.client.render.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import physica.api.core.ITileBase;
+import physica.api.core.tile.ITileBase;
 
 @SideOnly(Side.CLIENT)
 public class RenderFortronBlockInfo {

@@ -3,7 +3,7 @@ package physica.nuclear.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;

@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.tile;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.IGuiInterface;
+import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;

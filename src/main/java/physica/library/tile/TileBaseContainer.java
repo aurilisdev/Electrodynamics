@@ -1,7 +1,7 @@
 package physica.library.tile;
 
 import net.minecraft.item.ItemStack;
-import physica.api.core.ITileBaseContainer;
+import physica.api.core.tile.ITileBaseContainer;
 
 public abstract class TileBaseContainer extends TileBaseRotateable implements ITileBaseContainer {
 

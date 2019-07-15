@@ -9,7 +9,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
-import physica.api.core.IContent;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.forcefield.client.render.tile.TileRenderFortronBlock;
 import physica.forcefield.common.ForcefieldBlockRegister;
 import physica.forcefield.common.ForcefieldFluidRegister;
@@ -24,29 +25,32 @@ import physica.library.client.render.ItemRenderObjModel;
 public class ForcefieldClientRegister implements IContent {
 
 	@Override
-	public void preInit()
+	public void register(LoadPhase phase)
 	{
-		MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(new ForcefieldRenderHandler());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCoercionDriver.class, new TileRenderFortronBlock<TileCoercionDriver>("coercionDriver.obj"));
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockCoercionDriver),
-				new ItemRenderObjModel("coercionDriver.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+		if (phase == LoadPhase.ClientRegister)
+		{
+			MinecraftForge.EVENT_BUS.register(this);
+			MinecraftForge.EVENT_BUS.register(new ForcefieldRenderHandler());
+			ClientRegistry.bindTileEntitySpecialRenderer(TileCoercionDriver.class, new TileRenderFortronBlock<TileCoercionDriver>("coercionDriver.obj"));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockCoercionDriver),
+					new ItemRenderObjModel("coercionDriver.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileFortronFieldConstructor.class, new TileRenderFortronBlock<TileFortronFieldConstructor>("fortronFieldConstructor.obj"));
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor),
-				new ItemRenderObjModel("fortronFieldConstructor.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronFieldConstructor.class, new TileRenderFortronBlock<TileFortronFieldConstructor>("fortronFieldConstructor.obj"));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor),
+					new ItemRenderObjModel("fortronFieldConstructor.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileFortronCapacitor.class, new TileRenderFortronBlock<TileFortronCapacitor>("fortronCapacitor.obj"));
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronCapacitor),
-				new ItemRenderObjModel("fortronCapacitor.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronCapacitor.class, new TileRenderFortronBlock<TileFortronCapacitor>("fortronCapacitor.obj"));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronCapacitor),
+					new ItemRenderObjModel("fortronCapacitor.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileInterdictionMatrix.class, new TileRenderFortronBlock<TileInterdictionMatrix>("matrixModel.obj"));
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockInterdictionMatrix),
-				new ItemRenderObjModel("matrixModel.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileInterdictionMatrix.class, new TileRenderFortronBlock<TileInterdictionMatrix>("matrixModel.obj"));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockInterdictionMatrix),
+					new ItemRenderObjModel("matrixModel.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileBiometricIdentifier.class, new TileRenderFortronBlock<TileBiometricIdentifier>("biometricIdentifier.obj"));
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockBiometricIdentifier),
-				new ItemRenderObjModel("biometricIdentifier.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileBiometricIdentifier.class, new TileRenderFortronBlock<TileBiometricIdentifier>("biometricIdentifier.obj"));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockBiometricIdentifier),
+					new ItemRenderObjModel("biometricIdentifier.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+		}
 	}
 
 	@SubscribeEvent

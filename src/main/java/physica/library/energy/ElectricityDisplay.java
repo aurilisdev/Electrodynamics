@@ -1,6 +1,6 @@
 package physica.library.energy;
 
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.energy.base.Measurement;
 import physica.library.energy.base.Unit;
 

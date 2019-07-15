@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
-import physica.api.core.ITileBase;
+import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.client.ForcefieldRenderHandler;
 import physica.forcefield.client.render.model.ModelCube;

@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.tile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +13,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.inventory.IGuiInterface;
+import physica.api.core.inventory.IPlayerUsing;
+import physica.api.core.misc.IRotatable;
+import physica.api.core.network.ISidedObject;
 import physica.library.location.BlockLocation;
 import physica.library.location.VectorLocation;
 import physica.library.network.IPacket;

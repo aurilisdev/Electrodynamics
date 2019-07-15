@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.inventory;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

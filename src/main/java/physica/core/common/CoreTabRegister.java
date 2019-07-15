@@ -3,23 +3,27 @@ package physica.core.common;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import physica.CoreReferences;
-import physica.api.core.IContent;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 
 public class CoreTabRegister implements IContent {
 
 	public static CreativeTabs coreTab;
 
 	@Override
-	public void preInit()
+	public void register(LoadPhase phase)
 	{
-		coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core")
+		if (phase == LoadPhase.CreativeTabRegister)
 		{
-
-			@Override
-			public Item getTabIconItem()
+			coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core")
 			{
-				return CoreItemRegister.itemWrench;
-			}
-		};
+
+				@Override
+				public Item getTabIconItem()
+				{
+					return CoreItemRegister.itemWrench;
+				}
+			};
+		}
 	}
 }

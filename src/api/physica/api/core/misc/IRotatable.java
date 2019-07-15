@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.misc;
 
 import net.minecraftforge.common.util.ForgeDirection;
 

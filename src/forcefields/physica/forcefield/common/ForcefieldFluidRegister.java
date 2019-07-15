@@ -6,7 +6,8 @@ import net.minecraftforge.client.event.TextureStitchEvent.Pre;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import physica.CoreReferences;
-import physica.api.core.IContent;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.forcefield.ForcefieldReferences;
 
 public class ForcefieldFluidRegister implements IContent {
@@ -14,10 +15,13 @@ public class ForcefieldFluidRegister implements IContent {
 	public static Fluid LIQUID_FORTRON = new Fluid(ForcefieldReferences.PREFIX + "fortron").setGaseous(true).setTemperature(20);
 
 	@Override
-	public void init()
+	public void register(LoadPhase phase)
 	{
-		FluidRegistry.registerFluid(LIQUID_FORTRON);
-		LIQUID_FORTRON = FluidRegistry.getFluid(ForcefieldReferences.PREFIX + "fortron");
+		if (phase == LoadPhase.FluidRegister)
+		{
+			FluidRegistry.registerFluid(LIQUID_FORTRON);
+			LIQUID_FORTRON = FluidRegistry.getFluid(ForcefieldReferences.PREFIX + "fortron");
+		}
 	}
 
 	public static void textureStitchEventPre(Pre event)

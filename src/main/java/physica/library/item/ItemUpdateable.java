@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import physica.api.core.IItemUpdate;
+import physica.api.core.item.IItemUpdate;
 
 public class ItemUpdateable extends Item {
 

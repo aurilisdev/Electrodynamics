@@ -1,6 +1,8 @@
-package physica.api.core;
+package physica.api.core.utilities;
 
 import java.util.Random;
+
+import physica.api.core.PhysicaAPI;
 
 public interface IBaseUtilities extends IRecipeUtilities {
 

@@ -9,8 +9,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import physica.api.core.IPlayerUsing;
-import physica.api.core.ITileBaseContainer;
+import physica.api.core.inventory.IPlayerUsing;
+import physica.api.core.tile.ITileBaseContainer;
 import physica.library.inventory.slot.SlotNull;
 
 public class ContainerBase<T extends IPlayerUsing> extends Container {

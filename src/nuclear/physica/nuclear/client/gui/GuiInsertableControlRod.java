@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.client.gui.GuiContainerBase;
 import physica.library.inventory.ContainerBase;
 import physica.nuclear.common.tile.TileInsertableControlRod;

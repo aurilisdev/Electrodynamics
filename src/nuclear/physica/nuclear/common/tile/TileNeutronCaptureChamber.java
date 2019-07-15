@@ -12,7 +12,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.IGuiInterface;
+import physica.api.core.inventory.IGuiInterface;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.client.gui.GuiNeutronCaptureChamber;
 import physica.nuclear.common.NuclearItemRegister;

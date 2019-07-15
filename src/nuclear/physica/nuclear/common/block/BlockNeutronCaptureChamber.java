@@ -9,7 +9,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.IRotatable;
+import physica.api.core.misc.IRotatable;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
 import physica.library.recipe.RecipeSide;

@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.item;
 
 import java.util.Random;
 
@@ -11,7 +11,7 @@ public interface IItemUpdate {
 
 	Random rand = new Random();
 
-	default void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean p_77663_5_)
+	default void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean par5)
 	{
 	}
 

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.block.BlockBaseContainer;
 import physica.library.recipe.IRecipeRegister;

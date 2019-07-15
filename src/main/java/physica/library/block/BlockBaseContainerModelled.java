@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
 

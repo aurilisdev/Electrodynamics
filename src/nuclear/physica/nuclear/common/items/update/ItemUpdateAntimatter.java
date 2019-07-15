@@ -3,8 +3,8 @@ package physica.nuclear.common.items.update;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import physica.api.core.IBaseUtilities;
-import physica.api.core.IItemUpdate;
+import physica.api.core.item.IItemUpdate;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 
 public class ItemUpdateAntimatter implements IItemUpdate, IBaseUtilities {

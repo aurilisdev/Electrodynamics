@@ -9,7 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreBlockRegister;
 import physica.library.block.BlockBaseContainer;
 import physica.library.recipe.IRecipeRegister;

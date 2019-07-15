@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.misc;
 
 public interface IExplosionHandler {
 

@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import physica.api.core.ITileBase;
+import physica.api.core.tile.ITileBase;
 
 public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRenderer {
 

@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.IGuiInterface;
+import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Measurement;
 import physica.library.energy.base.Unit;

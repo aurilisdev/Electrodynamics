@@ -4,7 +4,7 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.ITileBasePowered;
+import physica.api.core.tile.ITileBasePowered;
 import physica.core.common.event.FulminationEventHandler;
 import physica.library.tile.TileBase;
 

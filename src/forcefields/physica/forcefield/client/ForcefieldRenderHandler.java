@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import physica.CoreReferences;
-import physica.api.core.ITileBase;
+import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.client.render.tile.RenderFortronBlockInfo;
 import physica.library.location.VectorLocation;

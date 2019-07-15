@@ -10,8 +10,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.IRotatable;
 import physica.api.core.PhysicaAPI;
+import physica.api.core.misc.IRotatable;
 
 public abstract class BlockRotatable extends BlockContainer {
 

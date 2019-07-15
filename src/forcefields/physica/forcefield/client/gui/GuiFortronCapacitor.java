@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.common.inventory.ContainerFortronCapacitor;
 import physica.forcefield.common.tile.TileFortronCapacitor;

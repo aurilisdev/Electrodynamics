@@ -4,8 +4,8 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import physica.api.core.IContent;
-import physica.api.core.IGuiInterface;
+import physica.api.core.inventory.IGuiInterface;
+import physica.api.core.load.IContent;
 
 public class CommonProxy implements IGuiHandler, IContent {
 

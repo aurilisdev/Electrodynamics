@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.client.gui.GuiContainerBase;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.inventory.ContainerFissionReactor;

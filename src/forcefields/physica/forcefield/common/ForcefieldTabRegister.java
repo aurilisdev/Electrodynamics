@@ -2,7 +2,8 @@ package physica.forcefield.common;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import physica.api.core.IContent;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.forcefield.ForcefieldReferences;
 
 public class ForcefieldTabRegister implements IContent {
@@ -10,16 +11,19 @@ public class ForcefieldTabRegister implements IContent {
 	public static CreativeTabs forcefieldTab;
 
 	@Override
-	public void preInit()
+	public void register(LoadPhase phase)
 	{
-		forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield")
+		if (phase == LoadPhase.CreativeTabRegister)
 		{
-
-			@Override
-			public Item getTabIconItem()
+			forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield")
 			{
-				return Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor);
-			}
-		};
+
+				@Override
+				public Item getTabIconItem()
+				{
+					return Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor);
+				}
+			};
+		}
 	}
 }

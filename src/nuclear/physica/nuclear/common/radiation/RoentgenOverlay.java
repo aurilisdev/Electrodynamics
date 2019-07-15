@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.nuclear.common.NuclearItemRegister;
 
 @SideOnly(Side.CLIENT)
@@ -56,7 +56,7 @@ public class RoentgenOverlay implements IBaseUtilities {
 		if (use != null && use.getItem() == NuclearItemRegister.itemGeigerCounter)
 		{
 			GL11.glPushMatrix();
-			double rounded = NuclearItemRegister.itemGeigerCounter.getEnergyStored(use) > 5 ? roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2)
+			double rounded = NuclearItemRegister.itemGeigerCounter.getElectricityStored(use) > 5 ? roundPrecise(cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate, 2)
 					: roundPrecise(Math.min(3.6, cachedRoentgen * RadiationSystem.toRealRoentgenConversionRate), 2);
 			String radiationText = "Roentgen per hour: " + (cachedRoentgen == 0 ? "< 0.01" : rounded);
 			ScaledResolution get = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);

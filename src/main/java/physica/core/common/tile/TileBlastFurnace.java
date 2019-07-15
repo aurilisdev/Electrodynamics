@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.EnumSkyBlock;
-import physica.api.core.IGuiInterface;
+import physica.api.core.inventory.IGuiInterface;
 import physica.core.client.gui.GuiBlastFurnace;
 import physica.core.common.CoreItemRegister;
 import physica.core.common.inventory.ContainerBlastFurnace;

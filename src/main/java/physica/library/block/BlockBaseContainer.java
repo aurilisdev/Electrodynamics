@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.Physica;
-import physica.api.core.IGuiInterface;
-import physica.api.core.IRotatable;
+import physica.api.core.inventory.IGuiInterface;
+import physica.api.core.misc.IRotatable;
 import physica.core.common.event.WrenchEventHandler;
 import physica.proxy.sided.CommonProxy;
 

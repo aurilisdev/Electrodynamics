@@ -12,7 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.client.render.TileRenderObjModel;
 import physica.nuclear.common.tile.TileQuantumAssembler;
 

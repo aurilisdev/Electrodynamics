@@ -8,7 +8,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import physica.api.core.IItemUpdate;
+import physica.api.core.item.IItemUpdate;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.radiation.RadiationSystem;
 

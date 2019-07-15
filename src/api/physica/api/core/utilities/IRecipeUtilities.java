@@ -1,4 +1,4 @@
-package physica.api.core;
+package physica.api.core.utilities;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;

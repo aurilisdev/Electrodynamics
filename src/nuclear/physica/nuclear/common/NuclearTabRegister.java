@@ -2,7 +2,8 @@ package physica.nuclear.common;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import physica.api.core.IContent;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.nuclear.NuclearReferences;
 
 public class NuclearTabRegister implements IContent {
@@ -10,16 +11,18 @@ public class NuclearTabRegister implements IContent {
 	public static CreativeTabs nuclearPhysicsTab;
 
 	@Override
-	public void preInit()
+	public void register(LoadPhase phase)
 	{
-		nuclearPhysicsTab = new CreativeTabs(NuclearReferences.DOMAIN + "NuclearPhysics")
+		if (phase == LoadPhase.CreativeTabRegister)
 		{
-
-			@Override
-			public Item getTabIconItem()
+			nuclearPhysicsTab = new CreativeTabs(NuclearReferences.DOMAIN + "NuclearPhysics")
 			{
-				return NuclearItemRegister.itemHazmatHelmet;
-			}
-		};
+				@Override
+				public Item getTabIconItem()
+				{
+					return NuclearItemRegister.itemHazmatHelmet;
+				}
+			};
+		}
 	}
 }

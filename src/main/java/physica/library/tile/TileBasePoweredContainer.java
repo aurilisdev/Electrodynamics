@@ -1,6 +1,6 @@
 package physica.library.tile;
 
-import physica.api.core.ITileBasePoweredContainer;
+import physica.api.core.tile.ITileBasePoweredContainer;
 
 public abstract class TileBasePoweredContainer extends TileBaseContainer implements ITileBasePoweredContainer {
 

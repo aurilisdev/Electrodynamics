@@ -24,7 +24,7 @@ public class ItemGeigerCounter extends ItemElectric {
 		{
 			if (((EntityPlayer) entity).inventory.getCurrentItem() == stack)
 			{
-				extractEnergy(stack, getMaxEnergyStored(stack) / 250000, false);
+				extractElectricity(stack, getElectricCapacity(stack) / 250000, false);
 			}
 		}
 	}

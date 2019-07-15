@@ -12,6 +12,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import physica.CoreReferences;
 import physica.Physica;
+import physica.api.core.load.LoadPhase;
 import physica.forcefield.PhysicaForcefields;
 import physica.nuclear.PhysicaNuclearPhysics;
 
@@ -47,14 +48,14 @@ public class CommandPhysica extends CommandBase {
 			sender.addChatMessage(new ChatComponentText(" Version: " + CoreReferences.VERSION));
 		} else if (args[0].equalsIgnoreCase("reload"))
 		{
-			Physica.config.preInit();
+			Physica.config.register(LoadPhase.ConfigRegister);
 			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
 			{
-				PhysicaNuclearPhysics.config.preInit();
+				PhysicaNuclearPhysics.config.register(LoadPhase.ConfigRegister);
 			}
 			if (Loader.isModLoaded(CoreReferences.DOMAIN + "forcefields"))
 			{
-				PhysicaForcefields.config.preInit();
+				PhysicaForcefields.config.register(LoadPhase.ConfigRegister);
 			}
 			sender.addChatMessage(new ChatComponentText("Physica configs reloaded successfully"));
 		} else if (args[0].equalsIgnoreCase("item"))

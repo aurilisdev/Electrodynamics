@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.IGuiInterface;
+import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
 import physica.library.tile.TileBaseRotateable;
 import physica.nuclear.client.gui.GuiReactorControlPanel;

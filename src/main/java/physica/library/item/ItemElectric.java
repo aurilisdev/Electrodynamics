@@ -2,18 +2,18 @@ package physica.library.item;
 
 import java.util.List;
 
-import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import physica.api.core.electricity.IElectricItem;
 import physica.library.energy.ElectricityDisplay;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 
-public class ItemElectric extends Item implements IEnergyContainerItem {
+public class ItemElectric extends Item implements IElectricItem {
 
 	public static final String	ENERGY_NBT_DATA	= "Energy";
 
@@ -57,13 +57,13 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	@Override
 	public double getDurabilityForDisplay(ItemStack container)
 	{
-		return 1.0 - getEnergyStored(container) / (double) getMaxEnergyStored(container);
+		return 1.0 - getElectricityStored(container) / (double) getElectricCapacity(container);
 	}
 
 	@Override
 	public boolean showDurabilityBar(ItemStack stack)
 	{
-		return getEnergyStored(stack) < getMaxEnergyStored(stack);
+		return getElectricityStored(stack) < getElectricCapacity(stack);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,11 +71,11 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean par4)
 	{
 		super.addInformation(stack, player, info, par4);
-		info.add(EnumChatFormatting.AQUA + "Energy Stored: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getEnergyStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
+		info.add(EnumChatFormatting.AQUA + "Energy Stored: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getElectricityStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
 	}
 
 	@Override
-	public int extractEnergy(ItemStack container, int amount, boolean simulate)
+	public int extractElectricity(ItemStack container, int amount, boolean simulate)
 	{
 		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA))
 		{
@@ -92,43 +92,21 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 		return energyExtracted;
 	}
 
-	public void setEnergyStored(ItemStack container, int amount)
-	{
-		if (container.stackTagCompound == null)
-		{
-			container.stackTagCompound = new NBTTagCompound();
-		}
-
-		int energyStored = (int) Math.max(Math.min(amount, getMaxEnergyStored(container)), 0.0D);
-		container.stackTagCompound.setInteger(ENERGY_NBT_DATA, energyStored);
-		container.setItemDamage((int) Math.max(0, Math.abs(energyStored / (float) getMaxEnergyStored(container) * 100 - 100)));
-	}
-
 	@Override
-	public int getEnergyStored(ItemStack container)
-	{
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey(ENERGY_NBT_DATA))
-		{
-			return 0;
-		}
-		return container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
-	}
-
-	@Override
-	public int getMaxEnergyStored(ItemStack container)
+	public int getElectricCapacity(ItemStack container)
 	{
 		return capacity;
 	}
 
 	@Override
-	public int receiveEnergy(ItemStack container, int amount, boolean simulate)
+	public int receiveElectricity(ItemStack container, int maxReceive, boolean simulate)
 	{
 		if (container.stackTagCompound == null)
 		{
 			container.stackTagCompound = new NBTTagCompound();
 		}
 		int energy = container.stackTagCompound.getInteger(ENERGY_NBT_DATA);
-		int energyReceived = Math.min(capacity - energy, Math.min(receiveRate, amount));
+		int energyReceived = Math.min(capacity - energy, Math.min(receiveRate, maxReceive));
 
 		if (!simulate)
 		{

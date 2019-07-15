@@ -3,7 +3,7 @@ package physica.core.common.block;
 import net.minecraft.block.BlockCompressed;
 import net.minecraft.block.material.MapColor;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreTabRegister;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;

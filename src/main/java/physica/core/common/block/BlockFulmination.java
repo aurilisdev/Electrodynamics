@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.TileFulmination;

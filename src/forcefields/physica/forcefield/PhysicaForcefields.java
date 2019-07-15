@@ -19,6 +19,8 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
+import physica.api.core.load.ContentLoader;
+import physica.api.core.load.LoadPhase;
 import physica.forcefield.client.ForcefieldClientRegister;
 import physica.forcefield.common.ForcefieldBlockRegister;
 import physica.forcefield.common.ForcefieldEventHandler;
@@ -31,7 +33,6 @@ import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
-import physica.proxy.ContentLoader;
 import physica.proxy.sided.CommonProxy;
 
 @Mod(modid = ForcefieldReferences.DOMAIN, name = ForcefieldReferences.NAME, version = CoreReferences.VERSION, dependencies = "required-after:" + CoreReferences.DOMAIN)
@@ -57,8 +58,7 @@ public class PhysicaForcefields {
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + ForcefieldReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
-		config = new ConfigForcefields();
-		config.preInit();
+		proxyLoader.addContent(config = new ConfigForcefields());
 
 		proxyLoader.addContent(new ForcefieldTabRegister());
 
@@ -74,8 +74,6 @@ public class PhysicaForcefields {
 
 		proxyLoader.addContent(new ForcefieldRecipeRegister());
 
-		proxyLoader.preInit();
-
 		MinecraftForge.EVENT_BUS.register(ForcefieldEventHandler.INSTANCE);
 
 		metadata.authorList = CoreReferences.Metadata.AUTHORS;
@@ -88,24 +86,32 @@ public class PhysicaForcefields {
 		metadata.updateUrl = CoreReferences.Metadata.UPDATE_URL;
 		metadata.url = CoreReferences.Metadata.URL;
 		metadata.version = CoreReferences.VERSION;
+		proxyLoader.callRegister(LoadPhase.CreativeTabRegister);
+		proxyLoader.callRegister(LoadPhase.ConfigRegister);
+		proxyLoader.callRegister(LoadPhase.RegisterObjects);
+		proxyLoader.callRegister(LoadPhase.PreInitialize);
+		proxyLoader.callRegister(LoadPhase.ClientRegister);
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		proxyLoader.init();
+		proxyLoader.callRegister(LoadPhase.Initialize);
+		proxyLoader.callRegister(LoadPhase.EntityRegister);
+		proxyLoader.callRegister(LoadPhase.FluidRegister);
+		proxyLoader.callRegister(LoadPhase.WorldRegister);
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		proxyLoader.postInit();
+		proxyLoader.callRegister(LoadPhase.PostInitialize);
 	}
 
 	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event)
 	{
-		proxyLoader.loadComplete();
+		proxyLoader.callRegister(LoadPhase.OnStartup);
 		IRecipeRegister.InitializeSide(RecipeSide.Forcefield);
 	}
 

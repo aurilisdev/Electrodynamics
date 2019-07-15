@@ -6,7 +6,8 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import physica.Physica;
-import physica.api.core.IContent;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.nuclear.common.entity.EntityParticle;
 
 public class NuclearEntityRegister implements IContent {
@@ -14,24 +15,27 @@ public class NuclearEntityRegister implements IContent {
 	public static final int MOD_ID = 120;
 
 	@Override
-	public void init()
+	public void register(LoadPhase phase)
 	{
-		registerEntity(EntityParticle.class, "particle", 80, 3, true);
-		ForgeChunkManager.setForcedChunkLoadingCallback(Physica.INSTANCE, (tickets, world) ->
+		if (phase == LoadPhase.EntityRegister)
 		{
-			for (Ticket ticket : tickets)
+			registerEntity(EntityParticle.class, "particle", 80, 3, true);
+			ForgeChunkManager.setForcedChunkLoadingCallback(Physica.INSTANCE, (tickets, world) ->
 			{
-				if (ticket.getType() == Type.ENTITY)
+				for (Ticket ticket : tickets)
 				{
-					final Entity entity = ticket.getEntity();
-
-					if (entity instanceof EntityParticle)
+					if (ticket.getType() == Type.ENTITY)
 					{
-						((EntityParticle) entity).updateTicket = ticket;
+						final Entity entity = ticket.getEntity();
+
+						if (entity instanceof EntityParticle)
+						{
+							((EntityParticle) entity).updateTicket = ticket;
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)

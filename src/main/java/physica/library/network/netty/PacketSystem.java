@@ -11,8 +11,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import physica.api.core.IContent;
 import physica.api.core.PhysicaAPI;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.library.network.IPacket;
 
 /**
@@ -33,9 +34,12 @@ public class PacketSystem implements IContent {
 	}
 
 	@Override
-	public void init()
+	public void register(LoadPhase phase)
 	{
-		channelEnumMap = NetworkRegistry.INSTANCE.newChannel(channel, new PacketEncoderDecoderHandler(), new PacketChannelInboundHandler());
+		if (phase == LoadPhase.Initialize)
+		{
+			channelEnumMap = NetworkRegistry.INSTANCE.newChannel(channel, new PacketEncoderDecoderHandler(), new PacketChannelInboundHandler());
+		}
 	}
 
 	/**

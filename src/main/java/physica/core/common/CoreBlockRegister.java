@@ -5,8 +5,9 @@ import java.util.HashMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.CoreReferences;
-import physica.api.core.IContent;
 import physica.api.core.cable.EnumConductorType;
+import physica.api.core.load.IContent;
+import physica.api.core.load.LoadPhase;
 import physica.core.common.block.BlockBlastFurnace;
 import physica.core.common.block.BlockEnergyCable;
 import physica.core.common.block.BlockFulmination;
@@ -36,37 +37,40 @@ public class CoreBlockRegister implements IContent {
 	public static BlockOre				blockSilverOre;
 
 	@Override
-	public void preInit()
+	public void register(LoadPhase phase)
 	{
-		GameRegistry.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), "infEnergy");
-		GameRegistry.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
-		GameRegistry.registerBlock(blockFulmination = new BlockFulmination(), "fulmination");
-		GameRegistry.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
-		GameRegistry.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), "blastFurnace");
-		GameRegistry.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
-
-		HashMap<Integer, String[]> instanceMap = new HashMap<>();
-		for (EnumConductorType en : EnumConductorType.values())
+		if (phase == LoadPhase.RegisterObjects)
 		{
-			if (en == EnumConductorType.superConductor)
+			GameRegistry.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), "infEnergy");
+			GameRegistry.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
+			GameRegistry.registerBlock(blockFulmination = new BlockFulmination(), "fulmination");
+			GameRegistry.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
+			GameRegistry.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), "blastFurnace");
+			GameRegistry.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
+
+			HashMap<Integer, String[]> instanceMap = new HashMap<>();
+			for (EnumConductorType en : EnumConductorType.values())
 			{
-				instanceMap.put(en.ordinal(), new String[] { "Max Power: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: infinite" });
-			} else
-			{
-				instanceMap.put(en.ordinal(), new String[] { "Max Power: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: " + en.getVoltage() });
+				if (en == EnumConductorType.superConductor)
+				{
+					instanceMap.put(en.ordinal(), new String[] { "Max Power: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: infinite" });
+				} else
+				{
+					instanceMap.put(en.ordinal(), new String[] { "Max Power: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), "Max Voltage: " + en.getVoltage() });
+				}
 			}
+			ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);
+			GameRegistry.registerBlock(blockCable, ItemBlockMetadata.class, "energyCable");
+			GameRegistry.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
+			GameRegistry.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
+			GameRegistry.registerBlock(blockCopperOre = new BlockOre("copperOre", ConfigCore.COPPER_ORE_HARVEST_LEVEL), "copperOre");
+			GameRegistry.registerBlock(blockLeadOre = new BlockOre("leadOre", ConfigCore.LEAD_ORE_HARVEST_LEVEL), "leadOre");
+			GameRegistry.registerBlock(blockSilverOre = new BlockOre("silverOre", ConfigCore.SILVER_ORE_HARVEST_LEVEL), "silverOre");
+			GameRegistry.registerBlock(blockLead = new BlockLead(), "blockLead");
+			OreDictionary.registerOre("oreLead", blockLeadOre);
+			OreDictionary.registerOre("oreTin", blockTinOre);
+			OreDictionary.registerOre("oreCopper", blockCopperOre);
+			OreDictionary.registerOre("oreSilver", blockCopperOre);
 		}
-		ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);
-		GameRegistry.registerBlock(blockCable, ItemBlockMetadata.class, "energyCable");
-		GameRegistry.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
-		GameRegistry.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
-		GameRegistry.registerBlock(blockCopperOre = new BlockOre("copperOre", ConfigCore.COPPER_ORE_HARVEST_LEVEL), "copperOre");
-		GameRegistry.registerBlock(blockLeadOre = new BlockOre("leadOre", ConfigCore.LEAD_ORE_HARVEST_LEVEL), "leadOre");
-		GameRegistry.registerBlock(blockSilverOre = new BlockOre("silverOre", ConfigCore.SILVER_ORE_HARVEST_LEVEL), "silverOre");
-		GameRegistry.registerBlock(blockLead = new BlockLead(), "blockLead");
-		OreDictionary.registerOre("oreLead", blockLeadOre);
-		OreDictionary.registerOre("oreTin", blockTinOre);
-		OreDictionary.registerOre("oreCopper", blockCopperOre);
-		OreDictionary.registerOre("oreSilver", blockCopperOre);
 	}
 }

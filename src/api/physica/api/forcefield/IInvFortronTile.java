@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import physica.api.core.ITileBase;
+import physica.api.core.tile.ITileBase;
 import physica.forcefield.common.ForcefieldFluidRegister;
 
 public interface IInvFortronTile extends ITileBase {

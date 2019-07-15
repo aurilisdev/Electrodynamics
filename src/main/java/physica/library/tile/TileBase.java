@@ -7,7 +7,7 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import physica.api.core.ITileBase;
+import physica.api.core.tile.ITileBase;
 
 public abstract class TileBase extends TileEntity implements ITileBase {
 

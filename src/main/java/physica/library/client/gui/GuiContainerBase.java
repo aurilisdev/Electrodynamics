@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import physica.CoreReferences;
-import physica.api.core.IPlayerUsing;
+import physica.api.core.inventory.IPlayerUsing;
 import physica.library.inventory.slot.IRenderableSlot;
 import physica.library.inventory.tooltip.IToolTipContainer;
 import physica.library.inventory.tooltip.ToolTip;

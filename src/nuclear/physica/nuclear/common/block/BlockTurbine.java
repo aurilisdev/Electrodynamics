@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.api.core.IBaseUtilities;
+import physica.api.core.utilities.IBaseUtilities;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
