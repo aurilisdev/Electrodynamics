@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -19,11 +20,13 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 	protected IModelCustom		model_middle;
 	protected IModelCustom		model_big;
 	protected IModelCustom		model_base;
+	protected IModelCustom		model_baseOptimized;
 	protected ResourceLocation	model_texture;
 
 	public TileRenderTurbine(String objFile, String textureFile) {
 		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));
 		model_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile);
+		model_baseOptimized = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "SmallOptimized.obj")));
 		model_middle = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
 		model_big = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
 	}
@@ -38,7 +41,7 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 			{
 				GL11.glScaled(0.0925, 0.0525, 0.0925);
 				bindTexture(model_texture);
-				model_base.renderAll();
+				(Minecraft.getMinecraft().gameSettings.fancyGraphics ? model_base : model_baseOptimized).renderAll();
 				if (tile.hasClientSpin())
 				{
 					GL11.glRotatef(tile.getTicksRunning() % 360 * 10, 0.0f, 1.0f, 0.0f);
