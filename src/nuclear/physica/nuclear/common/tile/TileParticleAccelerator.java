@@ -309,13 +309,13 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
-		return !from.equals(getFacing().getOpposite());
+		return from != getFacing().getOpposite();
 	}
 
 	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return (int) ElectricityUtilities.convertEnergy(169.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}

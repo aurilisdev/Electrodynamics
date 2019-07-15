@@ -2,11 +2,11 @@ package physica.library.inventory.slot;
 
 import org.lwjgl.opengl.GL11;
 
-import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.library.client.gui.GuiContainerBase;
 import physica.library.inventory.tooltip.IToolTipContainer;
 import physica.library.inventory.tooltip.ToolTip;
@@ -28,7 +28,7 @@ public class SlotEnergyHolder extends SlotBase implements IRenderableSlot, ITool
 	@Override
 	public boolean isItemValid(ItemStack stack)
 	{
-		return stack.getItem() instanceof IEnergyContainerItem;
+		return ElectricityHandler.isItemElectric(stack);
 	}
 
 	@Override

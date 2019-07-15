@@ -135,13 +135,13 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
 		return from != ForgeDirection.UP;
 	}
 
 	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return (int) ElectricityUtilities.convertEnergy(125.0 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}

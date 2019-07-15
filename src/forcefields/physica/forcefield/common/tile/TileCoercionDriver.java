@@ -82,9 +82,9 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 		{
 			validateConnections();
 		}
-		if (getEnergyStored() > 1)
+		if (getElectricityStored() > 1)
 		{
-			setEnergyStored(getEnergyStored() - fortronTank.fill(new FluidStack(ForcefieldFluidRegister.LIQUID_FORTRON, Math.min(getEnergyUsage(), getEnergyStored()) - 1), true));
+			setElectricityStored(getElectricityStored() - fortronTank.fill(new FluidStack(ForcefieldFluidRegister.LIQUID_FORTRON, Math.min(getElectricityUsage(), getElectricityStored()) - 1), true));
 		}
 		if (canSendBeam())
 		{
@@ -217,21 +217,15 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return getFortronTransferRate();
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
+	public int getElectricCapacity(ForgeDirection from)
 	{
 		return getMaxEnergyStored();
-	}
-
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
-	{
-		return true;
 	}
 
 	@Override

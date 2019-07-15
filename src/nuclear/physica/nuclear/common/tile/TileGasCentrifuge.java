@@ -2,7 +2,6 @@ package physica.nuclear.common.tile;
 
 import java.util.List;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Measurement;
@@ -157,7 +157,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return stack == null ? false : slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem : slot == SLOT_OUTPUT1 || slot == SLOT_OUTPUT2 ? false : false;
+		return stack == null ? false : slot == SLOT_ENERGY ? ElectricityHandler.isItemElectric(stack) : slot == SLOT_OUTPUT1 || slot == SLOT_OUTPUT2 ? false : false;
 	}
 
 	@Override
@@ -174,13 +174,13 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
 		return from == ForgeDirection.DOWN || from == ForgeDirection.UP;
 	}
 
 	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return (int) ElectricityUtilities.convertEnergy(1.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
 	}

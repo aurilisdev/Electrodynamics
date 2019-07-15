@@ -2,77 +2,75 @@ package physica.api.core.tile;
 
 import java.util.List;
 
-import cofh.api.energy.IEnergyReceiver;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.electricity.IElectricityReceiver;
 
-public interface ITileBasePowered extends ITileBase, IEnergyReceiver {
+public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 
 	default boolean hasEnoughEnergy()
 	{
-		return getEnergyStored() >= getEnergyUsage();
+		return getElectricityStored() >= getElectricityUsage();
 	}
 
 	default int extractEnergy()
 	{
-		setEnergyStored(Math.max(0, getEnergyStored() - getEnergyUsage()));
-		return getEnergyUsage();
+		setElectricityStored(Math.max(0, getElectricityStored() - getElectricityUsage()));
+		return getElectricityUsage();
 	}
 
 	@Override
 	default void handleWriteToNBT(NBTTagCompound nbt)
 	{
 		ITileBase.super.handleWriteToNBT(nbt);
-		nbt.setInteger("Energy", getEnergyStored());
+		nbt.setInteger("Energy", getElectricityStored());
 	}
 
 	@Override
 	default void handleReadFromNBT(NBTTagCompound nbt)
 	{
 		ITileBase.super.handleReadFromNBT(nbt);
-		setEnergyStored(nbt.getInteger("Energy"));
+		setElectricityStored(nbt.getInteger("Energy"));
 	}
 
 	@Override
 	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
 	{
 		ITileBase.super.writeSynchronizationPacket(dataList, player);
-		dataList.add(getEnergyStored());
+		dataList.add(getElectricityStored());
 	}
 
 	@Override
 	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
 	{
 		ITileBase.super.readSynchronizationPacket(buf, player);
-		setEnergyStored(buf.readInt());
+		setElectricityStored(buf.readInt());
 	}
 
 	@Override
-	default int getEnergyStored(ForgeDirection from)
+	default int getElectricityStored(ForgeDirection from)
 	{
-		return getEnergyStored();
+		return getElectricityStored();
 	}
 
 	@Override
-	default int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+	default int receiveElectricity(ForgeDirection from, int maxReceive, boolean simulate)
 	{
-		int capacityLeft = getMaxEnergyStored(from) - getEnergyStored();
-		setEnergyStored(simulate ? getEnergyStored() : capacityLeft >= maxReceive ? getEnergyStored() + maxReceive : getMaxEnergyStored(from));
+		int capacityLeft = getElectricCapacity(from) - getElectricityStored();
+		setElectricityStored(simulate ? getElectricityStored() : capacityLeft >= maxReceive ? getElectricityStored() + maxReceive : getElectricCapacity(from));
 		return capacityLeft >= maxReceive ? maxReceive : capacityLeft;
 	}
 
 	@Override
-	default int getMaxEnergyStored(ForgeDirection from)
+	default int getElectricCapacity(ForgeDirection from)
 	{
-		return getEnergyUsage() * 20;
+		return getElectricityUsage() * 20;
 	}
 
-	abstract int getEnergyUsage();
+	abstract int getElectricityUsage();
 
-	abstract int getEnergyStored();
-
-	abstract void setEnergyStored(int energy);
+	abstract int getElectricityStored();
 
 }

@@ -2,7 +2,6 @@ package physica.nuclear.common.tile;
 
 import java.util.List;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -173,7 +173,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return stack != null && (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem : slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
+		return stack != null && (slot == SLOT_ENERGY ? ElectricityHandler.isItemElectric(stack) : slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
 	}
 
 	@Override
@@ -190,13 +190,13 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
 		return from == getFacing().getOpposite() || from == ForgeDirection.DOWN;
 	}
 
 	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return ElectricityUtilities.convertEnergy(750, Unit.WATT, Unit.RF);
 	}

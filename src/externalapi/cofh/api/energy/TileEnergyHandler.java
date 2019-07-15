@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  *
  */
+@Deprecated
 public class TileEnergyHandler extends TileEntity implements IEnergyHandler {
 
 	protected EnergyStorage storage = new EnergyStorage(32000);

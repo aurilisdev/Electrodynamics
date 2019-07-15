@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  *
  */
+@Deprecated
 public interface IEnergyProvider extends IEnergyConnection {
 
 	/**

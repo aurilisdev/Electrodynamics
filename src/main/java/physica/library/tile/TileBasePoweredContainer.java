@@ -7,13 +7,13 @@ public abstract class TileBasePoweredContainer extends TileBaseContainer impleme
 	private int energyStored;
 
 	@Override
-	public int getEnergyStored()
+	public int getElectricityStored()
 	{
 		return energyStored;
 	}
 
 	@Override
-	public void setEnergyStored(int energy)
+	public void setElectricityStored(int energy)
 	{
 		energyStored = energy;
 	}

@@ -9,6 +9,7 @@ package cofh.api.energy;
  * @author King Lemming
  *
  */
+@Deprecated
 public interface IEnergyStorage {
 
 	/**

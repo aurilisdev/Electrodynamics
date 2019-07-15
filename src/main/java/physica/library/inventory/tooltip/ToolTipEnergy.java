@@ -2,25 +2,30 @@ package physica.library.inventory.tooltip;
 
 import java.awt.Rectangle;
 
-import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.electricity.ElectricityHandler;
 
 public class ToolTipEnergy extends ToolTip {
 
-	public IEnergyReceiver reciever;
+	public TileEntity receiver;
 
-	public ToolTipEnergy(Rectangle area, IEnergyReceiver reciever) {
+	public ToolTipEnergy(Rectangle area, TileEntity receiver) {
 		super(area, "");
-		this.reciever = reciever;
+		this.receiver = receiver;
 	}
 
 	@Override
 	public String getLocalizedTooltip()
 	{
-		if (reciever.getEnergyStored(ForgeDirection.UNKNOWN) <= 0)
+		if (ElectricityHandler.isElectricReceiver(receiver))
 		{
-			return "Empty";
+			if (ElectricityHandler.getElectricityStored(receiver, ForgeDirection.UNKNOWN) <= 0)
+			{
+				return "Empty";
+			}
+			return "Stored: " + (ElectricityHandler.getElectricityStored(receiver, ForgeDirection.UNKNOWN)) / (ElectricityHandler.getElectricCapacity(receiver, ForgeDirection.UNKNOWN)) * 100 + "%";
 		}
-		return "Stored: " + reciever.getEnergyStored(ForgeDirection.UNKNOWN) / reciever.getMaxEnergyStored(ForgeDirection.UNKNOWN) * 100 + "%";
+		return "Invalid Tile";
 	}
 }

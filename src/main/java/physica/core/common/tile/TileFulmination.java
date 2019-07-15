@@ -1,26 +1,26 @@
 package physica.core.common.tile;
 
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.electricity.IElectricityHandler;
 import physica.api.core.tile.ITileBasePowered;
 import physica.core.common.event.FulminationEventHandler;
 import physica.library.tile.TileBase;
 
-public class TileFulmination extends TileBase implements ITileBasePowered, IEnergyProvider {
+public class TileFulmination extends TileBase implements ITileBasePowered, IElectricityHandler {
 
 	public static int	MAX_ENERGY_STORED	= 500000;
 	private int			energyStored;
 
 	@Override
-	public int getEnergyStored()
+	public int getElectricityStored()
 	{
 		return energyStored;
 	}
 
 	@Override
-	public void setEnergyStored(int energy)
+	public void setElectricityStored(int energy)
 	{
 		energyStored = Math.min(energy, MAX_ENERGY_STORED);
 	}
@@ -38,12 +38,11 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 			if (tile != null)
 			{
-				if (tile instanceof IEnergyReceiver)
+				if (ElectricityHandler.isElectricReceiver(tile))
 				{
-					IEnergyReceiver reciever = (IEnergyReceiver) tile;
-					if (reciever.canConnectEnergy(dir.getOpposite()))
+					if (ElectricityHandler.canConnectElectricity(tile, dir.getOpposite()))
 					{
-						energyStored -= reciever.receiveEnergy(dir.getOpposite(), Math.min(5000, energyStored), false);
+						ElectricityHandler.receiveElectricity(tile, dir.getOpposite(), Math.min(5000, energyStored), false);
 					}
 				}
 			}
@@ -51,19 +50,19 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
+	public int getElectricCapacity(ForgeDirection from)
 	{
 		return MAX_ENERGY_STORED;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
 		return true;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
 	{
 		if (!simulate)
 		{
@@ -73,21 +72,20 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IEner
 	}
 
 	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return 0;
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+	public int receiveElectricity(ForgeDirection from, int maxReceive, boolean simulate)
 	{
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from)
+	public int getElectricityStored(ForgeDirection from)
 	{
-		return ITileBasePowered.super.getEnergyStored(from);
+		return ITileBasePowered.super.getElectricityStored(from);
 	}
-
 }

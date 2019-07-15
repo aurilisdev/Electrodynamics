@@ -2,33 +2,29 @@ package physica.api.core.tile;
 
 import java.util.List;
 
-import cofh.api.energy.IEnergyContainerItem;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.electricity.ElectricityHandler;
 
 public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseContainer {
 
 	default void drainBattery(int slot)
 	{
-		if (receiveEnergy(ForgeDirection.UNKNOWN, 1, true) > 0)
+		if (receiveElectricity(ForgeDirection.UNKNOWN, 1, true) > 0)
 		{
 			ItemStack itemStack = getStackInSlot(slot);
 
-			if (itemStack != null)
+			if (ElectricityHandler.isItemElectric(itemStack))
 			{
-				if (itemStack.getItem() instanceof IEnergyContainerItem)
+				int power = ElectricityHandler.getElectricityStored(itemStack);
+				if (power > 0)
 				{
-					IEnergyContainerItem energized = (IEnergyContainerItem) itemStack.getItem();
-					int power = energized.getEnergyStored(itemStack);
-					if (power > 0)
-					{
-						power = energized.extractEnergy(itemStack, power, true);
-						energized.extractEnergy(itemStack, receiveEnergy(ForgeDirection.UNKNOWN, power, false), false);
-						setInventorySlotContents(slot, itemStack);
-					}
+					power = ElectricityHandler.extractElectricity(itemStack, power, true);
+					ElectricityHandler.extractElectricity(itemStack, receiveElectricity(ForgeDirection.UNKNOWN, power, false), false);
+					setInventorySlotContents(slot, itemStack);
 				}
 			}
 		}
@@ -68,13 +64,13 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
 	{
 		ITileBaseContainer.super.writeClientGuiPacket(dataList, player);
-		dataList.add(getEnergyStored());
+		dataList.add(getElectricityStored());
 	}
 
 	@Override
 	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
 	{
 		ITileBaseContainer.super.readClientGuiPacket(buf, player);
-		setEnergyStored(buf.readInt());
+		setElectricityStored(buf.readInt());
 	}
 }

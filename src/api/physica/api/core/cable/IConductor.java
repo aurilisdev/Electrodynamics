@@ -1,9 +1,9 @@
 package physica.api.core.cable;
 
-import cofh.api.energy.IEnergyReceiver;
+import physica.api.core.electricity.IElectricityReceiver;
 import physica.library.net.energy.EnergyNetwork;
 
-public interface IConductor extends IEnergyReceiver {
+public interface IConductor extends IElectricityReceiver {
 	public EnergyNetwork getNetwork();
 
 	public EnergyNetwork getNetwork(boolean createIfNull);

@@ -1,6 +1,5 @@
 package physica.nuclear.common.radiation;
 
-import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.items.armor.ItemHazmatArmor;
@@ -82,11 +82,10 @@ public class RadiationSystem {
 					{
 						EntityPlayer player = (EntityPlayer) base;
 						ItemStack stack = player.inventory.getCurrentItem();
-						if (stack != null && stack.getItem() instanceof IEnergyContainerItem)
+						if (ElectricityHandler.isItemElectric(stack))
 						{
-							IEnergyContainerItem item = (IEnergyContainerItem) stack.getItem();
-							int electricity = (int) (item.getMaxEnergyStored(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
-							item.extractEnergy(stack, electricity, false);
+							int electricity = (int) (ElectricityHandler.getElectricCapacity(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
+							ElectricityHandler.extractElectricity(stack, electricity, false);
 						}
 					}
 				}

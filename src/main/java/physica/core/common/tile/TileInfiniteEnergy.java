@@ -1,13 +1,13 @@
 package physica.core.common.tile;
 
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.configuration.ConfigCore;
 import physica.library.tile.TileBase;
 
-public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
+public class TileInfiniteEnergy extends TileBase implements IElectricityProvider {
 
 	public static final int VISIBLE_STORAGE = Integer.MAX_VALUE;
 
@@ -24,12 +24,11 @@ public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 			if (tile != null)
 			{
-				if (tile instanceof IEnergyReceiver)
+				if (ElectricityHandler.isElectricReceiver(tile))
 				{
-					IEnergyReceiver reciever = (IEnergyReceiver) tile;
-					if (reciever.canConnectEnergy(dir.getOpposite()))
+					if (ElectricityHandler.canConnectElectricity(tile, dir.getOpposite()))
 					{
-						reciever.receiveEnergy(dir.getOpposite(), VISIBLE_STORAGE, false);
+						ElectricityHandler.receiveElectricity(tile, dir.getOpposite(), VISIBLE_STORAGE, false);
 					}
 				}
 			}
@@ -37,25 +36,25 @@ public class TileInfiniteEnergy extends TileBase implements IEnergyProvider {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
 		return true;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
 	{
 		return maxExtract;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from)
+	public int getElectricityStored(ForgeDirection from)
 	{
 		return VISIBLE_STORAGE;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
+	public int getElectricCapacity(ForgeDirection from)
 	{
 		return VISIBLE_STORAGE;
 	}

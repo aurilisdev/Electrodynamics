@@ -79,7 +79,7 @@ public class FulminationEventHandler {
 						double electricity = Math.min(energy, energy / (distance / size));
 						electricity = Math.max(
 								electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
-						tile.setEnergyStored((int) (tile.getEnergyStored() + electricity));
+						tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));
 					}
 				}
 			}
@@ -117,7 +117,7 @@ public class FulminationEventHandler {
 							double electricity = Math.min(energy, energy / (distance / size));
 							electricity = Math.max(electricity - event.world.getBlockDensity(Vec3.createVectorHelper(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ),
 									CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(event.world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
-							tile.setEnergyStored((int) (tile.getEnergyStored() + electricity));
+							tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));
 						}
 					}
 				}

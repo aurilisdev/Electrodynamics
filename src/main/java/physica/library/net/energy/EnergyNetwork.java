@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -17,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
 import physica.api.core.cable.EnumConductorType;
 import physica.api.core.cable.IConductor;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.library.location.BlockLocation;
 import physica.library.net.EnergyNetworkRegistry;
 
@@ -84,11 +84,11 @@ public class EnergyNetwork {
 						int currentSending = sending + remaining;
 
 						remaining = 0;
-						if (acceptor instanceof IEnergyReceiver)
+						if (ElectricityHandler.isElectricReceiver(acceptor))
 						{
 							for (ForgeDirection connection : acceptorInputMap.get(acceptor))
 							{
-								energySent += ((IEnergyReceiver) acceptor).receiveEnergy(connection.getOpposite(), currentSending, false);
+								energySent += ElectricityHandler.receiveElectricity(acceptor, connection.getOpposite(), currentSending, false);
 							}
 						}
 					}
@@ -140,18 +140,14 @@ public class EnergyNetwork {
 		Set<TileEntity> toReturn = new HashSet<>();
 		for (TileEntity acceptor : acceptorSet)
 		{
-			if (acceptor instanceof IEnergyReceiver)
+			if (ElectricityHandler.isElectricReceiver(acceptor))
 			{
-				IEnergyReceiver receiver = (IEnergyReceiver) acceptor;
 				for (ForgeDirection connection : acceptorInputMap.get(acceptor))
 				{
 					ForgeDirection direction = connection.getOpposite();
-					if (receiver.canConnectEnergy(direction))
+					if (ElectricityHandler.canInputElectricityNow(acceptor, direction))
 					{
-						if (receiver.receiveEnergy(direction, Integer.MAX_VALUE, true) > 0 || receiver.getEnergyStored(direction) < receiver.getMaxEnergyStored(direction))
-						{
-							toReturn.add(acceptor);
-						}
+						toReturn.add(acceptor);
 					}
 				}
 			}
@@ -165,7 +161,7 @@ public class EnergyNetwork {
 		for (ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity acceptor = new BlockLocation(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
-			if (acceptor instanceof IEnergyReceiver && !(acceptor instanceof IConductor))
+			if (ElectricityHandler.isElectricReceiver(acceptor) && !(acceptor instanceof IConductor))
 			{
 				acceptors[orientation.ordinal()] = acceptor;
 			}

@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  *
  */
+@Deprecated
 public interface IEnergyHandler extends IEnergyProvider, IEnergyReceiver {
 
 	// merely a convenience interface (remove these methods in 1.8; provided

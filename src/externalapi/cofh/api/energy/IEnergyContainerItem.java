@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
  * @author King Lemming
  *
  */
+@Deprecated
 public interface IEnergyContainerItem {
 
 	/**

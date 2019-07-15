@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * networks Of IEnergyTransports to intelligently transfer energy to other
  * networks.
  */
+@Deprecated
 public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 
 	/**

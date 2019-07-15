@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+@SuppressWarnings("deprecation")
 public interface IElectricItem extends IEnergyContainerItem {
 	public static final String ENERGY_NBT_DATA = "Energy";
 

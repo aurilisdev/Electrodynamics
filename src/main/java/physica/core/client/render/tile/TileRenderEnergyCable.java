@@ -3,7 +3,6 @@ package physica.core.client.render.tile;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cofh.api.energy.IEnergyConnection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderHelper;
@@ -14,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.cable.EnumConductorType;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.core.common.tile.cable.TileEnergyCable;
 
 @SideOnly(Side.CLIENT)
@@ -50,7 +50,7 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity sideTile = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
-			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite()))
+			if (ElectricityHandler.canConnectElectricity(sideTile, dir.getOpposite()))
 			{
 				drawConnection(dir);
 				if (sideTile.getBlockMetadata() == meta && sideTile instanceof TileEnergyCable)

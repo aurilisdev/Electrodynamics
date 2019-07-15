@@ -2,7 +2,6 @@ package physica.nuclear.common.tile;
 
 import java.util.List;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -174,8 +174,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return slot != SLOT_OUTPUT && stack != null
-				&& (slot == SLOT_ENERGY ? stack.getItem() instanceof IEnergyContainerItem : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
+		return slot != SLOT_OUTPUT && stack != null && (slot == SLOT_ENERGY ? ElectricityHandler.isItemElectric(stack) : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
 	}
 
 	@Override
@@ -192,13 +191,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
-	{
-		return true;
-	}
-
-	@Override
-	public int getEnergyUsage()
+	public int getElectricityUsage()
 	{
 		return ElectricityUtilities.convertEnergy(750, Unit.WATT, Unit.RF);
 	}

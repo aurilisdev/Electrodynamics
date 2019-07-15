@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author King Lemming
  *
  */
+@Deprecated
 public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
 	protected int	capacity;

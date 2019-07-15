@@ -3,7 +3,6 @@ package physica.core.common.block;
 import java.awt.Color;
 import java.util.List;
 
-import cofh.api.energy.IEnergyConnection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -24,6 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.cable.EnumConductorType;
 import physica.api.core.cable.IConductor;
+import physica.api.core.electricity.ElectricityHandler;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
@@ -96,7 +96,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity sideTile = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-			if (sideTile instanceof IEnergyConnection && ((IEnergyConnection) sideTile).canConnectEnergy(dir.getOpposite()))
+			if (ElectricityHandler.canConnectElectricity(sideTile, dir.getOpposite()))
 			{
 				switch (dir) {
 				case DOWN:
