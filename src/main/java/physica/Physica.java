@@ -34,7 +34,7 @@ import physica.library.net.energy.EnergyNetwork;
 import physica.library.network.netty.PacketSystem;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
-import physica.proxy.sided.CommonProxy;
+import physica.proxy.CommonProxy;
 
 @Mod(modid = CoreReferences.DOMAIN, name = CoreReferences.NAME, version = CoreReferences.VERSION)
 public class Physica {

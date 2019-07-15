@@ -31,7 +31,7 @@ import physica.nuclear.common.NuclearWorldGenRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.radiation.RoentgenOverlay;
-import physica.proxy.sided.CommonProxy;
+import physica.proxy.CommonProxy;
 
 @Mod(modid = NuclearReferences.DOMAIN, name = NuclearReferences.NAME, version = CoreReferences.VERSION, dependencies = "required-after:" + CoreReferences.DOMAIN)
 public class PhysicaNuclearPhysics {

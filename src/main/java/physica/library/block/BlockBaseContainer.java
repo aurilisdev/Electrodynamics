@@ -14,7 +14,7 @@ import physica.Physica;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.misc.IRotatable;
 import physica.core.common.event.WrenchEventHandler;
-import physica.proxy.sided.CommonProxy;
+import physica.proxy.CommonProxy;
 
 public abstract class BlockBaseContainer extends BlockRotatable {
 

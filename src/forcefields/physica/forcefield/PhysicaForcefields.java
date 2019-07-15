@@ -33,7 +33,7 @@ import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.recipe.IRecipeRegister;
 import physica.library.recipe.RecipeSide;
-import physica.proxy.sided.CommonProxy;
+import physica.proxy.CommonProxy;
 
 @Mod(modid = ForcefieldReferences.DOMAIN, name = ForcefieldReferences.NAME, version = CoreReferences.VERSION, dependencies = "required-after:" + CoreReferences.DOMAIN)
 public class PhysicaForcefields {

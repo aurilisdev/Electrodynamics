@@ -1,4 +1,4 @@
-package physica.proxy.sided;
+package physica.proxy;
 
 public class ServerProxy extends CommonProxy {
 }

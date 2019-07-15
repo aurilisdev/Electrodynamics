@@ -1,4 +1,4 @@
-package physica.proxy.sided;
+package physica.proxy;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
