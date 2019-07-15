@@ -27,7 +27,7 @@ public class CoreItemRegister implements IContent {
 		GameRegistry.registerItem(itemEmptyCell = (ItemInformationHolder) new ItemInformationHolder("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
 		GameRegistry.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
 		GameRegistry.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
-		GameRegistry.registerItem(itemMetaIngot = new ItemMetaHolder("ingotTin").addSubItem("ingotCopper").addSubItem("ingotSteel").addSubItem("ingotLead").addSubItem("ingotSilver").addSubItem("ingotSuperConductive"), "item.metaIngot");
+		GameRegistry.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"), "item.metaIngot");
 		GameRegistry.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive"), "item.metaBlend");
 		GameRegistry.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
 		GameRegistry.registerItem(itemMotor = (ItemInformationHolder) new ItemInformationHolder("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
