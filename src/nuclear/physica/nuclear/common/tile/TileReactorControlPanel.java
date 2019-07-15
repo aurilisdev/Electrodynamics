@@ -11,16 +11,12 @@ import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.IGuiInterface;
-import physica.api.core.ITileBasePowered;
-import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Unit;
 import physica.library.inventory.ContainerBase;
 import physica.library.tile.TileBaseRotateable;
 import physica.nuclear.client.gui.GuiReactorControlPanel;
 
-public class TileReactorControlPanel extends TileBaseRotateable implements ITileBasePowered, IGuiInterface {
+public class TileReactorControlPanel extends TileBaseRotateable implements IGuiInterface {
 
-	private int						energyStored;
 	public TileFissionReactor		reactor;
 	public TileInsertableControlRod	rod;
 
@@ -84,29 +80,5 @@ public class TileReactorControlPanel extends TileBaseRotateable implements ITile
 	public Container getServerGuiElement(int id, EntityPlayer player)
 	{
 		return new ContainerBase<>(player, this, null);
-	}
-
-	@Override
-	public int getEnergyStored()
-	{
-		return energyStored;
-	}
-
-	@Override
-	public void setEnergyStored(int energy)
-	{
-		energyStored = energy;
-	}
-
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
-	{
-		return false;
-	}
-
-	@Override
-	public int getEnergyUsage()
-	{
-		return ElectricityUtilities.convertEnergy(450, Unit.WATT, Unit.RF);
 	}
 }

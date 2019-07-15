@@ -20,10 +20,6 @@ public class ElectricityDisplay implements IBaseUtilities {
 		{
 			return value + " " + unitName;
 		}
-		if (value <= Measurement.MILLI.value)
-		{
-			return IBaseUtilities.roundPreciseStatic(Measurement.MICRO.process(value), decimalPlaces) + " " + Measurement.MICRO.getName(isShort) + unitName;
-		}
 		if (value < 1.0D)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MILLI.process(value), decimalPlaces) + " " + Measurement.MILLI.getName(isShort) + unitName;

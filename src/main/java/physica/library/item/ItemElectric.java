@@ -63,7 +63,7 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	@Override
 	public boolean showDurabilityBar(ItemStack stack)
 	{
-		return true;
+		return getEnergyStored(stack) < getMaxEnergyStored(stack);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List info, boolean par4)
 	{
 		super.addInformation(stack, player, info, par4);
-		info.add(EnumChatFormatting.AQUA + "Energy Stored: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getEnergyStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
+		info.add(EnumChatFormatting.AQUA + "Power Stored: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(getEnergyStored(stack), Unit.RF, Unit.WATT), Unit.WATT));
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class ItemElectric extends Item implements IEnergyContainerItem {
 
 		int energyStored = (int) Math.max(Math.min(amount, getMaxEnergyStored(container)), 0.0D);
 		container.stackTagCompound.setInteger(ENERGY_NBT_DATA, energyStored);
-		container.setItemDamage((int) Math.max(1, Math.abs(energyStored / (float) getMaxEnergyStored(container) * 100 - 100)));
+		container.setItemDamage((int) Math.max(0, Math.abs(energyStored / (float) getMaxEnergyStored(container) * 100 - 100)));
 	}
 
 	@Override

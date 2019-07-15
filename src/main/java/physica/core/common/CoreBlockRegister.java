@@ -61,10 +61,9 @@ public class CoreBlockRegister implements IContent {
 		GameRegistry.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
 		GameRegistry.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
 		GameRegistry.registerBlock(blockCopperOre = new BlockOre("copperOre", ConfigCore.COPPER_ORE_HARVEST_LEVEL), "copperOre");
-		GameRegistry.registerBlock(blockLead = new BlockLead(), "blockLead");
 		GameRegistry.registerBlock(blockLeadOre = new BlockOre("leadOre", ConfigCore.LEAD_ORE_HARVEST_LEVEL), "leadOre");
 		GameRegistry.registerBlock(blockSilverOre = new BlockOre("silverOre", ConfigCore.SILVER_ORE_HARVEST_LEVEL), "silverOre");
-
+		GameRegistry.registerBlock(blockLead = new BlockLead(), "blockLead");
 		OreDictionary.registerOre("oreLead", blockLeadOre);
 		OreDictionary.registerOre("oreTin", blockTinOre);
 		OreDictionary.registerOre("oreCopper", blockCopperOre);

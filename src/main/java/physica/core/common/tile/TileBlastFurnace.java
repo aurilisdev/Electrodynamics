@@ -21,7 +21,7 @@ import physica.library.tile.TileBaseContainer;
 
 public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface {
 
-	public static final int		TOTAL_BURN_TIME			= 500;
+	public static final int		TOTAL_BURN_TIME			= 200;
 
 	public static final int		SLOT_INPUT				= 0;
 	public static final int		SLOT_INPUTFUEL			= 1;

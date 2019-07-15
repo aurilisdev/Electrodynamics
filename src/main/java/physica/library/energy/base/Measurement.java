@@ -1,7 +1,7 @@
 package physica.library.energy.base;
 
 public enum Measurement {
-	MICRO("Micro", "µ", 1.0E-6D), MILLI("Milli", "m", 0.001D), KILO("Kilo", "k", 1E3), MEGA("Mega", "M", 1.0E6), GIGA("Giga", "G", 1.0E9);
+	MILLI("Milli", "m", 0.001D), KILO("Kilo", "k", 1E3), MEGA("Mega", "M", 1.0E6), GIGA("Giga", "G", 1.0E9);
 
 	public String	name;
 	public String	symbol;
