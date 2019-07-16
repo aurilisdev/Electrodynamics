@@ -36,7 +36,7 @@ import physica.proxy.CommonProxy;
 @Mod(modid = NuclearReferences.DOMAIN, name = NuclearReferences.NAME, version = CoreReferences.VERSION, dependencies = "required-after:" + CoreReferences.DOMAIN)
 public class PhysicaNuclearPhysics {
 
-	@SidedProxy(clientSide = "physica.proxy.sided.ClientProxy", serverSide = "physica.proxy.sided.ServerProxy")
+	@SidedProxy(clientSide = "physica.proxy.ClientProxy", serverSide = "physica.proxy.ServerProxy")
 	public static CommonProxy			sidedProxy;
 	public static ContentLoader			proxyLoader	= new ContentLoader();
 

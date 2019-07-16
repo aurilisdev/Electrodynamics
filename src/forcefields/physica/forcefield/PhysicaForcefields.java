@@ -38,7 +38,7 @@ import physica.proxy.CommonProxy;
 @Mod(modid = ForcefieldReferences.DOMAIN, name = ForcefieldReferences.NAME, version = CoreReferences.VERSION, dependencies = "required-after:" + CoreReferences.DOMAIN)
 public class PhysicaForcefields {
 
-	@SidedProxy(clientSide = "physica.proxy.sided.ClientProxy", serverSide = "physica.proxy.sided.ServerProxy")
+	@SidedProxy(clientSide = "physica.proxy.ClientProxy", serverSide = "physica.proxy.ServerProxy")
 	public static CommonProxy			sidedProxy;
 	public static ContentLoader			proxyLoader		= new ContentLoader();
 
