@@ -1,7 +1,7 @@
 package physica.library.energy.base;
 
 public enum Unit {
-	RF(1.0, "Redstone Flux", "RF", ""), JOULES(0.4, "Joule", "J"), WATT(0.4, "Watt", "W");
+	RF(1.0, "Redstone Flux", "RF", ""), JOULES(2.5, "Joule", "J"), WATT(1, "Watt", "W"), WATTTICK(1, "WattTick", "Wt"), WATTSECOND(1.0 / 20.0, "WattSecond", "Ws"), WATTHOUR(1.0 / (20.0 * 60.0 * 60.0), "WattHour", "Wh");
 
 	public String	name;
 	public String	symbol;

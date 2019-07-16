@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -174,7 +174,8 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return slot != SLOT_OUTPUT && stack != null && (slot == SLOT_ENERGY ? ElectricityHandler.isItemElectric(stack) : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
+		return slot != SLOT_OUTPUT && stack != null
+				&& (slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
 	}
 
 	@Override

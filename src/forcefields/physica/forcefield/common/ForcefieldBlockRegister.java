@@ -1,6 +1,6 @@
 package physica.forcefield.common;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.forcefield.ForcefieldReferences;
@@ -31,18 +31,18 @@ public class ForcefieldBlockRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry.registerBlock(blockCoercionDriver = new BlockCoercionDriver(), "coercionDriver");
-			GameRegistry.registerTileEntity(TileCoercionDriver.class, ForcefieldReferences.PREFIX + "coercionDriver");
-			GameRegistry.registerBlock(blockFortronConstructor = new BlockFortronFieldConstructor(), "fortronConstructor");
-			GameRegistry.registerTileEntity(TileFortronFieldConstructor.class, ForcefieldReferences.PREFIX + "fortronConstructor");
-			GameRegistry.registerBlock(blockFortronCapacitor = new BlockFortronCapacitor(), "fortronCapacitor");
-			GameRegistry.registerTileEntity(TileFortronCapacitor.class, ForcefieldReferences.PREFIX + "fortronCapacitor");
-			GameRegistry.registerBlock(blockInterdictionMatrix = new BlockInterdictionMatrix(), "interdictionMatrix");
-			GameRegistry.registerTileEntity(TileInterdictionMatrix.class, ForcefieldReferences.PREFIX + "interdictionMatrix");
-			GameRegistry.registerBlock(blockBiometricIdentifier = new BlockBiometricIdentifier(), "biometricIdentifier");
-			GameRegistry.registerTileEntity(TileBiometricIdentifier.class, ForcefieldReferences.PREFIX + "biometricIdentifier");
-			GameRegistry.registerBlock(blockFortronField = new BlockFortronField(), "fortronField");
-			GameRegistry.registerTileEntity(TileFortronField.class, ForcefieldReferences.PREFIX + "fortronField");
+			AbstractionLayer.Registering.registerBlock(blockCoercionDriver = new BlockCoercionDriver(), "coercionDriver");
+			AbstractionLayer.Registering.registerTileEntity(TileCoercionDriver.class, ForcefieldReferences.PREFIX + "coercionDriver");
+			AbstractionLayer.Registering.registerBlock(blockFortronConstructor = new BlockFortronFieldConstructor(), "fortronConstructor");
+			AbstractionLayer.Registering.registerTileEntity(TileFortronFieldConstructor.class, ForcefieldReferences.PREFIX + "fortronConstructor");
+			AbstractionLayer.Registering.registerBlock(blockFortronCapacitor = new BlockFortronCapacitor(), "fortronCapacitor");
+			AbstractionLayer.Registering.registerTileEntity(TileFortronCapacitor.class, ForcefieldReferences.PREFIX + "fortronCapacitor");
+			AbstractionLayer.Registering.registerBlock(blockInterdictionMatrix = new BlockInterdictionMatrix(), "interdictionMatrix");
+			AbstractionLayer.Registering.registerTileEntity(TileInterdictionMatrix.class, ForcefieldReferences.PREFIX + "interdictionMatrix");
+			AbstractionLayer.Registering.registerBlock(blockBiometricIdentifier = new BlockBiometricIdentifier(), "biometricIdentifier");
+			AbstractionLayer.Registering.registerTileEntity(TileBiometricIdentifier.class, ForcefieldReferences.PREFIX + "biometricIdentifier");
+			AbstractionLayer.Registering.registerBlock(blockFortronField = new BlockFortronField(), "fortronField");
+			AbstractionLayer.Registering.registerTileEntity(TileFortronField.class, ForcefieldReferences.PREFIX + "fortronField");
 		}
 	}
 }

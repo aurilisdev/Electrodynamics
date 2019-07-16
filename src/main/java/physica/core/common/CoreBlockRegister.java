@@ -2,9 +2,8 @@ package physica.core.common;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import physica.CoreReferences;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.cable.EnumConductorType;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
@@ -41,12 +40,12 @@ public class CoreBlockRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), "infEnergy");
-			GameRegistry.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
-			GameRegistry.registerBlock(blockFulmination = new BlockFulmination(), "fulmination");
-			GameRegistry.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
-			GameRegistry.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), "blastFurnace");
-			GameRegistry.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
+			AbstractionLayer.Registering.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), "infEnergy");
+			AbstractionLayer.Registering.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
+			AbstractionLayer.Registering.registerBlock(blockFulmination = new BlockFulmination(), "fulmination");
+			AbstractionLayer.Registering.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
+			AbstractionLayer.Registering.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), "blastFurnace");
+			AbstractionLayer.Registering.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
 
 			HashMap<Integer, String[]> instanceMap = new HashMap<>();
 			for (EnumConductorType en : EnumConductorType.values())
@@ -60,17 +59,17 @@ public class CoreBlockRegister implements IContent {
 				}
 			}
 			ItemBlockMetadata.descriptionMap.put(blockCable = new BlockEnergyCable(), instanceMap);
-			GameRegistry.registerBlock(blockCable, ItemBlockMetadata.class, "energyCable");
-			GameRegistry.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
-			GameRegistry.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
-			GameRegistry.registerBlock(blockCopperOre = new BlockOre("copperOre", ConfigCore.COPPER_ORE_HARVEST_LEVEL), "copperOre");
-			GameRegistry.registerBlock(blockLeadOre = new BlockOre("leadOre", ConfigCore.LEAD_ORE_HARVEST_LEVEL), "leadOre");
-			GameRegistry.registerBlock(blockSilverOre = new BlockOre("silverOre", ConfigCore.SILVER_ORE_HARVEST_LEVEL), "silverOre");
-			GameRegistry.registerBlock(blockLead = new BlockLead(), "blockLead");
-			OreDictionary.registerOre("oreLead", blockLeadOre);
-			OreDictionary.registerOre("oreTin", blockTinOre);
-			OreDictionary.registerOre("oreCopper", blockCopperOre);
-			OreDictionary.registerOre("oreSilver", blockCopperOre);
+			AbstractionLayer.Registering.registerBlock(blockCable, ItemBlockMetadata.class, "energyCable");
+			AbstractionLayer.Registering.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
+			AbstractionLayer.Registering.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
+			AbstractionLayer.Registering.registerBlock(blockCopperOre = new BlockOre("copperOre", ConfigCore.COPPER_ORE_HARVEST_LEVEL), "copperOre");
+			AbstractionLayer.Registering.registerBlock(blockLeadOre = new BlockOre("leadOre", ConfigCore.LEAD_ORE_HARVEST_LEVEL), "leadOre");
+			AbstractionLayer.Registering.registerBlock(blockSilverOre = new BlockOre("silverOre", ConfigCore.SILVER_ORE_HARVEST_LEVEL), "silverOre");
+			AbstractionLayer.Registering.registerBlock(blockLead = new BlockLead(), "blockLead");
+			AbstractionLayer.Registering.registerOre("oreLead", blockLeadOre);
+			AbstractionLayer.Registering.registerOre("oreTin", blockTinOre);
+			AbstractionLayer.Registering.registerOre("oreCopper", blockCopperOre);
+			AbstractionLayer.Registering.registerOre("oreSilver", blockCopperOre);
 		}
 	}
 }

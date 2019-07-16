@@ -131,6 +131,9 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 					}
 				}
 			}
+		}
+		if (isServer() ? ticks % 5 == 0 : true)
+		{
 			double tempScale = temperature / 300.0;
 			double dRadius = isIncased ? Math.min(tempScale, radius) : tempScale;
 			@SuppressWarnings("unchecked")
@@ -144,6 +147,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
+
 		if (ticks % 4 == 0)
 		{
 			produceSteam();

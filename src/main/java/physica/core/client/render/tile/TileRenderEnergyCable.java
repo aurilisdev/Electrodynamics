@@ -12,8 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.cable.EnumConductorType;
-import physica.api.core.electricity.ElectricityHandler;
 import physica.core.common.tile.cable.TileEnergyCable;
 
 @SideOnly(Side.CLIENT)
@@ -50,7 +50,7 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity sideTile = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
-			if (ElectricityHandler.canConnectElectricity(sideTile, dir.getOpposite()))
+			if (AbstractionLayer.Electricity.canConnectElectricity(sideTile, dir.getOpposite()))
 			{
 				drawConnection(dir);
 				if (sideTile.getBlockMetadata() == meta && sideTile instanceof TileEnergyCable)

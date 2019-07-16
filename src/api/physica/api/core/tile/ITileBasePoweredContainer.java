@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 
 public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseContainer {
 
@@ -17,13 +17,13 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 		{
 			ItemStack itemStack = getStackInSlot(slot);
 
-			if (ElectricityHandler.isItemElectric(itemStack))
+			if (AbstractionLayer.Electricity.isItemElectric(itemStack))
 			{
-				int power = ElectricityHandler.getElectricityStored(itemStack);
+				int power = AbstractionLayer.Electricity.getElectricityStored(itemStack);
 				if (power > 0)
 				{
-					power = ElectricityHandler.extractElectricity(itemStack, power, true);
-					ElectricityHandler.extractElectricity(itemStack, receiveElectricity(ForgeDirection.UNKNOWN, power, false), false);
+					power = AbstractionLayer.Electricity.extractElectricity(itemStack, power, true);
+					AbstractionLayer.Electricity.extractElectricity(itemStack, receiveElectricity(ForgeDirection.UNKNOWN, power, false), false);
 					setInventorySlotContents(slot, itemStack);
 				}
 			}

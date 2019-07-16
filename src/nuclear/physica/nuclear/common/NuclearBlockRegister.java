@@ -1,8 +1,7 @@
 package physica.nuclear.common;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.library.item.ItemBlockMetadata;
@@ -74,51 +73,51 @@ public class NuclearBlockRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry.registerBlock(blockParticleAccelerator = new BlockParticleAccelerator(), "accelerator");
-			GameRegistry.registerTileEntity(TileParticleAccelerator.class, NuclearReferences.PREFIX + "accelerator");
-			GameRegistry.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), "assembler");
-			GameRegistry.registerTileEntity(TileQuantumAssembler.class, NuclearReferences.PREFIX + "assembler");
-			GameRegistry.registerBlock(blockCentrifuge = new BlockGasCentrifuge(), "centrifuge");
-			GameRegistry.registerTileEntity(TileGasCentrifuge.class, NuclearReferences.PREFIX + "centrifuge");
-			GameRegistry.registerBlock(blockChemicalBoiler = new BlockChemicalBoiler(), "chemicalBoiler");
-			GameRegistry.registerTileEntity(TileChemicalBoiler.class, NuclearReferences.PREFIX + "chemicalBoiler");
-			GameRegistry.registerBlock(blockChemicalExtractor = new BlockChemicalExtractor(), "chemicalExtractor");
-			GameRegistry.registerTileEntity(TileChemicalExtractor.class, NuclearReferences.PREFIX + "chemicalExtractor");
-			GameRegistry.registerBlock(blockFissionReactor = new BlockFissionReactor(), "fissionReactor");
-			GameRegistry.registerTileEntity(TileFissionReactor.class, NuclearReferences.PREFIX + "fissionReactor");
-			GameRegistry.registerBlock(blockNeutronCaptureChamber = new BlockNeutronCaptureChamber(), "neutronCaptureChamber");
-			GameRegistry.registerTileEntity(TileNeutronCaptureChamber.class, NuclearReferences.PREFIX + "neutronCaptureChamber");
-			GameRegistry.registerBlock(blockThermometer = new BlockThermometer(), "thermometer");
-			GameRegistry.registerBlock(blockControlRod = new BlockControlRod(), "controlRod");
-			GameRegistry.registerBlock(blockUraniumOre = new BlockUraniumOre(), "uraniumOre");
-			GameRegistry.registerBlock(blockFusionReactor = new BlockFusionReactor(), "fusionReactor");
-			GameRegistry.registerTileEntity(TileFusionReactor.class, NuclearReferences.PREFIX + "fusionReactor");
-			GameRegistry.registerBlock(blockTurbine = new BlockTurbine(), "turbine");
-			GameRegistry.registerTileEntity(TileTurbine.class, NuclearReferences.PREFIX + "turbine");
-			GameRegistry.registerBlock(blockElectromagnet = new BlockElectromagnet(), ItemBlockMetadata.class, "electromagnet");
-			GameRegistry.registerBlock(blockPlasma = new BlockPlasma(), "plasma");
-			GameRegistry.registerTileEntity(TilePlasma.class, NuclearReferences.PREFIX + "plasma");
-			GameRegistry.registerBlock(blockSiren = new BlockSiren(), "siren");
-			GameRegistry.registerTileEntity(TileSiren.class, NuclearReferences.PREFIX + "siren");
+			AbstractionLayer.Registering.registerBlock(blockParticleAccelerator = new BlockParticleAccelerator(), "accelerator");
+			AbstractionLayer.Registering.registerTileEntity(TileParticleAccelerator.class, NuclearReferences.PREFIX + "accelerator");
+			AbstractionLayer.Registering.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), "assembler");
+			AbstractionLayer.Registering.registerTileEntity(TileQuantumAssembler.class, NuclearReferences.PREFIX + "assembler");
+			AbstractionLayer.Registering.registerBlock(blockCentrifuge = new BlockGasCentrifuge(), "centrifuge");
+			AbstractionLayer.Registering.registerTileEntity(TileGasCentrifuge.class, NuclearReferences.PREFIX + "centrifuge");
+			AbstractionLayer.Registering.registerBlock(blockChemicalBoiler = new BlockChemicalBoiler(), "chemicalBoiler");
+			AbstractionLayer.Registering.registerTileEntity(TileChemicalBoiler.class, NuclearReferences.PREFIX + "chemicalBoiler");
+			AbstractionLayer.Registering.registerBlock(blockChemicalExtractor = new BlockChemicalExtractor(), "chemicalExtractor");
+			AbstractionLayer.Registering.registerTileEntity(TileChemicalExtractor.class, NuclearReferences.PREFIX + "chemicalExtractor");
+			AbstractionLayer.Registering.registerBlock(blockFissionReactor = new BlockFissionReactor(), "fissionReactor");
+			AbstractionLayer.Registering.registerTileEntity(TileFissionReactor.class, NuclearReferences.PREFIX + "fissionReactor");
+			AbstractionLayer.Registering.registerBlock(blockNeutronCaptureChamber = new BlockNeutronCaptureChamber(), "neutronCaptureChamber");
+			AbstractionLayer.Registering.registerTileEntity(TileNeutronCaptureChamber.class, NuclearReferences.PREFIX + "neutronCaptureChamber");
+			AbstractionLayer.Registering.registerBlock(blockThermometer = new BlockThermometer(), "thermometer");
+			AbstractionLayer.Registering.registerBlock(blockControlRod = new BlockControlRod(), "controlRod");
+			AbstractionLayer.Registering.registerBlock(blockUraniumOre = new BlockUraniumOre(), "uraniumOre");
+			AbstractionLayer.Registering.registerBlock(blockFusionReactor = new BlockFusionReactor(), "fusionReactor");
+			AbstractionLayer.Registering.registerTileEntity(TileFusionReactor.class, NuclearReferences.PREFIX + "fusionReactor");
+			AbstractionLayer.Registering.registerBlock(blockTurbine = new BlockTurbine(), "turbine");
+			AbstractionLayer.Registering.registerTileEntity(TileTurbine.class, NuclearReferences.PREFIX + "turbine");
+			AbstractionLayer.Registering.registerBlock(blockElectromagnet = new BlockElectromagnet(), ItemBlockMetadata.class, "electromagnet");
+			AbstractionLayer.Registering.registerBlock(blockPlasma = new BlockPlasma(), "plasma");
+			AbstractionLayer.Registering.registerTileEntity(TilePlasma.class, NuclearReferences.PREFIX + "plasma");
+			AbstractionLayer.Registering.registerBlock(blockSiren = new BlockSiren(), "siren");
+			AbstractionLayer.Registering.registerTileEntity(TileSiren.class, NuclearReferences.PREFIX + "siren");
 
-			GameRegistry.registerBlock(blockInsertableControlRod = new BlockInsertableControlRod(), "insertableControlRod");
-			GameRegistry.registerTileEntity(TileInsertableControlRod.class, NuclearReferences.PREFIX + "insertableControlRod");
+			AbstractionLayer.Registering.registerBlock(blockInsertableControlRod = new BlockInsertableControlRod(), "insertableControlRod");
+			AbstractionLayer.Registering.registerTileEntity(TileInsertableControlRod.class, NuclearReferences.PREFIX + "insertableControlRod");
 
-			GameRegistry.registerBlock(blockReactorControlPanel = new BlockReactorControlPanel(), "reactorControlPanel");
-			GameRegistry.registerTileEntity(TileReactorControlPanel.class, NuclearReferences.PREFIX + "reactorControlPanel");
+			AbstractionLayer.Registering.registerBlock(blockReactorControlPanel = new BlockReactorControlPanel(), "reactorControlPanel");
+			AbstractionLayer.Registering.registerTileEntity(TileReactorControlPanel.class, NuclearReferences.PREFIX + "reactorControlPanel");
 
-			GameRegistry.registerBlock(blockMeltedReactor = new BlockMeltedReactor(), "meltedReactor");
-			GameRegistry.registerTileEntity(TileMeltedReactor.class, NuclearReferences.PREFIX + "meltedReactor");
+			AbstractionLayer.Registering.registerBlock(blockMeltedReactor = new BlockMeltedReactor(), "meltedReactor");
+			AbstractionLayer.Registering.registerTileEntity(TileMeltedReactor.class, NuclearReferences.PREFIX + "meltedReactor");
 
-			GameRegistry.registerBlock(blockRadioactiveGrass = new BlockRadioactiveGrass(), "radioactiveGrass");
-			GameRegistry.registerBlock(blockRadioactiveStone = new BlockRadioactiveStone(), "radioactiveStone");
-			GameRegistry.registerBlock(blockRadioactiveDirt = new BlockRadioactiveDirt(), "radioactiveDirt");
+			AbstractionLayer.Registering.registerBlock(blockRadioactiveGrass = new BlockRadioactiveGrass(), "radioactiveGrass");
+			AbstractionLayer.Registering.registerBlock(blockRadioactiveStone = new BlockRadioactiveStone(), "radioactiveStone");
+			AbstractionLayer.Registering.registerBlock(blockRadioactiveDirt = new BlockRadioactiveDirt(), "radioactiveDirt");
 
-			OreDictionary.registerOre("oreUraniumPhysica", blockUraniumOre);
-			OreDictionary.registerOre("blockRadioactive", new ItemStack(blockRadioactiveDirt, 1, 15));
-			OreDictionary.registerOre("blockRadioactiveDirt", new ItemStack(blockRadioactiveDirt, 1, 15));
-			OreDictionary.registerOre("blockRadioactiveStone", new ItemStack(blockRadioactiveStone, 1, 15));
-			OreDictionary.registerOre("blockRadioactiveGrass", new ItemStack(blockRadioactiveGrass, 1, 15));
+			AbstractionLayer.Registering.registerOre("oreUraniumPhysica", blockUraniumOre);
+			AbstractionLayer.Registering.registerOre("blockRadioactive", new ItemStack(blockRadioactiveDirt, 1, 15));
+			AbstractionLayer.Registering.registerOre("blockRadioactiveDirt", new ItemStack(blockRadioactiveDirt, 1, 15));
+			AbstractionLayer.Registering.registerOre("blockRadioactiveStone", new ItemStack(blockRadioactiveStone, 1, 15));
+			AbstractionLayer.Registering.registerOre("blockRadioactiveGrass", new ItemStack(blockRadioactiveGrass, 1, 15));
 		}
 	}
 }

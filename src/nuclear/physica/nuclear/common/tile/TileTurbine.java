@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -173,13 +173,13 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 				receiver = null;
 			}
 			TileEntity above = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-			if (ElectricityHandler.isElectricReceiver(above))
+			if (AbstractionLayer.Electricity.isElectricReceiver(above))
 			{
 				receiver = above;
 			}
 		} else
 		{
-			energyStored -= ElectricityHandler.receiveElectricity(receiver, ForgeDirection.DOWN, energyStored, false);
+			energyStored -= AbstractionLayer.Electricity.receiveElectricity(receiver, ForgeDirection.DOWN, energyStored, false);
 		}
 		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain))
 		{

@@ -14,9 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.cable.EnumConductorType;
 import physica.api.core.cable.IConductor;
-import physica.api.core.electricity.ElectricityHandler;
 import physica.library.location.BlockLocation;
 import physica.library.net.EnergyNetworkRegistry;
 
@@ -84,11 +84,11 @@ public class EnergyNetwork {
 						int currentSending = sending + remaining;
 
 						remaining = 0;
-						if (ElectricityHandler.isElectricReceiver(acceptor))
+						if (AbstractionLayer.Electricity.isElectricReceiver(acceptor))
 						{
 							for (ForgeDirection connection : acceptorInputMap.get(acceptor))
 							{
-								energySent += ElectricityHandler.receiveElectricity(acceptor, connection.getOpposite(), currentSending, false);
+								energySent += AbstractionLayer.Electricity.receiveElectricity(acceptor, connection.getOpposite(), currentSending, false);
 							}
 						}
 					}
@@ -140,12 +140,12 @@ public class EnergyNetwork {
 		Set<TileEntity> toReturn = new HashSet<>();
 		for (TileEntity acceptor : acceptorSet)
 		{
-			if (ElectricityHandler.isElectricReceiver(acceptor))
+			if (AbstractionLayer.Electricity.isElectricReceiver(acceptor))
 			{
 				for (ForgeDirection connection : acceptorInputMap.get(acceptor))
 				{
 					ForgeDirection direction = connection.getOpposite();
-					if (ElectricityHandler.canInputElectricityNow(acceptor, direction))
+					if (AbstractionLayer.Electricity.canInputElectricityNow(acceptor, direction))
 					{
 						toReturn.add(acceptor);
 					}
@@ -161,7 +161,7 @@ public class EnergyNetwork {
 		for (ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
 		{
 			TileEntity acceptor = new BlockLocation(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
-			if (ElectricityHandler.isElectricReceiver(acceptor) && !(acceptor instanceof IConductor))
+			if (AbstractionLayer.Electricity.isElectricReceiver(acceptor) && !(acceptor instanceof IConductor))
 			{
 				acceptors[orientation.ordinal()] = acceptor;
 			}

@@ -2,7 +2,7 @@ package physica.core.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.electricity.IElectricityHandler;
 import physica.api.core.tile.ITileBasePowered;
 import physica.core.common.event.FulminationEventHandler;
@@ -38,11 +38,11 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 			if (tile != null)
 			{
-				if (ElectricityHandler.isElectricReceiver(tile))
+				if (AbstractionLayer.Electricity.isElectricReceiver(tile))
 				{
-					if (ElectricityHandler.canConnectElectricity(tile, dir.getOpposite()))
+					if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite()))
 					{
-						ElectricityHandler.receiveElectricity(tile, dir.getOpposite(), Math.min(5000, energyStored), false);
+						AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), Math.min(5000, energyStored), false);
 					}
 				}
 			}

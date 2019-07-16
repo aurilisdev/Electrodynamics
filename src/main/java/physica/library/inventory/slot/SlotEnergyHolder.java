@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.library.client.gui.GuiContainerBase;
 import physica.library.inventory.tooltip.IToolTipContainer;
 import physica.library.inventory.tooltip.ToolTip;
@@ -28,7 +28,7 @@ public class SlotEnergyHolder extends SlotBase implements IRenderableSlot, ITool
 	@Override
 	public boolean isItemValid(ItemStack stack)
 	{
-		return ElectricityHandler.isItemElectric(stack);
+		return AbstractionLayer.Electricity.isItemElectric(stack);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package physica.core.common;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.core.common.items.ItemBattery;
@@ -27,15 +26,16 @@ public class CoreItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry.registerItem(itemEmptyCell = (ItemInformationHolder) new ItemInformationHolder("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
-			GameRegistry.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
-			GameRegistry.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
-			GameRegistry.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"), "item.metaIngot");
-			GameRegistry.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive"), "item.metaBlend");
-			GameRegistry.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
-			GameRegistry.registerItem(itemMotor = (ItemInformationHolder) new ItemInformationHolder("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
-			GameRegistry.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());
-			GameRegistry.registerItem(itemMultimeter = new ItemMultimeter(), itemMultimeter.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemEmptyCell = (ItemInformationHolder) new ItemInformationHolder("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
+			AbstractionLayer.Registering.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
+			AbstractionLayer.Registering.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"),
+					"item.metaIngot");
+			AbstractionLayer.Registering.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive"), "item.metaBlend");
+			AbstractionLayer.Registering.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemMotor = (ItemInformationHolder) new ItemInformationHolder("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemMultimeter = new ItemMultimeter(), itemMultimeter.getUnlocalizedName());
 			itemMetaPlate.addOreDictionaryInput("plateIron", 0);
 			itemMetaPlate.addOreDictionaryInput("plateSteel", 1);
 			itemMetaPlate.addOreDictionaryInput("plateLead", 2);
@@ -50,7 +50,7 @@ public class CoreItemRegister implements IContent {
 			itemMetaCircuit.addOreDictionaryInput("circuitAdvanced", 1);
 			itemMetaCircuit.addOreDictionaryInput("circuitElite", 2);
 			itemMotor.addOreDictionaryInput("motor", 0);
-			OreDictionary.registerOre("phyBattery", CoreItemRegister.itemBattery);
+			AbstractionLayer.Registering.registerOre("phyBattery", CoreItemRegister.itemBattery);
 		}
 	}
 }

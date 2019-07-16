@@ -2,7 +2,7 @@ package physica.core.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.configuration.ConfigCore;
 import physica.library.tile.TileBase;
@@ -24,11 +24,11 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 			if (tile != null)
 			{
-				if (ElectricityHandler.isElectricReceiver(tile))
+				if (AbstractionLayer.Electricity.isElectricReceiver(tile))
 				{
-					if (ElectricityHandler.canConnectElectricity(tile, dir.getOpposite()))
+					if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite()))
 					{
-						ElectricityHandler.receiveElectricity(tile, dir.getOpposite(), VISIBLE_STORAGE, false);
+						AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), VISIBLE_STORAGE, false);
 					}
 				}
 			}

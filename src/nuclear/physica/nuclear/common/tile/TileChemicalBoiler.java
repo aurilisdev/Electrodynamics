@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -173,7 +173,8 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return stack != null && (slot == SLOT_ENERGY ? ElectricityHandler.isItemElectric(stack) : slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
+		return stack != null
+				&& (slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
 	}
 
 	@Override

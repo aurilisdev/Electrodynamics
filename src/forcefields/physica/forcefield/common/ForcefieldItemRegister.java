@@ -2,8 +2,8 @@ package physica.forcefield.common;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.forcefield.common.item.ItemFrequency;
@@ -29,20 +29,20 @@ public class ForcefieldItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry.registerItem(itemMetaShapeModule = (ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere").addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube").addSubItem("moduleShapePyramid")
+			AbstractionLayer.Registering.registerItem(itemMetaShapeModule = (ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere").addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube").addSubItem("moduleShapePyramid")
 					.setCreativeTab(ForcefieldTabRegister.forcefieldTab).setMaxStackSize(1), "item.metaShapeModule");
-			GameRegistry.registerItem(itemMetaUpgradeModule = (ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed").addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock").addSubItem("moduleUpgradeDisintegration")
-					.addSubItem("moduleUpgradeInterior").addSubItem("moduleUpgradeSponge").addSubItem("moduleUpgradeStabilize").addSubItem("moduleUpgradeColorChange").addSubItem("moduleUpgradeAntiHostile")
-					.addSubItem("moduleUpgradeAntiFriendly").addSubItem("moduleUpgradeAntiPersonnel").addSubItem("moduleUpgradeAntiSpawn").addSubItem("moduleUpgradeBlockAccess").addSubItem("moduleUpgradeBlockAlter")
-					.addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").setCreativeTab(ForcefieldTabRegister.forcefieldTab), "item.metaUpgradeModule");
+			AbstractionLayer.Registering.registerItem(itemMetaUpgradeModule = (ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed").addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock")
+					.addSubItem("moduleUpgradeDisintegration").addSubItem("moduleUpgradeInterior").addSubItem("moduleUpgradeSponge").addSubItem("moduleUpgradeStabilize").addSubItem("moduleUpgradeColorChange")
+					.addSubItem("moduleUpgradeAntiHostile").addSubItem("moduleUpgradeAntiFriendly").addSubItem("moduleUpgradeAntiPersonnel").addSubItem("moduleUpgradeAntiSpawn").addSubItem("moduleUpgradeBlockAccess")
+					.addSubItem("moduleUpgradeBlockAlter").addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").setCreativeTab(ForcefieldTabRegister.forcefieldTab), "item.metaUpgradeModule");
 
-			GameRegistry.registerItem(itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale").addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
+			AbstractionLayer.Registering.registerItem(itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale").addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
 					"item.metaManipulationModule");
 
-			GameRegistry.registerItem(itemFocusMatrix = (ItemInformationHolder) new ItemInformationHolder("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab), itemFocusMatrix.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemFocusMatrix = (ItemInformationHolder) new ItemInformationHolder("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab), itemFocusMatrix.getUnlocalizedName());
 
-			GameRegistry.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
-			GameRegistry.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());
 
 			moduleMap.put("moduleShapeSphere", new ItemStack(itemMetaShapeModule, 1, 0));
 			moduleMap.put("moduleShapeHemisphere", new ItemStack(itemMetaShapeModule, 1, 1));

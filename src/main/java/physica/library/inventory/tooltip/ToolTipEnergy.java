@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 
 public class ToolTipEnergy extends ToolTip {
 
@@ -18,13 +18,13 @@ public class ToolTipEnergy extends ToolTip {
 	@Override
 	public String getLocalizedTooltip()
 	{
-		if (ElectricityHandler.isElectricReceiver(receiver))
+		if (AbstractionLayer.Electricity.isElectricReceiver(receiver))
 		{
-			if (ElectricityHandler.getElectricityStored(receiver, ForgeDirection.UNKNOWN) <= 0)
+			if (AbstractionLayer.Electricity.getElectricityStored(receiver, ForgeDirection.UNKNOWN) <= 0)
 			{
 				return "Empty";
 			}
-			return "Stored: " + (ElectricityHandler.getElectricityStored(receiver, ForgeDirection.UNKNOWN)) / (ElectricityHandler.getElectricCapacity(receiver, ForgeDirection.UNKNOWN)) * 100 + "%";
+			return "Stored: " + (AbstractionLayer.Electricity.getElectricityStored(receiver, ForgeDirection.UNKNOWN)) / (AbstractionLayer.Electricity.getElectricCapacity(receiver, ForgeDirection.UNKNOWN)) * 100 + "%";
 		}
 		return "Invalid Tile";
 	}

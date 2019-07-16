@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.electricity.ElectricityHandler;
+import physica.api.core.abstraction.AbstractionLayer;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.items.armor.ItemHazmatArmor;
@@ -82,10 +82,10 @@ public class RadiationSystem {
 					{
 						EntityPlayer player = (EntityPlayer) base;
 						ItemStack stack = player.inventory.getCurrentItem();
-						if (ElectricityHandler.isItemElectric(stack))
+						if (AbstractionLayer.Electricity.isItemElectric(stack))
 						{
-							int electricity = (int) (ElectricityHandler.getElectricCapacity(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
-							ElectricityHandler.extractElectricity(stack, electricity, false);
+							int electricity = (int) (AbstractionLayer.Electricity.getElectricCapacity(stack) / (60 * 20 / (maxRadius - distanceFromSource) / maxRadius * 75));
+							AbstractionLayer.Electricity.extractElectricity(stack, electricity, false);
 						}
 					}
 				}
