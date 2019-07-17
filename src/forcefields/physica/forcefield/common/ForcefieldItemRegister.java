@@ -17,7 +17,7 @@ public class ForcefieldItemRegister implements IContent {
 	public static ItemMetaHolder				itemMetaManipulationModule;
 	public static ItemMetaHolder				itemMetaUpgradeModule;
 
-	public static ItemDescriptable			itemFocusMatrix;
+	public static ItemDescriptable				itemFocusMatrix;
 
 	public static ItemFrequency					itemFrequency;
 	public static ItemIdentificationCard		itemIdentifcationCard;

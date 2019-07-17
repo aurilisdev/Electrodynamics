@@ -12,14 +12,14 @@ import physica.library.item.ItemMetaHolder;
 public class CoreItemRegister implements IContent {
 
 	public static ItemDescriptable	itemEmptyCell;
-	public static ItemMetaHolder		itemMetaCircuit;
-	public static ItemMetaHolder		itemMetaPlate;
-	public static ItemMetaHolder		itemMetaIngot;
-	public static ItemMetaHolder		itemMetaBlend;
+	public static ItemMetaHolder	itemMetaCircuit;
+	public static ItemMetaHolder	itemMetaPlate;
+	public static ItemMetaHolder	itemMetaIngot;
+	public static ItemMetaHolder	itemMetaBlend;
 	public static ItemDescriptable	itemMotor;
-	public static ItemWrench			itemWrench;
-	public static ItemBattery			itemBattery;
-	public static ItemMultimeter		itemMultimeter;
+	public static ItemWrench		itemWrench;
+	public static ItemBattery		itemBattery;
+	public static ItemMultimeter	itemMultimeter;
 
 	@Override
 	public void register(LoadPhase phase)

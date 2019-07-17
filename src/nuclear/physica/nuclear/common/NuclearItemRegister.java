@@ -28,29 +28,28 @@ public class NuclearItemRegister implements IContent {
 	public static ItemDescriptable	itemTritiumCell;
 	public static ItemDescriptable	itemEmptyElectromagneticCell;
 	public static ItemDescriptable	itemEmptyQuantumCell;
-	public static ItemGeigerCounter		itemGeigerCounter;
+	public static ItemGeigerCounter	itemGeigerCounter;
 
 	public static ItemDescriptable	itemUranium235;
 	public static ItemDescriptable	itemUranium238;
 	public static ItemDescriptable	itemYellowcake;
 
-	public static ItemHazmatArmor		itemHazmatHelmet;
-	public static ItemHazmatArmor		itemHazmatPlate;
-	public static ItemHazmatArmor		itemHazmatLegs;
-	public static ItemHazmatArmor		itemHazmatBoots;
-	public static ItemHazmatArmor		itemReinforcedHazmatHelmet;
-	public static ItemHazmatArmor		itemReinforcedHazmatPlate;
-	public static ItemHazmatArmor		itemReinforcedHazmatLegs;
-	public static ItemHazmatArmor		itemReinforcedHazmatBoots;
+	public static ItemHazmatArmor	itemHazmatHelmet;
+	public static ItemHazmatArmor	itemHazmatPlate;
+	public static ItemHazmatArmor	itemHazmatLegs;
+	public static ItemHazmatArmor	itemHazmatBoots;
+	public static ItemHazmatArmor	itemReinforcedHazmatHelmet;
+	public static ItemHazmatArmor	itemReinforcedHazmatPlate;
+	public static ItemHazmatArmor	itemReinforcedHazmatLegs;
+	public static ItemHazmatArmor	itemReinforcedHazmatBoots;
 
 	@Override
 	public void register(LoadPhase phase)
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry
-					.registerItem(itemAntimatterCell125Milligram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell100Milligram", "125 Milligrams").setTextureName(CoreReferences.PREFIX + "antimatterCell"))
-							.setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell125Milligram.getUnlocalizedName());
+			GameRegistry.registerItem(itemAntimatterCell125Milligram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell100Milligram", "125 Milligrams").setTextureName(CoreReferences.PREFIX + "antimatterCell"))
+					.setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell125Milligram.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemAntimatterCell1Gram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell1Gram", "1 Gram").setTextureName(CoreReferences.PREFIX + "antimatterCell"))
 					.setUpdate(new ItemUpdateAntimatter().setScale(3)).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell1Gram.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemDarkmatterCell = (ItemDescriptable) new ItemDescriptable("darkmatterCell").setUpdate(new ItemUpdateDarkMatter()).setMaxDamage(ConfigNuclearPhysics.DARK_MATTER_USES)
@@ -66,15 +65,13 @@ public class NuclearItemRegister implements IContent {
 
 			AbstractionLayer.Registering.registerItem(itemGeigerCounter = new ItemGeigerCounter("geigerCounter"), itemGeigerCounter.getUnlocalizedName());
 
-			AbstractionLayer.Registering.registerItem(itemHeavyWaterCell = (ItemDescriptable) new ItemDescriptable("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-					itemHeavyWaterCell.getUnlocalizedName());
-			AbstractionLayer.Registering.registerItem(itemDeuteriumCell = (ItemDescriptable) new ItemDescriptable("deuteriumCell", "25ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
-					itemDeuteriumCell.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemHeavyWaterCell = (ItemDescriptable) new ItemDescriptable("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemHeavyWaterCell.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemDeuteriumCell = (ItemDescriptable) new ItemDescriptable("deuteriumCell", "25ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemDeuteriumCell.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemTritiumCell = (ItemDescriptable) new ItemDescriptable("tritiumCell", "12.5ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemTritiumCell.getUnlocalizedName());
-			AbstractionLayer.Registering.registerItem(itemUranium235 = (ItemDescriptable) new ItemDescriptable("uranium", "Isotope 235").setUpdate(new ItemUpdateUranium().setScale(8.1f))
-					.setTextureName(CoreReferences.PREFIX + "uranium235").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium235.getUnlocalizedName() + "235");
-			AbstractionLayer.Registering.registerItem(itemUranium238 = (ItemDescriptable) new ItemDescriptable("uranium", "Isotope 238").setUpdate(new ItemUpdateUranium().setScale(2.25f))
-					.setTextureName(CoreReferences.PREFIX + "uranium238").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium238.getUnlocalizedName() + "238");
+			AbstractionLayer.Registering.registerItem(itemUranium235 = (ItemDescriptable) new ItemDescriptable("uranium", "Isotope 235").setUpdate(new ItemUpdateUranium().setScale(8.1f)).setTextureName(CoreReferences.PREFIX + "uranium235")
+					.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium235.getUnlocalizedName() + "235");
+			AbstractionLayer.Registering.registerItem(itemUranium238 = (ItemDescriptable) new ItemDescriptable("uranium", "Isotope 238").setUpdate(new ItemUpdateUranium().setScale(2.25f)).setTextureName(CoreReferences.PREFIX + "uranium238")
+					.setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemUranium238.getUnlocalizedName() + "238");
 			AbstractionLayer.Registering.registerItem(itemYellowcake = (ItemDescriptable) new ItemDescriptable("yellowcake").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemYellowcake.getUnlocalizedName());
 
 			if (FMLCommonHandler.instance().getEffectiveSide().isClient())
