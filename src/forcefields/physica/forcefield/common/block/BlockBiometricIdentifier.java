@@ -8,7 +8,6 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.tile.TileBiometricIdentifier;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 
 public class BlockBiometricIdentifier extends BlockBaseContainerModelled {
 
@@ -28,14 +27,14 @@ public class BlockBiometricIdentifier extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "FMF", "CMC", "FMF", 'C', ForcefieldItemRegister.itemIdentifcationCard, 'M', "circuitElite", 'F', "plateSteel");
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Forcefield;
+		return "Forcefields";
 	}
 }

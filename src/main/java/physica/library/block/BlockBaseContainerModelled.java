@@ -5,9 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 
 public abstract class BlockBaseContainerModelled extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
 
@@ -16,7 +15,7 @@ public abstract class BlockBaseContainerModelled extends BlockBaseContainer impl
 		addToRegister(getSide(), this);
 	}
 
-	public abstract RecipeSide getSide();
+	public abstract String getSide();
 
 	@Override
 	@SideOnly(Side.CLIENT)

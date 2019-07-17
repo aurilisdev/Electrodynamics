@@ -10,11 +10,11 @@ import net.minecraft.item.ItemStack;
 import physica.CoreReferences;
 import physica.core.common.CoreTabRegister;
 
-public class ItemInformationHolder extends ItemUpdateable {
+public class ItemDescriptable extends ItemUpdateable {
 
 	public Set<String> lineList = new HashSet<>();
 
-	public ItemInformationHolder(String name, String... customLines) {
+	public ItemDescriptable(String name, String... customLines) {
 		setUnlocalizedName(name);
 		setTextureName(CoreReferences.PREFIX + name);
 		lineList.addAll(Arrays.asList(customLines));

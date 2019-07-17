@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileMeltedReactor;
@@ -31,9 +30,9 @@ public class BlockMeltedReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class BlockMeltedReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 	}
 }

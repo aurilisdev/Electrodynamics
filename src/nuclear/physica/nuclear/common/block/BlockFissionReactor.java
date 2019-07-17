@@ -8,7 +8,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
@@ -28,15 +27,15 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
 
 	@Override

@@ -8,9 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileSiren;
@@ -25,11 +24,11 @@ public class BlockSiren extends Block implements IBaseUtilities, IRecipeRegister
 		setBlockTextureName(CoreReferences.PREFIX + "siren");
 		setBlockName(NuclearReferences.PREFIX + "siren");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
-		addToRegister(RecipeSide.Nuclear, this);
+		addToRegister("Nuclear", this);
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "SNS", "NAN", "SNS", 'S', "plateSteel", 'N', Blocks.noteblock, 'A', "circuitBasic");
 	}

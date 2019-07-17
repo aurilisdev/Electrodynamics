@@ -20,7 +20,7 @@ public class CoreReferences {
 		public static final List<String>	AUTHORS		= Arrays.asList("aurilisdev");
 		public static final String			CREDITS		= "Thanks to everyone who has contributed to this project.";
 		public static final String			DESCRIPTION	= "Physica is a Minecraft Mod focused around science and technology that introduces many new machines/blocks and items into the game.";
-		public static final String			URL			= "https://github.com/Aurilisdev/Physica/";
-		public static final String			UPDATE_URL	= "https://github.com/Aurilisdev/Physica/releases/";
+		public static final String			URL			= "http://aurilisdev.com";
+		public static final String			UPDATE_URL	= "http://aurilisdev.com/download";
 	}
 }

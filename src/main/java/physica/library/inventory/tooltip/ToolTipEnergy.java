@@ -24,7 +24,7 @@ public class ToolTipEnergy extends ToolTip {
 			{
 				return "Empty";
 			}
-			return "Stored: " + (AbstractionLayer.Electricity.getElectricityStored(receiver, ForgeDirection.UNKNOWN)) / (AbstractionLayer.Electricity.getElectricCapacity(receiver, ForgeDirection.UNKNOWN)) * 100 + "%";
+			return "Stored: " + AbstractionLayer.Electricity.getElectricityStored(receiver, ForgeDirection.UNKNOWN) / AbstractionLayer.Electricity.getElectricCapacity(receiver, ForgeDirection.UNKNOWN) * 100 + "%";
 		}
 		return "Invalid Tile";
 	}

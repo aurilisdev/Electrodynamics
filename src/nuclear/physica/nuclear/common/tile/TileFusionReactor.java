@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Measurement;
 import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.common.NuclearBlockRegister;
@@ -22,8 +21,10 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	public static final int		MAX_DEUTERIUM			= 1024;
 	public static final int		SLOT_DEUTERIUM			= 0;
 	public static final int		SLOT_TRITIUM			= 1;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(175000, Unit.WATT, Unit.RF);
 
 	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_DEUTERIUM, SLOT_TRITIUM };
+
 	private int					energyStored;
 	private int					ticksRunning;
 	private boolean				isRunning				= false;
@@ -143,7 +144,7 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	@Override
 	public int getElectricityUsage()
 	{
-		return (int) ElectricityUtilities.convertEnergy(125.0 * Measurement.KILO.value, Unit.WATT, Unit.RF);
+		return POWER_USAGE;
 	}
 
 	@Override

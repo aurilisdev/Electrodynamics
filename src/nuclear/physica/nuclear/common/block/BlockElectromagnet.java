@@ -17,10 +17,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.api.nuclear.IElectromagnet;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.library.util.OreDictionaryUtilities;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearBlockRegister;
@@ -41,11 +40,11 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 		setBlockTextureName(CoreReferences.PREFIX + "electromagnet");
 		setBlockName(NuclearReferences.PREFIX + "electromagnet");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
-		addToRegister(RecipeSide.Nuclear, this);
+		addToRegister("Nuclear", this);
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(new ItemStack(this, 2), "BSB", "SMS", "BSB", 'B', OreDictionaryUtilities.getAlternatingOreItem("ingotBronze", "ingotCopper"), 'M', "motor", 'S', "ingotSteel");
 		addShapeless(new ItemStack(this, 1, EnumElectromagnet.GLASS.ordinal()), NuclearBlockRegister.blockElectromagnet, Blocks.glass);

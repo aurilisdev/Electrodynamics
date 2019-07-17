@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileChemicalBoiler;
@@ -29,14 +28,14 @@ public class BlockChemicalBoiler extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "PCP", "TFT", "PMP", 'F', CoreBlockRegister.blockBlastFurnace, 'T', CoreItemRegister.itemEmptyCell, 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced");
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
 }

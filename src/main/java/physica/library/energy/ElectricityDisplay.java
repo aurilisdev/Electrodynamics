@@ -9,10 +9,16 @@ public class ElectricityDisplay implements IBaseUtilities {
 	public static String getDisplay(double value, Unit unit, int decimalPlaces, boolean isShort)
 	{
 		String unitName = unit.name;
+		double testValue = value;
+		if (testValue < 100)
+		{
+			testValue = value / 1000.0;
+		}
+
 		if (isShort)
 		{
 			unitName = unit.symbol;
-		} else if (value > 1.0D)
+		} else if (testValue > 1.0D)
 		{
 			unitName = unit.getPlural();
 		}
@@ -20,16 +26,16 @@ public class ElectricityDisplay implements IBaseUtilities {
 		{
 			return value + " " + unitName;
 		}
-		if (value < 1.0D)
+		if (testValue < 1.0D)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MILLI.process(value), decimalPlaces) + " " + Measurement.MILLI.getName(isShort) + unitName;
-		} else if (value > Measurement.GIGA.value)
+		} else if (testValue > Measurement.GIGA.value)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.GIGA.process(value), decimalPlaces) + " " + Measurement.GIGA.getName(isShort) + unitName;
-		} else if (value > Measurement.MEGA.value)
+		} else if (testValue > Measurement.MEGA.value)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.MEGA.process(value), decimalPlaces) + " " + Measurement.MEGA.getName(isShort) + unitName;
-		} else if (value > Measurement.KILO.value)
+		} else if (testValue > Measurement.KILO.value)
 		{
 			return IBaseUtilities.roundPreciseStatic(Measurement.KILO.process(value), decimalPlaces) + " " + Measurement.KILO.getName(isShort) + unitName;
 		}

@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.cable.EnumConductorType;
 import physica.api.core.cable.IConductor;
 import physica.api.core.utilities.IBaseUtilities;
@@ -29,8 +30,6 @@ import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.cable.TileEnergyCable;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 
 public class BlockEnergyCable extends Block implements ITileEntityProvider, IBaseUtilities, IRecipeRegister {
 
@@ -43,7 +42,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockBounds(TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo,
 				1 - TileRenderEnergyCable.pixelElevenTwo);
-		addToRegister(RecipeSide.Core, this);
+		addToRegister("Core", this);
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 0), "WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', "ingotCopper");
 		addRecipe(new ItemStack(CoreBlockRegister.blockCable, 6, 0), "LIL", "LIL", "LIL", 'L', Items.leather, 'I', "ingotCopper");

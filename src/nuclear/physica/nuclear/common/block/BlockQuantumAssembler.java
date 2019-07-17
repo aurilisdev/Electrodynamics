@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
@@ -30,15 +29,15 @@ public class BlockQuantumAssembler extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "CPC", "QTQ", "CPC", 'C', "circuitElite", 'Q', NuclearItemRegister.itemEmptyQuantumCell, 'P',
 				new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'T', new ItemStack(NuclearBlockRegister.blockCentrifuge));
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
 }

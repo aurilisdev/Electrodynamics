@@ -18,7 +18,6 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.block.BlockElectromagnet;
 
@@ -52,7 +51,7 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "PEP", "EDE", "PEP", 'E', "circuitElite", 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'D', Blocks.diamond_block);
 	}
@@ -196,8 +195,8 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Forcefield;
+		return "Forcefields";
 	}
 }

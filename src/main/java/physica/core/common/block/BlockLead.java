@@ -3,10 +3,9 @@ package physica.core.common.block;
 import net.minecraft.block.BlockCompressed;
 import net.minecraft.block.material.MapColor;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreTabRegister;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 
 public class BlockLead extends BlockCompressed implements IBaseUtilities, IRecipeRegister {
 
@@ -18,11 +17,11 @@ public class BlockLead extends BlockCompressed implements IBaseUtilities, IRecip
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockName(CoreReferences.PREFIX + "blockLead");
 		setBlockTextureName(CoreReferences.PREFIX + "blockLead");
-		addToRegister(RecipeSide.Core, this);
+		addToRegister("Core", this);
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "IPI", "IPI", "IPI", 'I', "ingotLead", 'P', "plateLead");
 	}

@@ -6,11 +6,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 @SuppressWarnings("deprecation")
 public interface IElectricityHandler extends IElectricityProvider, IElectricityReceiver, IEnergyHandler {
 
+	@Override
 	default int getElectricityStored(ForgeDirection from)
 	{
 		return 0;
 	}
 
+	@Override
 	default int getElectricCapacity(ForgeDirection from)
 	{
 		return 0;

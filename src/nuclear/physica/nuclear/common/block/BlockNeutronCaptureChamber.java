@@ -12,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.misc.IRotatable;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileFissionReactor;
@@ -115,15 +114,15 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "SSS", "SGC", "SSS", 'S', "plateSteel", 'G', new ItemStack(Blocks.glass), 'C', CoreItemRegister.itemEmptyCell);
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
 
 }

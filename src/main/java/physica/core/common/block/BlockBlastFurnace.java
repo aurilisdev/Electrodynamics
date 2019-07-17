@@ -11,7 +11,6 @@ import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.TileBlastFurnace;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 
 public class BlockBlastFurnace extends BlockBaseContainerModelled {
 
@@ -38,14 +37,14 @@ public class BlockBlastFurnace extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(CoreBlockRegister.blockBlastFurnace, "III", "IFI", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', Blocks.stonebrick);
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Core;
+		return "Core";
 	}
 }

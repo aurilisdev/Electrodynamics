@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.misc.IRotatable;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearTabRegister;
@@ -98,7 +97,7 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "SMS", "IAI", "SSS", 'I', NuclearBlockRegister.blockControlRod, 'S', "plateSteel", 'A', "circuitElite", 'M', "motor");
 	}
@@ -110,9 +109,8 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
-
 }

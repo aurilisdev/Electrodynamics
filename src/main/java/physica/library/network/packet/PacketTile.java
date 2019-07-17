@@ -1,5 +1,6 @@
 package physica.library.network.packet;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -95,14 +96,20 @@ public class PacketTile extends PacketBase {
 		{
 			if (PhysicaAPI.isDebugMode)
 			{
-				PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", null) - Null tile"));
+				if (FMLCommonHandler.instance().getSide().isServer())
+				{
+					PhysicaAPI.logger.error(new RuntimeException("PacketTile#handle(" + player.getDisplayName() + ", null) - Null tile"));
+				}
 			}
 		} else if (tile.isInvalid())
 		{
 			if (PhysicaAPI.isDebugMode)
 			{
-				PhysicaAPI.logger.error(new RuntimeException(
-						"PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", " + tile.yCoord + ", " + tile.zCoord + "]) - Invalidated tile"));
+				if (FMLCommonHandler.instance().getSide().isServer())
+				{
+					PhysicaAPI.logger.error(new RuntimeException(
+							"PacketTile#handle(" + player.getDisplayName() + ", TILE[" + tile.getWorldObj().getWorldInfo().getWorldName() + ": " + tile.xCoord + ", " + tile.yCoord + ", " + tile.zCoord + "]) - Invalidated tile"));
+				}
 			}
 		} else if (tile instanceof IPacketReciever)
 		{

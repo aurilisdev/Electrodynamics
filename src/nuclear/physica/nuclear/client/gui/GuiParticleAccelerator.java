@@ -29,7 +29,7 @@ public class GuiParticleAccelerator extends GuiContainerBase<TileParticleAcceler
 		drawString("Status: " + host.getAcceleratorStatus().name(), 8, 30);
 		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getElectricityUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 41);
 		drawString("Antimatter: " + host.getAntimatterAmount() + " mg", 8, ySize - 96 + 2, 4210752);
-		drawString("Used: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getSessionUse() * host.getCurrentSessionTicks() / 72000.0, Unit.RF, Unit.WATT), Unit.WATT) + "h", 8, 52);
+		drawString("Used: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getSessionUse() * host.getCurrentSessionTicks(), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR), 8, 52);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "accelerator.gui"), xSize / 2, 5);
 	}
 }

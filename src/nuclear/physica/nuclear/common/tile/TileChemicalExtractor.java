@@ -32,6 +32,7 @@ import physica.nuclear.common.recipe.type.ChemicalExtractorRecipe;
 public class TileChemicalExtractor extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
 	public static final int		TICKS_REQUIRED			= 400;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(1500, Unit.WATT, Unit.RF);
 	public static final int		SLOT_ENERGY				= 0;
 	public static final int		SLOT_INPUT				= 1;
 	public static final int		SLOT_OUTPUT				= 2;
@@ -194,7 +195,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	@Override
 	public int getElectricityUsage()
 	{
-		return ElectricityUtilities.convertEnergy(750, Unit.WATT, Unit.RF);
+		return POWER_USAGE;
 	}
 
 	@Override

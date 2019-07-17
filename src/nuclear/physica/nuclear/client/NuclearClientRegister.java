@@ -25,6 +25,7 @@ import physica.nuclear.client.render.tile.TileRenderControlRod;
 import physica.nuclear.client.render.tile.TileRenderFissionReactor;
 import physica.nuclear.client.render.tile.TileRenderFusionReactor;
 import physica.nuclear.client.render.tile.TileRenderNeutronCaptureChamber;
+import physica.nuclear.client.render.tile.TileRenderThermometer;
 import physica.nuclear.client.render.tile.TileRenderTurbine;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearFluidRegister;
@@ -38,6 +39,7 @@ import physica.nuclear.common.tile.TileInsertableControlRod;
 import physica.nuclear.common.tile.TileMeltedReactor;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 import physica.nuclear.common.tile.TileQuantumAssembler;
+import physica.nuclear.common.tile.TileThermometer;
 import physica.nuclear.common.tile.TileTurbine;
 
 @SideOnly(Side.CLIENT)
@@ -92,6 +94,8 @@ public class NuclearClientRegister implements IContent {
 					new TileRenderObjModel<TileMeltedReactor>("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockMeltedReactor),
 					new ItemRenderObjModel("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+
+			ClientRegistry.bindTileEntitySpecialRenderer(TileThermometer.class, new TileRenderThermometer());
 		} else if (phase == LoadPhase.PostInitialize)
 		{
 			RenderingRegistry.registerEntityRenderingHandler(EntityParticle.class, new RenderParticle());

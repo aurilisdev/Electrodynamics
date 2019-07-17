@@ -2,7 +2,6 @@ package physica.library.net.energy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,30 +65,31 @@ public class EnergyNetwork {
 		energyToSend = Math.min(maxPowerTransfer - energyTransmittedBuffer, energyToSend);
 		if (energyToSend > 0)
 		{
-			List<Object> availableAcceptors = Arrays.asList(getEnergyAcceptors().toArray());
+			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
 
-			Collections.shuffle(availableAcceptors);
 			int energySent = 0;
 			if (!availableAcceptors.isEmpty())
 			{
 				checkForVoltage(energyToSend);
-				int divider = availableAcceptors.size();
-				int remaining = energyToSend % divider;
-				int sending = (energyToSend - remaining) / divider;
-				for (Object obj : availableAcceptors)
+				HashSet<TileEntity> validAcceptors = new HashSet<>();
+				for (TileEntity acceptor : availableAcceptors)
 				{
-					if (obj instanceof TileEntity && !ignored.contains(obj))
+					if (!ignored.contains(acceptor))
 					{
-						TileEntity acceptor = (TileEntity) obj;
-						int currentSending = sending + remaining;
-
-						remaining = 0;
 						if (AbstractionLayer.Electricity.isElectricReceiver(acceptor))
 						{
-							for (ForgeDirection connection : acceptorInputMap.get(acceptor))
-							{
-								energySent += AbstractionLayer.Electricity.receiveElectricity(acceptor, connection.getOpposite(), currentSending, false);
-							}
+							validAcceptors.add(acceptor);
+						}
+					}
+				}
+				if (validAcceptors.size() > 0)
+				{
+					int energyPerReceiver = energyToSend / validAcceptors.size();
+					for (TileEntity receiver : validAcceptors)
+					{
+						for (ForgeDirection connection : acceptorInputMap.get(receiver))
+						{
+							energySent += AbstractionLayer.Electricity.receiveElectricity(receiver, connection.getOpposite(), energyPerReceiver, false);
 						}
 					}
 				}

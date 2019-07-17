@@ -8,7 +8,6 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.tile.TileInterdictionMatrix;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 
 public class BlockInterdictionMatrix extends BlockBaseContainerModelled {
 
@@ -28,14 +27,14 @@ public class BlockInterdictionMatrix extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "BEB", "ESE", "BEB", 'B', "phyBattery", 'E', "circuitElite", 'S', ForcefieldItemRegister.moduleMap.get("moduleUpgradeShock"));
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Forcefield;
+		return "Forcefields";
 	}
 }

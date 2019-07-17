@@ -5,6 +5,7 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,15 +14,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.library.util.ChatUtils;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileFissionReactor;
+import physica.nuclear.common.tile.TileThermometer;
 
-public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRegister {
+public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRegister, ITileEntityProvider {
 
 	@SideOnly(Side.CLIENT)
 	private static IIcon iconTop, iconGlass;
@@ -35,11 +36,17 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 		setBlockName(NuclearReferences.PREFIX + "thermometer");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setTickRandomly(true);
-		addToRegister(RecipeSide.Nuclear, this);
+		addToRegister("Nuclear", this);
 	}
 
 	@Override
-	public void initialize()
+	public boolean hasTileEntity()
+	{
+		return true;
+	}
+
+	@Override
+	public void registerRecipes()
 	{
 		addRecipe(this, "SSS", "SWS", "SSS", 'S', "ingotSteel", 'W', "circuitAdvanced");
 	}
@@ -132,5 +139,17 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	public IIcon getIcon(int side, int metadata)
 	{
 		return side == 0 || side == 1 ? iconTop : super.getIcon(side, metadata);
+	}
+
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return false;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
+		return new TileThermometer();
 	}
 }

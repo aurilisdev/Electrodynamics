@@ -15,7 +15,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Measurement;
 import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiParticleAccelerator;
@@ -29,6 +28,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public static final int		SLOT_INPUTMATTER				= 1;
 	public static final int		SLOT_INPUTCELLS					= 0;
 	public static final int		SLOT_OUTPUT						= 2;
+	public static final int		POWER_USAGE						= ElectricityUtilities.convertEnergy(340000, Unit.WATT, Unit.RF);
 
 	private static final int[]	ACCESSIBLE_SLOTS_UP				= new int[] { SLOT_INPUTMATTER };
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN			= new int[] { SLOT_OUTPUT };
@@ -317,7 +317,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	@Override
 	public int getElectricityUsage()
 	{
-		return (int) ElectricityUtilities.convertEnergy(169.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
+		return POWER_USAGE;
 	}
 
 	public float getParticleVelocity()

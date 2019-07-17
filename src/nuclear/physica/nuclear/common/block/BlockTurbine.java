@@ -16,9 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileTurbine;
@@ -32,11 +31,11 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setHarvestLevel("pickaxe", 2);
 		setBlockName(NuclearReferences.PREFIX + "turbine");
-		addToRegister(RecipeSide.Nuclear, this);
+		addToRegister("Nuclear", this);
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "PAP", "BMB", "PBP", 'P', "plateSteel", 'A', "circuitAdvanced", 'B', Blocks.iron_bars, 'M', "motor");
 	}

@@ -9,11 +9,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreBlockRegister;
 import physica.library.block.BlockBaseContainer;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileReactorControlPanel;
@@ -31,7 +30,7 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setBlockName(NuclearReferences.PREFIX + "reactorControlPanel");
 		setBlockTextureName(CoreReferences.PREFIX + "reactorControlPanel");
-		addToRegister(RecipeSide.Nuclear, this);
+		addToRegister("Nuclear", this);
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "IPI", "PCP", "IPI", 'I', CoreBlockRegister.blockLead, 'P', "plateLead", 'C', "circuitElite");
 	}

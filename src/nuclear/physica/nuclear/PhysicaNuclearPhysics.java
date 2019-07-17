@@ -16,10 +16,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.load.ContentLoader;
 import physica.api.core.load.LoadPhase;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.client.NuclearClientRegister;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearEntityRegister;
@@ -109,6 +108,6 @@ public class PhysicaNuclearPhysics {
 	public void loadComplete(FMLLoadCompleteEvent event)
 	{
 		proxyLoader.callRegister(LoadPhase.OnStartup);
-		IRecipeRegister.InitializeSide(RecipeSide.Nuclear);
+		IRecipeRegister.callRegister("Nuclear");
 	}
 }

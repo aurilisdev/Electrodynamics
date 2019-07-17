@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.load.ContentLoader;
 import physica.api.core.load.LoadPhase;
 import physica.forcefield.client.ForcefieldClientRegister;
@@ -31,8 +32,6 @@ import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.command.SetIdentityCommand;
 import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.proxy.CommonProxy;
 
 @Mod(modid = ForcefieldReferences.DOMAIN, name = ForcefieldReferences.NAME, version = CoreReferences.VERSION, dependencies = "required-after:" + CoreReferences.DOMAIN)
@@ -112,7 +111,7 @@ public class PhysicaForcefields {
 	public void loadComplete(FMLLoadCompleteEvent event)
 	{
 		proxyLoader.callRegister(LoadPhase.OnStartup);
-		IRecipeRegister.InitializeSide(RecipeSide.Forcefield);
+		IRecipeRegister.callRegister("Forcefields");
 	}
 
 	@EventHandler

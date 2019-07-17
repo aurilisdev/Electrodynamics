@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Measurement;
 import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiQuantumAssembler;
@@ -26,6 +25,8 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	public static final int		TICKS_REQUIRED			= 120;
 	public static final int		SLOT_INPUT				= 6;
 	public static final int		SLOT_OUTPUT				= 7;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(71000, Unit.WATT, Unit.RF);
+
 	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
 	private static final int[]	ACCESSIBLE_SLOTS_ELSE	= new int[] { 0, 1, 2, 3, 4, 5 };
@@ -216,6 +217,6 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	@Override
 	public int getElectricityUsage()
 	{
-		return (int) ElectricityUtilities.convertEnergy(35.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
+		return POWER_USAGE;
 	}
 }

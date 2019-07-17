@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Measurement;
 import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiCentrifuge;
@@ -33,6 +32,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 
 	public static final int		TICKS_REQUIRED			= 2400;
 	public static final int		SLOT_ENERGY				= 0;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(3000, Unit.WATT, Unit.RF);
 	public static final int		SLOT_OUTPUT1			= 1;
 	public static final int		SLOT_OUTPUT2			= 2;
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT1, SLOT_OUTPUT2 };
@@ -182,7 +182,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public int getElectricityUsage()
 	{
-		return (int) ElectricityUtilities.convertEnergy(1.5 * Measurement.KILO.value, Unit.WATT, Unit.RF);
+		return POWER_USAGE;
 	}
 
 	@Override

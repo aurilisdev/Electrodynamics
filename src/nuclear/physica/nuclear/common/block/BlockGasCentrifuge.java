@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.misc.IRotatable;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileChemicalBoiler;
@@ -50,15 +49,15 @@ public class BlockGasCentrifuge extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "ICI", "TMT", "TPT", 'I', "ingotSteel", 'T', CoreItemRegister.itemEmptyCell, 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced");
 
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Nuclear;
+		return "Nuclear";
 	}
 }

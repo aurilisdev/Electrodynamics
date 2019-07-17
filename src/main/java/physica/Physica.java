@@ -17,6 +17,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
+import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.load.ContentLoader;
 import physica.api.core.load.LoadPhase;
 import physica.core.client.ClientRegister;
@@ -32,8 +33,6 @@ import physica.core.common.event.WrenchEventHandler;
 import physica.library.net.EnergyNetworkRegistry;
 import physica.library.net.energy.EnergyNetwork;
 import physica.library.network.netty.PacketSystem;
-import physica.library.recipe.IRecipeRegister;
-import physica.library.recipe.RecipeSide;
 import physica.proxy.CommonProxy;
 
 @Mod(modid = CoreReferences.DOMAIN, name = CoreReferences.NAME, version = CoreReferences.VERSION)
@@ -114,7 +113,7 @@ public class Physica {
 	public void loadComplete(FMLLoadCompleteEvent event)
 	{
 		proxyLoader.callRegister(LoadPhase.OnStartup);
-		IRecipeRegister.InitializeSide(RecipeSide.Core);
+		IRecipeRegister.callRegister("Core");
 	}
 
 	@EventHandler

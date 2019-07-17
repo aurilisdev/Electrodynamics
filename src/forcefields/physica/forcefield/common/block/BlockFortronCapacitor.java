@@ -8,7 +8,6 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.tile.TileFortronCapacitor;
 import physica.library.block.BlockBaseContainerModelled;
-import physica.library.recipe.RecipeSide;
 
 public class BlockFortronCapacitor extends BlockBaseContainerModelled {
 
@@ -28,14 +27,14 @@ public class BlockFortronCapacitor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void initialize()
+	public void registerRecipes()
 	{
 		addRecipe(this, "MFM", "FCF", "MFM", 'C', "phyBattery", 'F', ForcefieldItemRegister.itemFocusMatrix, 'M', "plateSteel");
 	}
 
 	@Override
-	public RecipeSide getSide()
+	public String getSide()
 	{
-		return RecipeSide.Forcefield;
+		return "Forcefields";
 	}
 }

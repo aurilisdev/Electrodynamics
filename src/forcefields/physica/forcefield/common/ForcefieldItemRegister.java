@@ -8,7 +8,7 @@ import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.forcefield.common.item.ItemFrequency;
 import physica.forcefield.common.item.ItemIdentificationCard;
-import physica.library.item.ItemInformationHolder;
+import physica.library.item.ItemDescriptable;
 import physica.library.item.ItemMetaHolder;
 
 public class ForcefieldItemRegister implements IContent {
@@ -17,7 +17,7 @@ public class ForcefieldItemRegister implements IContent {
 	public static ItemMetaHolder				itemMetaManipulationModule;
 	public static ItemMetaHolder				itemMetaUpgradeModule;
 
-	public static ItemInformationHolder			itemFocusMatrix;
+	public static ItemDescriptable			itemFocusMatrix;
 
 	public static ItemFrequency					itemFrequency;
 	public static ItemIdentificationCard		itemIdentifcationCard;
@@ -39,7 +39,7 @@ public class ForcefieldItemRegister implements IContent {
 			AbstractionLayer.Registering.registerItem(itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale").addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
 					"item.metaManipulationModule");
 
-			AbstractionLayer.Registering.registerItem(itemFocusMatrix = (ItemInformationHolder) new ItemInformationHolder("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab), itemFocusMatrix.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemFocusMatrix = (ItemDescriptable) new ItemDescriptable("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab), itemFocusMatrix.getUnlocalizedName());
 
 			AbstractionLayer.Registering.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());

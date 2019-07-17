@@ -34,6 +34,7 @@ import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
 public class TileChemicalBoiler extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
 	public static final int		TICKS_REQUIRED			= 800;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(1500, Unit.WATT, Unit.RF);
 	public static final int		SLOT_ENERGY				= 0;
 	public static final int		SLOT_INPUT1				= 1;
 	public static final int		SLOT_INPUT2				= 2;
@@ -199,7 +200,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public int getElectricityUsage()
 	{
-		return ElectricityUtilities.convertEnergy(750, Unit.WATT, Unit.RF);
+		return POWER_USAGE;
 	}
 
 	@Override
