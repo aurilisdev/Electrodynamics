@@ -3,7 +3,7 @@
 tile.physica:infEnergy.name=Infinite Energy Cube
 tile.physica:fulmination.name=Fulmination Generator
 tile.physica:blastFurnace.name=Blast Furnace
-tile.phyisca:coalGenerator.name=Coal Generator
+tile.physica:coalGenerator.name=Coal Generator
 tile.physica:tinOre.name=Tin Ore
 tile.physica:copperOre.name=Copper Ore
 tile.physica:leadOre.name=Lead Ore

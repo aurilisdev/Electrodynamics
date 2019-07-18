@@ -20,7 +20,7 @@ import physica.library.location.BlockLocation;
 import physica.library.net.EnergyNetworkRegistry;
 
 public class EnergyNetwork {
-	private static final int								DEFAULT_VOLTAGE					= 480;
+	private static final int								DEFAULT_VOLTAGE					= 120;
 	public HashSet<IConductor>								conductorSet					= new HashSet<>();
 	public HashSet<TileEntity>								acceptorSet						= new HashSet<>();
 	public HashMap<TileEntity, HashSet<ForgeDirection>>		acceptorInputMap				= new HashMap<>();

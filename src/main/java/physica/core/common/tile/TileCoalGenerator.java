@@ -77,10 +77,17 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	}
 
 	@Override
+	public int getSyncRate()
+	{
+		return 40;
+	}
+
+	@Override
 	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
 	{
 		super.readSynchronizationPacket(buf, player);
 		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 	}
 
 	@Override

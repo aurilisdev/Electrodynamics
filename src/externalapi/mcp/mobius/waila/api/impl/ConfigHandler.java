@@ -75,7 +75,7 @@ public class ConfigHandler implements IWailaConfigHandler {
 
 	public void addConfig(String modName, String key, String name, boolean defvalue)
 	{
-		this.saveModuleKey(modName, key, defvalue);
+		saveModuleKey(modName, key, defvalue);
 
 		if (!modules.containsKey(modName))
 		{
@@ -92,7 +92,7 @@ public class ConfigHandler implements IWailaConfigHandler {
 
 	public void addConfigServer(String modName, String key, String name, boolean defvalue)
 	{
-		this.saveModuleKey(modName, key, defvalue);
+		saveModuleKey(modName, key, defvalue);
 
 		if (!modules.containsKey(modName))
 		{
