@@ -10,7 +10,7 @@ public class ElectricityDisplay implements IBaseUtilities {
 	{
 		String unitName = unit.name;
 		double testValue = value;
-		if (testValue < 100)
+		if (testValue < 10)
 		{
 			testValue = value / 1000.0;
 		}

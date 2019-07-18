@@ -7,6 +7,7 @@ import physica.api.core.cable.EnumConductorType;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.core.common.block.BlockBlastFurnace;
+import physica.core.common.block.BlockCoalGenerator;
 import physica.core.common.block.BlockEnergyCable;
 import physica.core.common.block.BlockFulmination;
 import physica.core.common.block.BlockInfiniteEnergy;
@@ -14,6 +15,7 @@ import physica.core.common.block.BlockLead;
 import physica.core.common.block.BlockOre;
 import physica.core.common.configuration.ConfigCore;
 import physica.core.common.tile.TileBlastFurnace;
+import physica.core.common.tile.TileCoalGenerator;
 import physica.core.common.tile.TileFulmination;
 import physica.core.common.tile.TileInfiniteEnergy;
 import physica.core.common.tile.cable.TileEnergyCable;
@@ -28,6 +30,7 @@ public class CoreBlockRegister implements IContent {
 	public static BlockInfiniteEnergy	blockInfEnergy;
 	public static BlockFulmination		blockFulmination;
 	public static BlockBlastFurnace		blockBlastFurnace;
+	public static BlockCoalGenerator	blockCoalGenerator;
 	public static BlockEnergyCable		blockCable;
 	public static BlockLead				blockLead;
 	public static BlockOre				blockTinOre;
@@ -46,6 +49,8 @@ public class CoreBlockRegister implements IContent {
 			AbstractionLayer.Registering.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
 			AbstractionLayer.Registering.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), ItemBlockDescriptable.class, "blastFurnace");
 			AbstractionLayer.Registering.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
+			AbstractionLayer.Registering.registerBlock(blockCoalGenerator = new BlockCoalGenerator(), ItemBlockDescriptable.class, "coalGenerator");
+			AbstractionLayer.Registering.registerTileEntity(TileCoalGenerator.class, CoreReferences.PREFIX + "coalGenerator");
 			AbstractionLayer.Registering.registerBlock(blockCable = new BlockEnergyCable(), ItemBlockMetadata.class, "energyCable");
 			AbstractionLayer.Registering.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
 			AbstractionLayer.Registering.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
@@ -56,7 +61,7 @@ public class CoreBlockRegister implements IContent {
 			AbstractionLayer.Registering.registerOre("oreLead", blockLeadOre);
 			AbstractionLayer.Registering.registerOre("oreTin", blockTinOre);
 			AbstractionLayer.Registering.registerOre("oreCopper", blockCopperOre);
-			AbstractionLayer.Registering.registerOre("oreSilver", blockCopperOre);
+			AbstractionLayer.Registering.registerOre("oreSilver", blockSilverOre);
 
 			for (EnumConductorType en : EnumConductorType.values())
 			{
@@ -76,6 +81,7 @@ public class CoreBlockRegister implements IContent {
 			ItemBlockDescriptable.addDescriptionShifted(blockInfEnergy, 0, "Emits infinite energy into nearby receivers.");
 			ItemBlockDescriptable.addDescriptionShifted(blockFulmination, 0, "Harvests energy from explosions.");
 			ItemBlockDescriptable.addDescriptionShifted(blockBlastFurnace, 0, "Smelts iron and combines it with carbon", "to produce steel.");
+			ItemBlockDescriptable.addDescriptionShifted(blockCoalGenerator, 0, "Generates electricity burning coal.");
 		}
 	}
 }

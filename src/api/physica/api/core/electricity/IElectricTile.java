@@ -6,6 +6,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 @SuppressWarnings("deprecation")
 public interface IElectricTile extends IEnergyConnection {
 
+	public static String ELECTRICITY_NBT = "Energy";
+
 	default void setElectricityStored(int electricity)
 	{
 	}

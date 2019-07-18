@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import physica.CoreReferences;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
+import physica.forcefield.client.render.item.ItemRenderConstructor;
 import physica.forcefield.client.render.tile.TileRenderFortronBlock;
 import physica.forcefield.common.ForcefieldBlockRegister;
 import physica.forcefield.common.ForcefieldFluidRegister;
@@ -37,7 +38,7 @@ public class ForcefieldClientRegister implements IContent {
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronFieldConstructor.class, new TileRenderFortronBlock<TileFortronFieldConstructor>("fortronFieldConstructor.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor),
-					new ItemRenderObjModel("fortronFieldConstructor.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderConstructor("fortronFieldConstructor.obj", "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronCapacitor.class, new TileRenderFortronBlock<TileFortronCapacitor>("fortronCapacitor.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronCapacitor),

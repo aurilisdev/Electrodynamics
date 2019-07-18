@@ -3,6 +3,7 @@
 tile.physica:infEnergy.name=Infinite Energy Cube
 tile.physica:fulmination.name=Fulmination Generator
 tile.physica:blastFurnace.name=Blast Furnace
+tile.phyisca:coalGenerator.name=Coal Generator
 tile.physica:tinOre.name=Tin Ore
 tile.physica:copperOre.name=Copper Ore
 tile.physica:leadOre.name=Lead Ore
@@ -14,6 +15,7 @@ tile.physica:energyCable.2.name=Gold Cable
 tile.physica:energyCable.3.name=Superconductive Cable
 #### GUI
 tile.physica:blastFurnace.gui=Blast Furnace
+tile.physica:coalGenerator.gui=Coal Generator
 #### ITEMS
 item.emptyCell.name=Empty Cell
 item.motor.name=Motor

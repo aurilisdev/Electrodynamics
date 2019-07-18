@@ -56,6 +56,7 @@ public class Physica {
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + CoreReferences.DOMAIN);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, sidedProxy);
+		proxyLoader.addContent(new ModIntegration());
 		proxyLoader.addContent(sidedProxy);
 		proxyLoader.addContent(PacketSystem.INSTANCE);
 		proxyLoader.addContent(config = new ConfigCore());

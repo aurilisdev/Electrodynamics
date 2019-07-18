@@ -25,14 +25,14 @@ public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 	default void handleWriteToNBT(NBTTagCompound nbt)
 	{
 		ITileBase.super.handleWriteToNBT(nbt);
-		nbt.setInteger("Energy", getElectricityStored());
+		nbt.setInteger(ELECTRICITY_NBT, getElectricityStored());
 	}
 
 	@Override
 	default void handleReadFromNBT(NBTTagCompound nbt)
 	{
 		ITileBase.super.handleReadFromNBT(nbt);
-		setElectricityStored(nbt.getInteger("Energy"));
+		setElectricityStored(nbt.getInteger(ELECTRICITY_NBT));
 	}
 
 	@Override
