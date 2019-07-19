@@ -177,7 +177,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	@Override
 	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
 	{
-		return (int) (from == getFacing().getOpposite() ? getElectricityStored(from) : 0);
+		return from == getFacing().getOpposite() ? getElectricityStored(from) : 0;
 	}
 
 	@Override

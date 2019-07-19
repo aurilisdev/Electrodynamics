@@ -97,27 +97,27 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 			if (generator.generate > 0)
 			{
 				int ordinal = generator.getFacing().ordinal();
-				float xLoc = (float) x + 0.5F;
-				float yLoc = (float) y + 4.0f / 16.0f + rand.nextFloat() * 6.0F / 16.0F;
-				float zLoc = (float) z + 0.5F;
+				float xLoc = x + 0.5F;
+				float yLoc = y + 4.0f / 16.0f + rand.nextFloat() * 6.0F / 16.0F;
+				float zLoc = z + 0.5F;
 				float offset1 = 0.52F;
 				float offset2 = rand.nextFloat() * 0.6F - 0.3F;
 				if (ordinal == 4)
 				{
-					world.spawnParticle("smoke", (double) (xLoc - offset1), (double) yLoc, (double) (zLoc + offset2), 0.0D, 0.0D, 0.0D);
-					world.spawnParticle("flame", (double) (xLoc - offset1), (double) yLoc, (double) (zLoc + offset2), 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("smoke", xLoc - offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("flame", xLoc - offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
 				} else if (ordinal == 5)
 				{
-					world.spawnParticle("smoke", (double) (xLoc + offset1), (double) yLoc, (double) (zLoc + offset2), 0.0D, 0.0D, 0.0D);
-					world.spawnParticle("flame", (double) (xLoc + offset1), (double) yLoc, (double) (zLoc + offset2), 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("smoke", xLoc + offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("flame", xLoc + offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
 				} else if (ordinal == 2)
 				{
-					world.spawnParticle("smoke", (double) (xLoc + offset2), (double) yLoc, (double) (zLoc - offset1), 0.0D, 0.0D, 0.0D);
-					world.spawnParticle("flame", (double) (xLoc + offset2), (double) yLoc, (double) (zLoc - offset1), 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("smoke", xLoc + offset2, yLoc, zLoc - offset1, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("flame", xLoc + offset2, yLoc, zLoc - offset1, 0.0D, 0.0D, 0.0D);
 				} else if (ordinal == 3)
 				{
-					world.spawnParticle("smoke", (double) (xLoc + offset2), (double) yLoc, (double) (zLoc + offset1), 0.0D, 0.0D, 0.0D);
-					world.spawnParticle("flame", (double) (xLoc + offset2), (double) yLoc, (double) (zLoc + offset1), 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("smoke", xLoc + offset2, yLoc, zLoc + offset1, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("flame", xLoc + offset2, yLoc, zLoc + offset1, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

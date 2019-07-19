@@ -18,6 +18,7 @@ import mcp.mobius.waila.api.IWailaSummaryProvider;
 import mcp.mobius.waila.api.IWailaTooltipRenderer;
 import mcp.mobius.waila.cbcore.LangUtil;
 import mcp.mobius.waila.utils.Constants;
+
 @SuppressWarnings("rawtypes")
 public class ModuleRegistrar implements IWailaRegistrar {
 
