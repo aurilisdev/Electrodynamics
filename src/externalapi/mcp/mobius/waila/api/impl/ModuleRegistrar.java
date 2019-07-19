@@ -18,7 +18,7 @@ import mcp.mobius.waila.api.IWailaSummaryProvider;
 import mcp.mobius.waila.api.IWailaTooltipRenderer;
 import mcp.mobius.waila.cbcore.LangUtil;
 import mcp.mobius.waila.utils.Constants;
-
+@SuppressWarnings("rawtypes")
 public class ModuleRegistrar implements IWailaRegistrar {
 
 	private static ModuleRegistrar														instance				= null;
@@ -26,6 +26,7 @@ public class ModuleRegistrar implements IWailaRegistrar {
 	public LinkedHashMap<Class, ArrayList<IWailaDataProvider>>							headBlockProviders		= new LinkedHashMap<>();
 	public LinkedHashMap<Class, ArrayList<IWailaDataProvider>>							bodyBlockProviders		= new LinkedHashMap<>();
 	public LinkedHashMap<Class, ArrayList<IWailaDataProvider>>							tailBlockProviders		= new LinkedHashMap<>();
+
 	public LinkedHashMap<Class, ArrayList<IWailaDataProvider>>							stackBlockProviders		= new LinkedHashMap<>();
 	public LinkedHashMap<Class, ArrayList<IWailaDataProvider>>							NBTDataProviders		= new LinkedHashMap<>();
 

@@ -2,6 +2,7 @@ package physica.api.core.abstraction;
 
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -62,6 +63,11 @@ public class AbstractionLayer {
 			return tile instanceof IEnergyReceiver;
 		}
 
+		public static boolean isElectricProvider(TileEntity tile)
+		{
+			return tile instanceof IEnergyProvider;
+		}
+
 		public static boolean canConnectElectricity(TileEntity tile, ForgeDirection from)
 		{
 			if (isElectric(tile))
@@ -69,6 +75,18 @@ public class AbstractionLayer {
 				return ((IEnergyConnection) tile).canConnectEnergy(from);
 			}
 			return false;
+		}
+
+		public static int extractElectricity(TileEntity tile, ForgeDirection from, int maxExtract, boolean simulate)
+		{
+			if (isElectricProvider(tile))
+			{
+				if (canConnectElectricity(tile, from))
+				{
+					return ((IEnergyProvider) tile).extractEnergy(from, maxExtract, simulate);
+				}
+			}
+			return 0;
 		}
 
 		public static int receiveElectricity(TileEntity tile, ForgeDirection from, int maxReceive, boolean simulate)
@@ -102,6 +120,10 @@ public class AbstractionLayer {
 			{
 				return ((IEnergyReceiver) tile).getEnergyStored(from);
 			}
+			if (isElectricProvider(tile))
+			{
+				return ((IEnergyProvider) tile).getEnergyStored(from);
+			}
 			return -1;
 		}
 
@@ -110,6 +132,10 @@ public class AbstractionLayer {
 			if (isElectricReceiver(tile))
 			{
 				return ((IEnergyReceiver) tile).getMaxEnergyStored(from);
+			}
+			if (isElectricProvider(tile))
+			{
+				return ((IEnergyProvider) tile).getMaxEnergyStored(from);
 			}
 			return -1;
 		}

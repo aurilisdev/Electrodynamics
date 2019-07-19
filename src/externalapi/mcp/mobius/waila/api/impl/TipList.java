@@ -10,7 +10,9 @@ import java.util.Set;
 
 import mcp.mobius.waila.api.ITaggedList;
 
+@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 public class TipList<E, T> extends ArrayList<E> implements ITaggedList<E, T> {
+
 	Map<E, Set<T>> tags = new HashMap();
 
 	@Override

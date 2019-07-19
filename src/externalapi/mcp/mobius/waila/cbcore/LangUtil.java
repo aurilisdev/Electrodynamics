@@ -59,6 +59,7 @@ public class LangUtil {
 		return ret;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void addLangFile(InputStream resource, String lang) throws IOException
 	{
 		LanguageRegistry reg = LanguageRegistry.instance();
@@ -92,6 +93,7 @@ public class LangUtil {
 		return new LangUtil(domain).addLangDir(new ResourceLocation(domain, "lang"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@SideOnly(Side.CLIENT)
 	public LangUtil addLangDir(ResourceLocation dir)
 	{

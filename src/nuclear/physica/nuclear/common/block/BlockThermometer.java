@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
-import physica.library.util.ChatUtils;
+import physica.library.util.ChatUtilities;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TileFissionReactor;
@@ -60,19 +60,19 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 			int meta = world.getBlockMetadata(x, y, z);
 			world.setBlockMetadataWithNotify(x, y, z, meta = meta == 0 ? 1 : meta == 1 ? 2 : meta == 2 ? 3 : meta == 3 ? 4 : 0, 2);
 			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
-			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
 		} else if (tile instanceof TileFissionReactor)
 		{
-			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "C");
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "C");
 			int meta = world.getBlockMetadata(x, y, z);
 			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
-			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
 		} else
 		{
-			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: 15.0C");
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: 15.0C");
 			int meta = world.getBlockMetadata(x, y, z);
 			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
-			ChatUtils.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
 		}
 		return true;
 	}

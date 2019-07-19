@@ -24,6 +24,7 @@ package mcp.mobius.waila.api;
  * @author ProfMobius
  *
  */
+@SuppressWarnings("rawtypes")
 public interface IWailaRegistrar {
 	/*
 	 * Add a config option in the section modname with displayed text configtext and
@@ -46,6 +47,7 @@ public interface IWailaRegistrar {
 	public void addConfigRemote(String modname, String keyname, boolean defvalue);
 
 	/* Register a stack overrider for the given blockID */
+
 	public void registerStackProvider(IWailaDataProvider dataProvider, Class block);
 
 	/* Same thing, but works on a class hierarchy instead */

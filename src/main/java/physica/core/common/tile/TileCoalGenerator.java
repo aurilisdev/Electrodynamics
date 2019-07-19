@@ -59,14 +59,17 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 					decrStackSize(0, 1);
 				}
 			}
-			ForgeDirection out = getFacing().getOpposite();
-			TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
-
-			if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
+			if (generate > MIN_GENERATE)
 			{
-				if (AbstractionLayer.Electricity.canConnectElectricity(outputTile, out.getOpposite()))
+				ForgeDirection out = getFacing().getOpposite();
+				TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
+
+				if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 				{
-					AbstractionLayer.Electricity.receiveElectricity(outputTile, out.getOpposite(), (int) generate, false);
+					if (AbstractionLayer.Electricity.canConnectElectricity(outputTile, out.getOpposite()))
+					{
+						AbstractionLayer.Electricity.receiveElectricity(outputTile, out.getOpposite(), (int) generate, false);
+					}
 				}
 			}
 		}
@@ -168,7 +171,13 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	@Override
 	public int getElectricityStored(ForgeDirection from)
 	{
-		return (int) generate;
+		return generate > MIN_GENERATE ? (int) generate : 0;
+	}
+
+	@Override
+	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
+	{
+		return (int) (from == getFacing().getOpposite() ? getElectricityStored(from) : 0);
 	}
 
 	@Override
