@@ -47,6 +47,7 @@ tile.physicanuclearphysics:chemicalBoiler.name=Chemical Boiler
 tile.physicanuclearphysics:chemicalExtractor.name=Chemical Extractor
 tile.physicanuclearphysics:fissionReactor.name=Fission Reactor
 tile.physicanuclearphysics:fusionReactor.name=Fusion Reactor
+tile.physicanuclearphysics:radioisotopeGenerator.name=Radioisotope Thermoelectric Generator
 tile.physicanuclearphysics:neutronCaptureChamber.name=Neutron Capture Chamber
 tile.physicanuclearphysics:turbine.name=Steam Turbine
 tile.physicanuclearphysics:siren.name=Siren
@@ -72,6 +73,7 @@ tile.physicanuclearphysics:chemicalExtractor.gui=Chemical Extractor
 tile.physicanuclearphysics:fissionReactor.gui=Fission Reactor
 tile.physicanuclearphysics:neutronCaptureChamber.gui=Neutron Capture Chamber
 tile.physicanuclearphysics:reactorControlPanel.gui=Control Panel
+tile.physicanuclearphysics:radioisotopeGenerator.gui=Radioisotope Generator
 #### ITEMS
 item.yellowcake.name=Yellowcake
 item.uranium.name=Uranium

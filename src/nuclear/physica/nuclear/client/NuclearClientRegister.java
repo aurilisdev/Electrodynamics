@@ -39,6 +39,7 @@ import physica.nuclear.common.tile.TileInsertableControlRod;
 import physica.nuclear.common.tile.TileMeltedReactor;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 import physica.nuclear.common.tile.TileQuantumAssembler;
+import physica.nuclear.common.tile.TileRadioisotopeGenerator;
 import physica.nuclear.common.tile.TileThermometer;
 import physica.nuclear.common.tile.TileTurbine;
 
@@ -86,6 +87,10 @@ public class NuclearClientRegister implements IContent {
 					new TileRenderFusionReactor("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockFusionReactor),
 					new ItemRenderObjModel("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileRadioisotopeGenerator.class,
+					new TileRenderObjModel<TileRadioisotopeGenerator>("radioisotopeGenerator.obj", "radioisotopeGenerator.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockRadioisotopeGenerator),
+					new ItemRenderObjModel("radioisotopeGenerator.obj", "radioisotopeGenerator.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileInsertableControlRod.class, new TileRenderControlRod());
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockInsertableControlRod), new ItemRenderControlRod("controlRodStation.obj", "fissionReactor.png"));
