@@ -19,22 +19,16 @@ public class ModIntegration implements IContent {
 	{
 		if (phase == LoadPhase.OnStartup)
 		{
-
 			if (Loader.isModLoaded("Waila"))
 			{
 				PhysicaAPI.logger.log(Level.INFO, "Attempting to integrate Physica with WAILA.");
 				try
 				{
-
 					Class<?> moduleRegistrar = Class.forName("mcp.mobius.waila.api.impl.ModuleRegistrar");
 					Object instance = moduleRegistrar.getMethod("instance").invoke(null);
-					Method addConfigRemote = moduleRegistrar.getMethod("addConfigRemote", String.class, String.class);
-					Method registerBodyProvider;
-
-					registerBodyProvider = moduleRegistrar.getMethod("registerBodyProvider", IWailaDataProvider.class, Class.class);
-
+					moduleRegistrar.getMethod("addConfigRemote", String.class, String.class).invoke(instance, "Physica", "physica.electricityhandler");
+					Method registerBodyProvider = moduleRegistrar.getMethod("registerBodyProvider", IWailaDataProvider.class, Class.class);
 					Method registerNBTProvider = moduleRegistrar.getMethod("registerNBTProvider", IWailaDataProvider.class, Class.class);
-					addConfigRemote.invoke(instance, "Physica", "physica.electricityhandler");
 					registerBodyProvider.invoke(instance, new HUDHandlerIElectricityHandler(), IElectricityProvider.class);
 					registerNBTProvider.invoke(instance, new HUDHandlerIElectricityHandler(), IElectricityProvider.class);
 					registerBodyProvider.invoke(instance, new HUDHandlerIElectricityHandler(), IElectricityReceiver.class);
@@ -42,8 +36,7 @@ public class ModIntegration implements IContent {
 					PhysicaAPI.logger.log(Level.INFO, "Integrated Physica with WAILA.");
 				} catch (Exception e)
 				{
-					PhysicaAPI.logger.log(Level.INFO, "Failed to integrate Physica with WAILA.");
-					e.printStackTrace();
+					PhysicaAPI.logger.log(Level.ERROR, "Failed to integrate Physica with WAILA.");
 				}
 			}
 		}

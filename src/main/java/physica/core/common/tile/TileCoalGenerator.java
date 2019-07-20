@@ -31,6 +31,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	public double				prevGenerateWatts;
 	public double				generate;
 	public int					itemCookTime;
+	private TileEntity			cachedOutput;
 
 	@Override
 	public boolean canConnectElectricity(ForgeDirection from)
@@ -62,13 +63,20 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 			if (generate > MIN_GENERATE)
 			{
 				ForgeDirection out = getFacing().getOpposite();
-				TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
-
-				if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
+				if (cachedOutput == null || cachedOutput.isInvalid())
 				{
-					if (AbstractionLayer.Electricity.canConnectElectricity(outputTile, out.getOpposite()))
+					cachedOutput = null;
+					TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
+					if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 					{
-						AbstractionLayer.Electricity.receiveElectricity(outputTile, out.getOpposite(), (int) generate, false);
+						cachedOutput = outputTile;
+					}
+				}
+				if (cachedOutput != null)
+				{
+					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
+					{
+						AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), (int) generate, false);
 					}
 				}
 			}

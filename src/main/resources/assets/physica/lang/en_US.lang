@@ -149,4 +149,3 @@ itemGroup.physicaforcefieldsForcefield=Physica - Forcefields
 
 #### MOD INTEGRATION
 option.physica.electricityhandler=Show Watt(Hours/Seconds)
-options.physica.hdmodels=Physica HD Models
