@@ -17,6 +17,7 @@ public class BlockRadioisotopeGenerator extends BlockBaseContainerModelled {
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setBlockName(NuclearReferences.PREFIX + "radioisotopeGenerator");
+		setBlockBounds(1.0f / 16.0f, 0, 1.0f / 16.0f, 15.0f / 16.0f, 1.0f, 15.0f / 16.0f);
 	}
 
 	@Override
@@ -37,5 +38,4 @@ public class BlockRadioisotopeGenerator extends BlockBaseContainerModelled {
 	{
 		return "Nuclear";
 	}
-
 }
