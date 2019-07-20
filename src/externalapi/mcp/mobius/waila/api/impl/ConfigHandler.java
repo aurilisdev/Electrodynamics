@@ -114,7 +114,7 @@ public class ConfigHandler implements IWailaConfigHandler {
 	{
 		try
 		{
-			if (serverconfigs.contains(key) && !Class.forName("mcp.mobius.waila.Waila").getField("serverPresent").getBoolean(null))
+			if (serverconfigs.contains(key) && (!Class.forName("mcp.mobius.waila.Waila").getField("serverPresent").getBoolean(Class.forName("mcp.mobius.waila.Waila").getField("instance").get(null))))
 			{
 				return false;
 			}

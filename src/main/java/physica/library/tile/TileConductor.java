@@ -125,15 +125,9 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from)
+	public int getElectricCapacity(ForgeDirection from)
 	{
-		return 0;
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from)
-	{
-		return 1;
+		return getCableType().getTransferRate();
 	}
 
 	@Override
@@ -155,7 +149,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from)
+	public boolean canConnectElectricity(ForgeDirection from)
 	{
 		return true;
 	}

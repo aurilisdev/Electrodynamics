@@ -37,7 +37,16 @@ public class HUDHandlerIElectricityHandler implements IWailaDataProvider {
 	@Override
 	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
 	{
-
+		try
+		{
+			if (!config.getConfig("physica.electricityhandler"))
+			{
+				return currenttip;
+			}
+		} catch (NullPointerException e)
+		{
+			e.printStackTrace();
+		}
 		if (!accessor.getNBTData().hasKey(IElectricTile.ELECTRICITY_NBT))
 		{
 			return currenttip;

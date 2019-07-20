@@ -146,3 +146,6 @@ item.identificationCard.name=Identification Card
 fluid.physicaforcefields:fortron=Fortron
 #### TABS
 itemGroup.physicaforcefieldsForcefield=Physica - Forcefields
+
+#### MOD INTEGRATION
+option.physica.electricityhandler=Show 	Watt(Hours/Seconds)
