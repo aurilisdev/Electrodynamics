@@ -25,7 +25,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 
 	public static final int		SLOT_INPUT			= 0;
 	private static final int[]	ACCESSIBLE_SLOTS	= new int[] { SLOT_INPUT };
-	public static final int		MAX_GENERATE		= 10000;
+	public static final int		MAX_GENERATE		= 10100;
 	public static final int		MIN_GENERATE		= 100;
 	private static final float	BASE_ACCELERATION	= 0.3F;
 	public double				prevGenerateWatts;
@@ -61,7 +61,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 				}
 			}
 		}
-		if (generate > MIN_GENERATE)
+		if (generate - MIN_GENERATE > 0)
 		{
 			ForgeDirection out = getFacing().getOpposite();
 			if (cachedOutput == null || cachedOutput.isInvalid())
@@ -77,7 +77,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 			{
 				if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
 				{
-					AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), (int) generate, false);
+					AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), (int) generate - 100, false);
 				}
 			}
 		}
@@ -179,7 +179,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	@Override
 	public int getElectricityStored(ForgeDirection from)
 	{
-		return generate > MIN_GENERATE ? (int) generate : 0;
+		return generate > MIN_GENERATE ? (int) generate - 100 : 0;
 	}
 
 	@Override
@@ -191,6 +191,6 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	@Override
 	public int getElectricCapacity(ForgeDirection from)
 	{
-		return MAX_GENERATE;
+		return MAX_GENERATE - 100;
 	}
 }
