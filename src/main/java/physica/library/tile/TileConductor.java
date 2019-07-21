@@ -10,11 +10,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
 import physica.library.location.BlockLocation;
-import physica.library.net.EnergyNetworkRegistry;
-import physica.library.net.energy.EnergyNetwork;
+import physica.library.net.ElectricNetworkRegistry;
+import physica.library.net.energy.ElectricNetwork;
 
 public class TileConductor extends TileEntity implements IConductor {
-	public EnergyNetwork energyNetwork;
+	public ElectricNetwork energyNetwork;
 
 	@Override
 	public boolean canUpdate()
@@ -23,7 +23,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public EnergyNetwork getNetwork()
+	public ElectricNetwork getNetwork()
 	{
 		return getNetwork(true);
 	}
@@ -43,12 +43,12 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public EnergyNetwork getNetwork(boolean createIfNull)
+	public ElectricNetwork getNetwork(boolean createIfNull)
 	{
 		if (energyNetwork == null && createIfNull)
 		{
 			TileEntity[] adjacentCables = getConnectedCables(this);
-			HashSet<EnergyNetwork> connectedNets = new HashSet<>();
+			HashSet<ElectricNetwork> connectedNets = new HashSet<>();
 			for (TileEntity cable : adjacentCables)
 			{
 				if (cable instanceof IConductor && ((IConductor) cable).getNetwork(false) != null)
@@ -58,14 +58,14 @@ public class TileConductor extends TileEntity implements IConductor {
 			}
 			if (connectedNets.size() == 0)
 			{
-				energyNetwork = new EnergyNetwork(new IConductor[] { this });
+				energyNetwork = new ElectricNetwork(new IConductor[] { this });
 			} else if (connectedNets.size() == 1)
 			{
-				energyNetwork = (EnergyNetwork) connectedNets.toArray()[0];
+				energyNetwork = (ElectricNetwork) connectedNets.toArray()[0];
 				energyNetwork.conductorSet.add(this);
 			} else
 			{
-				energyNetwork = new EnergyNetwork(connectedNets);
+				energyNetwork = new ElectricNetwork(connectedNets);
 				energyNetwork.conductorSet.add(this);
 			}
 		}
@@ -83,7 +83,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public void setNetwork(EnergyNetwork network)
+	public void setNetwork(ElectricNetwork network)
 	{
 		if (network != energyNetwork)
 		{
@@ -158,7 +158,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	public void onChunkUnload()
 	{
 		invalidate();
-		EnergyNetworkRegistry.getInstance().pruneEmptyNetworks();
+		ElectricNetworkRegistry.getInstance().pruneEmptyNetworks();
 	}
 
 	@Override

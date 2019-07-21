@@ -17,9 +17,9 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
 import physica.library.location.BlockLocation;
-import physica.library.net.EnergyNetworkRegistry;
+import physica.library.net.ElectricNetworkRegistry;
 
-public class EnergyNetwork {
+public class ElectricNetwork {
 	private static final int								DEFAULT_VOLTAGE					= 120;
 	public HashSet<IConductor>								conductorSet					= new HashSet<>();
 	public HashSet<TileEntity>								acceptorSet						= new HashSet<>();
@@ -42,13 +42,13 @@ public class EnergyNetwork {
 		return maxPowerTransfer;
 	}
 
-	public EnergyNetwork(IConductor... varCables) {
+	public ElectricNetwork(IConductor... varCables) {
 		conductorSet.addAll(Arrays.asList(varCables));
-		EnergyNetworkRegistry.getInstance().registerNetwork(this);
+		ElectricNetworkRegistry.getInstance().registerNetwork(this);
 	}
 
-	public EnergyNetwork(Set<EnergyNetwork> networks) {
-		for (EnergyNetwork net : networks)
+	public ElectricNetwork(Set<ElectricNetwork> networks) {
+		for (ElectricNetwork net : networks)
 		{
 			if (net != null)
 			{
@@ -57,7 +57,7 @@ public class EnergyNetwork {
 			}
 		}
 		refresh();
-		EnergyNetworkRegistry.getInstance().registerNetwork(this);
+		ElectricNetworkRegistry.getInstance().registerNetwork(this);
 	}
 
 	public int emit(int energyToSend, ArrayList<TileEntity> ignored)
@@ -221,14 +221,14 @@ public class EnergyNetwork {
 		}
 	}
 
-	public void merge(EnergyNetwork network)
+	public void merge(ElectricNetwork network)
 	{
 		if (network != null && network != this)
 		{
-			Set<EnergyNetwork> networks = new HashSet<>();
+			Set<ElectricNetwork> networks = new HashSet<>();
 			networks.add(this);
 			networks.add(network);
-			EnergyNetwork newNetwork = new EnergyNetwork(networks);
+			ElectricNetwork newNetwork = new ElectricNetwork(networks);
 			newNetwork.refresh();
 		}
 	}
@@ -272,7 +272,7 @@ public class EnergyNetwork {
 							}
 						}
 					}
-					EnergyNetwork newNetwork = new EnergyNetwork(new IConductor[0]);
+					ElectricNetwork newNetwork = new ElectricNetwork(new IConductor[0]);
 					for (BlockLocation node : finder.iterated)
 					{
 						TileEntity nodeTile = node.getTile(((TileEntity) splitPoint).getWorldObj());
@@ -307,7 +307,7 @@ public class EnergyNetwork {
 					newCables.add((IConductor) nodeTile);
 				}
 			}
-			EnergyNetwork newNetwork = new EnergyNetwork(newCables.toArray(new IConductor[0]));
+			ElectricNetwork newNetwork = new ElectricNetwork(newCables.toArray(new IConductor[0]));
 			newNetwork.refresh();
 			newNetwork.fixed = true;
 			deregister();
@@ -326,7 +326,7 @@ public class EnergyNetwork {
 	public void deregister()
 	{
 		conductorSet.clear();
-		EnergyNetworkRegistry.getInstance().removeNetwork(this);
+		ElectricNetworkRegistry.getInstance().removeNetwork(this);
 	}
 
 	public static class NetworkFinder {

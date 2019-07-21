@@ -30,8 +30,8 @@ import physica.core.common.command.CommandPhysica;
 import physica.core.common.configuration.ConfigCore;
 import physica.core.common.event.FulminationEventHandler;
 import physica.core.common.event.WrenchEventHandler;
-import physica.library.net.EnergyNetworkRegistry;
-import physica.library.net.energy.EnergyNetwork;
+import physica.library.net.ElectricNetworkRegistry;
+import physica.library.net.energy.ElectricNetwork;
 import physica.library.network.netty.PacketSystem;
 import physica.proxy.CommonProxy;
 
@@ -74,9 +74,9 @@ public class Physica {
 		proxyLoader.addContent(new CoreWorldGenRegister());
 
 		MinecraftForge.EVENT_BUS.register(FulminationEventHandler.INSTANCE);
-		MinecraftForge.EVENT_BUS.register(EnergyNetworkRegistry.INSTANCE);
-		FMLCommonHandler.instance().bus().register(EnergyNetworkRegistry.INSTANCE);
-		MinecraftForge.EVENT_BUS.register(new EnergyNetwork.NetworkLoader());
+		MinecraftForge.EVENT_BUS.register(ElectricNetworkRegistry.INSTANCE);
+		FMLCommonHandler.instance().bus().register(ElectricNetworkRegistry.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new ElectricNetwork.NetworkLoader());
 		MinecraftForge.EVENT_BUS.register(WrenchEventHandler.INSTANCE);
 
 		metadata.authorList = CoreReferences.Metadata.AUTHORS;

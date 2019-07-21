@@ -6,23 +6,23 @@ import java.util.Set;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import physica.library.net.energy.EnergyNetwork;
+import physica.library.net.energy.ElectricNetwork;
 
-public class EnergyNetworkRegistry {
-	public static EnergyNetworkRegistry	INSTANCE	= new EnergyNetworkRegistry();
-	private HashSet<EnergyNetwork>		networks	= new HashSet<>();
+public class ElectricNetworkRegistry {
+	public static ElectricNetworkRegistry	INSTANCE	= new ElectricNetworkRegistry();
+	private HashSet<ElectricNetwork>		networks	= new HashSet<>();
 
-	public static EnergyNetworkRegistry getInstance()
+	public static ElectricNetworkRegistry getInstance()
 	{
 		return INSTANCE;
 	}
 
-	public void registerNetwork(EnergyNetwork network)
+	public void registerNetwork(ElectricNetwork network)
 	{
 		networks.add(network);
 	}
 
-	public void removeNetwork(EnergyNetwork network)
+	public void removeNetwork(ElectricNetwork network)
 	{
 		if (networks.contains(network))
 		{
@@ -32,7 +32,7 @@ public class EnergyNetworkRegistry {
 
 	public void pruneEmptyNetworks()
 	{
-		for (EnergyNetwork e : networks)
+		for (ElectricNetwork e : networks)
 		{
 			if (e.conductorSet.size() == 0)
 			{
@@ -47,8 +47,8 @@ public class EnergyNetworkRegistry {
 		if (event.phase == Phase.END)
 		{
 			@SuppressWarnings("unchecked")
-			Set<EnergyNetwork> iterNetworks = (Set<EnergyNetwork>) networks.clone();
-			for (EnergyNetwork net : iterNetworks)
+			Set<ElectricNetwork> iterNetworks = (Set<ElectricNetwork>) networks.clone();
+			for (ElectricNetwork net : iterNetworks)
 			{
 				if (networks.contains(net))
 				{

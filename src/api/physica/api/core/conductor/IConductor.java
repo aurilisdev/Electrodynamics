@@ -1,16 +1,16 @@
 package physica.api.core.conductor;
 
 import physica.api.core.electricity.IElectricityReceiver;
-import physica.library.net.energy.EnergyNetwork;
+import physica.library.net.energy.ElectricNetwork;
 
 public interface IConductor extends IElectricityReceiver {
-	public EnergyNetwork getNetwork();
+	public ElectricNetwork getNetwork();
 
-	public EnergyNetwork getNetwork(boolean createIfNull);
+	public ElectricNetwork getNetwork(boolean createIfNull);
 
 	public EnumConductorType getCableType();
 
-	public void setNetwork(EnergyNetwork network);
+	public void setNetwork(ElectricNetwork network);
 
 	public void refreshNetwork();
 
