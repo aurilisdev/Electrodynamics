@@ -48,7 +48,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 		if (itemCookTime > 0)
 		{
 			itemCookTime -= 1;
-			generate = Math.min(generate + Math.min(generate * 0.005D + BASE_ACCELERATION, 5.0D), 10000.0D);
+			generate = Math.min(generate + Math.min(generate * 0.005D + BASE_ACCELERATION, 5.0D), MAX_GENERATE);
 		}
 		if (getStackInSlot(SLOT_INPUT) != null)
 		{

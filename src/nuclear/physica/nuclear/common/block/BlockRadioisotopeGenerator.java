@@ -29,8 +29,7 @@ public class BlockRadioisotopeGenerator extends BlockBaseContainerModelled {
 	@Override
 	public void registerRecipes()
 	{
-		// addRecipe(this, "IPI", "MCM", "IPI", 'I', "ingotSteel", 'M', "motor", 'P',
-		// "plateSteel", 'C', "circuitAdvanced");
+		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateLead", 'E', "circuitAdvanced");
 	}
 
 	@Override

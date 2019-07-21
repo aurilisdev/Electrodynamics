@@ -29,7 +29,7 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	@Override
 	public void registerRecipes()
 	{
-		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C', "circuitAdvanced", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
+		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
 	}
 
 	@Override

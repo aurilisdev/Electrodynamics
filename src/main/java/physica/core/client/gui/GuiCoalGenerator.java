@@ -32,7 +32,7 @@ public class GuiCoalGenerator extends GuiContainerBase<TileCoalGenerator> {
 		} else
 		{
 			drawString("Generating", 70, 33, 4210752);
-			displayText = ElectricityDisplay.getDisplay(host.generate, Unit.WATT);
+			displayText = ElectricityDisplay.getDisplay(host.generate - 100, Unit.WATT);
 		}
 		drawString("Time Left: " + host.itemCookTime / 20 + "s", 70, 45);
 		drawString(displayText, 70, 57);
