@@ -60,24 +60,24 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 					decrStackSize(0, 1);
 				}
 			}
-			if (generate > MIN_GENERATE)
+		}
+		if (generate > MIN_GENERATE)
+		{
+			ForgeDirection out = getFacing().getOpposite();
+			if (cachedOutput == null || cachedOutput.isInvalid())
 			{
-				ForgeDirection out = getFacing().getOpposite();
-				if (cachedOutput == null || cachedOutput.isInvalid())
+				cachedOutput = null;
+				TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
+				if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 				{
-					cachedOutput = null;
-					TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
-					if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
-					{
-						cachedOutput = outputTile;
-					}
+					cachedOutput = outputTile;
 				}
-				if (cachedOutput != null)
+			}
+			if (cachedOutput != null)
+			{
+				if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
 				{
-					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
-					{
-						AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), (int) generate, false);
-					}
+					AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), (int) generate, false);
 				}
 			}
 		}
