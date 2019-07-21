@@ -1,4 +1,4 @@
-package physica.api.core.cable;
+package physica.api.core.conductor;
 
 import physica.api.core.electricity.IElectricityReceiver;
 import physica.library.net.energy.EnergyNetwork;

@@ -3,7 +3,7 @@ package physica.core.common;
 import net.minecraft.util.EnumChatFormatting;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.cable.EnumConductorType;
+import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.core.common.block.BlockBlastFurnace;

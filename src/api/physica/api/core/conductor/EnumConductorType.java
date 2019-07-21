@@ -1,4 +1,4 @@
-package physica.api.core.cable;
+package physica.api.core.conductor;
 
 public enum EnumConductorType {
 	copper(120, 15360), silver(240, 61440), gold(360, 138240), superConductor(-1, 307200);

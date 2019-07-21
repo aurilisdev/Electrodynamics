@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.cable.EnumConductorType;
+import physica.api.core.conductor.EnumConductorType;
 import physica.core.common.tile.cable.TileEnergyCable;
 
 @SideOnly(Side.CLIENT)

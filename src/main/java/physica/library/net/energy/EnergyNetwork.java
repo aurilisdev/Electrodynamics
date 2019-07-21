@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.cable.EnumConductorType;
-import physica.api.core.cable.IConductor;
+import physica.api.core.conductor.EnumConductorType;
+import physica.api.core.conductor.IConductor;
 import physica.library.location.BlockLocation;
 import physica.library.net.EnergyNetworkRegistry;
 

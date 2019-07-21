@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.cable.IConductor;
+import physica.api.core.conductor.IConductor;
 import physica.core.common.CoreTabRegister;
 import physica.library.energy.ElectricityDisplay;
 import physica.library.energy.ElectricityUtilities;
