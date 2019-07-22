@@ -38,7 +38,7 @@ public class UnitDisplayUtils {
 
 		public double convertFromK(double T, boolean shift)
 		{
-			return (T * intervalSize) - (shift ? zeroOffset : 0);
+			return T * intervalSize - (shift ? zeroOffset : 0);
 		}
 
 		public double convertToK(double T, boolean shift)
@@ -140,7 +140,7 @@ public class UnitDisplayUtils {
 
 				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
 
-				if ((lowerMeasure.above(value) && upperMeasure.below(value)) || lowerMeasure.value == value)
+				if (lowerMeasure.above(value) && upperMeasure.below(value) || lowerMeasure.value == value)
 				{
 					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 				}
@@ -219,7 +219,7 @@ public class UnitDisplayUtils {
 
 				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
 
-				if ((lowerMeasure.above(value) && upperMeasure.below(value)) || lowerMeasure.value == value)
+				if (lowerMeasure.above(value) && upperMeasure.below(value) || lowerMeasure.value == value)
 				{
 					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
 				}
