@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -193,9 +193,9 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
-		return from == getFacing().getOpposite() || from == FaceDirection.DOWN;
+		return from == getFacing().getOpposite() || from == Face.DOWN;
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
+		return side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side == Face.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
@@ -237,14 +237,14 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
-		return from.ordinal() == RotationUtility.getRelativeSide(FaceDirection.EAST, getFacing().getOpposite()).ordinal() ? hexaTank.drain(maxDrain, doDrain) : null;
+		return from.ordinal() == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite()).ordinal() ? hexaTank.drain(maxDrain, doDrain) : null;
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		return fluid == FluidRegistry.WATER ? from.ordinal() == RotationUtility.getRelativeSide(FaceDirection.WEST, getFacing().getOpposite()).ordinal()
-				: fluid == NuclearFluidRegister.LIQUID_HE ? from.ordinal() == RotationUtility.getRelativeSide(FaceDirection.EAST, getFacing().getOpposite()).ordinal() : false;
+		return fluid == FluidRegistry.WATER ? from.ordinal() == RotationUtility.getRelativeSide(Face.WEST, getFacing().getOpposite()).ordinal()
+				: fluid == NuclearFluidRegister.LIQUID_HE ? from.ordinal() == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite()).ordinal() : false;
 	}
 
 	@Override
@@ -256,8 +256,8 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
-		return from.ordinal() == RotationUtility.getRelativeSide(FaceDirection.WEST, getFacing().getOpposite()).ordinal() ? new FluidTankInfo[] { waterTank.getInfo() }
-				: from.ordinal() == RotationUtility.getRelativeSide(FaceDirection.EAST, getFacing().getOpposite()).ordinal() ? new FluidTankInfo[] { hexaTank.getInfo() } : new FluidTankInfo[] {};
+		return from.ordinal() == RotationUtility.getRelativeSide(Face.WEST, getFacing().getOpposite()).ordinal() ? new FluidTankInfo[] { waterTank.getInfo() }
+				: from.ordinal() == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite()).ordinal() ? new FluidTankInfo[] { hexaTank.getInfo() } : new FluidTankInfo[] {};
 	}
 
 	public boolean isRotating()

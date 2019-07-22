@@ -21,7 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
@@ -92,7 +92,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		float tempMaxX = 1 - TileRenderEnergyCable.pixelElevenTwo;
 		float tempMaxY = 1 - TileRenderEnergyCable.pixelElevenTwo;
 		float tempMaxZ = 1 - TileRenderEnergyCable.pixelElevenTwo;
-		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+		for (Face dir : Face.VALID)
 		{
 			TileEntity sideTile = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 			if (AbstractionLayer.Electricity.canConnectElectricity(sideTile, dir.getOpposite()))

@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.ChunkEvent;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
 import physica.library.location.Location;
@@ -23,7 +23,7 @@ public class ElectricNetwork {
 	private static final int								DEFAULT_VOLTAGE					= 120;
 	public HashSet<IConductor>								conductorSet					= new HashSet<>();
 	public HashSet<TileEntity>								acceptorSet						= new HashSet<>();
-	public HashMap<TileEntity, HashSet<FaceDirection>>		acceptorInputMap				= new HashMap<>();
+	public HashMap<TileEntity, HashSet<Face>>				acceptorInputMap				= new HashMap<>();
 	private HashMap<EnumConductorType, HashSet<IConductor>>	conductorTypeMap				= new HashMap<>();
 	private int												energyTransmittedBuffer			= 0;
 	private int												energyTransmittedLastTick		= 0;
@@ -87,7 +87,7 @@ public class ElectricNetwork {
 					int energyPerReceiver = energyToSend / validAcceptors.size();
 					for (TileEntity receiver : validAcceptors)
 					{
-						for (FaceDirection connection : acceptorInputMap.get(receiver))
+						for (Face connection : acceptorInputMap.get(receiver))
 						{
 							energySent += AbstractionLayer.Electricity.receiveElectricity(receiver, connection.getOpposite(), energyPerReceiver, false);
 						}
@@ -142,9 +142,9 @@ public class ElectricNetwork {
 		{
 			if (AbstractionLayer.Electricity.isElectricReceiver(acceptor))
 			{
-				for (FaceDirection connection : acceptorInputMap.get(acceptor))
+				for (Face connection : acceptorInputMap.get(acceptor))
 				{
-					FaceDirection direction = connection.getOpposite();
+					Face direction = connection.getOpposite();
 					if (AbstractionLayer.Electricity.canInputElectricityNow(acceptor, direction))
 					{
 						toReturn.add(acceptor);
@@ -158,7 +158,7 @@ public class ElectricNetwork {
 	public TileEntity[] getConnectedEnergyAcceptors(TileEntity tileEntity)
 	{
 		TileEntity[] acceptors = { null, null, null, null, null, null };
-		for (FaceDirection orientation : FaceDirection.VALID_DIRECTIONS)
+		for (Face orientation : Face.VALID)
 		{
 			TileEntity acceptor = new Location(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
 			if (AbstractionLayer.Electricity.isElectricReceiver(acceptor) && !(acceptor instanceof IConductor))
@@ -197,8 +197,8 @@ public class ElectricNetwork {
 				if (acceptor != null && !(acceptor instanceof IConductor))
 				{
 					acceptorSet.add(acceptor);
-					HashSet<FaceDirection> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
-					directions.add(FaceDirection.getOrientation(Arrays.asList(acceptors).indexOf(acceptor)));
+					HashSet<Face> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
+					directions.add(Face.getOrientation(Arrays.asList(acceptors).indexOf(acceptor)));
 					acceptorInputMap.put(acceptor, directions);
 				}
 			}
@@ -246,12 +246,12 @@ public class ElectricNetwork {
 
 			TileEntity[] connectedBlocks = new TileEntity[6];
 			boolean[] dealtWith = { false, false, false, false, false, false };
-			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+			for (Face direction : Face.VALID)
 			{
 				TileEntity sideTile = new Location((TileEntity) splitPoint).OffsetFace(direction).getTile(((TileEntity) splitPoint).getWorldObj());
 				if (sideTile != null)
 				{
-					connectedBlocks[Arrays.asList(FaceDirection.values()).indexOf(direction)] = sideTile;
+					connectedBlocks[Arrays.asList(Face.values()).indexOf(direction)] = sideTile;
 				}
 			}
 			for (int countOne = 0; countOne < connectedBlocks.length; countOne++)
@@ -350,7 +350,7 @@ public class ElectricNetwork {
 			{
 				iterated.add(location);
 			}
-			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+			for (Face direction : Face.VALID)
 			{
 				Location obj = location.OffsetFace(direction);
 				if (!iterated.contains(obj) && !toIgnore.contains(obj))

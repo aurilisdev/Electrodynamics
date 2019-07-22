@@ -19,7 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import physica.CoreReferences;
 import physica.api.core.PhysicaAPI;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.common.CoreBlockRegister;
 import physica.library.location.Location;
@@ -49,18 +49,18 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		super.updateServer(ticks);
 
-		Block[] adjacentBlocks = new Block[FaceDirection.VALID_DIRECTIONS.length];
+		Block[] adjacentBlocks = new Block[Face.VALID.length];
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
-			FaceDirection direction = FaceDirection.VALID_DIRECTIONS[i];
+			Face direction = Face.VALID[i];
 			Location loc = getLocation();
-			adjacentBlocks[i] = worldObj.getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
+			adjacentBlocks[i] = World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
 		if (hasFuelRod() && !isBeingControlled(adjacentBlocks))
 		{
 			processFuelRod();
-			if (temperature > MELTDOWN_TEMPERATURE + 101 + worldObj.rand.nextInt(5) && hasFuelRod())
+			if (temperature > MELTDOWN_TEMPERATURE + 101 + World().rand.nextInt(5) && hasFuelRod())
 			{
 				performMeltdown();
 			}
@@ -83,16 +83,16 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 					for (int k = -radius; k <= radius; k++)
 					{
 
-						Block block = worldObj.getBlock(loc.xCoord + i, loc.yCoord - radius, loc.zCoord + k);
+						Block block = World().getBlock(loc.xCoord + i, loc.yCoord - radius, loc.zCoord + k);
 						if (block == NuclearBlockRegister.blockReactorControlPanel)
 						{
-							TileReactorControlPanel control = (TileReactorControlPanel) worldObj.getTileEntity(loc.xCoord + i, loc.yCoord - radius, loc.zCoord + k);
+							TileReactorControlPanel control = (TileReactorControlPanel) World().getTileEntity(loc.xCoord + i, loc.yCoord - radius, loc.zCoord + k);
 							if (control != null)
 							{
 
 								control.reactor = this;
 								Location controlLoc = control.getLocation();
-								worldObj.markBlockRangeForRenderUpdate(controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord, controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord);
+								World().markBlockRangeForRenderUpdate(controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord, controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord);
 							} else
 							{
 
@@ -114,15 +114,15 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 						{
 							if (i == -radius || i == radius || k == radius || k == -radius)
 							{
-								Block block = worldObj.getBlock(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
+								Block block = World().getBlock(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
 								if (block == NuclearBlockRegister.blockReactorControlPanel)
 								{
-									TileReactorControlPanel control = (TileReactorControlPanel) worldObj.getTileEntity(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
+									TileReactorControlPanel control = (TileReactorControlPanel) World().getTileEntity(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
 									if (control != null)
 									{
 										control.reactor = this;
 										Location controlLoc = control.getLocation();
-										worldObj.markBlockRangeForRenderUpdate(controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord, controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord);
+										World().markBlockRangeForRenderUpdate(controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord, controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord);
 									} else
 									{
 										isIncased = false;
@@ -144,7 +144,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			double tempScale = temperature / 300.0;
 			double dRadius = isIncased ? Math.min(tempScale, radius) : tempScale;
 			@SuppressWarnings("unchecked")
-			List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+			List<EntityLiving> entities = World().getEntitiesWithinAABB(Entity.class,
 					AxisAlignedBB.getBoundingBox(loc.xCoord - dRadius, loc.yCoord - dRadius, loc.zCoord - dRadius, loc.xCoord + dRadius + 1, loc.yCoord + tempScale, loc.zCoord + dRadius + 1));
 			for (Entity entity : entities)
 			{
@@ -169,16 +169,16 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
 			Block block = adjacentBlocks[i];
-			FaceDirection direction = FaceDirection.VALID_DIRECTIONS[i];
+			Face direction = Face.VALID[i];
 			if (block == NuclearBlockRegister.blockControlRod)
 			{
 				insertion = 100;
 			} else if (block == NuclearBlockRegister.blockThermometer)
 			{
-				block.updateTick(worldObj, loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, worldObj.rand);
+				block.updateTick(World(), loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, World().rand);
 			} else if (block == NuclearBlockRegister.blockInsertableControlRod)
 			{
-				TileEntity tile = worldObj.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
+				TileEntity tile = World().getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 				if (tile instanceof TileInsertableControlRod)
 				{
 					TileInsertableControlRod rod = (TileInsertableControlRod) tile;
@@ -210,9 +210,9 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		super.updateClient(ticks);
 		Location loc = getLocation();
-		if (worldObj.getWorldTime() % 100 == 0 && temperature >= 100)
+		if (World().getWorldTime() % 100 == 0 && temperature >= 100)
 		{
-			worldObj.playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, CoreReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
+			World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, CoreReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
 		}
 		float radius = 0.15f;
 		for (int k = 0; k < 4; k++)
@@ -222,10 +222,10 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
 			for (float i = 0.175f; i < 0.8; i += 0.1)
 			{
-				if (worldObj.rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3) / 4.0)
+				if (World().rand.nextFloat() < (temperature - AIR_TEMPERATURE) / (MELTDOWN_TEMPERATURE * 3) / 4.0)
 				{
-					worldObj.spawnParticle("reddust", loc.xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, loc.yCoord + i + worldObj.rand.nextDouble() * radius - radius / 2,
-							loc.zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 0.4f, 0.01f);
+					World().spawnParticle("reddust", loc.xCoord + xCoordOffset + 0.5f + World().rand.nextDouble() * radius - radius / 2, loc.yCoord + i + World().rand.nextDouble() * radius - radius / 2,
+							loc.zCoord + zCoordOffset + 0.5f + World().rand.nextDouble() * radius - radius / 2, 0.01f, 0.4f, 0.01f);
 				}
 			}
 		}
@@ -236,13 +236,13 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			{
 				for (int k = 0; k < 4; k++)
 				{
-					if (worldObj.rand.nextFloat() < 1.0 / 16.0)
+					if (World().rand.nextFloat() < 1.0 / 16.0)
 					{
 						float outerRods = 0.15f;
 						float xCoordOffset = k == 0 ? -outerRods : k == 1 ? outerRods : 0;
 						float zCoordOffset = k == 2 ? -outerRods : k == 3 ? outerRods : 0;
-						worldObj.spawnParticle("reddust", loc.xCoord + xCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, loc.yCoord + worldObj.rand.nextDouble() * radius - radius / 2,
-								loc.zCoord + zCoordOffset + 0.5f + worldObj.rand.nextDouble() * radius - radius / 2, 0.01f, 0.5f, 0.01f);
+						World().spawnParticle("reddust", loc.xCoord + xCoordOffset + 0.5f + World().rand.nextDouble() * radius - radius / 2, loc.yCoord + World().rand.nextDouble() * radius - radius / 2,
+								loc.zCoord + zCoordOffset + 0.5f + World().rand.nextDouble() * radius - radius / 2, 0.01f, 0.5f, 0.01f);
 					}
 				}
 			}
@@ -262,13 +262,13 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
 		}
 		Location loc = getLocation();
-		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
+		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(World().getWorldInfo().getWorldName().toLowerCase()))
 		{
 			if (PhysicaAPI.isDebugMode)
 			{
-				PhysicaAPI.logger.info("World " + worldObj.getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
+				PhysicaAPI.logger.info("World " + World().getWorldInfo().getWorldName().toLowerCase() + " is protected so the meltdown did not occur fully.");
 			}
-			worldObj.setBlockToAir(loc.xCoord, loc.yCoord, loc.zCoord);
+			World().setBlockToAir(loc.xCoord, loc.yCoord, loc.zCoord);
 			return;
 		}
 		int power = (int) (temperature / 125.0f);
@@ -281,16 +281,16 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				for (int k = -power; k <= power; k++)
 				{
 					location.set(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
-					Block block = location.getBlock(worldObj);
+					Block block = location.getBlock(World());
 					if (block == Blocks.water || block == Blocks.flowing_water)
 					{
-						location.setBlockAirNonUpdate(worldObj);
+						location.setBlockAirNonUpdate(World());
 					}
 				}
 			}
 		}
-		worldObj.createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, power * 2, true);
-		worldObj.setBlock(loc.xCoord, loc.yCoord, loc.zCoord, NuclearBlockRegister.blockMeltedReactor);
+		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, power * 2, true);
+		World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, NuclearBlockRegister.blockMeltedReactor);
 	}
 
 	private void cooldownReactor(Block[] adjacentBlocks)
@@ -319,7 +319,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		ItemStack fuelRod = getStackInSlot(SLOT_INPUT);
 		double insertDecimal = (100 - insertion) / 100.0;
-		if (worldObj.rand.nextFloat() < insertDecimal)
+		if (World().rand.nextFloat() < insertDecimal)
 		{
 			fuelRod.setItemDamage(fuelRod.getItemDamage() + 1 + Math.round(temperature / (MELTDOWN_TEMPERATURE / 2)));
 		}
@@ -328,16 +328,16 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
 			{
 				setInventorySlotContents(SLOT_INPUT, new ItemStack(NuclearItemRegister.itemLowEnrichedFuelCell, 1,
-						(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + worldObj.rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
+						(int) (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 3 + World().rand.nextFloat() * (NuclearItemRegister.itemLowEnrichedFuelCell.getMaxDamage() / 5))));
 			}
-			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (1.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
+			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (1.25f + World().rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		} else if (isLowEnriched())
 		{
 			if (fuelRod.getItemDamage() >= fuelRod.getMaxDamage())
 			{
 				setInventorySlotContents(SLOT_INPUT, null);
 			}
-			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (0.25f + worldObj.rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
+			temperature += (MELTDOWN_TEMPERATURE * insertDecimal * (0.25f + World().rand.nextFloat() / 5) - temperature) / (200 + 20 * surroundingWater);
 		}
 		temperature = Math.max(AIR_TEMPERATURE, temperature);
 	}
@@ -367,24 +367,24 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 					int offsetX = loc.xCoord + i - STEAM_GEN_DIAMETER / 2;
 					int offsetY = loc.yCoord + j;
 					int offsetZ = loc.zCoord + k - STEAM_GEN_DIAMETER / 2;
-					Block offset = worldObj.getBlock(offsetX, offsetY, offsetZ);
+					Block offset = World().getBlock(offsetX, offsetY, offsetZ);
 					if (offset == Blocks.water)
 					{
-						boolean isFaceWater = worldObj.getBlock(offsetX, loc.yCoord, loc.zCoord) == Blocks.water || worldObj.getBlock(loc.xCoord, loc.yCoord, offsetZ) == Blocks.water || isReactor2d;
+						boolean isFaceWater = World().getBlock(offsetX, loc.yCoord, loc.zCoord) == Blocks.water || World().getBlock(loc.xCoord, loc.yCoord, offsetZ) == Blocks.water || isReactor2d;
 						if (isFaceWater)
 						{
 							if (isServer())
 							{
 								float temperatureVarient = temperature / MELTDOWN_TEMPERATURE / 2400;
-								if (worldObj.rand.nextFloat() < temperatureVarient / 2.0f + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250))
+								if (World().rand.nextFloat() < temperatureVarient / 2.0f + temperatureVarient * Math.pow(temperature / MELTDOWN_TEMPERATURE, 250))
 								{
-									worldObj.setBlockToAir(offsetX, offsetY, offsetZ);
+									World().setBlockToAir(offsetX, offsetY, offsetZ);
 									continue;
 								}
 								TileTurbine turbine = cachedTurbines[i][j][k];
-								if (turbine == null || !worldObj.loadedTileEntityList.contains(turbine))
+								if (turbine == null || !World().loadedTileEntityList.contains(turbine))
 								{
-									TileEntity above = worldObj.getTileEntity(offsetX, offsetY + 1, offsetZ);
+									TileEntity above = World().getTileEntity(offsetX, offsetY + 1, offsetZ);
 									if (above instanceof TileTurbine)
 									{
 										cachedTurbines[i][j][k] = (TileTurbine) above;
@@ -401,23 +401,23 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 								}
 							} else if (isClient())
 							{
-								if (worldObj.rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE)
+								if (World().rand.nextFloat() < temperature / MELTDOWN_TEMPERATURE)
 								{
-									if (worldObj.rand.nextInt(80) == 0)
+									if (World().rand.nextInt(80) == 0)
 									{
-										worldObj.playSoundEffect(offsetX + 0.5D, offsetY + 0.5D, offsetZ + 0.5D, "liquid.lava", 0.5F, 2.1F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.85F);
+										World().playSoundEffect(offsetX + 0.5D, offsetY + 0.5D, offsetZ + 0.5D, "liquid.lava", 0.5F, 2.1F + (World().rand.nextFloat() - World().rand.nextFloat()) * 0.85F);
 									}
-									if (worldObj.rand.nextInt(40) == 0)
+									if (World().rand.nextInt(40) == 0)
 									{
-										worldObj.playSoundEffect(offsetX + 0.5D, offsetY + 0.5D, offsetZ + 0.5D, "liquid.lavapop", 0.5F, 2.6F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.8F);
+										World().playSoundEffect(offsetX + 0.5D, offsetY + 0.5D, offsetZ + 0.5D, "liquid.lavapop", 0.5F, 2.6F + (World().rand.nextFloat() - World().rand.nextFloat()) * 0.8F);
 									}
-									double offsetFX = offsetX + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
-									double offsetFY = offsetY + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
-									double offsetFZ = offsetZ + worldObj.rand.nextDouble() / 2.0 * (worldObj.rand.nextBoolean() ? -1 : 1);
-									worldObj.spawnParticle("bubble", offsetFX + 0.5D, offsetFY + 0.20000000298023224D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
-									if (worldObj.rand.nextInt(3) == 0)
+									double offsetFX = offsetX + World().rand.nextDouble() / 2.0 * (World().rand.nextBoolean() ? -1 : 1);
+									double offsetFY = offsetY + World().rand.nextDouble() / 2.0 * (World().rand.nextBoolean() ? -1 : 1);
+									double offsetFZ = offsetZ + World().rand.nextDouble() / 2.0 * (World().rand.nextBoolean() ? -1 : 1);
+									World().spawnParticle("bubble", offsetFX + 0.5D, offsetFY + 0.20000000298023224D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
+									if (World().rand.nextInt(3) == 0)
 									{
-										worldObj.spawnParticle("smoke", offsetFX + 0.5D, offsetFY + 0.5D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
+										World().spawnParticle("smoke", offsetFX + 0.5D, offsetFY + 0.5D, offsetFZ + 0.5D, 0.0D, 0.0D, 0.0D);
 									}
 								}
 							}
@@ -496,7 +496,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
+		return side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override

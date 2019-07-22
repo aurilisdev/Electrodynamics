@@ -2,7 +2,7 @@ package physica.core.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.configuration.ConfigCore;
 import physica.library.location.Location;
@@ -18,12 +18,12 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 		Location loc = getLocation();
 		if (ConfigCore.DISABLE_INFINITE_ENERGY_CUBE)
 		{
-			loc.setBlockAir(worldObj);
+			loc.setBlockAir(World());
 			return;
 		}
-		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+		for (Face dir : Face.VALID)
 		{
-			TileEntity tile = worldObj.getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
+			TileEntity tile = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
 			if (tile != null)
 			{
 				if (AbstractionLayer.Electricity.isElectricReceiver(tile))
@@ -38,25 +38,25 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
 		return true;
 	}
 
 	@Override
-	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(Face from, int maxExtract, boolean simulate)
 	{
 		return maxExtract;
 	}
 
 	@Override
-	public int getElectricityStored(FaceDirection from)
+	public int getElectricityStored(Face from)
 	{
 		return VISIBLE_STORAGE;
 	}
 
 	@Override
-	public int getElectricCapacity(FaceDirection from)
+	public int getElectricCapacity(Face from)
 	{
 		return VISIBLE_STORAGE;
 	}

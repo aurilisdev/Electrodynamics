@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 
 public class ToolTipEnergy extends ToolTip {
 
@@ -20,11 +20,11 @@ public class ToolTipEnergy extends ToolTip {
 	{
 		if (AbstractionLayer.Electricity.isElectricReceiver(receiver))
 		{
-			if (AbstractionLayer.Electricity.getElectricityStored(receiver, FaceDirection.UNKNOWN) <= 0)
+			if (AbstractionLayer.Electricity.getElectricityStored(receiver, Face.UNKNOWN) <= 0)
 			{
 				return "Empty";
 			}
-			return "Stored: " + AbstractionLayer.Electricity.getElectricityStored(receiver, FaceDirection.UNKNOWN) / AbstractionLayer.Electricity.getElectricCapacity(receiver, FaceDirection.UNKNOWN) * 100 + "%";
+			return "Stored: " + AbstractionLayer.Electricity.getElectricityStored(receiver, Face.UNKNOWN) / AbstractionLayer.Electricity.getElectricCapacity(receiver, Face.UNKNOWN) * 100 + "%";
 		}
 		return "Invalid Tile";
 	}

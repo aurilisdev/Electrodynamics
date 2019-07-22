@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
 import physica.library.location.Location;
@@ -28,17 +28,17 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 		Location loc = getLocation();
 		if (ticks % 20 == 0)
 		{
-			worldObj.markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
+			World().markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
 			rod = null;
 			if (reactor != null)
 			{
-				TileEntity tile = reactor.getLocation().OffsetFace(FaceDirection.UP).getTile(worldObj);
+				TileEntity tile = reactor.getLocation().OffsetFace(Face.UP).getTile(World());
 				if (tile instanceof TileInsertableControlRod)
 				{
 					rod = (TileInsertableControlRod) tile;
 				} else
 				{
-					tile = reactor.getLocation().OffsetFace(FaceDirection.DOWN).getTile(worldObj);
+					tile = reactor.getLocation().OffsetFace(Face.DOWN).getTile(World());
 					if (tile instanceof TileInsertableControlRod)
 					{
 						rod = (TileInsertableControlRod) tile;
@@ -48,7 +48,7 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 		}
 		if (reactor != null && (reactor.isInvalid() || !reactor.isIncased))
 		{
-			worldObj.markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
+			World().markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
 		}
 	}
 

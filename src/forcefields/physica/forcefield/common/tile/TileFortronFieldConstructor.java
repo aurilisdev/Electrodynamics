@@ -30,7 +30,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fluids.FluidTank;
 import physica.CoreReferences;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.misc.IExplosionHandler;
 import physica.api.core.tile.ITileBase;
@@ -148,13 +148,13 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			destroyField(true);
 			Location loc = getLocation();
-			loc.setBlockAir(worldObj);
+			loc.setBlockAir(World());
 			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
 			{
-				EntityItem antimatter = new EntityItem(worldObj, loc.xCoord, loc.yCoord, loc.zCoord, new ItemStack(physica.nuclear.common.NuclearItemRegister.itemAntimatterCell1Gram));
-				worldObj.spawnEntityInWorld(antimatter);
+				EntityItem antimatter = new EntityItem(World(), loc.xCoord, loc.yCoord, loc.zCoord, new ItemStack(physica.nuclear.common.NuclearItemRegister.itemAntimatterCell1Gram));
+				World().spawnEntityInWorld(antimatter);
 			}
-			worldObj.createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, 10F, true);
+			World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, 10F, true);
 		}
 	}
 
@@ -238,7 +238,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		cachedInformation[6] = Math.min(64, getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0], TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
 		cachedInformation[7] = BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), 0, 11);
 		cachedInformation[8] = 1 + BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
-		worldObj.updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
+		World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 	}
 
 	@Override
@@ -386,7 +386,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 					TileFortronField field = iterator.next();
 					iterator.remove();
 					field.invalidate();
-					field.getLocation().setBlockAirNonUpdate(worldObj);
+					field.getLocation().setBlockAirNonUpdate(World());
 				}
 			}
 		}
@@ -458,7 +458,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			for (TileFortronField field : activeFields)
 			{
-				field.getLocation().setBlockAirNonUpdate(worldObj);
+				field.getLocation().setBlockAirNonUpdate(World());
 			}
 			activeFields.clear();
 		}
@@ -498,10 +498,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				break;
 			}
 			finishedQueueItems.add(fieldPoint);
-			Block block = fieldPoint.getBlock(worldObj);
+			Block block = fieldPoint.getBlock(World());
 			if (block == ForcefieldBlockRegister.blockFortronField)
 			{
-				TileFortronField field = (TileFortronField) fieldPoint.getTile(worldObj);
+				TileFortronField field = (TileFortronField) fieldPoint.getTile(World());
 				if (field != null && field.getConstructorCoord().equals(location))
 				{
 					activeFields.add(field);
@@ -513,13 +513,13 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			{
 				if (block.getMaterial().isLiquid())
 				{
-					fieldPoint.setBlockAir(worldObj);
-					for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+					fieldPoint.setBlockAir(World());
+					for (Face direction : Face.VALID)
 					{
-						Block adjacentBlock = worldObj.getBlock(fieldPoint.xCoord + direction.offsetX, fieldPoint.yCoord + direction.offsetY, fieldPoint.zCoord + direction.offsetZ);
+						Block adjacentBlock = World().getBlock(fieldPoint.xCoord + direction.offsetX, fieldPoint.yCoord + direction.offsetY, fieldPoint.zCoord + direction.offsetZ);
 						if (adjacentBlock.getMaterial().isLiquid())
 						{
-							fieldPoint.setBlockAir(worldObj);
+							fieldPoint.setBlockAir(World());
 						}
 					}
 					currentlyGenerated++;
@@ -531,11 +531,11 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			{
 				if (shouldDisintegrate)
 				{
-					if (block.getBlockHardness(worldObj, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) != -1)
+					if (block.getBlockHardness(World(), fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) != -1)
 					{ // Location usually has no effect
 						if (hasCollectionModule)
 						{
-							for (ItemStack stack : block.getDrops(worldObj, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, fieldPoint.getMetadata(worldObj), 0))
+							for (ItemStack stack : block.getDrops(World(), fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, fieldPoint.getMetadata(World()), 0))
 							{
 								TileInterdictionMatrix.mergeIntoInventory(this, stack);
 							}
@@ -545,7 +545,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							currentlyMissed++;
 							continue;
 						}
-						fieldPoint.setBlockAirNonUpdate(worldObj);
+						fieldPoint.setBlockAirNonUpdate(World());
 
 						currentlyGenerated++;
 					}
@@ -554,9 +554,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 					if (shouldStabilize)
 					{
 						Location loc = getLocation();
-						for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+						for (Face dir : Face.VALID)
 						{
-							TileEntity entity = worldObj.getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
+							TileEntity entity = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
 							if (entity != null && entity instanceof IInventory)
 							{
 								IInventory inv = (IInventory) entity;
@@ -586,8 +586,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 						}
 					} else
 					{
-						fieldPoint.setBlockNonUpdate(worldObj, ForcefieldBlockRegister.blockFortronField);
-						TileEntity tile = fieldPoint.getTile(worldObj);
+						fieldPoint.setBlockNonUpdate(World(), ForcefieldBlockRegister.blockFortronField);
+						TileEntity tile = fieldPoint.getTile(World());
 						if (tile instanceof TileFortronField)
 						{
 							TileFortronField field = (TileFortronField) tile;
@@ -596,7 +596,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 						}
 						currentlyGenerated++;
 					}
-				} else if (block.getBlockHardness(worldObj, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) == -1)
+				} else if (block.getBlockHardness(World(), fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) == -1)
 				{
 					maximumForceFieldCount--;
 				}

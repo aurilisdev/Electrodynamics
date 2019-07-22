@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 
 public class Location {
 
@@ -68,7 +68,7 @@ public class Location {
 		return new VectorLocation(xCoord / n, yCoord / n, zCoord / n);
 	}
 
-	public Location OffsetFace(FaceDirection direction)
+	public Location OffsetFace(Face direction)
 	{
 		return new Location(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 	}

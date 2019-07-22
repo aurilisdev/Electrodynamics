@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.tile.TilePlasma;
@@ -38,7 +38,7 @@ public class BlockPlasma extends Block implements ITileEntityProvider {
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
 	{
 		Block block = world.getBlock(x, y, z);
-		FaceDirection dir = FaceDirection.getOrientation(side).getOpposite();
+		Face dir = Face.getOrientation(side).getOpposite();
 		int xn = x + dir.offsetX, yn = y + dir.offsetY, zn = z + dir.offsetZ;
 		Block neighborBlock = world.getBlock(xn, yn, zn);
 		return block == this && neighborBlock == this ? false : super.shouldSideBeRendered(world, x, y, z, side);

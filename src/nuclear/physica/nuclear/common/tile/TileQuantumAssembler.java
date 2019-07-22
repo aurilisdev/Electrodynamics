@@ -10,7 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -109,7 +109,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 
 	private EntityItem getEntityForItem(ItemStack itemStack)
 	{
-		EntityItem entityItem = new EntityItem(worldObj, 0, 0, 0, itemStack.copy());
+		EntityItem entityItem = new EntityItem(World(), 0, 0, 0, itemStack.copy());
 		entityItem.setAgeToCreativeDespawnTime();
 
 		return entityItem;
@@ -172,15 +172,15 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
-		return from.equals(FaceDirection.DOWN) || from.equals(FaceDirection.UP);
+		return from.equals(Face.DOWN) || from.equals(Face.UP);
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side != FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_ELSE : ACCESSIBLE_SLOTS_DOWN;
+		return side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side != Face.DOWN.ordinal() ? ACCESSIBLE_SLOTS_ELSE : ACCESSIBLE_SLOTS_DOWN;
 	}
 
 	@Override

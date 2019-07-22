@@ -2,7 +2,7 @@ package physica.core.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityHandler;
 import physica.api.core.tile.ITileBasePowered;
 import physica.core.common.event.FulminationEventHandler;
@@ -35,9 +35,9 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 			FulminationEventHandler.INSTANCE.register(this);
 		}
 		Location loc = getLocation();
-		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+		for (Face dir : Face.VALID)
 		{
-			TileEntity tile = worldObj.getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
+			TileEntity tile = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
 			if (tile != null)
 			{
 				if (AbstractionLayer.Electricity.isElectricReceiver(tile))
@@ -52,19 +52,19 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 	}
 
 	@Override
-	public int getElectricCapacity(FaceDirection from)
+	public int getElectricCapacity(Face from)
 	{
 		return MAX_ENERGY_STORED;
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
 		return true;
 	}
 
 	@Override
-	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(Face from, int maxExtract, boolean simulate)
 	{
 		if (!simulate)
 		{
@@ -80,13 +80,13 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 	}
 
 	@Override
-	public int receiveElectricity(FaceDirection from, int maxReceive, boolean simulate)
+	public int receiveElectricity(Face from, int maxReceive, boolean simulate)
 	{
 		return 0;
 	}
 
 	@Override
-	public int getElectricityStored(FaceDirection from)
+	public int getElectricityStored(Face from)
 	{
 		return ITileBasePowered.super.getElectricityStored(from);
 	}

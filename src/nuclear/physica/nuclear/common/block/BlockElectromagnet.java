@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.api.nuclear.IElectromagnet;
@@ -112,7 +112,7 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	{
 		Block block = world.getBlock(x, y, z);
 		int metadata = world.getBlockMetadata(x, y, z);
-		FaceDirection dir = FaceDirection.getOrientation(side).getOpposite();
+		Face dir = Face.getOrientation(side).getOpposite();
 		int xn = x + dir.offsetX, yn = y + dir.offsetY, zn = z + dir.offsetZ;
 		Block neighborBlock = world.getBlock(xn, yn, zn);
 		int neighborMetadata = world.getBlockMetadata(xn, yn, zn);

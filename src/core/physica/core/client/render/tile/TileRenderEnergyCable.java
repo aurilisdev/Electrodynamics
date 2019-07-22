@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.EnumConductorType;
 import physica.core.common.tile.cable.TileEnergyCable;
 
@@ -46,8 +46,8 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		boolean finished = false;
 		int connections = 0;
 		int differentLocations = 0;
-		FaceDirection last = FaceDirection.UNKNOWN;
-		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+		Face last = Face.UNKNOWN;
+		for (Face dir : Face.VALID)
 		{
 			TileEntity sideTile = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
 			if (AbstractionLayer.Electricity.canConnectElectricity(sideTile, dir.getOpposite()))
@@ -89,22 +89,22 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 	}
 
-	public static void drawConnection(FaceDirection direction)
+	public static void drawConnection(Face direction)
 	{
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == FaceDirection.DOWN)
+		if (direction == Face.DOWN)
 		{
 			GL11.glRotatef(180, 1, 0, 0);
-		} else if (direction == FaceDirection.NORTH)
+		} else if (direction == Face.NORTH)
 		{
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == FaceDirection.SOUTH)
+		} else if (direction == Face.SOUTH)
 		{
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == FaceDirection.EAST)
+		} else if (direction == Face.EAST)
 		{
 			GL11.glRotatef(-90, 0, 0, 1);
-		} else if (direction == FaceDirection.WEST)
+		} else if (direction == Face.WEST)
 		{
 			GL11.glRotatef(90, 0, 0, 1);
 		}
@@ -136,19 +136,19 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
 		tess.draw();
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == FaceDirection.DOWN)
+		if (direction == Face.DOWN)
 		{
 			GL11.glRotatef(-180, 1, 0, 0);
-		} else if (direction == FaceDirection.NORTH)
+		} else if (direction == Face.NORTH)
 		{
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == FaceDirection.SOUTH)
+		} else if (direction == Face.SOUTH)
 		{
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == FaceDirection.EAST)
+		} else if (direction == Face.EAST)
 		{
 			GL11.glRotatef(90, 0, 0, 1);
-		} else if (direction == FaceDirection.WEST)
+		} else if (direction == Face.WEST)
 		{
 			GL11.glRotatef(-90, 0, 0, 1);
 		}

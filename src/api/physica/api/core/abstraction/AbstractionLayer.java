@@ -67,7 +67,7 @@ public class AbstractionLayer {
 			return tile instanceof IEnergyProvider;
 		}
 
-		public static boolean canConnectElectricity(TileEntity tile, FaceDirection from)
+		public static boolean canConnectElectricity(TileEntity tile, Face from)
 		{
 			if (isElectric(tile))
 			{
@@ -76,7 +76,7 @@ public class AbstractionLayer {
 			return false;
 		}
 
-		public static int extractElectricity(TileEntity tile, FaceDirection from, int maxExtract, boolean simulate)
+		public static int extractElectricity(TileEntity tile, Face from, int maxExtract, boolean simulate)
 		{
 			if (isElectricProvider(tile))
 			{
@@ -88,7 +88,7 @@ public class AbstractionLayer {
 			return 0;
 		}
 
-		public static int receiveElectricity(TileEntity tile, FaceDirection from, int maxReceive, boolean simulate)
+		public static int receiveElectricity(TileEntity tile, Face from, int maxReceive, boolean simulate)
 		{
 			if (isElectricReceiver(tile))
 			{
@@ -100,7 +100,7 @@ public class AbstractionLayer {
 			return 0;
 		}
 
-		public static boolean canInputElectricityNow(TileEntity tile, FaceDirection from)
+		public static boolean canInputElectricityNow(TileEntity tile, Face from)
 		{
 			if (receiveElectricity(tile, from, Integer.MAX_VALUE, true) > 0)
 			{
@@ -113,7 +113,7 @@ public class AbstractionLayer {
 			return false;
 		}
 
-		public static int getElectricityStored(TileEntity tile, FaceDirection from)
+		public static int getElectricityStored(TileEntity tile, Face from)
 		{
 			if (isElectricReceiver(tile))
 			{
@@ -126,7 +126,7 @@ public class AbstractionLayer {
 			return -1;
 		}
 
-		public static int getElectricCapacity(TileEntity tile, FaceDirection from)
+		public static int getElectricCapacity(TileEntity tile, Face from)
 		{
 			if (isElectricReceiver(tile))
 			{

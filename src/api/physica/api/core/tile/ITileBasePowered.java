@@ -5,7 +5,7 @@ import java.util.List;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityReceiver;
 
 public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
@@ -50,13 +50,13 @@ public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 	}
 
 	@Override
-	default int getElectricityStored(FaceDirection from)
+	default int getElectricityStored(Face from)
 	{
 		return getElectricityStored();
 	}
 
 	@Override
-	default int receiveElectricity(FaceDirection from, int maxReceive, boolean simulate)
+	default int receiveElectricity(Face from, int maxReceive, boolean simulate)
 	{
 		int capacityLeft = getElectricCapacity(from) - getElectricityStored();
 		setElectricityStored(simulate ? getElectricityStored() : capacityLeft >= maxReceive ? getElectricityStored() + maxReceive : getElectricCapacity(from));
@@ -64,7 +64,7 @@ public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 	}
 
 	@Override
-	default int getElectricCapacity(FaceDirection from)
+	default int getElectricCapacity(Face from)
 	{
 		return getElectricityUsage() * 20;
 	}

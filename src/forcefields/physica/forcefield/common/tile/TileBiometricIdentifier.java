@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidTank;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
@@ -46,10 +46,10 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 		{
 			isActivated = false;
 			Location loc = getLocation();
-			for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+			for (Face dir : Face.VALID)
 			{
 				Location offset = loc.OffsetFace(dir);
-				if (offset.getTile(worldObj) instanceof TileInterdictionMatrix)
+				if (offset.getTile(World()) instanceof TileInterdictionMatrix)
 				{
 					isActivated = true;
 				}

@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricTile;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.electricity.IElectricityReceiver;
@@ -80,12 +80,12 @@ public class HUDHandlerIElectricityHandler implements IWailaDataProvider {
 			Integer maxsto = -1;
 			if (te instanceof IElectricityProvider)
 			{
-				energy = ((IElectricityProvider) te).getElectricityStored(FaceDirection.UNKNOWN);
-				maxsto = ((IElectricityProvider) te).getElectricCapacity(FaceDirection.UNKNOWN);
+				energy = ((IElectricityProvider) te).getElectricityStored(Face.UNKNOWN);
+				maxsto = ((IElectricityProvider) te).getElectricCapacity(Face.UNKNOWN);
 			} else if (te instanceof IElectricityReceiver)
 			{
-				energy = ((IElectricityReceiver) te).getElectricityStored(FaceDirection.UNKNOWN);
-				maxsto = ((IElectricityReceiver) te).getElectricCapacity(FaceDirection.UNKNOWN);
+				energy = ((IElectricityReceiver) te).getElectricityStored(Face.UNKNOWN);
+				maxsto = ((IElectricityReceiver) te).getElectricCapacity(Face.UNKNOWN);
 			}
 
 			tag.setInteger(IElectricTile.ELECTRICITY_NBT, energy);

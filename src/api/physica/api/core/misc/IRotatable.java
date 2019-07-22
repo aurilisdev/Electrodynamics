@@ -1,10 +1,10 @@
 package physica.api.core.misc;
 
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 
 public interface IRotatable {
 
-	FaceDirection getFacing();
+	Face getFacing();
 
-	void setFacing(FaceDirection facing);
+	void setFacing(Face facing);
 }

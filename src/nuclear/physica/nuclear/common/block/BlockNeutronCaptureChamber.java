@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.misc.IRotatable;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
@@ -50,7 +50,7 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 			TileNeutronCaptureChamber neutronChamber = (TileNeutronCaptureChamber) tile;
 			minY = 0.05f;
 			maxY = 0.95f;
-			FaceDirection dir = neutronChamber.getFacing().getOpposite();
+			Face dir = neutronChamber.getFacing().getOpposite();
 			switch (dir) {
 			case EAST:
 				minX = 0.8f;
@@ -88,7 +88,7 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
 	{
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+		for (Face dir : Face.VALID)
 		{
 			if (dir.ordinal() > 1)
 			{
@@ -103,7 +103,7 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	@Override
 	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
 	{
-		FaceDirection dir = FaceDirection.getOrientation(side).getOpposite();
+		Face dir = Face.getOrientation(side).getOpposite();
 		return side > 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor;
 	}
 

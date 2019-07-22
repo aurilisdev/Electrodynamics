@@ -11,7 +11,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
@@ -30,7 +30,7 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	private TileEntity[]		cachedOutputs		= new TileEntity[2];
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
 		return from.ordinal() < 2;
 	}
@@ -46,12 +46,12 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 			for (int index = 0; index < cachedOutputs.length; index++)
 			{
 				TileEntity cachedOutput = cachedOutputs[index];
-				FaceDirection out = FaceDirection.getOrientation(index);
+				Face out = Face.getOrientation(index);
 				if (cachedOutput == null || cachedOutput.isInvalid())
 				{
 					cachedOutput = null;
 					Location loc = getLocation();
-					TileEntity outputTile = worldObj.getTileEntity(loc.xCoord + out.offsetX, loc.yCoord + out.offsetY, loc.zCoord + out.offsetZ);
+					TileEntity outputTile = World().getTileEntity(loc.xCoord + out.offsetX, loc.yCoord + out.offsetY, loc.zCoord + out.offsetZ);
 					if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 					{
 						cachedOutputs[index] = outputTile;
@@ -70,7 +70,7 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 				int index = 0;
 				for (TileEntity cachedOutput : cachedOutputs)
 				{
-					FaceDirection out = FaceDirection.getOrientation(index);
+					Face out = Face.getOrientation(index);
 					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
 					{
 						AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), generate / validReceivers, false);
@@ -139,19 +139,19 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	}
 
 	@Override
-	public int getElectricityStored(FaceDirection from)
+	public int getElectricityStored(Face from)
 	{
 		return generate;
 	}
 
 	@Override
-	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(Face from, int maxExtract, boolean simulate)
 	{
 		return from == getFacing().getOpposite() ? getElectricityStored(from) : 0;
 	}
 
 	@Override
-	public int getElectricCapacity(FaceDirection from)
+	public int getElectricCapacity(Face from)
 	{
 		return ElectricityUtilities.convertEnergy(6400, Unit.WATT, Unit.RF);
 	}

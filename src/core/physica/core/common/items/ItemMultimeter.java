@@ -8,7 +8,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.IConductor;
 import physica.core.common.CoreTabRegister;
 import physica.library.energy.ElectricityDisplay;
@@ -30,7 +30,7 @@ public class ItemMultimeter extends Item {
 	{
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		FaceDirection dir = FaceDirection.getOrientation(side);
+		Face dir = Face.getOrientation(side);
 		if (tile instanceof IConductor)
 		{
 			if (!world.isRemote)

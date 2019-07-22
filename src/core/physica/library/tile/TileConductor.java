@@ -6,7 +6,7 @@ import java.util.HashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
 import physica.library.location.Location;
@@ -31,7 +31,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	public TileEntity[] getConnectedCables(TileEntity tileEntity)
 	{
 		TileEntity[] cables = { null, null, null, null, null, null };
-		for (FaceDirection orientation : FaceDirection.VALID_DIRECTIONS)
+		for (Face orientation : Face.VALID)
 		{
 			TileEntity cable = new Location(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
 			if (cable instanceof IConductor)
@@ -97,7 +97,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	{
 		if (!worldObj.isRemote)
 		{
-			for (FaceDirection side : FaceDirection.VALID_DIRECTIONS)
+			for (Face side : Face.VALID)
 			{
 				TileEntity tileEntity = new Location(this).OffsetFace(side).getTile(worldObj);
 				if (tileEntity instanceof IConductor)
@@ -125,7 +125,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public int getElectricCapacity(FaceDirection from)
+	public int getElectricCapacity(Face from)
 	{
 		return getCableType().getTransferRate();
 	}
@@ -137,7 +137,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public int receiveElectricity(FaceDirection from, int maxReceive, boolean simulate)
+	public int receiveElectricity(Face from, int maxReceive, boolean simulate)
 	{
 		if (simulate)
 		{
@@ -149,7 +149,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
 		return true;
 	}

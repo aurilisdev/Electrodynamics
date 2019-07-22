@@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.location.Location;
 import physica.library.tile.TileBase;
@@ -40,9 +40,9 @@ public class TilePlasma extends TileBase {
 		{
 			if (isServer())
 			{
-				if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(worldObj.getWorldInfo().getWorldName().toLowerCase()))
+				if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(World().getWorldInfo().getWorldName().toLowerCase()))
 				{
-					worldObj.setBlock(loc.xCoord, loc.yCoord, loc.zCoord, Blocks.air);
+					World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, Blocks.air);
 					return;
 				}
 
@@ -50,25 +50,25 @@ public class TilePlasma extends TileBase {
 
 				if (power <= 0)
 				{
-					worldObj.setBlock(loc.xCoord, loc.yCoord, loc.zCoord, Blocks.fire);
+					World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, Blocks.fire);
 					return;
 				}
 				float directions = 1;
-				for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+				for (Face direction : Face.VALID)
 				{
-					if (worldObj.rand.nextFloat() < directions)
+					if (World().rand.nextFloat() < directions)
 					{
-						Block block = worldObj.getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
-						if (canPlace(block, worldObj, loc.xCoord, loc.yCoord, loc.zCoord))
+						Block block = World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
+						if (canPlace(block, World(), loc.xCoord, loc.yCoord, loc.zCoord))
 						{
 							directions -= 1 / 6f;
-							worldObj.setBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, NuclearBlockRegister.blockPlasma, 0, 3);
+							World().setBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, NuclearBlockRegister.blockPlasma, 0, 3);
 
-							TileEntity tile = worldObj.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
+							TileEntity tile = World().getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 							if (tile instanceof TilePlasma)
 							{
-								int newPower = power + worldObj.rand.nextInt(2) - 1;
-								((TilePlasma) tile).strength = (int) (newPower / Math.max(1, block.getBlockHardness(worldObj, loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ)));
+								int newPower = power + World().rand.nextInt(2) - 1;
+								((TilePlasma) tile).strength = (int) (newPower / Math.max(1, block.getBlockHardness(World(), loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ)));
 							}
 						}
 					}
@@ -76,34 +76,34 @@ public class TilePlasma extends TileBase {
 			}
 		} else if (ticks > 20)
 		{
-			if (ticks > strength * 5 && worldObj.rand.nextFloat() < 0.333f)
+			if (ticks > strength * 5 && World().rand.nextFloat() < 0.333f)
 			{
-				worldObj.setBlock(loc.xCoord, loc.yCoord, loc.zCoord, worldObj.rand.nextFloat() < 0.025f ? Blocks.fire : Blocks.air);
+				World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, World().rand.nextFloat() < 0.025f ? Blocks.fire : Blocks.air);
 			}
 		}
 
 		AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(loc.xCoord - 1, loc.yCoord - 1, loc.zCoord - 1, loc.xCoord + 2, loc.yCoord + 2, loc.zCoord + 2);
 		@SuppressWarnings("unchecked")
-		List<Entity> entitiesNearby = worldObj.getEntitiesWithinAABB(Entity.class, bounds);
+		List<Entity> entitiesNearby = World().getEntitiesWithinAABB(Entity.class, bounds);
 		for (Entity entity : entitiesNearby)
 		{
 			entity.attackEntityFrom(DamageSourcePlasma.INSTANCE, (float) (10 / entity.getDistance(loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5)));
 		}
-		for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+		for (Face direction : Face.VALID)
 		{
 			if (direction.ordinal() > 0)
 			{
-				if (worldObj.getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ) == NuclearBlockRegister.blockElectromagnet)
+				if (World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ) == NuclearBlockRegister.blockElectromagnet)
 				{
-					Block blockAboveMagnet = worldObj.getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY + 1, loc.zCoord + direction.offsetZ);
+					Block blockAboveMagnet = World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY + 1, loc.zCoord + direction.offsetZ);
 					if (blockAboveMagnet == Blocks.water)
 					{
-						TileEntity tileAboveWater = worldObj.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY + 2, loc.zCoord + direction.offsetZ);
+						TileEntity tileAboveWater = World().getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY + 2, loc.zCoord + direction.offsetZ);
 						if (tileAboveWater instanceof TileTurbine)
 						{
 							TileTurbine turbine = (TileTurbine) tileAboveWater;
 							float temperature = (float) (TARGET_TEMPERATURE * 1.25f / (TileFusionReactor.PLASMA_SPAWN_STRENGTH * 0.15226));
-							int steam = (int) temperature * (worldObj.getBlockMetadata(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ) > 1 ? 100 : 10);
+							int steam = (int) temperature * (World().getBlockMetadata(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ) > 1 ? 100 : 10);
 							if (steam > 0)
 							{
 								turbine.addSteam(steam);

@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
@@ -54,17 +54,17 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 
 	private float getTicksAddition()
 	{
-		FaceDirection facing = getFacing().getOpposite();
+		Face facing = getFacing().getOpposite();
 		Location loc = getLocation();
-		TileFissionReactor reactor = (TileFissionReactor) worldObj.getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
+		TileFissionReactor reactor = (TileFissionReactor) World().getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		return reactor.temperature / TICKS_REQUIRED;
 	}
 
 	public boolean canProcess()
 	{
-		FaceDirection facing = getFacing().getOpposite();
+		Face facing = getFacing().getOpposite();
 		Location loc = getLocation();
-		TileEntity tile = worldObj.getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
+		TileEntity tile = World().getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor)
 		{
 			if (getStackInSlot(SLOT_INPUT) == null || getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit())
@@ -75,8 +75,8 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 			return reactor.hasFuelRod() && reactor.temperature > 1000;
 		} else
 		{
-			worldObj.spawnEntityInWorld(new EntityItem(worldObj, loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
-			getLocation().setBlockAir(worldObj);
+			World().spawnEntityInWorld(new EntityItem(World(), loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
+			getLocation().setBlockAir(World());
 			return false;
 		}
 	}
@@ -147,7 +147,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_DOWN;
+		return side == Face.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_DOWN;
 	}
 
 	@Override

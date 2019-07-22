@@ -1,19 +1,19 @@
 package physica.library.tile;
 
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 
 public abstract class TileBaseRotateable extends TileBase {
 
-	private FaceDirection facing = FaceDirection.NORTH;
+	private Face facing = Face.NORTH;
 
 	@Override
-	public FaceDirection getFacing()
+	public Face getFacing()
 	{
 		return facing;
 	}
 
 	@Override
-	public void setFacing(FaceDirection facing)
+	public void setFacing(Face facing)
 	{
 		this.facing = facing;
 	}

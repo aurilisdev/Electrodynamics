@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -61,9 +61,9 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 				}
 				extractEnergy();
 			}
-			FaceDirection direction = getFacing().getOpposite();
+			Face direction = getFacing().getOpposite();
 			Location loc = getLocation();
-			TileEntity tile = worldObj.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
+			TileEntity tile = World().getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 			if (tile instanceof TileChemicalBoiler)
 			{
 				TileChemicalBoiler boiler = (TileChemicalBoiler) tile;
@@ -95,7 +95,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	private void process()
 	{
 		tank.drain(2500, true);
-		boolean isEnriched = worldObj.rand.nextFloat() > 0.828f;
+		boolean isEnriched = World().rand.nextFloat() > 0.828f;
 		int slot = isEnriched ? SLOT_OUTPUT1 : SLOT_OUTPUT2;
 		ItemStack itemStack = getStackInSlot(slot);
 		if (itemStack != null)
@@ -177,9 +177,9 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
-		return from == FaceDirection.DOWN || from == FaceDirection.UP;
+		return from == Face.DOWN || from == Face.UP;
 	}
 
 	@Override
@@ -191,7 +191,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
+		return side == Face.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override

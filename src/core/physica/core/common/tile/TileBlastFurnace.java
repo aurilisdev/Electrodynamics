@@ -82,12 +82,12 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		if (isBurning())
 		{
 			Location loc = getLocation();
-			if (worldObj.rand.nextFloat() < 0.25f)
+			if (World().rand.nextFloat() < 0.25f)
 			{
-				worldObj.spawnParticle("smoke", loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, 0, 0.05f, 0);
-			} else if (worldObj.rand.nextFloat() < 0.025f)
+				World().spawnParticle("smoke", loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, 0, 0.05f, 0);
+			} else if (World().rand.nextFloat() < 0.025f)
 			{
-				worldObj.spawnParticle("lava", loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, 0, 0.05f, 0);
+				World().spawnParticle("lava", loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, 0, 0.05f, 0);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 			--furnaceBurnTime;
 		}
 		ItemStack stackInputFuel = getStackInSlot(SLOT_INPUTFUEL);
-		if (!worldObj.isRemote)
+		if (!World().isRemote)
 		{
 			if (furnaceBurnTime != 0 || stackInputFuel != null && getStackInSlot(SLOT_INPUT) != null)
 			{
@@ -157,7 +157,7 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		currentItemBurnTime = buf.readInt();
 		furnaceCookTime = buf.readInt();
 		Location loc = getLocation();
-		worldObj.updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
+		World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 	}
 
 	@Override

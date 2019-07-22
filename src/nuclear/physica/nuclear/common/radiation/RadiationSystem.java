@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import physica.api.core.abstraction.AbstractionLayer;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.effect.potion.PotionRadiation;
 import physica.nuclear.common.items.armor.ItemHazmatArmor;
@@ -98,7 +98,7 @@ public class RadiationSystem {
 		int currentMeta = world.getBlockMetadata(x, y, z);
 		if (currentMeta > 1)
 		{
-			for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+			for (Face dir : Face.VALID)
 			{
 				int i1 = x + dir.offsetX;
 				int j1 = y + dir.offsetY;

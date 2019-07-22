@@ -21,7 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.forcefield.IFortronBlock;
 import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.PhysicaForcefields;
@@ -176,7 +176,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 									world.setBlock(loc.xCoord, loc.yCoord, loc.zCoord, Blocks.air, 0, 2);
 									removed.add(loc);
 
-									for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+									for (Face direction : Face.VALID)
 									{
 										TileEntity tile = world.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 										if (tile instanceof TileFortronField && !((TileFortronField) tile).isValidField())

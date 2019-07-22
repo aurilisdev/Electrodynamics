@@ -2,7 +2,7 @@ package physica.api.core.electricity;
 
 import cofh.api.energy.IEnergyConnection;
 import net.minecraftforge.common.util.ForgeDirection;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 
 @SuppressWarnings("deprecation")
 public interface IElectricTile extends IEnergyConnection {
@@ -13,7 +13,7 @@ public interface IElectricTile extends IEnergyConnection {
 	{
 	}
 
-	default boolean canConnectElectricity(FaceDirection from)
+	default boolean canConnectElectricity(Face from)
 	{
 		return true;
 	}
@@ -22,7 +22,7 @@ public interface IElectricTile extends IEnergyConnection {
 	@Deprecated
 	default boolean canConnectEnergy(ForgeDirection from)
 	{
-		return canConnectElectricity(FaceDirection.Parse(from));
+		return canConnectElectricity(Face.Parse(from));
 	}
 
 }

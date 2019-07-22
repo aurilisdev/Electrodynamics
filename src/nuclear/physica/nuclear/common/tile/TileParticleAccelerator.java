@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.ElectricityUtilities;
@@ -97,9 +97,9 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 					{
 						if (stackEmptyCell != null)
 						{
-							if (worldObj.rand.nextFloat() > 0.666f)
+							if (World().rand.nextFloat() > 0.666f)
 							{
-								antimatterAmount = Math.min(1000, antimatterAmount + 7 + worldObj.rand.nextInt(5));
+								antimatterAmount = Math.min(1000, antimatterAmount + 7 + World().rand.nextInt(5));
 								particle.setDead();
 							} else if (antimatterAmount > 100)
 							{
@@ -121,7 +121,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 					particle = null;
 				} else if (velocity >= ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)
 				{
-					antimatterAmount = Math.min(1000, antimatterAmount + 7 + worldObj.rand.nextInt(5));
+					antimatterAmount = Math.min(1000, antimatterAmount + 7 + World().rand.nextInt(5));
 					particle.setDead();
 					particle = null;
 				}
@@ -135,14 +135,14 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			}
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
-			FaceDirection opposite = getFacing().getOpposite();
+			Face opposite = getFacing().getOpposite();
 			Location loc = getLocation();
-			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(worldObj, loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
+			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
 			{
 				currentSessionUse = extractEnergy();
 
-				particle = new EntityParticle(worldObj, loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ, opposite);
-				worldObj.spawnEntityInWorld(particle);
+				particle = new EntityParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ, opposite);
+				World().spawnEntityInWorld(particle);
 
 				decrStackSize(SLOT_INPUTMATTER, 1);
 			}
@@ -218,9 +218,9 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			}
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
-			FaceDirection opposite = getFacing().getOpposite();
+			Face opposite = getFacing().getOpposite();
 			Location loc = getLocation();
-			if (EntityParticle.canSpawnParticle(worldObj, loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
+			if (EntityParticle.canSpawnParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
 			{
 				return AcceleratorStatus.Ready;
 			}
@@ -313,7 +313,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
 		return from != getFacing().getOpposite();
 	}
@@ -342,7 +342,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_MIDDLE_SIDES;
+		return side == Face.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_MIDDLE_SIDES;
 	}
 
 	@Override

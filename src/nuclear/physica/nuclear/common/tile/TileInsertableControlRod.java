@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
 import physica.library.location.Location;
@@ -38,13 +38,13 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		FaceDirection facing = getFacing().getOpposite();
+		Face facing = getFacing().getOpposite();
 		Location loc = getLocation();
-		TileEntity tile = worldObj.getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
+		TileEntity tile = World().getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		if (!(tile instanceof TileFissionReactor))
 		{
-			worldObj.spawnEntityInWorld(new EntityItem(worldObj, loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
-			getLocation().setBlockAir(worldObj);
+			World().spawnEntityInWorld(new EntityItem(World(), loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
+			getLocation().setBlockAir(World());
 
 		}
 	}

@@ -37,7 +37,7 @@ public class TileFortronField extends TileBase {
 
 	public boolean isForcefieldActive()
 	{
-		TileEntity tile = constructorCoord.getTile(worldObj);
+		TileEntity tile = constructorCoord.getTile(World());
 		if (!(tile instanceof TileFortronFieldConstructor))
 		{
 			return false;
@@ -58,7 +58,7 @@ public class TileFortronField extends TileBase {
 
 	public boolean isValidField()
 	{
-		TileEntity constructor = constructorCoord.getTile(worldObj);
+		TileEntity constructor = constructorCoord.getTile(World());
 		return constructor instanceof TileFortronFieldConstructor && ((TileFortronFieldConstructor) constructor).isActivated();
 	}
 

@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.location.Location;
@@ -57,16 +57,16 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 				return;
 			}
 			Location loc = getLocation();
-			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+			for (Face direction : Face.VALID)
 			{
-				if (direction == FaceDirection.DOWN || direction == FaceDirection.UP)
+				if (direction == Face.DOWN || direction == Face.UP)
 				{
 					continue;
 				}
-				Block block = worldObj.getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
+				Block block = World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 				if (block.getMaterial() == Material.air || block.getMaterial() == Material.fire)
 				{
-					NuclearBlockRegister.blockPlasma.spawn(worldObj, block, loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, 10);
+					NuclearBlockRegister.blockPlasma.spawn(World(), block, loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, 10);
 				}
 			}
 		} else
@@ -138,9 +138,9 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public boolean canConnectElectricity(FaceDirection from)
+	public boolean canConnectElectricity(Face from)
 	{
-		return from != FaceDirection.UP;
+		return from != Face.UP;
 	}
 
 	@Override
@@ -191,7 +191,7 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
+		return side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override

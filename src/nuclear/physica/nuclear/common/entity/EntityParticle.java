@@ -19,7 +19,7 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import physica.CoreReferences;
 import physica.Physica;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.base.Measurement;
 import physica.library.util.RotationUtility;
@@ -29,12 +29,12 @@ import physica.nuclear.common.tile.TileParticleAccelerator;
 
 public class EntityParticle extends Entity implements IEntityAdditionalSpawnData {
 
-	private static int		movementTicketUpdateId	= 20;
+	private static int	movementTicketUpdateId	= 20;
 
-	public Ticket			updateTicket;
-	private boolean			didCollide;
-	private int				hostLocationX, hostLocationY, hostLocationZ;
-	private FaceDirection	movementDirection		= FaceDirection.NORTH;
+	public Ticket		updateTicket;
+	private boolean		didCollide;
+	private int			hostLocationX, hostLocationY, hostLocationZ;
+	private Face		movementDirection		= Face.NORTH;
 
 	public EntityParticle(World world) {
 		super(world);
@@ -42,7 +42,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		setSize(0.1F, 0.1F);
 	}
 
-	public EntityParticle(World world, int x, int y, int z, FaceDirection movementDirection) {
+	public EntityParticle(World world, int x, int y, int z, Face movementDirection) {
 		this(world);
 		this.movementDirection = movementDirection;
 		hostLocationX = x + this.movementDirection.getOpposite().offsetX;
@@ -75,7 +75,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		if (world.isAirBlock(x, y, z))
 		{
 			int electromagnetCount = 0;
-			for (FaceDirection side : FaceDirection.VALID_DIRECTIONS)
+			for (Face side : Face.VALID)
 			{
 				if (isElectromagnet(world, x, y, z, side))
 				{
@@ -90,7 +90,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		return false;
 	}
 
-	public static boolean isElectromagnet(World world, int x, int y, int z, FaceDirection facing)
+	public static boolean isElectromagnet(World world, int x, int y, int z, Face facing)
 	{
 		return world.getBlock(x + facing.offsetX, y + facing.offsetY, z + facing.offsetZ) instanceof IElectromagnet;
 	}
@@ -110,7 +110,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		hostLocationX = data.readInt();
 		hostLocationY = data.readInt();
 		hostLocationZ = data.readInt();
-		movementDirection = FaceDirection.getOrientation(data.readInt());
+		movementDirection = Face.getOrientation(data.readInt());
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 				dataWatcher.updateObject(movementTicketUpdateId, (byte) movementDirection.ordinal());
 			} else
 			{
-				movementDirection = FaceDirection.getOrientation(dataWatcher.getWatchableObjectByte(movementTicketUpdateId));
+				movementDirection = Face.getOrientation(dataWatcher.getWatchableObjectByte(movementTicketUpdateId));
 				if (rand.nextFloat() < 2)
 				{
 					worldObj.spawnParticle("portal", posX, posY - 1, posZ, motionX, motionY, motionZ);
@@ -266,7 +266,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		hostLocationX = tag.getInteger("tileLocationX");
 		hostLocationY = tag.getInteger("tileLocationY");
 		hostLocationZ = tag.getInteger("tileLocationZ");
-		movementDirection = FaceDirection.getOrientation(tag.getByte("direction"));
+		movementDirection = Face.getOrientation(tag.getByte("direction"));
 	}
 
 	@Override
@@ -296,10 +296,10 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 
 	public double turn()
 	{
-		FaceDirection leftDirection = RotationUtility.getRelativeSide(FaceDirection.WEST, movementDirection);
-		FaceDirection rightDirection = RotationUtility.getRelativeSide(FaceDirection.EAST, movementDirection);
-		FaceDirection upDirection = RotationUtility.getRelativeSide(FaceDirection.UP, movementDirection);
-		FaceDirection downDirection = RotationUtility.getRelativeSide(FaceDirection.DOWN, movementDirection);
+		Face leftDirection = RotationUtility.getRelativeSide(Face.WEST, movementDirection);
+		Face rightDirection = RotationUtility.getRelativeSide(Face.EAST, movementDirection);
+		Face upDirection = RotationUtility.getRelativeSide(Face.UP, movementDirection);
+		Face downDirection = RotationUtility.getRelativeSide(Face.DOWN, movementDirection);
 
 		if (worldObj.isAirBlock((int) Math.floor(posX + leftDirection.offsetX), (int) Math.floor(posY + leftDirection.offsetY), (int) Math.floor(posZ + leftDirection.offsetZ)))
 		{

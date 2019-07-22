@@ -24,7 +24,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.FluidTank;
-import physica.api.core.abstraction.FaceDirection;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
@@ -126,10 +126,10 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 			return true;
 		}
 		Location current = getLocation();
-		for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
+		for (Face direction : Face.VALID)
 		{
 			Location loc = current.OffsetFace(direction);
-			TileEntity tile = loc.getTile(worldObj);
+			TileEntity tile = loc.getTile(World());
 			if (tile instanceof TileBiometricIdentifier)
 			{
 				TileBiometricIdentifier identifier = (TileBiometricIdentifier) tile;
@@ -192,7 +192,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		{
 			fortronTank.drain(getFortronUse(), true);
 			@SuppressWarnings("unchecked")
-			List<EntityLivingBase> activeBBEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getActiveBB());
+			List<EntityLivingBase> activeBBEntities = World().getEntitiesWithinAABB(EntityLivingBase.class, getActiveBB());
 			boolean confiscate = hasModule("moduleUpgradeConfiscate"), antiHostile = hasModule("moduleUpgradeAntiHostile"), antiFriendly = hasModule("moduleUpgradeAntiFriendly"), antiPersonnel = hasModule("moduleUpgradeAntiPersonnel");
 			if (ticks % 3 == 0)
 			{
@@ -215,7 +215,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 			if (ticks % 30 == 0)
 			{
 				@SuppressWarnings("unchecked")
-				List<Object> warnBBEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getActiveWarnBB());
+				List<Object> warnBBEntities = World().getEntitiesWithinAABB(EntityLivingBase.class, getActiveWarnBB());
 				for (Object obj : warnBBEntities)
 				{
 					if (obj instanceof EntityPlayer)
@@ -304,7 +304,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public static boolean mergeIntoInventory(TileEntity from, ItemStack stack)
 	{
-		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
+		for (Face dir : Face.VALID)
 		{
 			stack = placeAdjInv(from, stack, dir);
 			if (stack == null || stack.stackSize <= 0)
@@ -315,7 +315,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		return false;
 	}
 
-	private static ItemStack placeAdjInv(TileEntity tile, ItemStack stack, FaceDirection dir)
+	private static ItemStack placeAdjInv(TileEntity tile, ItemStack stack, Face dir)
 	{
 		TileEntity tileEntity = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
 		if (stack != null && tileEntity != null)
