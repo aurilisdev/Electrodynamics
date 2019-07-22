@@ -44,17 +44,4 @@ public class CommonProxy implements IGuiHandler, IContent {
 			return null;
 		}
 	}
-
-	public void onInit()
-	{
-	}
-
-	public void onPostInit()
-	{
-	}
-
-	public void onPreInit()
-	{
-	}
-
 }
