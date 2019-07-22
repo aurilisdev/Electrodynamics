@@ -23,7 +23,6 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
@@ -126,7 +125,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		{
 			return true;
 		}
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 		{
 			BlockLocation loc = new BlockLocation(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 			TileEntity tile = loc.getTile(worldObj);

@@ -50,7 +50,7 @@ public abstract class BlockRotatable extends BlockContainer {
 
 		if (isFlipPlacement)
 		{
-			return ForgeDirection.getOrientation(returnSide).getOpposite().ordinal();
+			return FaceDirection.getOrientation(returnSide).getOpposite().ordinal();
 		}
 
 		return returnSide;
