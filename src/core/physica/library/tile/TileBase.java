@@ -10,8 +10,13 @@ import net.minecraft.tileentity.TileEntity;
 import physica.api.core.tile.ITileBase;
 import physica.library.location.Location;
 
-@SuppressWarnings("unused")
 public abstract class TileBase extends TileEntity implements ITileBase {
+	@Deprecated
+	public int					xCoord;
+	@Deprecated
+	public int					yCoord;
+	@Deprecated
+	public int					zCoord;
 	private int					_ticksRunning	= 0;
 	private Location			location;
 	protected Set<EntityPlayer>	playersUsingGUI	= new HashSet<>();
