@@ -33,7 +33,7 @@ public class TileConductor extends TileEntity implements IConductor {
 		TileEntity[] cables = { null, null, null, null, null, null };
 		for (FaceDirection orientation : FaceDirection.VALID_DIRECTIONS)
 		{
-			TileEntity cable = new Location(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
+			TileEntity cable = new Location(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
 			if (cable instanceof IConductor)
 			{
 				cables[orientation.ordinal()] = cable;
@@ -99,7 +99,7 @@ public class TileConductor extends TileEntity implements IConductor {
 		{
 			for (FaceDirection side : FaceDirection.VALID_DIRECTIONS)
 			{
-				TileEntity tileEntity = new Location(this).TranslateTo(side).getTile(worldObj);
+				TileEntity tileEntity = new Location(this).OffsetFace(side).getTile(worldObj);
 				if (tileEntity instanceof IConductor)
 				{
 					getNetwork().merge(((IConductor) tileEntity).getNetwork());
@@ -144,7 +144,7 @@ public class TileConductor extends TileEntity implements IConductor {
 			return 0;
 		}
 		ArrayList<TileEntity> ignored = new ArrayList<>();
-		ignored.add(new Location(this).TranslateTo(from).getTile(worldObj));
+		ignored.add(new Location(this).OffsetFace(from).getTile(worldObj));
 		return getNetwork().emit(maxReceive, ignored);
 	}
 

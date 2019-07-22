@@ -167,18 +167,18 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 								while (!invalidQueue.isEmpty() && removed.size() < 1000)
 								{
 									TileFortronField element = invalidQueue.pop();
-									Location blockLocation = new Location(element.xCoord, element.yCoord, element.zCoord);
-									if (removed.contains(blockLocation))
+									Location loc = element.getLocation();
+									if (removed.contains(loc))
 									{
 										continue;
 									}
 
-									world.setBlock(element.xCoord, element.yCoord, element.zCoord, Blocks.air, 0, 2);
-									removed.add(blockLocation);
+									world.setBlock(loc.xCoord, loc.yCoord, loc.zCoord, Blocks.air, 0, 2);
+									removed.add(loc);
 
 									for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 									{
-										TileEntity tile = world.getTileEntity(element.xCoord + direction.offsetX, element.yCoord + direction.offsetY, element.zCoord + direction.offsetZ);
+										TileEntity tile = world.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 										if (tile instanceof TileFortronField && !((TileFortronField) tile).isValidField())
 										{
 											invalidQueue.add((TileFortronField) tile);

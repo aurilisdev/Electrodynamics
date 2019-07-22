@@ -50,7 +50,7 @@ public class ConfigCore implements IContent {
 			configuration.load();
 			IS_DEBUG_MODE = configuration.getBoolean("isDebugMode", "Debugging", IS_DEBUG_MODE, "Enable/disable debug mode");
 			DISABLE_INFINITE_ENERGY_CUBE = configuration.getBoolean("disable_infinite_energy_cube", CATEGORY, DISABLE_INFINITE_ENERGY_CUBE, "True to disable infinite energy cubes. False to enable");
-			MODIFY_OTHER_MODS_TO_WATTS = configuration.getBoolean("modify_other_mods_to_watts", CATEGORY, DISABLE_INFINITE_ENERGY_CUBE, "True to disable infinite energy cubes. False to enable");
+			MODIFY_OTHER_MODS_TO_WATTS = configuration.getBoolean("modify_other_mods_to_watts", CATEGORY, MODIFY_OTHER_MODS_TO_WATTS, "True to disable infinite energy cubes. False to enable");
 
 			if (IS_DEBUG_MODE)
 			{

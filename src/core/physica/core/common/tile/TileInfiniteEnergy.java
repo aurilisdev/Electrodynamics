@@ -5,6 +5,7 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.configuration.ConfigCore;
+import physica.library.location.Location;
 import physica.library.tile.TileBase;
 
 public class TileInfiniteEnergy extends TileBase implements IElectricityProvider {
@@ -14,14 +15,15 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 	@Override
 	public void updateServer(int ticks)
 	{
+		Location loc = getLocation();
 		if (ConfigCore.DISABLE_INFINITE_ENERGY_CUBE)
 		{
-			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+			loc.setBlockAir(worldObj);
 			return;
 		}
 		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
-			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity tile = worldObj.getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
 			if (tile != null)
 			{
 				if (AbstractionLayer.Electricity.isElectricReceiver(tile))

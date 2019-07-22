@@ -14,6 +14,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import physica.CoreReferences;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.tile.TileFulmination;
+import physica.library.location.Location;
 import physica.nuclear.common.NuclearItemRegister;
 import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
@@ -77,8 +78,9 @@ public class FulminationEventHandler {
 					if (distance <= size && distance > 0)
 					{
 						double electricity = Math.min(energy, energy / (distance / size));
-						electricity = Math.max(
-								electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
+						Location loc = tile.getLocation();
+						electricity = Math
+								.max(electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, loc.xCoord, loc.yCoord, loc.zCoord)) * electricity, 0.0D);
 						tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));
 					}
 				}
@@ -115,8 +117,9 @@ public class FulminationEventHandler {
 								}
 							}
 							double electricity = Math.min(energy, energy / (distance / size));
+							Location loc = tile.getLocation();
 							electricity = Math.max(electricity - event.world.getBlockDensity(Vec3.createVectorHelper(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ),
-									CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(event.world, tile.xCoord, tile.yCoord, tile.zCoord)) * electricity, 0.0D);
+									CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(event.world, loc.xCoord, loc.yCoord, loc.zCoord)) * electricity, 0.0D);
 							tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));
 						}
 					}

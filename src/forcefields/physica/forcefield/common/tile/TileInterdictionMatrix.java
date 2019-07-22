@@ -125,9 +125,10 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		{
 			return true;
 		}
+		Location current = getLocation();
 		for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 		{
-			Location loc = new Location(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			Location loc = current.OffsetFace(direction);
 			TileEntity tile = loc.getTile(worldObj);
 			if (tile instanceof TileBiometricIdentifier)
 			{
@@ -402,13 +403,15 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public AxisAlignedBB getActiveBB()
 	{
 		int scaleCount = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
-		return AxisAlignedBB.getBoundingBox(xCoord - scaleCount, yCoord - scaleCount, zCoord - scaleCount, xCoord + scaleCount + 1, yCoord + scaleCount + 1, zCoord + scaleCount + 1);
+		Location loc = getLocation();
+		return AxisAlignedBB.getBoundingBox(loc.xCoord - scaleCount, loc.yCoord - scaleCount, loc.zCoord - scaleCount, loc.xCoord + scaleCount + 1, loc.yCoord + scaleCount + 1, loc.zCoord + scaleCount + 1);
 	}
 
 	public AxisAlignedBB getActiveWarnBB()
 	{
 		int scaleCount = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX)) * 2;
-		return AxisAlignedBB.getBoundingBox(xCoord - scaleCount, yCoord - scaleCount, zCoord - scaleCount, xCoord + scaleCount + 1, yCoord + scaleCount + 1, zCoord + scaleCount + 1);
+		Location loc = getLocation();
+		return AxisAlignedBB.getBoundingBox(loc.xCoord - scaleCount, loc.yCoord - scaleCount, loc.zCoord - scaleCount, loc.xCoord + scaleCount + 1, loc.yCoord + scaleCount + 1, loc.zCoord + scaleCount + 1);
 	}
 
 	@Override
@@ -548,7 +551,8 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	{
 		if (side == Side.CLIENT)
 		{
-			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, xCoord, yCoord, zCoord, buttonId));
+			Location loc = getLocation();
+			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, buttonId));
 		} else if (side == Side.SERVER)
 		{
 			if (buttonId == 1)

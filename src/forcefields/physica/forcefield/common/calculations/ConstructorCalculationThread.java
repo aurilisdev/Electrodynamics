@@ -51,6 +51,7 @@ public class ConstructorCalculationThread extends Thread {
 				constructor.calculatedFieldPoints.clear();
 			} else
 			{
+				Location constructorLocation = constructor.getLocation();
 				if (constructor.shouldDisintegrate)
 				{
 					List<Location> exclude = new ArrayList<>();
@@ -60,7 +61,7 @@ public class ConstructorCalculationThread extends Thread {
 						{
 							for (int dy = -EXCLUDE_RADIUS; dy <= EXCLUDE_RADIUS; dy++)
 							{
-								exclude.add(new Location(constructor.xCoord + dx, constructor.yCoord + dy, constructor.zCoord + dz));
+								exclude.add(new Location(constructorLocation.xCoord + dx, constructorLocation.yCoord + dy, constructorLocation.zCoord + dz));
 							}
 						}
 					}

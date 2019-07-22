@@ -73,7 +73,8 @@ public class TileFortronField extends TileBase {
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+		Location loc = getLocation();
+		return new S35PacketUpdateTileEntity(loc.xCoord, loc.yCoord, loc.zCoord, 1, nbt);
 	}
 
 	@Override
@@ -101,6 +102,7 @@ public class TileFortronField extends TileBase {
 	@Override
 	public int hashCode()
 	{
-		return xCoord * 2 * yCoord * zCoord;
+		Location loc = getLocation();
+		return loc.xCoord * 2 * loc.yCoord * loc.zCoord;
 	}
 }

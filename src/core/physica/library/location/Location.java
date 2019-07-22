@@ -20,9 +20,9 @@ public class Location {
 	}
 
 	public Location(int x, int y, int z) {
-		this.xCoord = x;
-		this.yCoord = y;
-		this.zCoord = z;
+		xCoord = x;
+		yCoord = y;
+		zCoord = z;
 	}
 
 	public Location(TileEntity tile) {
@@ -31,10 +31,15 @@ public class Location {
 
 	public Location set(int x, int y, int z)
 	{
-		this.xCoord = x;
-		this.yCoord = y;
-		this.zCoord = z;
+		xCoord = x;
+		yCoord = y;
+		zCoord = z;
 		return this;
+	}
+
+	public Location set(Location location)
+	{
+		return set(location.xCoord, location.yCoord, location.zCoord);
 	}
 
 	public int getX()
@@ -63,7 +68,7 @@ public class Location {
 		return new VectorLocation(xCoord / n, yCoord / n, zCoord / n);
 	}
 
-	public Location TranslateTo(FaceDirection direction)
+	public Location OffsetFace(FaceDirection direction)
 	{
 		return new Location(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 	}

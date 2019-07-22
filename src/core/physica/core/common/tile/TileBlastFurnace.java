@@ -17,6 +17,7 @@ import physica.api.core.inventory.IGuiInterface;
 import physica.core.client.gui.GuiBlastFurnace;
 import physica.core.common.CoreItemRegister;
 import physica.core.common.inventory.ContainerBlastFurnace;
+import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
 
 public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface {
@@ -80,12 +81,13 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		super.updateClient(ticks);
 		if (isBurning())
 		{
+			Location loc = getLocation();
 			if (worldObj.rand.nextFloat() < 0.25f)
 			{
-				worldObj.spawnParticle("smoke", xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 0, 0.05f, 0);
+				worldObj.spawnParticle("smoke", loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, 0, 0.05f, 0);
 			} else if (worldObj.rand.nextFloat() < 0.025f)
 			{
-				worldObj.spawnParticle("lava", xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 0, 0.05f, 0);
+				worldObj.spawnParticle("lava", loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, 0, 0.05f, 0);
 			}
 		}
 	}
@@ -154,7 +156,8 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		furnaceBurnTime = buf.readInt();
 		currentItemBurnTime = buf.readInt();
 		furnaceCookTime = buf.readInt();
-		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+		Location loc = getLocation();
+		worldObj.updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 	}
 
 	@Override

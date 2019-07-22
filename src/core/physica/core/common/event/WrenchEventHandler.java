@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import physica.core.common.block.BlockEnergyCable;
 import physica.library.block.BlockBaseContainer;
+import physica.nuclear.common.block.BlockTurbine;
 
 public class WrenchEventHandler {
 
@@ -74,7 +75,7 @@ public class WrenchEventHandler {
 							}
 						}
 						event.entityPlayer.swingItem();
-					} else if (block instanceof BlockEnergyCable)
+					} else if (block instanceof BlockEnergyCable || block instanceof BlockTurbine)
 					{
 						if (!event.world.isRemote)
 						{

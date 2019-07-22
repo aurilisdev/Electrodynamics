@@ -45,10 +45,11 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 		if (ticks % 10 == 0)
 		{
 			isActivated = false;
+			Location loc = getLocation();
 			for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 			{
-				Location loc = new Location(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-				if (loc.getTile(worldObj) instanceof TileInterdictionMatrix)
+				Location offset = loc.OffsetFace(dir);
+				if (offset.getTile(worldObj) instanceof TileInterdictionMatrix)
 				{
 					isActivated = true;
 				}
@@ -60,7 +61,8 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 	{
 		if (side == Side.CLIENT)
 		{
-			PacketSystem.INSTANCE.sendToServer(new PacketTile("", BIOMETRIC_IDENTIFIER_PACKET_ID, xCoord, yCoord, zCoord, perm.id));
+			Location loc = getLocation();
+			PacketSystem.INSTANCE.sendToServer(new PacketTile("", BIOMETRIC_IDENTIFIER_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, perm.id));
 		} else
 		{
 			ItemStack card = getStackInSlot(SLOT_INPUT_CARD);

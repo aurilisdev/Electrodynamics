@@ -20,7 +20,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
@@ -83,10 +82,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	protected boolean						isActivated				= false;
 	protected Set<ITileBase>				fortronConnections		= new HashSet<>();
 
-	public Set<Location>				calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
+	public Set<Location>					calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
 	public Set<TileFortronField>			activeFields			= new HashSet<>();
 
-	private Location					location;
+	private Location						location;
 	private ConstructorCalculationThread	calculationThread;
 	private int[]							cachedCoordinates		= new int[3];
 	private int[]							cachedInformation		= new int[9];
@@ -148,13 +147,14 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		if (healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS)
 		{
 			destroyField(true);
-			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+			Location loc = getLocation();
+			loc.setBlockAir(worldObj);
 			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
 			{
-				EntityItem antimatter = new EntityItem(worldObj, xCoord, yCoord, zCoord, new ItemStack(physica.nuclear.common.NuclearItemRegister.itemAntimatterCell1Gram));
+				EntityItem antimatter = new EntityItem(worldObj, loc.xCoord, loc.yCoord, loc.zCoord, new ItemStack(physica.nuclear.common.NuclearItemRegister.itemAntimatterCell1Gram));
 				worldObj.spawnEntityInWorld(antimatter);
 			}
-			worldObj.createExplosion(null, xCoord, yCoord, zCoord, 10F, true);
+			worldObj.createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, 10F, true);
 		}
 	}
 
@@ -216,10 +216,11 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			moduleCount = ret;
 			destroyField(false);
 		}
+		Location loc = getLocation();
 		ItemStack translate = ForcefieldItemRegister.moduleMap.get("moduleManipulationTranslate");
-		cachedCoordinates[0] = xCoord + getModuleCountIn(translate, SLOT_EAST[0], +SLOT_EAST[1]) - getModuleCountIn(translate, SLOT_WEST[0], SLOT_WEST[1]);
-		cachedCoordinates[1] = yCoord + getModuleCountIn(translate, SLOT_UP[0], SLOT_UP[1]) - getModuleCountIn(translate, SLOT_DOWN[0], SLOT_DOWN[1]);
-		cachedCoordinates[2] = zCoord + getModuleCountIn(translate, SLOT_SOUTH[0], SLOT_SOUTH[1]) - getModuleCountIn(translate, SLOT_NORTH[0], SLOT_NORTH[1]);
+		cachedCoordinates[0] = loc.xCoord + getModuleCountIn(translate, SLOT_EAST[0], +SLOT_EAST[1]) - getModuleCountIn(translate, SLOT_WEST[0], SLOT_WEST[1]);
+		cachedCoordinates[1] = loc.yCoord + getModuleCountIn(translate, SLOT_UP[0], SLOT_UP[1]) - getModuleCountIn(translate, SLOT_DOWN[0], SLOT_DOWN[1]);
+		cachedCoordinates[2] = loc.zCoord + getModuleCountIn(translate, SLOT_SOUTH[0], SLOT_SOUTH[1]) - getModuleCountIn(translate, SLOT_NORTH[0], SLOT_NORTH[1]);
 		ItemStack scaleModule = ForcefieldItemRegister.moduleMap.get("moduleManipulationScale");
 		hasInterior = hasUpgrade("moduleUpgradeInterior");
 		cachedInformation[0] = (int) (cachedCoordinates[0]
@@ -237,7 +238,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		cachedInformation[6] = Math.min(64, getModuleCount(scaleModule, TileFortronFieldConstructor.SLOT_MODULES[0], TileFortronFieldConstructor.SLOT_MODULES[TileFortronFieldConstructor.SLOT_MODULES.length - 1]) / 6);
 		cachedInformation[7] = BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), 0, 11);
 		cachedInformation[8] = 1 + BASE_FORTRON * getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
-		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+		worldObj.updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 	}
 
 	@Override
@@ -385,7 +386,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 					TileFortronField field = iterator.next();
 					iterator.remove();
 					field.invalidate();
-					worldObj.setBlock(field.xCoord, field.yCoord, field.zCoord, Blocks.air, 0, 2);
+					field.getLocation().setBlockAirNonUpdate(worldObj);
 				}
 			}
 		}
@@ -457,7 +458,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			for (TileFortronField field : activeFields)
 			{
-				worldObj.setBlock(field.xCoord, field.yCoord, field.zCoord, Blocks.air, 0, 2);
+				field.getLocation().setBlockAirNonUpdate(worldObj);
 			}
 			activeFields.clear();
 		}
@@ -552,9 +553,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				{
 					if (shouldStabilize)
 					{
+						Location loc = getLocation();
 						for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 						{
-							TileEntity entity = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+							TileEntity entity = worldObj.getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
 							if (entity != null && entity instanceof IInventory)
 							{
 								IInventory inv = (IInventory) entity;
@@ -564,7 +566,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 									ItemStack stack = inv.getStackInSlot(slot);
 									if (stack != null)
 									{
-										if (stack.getItem() instanceof ItemBlock && entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, false, 0, null, stack))
+										if (stack.getItem() instanceof ItemBlock
+												&& entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, false, 0, null, stack))
 										{
 											int meta = stack.getHasSubtypes() ? stack.getItemDamage() : 0;
 											((ItemBlock) stack.getItem()).placeBlockAt(stack, null, entity.getWorldObj(), fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, 0, 0, 0, 0, meta);
@@ -792,7 +795,8 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		if (side == Side.CLIENT)
 		{
-			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, xCoord, yCoord, zCoord, buttonId));
+			Location loc = getLocation();
+			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, buttonId));
 		} else if (side == Side.SERVER)
 		{
 			isOverriden = !isOverriden;

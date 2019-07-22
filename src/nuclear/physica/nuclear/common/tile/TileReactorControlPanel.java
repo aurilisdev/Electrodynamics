@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
+import physica.library.location.Location;
 import physica.library.tile.TileBaseRotateable;
 import physica.nuclear.client.gui.GuiReactorControlPanel;
 
@@ -24,25 +25,30 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
+		Location loc = getLocation();
 		if (ticks % 20 == 0)
 		{
-			worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+			worldObj.markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
 			rod = null;
 			if (reactor != null)
 			{
-				TileEntity tile = reactor.getLocation().TranslateTo(FaceDirection.UP).getTile(worldObj);
+				TileEntity tile = reactor.getLocation().OffsetFace(FaceDirection.UP).getTile(worldObj);
 				if (tile instanceof TileInsertableControlRod)
 				{
 					rod = (TileInsertableControlRod) tile;
 				} else
 				{
-					tile = reactor.getLocation().TranslateTo(FaceDirection.DOWN).getTile(worldObj);
+					tile = reactor.getLocation().OffsetFace(FaceDirection.DOWN).getTile(worldObj);
 					if (tile instanceof TileInsertableControlRod)
 					{
 						rod = (TileInsertableControlRod) tile;
 					}
 				}
 			}
+		}
+		if (reactor != null && (reactor.isInvalid() || !reactor.isIncased))
+		{
+			worldObj.markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
 		}
 	}
 
@@ -53,7 +59,6 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 		if (reactor != null && (reactor.isInvalid() || !reactor.isIncased))
 		{
 			reactor = null;
-			worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 		}
 	}
 

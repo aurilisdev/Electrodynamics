@@ -11,6 +11,7 @@ import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityProvider;
+import physica.library.location.Location;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 
@@ -23,7 +24,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	protected boolean		isGenerating	= false;
 	public int				delayGeneration	= 10;
 	protected int			steam;
-	protected int			mainX, mainY, mainZ;
+	protected Location		mainLocation	= new Location();
 	protected boolean		hasMain			= false;
 	protected boolean		isMain			= false;
 
@@ -37,6 +38,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	{
 		boolean canConstruct = true;
 		int radius = 1;
+		Location loc = getLocation();
 		for (int i = -radius; i <= radius; i++)
 		{
 			if (!canConstruct)
@@ -47,7 +49,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			{
 				if (i != 0 || j != 0)
 				{
-					TileEntity tile = worldObj.getTileEntity(xCoord + i, yCoord, zCoord + j);
+					TileEntity tile = worldObj.getTileEntity(loc.xCoord + i, loc.yCoord, loc.zCoord + j);
 					if (!(tile instanceof TileTurbine))
 					{
 						canConstruct = false;
@@ -71,7 +73,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			{
 				for (int j = -radius; j <= radius; j++)
 				{
-					((TileTurbine) worldObj.getTileEntity(xCoord + i, yCoord, zCoord + j)).addToConstruction(this);
+					((TileTurbine) worldObj.getTileEntity(loc.xCoord + i, loc.yCoord, loc.zCoord + j)).addToConstruction(this);
 				}
 			}
 		}
@@ -81,6 +83,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	{
 		if (isMain)
 		{
+			Location loc = getLocation();
 			int radius = 1;
 			for (int i = -radius; i <= radius; i++)
 			{
@@ -88,14 +91,14 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 				{
 					if (i != 0 || j != 0)
 					{
-						TileEntity tile = worldObj.getTileEntity(xCoord + i, yCoord, zCoord + j);
+						TileEntity tile = worldObj.getTileEntity(loc.xCoord + i, loc.yCoord, loc.zCoord + j);
 						if (tile instanceof TileTurbine)
 						{
 							TileTurbine turbine = (TileTurbine) tile;
 							if (turbine != null)
 							{
 								turbine.hasMain = false;
-								turbine.mainX = turbine.mainY = turbine.mainZ = 0;
+								mainLocation.set(0, 0, 0);
 							}
 						}
 					}
@@ -103,25 +106,23 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			}
 			isMain = false;
 			hasMain = false;
-			mainX = mainY = mainZ = 0;
+			mainLocation.set(0, 0, 0);
 		} else if (hasMain)
 		{
-			TileTurbine main = (TileTurbine) worldObj.getTileEntity(mainX, mainY, mainZ);
+			TileTurbine main = (TileTurbine) mainLocation.getTile(worldObj);
 			if (main != null)
 			{
 				main.tryDeconstruct();
 			}
 			hasMain = false;
-			mainX = mainY = mainZ = 0;
+			mainLocation.set(0, 0, 0);
 		}
 
 	}
 
 	protected void addToConstruction(TileTurbine main)
 	{
-		mainX = main.xCoord;
-		mainY = main.yCoord;
-		mainZ = main.zCoord;
+		mainLocation.set(main.getLocation());
 		hasMain = true;
 	}
 
@@ -166,13 +167,14 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			clientSpin = true;
 			delayGeneration = 60;
 		}
+		Location loc = getLocation();
 		if (receiver == null || receiver.isInvalid())
 		{
 			if (receiver != null && receiver.isInvalid())
 			{
 				receiver = null;
 			}
-			TileEntity above = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+			TileEntity above = worldObj.getTileEntity(loc.xCoord, loc.yCoord + 1, loc.zCoord);
 			if (AbstractionLayer.Electricity.isElectricReceiver(above))
 			{
 				receiver = above;
@@ -183,7 +185,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		}
 		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain))
 		{
-			worldObj.playSoundEffect(xCoord, yCoord, zCoord, CoreReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
+			worldObj.playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, CoreReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
 		}
 	}
 
@@ -202,9 +204,9 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		dataList.add(clientSpin);
 		dataList.add(hasMain);
 		dataList.add(isMain);
-		dataList.add(mainX);
-		dataList.add(mainY);
-		dataList.add(mainZ);
+		dataList.add(mainLocation.xCoord);
+		dataList.add(mainLocation.yCoord);
+		dataList.add(mainLocation.zCoord);
 	}
 
 	@Override
@@ -216,9 +218,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		clientSpin = buf.readBoolean();
 		hasMain = buf.readBoolean();
 		isMain = buf.readBoolean();
-		mainX = buf.readInt();
-		mainY = buf.readInt();
-		mainZ = buf.readInt();
+		mainLocation.set(buf.readInt(), buf.readInt(), buf.readInt());
 	}
 
 	@Override
@@ -235,13 +235,14 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		int radius = 1;
 		if (isMain)
 		{
+			Location loc = getLocation();
 			for (int i = -radius; i <= radius; i++)
 			{
 				for (int j = -radius; j <= radius; j++)
 				{
 					if (i != 0 || j != 0)
 					{
-						TileEntity tile = worldObj.getTileEntity(xCoord + i, yCoord, zCoord + j);
+						TileEntity tile = worldObj.getTileEntity(loc.xCoord + i, loc.yCoord, loc.zCoord + j);
 						if (tile instanceof TileTurbine)
 						{
 							TileTurbine turbine = (TileTurbine) tile;
@@ -259,7 +260,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	{
 		if (!isMain && hasMain)
 		{
-			TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
+			TileEntity tile = mainLocation.getTile(worldObj);
 			if (tile instanceof TileTurbine)
 			{
 				return ((TileTurbine) tile).energyStored;
@@ -282,9 +283,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		steam = nbt.getInteger("Steam");
 		hasMain = nbt.getBoolean("hasMain");
 		isMain = nbt.getBoolean("isMain");
-		mainX = nbt.getInteger("mainX");
-		mainY = nbt.getInteger("mainY");
-		mainZ = nbt.getInteger("mainZ");
+		mainLocation.writeToNBT(nbt, "main");
 	}
 
 	@Override
@@ -295,9 +294,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		nbt.setInteger("Steam", steam);
 		nbt.setBoolean("hasMain", hasMain);
 		nbt.setBoolean("isMain", isMain);
-		nbt.setInteger("mainX", mainX);
-		nbt.setInteger("mainY", mainY);
-		nbt.setInteger("mainZ", mainZ);
+		mainLocation.readFromNBT(nbt, "main");
 	}
 
 	public void addSteam(int steam)
@@ -305,7 +302,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		this.steam = Math.min(MAX_STEAM, this.steam + steam);
 		if (!isMain && hasMain)
 		{
-			TileEntity tile = worldObj.getTileEntity(mainX, mainY, mainZ);
+			TileEntity tile = mainLocation.getTile(worldObj);
 			if (tile instanceof TileTurbine)
 			{
 				((TileTurbine) tile).steam = Math.min(MAX_STEAM, ((TileTurbine) tile).steam + this.steam);

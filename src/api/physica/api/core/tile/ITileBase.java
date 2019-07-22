@@ -18,7 +18,6 @@ import physica.api.core.inventory.IPlayerUsing;
 import physica.api.core.misc.IRotatable;
 import physica.api.core.network.ISidedObject;
 import physica.library.location.Location;
-import physica.library.location.VectorLocation;
 import physica.library.network.IPacket;
 import physica.library.network.IPacketReciever;
 import physica.library.network.netty.PacketSystem;

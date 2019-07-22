@@ -160,7 +160,7 @@ public class ElectricNetwork {
 		TileEntity[] acceptors = { null, null, null, null, null, null };
 		for (FaceDirection orientation : FaceDirection.VALID_DIRECTIONS)
 		{
-			TileEntity acceptor = new Location(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
+			TileEntity acceptor = new Location(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
 			if (AbstractionLayer.Electricity.isElectricReceiver(acceptor) && !(acceptor instanceof IConductor))
 			{
 				acceptors[orientation.ordinal()] = acceptor;
@@ -248,7 +248,7 @@ public class ElectricNetwork {
 			boolean[] dealtWith = { false, false, false, false, false, false };
 			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 			{
-				TileEntity sideTile = new Location((TileEntity) splitPoint).TranslateTo(direction).getTile(((TileEntity) splitPoint).getWorldObj());
+				TileEntity sideTile = new Location((TileEntity) splitPoint).OffsetFace(direction).getTile(((TileEntity) splitPoint).getWorldObj());
 				if (sideTile != null)
 				{
 					connectedBlocks[Arrays.asList(FaceDirection.values()).indexOf(direction)] = sideTile;
@@ -330,8 +330,8 @@ public class ElectricNetwork {
 	}
 
 	public static class NetworkFinder {
-		public World				worldObj;
-		public Location		start;
+		public World			worldObj;
+		public Location			start;
 		public List<Location>	iterated	= new ArrayList<>();
 		public List<Location>	toIgnore	= new ArrayList<>();
 
@@ -352,7 +352,7 @@ public class ElectricNetwork {
 			}
 			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 			{
-				Location obj = location.TranslateTo(direction);
+				Location obj = location.OffsetFace(direction);
 				if (!iterated.contains(obj) && !toIgnore.contains(obj))
 				{
 					TileEntity tileEntity = obj.getTile(worldObj);

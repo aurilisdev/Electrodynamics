@@ -16,6 +16,7 @@ import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
+import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
 import physica.library.util.OreDictionaryUtilities;
 import physica.nuclear.client.gui.GuiRadioisotopeGenerator;
@@ -49,7 +50,8 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 				if (cachedOutput == null || cachedOutput.isInvalid())
 				{
 					cachedOutput = null;
-					TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
+					Location loc = getLocation();
+					TileEntity outputTile = worldObj.getTileEntity(loc.xCoord + out.offsetX, loc.yCoord + out.offsetY, loc.zCoord + out.offsetZ);
 					if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 					{
 						cachedOutputs[index] = outputTile;

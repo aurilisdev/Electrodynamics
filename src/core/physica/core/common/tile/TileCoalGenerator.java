@@ -19,6 +19,7 @@ import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.client.gui.GuiCoalGenerator;
 import physica.core.common.inventory.ContainerCoalGenerator;
+import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
 
 public class TileCoalGenerator extends TileBaseContainer implements IGuiInterface, IElectricityProvider {
@@ -67,7 +68,8 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 			if (cachedOutput == null || cachedOutput.isInvalid())
 			{
 				cachedOutput = null;
-				TileEntity outputTile = worldObj.getTileEntity(xCoord + out.offsetX, yCoord + out.offsetY, zCoord + out.offsetZ);
+				Location loc = getLocation();
+				TileEntity outputTile = worldObj.getTileEntity(loc.xCoord + out.offsetX, loc.yCoord + out.offsetY, loc.zCoord + out.offsetZ);
 				if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 				{
 					cachedOutput = outputTile;
@@ -97,8 +99,9 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
 	{
 		super.readSynchronizationPacket(buf, player);
-		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+		Location loc = getLocation();
+		worldObj.updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
+		worldObj.markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
 	}
 
 	@Override

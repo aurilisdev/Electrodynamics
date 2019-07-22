@@ -6,6 +6,7 @@ import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityHandler;
 import physica.api.core.tile.ITileBasePowered;
 import physica.core.common.event.FulminationEventHandler;
+import physica.library.location.Location;
 import physica.library.tile.TileBase;
 
 public class TileFulmination extends TileBase implements ITileBasePowered, IElectricityHandler {
@@ -33,9 +34,10 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 		{
 			FulminationEventHandler.INSTANCE.register(this);
 		}
+		Location loc = getLocation();
 		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
-			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity tile = worldObj.getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
 			if (tile != null)
 			{
 				if (AbstractionLayer.Electricity.isElectricReceiver(tile))
