@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
@@ -55,9 +55,9 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 			{
 				return;
 			}
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 			{
-				if (direction == ForgeDirection.DOWN || direction == ForgeDirection.UP)
+				if (direction == FaceDirection.DOWN || direction == FaceDirection.UP)
 				{
 					continue;
 				}
@@ -136,9 +136,9 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
-		return from != ForgeDirection.UP;
+		return from != FaceDirection.UP;
 	}
 
 	@Override
@@ -189,7 +189,7 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
+		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override

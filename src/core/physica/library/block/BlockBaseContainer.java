@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.Physica;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.misc.IRotatable;
 import physica.core.common.event.WrenchEventHandler;
@@ -31,7 +31,7 @@ public abstract class BlockBaseContainer extends BlockRotatable {
 		{
 			if (tile instanceof IRotatable)
 			{
-				((IRotatable) tile).setFacing(ForgeDirection.VALID_DIRECTIONS[determineOrientation(world, x, y, z, player)]);
+				((IRotatable) tile).setFacing(FaceDirection.VALID_DIRECTIONS[determineOrientation(world, x, y, z, player)]);
 			}
 		} else
 		{

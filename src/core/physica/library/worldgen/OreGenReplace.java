@@ -17,7 +17,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 
 public class OreGenReplace extends AbstractOreGenerator {
 
@@ -61,8 +61,8 @@ public class OreGenReplace extends AbstractOreGenerator {
 
 		toPath.add(new Vector3d(varX, varY, varZ));
 
-		List<ForgeDirection> directions = new ArrayList<>();
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		List<FaceDirection> directions = new ArrayList<>();
+		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
 			directions.add(dir);
 		}
@@ -81,7 +81,7 @@ public class OreGenReplace extends AbstractOreGenerator {
 			}
 
 			Collections.shuffle(directions);
-			for (ForgeDirection direction : directions)
+			for (FaceDirection direction : directions)
 			{
 				Vector3d pos = new Vector3d(next.x + direction.offsetX, next.y + direction.offsetY, next.z + direction.offsetZ);
 				if (!pathed.contains(pos) && world.rand.nextBoolean())

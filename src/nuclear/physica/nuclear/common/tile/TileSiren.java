@@ -1,8 +1,8 @@
 package physica.nuclear.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
+import physica.api.core.abstraction.FaceDirection;
 import physica.library.tile.TileBase;
 
 public class TileSiren extends TileBase {
@@ -15,7 +15,7 @@ public class TileSiren extends TileBase {
 			if (worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0)
 			{
 				float volume = 2.5F;
-				for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+				for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 				{
 					TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 					if (tile == this)

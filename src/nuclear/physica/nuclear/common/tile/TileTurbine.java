@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -161,7 +161,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		if (steam > 0)
 		{
 			float steamToRf = ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO;
-			energyStored = (int) Math.min(getElectricCapacity(ForgeDirection.UNKNOWN), energyStored + steam * (isMain ? steamToRf * 1.111 : steamToRf));
+			energyStored = (int) Math.min(getElectricCapacity(FaceDirection.UNKNOWN), energyStored + steam * (isMain ? steamToRf * 1.111 : steamToRf));
 			steam = Math.max(steam - Math.max(75, steam), 0);
 			clientSpin = true;
 			delayGeneration = 60;
@@ -179,7 +179,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			}
 		} else
 		{
-			energyStored -= AbstractionLayer.Electricity.receiveElectricity(receiver, ForgeDirection.DOWN, energyStored, false);
+			energyStored -= AbstractionLayer.Electricity.receiveElectricity(receiver, FaceDirection.DOWN, energyStored, false);
 		}
 		if (worldObj.getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain))
 		{
@@ -222,13 +222,13 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
-		return from == ForgeDirection.UP && !hasMain || isMain;
+		return from == FaceDirection.UP && !hasMain || isMain;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
 	{
 		int energyExtracted = Math.min(energyStored, Math.min(getElectricCapacity(from), maxExtract));
 		energyStored -= simulate ? 0 : energyExtracted;
@@ -245,7 +245,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 						if (tile instanceof TileTurbine)
 						{
 							TileTurbine turbine = (TileTurbine) tile;
-							energyExtracted += turbine.extractEnergy(from, maxExtract, simulate);
+							energyExtracted += turbine.extractElectricity(from, maxExtract, simulate);
 						}
 					}
 				}
@@ -255,7 +255,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	}
 
 	@Override
-	public int getElectricityStored(ForgeDirection from)
+	public int getElectricityStored(FaceDirection from)
 	{
 		if (!isMain && hasMain)
 		{
@@ -269,7 +269,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	}
 
 	@Override
-	public int getElectricCapacity(ForgeDirection from)
+	public int getElectricCapacity(FaceDirection from)
 	{
 		return !isMain && !hasMain ? 320000000 : Integer.MAX_VALUE - 1;
 	}
@@ -309,7 +309,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			if (tile instanceof TileTurbine)
 			{
 				((TileTurbine) tile).steam = Math.min(MAX_STEAM, ((TileTurbine) tile).steam + this.steam);
-				((TileTurbine) tile).energyStored = Math.min(((TileTurbine) tile).getElectricCapacity(ForgeDirection.UNKNOWN), ((TileTurbine) tile).energyStored + energyStored);
+				((TileTurbine) tile).energyStored = Math.min(((TileTurbine) tile).getElectricCapacity(FaceDirection.UNKNOWN), ((TileTurbine) tile).energyStored + energyStored);
 				this.steam = 0;
 				energyStored = 0;
 			}

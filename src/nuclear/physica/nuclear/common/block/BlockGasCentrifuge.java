@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.misc.IRotatable;
 import physica.core.common.CoreItemRegister;
 import physica.library.block.BlockBaseContainerModelled;
@@ -36,7 +36,7 @@ public class BlockGasCentrifuge extends BlockBaseContainerModelled {
 	{
 		super.onBlockPlacedBy(world, x, y, z, entity, item);
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
 			if (dir.ordinal() > 1)
 			{

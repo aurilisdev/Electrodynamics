@@ -12,6 +12,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.ElectricityUtilities;
@@ -134,7 +135,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			}
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
-			ForgeDirection opposite = getFacing().getOpposite();
+			FaceDirection opposite = getFacing().getOpposite();
 			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ))
 			{
 				currentSessionUse = extractEnergy();
@@ -215,7 +216,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			}
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
-			ForgeDirection opposite = getFacing().getOpposite();
+			FaceDirection opposite = getFacing().getOpposite();
 			if (EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ))
 			{
 				return AcceleratorStatus.Ready;
@@ -309,7 +310,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
 		return from != getFacing().getOpposite();
 	}

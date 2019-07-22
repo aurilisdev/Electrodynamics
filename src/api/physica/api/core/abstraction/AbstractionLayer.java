@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 @SuppressWarnings("deprecation")
@@ -68,40 +67,40 @@ public class AbstractionLayer {
 			return tile instanceof IEnergyProvider;
 		}
 
-		public static boolean canConnectElectricity(TileEntity tile, ForgeDirection from)
+		public static boolean canConnectElectricity(TileEntity tile, FaceDirection from)
 		{
 			if (isElectric(tile))
 			{
-				return ((IEnergyConnection) tile).canConnectEnergy(from);
+				return ((IEnergyConnection) tile).canConnectEnergy(from.Forge());
 			}
 			return false;
 		}
 
-		public static int extractElectricity(TileEntity tile, ForgeDirection from, int maxExtract, boolean simulate)
+		public static int extractElectricity(TileEntity tile, FaceDirection from, int maxExtract, boolean simulate)
 		{
 			if (isElectricProvider(tile))
 			{
 				if (canConnectElectricity(tile, from))
 				{
-					return ((IEnergyProvider) tile).extractEnergy(from, maxExtract, simulate);
+					return ((IEnergyProvider) tile).extractEnergy(from.Forge(), maxExtract, simulate);
 				}
 			}
 			return 0;
 		}
 
-		public static int receiveElectricity(TileEntity tile, ForgeDirection from, int maxReceive, boolean simulate)
+		public static int receiveElectricity(TileEntity tile, FaceDirection from, int maxReceive, boolean simulate)
 		{
 			if (isElectricReceiver(tile))
 			{
 				if (canConnectElectricity(tile, from))
 				{
-					return ((IEnergyReceiver) tile).receiveEnergy(from, maxReceive, simulate);
+					return ((IEnergyReceiver) tile).receiveEnergy(from.Forge(), maxReceive, simulate);
 				}
 			}
 			return 0;
 		}
 
-		public static boolean canInputElectricityNow(TileEntity tile, ForgeDirection from)
+		public static boolean canInputElectricityNow(TileEntity tile, FaceDirection from)
 		{
 			if (receiveElectricity(tile, from, Integer.MAX_VALUE, true) > 0)
 			{
@@ -109,33 +108,33 @@ public class AbstractionLayer {
 			}
 			if (isElectricReceiver(tile))
 			{
-				return ((IEnergyReceiver) tile).getEnergyStored(from) < ((IEnergyReceiver) tile).getMaxEnergyStored(from);
+				return ((IEnergyReceiver) tile).getEnergyStored(from.Forge()) < ((IEnergyReceiver) tile).getMaxEnergyStored(from.Forge());
 			}
 			return false;
 		}
 
-		public static int getElectricityStored(TileEntity tile, ForgeDirection from)
+		public static int getElectricityStored(TileEntity tile, FaceDirection from)
 		{
 			if (isElectricReceiver(tile))
 			{
-				return ((IEnergyReceiver) tile).getEnergyStored(from);
+				return ((IEnergyReceiver) tile).getEnergyStored(from.Forge());
 			}
 			if (isElectricProvider(tile))
 			{
-				return ((IEnergyProvider) tile).getEnergyStored(from);
+				return ((IEnergyProvider) tile).getEnergyStored(from.Forge());
 			}
 			return -1;
 		}
 
-		public static int getElectricCapacity(TileEntity tile, ForgeDirection from)
+		public static int getElectricCapacity(TileEntity tile, FaceDirection from)
 		{
 			if (isElectricReceiver(tile))
 			{
-				return ((IEnergyReceiver) tile).getMaxEnergyStored(from);
+				return ((IEnergyReceiver) tile).getMaxEnergyStored(from.Forge());
 			}
 			if (isElectricProvider(tile))
 			{
-				return ((IEnergyProvider) tile).getMaxEnergyStored(from);
+				return ((IEnergyProvider) tile).getMaxEnergyStored(from.Forge());
 			}
 			return -1;
 		}

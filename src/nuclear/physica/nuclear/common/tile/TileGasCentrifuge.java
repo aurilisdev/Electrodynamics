@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -59,7 +60,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 				}
 				extractEnergy();
 			}
-			ForgeDirection direction = getFacing().getOpposite();
+			FaceDirection direction = getFacing().getOpposite();
 			TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 			if (tile instanceof TileChemicalBoiler)
 			{
@@ -174,9 +175,9 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
-		return from == ForgeDirection.DOWN || from == ForgeDirection.UP;
+		return from == FaceDirection.DOWN || from == FaceDirection.UP;
 	}
 
 	@Override
@@ -188,7 +189,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
+		return side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
@@ -224,18 +225,18 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		return from == getFacing().getOpposite() && fluid == NuclearFluidRegister.LIQUID_HE;
+		return from.ordinal() == getFacing().getOpposite().ordinal() && fluid == NuclearFluidRegister.LIQUID_HE;
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid)
 	{
-		return from == getFacing().getOpposite() && fluid == NuclearFluidRegister.LIQUID_HE;
+		return from.ordinal() == getFacing().getOpposite().ordinal() && fluid == NuclearFluidRegister.LIQUID_HE;
 	}
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
-		return from == getFacing().getOpposite() ? new FluidTankInfo[] { tank.getInfo() } : new FluidTankInfo[] {};
+		return from.ordinal() == getFacing().getOpposite().ordinal() ? new FluidTankInfo[] { tank.getInfo() } : new FluidTankInfo[] {};
 	}
 }

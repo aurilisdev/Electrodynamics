@@ -12,8 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreBlockRegister;
@@ -62,7 +62,7 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 		TileEntity tile = access.getTileEntity(x, y, z);
 		if (tile instanceof TileCoalGenerator)
 		{
-			ForgeDirection facing = ((TileCoalGenerator) tile).getFacing();
+			FaceDirection facing = ((TileCoalGenerator) tile).getFacing();
 			if (side == facing.ordinal())
 			{
 				return ((TileCoalGenerator) tile).generate > 0 ? iconFacingRunning : iconFacing;

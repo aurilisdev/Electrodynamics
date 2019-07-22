@@ -1,10 +1,10 @@
 package physica.api.core.misc;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 
 public interface IRotatable {
 
-	ForgeDirection getFacing();
+	FaceDirection getFacing();
 
-	void setFacing(ForgeDirection facing);
+	void setFacing(FaceDirection facing);
 }

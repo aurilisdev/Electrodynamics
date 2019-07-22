@@ -1,8 +1,8 @@
 package physica.core.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.configuration.ConfigCore;
 import physica.library.tile.TileBase;
@@ -19,7 +19,7 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 			worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 			return;
 		}
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
 			TileEntity tile = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 			if (tile != null)
@@ -36,25 +36,25 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
 		return true;
 	}
 
 	@Override
-	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
 	{
 		return maxExtract;
 	}
 
 	@Override
-	public int getElectricityStored(ForgeDirection from)
+	public int getElectricityStored(FaceDirection from)
 	{
 		return VISIBLE_STORAGE;
 	}
 
 	@Override
-	public int getElectricCapacity(ForgeDirection from)
+	public int getElectricCapacity(FaceDirection from)
 	{
 		return VISIBLE_STORAGE;
 	}

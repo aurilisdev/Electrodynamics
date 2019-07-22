@@ -13,8 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.client.gui.GuiCoalGenerator;
@@ -34,7 +34,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	private TileEntity			cachedOutput;
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
 		return from == getFacing().getOpposite();
 	}
@@ -63,7 +63,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 		}
 		if (generate - MIN_GENERATE > 0)
 		{
-			ForgeDirection out = getFacing().getOpposite();
+			FaceDirection out = getFacing().getOpposite();
 			if (cachedOutput == null || cachedOutput.isInvalid())
 			{
 				cachedOutput = null;
@@ -177,19 +177,19 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	}
 
 	@Override
-	public int getElectricityStored(ForgeDirection from)
+	public int getElectricityStored(FaceDirection from)
 	{
 		return generate > MIN_GENERATE ? (int) generate - 100 : 0;
 	}
 
 	@Override
-	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
 	{
 		return from == getFacing().getOpposite() ? getElectricityStored(from) : 0;
 	}
 
 	@Override
-	public int getElectricCapacity(ForgeDirection from)
+	public int getElectricCapacity(FaceDirection from)
 	{
 		return MAX_GENERATE - 100;
 	}

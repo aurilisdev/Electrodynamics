@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.misc.IRotatable;
 import physica.library.block.BlockBaseContainerModelled;
 import physica.nuclear.NuclearReferences;
@@ -53,8 +53,8 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 		if (tile instanceof TileInsertableControlRod)
 		{
 			TileInsertableControlRod controlRod = (TileInsertableControlRod) tile;
-			ForgeDirection dir = controlRod.getFacing().getOpposite();
-			if (dir == ForgeDirection.DOWN)
+			FaceDirection dir = controlRod.getFacing().getOpposite();
+			if (dir == FaceDirection.DOWN)
 			{
 				maxY = (float) (0.25f + (100 - controlRod.getInsertion()) / 120.0);
 			} else
@@ -70,7 +70,7 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
 	{
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
 			if (dir.ordinal() <= 1)
 			{
@@ -91,7 +91,7 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	@Override
 	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
 	{
-		ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+		FaceDirection dir = FaceDirection.getOrientation(side).getOpposite();
 		return side <= 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor
 				&& !(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod);
 	}

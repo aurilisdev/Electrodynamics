@@ -1,19 +1,19 @@
 package physica.library.tile;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 
 public abstract class TileBaseRotateable extends TileBase {
 
-	private ForgeDirection facing = ForgeDirection.NORTH;
+	private FaceDirection facing = FaceDirection.NORTH;
 
 	@Override
-	public ForgeDirection getFacing()
+	public FaceDirection getFacing()
 	{
 		return facing;
 	}
 
 	@Override
-	public void setFacing(ForgeDirection facing)
+	public void setFacing(FaceDirection facing)
 	{
 		this.facing = facing;
 	}

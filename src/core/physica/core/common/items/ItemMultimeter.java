@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.conductor.IConductor;
 import physica.core.common.CoreTabRegister;
 import physica.library.energy.ElectricityDisplay;
@@ -30,7 +30,7 @@ public class ItemMultimeter extends Item {
 	{
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		FaceDirection dir = FaceDirection.getOrientation(side);
 		if (tile instanceof IConductor)
 		{
 			if (!world.isRemote)

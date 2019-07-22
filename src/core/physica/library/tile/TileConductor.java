@@ -6,7 +6,7 @@ import java.util.HashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
 import physica.library.location.BlockLocation;
@@ -31,7 +31,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	public TileEntity[] getConnectedCables(TileEntity tileEntity)
 	{
 		TileEntity[] cables = { null, null, null, null, null, null };
-		for (ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection orientation : FaceDirection.VALID_DIRECTIONS)
 		{
 			TileEntity cable = new BlockLocation(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
 			if (cable instanceof IConductor)
@@ -97,7 +97,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	{
 		if (!worldObj.isRemote)
 		{
-			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+			for (FaceDirection side : FaceDirection.VALID_DIRECTIONS)
 			{
 				TileEntity tileEntity = new BlockLocation(this).TranslateTo(side).getTile(worldObj);
 				if (tileEntity instanceof IConductor)
@@ -125,7 +125,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public int getElectricCapacity(ForgeDirection from)
+	public int getElectricCapacity(FaceDirection from)
 	{
 		return getCableType().getTransferRate();
 	}
@@ -137,7 +137,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+	public int receiveElectricity(FaceDirection from, int maxReceive, boolean simulate)
 	{
 		if (simulate)
 		{
@@ -149,7 +149,7 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
 		return true;
 	}

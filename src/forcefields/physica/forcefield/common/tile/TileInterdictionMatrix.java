@@ -25,6 +25,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
@@ -303,7 +304,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public static boolean mergeIntoInventory(TileEntity from, ItemStack stack)
 	{
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
 			stack = placeAdjInv(from, stack, dir);
 			if (stack == null || stack.stackSize <= 0)
@@ -314,7 +315,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		return false;
 	}
 
-	private static ItemStack placeAdjInv(TileEntity tile, ItemStack stack, ForgeDirection dir)
+	private static ItemStack placeAdjInv(TileEntity tile, ItemStack stack, FaceDirection dir)
 	{
 		TileEntity tileEntity = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
 		if (stack != null && tileEntity != null)

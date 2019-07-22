@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.client.gui.GuiNeutronCaptureChamber;
@@ -53,14 +53,14 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 
 	private float getTicksAddition()
 	{
-		ForgeDirection facing = getFacing().getOpposite();
+		FaceDirection facing = getFacing().getOpposite();
 		TileFissionReactor reactor = (TileFissionReactor) worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		return reactor.temperature / TICKS_REQUIRED;
 	}
 
 	public boolean canProcess()
 	{
-		ForgeDirection facing = getFacing().getOpposite();
+		FaceDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor)
 		{
@@ -144,7 +144,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_DOWN;
+		return side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_DOWN;
 	}
 
 	@Override

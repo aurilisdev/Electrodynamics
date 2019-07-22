@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
 import physica.library.network.IPacket;
@@ -37,7 +37,7 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		ForgeDirection facing = getFacing().getOpposite();
+		FaceDirection facing = getFacing().getOpposite();
 		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
 		if (!(tile instanceof TileFissionReactor))
 		{

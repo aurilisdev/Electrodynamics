@@ -3,8 +3,8 @@ package physica.library.inventory.tooltip;
 import java.awt.Rectangle;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 
 public class ToolTipEnergy extends ToolTip {
 
@@ -20,11 +20,11 @@ public class ToolTipEnergy extends ToolTip {
 	{
 		if (AbstractionLayer.Electricity.isElectricReceiver(receiver))
 		{
-			if (AbstractionLayer.Electricity.getElectricityStored(receiver, ForgeDirection.UNKNOWN) <= 0)
+			if (AbstractionLayer.Electricity.getElectricityStored(receiver, FaceDirection.UNKNOWN) <= 0)
 			{
 				return "Empty";
 			}
-			return "Stored: " + AbstractionLayer.Electricity.getElectricityStored(receiver, ForgeDirection.UNKNOWN) / AbstractionLayer.Electricity.getElectricCapacity(receiver, ForgeDirection.UNKNOWN) * 100 + "%";
+			return "Stored: " + AbstractionLayer.Electricity.getElectricityStored(receiver, FaceDirection.UNKNOWN) / AbstractionLayer.Electricity.getElectricCapacity(receiver, FaceDirection.UNKNOWN) * 100 + "%";
 		}
 		return "Invalid Tile";
 	}

@@ -14,9 +14,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
@@ -223,7 +223,7 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public int getElectricCapacity(ForgeDirection from)
+	public int getElectricCapacity(FaceDirection from)
 	{
 		return getMaxEnergyStored();
 	}

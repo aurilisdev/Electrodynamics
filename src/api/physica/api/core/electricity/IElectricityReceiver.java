@@ -2,20 +2,21 @@ package physica.api.core.electricity;
 
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 
 @SuppressWarnings("deprecation")
 public interface IElectricityReceiver extends IElectricTile, IEnergyReceiver {
-	default int getElectricityStored(ForgeDirection from)
+	default int getElectricityStored(FaceDirection from)
 	{
 		return 0;
 	}
 
-	default int getElectricCapacity(ForgeDirection from)
+	default int getElectricCapacity(FaceDirection from)
 	{
 		return 0;
 	}
 
-	default int receiveElectricity(ForgeDirection from, int maxReceive, boolean simulate)
+	default int receiveElectricity(FaceDirection from, int maxReceive, boolean simulate)
 	{
 		return 0;
 	}
@@ -24,20 +25,20 @@ public interface IElectricityReceiver extends IElectricTile, IEnergyReceiver {
 	@Deprecated
 	default int getEnergyStored(ForgeDirection from)
 	{
-		return getElectricityStored(from);
+		return getElectricityStored(FaceDirection.Parse(from));
 	}
 
 	@Override
 	@Deprecated
 	default int getMaxEnergyStored(ForgeDirection from)
 	{
-		return getElectricCapacity(from);
+		return getElectricCapacity(FaceDirection.Parse(from));
 	}
 
 	@Override
 	@Deprecated
 	default int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	{
-		return receiveElectricity(from, maxReceive, simulate);
+		return receiveElectricity(FaceDirection.Parse(from), maxReceive, simulate);
 	}
 }

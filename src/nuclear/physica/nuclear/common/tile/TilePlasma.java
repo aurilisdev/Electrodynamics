@@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.NuclearBlockRegister;
@@ -52,7 +52,7 @@ public class TilePlasma extends TileBase {
 					return;
 				}
 				float directions = 1;
-				for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+				for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 				{
 					if (worldObj.rand.nextFloat() < directions)
 					{
@@ -87,7 +87,7 @@ public class TilePlasma extends TileBase {
 		{
 			entity.attackEntityFrom(DamageSourcePlasma.INSTANCE, (float) (10 / entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)));
 		}
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+		for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 		{
 			if (direction.ordinal() > 0)
 			{

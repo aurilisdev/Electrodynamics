@@ -11,6 +11,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.PhysicaAPI;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.misc.IRotatable;
 
 public abstract class BlockRotatable extends BlockContainer {
@@ -88,7 +89,7 @@ public abstract class BlockRotatable extends BlockContainer {
 		{
 			IRotatable tileRotatable = (IRotatable) tile;
 
-			tileRotatable.setFacing(ForgeDirection.VALID_DIRECTIONS[determineOrientation(world, x, y, z, entity)]);
+			tileRotatable.setFacing(FaceDirection.VALID_DIRECTIONS[determineOrientation(world, x, y, z, entity)]);
 		}
 	}
 
@@ -101,7 +102,7 @@ public abstract class BlockRotatable extends BlockContainer {
 		{
 			IRotatable tileRotatable = (IRotatable) tile;
 
-			tileRotatable.setFacing(side);
+			tileRotatable.setFacing(FaceDirection.Parse(side));
 
 			return true;
 		}

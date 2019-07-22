@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -201,7 +202,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
+		return side == FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override

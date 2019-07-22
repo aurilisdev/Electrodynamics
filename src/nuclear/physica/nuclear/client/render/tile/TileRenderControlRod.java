@@ -8,8 +8,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
+import physica.api.core.abstraction.FaceDirection;
 import physica.library.client.render.TileRenderObjModel;
 import physica.nuclear.common.tile.TileInsertableControlRod;
 
@@ -27,20 +27,20 @@ public class TileRenderControlRod extends TileRenderObjModel<TileInsertableContr
 	public void renderTileAt(TileInsertableControlRod tile, double x, double y, double z, float deltaFrame)
 	{
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glTranslated(x + 0.5, y + 0.5 - (tile.getFacing() == ForgeDirection.UP ? 1 - (100 - tile.getInsertion()) / 120.0 : -1 + (100 - tile.getInsertion()) / 120.0), z + 0.5);
+		GL11.glTranslated(x + 0.5, y + 0.5 - (tile.getFacing() == FaceDirection.UP ? 1 - (100 - tile.getInsertion()) / 120.0 : -1 + (100 - tile.getInsertion()) / 120.0), z + 0.5);
 		GL11.glScaled(0.0625, 0.0625, 0.0625);
-		if (tile.getFacing() == ForgeDirection.DOWN)
+		if (tile.getFacing() == FaceDirection.DOWN)
 		{
 			GL11.glRotatef(180, 1, 0, 0);
 		}
 		bindTexture(model_texture);
 		model_base.renderAll();
 		modelRods.renderAll();
-		if (tile.getFacing() == ForgeDirection.DOWN)
+		if (tile.getFacing() == FaceDirection.DOWN)
 		{
 			GL11.glRotatef(-180, -1, 0, 0);
 		}
 		GL11.glScaled(1 / 0.0625, 1 / 0.0625, 1 / 0.0625);
-		GL11.glTranslated(-(x + 0.5), -(y + 0.5 - (tile.getFacing() == ForgeDirection.UP ? 1 - (100 - tile.getInsertion()) / 120.0 : -1 + (100 - tile.getInsertion()) / 120.0)), -(z + 0.5));
+		GL11.glTranslated(-(x + 0.5), -(y + 0.5 - (tile.getFacing() == FaceDirection.UP ? 1 - (100 - tile.getInsertion()) / 120.0 : -1 + (100 - tile.getInsertion()) / 120.0)), -(z + 0.5));
 	}
 }

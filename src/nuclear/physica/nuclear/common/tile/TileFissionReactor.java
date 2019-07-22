@@ -17,9 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.PhysicaAPI;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.common.CoreBlockRegister;
 import physica.library.location.BlockLocation;
@@ -49,10 +49,10 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		super.updateServer(ticks);
 
-		Block[] adjacentBlocks = new Block[ForgeDirection.VALID_DIRECTIONS.length];
+		Block[] adjacentBlocks = new Block[FaceDirection.VALID_DIRECTIONS.length];
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
-			ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+			FaceDirection direction = FaceDirection.VALID_DIRECTIONS[i];
 			adjacentBlocks[i] = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
@@ -160,7 +160,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
 			Block block = adjacentBlocks[i];
-			ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+			FaceDirection direction = FaceDirection.VALID_DIRECTIONS[i];
 			if (block == NuclearBlockRegister.blockControlRod)
 			{
 				insertion = 100;
@@ -484,7 +484,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
+		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override

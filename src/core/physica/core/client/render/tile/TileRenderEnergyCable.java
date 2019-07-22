@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.conductor.EnumConductorType;
 import physica.core.common.tile.cable.TileEnergyCable;
 
@@ -46,8 +46,8 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		boolean finished = false;
 		int connections = 0;
 		int differentLocations = 0;
-		ForgeDirection last = ForgeDirection.UNKNOWN;
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		FaceDirection last = FaceDirection.UNKNOWN;
+		for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 		{
 			TileEntity sideTile = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
 			if (AbstractionLayer.Electricity.canConnectElectricity(sideTile, dir.getOpposite()))
@@ -89,22 +89,22 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 	}
 
-	public static void drawConnection(ForgeDirection direction)
+	public static void drawConnection(FaceDirection direction)
 	{
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == ForgeDirection.DOWN)
+		if (direction == FaceDirection.DOWN)
 		{
 			GL11.glRotatef(180, 1, 0, 0);
-		} else if (direction == ForgeDirection.NORTH)
+		} else if (direction == FaceDirection.NORTH)
 		{
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == ForgeDirection.SOUTH)
+		} else if (direction == FaceDirection.SOUTH)
 		{
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == ForgeDirection.EAST)
+		} else if (direction == FaceDirection.EAST)
 		{
 			GL11.glRotatef(-90, 0, 0, 1);
-		} else if (direction == ForgeDirection.WEST)
+		} else if (direction == FaceDirection.WEST)
 		{
 			GL11.glRotatef(90, 0, 0, 1);
 		}
@@ -136,19 +136,19 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
 		tess.draw();
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == ForgeDirection.DOWN)
+		if (direction == FaceDirection.DOWN)
 		{
 			GL11.glRotatef(-180, 1, 0, 0);
-		} else if (direction == ForgeDirection.NORTH)
+		} else if (direction == FaceDirection.NORTH)
 		{
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == ForgeDirection.SOUTH)
+		} else if (direction == FaceDirection.SOUTH)
 		{
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == ForgeDirection.EAST)
+		} else if (direction == FaceDirection.EAST)
 		{
 			GL11.glRotatef(90, 0, 0, 1);
-		} else if (direction == ForgeDirection.WEST)
+		} else if (direction == FaceDirection.WEST)
 		{
 			GL11.glRotatef(-90, 0, 0, 1);
 		}

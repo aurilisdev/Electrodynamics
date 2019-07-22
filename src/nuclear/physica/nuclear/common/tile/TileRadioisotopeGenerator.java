@@ -10,8 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import physica.api.core.abstraction.AbstractionLayer;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
@@ -29,7 +29,7 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	private TileEntity[]		cachedOutputs		= new TileEntity[2];
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
 		return from.ordinal() < 2;
 	}
@@ -45,7 +45,7 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 			for (int index = 0; index < cachedOutputs.length; index++)
 			{
 				TileEntity cachedOutput = cachedOutputs[index];
-				ForgeDirection out = ForgeDirection.getOrientation(index);
+				FaceDirection out = FaceDirection.getOrientation(index);
 				if (cachedOutput == null || cachedOutput.isInvalid())
 				{
 					cachedOutput = null;
@@ -68,7 +68,7 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 				int index = 0;
 				for (TileEntity cachedOutput : cachedOutputs)
 				{
-					ForgeDirection out = ForgeDirection.getOrientation(index);
+					FaceDirection out = FaceDirection.getOrientation(index);
 					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
 					{
 						AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), generate / validReceivers, false);
@@ -137,19 +137,19 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	}
 
 	@Override
-	public int getElectricityStored(ForgeDirection from)
+	public int getElectricityStored(FaceDirection from)
 	{
 		return generate;
 	}
 
 	@Override
-	public int extractElectricity(ForgeDirection from, int maxExtract, boolean simulate)
+	public int extractElectricity(FaceDirection from, int maxExtract, boolean simulate)
 	{
 		return from == getFacing().getOpposite() ? getElectricityStored(from) : 0;
 	}
 
 	@Override
-	public int getElectricCapacity(ForgeDirection from)
+	public int getElectricCapacity(FaceDirection from)
 	{
 		return ElectricityUtilities.convertEnergy(6400, Unit.WATT, Unit.RF);
 	}

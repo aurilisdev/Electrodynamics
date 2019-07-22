@@ -10,7 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -172,15 +172,15 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	}
 
 	@Override
-	public boolean canConnectElectricity(ForgeDirection from)
+	public boolean canConnectElectricity(FaceDirection from)
 	{
-		return from.equals(ForgeDirection.DOWN) || from.equals(ForgeDirection.UP);
+		return from.equals(FaceDirection.DOWN) || from.equals(FaceDirection.UP);
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == ForgeDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side != ForgeDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_ELSE : ACCESSIBLE_SLOTS_DOWN;
+		return side == FaceDirection.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side != FaceDirection.DOWN.ordinal() ? ACCESSIBLE_SLOTS_ELSE : ACCESSIBLE_SLOTS_DOWN;
 	}
 
 	@Override

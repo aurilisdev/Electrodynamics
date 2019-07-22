@@ -29,9 +29,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 import physica.CoreReferences;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.misc.IExplosionHandler;
 import physica.api.core.tile.ITileBase;
@@ -513,7 +513,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				if (block.getMaterial().isLiquid())
 				{
 					fieldPoint.setBlockAir(worldObj);
-					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+					for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 					{
 						Block adjacentBlock = worldObj.getBlock(fieldPoint.x + direction.offsetX, fieldPoint.y + direction.offsetY, fieldPoint.z + direction.offsetZ);
 						if (adjacentBlock.getMaterial().isLiquid())
@@ -552,7 +552,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				{
 					if (shouldStabilize)
 					{
-						for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+						for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 						{
 							TileEntity entity = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 							if (entity != null && entity instanceof IInventory)

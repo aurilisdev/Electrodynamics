@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
 import physica.library.tile.TileBaseRotateable;
@@ -30,13 +30,13 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 			rod = null;
 			if (reactor != null)
 			{
-				TileEntity tile = reactor.getBlockLocation().TranslateTo(ForgeDirection.UP).getTile(worldObj);
+				TileEntity tile = reactor.getBlockLocation().TranslateTo(FaceDirection.UP).getTile(worldObj);
 				if (tile instanceof TileInsertableControlRod)
 				{
 					rod = (TileInsertableControlRod) tile;
 				} else
 				{
-					tile = reactor.getBlockLocation().TranslateTo(ForgeDirection.DOWN).getTile(worldObj);
+					tile = reactor.getBlockLocation().TranslateTo(FaceDirection.DOWN).getTile(worldObj);
 					if (tile instanceof TileInsertableControlRod)
 					{
 						rod = (TileInsertableControlRod) tile;

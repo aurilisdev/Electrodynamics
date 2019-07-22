@@ -2,18 +2,19 @@ package physica.api.core.electricity;
 
 import cofh.api.energy.IEnergyHandler;
 import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 
 @SuppressWarnings("deprecation")
 public interface IElectricityHandler extends IElectricityProvider, IElectricityReceiver, IEnergyHandler {
 
 	@Override
-	default int getElectricityStored(ForgeDirection from)
+	default int getElectricityStored(FaceDirection from)
 	{
 		return 0;
 	}
 
 	@Override
-	default int getElectricCapacity(ForgeDirection from)
+	default int getElectricCapacity(FaceDirection from)
 	{
 		return 0;
 	}
@@ -33,13 +34,13 @@ public interface IElectricityHandler extends IElectricityProvider, IElectricityR
 	@Override
 	default int getEnergyStored(ForgeDirection from)
 	{
-		return getElectricityStored(from);
+		return getElectricityStored(FaceDirection.Parse(from));
 	}
 
 	@Override
 	default int getMaxEnergyStored(ForgeDirection from)
 	{
-		return getElectricCapacity(from);
+		return getElectricCapacity(FaceDirection.Parse(from));
 	}
 
 }

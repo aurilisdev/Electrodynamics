@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.inventory.IPlayerUsing;
 import physica.api.core.misc.IRotatable;
@@ -128,7 +128,7 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 	{
 		if (isRotateAble())
 		{
-			setFacing(ForgeDirection.getOrientation(nbt.getInteger("facing")));
+			setFacing(FaceDirection.getOrientation(nbt.getInteger("facing")));
 		}
 	}
 
@@ -175,7 +175,7 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 	{
 		if (isRotateAble())
 		{
-			setFacing(ForgeDirection.getOrientation(buf.readInt()));
+			setFacing(FaceDirection.getOrientation(buf.readInt()));
 		}
 	}
 
@@ -216,13 +216,13 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 	}
 
 	@Override
-	default ForgeDirection getFacing()
+	default FaceDirection getFacing()
 	{
-		return ForgeDirection.UNKNOWN;
+		return FaceDirection.UNKNOWN;
 	}
 
 	@Override
-	default void setFacing(ForgeDirection facing)
+	default void setFacing(FaceDirection facing)
 	{
 	}
 
