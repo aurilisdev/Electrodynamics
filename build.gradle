@@ -20,7 +20,7 @@ sourceSets {
     main {
         java {
             srcDirs = [
-                "$projectDir/src/main/java",
+                "$projectDir/src/core",
                 "$projectDir/src/api",
                 "$projectDir/src/externalapi",
                 "$projectDir/src/forcefields",
@@ -31,7 +31,7 @@ sourceSets {
 
         resources {
             srcDirs = [
-                 "$projectDir/src/main/resources"
+                 "$projectDir/src/resources"
             ]
         }
     }
