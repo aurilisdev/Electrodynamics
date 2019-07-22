@@ -6,11 +6,13 @@ import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.Loader;
 import mcp.mobius.waila.api.IWailaDataProvider;
+import mekanism.api.util.UnitDisplayUtils.ElectricUnit;
 import physica.api.core.PhysicaAPI;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.electricity.IElectricityReceiver;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
+import physica.core.common.configuration.ConfigCore;
 import physica.core.common.waila.HUDHandlerIElectricityHandler;
 
 public class ModIntegration implements IContent {
@@ -36,8 +38,32 @@ public class ModIntegration implements IContent {
 					PhysicaAPI.logger.log(Level.INFO, "Integrated Physica with WAILA.");
 				} catch (Exception e)
 				{
+					e.printStackTrace();
 					PhysicaAPI.logger.log(Level.ERROR, "Failed to integrate Physica with WAILA.");
 				}
+			}
+			if (ConfigCore.MODIFY_OTHER_MODS_TO_WATTS)
+			{
+				PhysicaAPI.logger.log(Level.INFO, "Config option 'MODIFY_OTHER_MODS_TO_WATTS' is enabled.");
+				if (Loader.isModLoaded("Mekanism"))
+				{
+					PhysicaAPI.logger.log(Level.INFO, "Attempting to integrate Physica with Mekanism.");
+					try
+					{
+						PhysicaAPI.logger.log(Level.INFO, "Modifying Enum REDSTONE_FLUX' in ElectricUnit.class");
+						PhysicaAPI.logger.log(Level.INFO, "Changing unit Name to 'WattTick' and symbol to 'Wt'");
+						ElectricUnit.REDSTONE_FLUX.name = "WattTick";
+						ElectricUnit.REDSTONE_FLUX.symbol = "Wt";
+						PhysicaAPI.logger.log(Level.INFO, "Integrated Physica with Mekanism.");
+					} catch (Exception e)
+					{
+						e.printStackTrace();
+						PhysicaAPI.logger.log(Level.ERROR, "Failed to integrate Physica with Mekanism.");
+					}
+				}
+			} else
+			{
+
 			}
 		}
 	}

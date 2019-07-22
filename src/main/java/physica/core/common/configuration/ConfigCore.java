@@ -15,6 +15,7 @@ public class ConfigCore implements IContent {
 
 	public static boolean		IS_DEBUG_MODE					= false;
 	public static boolean		DISABLE_INFINITE_ENERGY_CUBE	= false;
+	public static boolean		MODIFY_OTHER_MODS_TO_WATTS		= true;
 
 	public static int			TIN_ORE_MIN_Y					= 10;
 	public static int			TIN_ORE_MAX_Y					= 55;
@@ -49,6 +50,7 @@ public class ConfigCore implements IContent {
 			configuration.load();
 			IS_DEBUG_MODE = configuration.getBoolean("isDebugMode", "Debugging", IS_DEBUG_MODE, "Enable/disable debug mode");
 			DISABLE_INFINITE_ENERGY_CUBE = configuration.getBoolean("disable_infinite_energy_cube", CATEGORY, DISABLE_INFINITE_ENERGY_CUBE, "True to disable infinite energy cubes. False to enable");
+			MODIFY_OTHER_MODS_TO_WATTS = configuration.getBoolean("modify_other_mods_to_watts", CATEGORY, DISABLE_INFINITE_ENERGY_CUBE, "True to disable infinite energy cubes. False to enable");
 
 			if (IS_DEBUG_MODE)
 			{
