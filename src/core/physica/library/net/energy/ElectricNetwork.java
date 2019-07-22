@@ -16,7 +16,7 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.net.ElectricNetworkRegistry;
 
 public class ElectricNetwork {
@@ -160,7 +160,7 @@ public class ElectricNetwork {
 		TileEntity[] acceptors = { null, null, null, null, null, null };
 		for (FaceDirection orientation : FaceDirection.VALID_DIRECTIONS)
 		{
-			TileEntity acceptor = new BlockLocation(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
+			TileEntity acceptor = new Location(tileEntity).TranslateTo(orientation).getTile(tileEntity.getWorldObj());
 			if (AbstractionLayer.Electricity.isElectricReceiver(acceptor) && !(acceptor instanceof IConductor))
 			{
 				acceptors[orientation.ordinal()] = acceptor;
@@ -248,7 +248,7 @@ public class ElectricNetwork {
 			boolean[] dealtWith = { false, false, false, false, false, false };
 			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 			{
-				TileEntity sideTile = new BlockLocation((TileEntity) splitPoint).TranslateTo(direction).getTile(((TileEntity) splitPoint).getWorldObj());
+				TileEntity sideTile = new Location((TileEntity) splitPoint).TranslateTo(direction).getTile(((TileEntity) splitPoint).getWorldObj());
 				if (sideTile != null)
 				{
 					connectedBlocks[Arrays.asList(FaceDirection.values()).indexOf(direction)] = sideTile;
@@ -259,21 +259,21 @@ public class ElectricNetwork {
 				TileEntity connectedBlockA = connectedBlocks[countOne];
 				if (connectedBlockA instanceof IConductor && dealtWith[countOne] == false)
 				{
-					NetworkFinder finder = new NetworkFinder(((TileEntity) splitPoint).getWorldObj(), new BlockLocation(connectedBlockA), new BlockLocation[] { new BlockLocation((TileEntity) splitPoint) });
-					List<BlockLocation> partNetwork = finder.exploreNetwork();
+					NetworkFinder finder = new NetworkFinder(((TileEntity) splitPoint).getWorldObj(), new Location(connectedBlockA), new Location[] { new Location((TileEntity) splitPoint) });
+					List<Location> partNetwork = finder.exploreNetwork();
 					for (int countTwo = countOne + 1; countTwo < connectedBlocks.length; countTwo++)
 					{
 						TileEntity connectedBlockB = connectedBlocks[countTwo];
 						if (connectedBlockB instanceof IConductor && dealtWith[countTwo] == false)
 						{
-							if (partNetwork.contains(new BlockLocation(connectedBlockB)))
+							if (partNetwork.contains(new Location(connectedBlockB)))
 							{
 								dealtWith[countTwo] = true;
 							}
 						}
 					}
 					ElectricNetwork newNetwork = new ElectricNetwork(new IConductor[0]);
-					for (BlockLocation node : finder.iterated)
+					for (Location node : finder.iterated)
 					{
 						TileEntity nodeTile = node.getTile(((TileEntity) splitPoint).getWorldObj());
 						if (nodeTile instanceof IConductor)
@@ -295,10 +295,10 @@ public class ElectricNetwork {
 	{
 		if (cable instanceof TileEntity)
 		{
-			NetworkFinder finder = new NetworkFinder(((TileEntity) cable).getWorldObj(), new BlockLocation((TileEntity) cable));
-			List<BlockLocation> partNetwork = finder.exploreNetwork();
+			NetworkFinder finder = new NetworkFinder(((TileEntity) cable).getWorldObj(), new Location((TileEntity) cable));
+			List<Location> partNetwork = finder.exploreNetwork();
 			Set<IConductor> newCables = new HashSet<>();
-			for (BlockLocation node : partNetwork)
+			for (Location node : partNetwork)
 			{
 				TileEntity nodeTile = node.getTile(((TileEntity) cable).getWorldObj());
 				if (nodeTile instanceof IConductor)
@@ -331,11 +331,11 @@ public class ElectricNetwork {
 
 	public static class NetworkFinder {
 		public World				worldObj;
-		public BlockLocation		start;
-		public List<BlockLocation>	iterated	= new ArrayList<>();
-		public List<BlockLocation>	toIgnore	= new ArrayList<>();
+		public Location		start;
+		public List<Location>	iterated	= new ArrayList<>();
+		public List<Location>	toIgnore	= new ArrayList<>();
 
-		public NetworkFinder(World world, BlockLocation location, BlockLocation... ignore) {
+		public NetworkFinder(World world, Location location, Location... ignore) {
 			worldObj = world;
 			start = location;
 			if (ignore.length > 0)
@@ -344,7 +344,7 @@ public class ElectricNetwork {
 			}
 		}
 
-		public void loopAll(BlockLocation location)
+		public void loopAll(Location location)
 		{
 			if (location.getTile(worldObj) instanceof IConductor)
 			{
@@ -352,7 +352,7 @@ public class ElectricNetwork {
 			}
 			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 			{
-				BlockLocation obj = location.TranslateTo(direction);
+				Location obj = location.TranslateTo(direction);
 				if (!iterated.contains(obj) && !toIgnore.contains(obj))
 				{
 					TileEntity tileEntity = obj.getTile(worldObj);
@@ -364,7 +364,7 @@ public class ElectricNetwork {
 			}
 		}
 
-		public List<BlockLocation> exploreNetwork()
+		public List<Location> exploreNetwork()
 		{
 			loopAll(start);
 

@@ -16,6 +16,7 @@ import physica.api.core.inventory.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
+import physica.library.location.Location;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiParticleAccelerator;
 import physica.nuclear.common.NuclearItemRegister;
@@ -135,10 +136,12 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
 			FaceDirection opposite = getFacing().getOpposite();
-			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ))
+			Location loc = getLocation();
+			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(worldObj, loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
 			{
 				currentSessionUse = extractEnergy();
-				particle = new EntityParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ, opposite);
+
+				particle = new EntityParticle(worldObj, loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ, opposite);
 				worldObj.spawnEntityInWorld(particle);
 
 				decrStackSize(SLOT_INPUTMATTER, 1);
@@ -216,7 +219,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
 			FaceDirection opposite = getFacing().getOpposite();
-			if (EntityParticle.canSpawnParticle(worldObj, xCoord + opposite.offsetX, yCoord + opposite.offsetY, zCoord + opposite.offsetZ))
+			Location loc = getLocation();
+			if (EntityParticle.canSpawnParticle(worldObj, loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
 			{
 				return AcceleratorStatus.Ready;
 			}

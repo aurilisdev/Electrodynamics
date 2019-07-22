@@ -30,13 +30,13 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 			rod = null;
 			if (reactor != null)
 			{
-				TileEntity tile = reactor.getBlockLocation().TranslateTo(FaceDirection.UP).getTile(worldObj);
+				TileEntity tile = reactor.getLocation().TranslateTo(FaceDirection.UP).getTile(worldObj);
 				if (tile instanceof TileInsertableControlRod)
 				{
 					rod = (TileInsertableControlRod) tile;
 				} else
 				{
-					tile = reactor.getBlockLocation().TranslateTo(FaceDirection.DOWN).getTile(worldObj);
+					tile = reactor.getLocation().TranslateTo(FaceDirection.DOWN).getTile(worldObj);
 					if (tile instanceof TileInsertableControlRod)
 					{
 						rod = (TileInsertableControlRod) tile;

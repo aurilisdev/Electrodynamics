@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
+import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.client.gui.GuiNeutronCaptureChamber;
 import physica.nuclear.common.NuclearItemRegister;
@@ -54,14 +55,16 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	private float getTicksAddition()
 	{
 		FaceDirection facing = getFacing().getOpposite();
-		TileFissionReactor reactor = (TileFissionReactor) worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
+		Location loc = getLocation();
+		TileFissionReactor reactor = (TileFissionReactor) worldObj.getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		return reactor.temperature / TICKS_REQUIRED;
 	}
 
 	public boolean canProcess()
 	{
 		FaceDirection facing = getFacing().getOpposite();
-		TileEntity tile = worldObj.getTileEntity(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ);
+		Location loc = getLocation();
+		TileEntity tile = worldObj.getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor)
 		{
 			if (getStackInSlot(SLOT_INPUT) == null || getStackInSlot(SLOT_OUTPUT) != null && getStackInSlot(SLOT_OUTPUT).stackSize >= getInventoryStackLimit())
@@ -72,8 +75,8 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 			return reactor.hasFuelRod() && reactor.temperature > 1000;
 		} else
 		{
-			worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, new ItemStack(getBlockType())));
-			getBlockLocation().setBlockAir(worldObj);
+			worldObj.spawnEntityInWorld(new EntityItem(worldObj, loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
+			getLocation().setBlockAir(worldObj);
 			return false;
 		}
 	}

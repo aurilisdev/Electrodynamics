@@ -22,7 +22,7 @@ import physica.forcefield.common.ForcefieldFluidRegister;
 import physica.forcefield.common.inventory.ContainerBiometricIndentifier;
 import physica.forcefield.common.item.ItemIdentificationCard;
 import physica.forcefield.common.item.Permission;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -47,7 +47,7 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 			isActivated = false;
 			for (FaceDirection dir : FaceDirection.VALID_DIRECTIONS)
 			{
-				BlockLocation loc = new BlockLocation(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+				Location loc = new Location(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 				if (loc.getTile(worldObj) instanceof TileInterdictionMatrix)
 				{
 					isActivated = true;

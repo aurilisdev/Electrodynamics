@@ -46,7 +46,7 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.calculations.ConstructorCalculationThread;
 import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.inventory.ContainerFortronFieldConstructor;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -83,10 +83,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	protected boolean						isActivated				= false;
 	protected Set<ITileBase>				fortronConnections		= new HashSet<>();
 
-	public Set<BlockLocation>				calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
+	public Set<Location>				calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
 	public Set<TileFortronField>			activeFields			= new HashSet<>();
 
-	private BlockLocation					location;
+	private Location					location;
 	private ConstructorCalculationThread	calculationThread;
 	private int[]							cachedCoordinates		= new int[3];
 	private int[]							cachedInformation		= new int[9];
@@ -296,10 +296,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				return false;
 			} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapeHemisphere").getItemDamage())
 			{
-				return getBlockLocation().getDistance(x, y, z) <= radius && y >= yCoordShifted();
+				return getLocation().getDistance(x, y, z) <= radius && y >= yCoordShifted();
 			} else
 			{
-				return getBlockLocation().getDistance(x, y, z) <= radius;
+				return getLocation().getDistance(x, y, z) <= radius;
 			}
 		} else if (index == ForcefieldItemRegister.moduleMap.get("moduleShapePyramid").getItemDamage())
 		{
@@ -412,7 +412,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							setCalculating(true);
 							calculationThread = new ConstructorCalculationThread(this);
 							calculationThread.start();
-							Logger.getGlobal().log(Level.INFO, "Started forcefield generation at: " + getBlockLocation());
+							Logger.getGlobal().log(Level.INFO, "Started forcefield generation at: " + getLocation());
 						}
 
 					} else if (!isCalculating && !calculatedFieldPoints.isEmpty())
@@ -484,9 +484,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 
 	protected void projectField()
 	{
-		Set<BlockLocation> finishedQueueItems = new HashSet<>();
+		Set<Location> finishedQueueItems = new HashSet<>();
 		int currentlyGenerated = 0, currentlyMissed = 0;
-		for (BlockLocation fieldPoint : calculatedFieldPoints)
+		for (Location fieldPoint : calculatedFieldPoints)
 		{
 			if (currentlyGenerated >= totalGeneratedPerTick)
 			{
@@ -515,7 +515,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 					fieldPoint.setBlockAir(worldObj);
 					for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 					{
-						Block adjacentBlock = worldObj.getBlock(fieldPoint.x + direction.offsetX, fieldPoint.y + direction.offsetY, fieldPoint.z + direction.offsetZ);
+						Block adjacentBlock = worldObj.getBlock(fieldPoint.xCoord + direction.offsetX, fieldPoint.yCoord + direction.offsetY, fieldPoint.zCoord + direction.offsetZ);
 						if (adjacentBlock.getMaterial().isLiquid())
 						{
 							fieldPoint.setBlockAir(worldObj);
@@ -530,11 +530,11 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			{
 				if (shouldDisintegrate)
 				{
-					if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) != -1)
+					if (block.getBlockHardness(worldObj, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) != -1)
 					{ // Location usually has no effect
 						if (hasCollectionModule)
 						{
-							for (ItemStack stack : block.getDrops(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z, fieldPoint.getMetadata(worldObj), 0))
+							for (ItemStack stack : block.getDrops(worldObj, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, fieldPoint.getMetadata(worldObj), 0))
 							{
 								TileInterdictionMatrix.mergeIntoInventory(this, stack);
 							}
@@ -564,10 +564,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 									ItemStack stack = inv.getStackInSlot(slot);
 									if (stack != null)
 									{
-										if (stack.getItem() instanceof ItemBlock && entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.x, fieldPoint.y, fieldPoint.z, false, 0, null, stack))
+										if (stack.getItem() instanceof ItemBlock && entity.getWorldObj().canPlaceEntityOnSide(((ItemBlock) stack.getItem()).field_150939_a, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, false, 0, null, stack))
 										{
 											int meta = stack.getHasSubtypes() ? stack.getItemDamage() : 0;
-											((ItemBlock) stack.getItem()).placeBlockAt(stack, null, entity.getWorldObj(), fieldPoint.x, fieldPoint.y, fieldPoint.z, 0, 0, 0, 0, meta);
+											((ItemBlock) stack.getItem()).placeBlockAt(stack, null, entity.getWorldObj(), fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord, 0, 0, 0, 0, meta);
 											inv.decrStackSize(slot, 1);
 											didPlace = true;
 											break;
@@ -593,7 +593,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 						}
 						currentlyGenerated++;
 					}
-				} else if (block.getBlockHardness(worldObj, fieldPoint.x, fieldPoint.y, fieldPoint.z) == -1)
+				} else if (block.getBlockHardness(worldObj, fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) == -1)
 				{
 					maximumForceFieldCount--;
 				}
@@ -777,11 +777,11 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public BlockLocation getBlockLocation()
+	public Location getLocation()
 	{
 		if (location == null)
 		{
-			location = super.getBlockLocation();
+			location = super.getLocation();
 		}
 		return location;
 	}

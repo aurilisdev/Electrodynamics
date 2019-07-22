@@ -6,12 +6,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import physica.forcefield.PhysicaForcefields;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.tile.TileBase;
 
 public class TileFortronField extends TileBase {
 
-	private BlockLocation constructorCoord = new BlockLocation(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+	private Location constructorCoord = new Location(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 	public TileFortronField() {
 		sendDescPacket();
@@ -23,14 +23,14 @@ public class TileFortronField extends TileBase {
 		{
 			if (constructor != null)
 			{
-				constructorCoord = constructor.getBlockLocation();
+				constructorCoord = constructor.getLocation();
 				constructor.activeFields.add(this);
 				fieldColor = constructor.fieldColorMultiplier();
 			}
 		}
 	}
 
-	public BlockLocation getConstructorCoord()
+	public Location getConstructorCoord()
 	{
 		return constructorCoord;
 	}

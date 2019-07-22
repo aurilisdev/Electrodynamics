@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import physica.library.location.Location;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.radiation.RadiationSystem;
@@ -28,13 +29,14 @@ public class TileMeltedReactor extends TileBase {
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
+		Location loc = getLocation();
 		if (ticks % 10 == 0)
 		{
-			if (worldObj.getBlock(xCoord, yCoord - 1, zCoord).getMaterial().isReplaceable())
+			if (worldObj.getBlock(loc.xCoord, loc.yCoord - 1, loc.zCoord).getMaterial().isReplaceable())
 			{
-				worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-				worldObj.setBlock(xCoord, yCoord - 1, zCoord, NuclearBlockRegister.blockMeltedReactor);
-				TileEntity entity = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+				worldObj.setBlockToAir(loc.xCoord, loc.yCoord, loc.zCoord);
+				worldObj.setBlock(loc.xCoord, loc.yCoord - 1, loc.zCoord, NuclearBlockRegister.blockMeltedReactor);
+				TileEntity entity = worldObj.getTileEntity(loc.xCoord, loc.yCoord, loc.zCoord);
 				if (entity instanceof TileMeltedReactor)
 				{
 					TileMeltedReactor tile = (TileMeltedReactor) entity;
@@ -47,12 +49,12 @@ public class TileMeltedReactor extends TileBase {
 		if (temperature > 0)
 		{
 			temperature--;
-			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
-			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
-			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
-			double d3 = xCoord - x2;
-			double d4 = yCoord - y2;
-			double d5 = zCoord - z2;
+			double x2 = loc.xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
+			double y2 = loc.yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
+			double z2 = loc.zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS / 2;
+			double d3 = loc.xCoord - x2;
+			double d4 = loc.yCoord - y2;
+			double d5 = loc.zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 			if (distance <= RADIATION_RADIUS)
 			{
@@ -94,12 +96,12 @@ public class TileMeltedReactor extends TileBase {
 		{
 
 			radiation--;
-			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2;
-			double y2 = Math.min(255, Math.max(0, yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2));
-			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2;
-			double d3 = xCoord - x2;
-			double d4 = yCoord - y2;
-			double d5 = zCoord - z2;
+			double x2 = loc.xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2;
+			double y2 = Math.min(255, Math.max(0, loc.yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2));
+			double z2 = loc.zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * (radiation / START_RADIATION) * 2;
+			double d3 = loc.xCoord - x2;
+			double d4 = loc.yCoord - y2;
+			double d5 = loc.zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 			if (distance <= RADIATION_RADIUS)
 			{
@@ -127,13 +129,14 @@ public class TileMeltedReactor extends TileBase {
 		super.updateCommon(ticks);
 		if (radiation > 0)
 		{
+			Location loc = getLocation();
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-					AxisAlignedBB.getBoundingBox(xCoord - RADIATION_RADIUS, yCoord - RADIATION_RADIUS, zCoord - RADIATION_RADIUS, xCoord + RADIATION_RADIUS, yCoord + RADIATION_RADIUS, zCoord + RADIATION_RADIUS));
+					AxisAlignedBB.getBoundingBox(loc.xCoord - RADIATION_RADIUS, loc.yCoord - RADIATION_RADIUS, loc.zCoord - RADIATION_RADIUS, loc.xCoord + RADIATION_RADIUS, loc.yCoord + RADIATION_RADIUS, loc.zCoord + RADIATION_RADIUS));
 			for (EntityLivingBase entity : entities)
 			{
-				double scale = RADIATION_RADIUS - entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 1.75f) * (radiation / START_RADIATION), (float) scale * 2f, (float) entity.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5), RADIATION_RADIUS);
+				double scale = RADIATION_RADIUS - entity.getDistance(loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5);
+				RadiationSystem.applyRontgenEntity(entity, (float) (scale / 1.75f) * (radiation / START_RADIATION), (float) scale * 2f, (float) entity.getDistance(loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5), RADIATION_RADIUS);
 			}
 		}
 	}
@@ -144,14 +147,15 @@ public class TileMeltedReactor extends TileBase {
 		super.updateClient(ticks);
 
 		int i = 0;
+		Location loc = getLocation();
 		while (true)
 		{
-			double x2 = xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
-			double y2 = yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
-			double z2 = zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
-			double d3 = xCoord - x2;
-			double d4 = yCoord - y2;
-			double d5 = zCoord - z2;
+			double x2 = loc.xCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
+			double y2 = loc.yCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
+			double z2 = loc.zCoord + 0.5 + (worldObj.rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;
+			double d3 = loc.xCoord - x2;
+			double d4 = loc.yCoord - y2;
+			double d5 = loc.zCoord - z2;
 			double distance = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 			if (worldObj.rand.nextDouble() > distance / RADIATION_RADIUS)
 			{

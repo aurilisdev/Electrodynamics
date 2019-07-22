@@ -30,7 +30,7 @@ import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.effect.damage.DamageSourceForcefield;
 import physica.forcefield.common.tile.TileFortronField;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.location.VectorLocation;
 import physica.library.util.PhysicaMath;
 
@@ -60,7 +60,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
 	{
-		BlockLocation loc = new BlockLocation(x, y, z);
+		Location loc = new Location(x, y, z);
 		TileEntity tile = loc.getTile(world);
 		if (tile instanceof TileFortronField)
 		{
@@ -160,14 +160,14 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 						{
 							if (!constructor.isActivated())
 							{
-								HashSet<BlockLocation> removed = new HashSet<>();
+								HashSet<Location> removed = new HashSet<>();
 								LinkedList<TileFortronField> invalidQueue = new LinkedList<>();
 								invalidQueue.push(field);
 
 								while (!invalidQueue.isEmpty() && removed.size() < 1000)
 								{
 									TileFortronField element = invalidQueue.pop();
-									BlockLocation blockLocation = new BlockLocation(element.xCoord, element.yCoord, element.zCoord);
+									Location blockLocation = new Location(element.xCoord, element.yCoord, element.zCoord);
 									if (removed.contains(blockLocation))
 									{
 										continue;
@@ -204,7 +204,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 								for (Entity living : entities)
 								{
 									VectorLocation pos = new VectorLocation(entity);
-									pos.sub(((TileFortronField) tileEntity).getLocation());
+									pos.sub(((TileFortronField) tileEntity).getLocation().Vector());
 
 									pos.floor();
 									pos.y = 1;

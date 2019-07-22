@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import physica.library.client.render.TileRenderObjModel;
+import physica.library.location.Location;
 import physica.nuclear.common.tile.TileFusionReactor;
 
 @SideOnly(Side.CLIENT)
@@ -19,7 +20,8 @@ public class TileRenderFusionReactor extends TileRenderObjModel<TileFusionReacto
 	public void renderTileAt(TileFusionReactor tile, double x, double y, double z, float deltaFrame)
 	{
 		super.renderTileAt(tile, x, y, z, deltaFrame);
-		if (Minecraft.getMinecraft().thePlayer.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord) <= 64)
+		Location loc = tile.getLocation();
+		if (Minecraft.getMinecraft().thePlayer.getDistanceSq(loc.xCoord, loc.yCoord, loc.zCoord) <= 64)
 		{
 			GL11.glPushMatrix();
 			int deuterium = tile.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM) != null ? tile.getStackInSlot(TileFusionReactor.SLOT_DEUTERIUM).stackSize : 0;

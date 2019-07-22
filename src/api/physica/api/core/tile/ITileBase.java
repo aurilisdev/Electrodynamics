@@ -17,7 +17,7 @@ import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.inventory.IPlayerUsing;
 import physica.api.core.misc.IRotatable;
 import physica.api.core.network.ISidedObject;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.location.VectorLocation;
 import physica.library.network.IPacket;
 import physica.library.network.IPacketReciever;
@@ -58,14 +58,9 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 		return 20;
 	}
 
-	default BlockLocation getBlockLocation()
+	default Location getLocation()
 	{
-		return new BlockLocation(This());
-	}
-
-	default VectorLocation getLocation()
-	{
-		return new VectorLocation(This());
+		return new Location(This());
 	}
 
 	default boolean shouldSendGuiPacket(EntityPlayerMP playerMP)

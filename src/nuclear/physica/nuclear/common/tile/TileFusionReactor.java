@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import physica.api.core.abstraction.FaceDirection;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
+import physica.library.location.Location;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
@@ -55,16 +56,17 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 			{
 				return;
 			}
+			Location loc = getLocation();
 			for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 			{
 				if (direction == FaceDirection.DOWN || direction == FaceDirection.UP)
 				{
 					continue;
 				}
-				Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+				Block block = worldObj.getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 				if (block.getMaterial() == Material.air || block.getMaterial() == Material.fire)
 				{
-					NuclearBlockRegister.blockPlasma.spawn(worldObj, block, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, 10);
+					NuclearBlockRegister.blockPlasma.spawn(worldObj, block, loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ, 10);
 				}
 			}
 		} else

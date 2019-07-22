@@ -36,7 +36,7 @@ import physica.forcefield.common.effect.damage.DamageSourceForcefield;
 import physica.forcefield.common.inventory.ContainerInterdictionMatrix;
 import physica.forcefield.common.item.ItemFrequency;
 import physica.forcefield.common.item.Permission;
-import physica.library.location.BlockLocation;
+import physica.library.location.Location;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -127,7 +127,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		}
 		for (FaceDirection direction : FaceDirection.VALID_DIRECTIONS)
 		{
-			BlockLocation loc = new BlockLocation(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			Location loc = new Location(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 			TileEntity tile = loc.getTile(worldObj);
 			if (tile instanceof TileBiometricIdentifier)
 			{

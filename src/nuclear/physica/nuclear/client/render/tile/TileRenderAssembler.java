@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.library.client.render.TileRenderObjModel;
+import physica.library.location.Location;
 import physica.nuclear.common.tile.TileQuantumAssembler;
 
 @SideOnly(Side.CLIENT)
@@ -48,10 +49,11 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 			GL11.glScalef(1 / down, 0.333f, 1 / down);
 			if (tile.getOperatingTicks() > 0)
 			{
-				double centerX = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down, centerY = tile.yCoord + 0.4 * down, centerZ = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down;
+				Location loc = tile.getLocation();
+				double centerX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down, centerY = loc.yCoord + 0.4 * down, centerZ = loc.zCoord + tile.getFacing().offsetX * down * forward + 0.5 * down;
 
-				double targetX = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333, targetY = tile.yCoord + 0.9 * down * 2,
-						targetZ = tile.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333;
+				double targetX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333, targetY = loc.yCoord + 0.9 * down * 2,
+						targetZ = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333;
 
 				double relX = tile.getFacing().offsetX * down * forward, relY = 0.6 + tile.getWorldObj().rand.nextFloat() / down, relZ = tile.getFacing().offsetZ * down * forward;
 				float dirX = (float) (targetX - centerX);

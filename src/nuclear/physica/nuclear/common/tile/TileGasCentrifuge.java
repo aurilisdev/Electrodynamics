@@ -23,6 +23,7 @@ import physica.api.core.abstraction.FaceDirection;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
+import physica.library.location.Location;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiCentrifuge;
 import physica.nuclear.common.NuclearFluidRegister;
@@ -61,7 +62,8 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 				extractEnergy();
 			}
 			FaceDirection direction = getFacing().getOpposite();
-			TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			Location loc = getLocation();
+			TileEntity tile = worldObj.getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 			if (tile instanceof TileChemicalBoiler)
 			{
 				TileChemicalBoiler boiler = (TileChemicalBoiler) tile;

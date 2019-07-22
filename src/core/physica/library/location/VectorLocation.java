@@ -106,11 +106,11 @@ public class VectorLocation {
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
-	public float getDistance(BlockLocation blockLocation)
+	public float getDistance(Location blockLocation)
 	{
-		double d3 = x - blockLocation.x;
-		double d4 = y - blockLocation.y;
-		double d5 = z - blockLocation.z;
+		double d3 = x - blockLocation.xCoord;
+		double d4 = y - blockLocation.yCoord;
+		double d5 = z - blockLocation.zCoord;
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
@@ -257,9 +257,9 @@ public class VectorLocation {
 		return new VectorLocation(x, y, z);
 	}
 
-	public BlockLocation BlockLocation()
+	public Location BlockLocation()
 	{
-		return new BlockLocation(floorX(), floorY(), floorZ());
+		return new Location(floorX(), floorY(), floorZ());
 	}
 
 	public static VectorLocation Cross(VectorLocation a, VectorLocation b)
