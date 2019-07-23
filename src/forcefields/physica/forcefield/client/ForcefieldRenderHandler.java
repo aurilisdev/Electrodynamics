@@ -11,7 +11,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -19,6 +18,7 @@ import physica.CoreReferences;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.client.render.tile.RenderFortronBlockInfo;
+import physica.library.client.render.TessellatorWrapper;
 import physica.library.location.VectorLocation;
 
 @SideOnly(Side.CLIENT)
@@ -32,7 +32,7 @@ public class ForcefieldRenderHandler {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(1, 1);
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png"));
-		Tessellator.instance.startDrawingQuads();
+		TessellatorWrapper.instance.startDrawingQuads();
 		for (RenderFortronBlockInfo render : renderSet)
 		{
 			IInvFortronTile tile = (IInvFortronTile) render.getTile();
@@ -60,7 +60,7 @@ public class ForcefieldRenderHandler {
 				}
 			}
 		}
-		Tessellator.instance.draw();
+		TessellatorWrapper.instance.draw();
 		GL11.glDisable(GL11.GL_BLEND);
 		renderSet.clear();
 	}
@@ -79,19 +79,19 @@ public class ForcefieldRenderHandler {
 		Player.set(Player.x / fl, Player.y / fl, Player.z / fl);
 		Player.mul(width);
 		Start.add(Player);
-		Tessellator.instance.addVertexWithUV(Start.getX(), Start.getY(), Start.getZ(), 0.0D, 0.0D);
+		TessellatorWrapper.instance.addVertexWithUV(Start.getX(), Start.getY(), Start.getZ(), 0.0D, 0.0D);
 		Start.sub(Player);
 
 		End.add(Player);
-		Tessellator.instance.addVertexWithUV(End.getX(), End.getY(), End.getZ(), 1.0D, 1.0D);
+		TessellatorWrapper.instance.addVertexWithUV(End.getX(), End.getY(), End.getZ(), 1.0D, 1.0D);
 		End.sub(Player);
 
 		End.sub(Player);
-		Tessellator.instance.addVertexWithUV(End.getX(), End.getY(), End.getZ(), 0.0D, 1.0D);
+		TessellatorWrapper.instance.addVertexWithUV(End.getX(), End.getY(), End.getZ(), 0.0D, 1.0D);
 		End.add(Player);
 
 		Start.sub(Player);
-		Tessellator.instance.addVertexWithUV(Start.getX(), Start.getY(), Start.getZ(), Math.random(), 0.0D);
+		TessellatorWrapper.instance.addVertexWithUV(Start.getX(), Start.getY(), Start.getZ(), Math.random(), 0.0D);
 		Start.add(Player);
 		Player.set(cachedX, cachedY, cachedZ);
 		Start.add(Player);

@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -71,7 +70,7 @@ public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRe
 		GL11.glDisable(2929);
 		GL11.glEnable(3042);
 		GL11.glBlendFunc(770, 771);
-		Tessellator tessellator = Tessellator.instance;
+		TessellatorWrapper tessellator = TessellatorWrapper.instance;
 		int yOffset = 0;
 		GL11.glDisable(3553);
 		tessellator.startDrawingQuads();

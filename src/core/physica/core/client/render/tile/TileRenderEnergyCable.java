@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +14,7 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.EnumConductorType;
 import physica.core.common.tile.cable.TileEnergyCable;
+import physica.library.client.render.TessellatorWrapper;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
@@ -110,7 +110,7 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		}
 		GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
 
-		Tessellator tess = Tessellator.instance;
+		TessellatorWrapper tess = TessellatorWrapper.instance;
 		tess.startDrawingQuads();
 		float fiveTex = 5 * texPixel;
 
@@ -157,7 +157,7 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
 	public static void drawCore()
 	{
-		Tessellator tess = Tessellator.instance;
+		TessellatorWrapper tess = TessellatorWrapper.instance;
 		tess.startDrawingQuads();
 		float fiveTex = 5 * texPixel;
 		tess.addVertexWithUV(1 - pixelElevenTwo, pixelElevenTwo, 1 - pixelElevenTwo, fiveTex, fiveTex);

@@ -8,7 +8,6 @@ import codechicken.lib.vec.Vector3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.api.core.tile.ITileBase;
@@ -16,6 +15,7 @@ import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.client.ForcefieldRenderHandler;
 import physica.forcefield.client.render.model.ModelCube;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
+import physica.library.client.render.TessellatorWrapper;
 import physica.library.client.render.TileRenderObjModel;
 
 @SideOnly(Side.CLIENT)
@@ -76,7 +76,7 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 					ModelCube.INSTANCE.render();
 				} else if (mode == 3)
 				{
-					Tessellator tessellator = Tessellator.instance;
+					TessellatorWrapper tessellator = TessellatorWrapper.instance;
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 					float height = 0.4F;
 					float width = 0.3F;
