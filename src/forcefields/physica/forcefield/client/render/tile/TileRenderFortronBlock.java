@@ -36,8 +36,8 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 		GL11.glScaled(0.0625f, 0.0625f, 0.0625f);
-		bindTexture(tile.isActivated() ? model_texture : model_texture2);
-		model_base.renderAll();
+		bindTexture(tile.isActivated() ? resourceTexture : model_texture2);
+		wavefrontObject.render();
 		GL11.glScaled(1 / 0.0625f, 1 / 0.0625f, 1 / 0.0625f);
 		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
 		if (tile.isActivated() && tile.canSendBeam())

@@ -33,9 +33,9 @@ public class TileRenderControlRod extends TileRenderObjModel<TileInsertableContr
 		{
 			GL11.glRotatef(180, 1, 0, 0);
 		}
-		bindTexture(model_texture);
-		model_base.renderAll();
-		modelRods.renderAll();
+		bindTexture(resourceTexture);
+		wavefrontObject.render();
+		modelRods.render();
 		if (tile.getFacing() == Face.DOWN)
 		{
 			GL11.glRotatef(-180, -1, 0, 0);

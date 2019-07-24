@@ -14,17 +14,16 @@ import physica.library.client.render.obj.model.WavefrontObject;
 
 public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRenderer {
 
-	protected WavefrontObject	model_base;
-	protected ResourceLocation	model_texture;
+	protected WavefrontObject	wavefrontObject;
+	protected ResourceLocation	resourceTexture;
 
 	public TileRenderObjModel(String objFile, String textureFile, String domain, String modelDirectory, String modelTextureDirectory) {
-		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(domain, modelDirectory + objFile));
-		model_texture = new ResourceLocation(domain, modelTextureDirectory + textureFile);
+		wavefrontObject = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(domain, modelDirectory + objFile));
+		resourceTexture = new ResourceLocation(domain, modelTextureDirectory + textureFile);
 	}
 
 	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame)
 	{
-		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 		GL11.glScaled(0.0625, 0.0625, 0.0625);
@@ -41,10 +40,23 @@ public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRe
 		default:
 			break;
 		}
-		bindTexture(model_texture);
-		model_base.renderAll();
-		GL11.glPopMatrix();
-
+		bindTexture(resourceTexture);
+		wavefrontObject.render();
+		switch (tile.getFacing()) {
+		case NORTH:
+			GL11.glRotatef(-90, 0, 1, 0);
+			break;
+		case SOUTH:
+			GL11.glRotatef(90, 0, 1, 0);
+			break;
+		case EAST:
+			GL11.glRotatef(180, 0, 1, 0);
+			break;
+		default:
+			break;
+		}
+		GL11.glScaled(1.0 / 0.0625, 1.0 / 0.0625, 1.0 / 0.0625);
+		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
 	}
 
 	@SuppressWarnings("unchecked")

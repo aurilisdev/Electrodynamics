@@ -42,8 +42,8 @@ public class ItemRenderCentrifuge extends ItemRenderObjModel {
 			GL11.glTranslatef(8f, 10f, 8f);
 		}
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(model_texture);
-		model_base.renderAll();
-		model_middle.renderAll();
+		model_base.render();
+		model_middle.render();
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 	}

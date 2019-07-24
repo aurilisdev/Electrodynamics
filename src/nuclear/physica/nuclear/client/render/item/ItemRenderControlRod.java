@@ -42,8 +42,8 @@ public class ItemRenderControlRod extends ItemRenderObjModel {
 			GL11.glTranslatef(8f, 10f, 8f);
 		}
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(model_texture);
-		model_base.renderAll();
-		modelCenter.renderAll();
+		model_base.render();
+		modelCenter.render();
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 	}

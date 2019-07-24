@@ -40,8 +40,8 @@ public class TileRenderNeutronCaptureChamber extends TileRenderObjModel<TileNeut
 		default:
 			break;
 		}
-		bindTexture(tile.hasDeuterium() ? filled_texture : model_texture);
-		model_base.renderAll();
+		bindTexture(tile.hasDeuterium() ? filled_texture : resourceTexture);
+		wavefrontObject.render();
 		GL11.glPopMatrix();
 	}
 }

@@ -28,11 +28,11 @@ public class TileRenderFissionReactor extends TileRenderObjModel<TileFissionReac
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.49, z + 0.5);
 		GL11.glScaled(0.0625, 0.0625, 0.0625);
-		bindTexture(model_texture);
-		model_base.renderAll();
+		bindTexture(resourceTexture);
+		wavefrontObject.render();
 		if (tile.hasFuelRod())
 		{
-			model_middle.renderAll();
+			model_middle.render();
 		}
 		GL11.glScaled(1 / 0.0625, 1 / 0.0625, 1 / 0.0625);
 		GL11.glTranslated(-(x + 0.5), -(y + 0.49), -(z + 0.5));

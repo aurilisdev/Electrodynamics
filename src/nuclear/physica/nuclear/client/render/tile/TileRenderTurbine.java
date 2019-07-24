@@ -41,12 +41,12 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 			{
 				GL11.glScaled(0.0925, 0.0525, 0.0925);
 				bindTexture(model_texture);
-				(Minecraft.getMinecraft().gameSettings.fancyGraphics ? model_base : model_baseOptimized).renderAll();
+				(Minecraft.getMinecraft().gameSettings.fancyGraphics ? model_base : model_baseOptimized).render();
 				if (tile.hasClientSpin())
 				{
 					GL11.glRotatef(tile.getTicksRunning() % 360 * 10, 0.0f, 1.0f, 0.0f);
 				}
-				model_middle.renderAll();
+				model_middle.render();
 				if (tile.hasClientSpin())
 				{
 					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 10), 0.0f, 1.0f, 0.0f);
@@ -56,12 +56,12 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 			{
 				GL11.glScaled(0.0725 * 4, 0.0525, 0.0725 * 4);
 				bindTexture(model_texture);
-				model_base.renderAll();
+				model_base.render();
 				if (tile.hasClientSpin())
 				{
 					GL11.glRotatef(tile.getTicksRunning() % 360 * 5, 0.0f, 1.0f, 0.0f);
 				}
-				model_middle.renderAll();
+				model_middle.render();
 				if (tile.hasClientSpin())
 				{
 					GL11.glRotatef(-(tile.getTicksRunning() % 360 * 5), 0.0f, 1.0f, 0.0f);

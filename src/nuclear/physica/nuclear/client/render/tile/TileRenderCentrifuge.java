@@ -43,8 +43,8 @@ public class TileRenderCentrifuge extends TileRenderObjModel<TileGasCentrifuge> 
 			break;
 		}
 
-		bindTexture(model_texture);
-		model_base.renderAll();
+		bindTexture(resourceTexture);
+		wavefrontObject.render();
 		if (tile.getOperatingTicks() > 0)
 		{
 			if (tile.hasEnoughEnergy())
@@ -55,7 +55,7 @@ public class TileRenderCentrifuge extends TileRenderObjModel<TileGasCentrifuge> 
 				GL11.glRotatef(tile.getOperatingTicks() * 24 % 360, 0.0f, 1, 0.0f);
 			}
 		}
-		model_middle.renderAll();
+		model_middle.render();
 		GL11.glPopMatrix();
 	}
 }

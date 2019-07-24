@@ -51,7 +51,7 @@ public class ItemRenderObjModel implements IItemRenderer {
 			GL11.glTranslatef(8f, 10f, 8f);
 		}
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(model_texture);
-		model_base.renderAll();
+		model_base.render();
 		GL11.glPopMatrix();
 	}
 }

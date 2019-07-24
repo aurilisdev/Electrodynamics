@@ -156,7 +156,7 @@ public class WavefrontObject {
 		}
 	}
 
-	public void renderAll()
+	public void render()
 	{
 		TessellatorWrapper tessellator = TessellatorWrapper.instance;
 
@@ -167,61 +167,11 @@ public class WavefrontObject {
 		{
 			tessellator.startDrawing(GL11.GL_TRIANGLES);
 		}
-		tessellateAll(tessellator);
-
-		tessellator.draw();
-	}
-
-	public void tessellateAll(TessellatorWrapper tessellator)
-	{
 		for (GroupObject groupObject : groupObjects)
 		{
 			groupObject.render(tessellator);
 		}
-	}
-
-	public void renderOnly(String... groupNames)
-	{
-		for (GroupObject groupObject : groupObjects)
-		{
-			for (String groupName : groupNames)
-			{
-				if (groupName.equalsIgnoreCase(groupObject.name))
-				{
-					groupObject.render();
-				}
-			}
-		}
-	}
-
-	public void renderPart(String partName)
-	{
-		for (GroupObject groupObject : groupObjects)
-		{
-			if (partName.equalsIgnoreCase(groupObject.name))
-			{
-				groupObject.render();
-			}
-		}
-	}
-
-	public void renderAllExcept(String... excludedGroupNames)
-	{
-		for (GroupObject groupObject : groupObjects)
-		{
-			boolean skipPart = false;
-			for (String excludedGroupName : excludedGroupNames)
-			{
-				if (excludedGroupName.equalsIgnoreCase(groupObject.name))
-				{
-					skipPart = true;
-				}
-			}
-			if (!skipPart)
-			{
-				groupObject.render();
-			}
-		}
+		tessellator.draw();
 	}
 
 	private Vertex parseVertex(String line, int lineCount) throws ModelFormatException
