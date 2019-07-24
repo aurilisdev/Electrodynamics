@@ -283,7 +283,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		steam = nbt.getInteger("Steam");
 		hasMain = nbt.getBoolean("hasMain");
 		isMain = nbt.getBoolean("isMain");
-		mainLocation.writeToNBT(nbt, "main");
+		mainLocation.readFromNBT(nbt, "main");
 	}
 
 	@Override
@@ -294,7 +294,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		nbt.setInteger("Steam", steam);
 		nbt.setBoolean("hasMain", hasMain);
 		nbt.setBoolean("isMain", isMain);
-		mainLocation.readFromNBT(nbt, "main");
+		mainLocation.writeToNBT(nbt, "main");
 	}
 
 	public void addSteam(int steam)

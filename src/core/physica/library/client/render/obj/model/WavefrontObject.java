@@ -187,10 +187,10 @@ public class WavefrontObject {
 			{
 				if (tokens.length == 2)
 				{
-					return new Vertex(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]));
+					return new Vertex(Double.parseDouble(tokens[0]), Double.parseDouble(tokens[1]));
 				} else if (tokens.length == 3)
 				{
-					return new Vertex(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
+					return new Vertex(Double.parseDouble(tokens[0]), Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2]));
 				}
 			} catch (NumberFormatException e)
 			{

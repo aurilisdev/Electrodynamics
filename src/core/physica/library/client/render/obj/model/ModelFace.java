@@ -24,7 +24,7 @@ public class ModelFace {
 			faceNormal = calculateFaceNormal();
 		}
 
-		tessellator.setNormal(faceNormal.x, faceNormal.y, faceNormal.z);
+		tessellator.setNormal((float) faceNormal.x, (float) faceNormal.y, (float) faceNormal.z);
 
 		float averageU = 0F;
 		float averageV = 0F;

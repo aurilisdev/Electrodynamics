@@ -1,13 +1,13 @@
 package physica.library.client.render.obj.model;
 
 public class Vertex {
-	public float x, y, z;
+	public double x, y, z;
 
-	public Vertex(float x, float y) {
-		this(x, y, 0F);
+	public Vertex(double x, double y) {
+		this(x, y, 0.0);
 	}
 
-	public Vertex(float x, float y, float z) {
+	public Vertex(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
