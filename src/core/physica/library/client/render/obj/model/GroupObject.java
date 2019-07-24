@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.Tessellator;
+import physica.library.client.render.TessellatorWrapper;
 
+@SideOnly(Side.CLIENT)
 public class GroupObject {
-	public String			name;
+	public String				name;
 	public ArrayList<ModelFace>	faces	= new ArrayList<>();
-	public int				glDrawingMode;
+	public int					glDrawingMode;
 
 	public GroupObject() {
 		this("");
@@ -24,20 +25,18 @@ public class GroupObject {
 		this.glDrawingMode = glDrawingMode;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void render()
 	{
 		if (faces.size() > 0)
 		{
-			Tessellator tessellator = Tessellator.instance;
+			TessellatorWrapper tessellator = TessellatorWrapper.instance;
 			tessellator.startDrawing(glDrawingMode);
 			render(tessellator);
 			tessellator.draw();
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void render(Tessellator tessellator)
+	public void render(TessellatorWrapper tessellator)
 	{
 		if (faces.size() > 0)
 		{

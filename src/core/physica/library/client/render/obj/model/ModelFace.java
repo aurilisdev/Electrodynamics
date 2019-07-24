@@ -2,23 +2,22 @@ package physica.library.client.render.obj.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Vec3;
+import physica.library.client.render.TessellatorWrapper;
 
+@SideOnly(Side.CLIENT)
 public class ModelFace {
 	public Vertex[]				vertices;
 	public Vertex[]				vertexNormals;
 	public Vertex				faceNormal;
 	public TextureCoordinate[]	textureCoordinates;
 
-	@SideOnly(Side.CLIENT)
-	public void addFaceForRender(Tessellator tessellator)
+	public void addFaceForRender(TessellatorWrapper tessellator)
 	{
 		addFaceForRender(tessellator, 0.0005F);
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void addFaceForRender(Tessellator tessellator, float textureOffset)
+	public void addFaceForRender(TessellatorWrapper tessellator, float textureOffset)
 	{
 		if (faceNormal == null)
 		{

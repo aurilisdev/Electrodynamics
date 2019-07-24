@@ -57,4 +57,9 @@ public class TessellatorWrapper {
 		getTessellator().setColorOpaque(i, j, k);
 	}
 
+	public void setNormal(float x, float y, float z)
+	{
+		getTessellator().setNormal(x, y, z);
+	}
+
 }

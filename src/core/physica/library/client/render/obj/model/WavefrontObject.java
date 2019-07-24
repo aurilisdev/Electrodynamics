@@ -13,16 +13,17 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelFormatException;
+import physica.library.client.render.TessellatorWrapper;
 
 /**
  * Wavefront Object importer Based heavily off of the specifications found at
  * http://en.wikipedia.org/wiki/Wavefront_.obj_file
  */
-public class WavefrontObject implements IModelCustom {
+@SideOnly(Side.CLIENT)
+public class WavefrontObject {
 	private static Pattern				vertexPattern				= Pattern.compile("(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
 	private static Pattern				vertexNormalPattern			= Pattern.compile("(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(vn( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");
 	private static Pattern				textureCoordinatePattern	= Pattern.compile("(vt( (\\-){0,1}\\d+\\.\\d+){2,3} *\\n)|(vt( (\\-){0,1}\\d+(\\.\\d+)?){2,3} *$)");
@@ -155,11 +156,9 @@ public class WavefrontObject implements IModelCustom {
 		}
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void renderAll()
 	{
-		Tessellator tessellator = Tessellator.instance;
+		TessellatorWrapper tessellator = TessellatorWrapper.instance;
 
 		if (currentGroupObject != null)
 		{
@@ -173,8 +172,7 @@ public class WavefrontObject implements IModelCustom {
 		tessellator.draw();
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void tessellateAll(Tessellator tessellator)
+	public void tessellateAll(TessellatorWrapper tessellator)
 	{
 		for (GroupObject groupObject : groupObjects)
 		{
@@ -182,8 +180,6 @@ public class WavefrontObject implements IModelCustom {
 		}
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void renderOnly(String... groupNames)
 	{
 		for (GroupObject groupObject : groupObjects)
@@ -198,23 +194,6 @@ public class WavefrontObject implements IModelCustom {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void tessellateOnly(Tessellator tessellator, String... groupNames)
-	{
-		for (GroupObject groupObject : groupObjects)
-		{
-			for (String groupName : groupNames)
-			{
-				if (groupName.equalsIgnoreCase(groupObject.name))
-				{
-					groupObject.render(tessellator);
-				}
-			}
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void renderPart(String partName)
 	{
 		for (GroupObject groupObject : groupObjects)
@@ -226,20 +205,6 @@ public class WavefrontObject implements IModelCustom {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void tessellatePart(Tessellator tessellator, String partName)
-	{
-		for (GroupObject groupObject : groupObjects)
-		{
-			if (partName.equalsIgnoreCase(groupObject.name))
-			{
-				groupObject.render(tessellator);
-			}
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void renderAllExcept(String... excludedGroupNames)
 	{
 		for (GroupObject groupObject : groupObjects)
@@ -255,27 +220,6 @@ public class WavefrontObject implements IModelCustom {
 			if (!skipPart)
 			{
 				groupObject.render();
-			}
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void tessellateAllExcept(Tessellator tessellator, String... excludedGroupNames)
-	{
-		boolean exclude;
-		for (GroupObject groupObject : groupObjects)
-		{
-			exclude = false;
-			for (String excludedGroupName : excludedGroupNames)
-			{
-				if (excludedGroupName.equalsIgnoreCase(groupObject.name))
-				{
-					exclude = true;
-				}
-			}
-			if (!exclude)
-			{
-				groupObject.render(tessellator);
 			}
 		}
 	}
@@ -661,11 +605,5 @@ public class WavefrontObject implements IModelCustom {
 
 		groupObjectMatcher = groupObjectPattern.matcher(line);
 		return groupObjectMatcher.matches();
-	}
-
-	@Override
-	public String getType()
-	{
-		return "obj";
 	}
 }
