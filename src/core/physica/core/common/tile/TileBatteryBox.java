@@ -28,7 +28,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		Face out = getFacing().getOpposite();
+		Face out = RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite());
 		if (cachedOutput == null || cachedOutput.isInvalid())
 		{
 			cachedOutput = null;
@@ -43,9 +43,20 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 		{
 			if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
 			{
-				AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), (int) getElectricCapacity(Face.UNKNOWN) / 500, false);
+				setElectricityStored(getElectricityStored() - AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), Math.min((int) getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), false));
 			}
 		}
+	}
+
+	@Override
+	public int extractElectricity(Face from, int maxExtract, boolean simulate)
+	{
+		int removed = Math.min(Math.min((int) getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), Math.min(getElectricityStored(from), maxExtract));
+		if (!simulate)
+		{
+			setElectricityStored(getElectricityStored(from) - removed);
+		}
+		return removed;
 	}
 
 	@Override

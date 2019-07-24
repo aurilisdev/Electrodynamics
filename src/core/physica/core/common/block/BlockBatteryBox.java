@@ -15,11 +15,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
+import physica.api.core.abstraction.Face;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
+import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.TileBatteryBox;
 import physica.library.block.BlockBaseContainer;
+import physica.library.util.RotationUtility;
 
 public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
 	@SideOnly(Side.CLIENT)
@@ -52,21 +55,41 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	@Override
+	public int getRenderColor(int par1)
+	{
+		return par1 > 0 ? (int) (super.getRenderColor(par1) - 7623713) : super.getRenderColor(par1);
+	}
+
+	@Override
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
+	{
+		return getRenderColor(world.getBlockMetadata(x, y, z));
+	}
+
+	@Override
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
-		return blockIcon;
+
+		TileEntity tile = access.getTileEntity(x, y, z);
+		if (tile instanceof TileBatteryBox)
+		{
+			TileBatteryBox generator = (TileBatteryBox) tile;
+			Face facing = generator.getFacing();
+			if (side == RotationUtility.getRelativeSide(Face.EAST, facing.getOpposite()).ordinal())
+			{
+				return machineOutput;
+			} else if (side == RotationUtility.getRelativeSide(Face.WEST, facing.getOpposite()).ordinal())
+			{
+				return machineInput;
+			}
+		}
+		return side <= 1 ? blockIcon : iconFacing;
 	}
 
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
-		if (side == 4)
-		{
-			return iconFacing;
-		} else
-		{
-			return blockIcon;
-		}
+		return side <= 1 ? blockIcon : side == 4 ? machineInput : side == 5 ? machineOutput : iconFacing;
 	}
 
 	@Override
@@ -78,6 +101,8 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	@Override
 	public void registerRecipes()
 	{
+		addRecipe(new ItemStack(this, 1, 0), "SSS", "BBB", "SSS", 'S', "ingotSteel", 'B', "phyBattery");
+		addRecipe(new ItemStack(this, 1, 1), "BTB", "WWW", "BAB", 'T', this, 'A', "circuitAdvanced", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, 0), 'B', "phyBattery");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,6 +119,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
 	{
+		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 3);
 	}
 
