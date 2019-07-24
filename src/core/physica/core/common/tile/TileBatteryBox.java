@@ -83,9 +83,9 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
+	public int[] getAccessibleSlotsFromFace(Face face)
 	{
-		return Face.getOrientation(side) == Face.UP ? ACCESSIBLE_SLOTS_UP : Face.getOrientation(side) == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
+		return face == Face.UP ? ACCESSIBLE_SLOTS_UP : face == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
@@ -95,15 +95,15 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
-		return getAccessibleSlotsFromSide(side)[0] == side && isItemValidForSlot(slot, stack);
+		return face == Face.UP ? slot == SLOT_INPUT && isItemValidForSlot(slot, stack) : false;
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
 	{
-		return getAccessibleSlotsFromSide(side)[0] == side && isItemValidForSlot(slot, stack);
+		return face == Face.DOWN ? slot == SLOT_OUTPUT && isItemValidForSlot(slot, stack) : false;
 	}
 
 	@Override

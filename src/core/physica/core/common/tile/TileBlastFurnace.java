@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.EnumSkyBlock;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.client.gui.GuiBlastFurnace;
 import physica.core.common.CoreItemRegister;
@@ -223,21 +224,21 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
+	public int[] getAccessibleSlotsFromFace(Face face)
 	{
-		return side == 0 ? ACCESSIBLE_SLOTS_DOWN : side == 1 ? ACCESSIBLE_SLOTS_TOP : ACCESSIBLE_SLOTS_SIDES;
+		return face == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : face == Face.UP ? ACCESSIBLE_SLOTS_TOP : ACCESSIBLE_SLOTS_SIDES;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
-		return isItemValidForSlot(slot, item);
+		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
 	{
-		return side != 0 || slot != 1 || item.getItem() == Items.bucket;
+		return face != Face.DOWN || slot != 1 || stack.getItem() == Items.bucket;
 	}
 
 	@Override

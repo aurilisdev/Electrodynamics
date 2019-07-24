@@ -205,19 +205,19 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
+	public int[] getAccessibleSlotsFromFace(Face face)
 	{
-		return side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : side == Face.DOWN.ordinal() ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
+		return face == Face.UP ? ACCESSIBLE_SLOTS_UP : face == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
 	{
 		return slot == SLOT_INPUT1 && getStackInSlot(SLOT_INPUT1) != null && getStackInSlot(SLOT_INPUT1).getItem() == Items.bucket;
 	}

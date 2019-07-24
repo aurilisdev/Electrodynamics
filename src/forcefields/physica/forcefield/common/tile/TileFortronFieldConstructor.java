@@ -696,12 +696,6 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
-	{
-		return ACCESSIBLE_SLOTS_NONE;
-	}
-
-	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		if (stack == null || stack.getItem() == null)
@@ -728,13 +722,13 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}

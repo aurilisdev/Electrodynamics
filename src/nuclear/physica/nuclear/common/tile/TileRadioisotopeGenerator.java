@@ -102,21 +102,21 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
+	public int[] getAccessibleSlotsFromFace(Face face)
 	{
-		return side < 2 ? ACCESSIBLE_SLOTS : ACCESSIBLE_SLOTS_NONE;
+		return face == Face.UP || face == Face.DOWN ? ACCESSIBLE_SLOTS : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side)
+	public boolean canInsertItem(int slot, ItemStack item, Face face)
 	{
-		return side < 2 && isItemValidForSlot(slot, item);
+		return (face == Face.UP || face == Face.DOWN) && isItemValidForSlot(slot, item);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side)
+	public boolean canExtractItem(int slot, ItemStack item, Face face)
 	{
-		return side < 2;
+		return face == Face.UP || face == Face.DOWN;
 	}
 
 	@Override

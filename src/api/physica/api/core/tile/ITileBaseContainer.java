@@ -9,6 +9,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import physica.api.core.abstraction.Face;
 
 public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 
@@ -179,4 +180,38 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	abstract ItemStack[] getInventoryArray();
 
 	abstract void nullifyInventoryArray();
+
+	@Override
+	default boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
+		return canExtractItem(slot, stack, Face.Parse(side));
+	}
+
+	@Override
+	default boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
+		return canInsertItem(slot, stack, Face.Parse(side));
+	}
+
+	@Override
+	default int[] getAccessibleSlotsFromSide(int side)
+	{
+		return getAccessibleSlotsFromFace(Face.Parse(side));
+	}
+
+	default boolean canExtractItem(int slot, ItemStack stack, Face face)
+	{
+		return false;
+	}
+
+	default boolean canInsertItem(int slot, ItemStack stack, Face face)
+	{
+		return false;
+	}
+
+	default int[] getAccessibleSlotsFromFace(Face face)
+	{
+		return ACCESSIBLE_SLOTS_NONE;
+	}
+
 }

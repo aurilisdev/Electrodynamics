@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidTank;
+import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
@@ -188,19 +189,13 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
-	{
-		return ACCESSIBLE_SLOTS_NONE;
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}

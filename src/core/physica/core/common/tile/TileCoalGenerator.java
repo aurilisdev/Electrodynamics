@@ -143,21 +143,15 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
+	public int[] getAccessibleSlotsFromFace(Face face)
 	{
 		return ACCESSIBLE_SLOTS;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
-		return isItemValidForSlot(slot, item);
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side)
-	{
-		return false;
+		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override

@@ -484,24 +484,6 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
-	{
-		return ACCESSIBLE_SLOTS_NONE;
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
-	{
-		return false;
-	}
-
-	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		if (slot == 0)

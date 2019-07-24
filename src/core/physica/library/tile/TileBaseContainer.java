@@ -23,4 +23,22 @@ public abstract class TileBaseContainer extends TileBaseRotateable implements IT
 		_inventoryArray = null;
 	}
 
+	@Override
+	public final boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
+		return ITileBaseContainer.super.canExtractItem(slot, stack, side);
+	}
+
+	@Override
+	public final boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
+		return ITileBaseContainer.super.canInsertItem(slot, stack, side);
+	}
+
+	@Override
+	public final int[] getAccessibleSlotsFromSide(int side)
+	{
+		return ITileBaseContainer.super.getAccessibleSlotsFromSide(side);
+	}
+
 }

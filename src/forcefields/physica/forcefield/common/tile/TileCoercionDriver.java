@@ -180,12 +180,6 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
-	{
-		return ACCESSIBLE_SLOTS_NONE;
-	}
-
-	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		return stack == null ? false
@@ -194,13 +188,13 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}

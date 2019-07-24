@@ -494,19 +494,19 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
+	public int[] getAccessibleSlotsFromFace(Face face)
 	{
-		return side == Face.UP.ordinal() ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
+		return face == Face.UP ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
 	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	public boolean canExtractItem(int slot, ItemStack stack, Face FACE)
 	{
 		return true;
 	}
