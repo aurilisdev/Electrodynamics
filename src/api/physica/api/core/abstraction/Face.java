@@ -65,9 +65,9 @@ public enum Face {
 		return ForgeDirection.getOrientation(ordinal());
 	}
 
-	public static Face Parse(ForgeDirection from)
+	public static Face Parse(Enum<?> obj)
 	{
-		return getOrientation(from.ordinal());
+		return getOrientation(obj.ordinal());
 	}
 
 	public static Face Parse(int ordinal)

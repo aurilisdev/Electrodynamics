@@ -18,6 +18,8 @@ tile.physica:energyCable.3.name=Superconductive Cable
 #### GUI
 tile.physica:blastFurnace.gui=Blast Furnace
 tile.physica:coalGenerator.gui=Coal Generator
+tile.physica:batteryBox.0.gui=Battery Box
+tile.physica:batteryBox.1.gui=Advanced Battery Box
 #### ITEMS
 item.emptyCell.name=Empty Cell
 item.motor.name=Motor

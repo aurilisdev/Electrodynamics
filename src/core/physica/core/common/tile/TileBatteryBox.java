@@ -1,17 +1,25 @@
 package physica.core.common.tile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityHandler;
+import physica.api.core.inventory.IGuiInterface;
+import physica.core.client.gui.GuiBatteryBox;
+import physica.core.common.inventory.ContainerBatteryBox;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.location.Location;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.library.util.RotationUtility;
 
-public class TileBatteryBox extends TileBasePoweredContainer implements IElectricityHandler {
+public class TileBatteryBox extends TileBasePoweredContainer implements IElectricityHandler, IGuiInterface {
 	public static final int		SLOT_INPUT				= 0;
 	public static final int		SLOT_OUTPUT				= 1;
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
@@ -28,6 +36,8 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
+		drainBattery(SLOT_INPUT);
+
 		Face out = RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite());
 		if (cachedOutput == null || cachedOutput.isInvalid())
 		{
@@ -43,15 +53,16 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 		{
 			if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
 			{
-				setElectricityStored(getElectricityStored() - AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), Math.min((int) getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), false));
+				setElectricityStored(getElectricityStored() - AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), Math.min(getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), false));
 			}
 		}
+		fillBattery(SLOT_OUTPUT);
 	}
 
 	@Override
 	public int extractElectricity(Face from, int maxExtract, boolean simulate)
 	{
-		int removed = Math.min(Math.min((int) getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), Math.min(getElectricityStored(from), maxExtract));
+		int removed = Math.min(Math.min(getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), Math.min(getElectricityStored(from), maxExtract));
 		if (!simulate)
 		{
 			setElectricityStored(getElectricityStored(from) - removed);
@@ -105,6 +116,19 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	public int getElectricityStored(Face from)
 	{
 		return super.getElectricityStored(from);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
+		return new GuiBatteryBox(player, this);
+	}
+
+	@Override
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
+		return new ContainerBatteryBox(player, this);
 	}
 
 }
