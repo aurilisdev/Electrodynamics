@@ -15,13 +15,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelFormatException;
 import physica.library.client.render.TessellatorWrapper;
 
-/**
- * Wavefront Object importer Based heavily off of the specifications found at
- * http://en.wikipedia.org/wiki/Wavefront_.obj_file
- */
 @SideOnly(Side.CLIENT)
 public class WavefrontObject {
 	private static Pattern				vertexPattern				= Pattern.compile("(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *\\n)|(v( (\\-){0,1}\\d+(\\.\\d+)?){3,4} *$)");

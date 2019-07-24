@@ -69,7 +69,10 @@ public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 		return getElectricityUsage() * 20;
 	}
 
-	abstract int getElectricityUsage();
+	default int getElectricityUsage()
+	{
+		return 0;
+	}
 
 	abstract int getElectricityStored();
 

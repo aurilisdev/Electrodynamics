@@ -27,7 +27,7 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 	@SideOnly(Side.CLIENT)
 	private IIcon	iconFacingRunning;
 	@SideOnly(Side.CLIENT)
-	private IIcon	iconOutput;
+	private IIcon	machineOutput;
 
 	public BlockCoalGenerator() {
 		super(Material.iron);
@@ -43,10 +43,10 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 	@Override
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = reg.registerIcon(getTextureName());
+		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "MachineSide");
+		machineOutput = reg.registerIcon(CoreReferences.PREFIX + "machineOutput");
 		iconFacing = reg.registerIcon(getTextureName() + "Facing");
 		iconFacingRunning = reg.registerIcon(getTextureName() + "FacingRunning");
-		iconOutput = reg.registerIcon(getTextureName() + "Output");
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 				return ((TileCoalGenerator) tile).generate > 0 ? iconFacingRunning : iconFacing;
 			} else if (side == facing.getOpposite().ordinal())
 			{
-				return iconOutput;
+				return machineOutput;
 			}
 		}
 		return blockIcon;

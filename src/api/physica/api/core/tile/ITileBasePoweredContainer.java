@@ -30,6 +30,18 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 		}
 	}
 
+	default void fillBattery(int slot)
+	{
+		if (getElectricityStored() > 0)
+		{
+			ItemStack itemStack = getStackInSlot(slot);
+
+			if (AbstractionLayer.Electricity.isItemElectric(itemStack))
+			{
+			}
+		}
+	}
+
 	@Override
 	default void handleWriteToNBT(NBTTagCompound nbt)
 	{
