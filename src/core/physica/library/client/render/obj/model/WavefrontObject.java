@@ -44,7 +44,7 @@ public class WavefrontObject {
 	private GroupObject					currentGroupObject;
 	private String						fileName;
 
-	public WavefrontObject(ResourceLocation resource) throws ModelFormatException {
+	public WavefrontObject(ResourceLocation resource) throws Exception {
 		fileName = resource.toString();
 
 		try
@@ -53,16 +53,16 @@ public class WavefrontObject {
 			loadObjModel(res.getInputStream());
 		} catch (IOException e)
 		{
-			throw new ModelFormatException("IO Exception reading model format", e);
+			throw new Exception("IO Exception reading model format", e);
 		}
 	}
 
-	public WavefrontObject(String filename, InputStream inputStream) throws ModelFormatException {
+	public WavefrontObject(String filename, InputStream inputStream) throws Exception {
 		fileName = filename;
 		loadObjModel(inputStream);
 	}
 
-	private void loadObjModel(InputStream inputStream) throws ModelFormatException
+	private void loadObjModel(InputStream inputStream) throws Exception
 	{
 		BufferedReader reader = null;
 
@@ -135,7 +135,7 @@ public class WavefrontObject {
 			groupObjects.add(currentGroupObject);
 		} catch (IOException e)
 		{
-			throw new ModelFormatException("IO Exception reading model format", e);
+			throw new Exception("IO Exception reading model format", e);
 		} finally
 		{
 			try
@@ -174,7 +174,7 @@ public class WavefrontObject {
 		tessellator.draw();
 	}
 
-	private Vertex parseVertex(String line, int lineCount) throws ModelFormatException
+	private Vertex parseVertex(String line, int lineCount) throws Exception
 	{
 		Vertex vertex = null;
 
@@ -194,17 +194,17 @@ public class WavefrontObject {
 				}
 			} catch (NumberFormatException e)
 			{
-				throw new ModelFormatException(String.format("Number formatting error at line %d", lineCount), e);
+				throw new Exception(String.format("Number formatting error at line %d", lineCount), e);
 			}
 		} else
 		{
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
 		}
 
 		return vertex;
 	}
 
-	private Vertex parseVertexNormal(String line, int lineCount) throws ModelFormatException
+	private Vertex parseVertexNormal(String line, int lineCount) throws Exception
 	{
 		Vertex vertexNormal = null;
 
@@ -221,17 +221,17 @@ public class WavefrontObject {
 				}
 			} catch (NumberFormatException e)
 			{
-				throw new ModelFormatException(String.format("Number formatting error at line %d", lineCount), e);
+				throw new Exception(String.format("Number formatting error at line %d", lineCount), e);
 			}
 		} else
 		{
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
 		}
 
 		return vertexNormal;
 	}
 
-	private TextureCoordinate parseTextureCoordinate(String line, int lineCount) throws ModelFormatException
+	private TextureCoordinate parseTextureCoordinate(String line, int lineCount) throws Exception
 	{
 		TextureCoordinate textureCoordinate = null;
 
@@ -251,17 +251,17 @@ public class WavefrontObject {
 				}
 			} catch (NumberFormatException e)
 			{
-				throw new ModelFormatException(String.format("Number formatting error at line %d", lineCount), e);
+				throw new Exception(String.format("Number formatting error at line %d", lineCount), e);
 			}
 		} else
 		{
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
 		}
 
 		return textureCoordinate;
 	}
 
-	private ModelFace parseFace(String line, int lineCount) throws ModelFormatException
+	private ModelFace parseFace(String line, int lineCount) throws Exception
 	{
 		ModelFace face = null;
 
@@ -280,7 +280,7 @@ public class WavefrontObject {
 					currentGroupObject.glDrawingMode = GL11.GL_TRIANGLES;
 				} else if (currentGroupObject.glDrawingMode != GL11.GL_TRIANGLES)
 				{
-					throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Invalid number of points for face (expected 4, found " + tokens.length + ")");
+					throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Invalid number of points for face (expected 4, found " + tokens.length + ")");
 				}
 			} else if (tokens.length == 4)
 			{
@@ -289,7 +289,7 @@ public class WavefrontObject {
 					currentGroupObject.glDrawingMode = GL11.GL_QUADS;
 				} else if (currentGroupObject.glDrawingMode != GL11.GL_QUADS)
 				{
-					throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Invalid number of points for face (expected 3, found " + tokens.length + ")");
+					throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Invalid number of points for face (expected 3, found " + tokens.length + ")");
 				}
 			}
 
@@ -356,17 +356,17 @@ public class WavefrontObject {
 				face.faceNormal = face.calculateFaceNormal();
 			} else
 			{
-				throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+				throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
 			}
 		} else
 		{
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
 		}
 
 		return face;
 	}
 
-	private GroupObject parseGroupObject(String line, int lineCount) throws ModelFormatException
+	private GroupObject parseGroupObject(String line, int lineCount) throws Exception
 	{
 		GroupObject group = null;
 
@@ -380,7 +380,7 @@ public class WavefrontObject {
 			}
 		} else
 		{
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new Exception("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
 		}
 
 		return group;
