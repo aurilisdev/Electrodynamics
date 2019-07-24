@@ -6,20 +6,20 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import physica.CoreReferences;
 import physica.library.client.render.TileRenderObjModel;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 import physica.nuclear.common.tile.TileGasCentrifuge;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderCentrifuge extends TileRenderObjModel<TileGasCentrifuge> {
 
-	protected IModelCustom model_middle;
+	protected WavefrontObject model_middle;
 
 	public TileRenderCentrifuge(String objFile, String textureFile) {
 		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_middle = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Stand.obj", "Spin.obj")));
+		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Stand.obj", "Spin.obj")));
 	}
 
 	@Override

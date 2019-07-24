@@ -9,26 +9,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import physica.CoreReferences;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 import physica.nuclear.common.tile.TileTurbine;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderTurbine extends TileEntitySpecialRenderer {
 
-	protected IModelCustom		model_middle;
-	protected IModelCustom		model_big;
-	protected IModelCustom		model_base;
-	protected IModelCustom		model_baseOptimized;
+	protected WavefrontObject	model_middle;
+	protected WavefrontObject	model_big;
+	protected WavefrontObject	model_base;
+	protected WavefrontObject	model_baseOptimized;
 	protected ResourceLocation	model_texture;
 
 	public TileRenderTurbine(String objFile, String textureFile) {
-		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));
+		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));
 		model_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile);
-		model_baseOptimized = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "SmallOptimized.obj")));
-		model_middle = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
-		model_big = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
+		model_baseOptimized = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "SmallOptimized.obj")));
+		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
+		model_big = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
 	}
 
 	public void renderTileAt(TileTurbine tile, double x, double y, double z, float deltaFrame)

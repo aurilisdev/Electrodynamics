@@ -8,17 +8,17 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import physica.api.core.tile.ITileBase;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 
 public class TileRenderObjModel<T extends ITileBase> extends TileEntitySpecialRenderer {
 
-	protected IModelCustom		model_base;
+	protected WavefrontObject	model_base;
 	protected ResourceLocation	model_texture;
 
 	public TileRenderObjModel(String objFile, String textureFile, String domain, String modelDirectory, String modelTextureDirectory) {
-		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(domain, modelDirectory + objFile));
+		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(domain, modelDirectory + objFile));
 		model_texture = new ResourceLocation(domain, modelTextureDirectory + textureFile);
 	}
 

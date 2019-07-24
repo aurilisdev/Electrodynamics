@@ -7,19 +7,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import physica.CoreReferences;
 import physica.library.client.render.ItemRenderObjModel;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 
 @SideOnly(Side.CLIENT)
 public class ItemRenderControlRod extends ItemRenderObjModel {
 
-	protected IModelCustom modelCenter;
+	protected WavefrontObject modelCenter;
 
 	public ItemRenderControlRod(String objFile, String textureFile) {
 		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		modelCenter = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Station.obj", "Rods.obj")));
+		modelCenter = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Station.obj", "Rods.obj")));
 	}
 
 	@Override

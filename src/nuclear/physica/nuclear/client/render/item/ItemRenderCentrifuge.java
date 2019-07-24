@@ -7,19 +7,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import physica.CoreReferences;
 import physica.library.client.render.ItemRenderObjModel;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 
 @SideOnly(Side.CLIENT)
 public class ItemRenderCentrifuge extends ItemRenderObjModel {
 
-	protected IModelCustom model_middle;
+	protected WavefrontObject model_middle;
 
 	public ItemRenderCentrifuge(String objFile, String textureFile) {
 		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_middle = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Stand.obj", "Spin.obj")));
+		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Stand.obj", "Spin.obj")));
 	}
 
 	@Override

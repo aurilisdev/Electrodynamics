@@ -6,16 +6,16 @@ import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 
 public class ItemRenderObjModel implements IItemRenderer {
 
-	protected IModelCustom		model_base;
+	protected WavefrontObject	model_base;
 	protected ResourceLocation	model_texture;
 
 	public ItemRenderObjModel(String objFile, String textureFile, String domain, String modelDirectory, String modelTextureDirectory) {
-		model_base = AdvancedModelLoader.loadModel(new ResourceLocation(domain, modelDirectory + objFile));
+		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(domain, modelDirectory + objFile));
 		model_texture = new ResourceLocation(domain, modelTextureDirectory + textureFile);
 	}
 

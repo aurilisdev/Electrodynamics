@@ -6,21 +6,21 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import physica.CoreReferences;
 import physica.api.core.abstraction.Face;
 import physica.library.client.render.TileRenderObjModel;
+import physica.library.client.render.obj.PhysicaModelLoader;
+import physica.library.client.render.obj.model.WavefrontObject;
 import physica.nuclear.common.tile.TileInsertableControlRod;
 
 @SideOnly(Side.CLIENT)
 public class TileRenderControlRod extends TileRenderObjModel<TileInsertableControlRod> {
 
-	protected IModelCustom modelRods;
+	protected WavefrontObject modelRods;
 
 	public TileRenderControlRod() {
 		super("controlRodStation.obj", "fissionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		modelRods = AdvancedModelLoader.loadModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + "controlRodRods.obj"));
+		modelRods = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + "controlRodRods.obj"));
 	}
 
 	@Override
