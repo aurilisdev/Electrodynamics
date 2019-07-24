@@ -17,19 +17,19 @@ import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.location.Location;
 import physica.library.tile.TileBasePoweredContainer;
-import physica.library.util.RotationUtility;
 
 public class TileBatteryBox extends TileBasePoweredContainer implements IElectricityHandler, IGuiInterface {
 	public static final int		SLOT_INPUT				= 0;
 	public static final int		SLOT_OUTPUT				= 1;
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
 	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
+	public static final int		BASE_ELECTRIC_CAPACITY	= 5000000;
 	private TileEntity			cachedOutput;
 
 	@Override
 	public int getElectricCapacity(Face from)
 	{
-		return getBlockMetadata() == 0 ? ElectricityUtilities.convertEnergy(5000000, Unit.WATT, Unit.RF) : ElectricityUtilities.convertEnergy(15000000, Unit.WATT, Unit.RF);
+		return getBlockMetadata() == 0 ? ElectricityUtilities.convertEnergy(BASE_ELECTRIC_CAPACITY, Unit.WATT, Unit.RF) : ElectricityUtilities.convertEnergy(BASE_ELECTRIC_CAPACITY * 3, Unit.WATT, Unit.RF);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 		super.updateServer(ticks);
 		drainBattery(SLOT_INPUT);
 
-		Face out = RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite());
+		Face out = getFacing().getOpposite().getRelativeSide(Face.EAST);
 		if (cachedOutput == null || cachedOutput.isInvalid())
 		{
 			cachedOutput = null;
@@ -73,13 +73,16 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	@Override
 	public int receiveElectricity(Face from, int maxReceive, boolean simulate)
 	{
-		return from == RotationUtility.getRelativeSide(Face.WEST, getFacing().getOpposite()) ? super.receiveElectricity(from, maxReceive, simulate) : 0;
+		maxReceive = Math.min(maxReceive, getElectricCapacity(Face.UNKNOWN) / 500);
+		int capacityLeft = getElectricCapacity(from) - getElectricityStored();
+		setElectricityStored(simulate ? getElectricityStored() : capacityLeft >= maxReceive ? getElectricityStored() + maxReceive : getElectricCapacity(from));
+		return from == getFacing().getOpposite().getRelativeSide(Face.WEST) || from == Face.UNKNOWN ? (capacityLeft >= maxReceive ? maxReceive : capacityLeft) : 0;
 	}
 
 	@Override
 	public boolean canConnectElectricity(Face from)
 	{
-		return from == RotationUtility.getRelativeSide(Face.WEST, getFacing().getOpposite()) || from == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite());
+		return from == getFacing().getOpposite().getRelativeSide(Face.WEST) || from == getFacing().getOpposite().getRelativeSide(Face.EAST);
 	}
 
 	@Override

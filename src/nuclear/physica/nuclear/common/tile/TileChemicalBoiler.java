@@ -25,7 +25,6 @@ import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.tile.TileBasePoweredContainer;
-import physica.library.util.RotationUtility;
 import physica.nuclear.client.gui.GuiChemicalBoiler;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.inventory.ContainerChemicalBoiler;
@@ -237,14 +236,14 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
-		return from.ordinal() == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite()).ordinal() ? hexaTank.drain(maxDrain, doDrain) : null;
+		return from.ordinal() == getFacing().getOpposite().getRelativeSide(Face.EAST).ordinal() ? hexaTank.drain(maxDrain, doDrain) : null;
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		return fluid == FluidRegistry.WATER ? from.ordinal() == RotationUtility.getRelativeSide(Face.WEST, getFacing().getOpposite()).ordinal()
-				: fluid == NuclearFluidRegister.LIQUID_HE ? from.ordinal() == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite()).ordinal() : false;
+		return fluid == FluidRegistry.WATER ? from.ordinal() == getFacing().getOpposite().getRelativeSide(Face.WEST).ordinal()
+				: fluid == NuclearFluidRegister.LIQUID_HE ? from.ordinal() == getFacing().getOpposite().getRelativeSide(Face.EAST).ordinal() : false;
 	}
 
 	@Override
@@ -256,8 +255,8 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
-		return from.ordinal() == RotationUtility.getRelativeSide(Face.WEST, getFacing().getOpposite()).ordinal() ? new FluidTankInfo[] { waterTank.getInfo() }
-				: from.ordinal() == RotationUtility.getRelativeSide(Face.EAST, getFacing().getOpposite()).ordinal() ? new FluidTankInfo[] { hexaTank.getInfo() } : new FluidTankInfo[] {};
+		return from.ordinal() == getFacing().getOpposite().getRelativeSide(Face.WEST).ordinal() ? new FluidTankInfo[] { waterTank.getInfo() }
+				: from.ordinal() == getFacing().getOpposite().getRelativeSide(Face.EAST).ordinal() ? new FluidTankInfo[] { hexaTank.getInfo() } : new FluidTankInfo[] {};
 	}
 
 	public boolean isRotating()

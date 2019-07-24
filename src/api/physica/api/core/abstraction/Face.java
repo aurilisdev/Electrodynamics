@@ -31,8 +31,9 @@ public enum Face {
 	public final int			offsetZ;
 	public final int			flag;
 	public static final Face[]	VALID			= { DOWN, UP, NORTH, SOUTH, WEST, EAST };
-	public static final int[]	OPPOSITES		= { 1, 0, 3, 2, 5, 4, 6 };
+	public static final Face[]	OPPOSITES		= { UP, DOWN, SOUTH, NORTH, EAST, WEST, UNKNOWN };
 	public static final int[][]	ROTATION_MATRIX	= { { 0, 1, 4, 5, 3, 2, 6 }, { 0, 1, 5, 4, 2, 3, 6 }, { 5, 4, 2, 3, 0, 1, 6 }, { 4, 5, 2, 3, 1, 0, 6 }, { 2, 3, 1, 0, 4, 5, 6 }, { 3, 2, 0, 1, 4, 5, 6 }, { 0, 1, 2, 3, 4, 5, 6 }, };
+	public static final int[][]	RELATIVE_MATRIX	= { { 3, 2, 1, 0, 5, 4 }, { 4, 5, 0, 1, 2, 3 }, { 0, 1, 3, 2, 4, 5 }, { 0, 1, 2, 3, 5, 4 }, { 0, 1, 5, 4, 3, 2 }, { 0, 1, 4, 5, 2, 3 } };
 
 	private Face(int x, int y, int z) {
 		offsetX = x;
@@ -52,12 +53,21 @@ public enum Face {
 
 	public Face getOpposite()
 	{
-		return getOrientation(OPPOSITES[ordinal()]);
+		return OPPOSITES[ordinal()];
 	}
 
 	public Face getRotation(Face axis)
 	{
 		return getOrientation(ROTATION_MATRIX[axis.ordinal()][ordinal()]);
+	}
+
+	public Face getRelativeSide(Face relative)
+	{
+		if (relative == Face.UNKNOWN || this == Face.UNKNOWN)
+		{
+			return Face.UNKNOWN;
+		}
+		return Face.getOrientation(RELATIVE_MATRIX[ordinal()][relative.ordinal()]);
 	}
 
 	public ForgeDirection Forge()

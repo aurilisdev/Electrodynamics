@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
+import physica.api.core.electricity.IElectricityProvider;
 
 public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseContainer {
 
@@ -32,12 +33,18 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 
 	default void fillBattery(int slot)
 	{
-		if (getElectricityStored() > 0)
+		if (this instanceof IElectricityProvider)
 		{
-			ItemStack itemStack = getStackInSlot(slot);
-
-			if (AbstractionLayer.Electricity.isItemElectric(itemStack))
+			if (getElectricityStored(Face.UNKNOWN) > 0)
 			{
+				ItemStack itemStack = getStackInSlot(slot);
+
+				if (AbstractionLayer.Electricity.isItemElectric(itemStack))
+				{
+					int powerEjectable = getElectricityStored(Face.UNKNOWN);
+					powerEjectable = AbstractionLayer.Electricity.receiveElectricity(itemStack, powerEjectable, true);
+					AbstractionLayer.Electricity.receiveElectricity(itemStack, ((IElectricityProvider) this).extractElectricity(Face.UNKNOWN, powerEjectable, false), false);
+				}
 			}
 		}
 	}

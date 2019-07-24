@@ -22,7 +22,6 @@ import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.TileBatteryBox;
 import physica.library.block.BlockBaseContainer;
-import physica.library.util.RotationUtility;
 
 public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
 	@SideOnly(Side.CLIENT)
@@ -75,10 +74,10 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 		{
 			TileBatteryBox generator = (TileBatteryBox) tile;
 			Face facing = generator.getFacing();
-			if (side == RotationUtility.getRelativeSide(Face.EAST, facing.getOpposite()).ordinal())
+			if (side == facing.getOpposite().getRelativeSide(Face.EAST).ordinal())
 			{
 				return machineOutput;
-			} else if (side == RotationUtility.getRelativeSide(Face.WEST, facing.getOpposite()).ordinal())
+			} else if (side == facing.getOpposite().getRelativeSide(Face.WEST).ordinal())
 			{
 				return machineInput;
 			}

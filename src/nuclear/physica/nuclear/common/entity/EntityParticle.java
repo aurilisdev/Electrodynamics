@@ -22,7 +22,6 @@ import physica.Physica;
 import physica.api.core.abstraction.Face;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.base.Measurement;
-import physica.library.util.RotationUtility;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.effect.damage.DamageSourceRadiation;
 import physica.nuclear.common.tile.TileParticleAccelerator;
@@ -296,10 +295,10 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 
 	public double turn()
 	{
-		Face leftDirection = RotationUtility.getRelativeSide(Face.WEST, movementDirection);
-		Face rightDirection = RotationUtility.getRelativeSide(Face.EAST, movementDirection);
-		Face upDirection = RotationUtility.getRelativeSide(Face.UP, movementDirection);
-		Face downDirection = RotationUtility.getRelativeSide(Face.DOWN, movementDirection);
+		Face leftDirection = movementDirection.getRelativeSide(Face.WEST);
+		Face rightDirection = movementDirection.getRelativeSide(Face.EAST);
+		Face upDirection = movementDirection.getRelativeSide(Face.UP);
+		Face downDirection = movementDirection.getRelativeSide(Face.DOWN);
 
 		if (worldObj.isAirBlock((int) Math.floor(posX + leftDirection.offsetX), (int) Math.floor(posY + leftDirection.offsetY), (int) Math.floor(posZ + leftDirection.offsetZ)))
 		{

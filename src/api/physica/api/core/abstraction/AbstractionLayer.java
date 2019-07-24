@@ -170,5 +170,14 @@ public class AbstractionLayer {
 			}
 			return 0;
 		}
+
+		public static int receiveElectricity(ItemStack stack, int maxExtract, boolean simulate)
+		{
+			if (isItemElectric(stack))
+			{
+				return ((IEnergyContainerItem) stack.getItem()).receiveEnergy(stack, maxExtract, simulate);
+			}
+			return 0;
+		}
 	}
 }
