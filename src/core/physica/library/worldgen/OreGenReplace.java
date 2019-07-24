@@ -9,7 +9,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
-import javax.vecmath.Vector3d;
+import org.lwjgl.util.vector.Vector3f;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -56,10 +56,10 @@ public class OreGenReplace extends AbstractOreGenerator {
 	public int generateBranch(World world, Random rand, int chunkCornerX, int chunkCornerZ, int varX, int varY, int varZ)
 	{
 		int blocksPlaced = 0;
-		Set<Vector3d> pathed = new HashSet<>();
-		Queue<Vector3d> toPath = new LinkedList<>();
+		Set<Vector3f> pathed = new HashSet<>();
+		Queue<Vector3f> toPath = new LinkedList<>();
 
-		toPath.add(new Vector3d(varX, varY, varZ));
+		toPath.add(new Vector3f(varX, varY, varZ));
 
 		List<Face> directions = new ArrayList<>();
 		for (Face dir : Face.VALID)
@@ -68,7 +68,7 @@ public class OreGenReplace extends AbstractOreGenerator {
 		}
 		while (!toPath.isEmpty() && blocksPlaced < settings.amountPerBranch)
 		{
-			Vector3d next = toPath.poll();
+			Vector3f next = toPath.poll();
 			pathed.add(next);
 
 			Block block = world.getBlock((int) next.x, (int) next.y, (int) next.z);
@@ -83,7 +83,7 @@ public class OreGenReplace extends AbstractOreGenerator {
 			Collections.shuffle(directions);
 			for (Face direction : directions)
 			{
-				Vector3d pos = new Vector3d(next.x + direction.offsetX, next.y + direction.offsetY, next.z + direction.offsetZ);
+				Vector3f pos = new Vector3f(next.x + direction.offsetX, next.y + direction.offsetY, next.z + direction.offsetZ);
 				if (!pathed.contains(pos) && world.rand.nextBoolean())
 				{
 					if (pos.y > 0 && pos.y < world.getHeight() - 1 && world.blockExists((int) pos.x, (int) pos.y, (int) pos.z))
