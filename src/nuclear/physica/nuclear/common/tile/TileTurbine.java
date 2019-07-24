@@ -272,7 +272,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	@Override
 	public int getElectricCapacity(Face from)
 	{
-		return !isMain && !hasMain ? 320000000 : Integer.MAX_VALUE - 1;
+		return (int) (!isMain && !hasMain ? MAX_STEAM * ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO : 9 * MAX_STEAM * ConfigNuclearPhysics.TURBINE_STEAM_TO_RF_RATIO * 1.111);
 	}
 
 	@Override
