@@ -8,6 +8,7 @@ public class CoreReferences {
 	public static final String	NAME					= "Physica";
 	public static final String	DOMAIN					= "physica";
 	public static final String	PREFIX					= DOMAIN + ":";
+	public static final String	PREFIX_TEXTURE_MACHINE	= DOMAIN + ":machine/";
 	public static final String	VERSION					= "@VERSION@";
 
 	public static final String	TEXTURE_DIRECTORY		= "textures/";

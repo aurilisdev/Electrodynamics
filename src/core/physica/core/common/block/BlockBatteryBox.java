@@ -41,16 +41,16 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockName(CoreReferences.PREFIX + "batteryBox");
-		setBlockTextureName(CoreReferences.PREFIX + "batteryBox");
+		setBlockTextureName(CoreReferences.PREFIX_TEXTURE_MACHINE + "batteryBox");
 		addToRegister("Core", this);
 	}
 
 	@Override
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "machineSide");
-		machineOutput = reg.registerIcon(CoreReferences.PREFIX + "machineOutput");
-		machineInput = reg.registerIcon(CoreReferences.PREFIX + "machineInput");
+		blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineSide");
+		machineOutput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineOutput");
+		machineInput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineInput");
 		iconFacing = reg.registerIcon(getTextureName());
 	}
 
