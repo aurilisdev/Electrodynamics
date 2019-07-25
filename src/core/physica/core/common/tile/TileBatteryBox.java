@@ -29,7 +29,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	@Override
 	public int getElectricCapacity(Face from)
 	{
-		return getBlockMetadata() == 0 ? ElectricityUtilities.convertEnergy(BASE_ELECTRIC_CAPACITY, Unit.WATT, Unit.RF) : ElectricityUtilities.convertEnergy(BASE_ELECTRIC_CAPACITY * 3, Unit.WATT, Unit.RF);
+		return ElectricityUtilities.convertEnergy(BASE_ELECTRIC_CAPACITY * (getBlockMetadata() == 0 ? 1 : getBlockMetadata() == 1 ? 4 : getBlockMetadata() == 2 ? 12 : 1), Unit.WATT, Unit.RF);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 		maxReceive = Math.min(maxReceive, getElectricCapacity(Face.UNKNOWN) / 500);
 		int capacityLeft = getElectricCapacity(from) - getElectricityStored();
 		setElectricityStored(simulate ? getElectricityStored() : capacityLeft >= maxReceive ? getElectricityStored() + maxReceive : getElectricCapacity(from));
-		return from == getFacing().getOpposite().getRelativeSide(Face.WEST) || from == Face.UNKNOWN ? (capacityLeft >= maxReceive ? maxReceive : capacityLeft) : 0;
+		return from == getFacing().getOpposite().getRelativeSide(Face.WEST) || from == Face.UNKNOWN ? capacityLeft >= maxReceive ? maxReceive : capacityLeft : 0;
 	}
 
 	@Override

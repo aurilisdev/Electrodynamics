@@ -22,7 +22,7 @@ public enum Face {
 	EAST(1, 0, 0),
 
 	/**
-	 * Used only by getOrientation, for invalid inputs
+	 * Used for invalid inputs
 	 */
 	UNKNOWN(0, 0, 0);
 

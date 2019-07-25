@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import physica.CoreReferences;
 import physica.api.core.abstraction.Face;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
+import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
@@ -56,7 +57,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	@Override
 	public int getRenderColor(int par1)
 	{
-		return par1 > 0 ? (int) (super.getRenderColor(par1) - 7623773) : super.getRenderColor(par1);
+		return par1 == 1 ? (255 & 0xFF) << 24 | (135 & 0xFF) << 16 | (151 & 0xFF) << 8 | (165 & 0xFF) << 0 : par1 == 2 ? (255 & 0xFF) << 24 | (81 & 0xFF) << 16 | (91 & 0xFF) << 8 | (99 & 0xFF) << 0 : super.getRenderColor(par1);
 	}
 
 	@Override
@@ -102,6 +103,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	{
 		addRecipe(new ItemStack(this, 1, 0), "SSS", "BBB", "SSS", 'S', "ingotSteel", 'B', "phyBattery");
 		addRecipe(new ItemStack(this, 1, 1), "BTB", "WWW", "BAB", 'T', this, 'A', "circuitAdvanced", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, 0), 'B', "phyBattery");
+		addRecipe(new ItemStack(this, 1, 2), "BEB", "TWT", "BEB", 'T', new ItemStack(this, 1, 1), 'E', "circuitElite", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, EnumConductorType.superConductor.ordinal()), 'B', "phyBattery");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -129,7 +131,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	public enum EnumBatteryBox {
-		BASIC, ADVANCED;
+		BASIC, ADVANCED, ELITE;
 
 		public String getName()
 		{

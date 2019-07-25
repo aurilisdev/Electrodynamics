@@ -12,14 +12,6 @@ import physica.api.core.tile.ITileBase;
 import physica.library.location.Location;
 
 public abstract class TileBase extends TileEntity implements ITileBase {
-	@Deprecated
-	public int					xCoord;
-	@Deprecated
-	public int					yCoord;
-	@Deprecated
-	public int					zCoord;
-	@Deprecated
-	public World				worldObj;
 	private int					_ticksRunning	= 0;
 	private Location			location;
 	protected Set<EntityPlayer>	playersUsingGUI	= new HashSet<>();
@@ -27,7 +19,6 @@ public abstract class TileBase extends TileEntity implements ITileBase {
 	@Override
 	public Location getLocation()
 	{
-		worldObj = super.worldObj;
 		return location == null ? location = new Location(this) : location.set(super.xCoord, super.yCoord, super.zCoord);
 	}
 
@@ -46,10 +37,6 @@ public abstract class TileBase extends TileEntity implements ITileBase {
 	public void updateEntity()
 	{
 		_ticksRunning = handleUpdate(_ticksRunning);
-		xCoord = super.xCoord;
-		yCoord = super.yCoord;
-		zCoord = super.zCoord;
-		worldObj = super.worldObj;
 	}
 
 	@Override
@@ -64,9 +51,6 @@ public abstract class TileBase extends TileEntity implements ITileBase {
 	{
 		super.readFromNBT(tag);
 		handleReadFromNBT(tag);
-		xCoord = super.xCoord;
-		yCoord = super.yCoord;
-		zCoord = super.zCoord;
 	}
 
 	@Override

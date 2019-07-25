@@ -89,11 +89,17 @@ public class CoreBlockRegister implements IContent {
 					EnumChatFormatting.GOLD + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY / 500, Unit.WATT, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockBatteryBox, 1,
 					EnumChatFormatting.AQUA + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) TileBatteryBox.BASE_ELECTRIC_CAPACITY * 3, Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
+							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) TileBatteryBox.BASE_ELECTRIC_CAPACITY * 4, Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
 					EnumChatFormatting.GOLD + "Power Transfer: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY * 3 / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY * 4 / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockBatteryBox, 2,
+					EnumChatFormatting.AQUA + "Capacity: " + EnumChatFormatting.GRAY
+							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) TileBatteryBox.BASE_ELECTRIC_CAPACITY * 12, Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
+					EnumChatFormatting.GOLD + "Power Transfer: " + EnumChatFormatting.GRAY
+							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY * 12 / 500, Unit.WATT, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescriptionShifted(blockBatteryBox, 0, "A block that can be used to store electricity.");
 			ItemBlockDescriptable.addDescriptionShifted(blockBatteryBox, 1, "A block that can be used to store electricity.");
+			ItemBlockDescriptable.addDescriptionShifted(blockBatteryBox, 2, "A block that can be used to store electricity.");
 			ItemBlockDescriptable.addDescriptionShifted(blockInfEnergy, 0, "Emits infinite energy into nearby receivers.");
 			ItemBlockDescriptable.addDescriptionShifted(blockFulmination, 0, "Harvests energy from explosions.");
 			ItemBlockDescriptable.addDescriptionShifted(blockBlastFurnace, 0, "Smelts iron and combines it with carbon", "to produce steel.");
