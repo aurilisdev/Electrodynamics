@@ -73,10 +73,8 @@ public class UnitDisplayUtils {
 			if (getShort)
 			{
 				return symbol;
-			} else
-			{
-				return name;
 			}
+			return name;
 		}
 
 		public double process(double d)
@@ -122,28 +120,26 @@ public class UnitDisplayUtils {
 		if (value == 0)
 		{
 			return value + " " + unitName;
-		} else
+		}
+		for (int i = 0; i < MeasurementUnit.values().length; i++)
 		{
-			for (int i = 0; i < MeasurementUnit.values().length; i++)
+			MeasurementUnit lowerMeasure = MeasurementUnit.values()[i];
+
+			if (lowerMeasure.below(value) && lowerMeasure.ordinal() == 0)
 			{
-				MeasurementUnit lowerMeasure = MeasurementUnit.values()[i];
+				return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
+			}
 
-				if (lowerMeasure.below(value) && lowerMeasure.ordinal() == 0)
-				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
-				}
+			if (lowerMeasure.ordinal() + 1 >= MeasurementUnit.values().length)
+			{
+				return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
+			}
 
-				if (lowerMeasure.ordinal() + 1 >= MeasurementUnit.values().length)
-				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
-				}
+			MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
 
-				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
-
-				if (lowerMeasure.above(value) && upperMeasure.below(value) || lowerMeasure.value == value)
-				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
-				}
+			if (lowerMeasure.above(value) && upperMeasure.below(value) || lowerMeasure.value == value)
+			{
+				return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + " " + lowerMeasure.getName(isShort) + unitName;
 			}
 		}
 
@@ -201,28 +197,26 @@ public class UnitDisplayUtils {
 		if (value == 0)
 		{
 			return value + (isShort ? "" : " ") + unitName;
-		} else
+		}
+		for (int i = 0; i < MeasurementUnit.values().length; i++)
 		{
-			for (int i = 0; i < MeasurementUnit.values().length; i++)
+			MeasurementUnit lowerMeasure = MeasurementUnit.values()[i];
+
+			if (lowerMeasure.below(value) && lowerMeasure.ordinal() == 0)
 			{
-				MeasurementUnit lowerMeasure = MeasurementUnit.values()[i];
+				return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
+			}
 
-				if (lowerMeasure.below(value) && lowerMeasure.ordinal() == 0)
-				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
-				}
+			if (lowerMeasure.ordinal() + 1 >= MeasurementUnit.values().length)
+			{
+				return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
+			}
 
-				if (lowerMeasure.ordinal() + 1 >= MeasurementUnit.values().length)
-				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
-				}
+			MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
 
-				MeasurementUnit upperMeasure = MeasurementUnit.values()[i + 1];
-
-				if (lowerMeasure.above(value) && upperMeasure.below(value) || lowerMeasure.value == value)
-				{
-					return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
-				}
+			if (lowerMeasure.above(value) && upperMeasure.below(value) || lowerMeasure.value == value)
+			{
+				return prefix + roundDecimals(lowerMeasure.process(value), decimalPlaces) + (isShort ? "" : " ") + lowerMeasure.getName(isShort) + unitName;
 			}
 		}
 

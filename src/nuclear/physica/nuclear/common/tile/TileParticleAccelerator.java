@@ -212,10 +212,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 				{
 					return AcceleratorStatus.Accelerating;
 				}
-			} else
-			{
-				return AcceleratorStatus.Failure;
 			}
+			return AcceleratorStatus.Failure;
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
 			Face opposite = getFacing().getOpposite();

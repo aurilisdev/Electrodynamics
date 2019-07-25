@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author King Lemming
  *
  */
+@SuppressWarnings("deprecation")
 @Deprecated
 public class EnergyStorage implements IEnergyStorage {
 

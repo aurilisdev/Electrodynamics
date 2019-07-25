@@ -34,21 +34,17 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 				markDirty();
 				onInventoryChanged();
 				return itemstack;
-			} else
-			{
-				itemstack = getInventoryArray()[slot].splitStack(amount);
-				if (getInventoryArray()[slot].stackSize == 0)
-				{
-					getInventoryArray()[slot] = null;
-				}
-				markDirty();
-				onInventoryChanged();
-				return itemstack;
 			}
-		} else
-		{
-			return null;
+			itemstack = getInventoryArray()[slot].splitStack(amount);
+			if (getInventoryArray()[slot].stackSize == 0)
+			{
+				getInventoryArray()[slot] = null;
+			}
+			markDirty();
+			onInventoryChanged();
+			return itemstack;
 		}
+		return null;
 	}
 
 	@Override
@@ -60,10 +56,8 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 			getInventoryArray()[slot] = null;
 			onInventoryChanged();
 			return itemstack;
-		} else
-		{
-			return null;
 		}
+		return null;
 	}
 
 	@Override

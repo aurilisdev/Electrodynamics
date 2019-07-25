@@ -19,9 +19,7 @@ public class ToolTipTank extends ToolTip {
 		if (tank.getFluid() != null && tank.getFluidAmount() > 0)
 		{
 			return tank.getFluid().getLocalizedName() + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + "ml";
-		} else
-		{
-			return "Empty";
 		}
+		return "Empty";
 	}
 }

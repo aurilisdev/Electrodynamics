@@ -61,10 +61,8 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 		if (side == 4)
 		{
 			return super.getIcon(side, meta);
-		} else
-		{
-			return CoreBlockRegister.blockLead.getIcon(side, 0);
 		}
+		return CoreBlockRegister.blockLead.getIcon(side, 0);
 	}
 
 	@Override

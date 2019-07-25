@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * networks Of IEnergyTransports to intelligently transfer energy to other
  * networks.
  */
+@SuppressWarnings("deprecation")
 @Deprecated
 public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 
@@ -83,10 +84,8 @@ public interface IEnergyTransport extends IEnergyProvider, IEnergyReceiver {
 			if (forward)
 			{
 				return this == BALANCE ? RECEIVE : this == RECEIVE ? SEND : BALANCE;
-			} else
-			{
-				return this == BALANCE ? SEND : this == SEND ? RECEIVE : BALANCE;
 			}
+			return this == BALANCE ? SEND : this == SEND ? RECEIVE : BALANCE;
 		}
 	}
 

@@ -173,25 +173,23 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 		if (input == null)
 		{
 			return false;
-		} else
-		{
-			ItemStack recipe = input.getItem() == Items.iron_ingot ? new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2) : null;
-			if (recipe == null)
-			{
-				return false;
-			}
-			ItemStack output = getStackInSlot(SLOT_OUTPUT);
-			if (output == null)
-			{
-				return true;
-			}
-			if (!output.isItemEqual(recipe))
-			{
-				return false;
-			}
-			int result = output.stackSize + recipe.stackSize;
-			return result <= getInventoryStackLimit() && result <= output.getMaxStackSize();
 		}
+		ItemStack recipe = input.getItem() == Items.iron_ingot ? new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2) : null;
+		if (recipe == null)
+		{
+			return false;
+		}
+		ItemStack output = getStackInSlot(SLOT_OUTPUT);
+		if (output == null)
+		{
+			return true;
+		}
+		if (!output.isItemEqual(recipe))
+		{
+			return false;
+		}
+		int result = output.stackSize + recipe.stackSize;
+		return result <= getInventoryStackLimit() && result <= output.getMaxStackSize();
 	}
 
 	public void smeltItem()
@@ -201,18 +199,21 @@ public class TileBlastFurnace extends TileBaseContainer implements IGuiInterface
 			ItemStack input = getStackInSlot(SLOT_INPUT);
 			ItemStack recipe = input.getItem() == Items.iron_ingot ? new ItemStack(CoreItemRegister.itemMetaIngot, 1, 2) : null;
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
-			if (output == null)
+			if (recipe != null)
 			{
-				setInventorySlotContents(SLOT_OUTPUT, recipe.copy());
-			} else if (output.getItem() == recipe.getItem())
-			{
-				output.stackSize += recipe.stackSize;
-			}
+				if (output == null)
+				{
+					setInventorySlotContents(SLOT_OUTPUT, recipe.copy());
+				} else if (output.getItem() == recipe.getItem())
+				{
+					output.stackSize += recipe.stackSize;
+				}
 
-			--input.stackSize;
-			if (input.stackSize <= 0)
-			{
-				setInventorySlotContents(SLOT_INPUT, null);
+				--input.stackSize;
+				if (input.stackSize <= 0)
+				{
+					setInventorySlotContents(SLOT_INPUT, null);
+				}
 			}
 		}
 	}

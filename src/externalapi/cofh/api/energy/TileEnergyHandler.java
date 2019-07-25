@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  *
  */
+@SuppressWarnings("deprecation")
 @Deprecated
 public class TileEnergyHandler extends TileEntity implements IEnergyHandler {
 

@@ -8,13 +8,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.library.client.gui.GuiContainerBase;
-import physica.library.inventory.tooltip.IToolTipContainer;
 import physica.library.inventory.tooltip.ToolTip;
 import physica.library.inventory.tooltip.ToolTipSlot;
 
-public class SlotEnergyHolder extends SlotBase implements IRenderableSlot, IToolTipContainer {
+public class SlotEnergyHolder extends SlotBase {
 
-	private ToolTip toolTip;
+	private ToolTip toolTipBase;
 
 	public SlotEnergyHolder(IInventory inventory, int slotIndex, int x, int y) {
 		super(inventory, slotIndex, x, y);
@@ -22,7 +21,7 @@ public class SlotEnergyHolder extends SlotBase implements IRenderableSlot, ITool
 
 	public SlotEnergyHolder(IInventory inventory, int slotIndex, int x, int y, String info) {
 		super(inventory, slotIndex, x, y);
-		toolTip = new ToolTipSlot(this, info);
+		toolTipBase = new ToolTipSlot(this, info);
 	}
 
 	@Override
@@ -43,6 +42,6 @@ public class SlotEnergyHolder extends SlotBase implements IRenderableSlot, ITool
 	@Override
 	public ToolTip getToolTip()
 	{
-		return toolTip;
+		return toolTipBase;
 	}
 }

@@ -10,8 +10,6 @@ import physica.library.tile.TileBase;
 
 public class TileInfiniteEnergy extends TileBase implements IElectricityProvider {
 
-	public static final int VISIBLE_STORAGE = Integer.MAX_VALUE;
-
 	@Override
 	public void updateServer(int ticks)
 	{
@@ -30,7 +28,7 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 				{
 					if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite()))
 					{
-						AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), VISIBLE_STORAGE, false);
+						AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), Integer.MAX_VALUE, false);
 					}
 				}
 			}
@@ -52,13 +50,13 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 	@Override
 	public int getElectricityStored(Face from)
 	{
-		return VISIBLE_STORAGE;
+		return Integer.MAX_VALUE;
 	}
 
 	@Override
 	public int getElectricCapacity(Face from)
 	{
-		return VISIBLE_STORAGE;
+		return Integer.MAX_VALUE;
 	}
 
 }

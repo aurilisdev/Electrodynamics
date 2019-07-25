@@ -51,10 +51,7 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 		drawTexturedModalRect(x, y, 40, 0, meterWidth, meterHeight);
 
-		if (fluidStack != null)
-		{
-			drawFluid(x, y, -10, 1, 12, (int) ((meterHeight - 1) * scale), fluidStack);
-		}
+		drawFluid(x, y, -10, 1, 12, (int) ((meterHeight - 1) * scale), fluidStack);
 
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawTexturedModalRect(x, y, 40, 49 * 2, meterWidth, meterHeight);
@@ -64,39 +61,41 @@ public class PhysicaRecipeHandlerBase extends TemplateRecipeHandler {
 
 	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack)
 	{
-		if (fluidStack != null && fluidStack.getFluid() != null)
+		if (fluidStack != null)
 		{
-			drawSize -= 1;
-
-			IIcon fluidIcon = null;
 			Fluid fluid = fluidStack.getFluid();
-
-			if (fluid != null && fluid.getStillIcon() != null)
+			if (fluid != null)
 			{
-				fluidIcon = fluid.getStillIcon();
-			}
+				drawSize -= 1;
 
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getResourceLocation(fluid.getSpriteNumber()));
+				IIcon fluidIcon = null;
 
-			int textureSize = 16;
-			int start = 0;
-			if (fluidIcon != null)
-			{
-				int renderY = textureSize;
-				while (renderY != 0 && drawSize != 0)
+				if (fluid.getStillIcon() != null)
 				{
-					if (drawSize > textureSize)
-					{
-						renderY = textureSize;
-						drawSize -= textureSize;
-					} else
-					{
-						renderY = drawSize;
-						drawSize = 0;
-					}
+					fluidIcon = fluid.getStillIcon();
+				}
+				FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getResourceLocation(fluid.getSpriteNumber()));
 
-					gui.drawTexturedModelRectFromIcon(x + col, y + line + 58 - renderY - start, fluidIcon, width, textureSize - (textureSize - renderY));
-					start = start + textureSize;
+				int textureSize = 16;
+				int start = 0;
+				if (fluidIcon != null)
+				{
+					int renderY = textureSize;
+					while (renderY != 0 && drawSize != 0)
+					{
+						if (drawSize > textureSize)
+						{
+							renderY = textureSize;
+							drawSize -= textureSize;
+						} else
+						{
+							renderY = drawSize;
+							drawSize = 0;
+						}
+
+						gui.drawTexturedModelRectFromIcon(x + col, y + line + 58 - renderY - start, fluidIcon, width, textureSize - (textureSize - renderY));
+						start = start + textureSize;
+					}
 				}
 			}
 		}

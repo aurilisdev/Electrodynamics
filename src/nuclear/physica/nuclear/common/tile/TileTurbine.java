@@ -54,14 +54,12 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 					{
 						canConstruct = false;
 						break;
-					} else
+					}
+					TileTurbine turbine = (TileTurbine) tile;
+					if (turbine.hasMain())
 					{
-						TileTurbine turbine = (TileTurbine) tile;
-						if (turbine.hasMain())
-						{
-							canConstruct = false;
-							break;
-						}
+						canConstruct = false;
+						break;
 					}
 				}
 			}
@@ -95,11 +93,8 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 						if (tile instanceof TileTurbine)
 						{
 							TileTurbine turbine = (TileTurbine) tile;
-							if (turbine != null)
-							{
-								turbine.hasMain = false;
-								mainLocation.set(0, 0, 0);
-							}
+							turbine.hasMain = false;
+							mainLocation.set(0, 0, 0);
 						}
 					}
 				}

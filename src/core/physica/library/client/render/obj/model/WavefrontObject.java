@@ -135,10 +135,12 @@ public class WavefrontObject {
 		{
 			try
 			{
-				reader.close();
+				if (reader != null)
+				{
+					reader.close();
+				}
 			} catch (IOException e)
 			{
-				// hush
 			}
 
 			try
@@ -146,7 +148,6 @@ public class WavefrontObject {
 				inputStream.close();
 			} catch (IOException e)
 			{
-				// hush
 			}
 		}
 	}

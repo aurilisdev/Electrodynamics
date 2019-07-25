@@ -1,5 +1,7 @@
 package physica.library.client.gui;
 
+import static codechicken.lib.gui.GuiDraw.gui;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.HashSet;
@@ -425,39 +427,41 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 
 	protected void drawFluid(int x, int y, int line, int col, int width, int drawSize, FluidStack fluidStack)
 	{
-		if (fluidStack != null && fluidStack.getFluid() != null)
+		if (fluidStack != null)
 		{
-			drawSize -= 1;
-
-			IIcon fluidIcon = null;
 			Fluid fluid = fluidStack.getFluid();
-
-			if (fluid != null && fluid.getStillIcon() != null)
+			if (fluid != null)
 			{
-				fluidIcon = fluid.getStillIcon();
-			}
+				drawSize -= 1;
 
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getResourceLocation(fluid.getSpriteNumber()));
+				IIcon fluidIcon = null;
 
-			int textureSize = 16;
-			int start = 0;
-			if (fluidIcon != null)
-			{
-				int renderY = textureSize;
-				while (renderY != 0 && drawSize != 0)
+				if (fluid.getStillIcon() != null)
 				{
-					if (drawSize > textureSize)
-					{
-						renderY = textureSize;
-						drawSize -= textureSize;
-					} else
-					{
-						renderY = drawSize;
-						drawSize = 0;
-					}
+					fluidIcon = fluid.getStillIcon();
+				}
+				FMLClientHandler.instance().getClient().renderEngine.bindTexture(FMLClientHandler.instance().getClient().renderEngine.getResourceLocation(fluid.getSpriteNumber()));
 
-					drawTexturedModelRectFromIcon(x + col, y + line + 58 - renderY - start, fluidIcon, width, textureSize - (textureSize - renderY));
-					start = start + textureSize;
+				int textureSize = 16;
+				int start = 0;
+				if (fluidIcon != null)
+				{
+					int renderY = textureSize;
+					while (renderY != 0 && drawSize != 0)
+					{
+						if (drawSize > textureSize)
+						{
+							renderY = textureSize;
+							drawSize -= textureSize;
+						} else
+						{
+							renderY = drawSize;
+							drawSize = 0;
+						}
+
+						gui.drawTexturedModelRectFromIcon(x + col, y + line + 58 - renderY - start, fluidIcon, width, textureSize - (textureSize - renderY));
+						start = start + textureSize;
+					}
 				}
 			}
 		}

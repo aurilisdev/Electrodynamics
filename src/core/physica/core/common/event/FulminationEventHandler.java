@@ -72,7 +72,7 @@ public class FulminationEventHandler {
 				if (tile.isInvalid())
 				{
 					iterator.remove();
-				} else if (tile != null && !tile.isInvalid() && world == tile.getWorldObj())
+				} else if (!tile.isInvalid() && world == tile.getWorldObj())
 				{
 					double distance = tile.getDistanceFrom(x, y, z);
 					if (distance <= size && distance > 0)
@@ -103,7 +103,7 @@ public class FulminationEventHandler {
 					if (tile.isInvalid())
 					{
 						iterator.remove();
-					} else if (tile != null && !tile.isInvalid() && event.world == tile.getWorldObj())
+					} else if (!tile.isInvalid() && event.world == tile.getWorldObj())
 					{
 						double distance = tile.getDistanceFrom(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
 						if (distance <= size && distance > 0.0D)

@@ -73,12 +73,10 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 			}
 			TileFissionReactor reactor = (TileFissionReactor) tile;
 			return reactor.hasFuelRod() && reactor.temperature > 1000;
-		} else
-		{
-			World().spawnEntityInWorld(new EntityItem(World(), loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
-			getLocation().setBlockAir(World());
-			return false;
 		}
+		World().spawnEntityInWorld(new EntityItem(World(), loc.xCoord + 0.5, loc.yCoord + 0.5, loc.zCoord + 0.5, new ItemStack(getBlockType())));
+		getLocation().setBlockAir(World());
+		return false;
 	}
 
 	private void process()

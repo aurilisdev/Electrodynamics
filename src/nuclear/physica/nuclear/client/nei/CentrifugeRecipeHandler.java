@@ -190,11 +190,8 @@ public class CentrifugeRecipeHandler extends PhysicaRecipeHandlerBase {
 			if (itemOutput.getItem() == NuclearItemRegister.itemUranium238)
 			{
 				return new PositionedStack(itemOutput, 102, 25);
-			} else
-			{
-				return new PositionedStack(itemOutput, 82, 25);
 			}
-
+			return new PositionedStack(itemOutput, 82, 25);
 		}
 
 		public recipe(int HexaCost, Item Output, float Chance) {

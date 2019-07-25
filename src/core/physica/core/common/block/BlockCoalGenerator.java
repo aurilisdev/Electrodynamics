@@ -80,10 +80,8 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 		if (side == 4)
 		{
 			return iconFacing;
-		} else
-		{
-			return blockIcon;
 		}
+		return blockIcon;
 	}
 
 	@SideOnly(Side.CLIENT)

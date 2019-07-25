@@ -6,17 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.inventory.IInventory;
 import physica.library.client.gui.GuiContainerBase;
-import physica.library.inventory.tooltip.IToolTipContainer;
 import physica.library.inventory.tooltip.ToolTip;
 import physica.library.inventory.tooltip.ToolTipSlot;
 
-public class SlotFluidHolder extends SlotBase implements IRenderableSlot, IToolTipContainer {
+public class SlotFluidHolder extends SlotBase {
 
-	private final ToolTipSlot toolTip;
+	private final ToolTipSlot toolTipBase;
 
 	public SlotFluidHolder(IInventory inventory, int slotIndex, int x, int y, String info) {
 		super(inventory, slotIndex, x, y);
-		toolTip = new ToolTipSlot(this, info);
+		toolTipBase = new ToolTipSlot(this, info);
 	}
 
 	@Override
@@ -30,6 +29,6 @@ public class SlotFluidHolder extends SlotBase implements IRenderableSlot, IToolT
 	@Override
 	public ToolTip getToolTip()
 	{
-		return toolTip;
+		return toolTipBase;
 	}
 }

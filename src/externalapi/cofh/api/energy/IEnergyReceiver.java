@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  *
  */
+@SuppressWarnings("deprecation")
 @Deprecated
 public interface IEnergyReceiver extends IEnergyConnection {
 
