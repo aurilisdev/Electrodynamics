@@ -59,7 +59,7 @@ public class CoreBlockRegister implements IContent {
 			AbstractionLayer.Registering.registerTileEntity(TileCoalGenerator.class, CoreReferences.PREFIX + "coalGenerator");
 			AbstractionLayer.Registering.registerBlock(blockBatteryBox = new BlockBatteryBox(), ItemBlockMetadata.class, "batteryBox");
 			AbstractionLayer.Registering.registerTileEntity(TileBatteryBox.class, CoreReferences.PREFIX + "batteryBox");
-			AbstractionLayer.Registering.registerBlock(blockElectricFurnace = new BlockElectricFurnace(), "electricFurnace");
+			AbstractionLayer.Registering.registerBlock(blockElectricFurnace = new BlockElectricFurnace(), ItemBlockDescriptable.class, "electricFurnace");
 			AbstractionLayer.Registering.registerTileEntity(TileElectricFurnace.class, CoreReferences.PREFIX + "electricFurnace");
 			AbstractionLayer.Registering.registerBlock(blockCable = new BlockEnergyCable(), ItemBlockMetadata.class, "energyCable");
 			AbstractionLayer.Registering.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
@@ -109,7 +109,7 @@ public class CoreBlockRegister implements IContent {
 			ItemBlockDescriptable.addDescriptionShifted(blockFulmination, 0, "Harvests energy from explosions.");
 			ItemBlockDescriptable.addDescriptionShifted(blockBlastFurnace, 0, "Smelts iron and combines it with carbon", "to produce steel.");
 			ItemBlockDescriptable.addDescriptionShifted(blockCoalGenerator, 0, "Generates electricity burning coal.");
-			ItemBlockDescriptable.addDescriptionShifted(blockElectricFurnace, 0, "This block is a faster version of the furnace", "that runs on electricity.r");
+			ItemBlockDescriptable.addDescriptionShifted(blockElectricFurnace, 0, "This block is a faster version of the furnace", "that runs on electricity.");
 
 		}
 	}

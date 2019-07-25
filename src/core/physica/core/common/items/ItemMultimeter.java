@@ -47,14 +47,14 @@ public class ItemMultimeter extends Item {
 		} else if (AbstractionLayer.Electricity.isElectricProvider(tile))
 		{
 			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 210, "Power Provider Stats",
-					" - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATT), Unit.WATT) + " / "
+					" - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR) + " / "
 							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricCapacity(tile, dir), Unit.RF, Unit.WATT), Unit.WATT),
 					" - Side Output: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.extractElectricity(tile, dir, Integer.MAX_VALUE, true), Unit.RF, Unit.WATT), Unit.WATT));
 			return true;
 		} else if (AbstractionLayer.Electricity.isElectricReceiver(tile))
 		{
 			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 200, "Power Receiver Stats",
-					" - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATT), Unit.WATT));
+					" - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR));
 			return true;
 		}
 		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);

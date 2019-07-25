@@ -58,8 +58,6 @@ public class HUDHandlerIElectricityHandler implements IWailaDataProvider {
 		{
 			((ITaggedList) currenttip).add(ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(energy, Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR) + " / "
 					+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(maxEnergy, Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR), "WattEnergyStorage");
-			((ITaggedList) currenttip).add(ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(energy, Unit.RF, Unit.WATTTICK), Unit.WATTTICK) + " / "
-					+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(maxEnergy, Unit.RF, Unit.WATTTICK), Unit.WATTTICK), "WattEnergyStorage");
 		}
 
 		return currenttip;

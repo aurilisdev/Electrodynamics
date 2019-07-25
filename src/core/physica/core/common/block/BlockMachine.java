@@ -1,5 +1,7 @@
 package physica.core.common.block;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -76,6 +78,21 @@ public abstract class BlockMachine extends BlockBaseContainer implements IBaseUt
 			return ((IMachineTile) tile).isRunning() ? Blocks.lava.getLightValue() : 0;
 		}
 		return 0;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
+		TileEntity tile = world.getTileEntity(x, y, z);
+		if (tile instanceof IMachineTile)
+		{
+			IMachineTile machine = (IMachineTile) tile;
+			if (machine.isRunning())
+			{
+				world.spawnParticle("smoke", x + rand.nextFloat(), y + rand.nextFloat(), z + rand.nextFloat(), 0.0D, 0.025D, 0.0D);
+			}
+		}
 	}
 
 	@Override

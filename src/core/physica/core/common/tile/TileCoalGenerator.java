@@ -27,7 +27,7 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 
 	public static final int		SLOT_INPUT			= 0;
 	private static final int[]	ACCESSIBLE_SLOTS	= new int[] { SLOT_INPUT };
-	public static final int		MAX_GENERATE		= 10100;
+	public static final int		MAX_GENERATE		= 5100;
 	public static final int		MIN_GENERATE		= 100;
 	private static final float	BASE_ACCELERATION	= 0.3F;
 	public double				prevGenerateWatts;
@@ -97,18 +97,16 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	}
 
 	@Override
-	public int getSyncRate()
-	{
-		return 40;
-	}
-
-	@Override
 	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
 	{
+		double prevGenerate = generate;
 		super.readSynchronizationPacket(buf, player);
-		Location loc = getLocation();
-		World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
-		World().markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
+		if (prevGenerate == 0 && generate > 0 || prevGenerate > 0 && (int) generate == 0)
+		{
+			Location loc = getLocation();
+			World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
+			World().markBlockRangeForRenderUpdate(loc.xCoord, loc.yCoord, loc.zCoord, loc.xCoord, loc.yCoord, loc.zCoord);
+		}
 	}
 
 	@Override

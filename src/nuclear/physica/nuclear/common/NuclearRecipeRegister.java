@@ -44,7 +44,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 			addRecipe(new ItemStack(NuclearItemRegister.itemEmptyElectromagneticCell, 1), " T ", "TGT", " T ", 'G', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, 1), 'T', "ingotTin");
 
 			// Empty Quantum cell
-			addRecipe(new ItemStack(NuclearItemRegister.itemEmptyQuantumCell, 1), " T ", "TGT", " T ", 'G', NuclearItemRegister.itemAntimatterCell125Milligram, 'T', "ingotTin");
+			addRecipe(new ItemStack(NuclearItemRegister.itemEmptyQuantumCell, 1), " T ", "TGT", " T ", 'G', NuclearItemRegister.itemAntimatterCell125Milligram, 'T', "ingotLead");
 
 			// Geiger Counter
 			addRecipe(NuclearItemRegister.itemGeigerCounter, "SAS", "SBS", "SSS", 'S', "plateSteel", 'A', "circuitAdvanced", 'B', "phyBattery");

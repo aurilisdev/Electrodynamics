@@ -107,7 +107,7 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 		input.stackSize--;
 		if (input.stackSize <= 0)
 		{
-			input = null;
+			setInventorySlotContents(SLOT_INPUT, null);
 		}
 	}
 
@@ -119,18 +119,16 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 	}
 
 	@Override
-	public int getSyncRate()
-	{
-		return 15;
-	}
-
-	@Override
 	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
 	{
 		super.readClientGuiPacket(buf, player);
+		int prevOperatingTicks = operatingTicks;
 		operatingTicks = buf.readInt();
-		Location loc = getLocation();
-		World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
+		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0)
+		{
+			Location loc = getLocation();
+			World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
+		}
 	}
 
 	public int getOperatingTicks()
