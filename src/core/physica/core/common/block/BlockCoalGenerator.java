@@ -16,7 +16,6 @@ import physica.CoreReferences;
 import physica.api.core.abstraction.Face;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
-import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.TileCoalGenerator;
 import physica.library.block.BlockBaseContainer;
@@ -130,7 +129,7 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 	@Override
 	public void registerRecipes()
 	{
-		addRecipe(CoreBlockRegister.blockCoalGenerator, "ISI", "CFC", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', "ingotSteel", 'C', Blocks.cobblestone);
+		addRecipe(this, "ISI", "CFC", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', "ingotSteel", 'C', Blocks.cobblestone);
 	}
 
 }

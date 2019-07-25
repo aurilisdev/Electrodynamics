@@ -17,12 +17,13 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.api.core.inventory.IGuiInterface;
+import physica.api.core.tile.IMachineTile;
 import physica.core.client.gui.GuiCoalGenerator;
 import physica.core.common.inventory.ContainerCoalGenerator;
 import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
 
-public class TileCoalGenerator extends TileBaseContainer implements IGuiInterface, IElectricityProvider {
+public class TileCoalGenerator extends TileBaseContainer implements IGuiInterface, IElectricityProvider, IMachineTile {
 
 	public static final int		SLOT_INPUT			= 0;
 	private static final int[]	ACCESSIBLE_SLOTS	= new int[] { SLOT_INPUT };
@@ -38,6 +39,12 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 	public boolean canConnectElectricity(Face from)
 	{
 		return from == getFacing().getOpposite();
+	}
+
+	@Override
+	public boolean isRunning()
+	{
+		return generate > 0;
 	}
 
 	@Override

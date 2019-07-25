@@ -7,7 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
-import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
 import physica.core.common.tile.TileBlastFurnace;
 import physica.library.block.BlockBaseContainerModelled;
@@ -39,7 +38,7 @@ public class BlockBlastFurnace extends BlockBaseContainerModelled {
 	@Override
 	public void registerRecipes()
 	{
-		addRecipe(CoreBlockRegister.blockBlastFurnace, "III", "IFI", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', Blocks.stonebrick);
+		addRecipe(this, "III", "IFI", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', Blocks.stonebrick);
 	}
 
 	@Override

@@ -37,9 +37,4 @@ public class GuiBatteryBox extends GuiContainerBase<TileBatteryBox> {
 		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "batteryBox." + host.getBlockMetadata() + ".gui"), xSize / 2, 5);
 	}
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
-	{
-		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
-	}
 }

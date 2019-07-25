@@ -24,7 +24,7 @@ public class GuiBlastFurnace extends GuiContainerBase<TileBlastFurnace> {
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Inventory", 8, 73);
-		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "blastFurnace.gui"), xSize / 2, 5);
+		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "electricFurnace.gui"), xSize / 2, 5);
 	}
 
 	@Override
@@ -36,7 +36,6 @@ public class GuiBlastFurnace extends GuiContainerBase<TileBlastFurnace> {
 		drawTexturedModalRect(containerWidth, containerHeight, 0, 0, xSize, ySize);
 		if (host.isBurning())
 		{
-
 			int i1 = host.getBurnTimeRemainingScaled(13);
 			drawTexturedModalRect(containerWidth + 56, containerHeight + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
 		}

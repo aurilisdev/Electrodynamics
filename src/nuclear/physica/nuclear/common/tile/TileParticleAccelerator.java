@@ -26,8 +26,8 @@ import physica.nuclear.common.inventory.ContainerParticleAccelerator;
 
 public class TileParticleAccelerator extends TileBasePoweredContainer implements IGuiInterface, IElectromagnet {
 
-	public static final int		SLOT_INPUTMATTER				= 1;
 	public static final int		SLOT_INPUTCELLS					= 0;
+	public static final int		SLOT_INPUTMATTER				= 1;
 	public static final int		SLOT_OUTPUT						= 2;
 	public static final int		POWER_USAGE						= ElectricityUtilities.convertEnergy(340000, Unit.WATT, Unit.RF);
 

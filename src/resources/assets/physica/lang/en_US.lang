@@ -7,6 +7,7 @@ tile.physica:coalGenerator.name=Coal Generator
 tile.physica:batteryBox.0.name=Battery Box
 tile.physica:batteryBox.1.name=Advanced Battery Box
 tile.physica:batteryBox.2.name=Elite Battery Box
+tile.physica:electricFurnace.name=Electric Furnace
 tile.physica:tinOre.name=Tin Ore
 tile.physica:copperOre.name=Copper Ore
 tile.physica:leadOre.name=Lead Ore
@@ -22,6 +23,7 @@ tile.physica:coalGenerator.gui=Coal Generator
 tile.physica:batteryBox.0.gui=Battery Box
 tile.physica:batteryBox.1.gui=Advanced Battery Box
 tile.physica:batteryBox.2.gui=Elite Battery Box
+tile.physica:electricFurnace.gui=Electric Furnace
 #### ITEMS
 item.emptyCell.name=Empty Cell
 item.motor.name=Motor
