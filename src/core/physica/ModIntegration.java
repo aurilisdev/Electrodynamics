@@ -52,7 +52,7 @@ public class ModIntegration implements IContent {
 					{
 						PhysicaAPI.logger.log(Level.INFO, "Modifying Enum REDSTONE_FLUX' in ElectricUnit.class");
 						PhysicaAPI.logger.log(Level.INFO, "Changing unit Name to 'WattTick' and symbol to 'Wt'");
-						ElectricUnit.REDSTONE_FLUX.name = "WattTick";
+						ElectricUnit.REDSTONE_FLUX.name = "Watt Tick";
 						ElectricUnit.REDSTONE_FLUX.symbol = "Wt";
 						PhysicaAPI.logger.log(Level.INFO, "Integrated Physica with Mekanism.");
 					} catch (Exception e)

@@ -9,8 +9,6 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -18,6 +16,7 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 import physica.api.core.abstraction.Face;
+import physica.library.location.Location;
 
 public class OreGenReplace extends AbstractOreGenerator {
 
@@ -56,10 +55,10 @@ public class OreGenReplace extends AbstractOreGenerator {
 	public int generateBranch(World world, Random rand, int chunkCornerX, int chunkCornerZ, int varX, int varY, int varZ)
 	{
 		int blocksPlaced = 0;
-		Set<Vector3f> pathed = new HashSet<>();
-		Queue<Vector3f> toPath = new LinkedList<>();
+		Set<Location> pathed = new HashSet<>();
+		Queue<Location> toPath = new LinkedList<>();
 
-		toPath.add(new Vector3f(varX, varY, varZ));
+		toPath.add(new Location(varX, varY, varZ));
 
 		List<Face> directions = new ArrayList<>();
 		for (Face dir : Face.VALID)
@@ -68,13 +67,13 @@ public class OreGenReplace extends AbstractOreGenerator {
 		}
 		while (!toPath.isEmpty() && blocksPlaced < settings.amountPerBranch)
 		{
-			Vector3f next = toPath.poll();
+			Location next = toPath.poll();
 			pathed.add(next);
 
-			Block block = world.getBlock((int) next.x, (int) next.y, (int) next.z);
+			Block block = world.getBlock(next.xCoord, next.yCoord, next.zCoord);
 			if (settings.replaceBlock == null || block == settings.replaceBlock)
 			{
-				if (world.setBlock((int) next.x, (int) next.y, (int) next.z, oreBlock, oreMeta, 2))
+				if (world.setBlock(next.xCoord, next.yCoord, next.zCoord, oreBlock, oreMeta, 2))
 				{
 					blocksPlaced += 1;
 				}
@@ -83,17 +82,17 @@ public class OreGenReplace extends AbstractOreGenerator {
 			Collections.shuffle(directions);
 			for (Face direction : directions)
 			{
-				Vector3f pos = new Vector3f(next.x + direction.offsetX, next.y + direction.offsetY, next.z + direction.offsetZ);
+				Location pos = new Location(next.xCoord + direction.offsetX, next.yCoord + direction.offsetY, next.zCoord + direction.offsetZ);
 				if (!pathed.contains(pos) && world.rand.nextBoolean())
 				{
-					if (pos.y > 0 && pos.y < world.getHeight() - 1 && world.blockExists((int) pos.x, (int) pos.y, (int) pos.z))
+					if (pos.yCoord > 0 && pos.yCoord < world.getHeight() - 1 && world.blockExists(pos.xCoord, pos.yCoord, pos.zCoord))
 					{
-						boolean insideX = (int) pos.x >= chunkCornerX && (int) pos.x < chunkCornerX + 16;
-						boolean insideZ = (int) pos.y >= chunkCornerZ && (int) pos.z < chunkCornerZ + 16;
-						boolean insideY = (int) pos.z >= settings.minGenerateHeight && (int) pos.y <= settings.maxGenerateHeight;
+						boolean insideX = pos.xCoord >= chunkCornerX && pos.xCoord < chunkCornerX + 16;
+						boolean insideZ = pos.yCoord >= chunkCornerZ && pos.zCoord < chunkCornerZ + 16;
+						boolean insideY = pos.zCoord >= settings.minGenerateHeight && pos.yCoord <= settings.maxGenerateHeight;
 						if (insideX && insideZ && insideY)
 						{
-							block = world.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+							block = world.getBlock(pos.xCoord, pos.yCoord, pos.zCoord);
 							if (settings.replaceBlock == null || block == settings.replaceBlock)
 							{
 								toPath.add(pos);

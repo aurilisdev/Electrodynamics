@@ -1,0 +1,31 @@
+Version 1.4.6 build 5
+
+### Game Changes ###
+Add a config option that allows you to modify other mods's visuals to use watt ticks instead of RF. This only works on mekanism currently and is on by default.
+Decrease turbine max rf so it actually holds the max steam * energy and not the max value of an integer.
+Optimize models themselves.
+Add a battery box. This has three sub-blocks which is the "Battery Box", the Advanced "..." and the Elite "...".
+Fix that the world was generating lead blocks instead of lead ore.
+Fix bugs with the coal generator.
+Add custom textures for all the machines. They now use a set of defaults plus whatever they use that is different.
+Add an electric furnace. This works the same as a normal furnace except that it is faster and uses electricity to run
+Remove wattticks from the waila integration.
+Optimize model rendering.
+Separate wattticks into watt ticks. This also applies to watt seconds and watt hours.
+Improve quantum cell texture.
+Improve electromagnetic cell texture.
+Improve steel ingot texture. Made it darker.
+
+### Code Changes ###
+Remove useless code in the CommonProxy.java
+Move all source code in the old src/main and separate it. Now there are two new folders, src/core and src/resources.
+Stop using ForgeDirection.class in all the places that we can. We now use the custom 'Face.java' This is because of the changes in future MC versions.
+Stop using X,Y,Z in all the tileentities that we can. We now use the custom Location class. This is because of the changes in future MC versions.
+Stopped accessing worldObj directly. This is also an "abstraction" layer to the old code.
+Stopped using the tessellator in most classes and we now use a wrapper for it. This is also an "abstraction" layer to the old code.
+Add a custom model loader so that we can continue to use obj models in the future.
+Add an abstraction layer for sides in sided inventories.
+Remove massive amounts of code frop the javax.vecmath api. We dont need this here? Only used once. Changed to Vector3f's from elsewhere.
+Made packet ids more consistant.
+Move relative rotation stuff into the face class itself.
+Remove parts of the cofhcore api as we dont need it.
