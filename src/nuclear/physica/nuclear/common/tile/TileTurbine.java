@@ -187,7 +187,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	@Override
 	public int getSyncRate()
 	{
-		return 1;
+		return 10;
 	}
 
 	@Override
