@@ -77,12 +77,6 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 	}
 
 	@Override
-	public int getSyncRate()
-	{
-		return 1;
-	}
-
-	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
