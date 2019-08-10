@@ -18,7 +18,7 @@ public class ItemHazmatArmor extends ItemArmor {
 		setMaxDamage(37500);
 		canRepair = false;
 		setUnlocalizedName(type);
-		setTextureName(CoreReferences.PREFIX + type);
+		setTextureName(CoreReferences.PREFIX + "hazmat/" + type);
 		if (type.contains("Reinforced"))
 		{
 			setPlatingProtection(5);

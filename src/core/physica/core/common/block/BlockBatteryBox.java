@@ -102,7 +102,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	public void registerRecipes()
 	{
 		addRecipe(new ItemStack(this, 1, 0), "SSS", "BBB", "SSS", 'S', "ingotSteel", 'B', "phyBattery");
-		addRecipe(new ItemStack(this, 1, 1), "BTB", "WWW", "BAB", 'T', this, 'A', "circuitAdvanced", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, 0), 'B', "phyBattery");
+		addRecipe(new ItemStack(this, 1, 1), "BTB", "WWW", "BAB", 'T', new ItemStack(this, 1, 0), 'A', "circuitAdvanced", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, 0), 'B', "phyBattery");
 		addRecipe(new ItemStack(this, 1, 2), "BEB", "TWT", "BEB", 'T', new ItemStack(this, 1, 1), 'E', "circuitElite", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, EnumConductorType.superConductor.ordinal()), 'B', "phyBattery");
 	}
 

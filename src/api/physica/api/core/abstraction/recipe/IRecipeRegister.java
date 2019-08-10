@@ -10,6 +10,10 @@ public interface IRecipeRegister {
 
 	public static void callRegister(String id)
 	{
+		if (!REGISTER.containsKey(id))
+		{
+			REGISTER.put(id, new HashSet<>());
+		}
 		for (IRecipeRegister reg : REGISTER.get(id))
 		{
 			reg.registerRecipes();

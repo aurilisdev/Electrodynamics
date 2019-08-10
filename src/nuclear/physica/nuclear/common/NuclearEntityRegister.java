@@ -8,18 +8,19 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 import physica.Physica;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
+import physica.nuclear.PhysicaNuclearPhysics;
 import physica.nuclear.common.entity.EntityParticle;
 
 public class NuclearEntityRegister implements IContent {
 
-	public static final int MOD_ID = 120;
+	private static int MOD_ID = 0;
 
 	@Override
 	public void register(LoadPhase phase)
 	{
 		if (phase == LoadPhase.EntityRegister)
 		{
-			registerEntity(EntityParticle.class, "particle", 80, 3, true);
+			registerEntity(EntityParticle.class, "physicaacceleratorparticle", 80, 3, true);
 			ForgeChunkManager.setForcedChunkLoadingCallback(Physica.INSTANCE, (tickets, world) ->
 			{
 				for (Ticket ticket : tickets)
@@ -41,6 +42,6 @@ public class NuclearEntityRegister implements IContent {
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
 	{
 		EntityRegistry.registerGlobalEntityID(entityClass, entityName, EntityRegistry.findGlobalUniqueEntityId());
-		EntityRegistry.registerModEntity(entityClass, entityName, MOD_ID, Physica.INSTANCE, trackingRange, updateFrequency, sendsVelocityUpdates);
+		EntityRegistry.registerModEntity(entityClass, entityName, MOD_ID++, PhysicaNuclearPhysics.INSTANCE, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 }

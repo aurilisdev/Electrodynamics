@@ -18,6 +18,13 @@ public class ItemMetaHolder extends ItemUpdateable {
 	public ArrayList<String>	subItems	= new ArrayList<>();
 	@SideOnly(Side.CLIENT)
 	public IIcon[]				subIcons;
+	public String				textureFolder;
+
+	public ItemMetaHolder setTextureFolder(String textureFolder)
+	{
+		this.textureFolder = textureFolder;
+		return this;
+	}
 
 	public ItemMetaHolder(String name) {
 		setUnlocalizedName(name);
@@ -34,7 +41,7 @@ public class ItemMetaHolder extends ItemUpdateable {
 		subIcons = new IIcon[subItems.size()];
 		for (int i = 0; i < subItems.size(); i++)
 		{
-			subIcons[i] = register.registerIcon(CoreReferences.PREFIX + subItems.get(i));
+			subIcons[i] = register.registerIcon(CoreReferences.PREFIX + textureFolder + "/" + subItems.get(i));
 		}
 	}
 

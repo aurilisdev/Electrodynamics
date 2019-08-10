@@ -36,6 +36,10 @@ public class CoreItemRegister implements IContent {
 			AbstractionLayer.Registering.registerItem(itemMotor = (ItemDescriptable) new ItemDescriptable("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemMultimeter = new ItemMultimeter(), itemMultimeter.getUnlocalizedName());
+			itemMetaPlate.setTextureFolder("plate");
+			itemMetaIngot.setTextureFolder("ingot");
+			itemMetaBlend.setTextureFolder("blend");
+			itemMetaCircuit.setTextureFolder("circuit");
 			itemMetaPlate.addOreDictionaryInput("plateIron", 0);
 			itemMetaPlate.addOreDictionaryInput("plateSteel", 1);
 			itemMetaPlate.addOreDictionaryInput("plateLead", 2);

@@ -62,4 +62,9 @@ public class TessellatorWrapper {
 		getTessellator().setNormal(x, y, z);
 	}
 
+	public void setTranslation(double x, double y, double z)
+	{
+		getTessellator().setTranslation(x, y, z);
+	}
+
 }

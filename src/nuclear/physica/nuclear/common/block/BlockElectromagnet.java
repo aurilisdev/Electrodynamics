@@ -138,15 +138,15 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	}
 
 	@Override
-	public int getLightOpacity(IBlockAccess world, int x, int y, int z)
-	{
-		return EnumElectromagnet.values()[world.getBlockMetadata(x, y, z)] == EnumElectromagnet.GLASS ? 0 : super.getLightOpacity(world, x, y, z);
-	}
-
-	@Override
 	public int damageDropped(int metadata)
 	{
 		return metadata;
+	}
+
+	@Override
+	public int getLightOpacity(IBlockAccess world, int x, int y, int z)
+	{
+		return EnumElectromagnet.values()[world.getBlockMetadata(x, y, z)] == EnumElectromagnet.GLASS ? 0 : super.getLightOpacity(world, x, y, z);
 	}
 
 	public enum EnumElectromagnet {

@@ -78,6 +78,13 @@ public class VectorLocation {
 		return (float) Math.sqrt(x * x + y * y + z * z);
 	}
 
+	public void translate(float x, float y, float z)
+	{
+		this.x += x;
+		this.y += y;
+		this.z += z;
+	}
+
 	public VectorLocation normalize()
 	{
 		float n = norm();
@@ -197,6 +204,14 @@ public class VectorLocation {
 	}
 
 	public VectorLocation add(int add)
+	{
+		x += add;
+		y += add;
+		z += add;
+		return this;
+	}
+
+	public VectorLocation add(double add)
 	{
 		x += add;
 		y += add;

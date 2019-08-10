@@ -155,5 +155,23 @@ fluid.physicaforcefields:fortron=Fortron
 #### TABS
 itemGroup.physicaforcefieldsForcefield=Physica - Forcefields
 
+### ### Missiles Subsection ### ###
+#### TILES
+physicaMissiles.explosive.condensive.name=Condensive Explosive
+physicaMissiles.explosive.repulsive.name=Repulsive Explosive
+physicaMissiles.explosive.attractive.name=Attractive Explosive
+physicaMissiles.explosive.shrapnel.name=Shrapnel Explosive
+physicaMissiles.explosive.anvil.name=Anvil Explosive
+physicaMissiles.explosive.incendiary.name=Incendiary Explosive
+#### ITEMS
+physicaMissiles.grenade.condensive.name=Condensive Explosive
+physicaMissiles.grenade.repulsive.name=Repulsive Explosive
+physicaMissiles.grenade.attractive.name=Attractive Explosive
+physicaMissiles.grenade.shrapnel.name=Shrapnel Explosive
+physicaMissiles.grenade.anvil.name=Anvil Explosive
+physicaMissiles.grenade.incendiary.name=Incendiary Explosive
+#### TABS
+itemGroup.physicamissilesMissiles=Physica - Missiles
+
 #### MOD INTEGRATION
 option.physica.electricityhandler=Show Watt(Hours/Seconds)

@@ -44,6 +44,10 @@ public class ForcefieldItemRegister implements IContent {
 			AbstractionLayer.Registering.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());
 
+			itemMetaShapeModule.setTextureFolder("modules");
+			itemMetaManipulationModule.setTextureFolder("modules");
+			itemMetaUpgradeModule.setTextureFolder("modules");
+
 			moduleMap.put("moduleShapeSphere", new ItemStack(itemMetaShapeModule, 1, 0));
 			moduleMap.put("moduleShapeHemisphere", new ItemStack(itemMetaShapeModule, 1, 1));
 			moduleMap.put("moduleShapeCube", new ItemStack(itemMetaShapeModule, 1, 2));

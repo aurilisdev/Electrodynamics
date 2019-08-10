@@ -165,11 +165,11 @@ public class Location {
 		return world.isAirBlock(xCoord, yCoord, zCoord);
 	}
 
-	public Location sub(VectorLocation b)
+	public Location sub(Location b)
 	{
-		xCoord -= b.x;
-		yCoord -= b.y;
-		zCoord -= b.z;
+		xCoord -= b.xCoord;
+		yCoord -= b.yCoord;
+		zCoord -= b.zCoord;
 		return this;
 	}
 
@@ -181,11 +181,11 @@ public class Location {
 		return this;
 	}
 
-	public Location add(VectorLocation b)
+	public Location add(Location b)
 	{
-		xCoord += b.x;
-		yCoord += b.y;
-		zCoord += b.z;
+		xCoord += b.xCoord;
+		yCoord += b.yCoord;
+		zCoord += b.zCoord;
 		return this;
 	}
 
@@ -197,11 +197,11 @@ public class Location {
 		return this;
 	}
 
-	public Location mul(VectorLocation b)
+	public Location mul(Location b)
 	{
-		xCoord *= b.x;
-		yCoord *= b.y;
-		zCoord *= b.z;
+		xCoord *= b.xCoord;
+		yCoord *= b.yCoord;
+		zCoord *= b.zCoord;
 		return this;
 	}
 

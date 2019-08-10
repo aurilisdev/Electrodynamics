@@ -6,8 +6,6 @@ Physica has a discord where you can come chat with other Physica users, staff an
 
 Invite link: https://discordapp.com/invite/jJANcdK
 
-Please visit our official modpack containing all of Physica! http://voltzmodpack.com/
-
 ## Core Curseforge page
 https://minecraft.curseforge.com/projects/physica
 ## Nuclear Physics Curseforge page
