@@ -22,7 +22,7 @@ public class BlockElectricFurnace extends BlockMachine {
 	public void registerRecipes()
 	{
 		addRecipe(this, "SSS", "SCS", "SMS", 'S', "ingotSteel", 'C', "circuitAdvanced", 'M', "motor");
-		addRecipe(new ItemStack(this, 1, EnumElectricFurnace.INDUSTRIAL.ordinal()), "SSS", "MCM", "SMS", 'S', "plateSteel", 'C', this, 'M', "circuitElite");
+		addRecipe(new ItemStack(this, 1, EnumElectricFurnace.INDUSTRIAL.ordinal()), "SSS", "MCM", "SMS", 'S', "plateSteel", 'C', new ItemStack(this, 1, EnumElectricFurnace.NORMAL.ordinal()), 'M', "circuitElite");
 	}
 
 	@Override
