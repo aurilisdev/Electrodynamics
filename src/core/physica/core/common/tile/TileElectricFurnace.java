@@ -86,7 +86,7 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 			{
 				return false;
 			}
-			if (output.stackSize + 1 > 64)
+			if (output.stackSize + 2 > 64)
 			{
 				return false;
 			}
@@ -99,10 +99,12 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 		ItemStack resultItemStack = FurnaceRecipes.smelting().getSmeltingResult(input);
 		if (output == null)
 		{
-			setInventorySlotContents(SLOT_OUTPUT, resultItemStack.copy());
+			ItemStack finalStack = resultItemStack.copy();
+			finalStack.stackSize = 2;
+			setInventorySlotContents(SLOT_OUTPUT, finalStack);
 		} else if (output.isItemEqual(resultItemStack))
 		{
-			output.stackSize++;
+			output.stackSize += 2;
 		}
 		input.stackSize--;
 		if (input.stackSize <= 0)
@@ -164,7 +166,7 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 	@Override
 	public int getElectricityUsage()
 	{
-		return POWER_USAGE;
+		return (int) (POWER_USAGE * (Math.pow((getBlockMetadata() + 1), 2)));
 	}
 
 	@Override

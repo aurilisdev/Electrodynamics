@@ -57,7 +57,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	@Override
 	public int getRenderColor(int par1)
 	{
-		return par1 == 1 ? (255 & 0xFF) << 24 | (135 & 0xFF) << 16 | (151 & 0xFF) << 8 | (165 & 0xFF) << 0 : par1 == 2 ? (255 & 0xFF) << 24 | (81 & 0xFF) << 16 | (91 & 0xFF) << 8 | (99 & 0xFF) << 0 : super.getRenderColor(par1);
+		return par1 == 1 ? (255 & 0xFF) << 24 | (155 & 0xFF) << 16 | (171 & 0xFF) << 8 | (185 & 0xFF) << 0 : par1 == 2 ? (255 & 0xFF) << 24 | (101 & 0xFF) << 16 | (111 & 0xFF) << 8 | (119 & 0xFF) << 0 : super.getRenderColor(par1);
 	}
 
 	@Override
