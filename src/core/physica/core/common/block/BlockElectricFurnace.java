@@ -62,16 +62,7 @@ public class BlockElectricFurnace extends BlockMachine {
 	}
 
 	public enum EnumElectricFurnace {
-		NORMAL("Electric Furnace"), INDUSTRIAL("Industrial Electric Furnace");
-		private String name;
+		NORMAL, INDUSTRIAL;
 
-		private EnumElectricFurnace(String name) {
-			this.name = name;
-		}
-
-		public String getName()
-		{
-			return name;
-		}
 	}
 }

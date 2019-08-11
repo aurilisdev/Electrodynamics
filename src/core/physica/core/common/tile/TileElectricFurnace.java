@@ -11,11 +11,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.oredict.OreDictionary;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.IMachineTile;
 import physica.core.client.gui.GuiElectricFurnace;
+import physica.core.common.block.BlockElectricFurnace.EnumElectricFurnace;
 import physica.core.common.inventory.ContainerElectricFurnace;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
@@ -97,14 +99,38 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 	private void process(ItemStack input, ItemStack output)
 	{
 		ItemStack resultItemStack = FurnaceRecipes.smelting().getSmeltingResult(input);
+		int stackSize = 1;
+		if (getBlockMetadata() == EnumElectricFurnace.INDUSTRIAL.ordinal())
+		{
+			boolean isOre = false;
+			for (int id : OreDictionary.getOreIDs(input))
+			{
+				if (OreDictionary.getOreName(id).startsWith("ore"))
+				{
+					isOre = true;
+					break;
+				}
+			}
+			if (isOre)
+			{
+				for (int id : OreDictionary.getOreIDs(resultItemStack))
+				{
+					if (OreDictionary.getOreName(id).startsWith("ingot"))
+					{
+						stackSize = 2;
+						break;
+					}
+				}
+			}
+		}
 		if (output == null)
 		{
 			ItemStack finalStack = resultItemStack.copy();
-			finalStack.stackSize = 2;
+			finalStack.stackSize = stackSize;
 			setInventorySlotContents(SLOT_OUTPUT, finalStack);
 		} else if (output.isItemEqual(resultItemStack))
 		{
-			output.stackSize += 2;
+			output.stackSize += stackSize;
 		}
 		input.stackSize--;
 		if (input.stackSize <= 0)

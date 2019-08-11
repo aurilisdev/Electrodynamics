@@ -24,7 +24,7 @@ public class GuiBlastFurnace extends GuiContainerBase<TileBlastFurnace> {
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Inventory", 8, 73);
-		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "electricFurnace.gui"), xSize / 2, 5);
+		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "blastFurnace.gui"), xSize / 2, 5);
 	}
 
 	@Override
