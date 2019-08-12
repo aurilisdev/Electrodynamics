@@ -1,7 +1,5 @@
 package physica.library.client.gui;
 
-import static codechicken.lib.gui.GuiDraw.gui;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.HashSet;
@@ -30,6 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import physica.CoreReferences;
 import physica.api.core.inventory.IPlayerUsing;
+import physica.library.client.render.TessellatorWrapper;
 import physica.library.inventory.slot.IRenderableSlot;
 import physica.library.inventory.tooltip.IToolTipContainer;
 import physica.library.inventory.tooltip.ToolTip;
@@ -459,12 +458,24 @@ public class GuiContainerBase<T extends IPlayerUsing> extends GuiContainer {
 							drawSize = 0;
 						}
 
-						gui.drawTexturedModelRectFromIcon(x + col, y + line + 58 - renderY - start, fluidIcon, width, textureSize - (textureSize - renderY));
+						drawTexturedModelRectFromIcon(x + col, y + line + 58 - renderY - start, fluidIcon, width, textureSize - (textureSize - renderY));
 						start = start + textureSize;
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public void drawTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height)
+	{
+		TessellatorWrapper tessellator = TessellatorWrapper.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(x + 0, y + height, zLevel, icon.getMinU(), icon.getMaxV());
+		tessellator.addVertexWithUV(x + width, y + height, zLevel, icon.getMaxU(), icon.getMaxV());
+		tessellator.addVertexWithUV(x + width, y + 0, zLevel, icon.getMaxU(), icon.getMinV());
+		tessellator.addVertexWithUV(x + 0, y + 0, zLevel, icon.getMinU(), icon.getMinV());
+		tessellator.draw();
 	}
 
 	protected void renderFurnaceCookArrow(int x, int y, float progress)

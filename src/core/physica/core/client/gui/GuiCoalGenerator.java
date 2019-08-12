@@ -40,9 +40,4 @@ public class GuiCoalGenerator extends GuiContainerBase<TileCoalGenerator> {
 		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "coalGenerator.gui"), xSize / 2, 5);
 	}
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
-	{
-		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
-	}
 }

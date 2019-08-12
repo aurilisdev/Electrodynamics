@@ -36,7 +36,7 @@ public class GuiElectricFurnace extends GuiContainerBase<TileElectricFurnace> {
 			displayText = "Idle";
 		}
 		drawString("Status: " + displayText, 82, 47, 4210752);
-		drawString(ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE * Math.pow((host.getBlockMetadata() + 1), 2), Unit.RF, Unit.WATT), Unit.WATT), 82, 58, 4210752);
+		drawString(ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE * Math.pow(host.getBlockMetadata() + 1, 2), Unit.RF, Unit.WATT), Unit.WATT), 82, 58, 4210752);
 		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "electricFurnace." + host.getBlockMetadata() + ".gui"), xSize / 2, 5);
 	}
 

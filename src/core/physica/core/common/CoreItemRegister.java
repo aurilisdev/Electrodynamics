@@ -26,7 +26,6 @@ public class CoreItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			AbstractionLayer.Registering.registerItem(itemEmptyCell = (ItemDescriptable) new ItemDescriptable("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
 			AbstractionLayer.Registering.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"),
 					"item.metaIngot");
@@ -36,6 +35,7 @@ public class CoreItemRegister implements IContent {
 			AbstractionLayer.Registering.registerItem(itemMotor = (ItemDescriptable) new ItemDescriptable("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemMultimeter = new ItemMultimeter(), itemMultimeter.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemEmptyCell = (ItemDescriptable) new ItemDescriptable("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
 			itemMetaPlate.setTextureFolder("plate");
 			itemMetaIngot.setTextureFolder("ingot");
 			itemMetaBlend.setTextureFolder("blend");
