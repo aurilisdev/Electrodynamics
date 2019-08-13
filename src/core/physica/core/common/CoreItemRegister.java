@@ -26,11 +26,11 @@ public class CoreItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
+			AbstractionLayer.Registering.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
 			AbstractionLayer.Registering.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
 			AbstractionLayer.Registering.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"),
 					"item.metaIngot");
 			AbstractionLayer.Registering.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive"), "item.metaBlend");
-			AbstractionLayer.Registering.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
 			AbstractionLayer.Registering.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemMotor = (ItemDescriptable) new ItemDescriptable("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());

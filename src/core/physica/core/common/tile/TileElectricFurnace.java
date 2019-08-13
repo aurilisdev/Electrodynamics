@@ -88,7 +88,7 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 			{
 				return false;
 			}
-			if (output.stackSize + 2 > 64)
+			if (output.stackSize + (getBlockMetadata() == EnumElectricFurnace.INDUSTRIAL.ordinal() ? 2 : 1) > 64)
 			{
 				return false;
 			}
