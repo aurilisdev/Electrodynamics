@@ -17,7 +17,6 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 		{
 			// Circuits
 			addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CRC", "RPR", "CRC", 'C', "ingotCopper", 'R', Items.redstone, 'P', "plateSteel");
-			addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0), "CRC", "RPR", "CRC", 'C', "ingotCopper", 'R', Items.redstone, 'P', "plateIron");
 			addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 1), "RGR", "BCB", "RGR", 'R', Items.redstone, 'G', Items.gold_nugget, 'B', "circuitBasic", 'C', "ingotCopper");
 			addRecipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 2), "GDG", "ALA", "GDG", 'G', Items.gold_ingot, 'D', Items.diamond, 'A', "circuitAdvanced", 'L', Blocks.lapis_block);
 
