@@ -63,6 +63,7 @@ public class FulminationEventHandler {
 
 	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z)
 	{
+		energy *= 5;
 		if (size > 0 && energy > 0)
 		{
 			Iterator<TileFulmination> iterator = set.iterator();
@@ -91,40 +92,17 @@ public class FulminationEventHandler {
 	@SubscribeEvent
 	public void onExplosion(ExplosionEvent.Detonate event)
 	{
+		double energy = event.explosion.explosionSize * 50;
+		if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
+		{
+			if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+			{
+				energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
+			}
+		}
 		if (event.explosion != null)
 		{
-			float size = event.explosion.explosionSize;
-			if (size > 0.0F)
-			{
-				Iterator<TileFulmination> iterator = set.iterator();
-				while (iterator.hasNext())
-				{
-					TileFulmination tile = iterator.next();
-					if (tile.isInvalid())
-					{
-						iterator.remove();
-					} else if (!tile.isInvalid() && event.world == tile.getWorldObj())
-					{
-						double distance = tile.getDistanceFrom(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
-						if (distance <= size && distance > 0.0D)
-						{
-							double energy = event.explosion.explosionSize * 50;
-							if (Loader.isModLoaded(CoreReferences.DOMAIN + "NuclearPhysics"))
-							{
-								if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
-								{
-									energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
-								}
-							}
-							double electricity = Math.min(energy, energy / (distance / size));
-							Location loc = tile.getLocation();
-							electricity = Math.max(electricity - event.world.getBlockDensity(Vec3.createVectorHelper(event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ),
-									CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(event.world, loc.xCoord, loc.yCoord, loc.zCoord)) * electricity, 0.0D);
-							tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));
-						}
-					}
-				}
-			}
+			onExplosionImpl((long) energy, event.explosion.explosionSize, event.world, event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
 		}
 	}
 

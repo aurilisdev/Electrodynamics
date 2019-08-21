@@ -1,20 +1,23 @@
 package physica.core.common.tile;
 
+import java.util.List;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
-import physica.api.core.electricity.IElectricityHandler;
-import physica.api.core.tile.ITileBasePowered;
+import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.event.FulminationEventHandler;
 import physica.library.location.Location;
 import physica.library.tile.TileBase;
 
-public class TileFulmination extends TileBase implements ITileBasePowered, IElectricityHandler {
+public class TileFulmination extends TileBase implements IElectricityProvider {
 
 	public static int	MAX_ENERGY_STORED	= 500000;
 	private int			energyStored;
 
-	@Override
 	public int getElectricityStored()
 	{
 		return energyStored;
@@ -35,20 +38,51 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 			FulminationEventHandler.INSTANCE.register(this);
 		}
 		Location loc = getLocation();
-		for (Face dir : Face.VALID)
+		if (energyStored > 0 && ticks % 20 == 0)
 		{
-			TileEntity tile = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
-			if (tile != null)
+			for (Face dir : Face.VALID)
 			{
-				if (AbstractionLayer.Electricity.isElectricReceiver(tile))
+				TileEntity tile = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
+				if (tile != null)
 				{
-					if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite()))
+					if (AbstractionLayer.Electricity.isElectricReceiver(tile))
 					{
-						AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), Math.min(5000, energyStored), false);
+						if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite()))
+						{
+							energyStored -= AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), energyStored, false);
+						}
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
+		super.writeSynchronizationPacket(dataList, player);
+		dataList.add(energyStored);
+	}
+
+	@Override
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
+		super.readSynchronizationPacket(buf, player);
+		energyStored = buf.readInt();
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag)
+	{
+		super.writeToNBT(tag);
+		tag.setInteger("energyStored", energyStored);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag)
+	{
+		super.readFromNBT(tag);
+		energyStored = tag.getInteger("energyStored");
 	}
 
 	@Override
@@ -66,28 +100,17 @@ public class TileFulmination extends TileBase implements ITileBasePowered, IElec
 	@Override
 	public int extractElectricity(Face from, int maxExtract, boolean simulate)
 	{
+		int value = Math.min(5000, energyStored);
 		if (!simulate)
 		{
-			energyStored -= Math.min(5000, energyStored);
+			energyStored -= value;
 		}
-		return Math.min(5000, energyStored);
-	}
-
-	@Override
-	public int getElectricityUsage()
-	{
-		return 0;
-	}
-
-	@Override
-	public int receiveElectricity(Face from, int maxReceive, boolean simulate)
-	{
-		return 0;
+		return value;
 	}
 
 	@Override
 	public int getElectricityStored(Face from)
 	{
-		return ITileBasePowered.super.getElectricityStored(from);
+		return energyStored;
 	}
 }

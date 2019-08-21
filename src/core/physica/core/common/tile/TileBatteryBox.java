@@ -38,7 +38,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 		super.updateServer(ticks);
 		drainBattery(SLOT_INPUT);
 
-		Face out = getFacing().getOpposite().getRelativeSide(Face.EAST);
+		Face out = getFacing().getOpposite().getRelativeSide(Face.WEST);
 		if (cachedOutput == null || cachedOutput.isInvalid())
 		{
 			cachedOutput = null;
@@ -62,7 +62,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	@Override
 	public int extractElectricity(Face from, int maxExtract, boolean simulate)
 	{
-		int removed = Math.min(Math.min(getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), Math.min(getElectricityStored(from), maxExtract));
+		int removed = from != getFacing().getOpposite().getRelativeSide(Face.WEST) ? 0 : Math.min(Math.min(getElectricCapacity(Face.UNKNOWN) / 500, getElectricityStored()), Math.min(getElectricityStored(from), maxExtract));
 		if (!simulate)
 		{
 			setElectricityStored(getElectricityStored(from) - removed);
@@ -75,8 +75,12 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	{
 		maxReceive = Math.min(maxReceive, getElectricCapacity(Face.UNKNOWN) / 500);
 		int capacityLeft = getElectricCapacity(from) - getElectricityStored();
-		setElectricityStored(simulate ? getElectricityStored() : capacityLeft >= maxReceive ? getElectricityStored() + maxReceive : getElectricCapacity(from));
-		return from == getFacing().getOpposite().getRelativeSide(Face.WEST) || from == Face.UNKNOWN ? capacityLeft >= maxReceive ? maxReceive : capacityLeft : 0;
+		int received = from != getFacing().getOpposite().getRelativeSide(Face.EAST) ? 0 : Math.min(maxReceive, capacityLeft);
+		if (!simulate)
+		{
+			setElectricityStored(getElectricityStored() + received);
+		}
+		return received;
 	}
 
 	@Override
