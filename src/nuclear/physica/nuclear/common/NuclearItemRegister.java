@@ -63,8 +63,6 @@ public class NuclearItemRegister implements IContent {
 			AbstractionLayer.Registering.registerItem(itemEmptyQuantumCell = (ItemDescriptable) new ItemDescriptable("emptyQuantumCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
 					itemEmptyQuantumCell.getUnlocalizedName());
 
-			AbstractionLayer.Registering.registerItem(itemGeigerCounter = new ItemGeigerCounter("geigerCounter"), itemGeigerCounter.getUnlocalizedName());
-
 			AbstractionLayer.Registering.registerItem(itemHeavyWaterCell = (ItemDescriptable) new ItemDescriptable("heavyWaterCell", "125ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemHeavyWaterCell.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemDeuteriumCell = (ItemDescriptable) new ItemDescriptable("deuteriumCell", "25ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemDeuteriumCell.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemTritiumCell = (ItemDescriptable) new ItemDescriptable("tritiumCell", "12.5ml").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemTritiumCell.getUnlocalizedName());
@@ -102,6 +100,8 @@ public class NuclearItemRegister implements IContent {
 				AbstractionLayer.Registering.registerItem(itemReinforcedHazmatBoots = new ItemHazmatArmor("ReinforcedHazmatBoots", 0, 3), itemReinforcedHazmatBoots.getUnlocalizedName());
 
 			}
+
+			AbstractionLayer.Registering.registerItem(itemGeigerCounter = new ItemGeigerCounter("geigerCounter"), itemGeigerCounter.getUnlocalizedName());
 
 			itemAntimatterCell125Milligram.addOreDictionaryInput("antimatter125Milligram", 0);
 			itemAntimatterCell1Gram.addOreDictionaryInput("antimatterGram", 0);

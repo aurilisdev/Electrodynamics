@@ -82,45 +82,42 @@ public class NuclearBlockRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
+			AbstractionLayer.Registering.registerBlock(blockElectromagnet = new BlockElectromagnet(), ItemBlockMetadata.class, "electromagnet");
+			AbstractionLayer.Registering.registerBlock(blockPlasma = new BlockPlasma(), "plasma");
+			AbstractionLayer.Registering.registerTileEntity(TilePlasma.class, NuclearReferences.PREFIX + "plasma");
+			AbstractionLayer.Registering.registerBlock(blockSiren = new BlockSiren(), ItemBlockDescriptable.class, "siren");
+			AbstractionLayer.Registering.registerTileEntity(TileSiren.class, NuclearReferences.PREFIX + "siren");
 			AbstractionLayer.Registering.registerBlock(blockParticleAccelerator = new BlockParticleAccelerator(), ItemBlockDescriptable.class, "accelerator");
 			AbstractionLayer.Registering.registerTileEntity(TileParticleAccelerator.class, NuclearReferences.PREFIX + "accelerator");
-			AbstractionLayer.Registering.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), ItemBlockDescriptable.class, "assembler");
-			AbstractionLayer.Registering.registerTileEntity(TileQuantumAssembler.class, NuclearReferences.PREFIX + "assembler");
+			AbstractionLayer.Registering.registerBlock(blockThermometer = new BlockThermometer(), ItemBlockDescriptable.class, "thermometer");
+			AbstractionLayer.Registering.registerTileEntity(TileThermometer.class, NuclearReferences.PREFIX + "thermometer");
+			AbstractionLayer.Registering.registerBlock(blockReactorControlPanel = new BlockReactorControlPanel(), ItemBlockDescriptable.class, "reactorControlPanel");
+			AbstractionLayer.Registering.registerTileEntity(TileReactorControlPanel.class, NuclearReferences.PREFIX + "reactorControlPanel");
 			AbstractionLayer.Registering.registerBlock(blockCentrifuge = new BlockGasCentrifuge(), ItemBlockDescriptable.class, "centrifuge");
 			AbstractionLayer.Registering.registerTileEntity(TileGasCentrifuge.class, NuclearReferences.PREFIX + "centrifuge");
 			AbstractionLayer.Registering.registerBlock(blockChemicalBoiler = new BlockChemicalBoiler(), ItemBlockDescriptable.class, "chemicalBoiler");
 			AbstractionLayer.Registering.registerTileEntity(TileChemicalBoiler.class, NuclearReferences.PREFIX + "chemicalBoiler");
 			AbstractionLayer.Registering.registerBlock(blockChemicalExtractor = new BlockChemicalExtractor(), ItemBlockDescriptable.class, "chemicalExtractor");
 			AbstractionLayer.Registering.registerTileEntity(TileChemicalExtractor.class, NuclearReferences.PREFIX + "chemicalExtractor");
-			AbstractionLayer.Registering.registerBlock(blockFissionReactor = new BlockFissionReactor(), ItemBlockDescriptable.class, "fissionReactor");
-			AbstractionLayer.Registering.registerTileEntity(TileFissionReactor.class, NuclearReferences.PREFIX + "fissionReactor");
-			AbstractionLayer.Registering.registerBlock(blockNeutronCaptureChamber = new BlockNeutronCaptureChamber(), ItemBlockDescriptable.class, "neutronCaptureChamber");
-			AbstractionLayer.Registering.registerTileEntity(TileNeutronCaptureChamber.class, NuclearReferences.PREFIX + "neutronCaptureChamber");
-			AbstractionLayer.Registering.registerBlock(blockThermometer = new BlockThermometer(), ItemBlockDescriptable.class, "thermometer");
-			AbstractionLayer.Registering.registerTileEntity(TileThermometer.class, NuclearReferences.PREFIX + "thermometer");
-			AbstractionLayer.Registering.registerBlock(blockControlRod = new BlockControlRod(), ItemBlockDescriptable.class, "controlRod");
-			AbstractionLayer.Registering.registerBlock(blockUraniumOre = new BlockUraniumOre(), "uraniumOre");
 			AbstractionLayer.Registering.registerBlock(blockFusionReactor = new BlockFusionReactor(), ItemBlockDescriptable.class, "fusionReactor");
 			AbstractionLayer.Registering.registerTileEntity(TileFusionReactor.class, NuclearReferences.PREFIX + "fusionReactor");
-			AbstractionLayer.Registering.registerBlock(blockRadioisotopeGenerator = new BlockRadioisotopeGenerator(), ItemBlockDescriptable.class, "radioisotopeGenerator");
-			AbstractionLayer.Registering.registerTileEntity(TileRadioisotopeGenerator.class, NuclearReferences.PREFIX + "radioisotopeGenerator");
+			AbstractionLayer.Registering.registerBlock(blockFissionReactor = new BlockFissionReactor(), ItemBlockDescriptable.class, "fissionReactor");
+			AbstractionLayer.Registering.registerTileEntity(TileFissionReactor.class, NuclearReferences.PREFIX + "fissionReactor");
 			AbstractionLayer.Registering.registerBlock(blockTurbine = new BlockTurbine(), ItemBlockDescriptable.class, "turbine");
 			AbstractionLayer.Registering.registerTileEntity(TileTurbine.class, NuclearReferences.PREFIX + "turbine");
-			AbstractionLayer.Registering.registerBlock(blockElectromagnet = new BlockElectromagnet(), ItemBlockMetadata.class, "electromagnet");
-			AbstractionLayer.Registering.registerBlock(blockPlasma = new BlockPlasma(), "plasma");
-			AbstractionLayer.Registering.registerTileEntity(TilePlasma.class, NuclearReferences.PREFIX + "plasma");
-			AbstractionLayer.Registering.registerBlock(blockSiren = new BlockSiren(), ItemBlockDescriptable.class, "siren");
-			AbstractionLayer.Registering.registerTileEntity(TileSiren.class, NuclearReferences.PREFIX + "siren");
-
+			AbstractionLayer.Registering.registerBlock(blockNeutronCaptureChamber = new BlockNeutronCaptureChamber(), ItemBlockDescriptable.class, "neutronCaptureChamber");
+			AbstractionLayer.Registering.registerTileEntity(TileNeutronCaptureChamber.class, NuclearReferences.PREFIX + "neutronCaptureChamber");
+			AbstractionLayer.Registering.registerBlock(blockControlRod = new BlockControlRod(), ItemBlockDescriptable.class, "controlRod");
+			AbstractionLayer.Registering.registerBlock(blockRadioisotopeGenerator = new BlockRadioisotopeGenerator(), ItemBlockDescriptable.class, "radioisotopeGenerator");
+			AbstractionLayer.Registering.registerTileEntity(TileRadioisotopeGenerator.class, NuclearReferences.PREFIX + "radioisotopeGenerator");
 			AbstractionLayer.Registering.registerBlock(blockInsertableControlRod = new BlockInsertableControlRod(), ItemBlockDescriptable.class, "insertableControlRod");
 			AbstractionLayer.Registering.registerTileEntity(TileInsertableControlRod.class, NuclearReferences.PREFIX + "insertableControlRod");
-
-			AbstractionLayer.Registering.registerBlock(blockReactorControlPanel = new BlockReactorControlPanel(), ItemBlockDescriptable.class, "reactorControlPanel");
-			AbstractionLayer.Registering.registerTileEntity(TileReactorControlPanel.class, NuclearReferences.PREFIX + "reactorControlPanel");
-
+			AbstractionLayer.Registering.registerBlock(blockQuantumAssembler = new BlockQuantumAssembler(), ItemBlockDescriptable.class, "assembler");
+			AbstractionLayer.Registering.registerTileEntity(TileQuantumAssembler.class, NuclearReferences.PREFIX + "assembler");
 			AbstractionLayer.Registering.registerBlock(blockMeltedReactor = new BlockMeltedReactor(), "meltedReactor");
 			AbstractionLayer.Registering.registerTileEntity(TileMeltedReactor.class, NuclearReferences.PREFIX + "meltedReactor");
 
+			AbstractionLayer.Registering.registerBlock(blockUraniumOre = new BlockUraniumOre(), "uraniumOre");
 			AbstractionLayer.Registering.registerBlock(blockRadioactiveGrass = new BlockRadioactiveGrass(), "radioactiveGrass");
 			AbstractionLayer.Registering.registerBlock(blockRadioactiveStone = new BlockRadioactiveStone(), "radioactiveStone");
 			AbstractionLayer.Registering.registerBlock(blockRadioactiveDirt = new BlockRadioactiveDirt(), "radioactiveDirt");

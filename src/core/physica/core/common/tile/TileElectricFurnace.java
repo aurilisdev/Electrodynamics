@@ -173,7 +173,7 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack)
 	{
-		return slot == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slot == 0 ? AbstractionLayer.Electricity.isItemElectric(itemStack) : false;
+		return slot == SLOT_INPUT ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(itemStack) : false;
 	}
 
 	@Override

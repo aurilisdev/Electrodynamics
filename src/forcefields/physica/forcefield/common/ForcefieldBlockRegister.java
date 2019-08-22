@@ -34,10 +34,10 @@ public class ForcefieldBlockRegister implements IContent {
 		{
 			AbstractionLayer.Registering.registerBlock(blockCoercionDriver = new BlockCoercionDriver(), ItemBlockDescriptable.class, "coercionDriver");
 			AbstractionLayer.Registering.registerTileEntity(TileCoercionDriver.class, ForcefieldReferences.PREFIX + "coercionDriver");
-			AbstractionLayer.Registering.registerBlock(blockFortronConstructor = new BlockFortronFieldConstructor(), ItemBlockDescriptable.class, "fortronConstructor");
-			AbstractionLayer.Registering.registerTileEntity(TileFortronFieldConstructor.class, ForcefieldReferences.PREFIX + "fortronConstructor");
 			AbstractionLayer.Registering.registerBlock(blockFortronCapacitor = new BlockFortronCapacitor(), ItemBlockDescriptable.class, "fortronCapacitor");
 			AbstractionLayer.Registering.registerTileEntity(TileFortronCapacitor.class, ForcefieldReferences.PREFIX + "fortronCapacitor");
+			AbstractionLayer.Registering.registerBlock(blockFortronConstructor = new BlockFortronFieldConstructor(), ItemBlockDescriptable.class, "fortronConstructor");
+			AbstractionLayer.Registering.registerTileEntity(TileFortronFieldConstructor.class, ForcefieldReferences.PREFIX + "fortronConstructor");
 			AbstractionLayer.Registering.registerBlock(blockInterdictionMatrix = new BlockInterdictionMatrix(), ItemBlockDescriptable.class, "interdictionMatrix");
 			AbstractionLayer.Registering.registerTileEntity(TileInterdictionMatrix.class, ForcefieldReferences.PREFIX + "interdictionMatrix");
 			AbstractionLayer.Registering.registerBlock(blockBiometricIdentifier = new BlockBiometricIdentifier(), ItemBlockDescriptable.class, "biometricIdentifier");

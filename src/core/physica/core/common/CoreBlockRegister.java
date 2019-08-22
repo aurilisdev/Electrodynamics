@@ -49,25 +49,25 @@ public class CoreBlockRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			AbstractionLayer.Registering.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), ItemBlockDescriptable.class, "infEnergy");
-			AbstractionLayer.Registering.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
-			AbstractionLayer.Registering.registerBlock(blockFulmination = new BlockFulmination(), ItemBlockDescriptable.class, "fulmination");
-			AbstractionLayer.Registering.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
-			AbstractionLayer.Registering.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), ItemBlockDescriptable.class, "blastFurnace");
-			AbstractionLayer.Registering.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
 			AbstractionLayer.Registering.registerBlock(blockCoalGenerator = new BlockCoalGenerator(), ItemBlockDescriptable.class, "coalGenerator");
 			AbstractionLayer.Registering.registerTileEntity(TileCoalGenerator.class, CoreReferences.PREFIX + "coalGenerator");
 			AbstractionLayer.Registering.registerBlock(blockBatteryBox = new BlockBatteryBox(), ItemBlockMetadata.class, "batteryBox");
 			AbstractionLayer.Registering.registerTileEntity(TileBatteryBox.class, CoreReferences.PREFIX + "batteryBox");
 			AbstractionLayer.Registering.registerBlock(blockElectricFurnace = new BlockElectricFurnace(), ItemBlockMetadata.class, "electricFurnace");
 			AbstractionLayer.Registering.registerTileEntity(TileElectricFurnace.class, CoreReferences.PREFIX + "electricFurnace");
+			AbstractionLayer.Registering.registerBlock(blockBlastFurnace = new BlockBlastFurnace(), ItemBlockDescriptable.class, "blastFurnace");
+			AbstractionLayer.Registering.registerTileEntity(TileBlastFurnace.class, CoreReferences.PREFIX + "blastFurnace");
+			AbstractionLayer.Registering.registerBlock(blockFulmination = new BlockFulmination(), ItemBlockDescriptable.class, "fulmination");
+			AbstractionLayer.Registering.registerTileEntity(TileFulmination.class, CoreReferences.PREFIX + "fulmination");
+			AbstractionLayer.Registering.registerBlock(blockInfEnergy = new BlockInfiniteEnergy(), ItemBlockDescriptable.class, "infEnergy");
+			AbstractionLayer.Registering.registerTileEntity(TileInfiniteEnergy.class, CoreReferences.PREFIX + "infEnergy");
 			AbstractionLayer.Registering.registerBlock(blockCable = new BlockEnergyCable(), ItemBlockMetadata.class, "energyCable");
 			AbstractionLayer.Registering.registerTileEntity(TileEnergyCable.class, CoreReferences.PREFIX + "energyCable");
+			AbstractionLayer.Registering.registerBlock(blockLead = new BlockLead(), "blockLead");
 			AbstractionLayer.Registering.registerBlock(blockTinOre = new BlockOre("tinOre", ConfigCore.TIN_ORE_HARVEST_LEVEL), "tinOre");
 			AbstractionLayer.Registering.registerBlock(blockCopperOre = new BlockOre("copperOre", ConfigCore.COPPER_ORE_HARVEST_LEVEL), "copperOre");
 			AbstractionLayer.Registering.registerBlock(blockLeadOre = new BlockOre("leadOre", ConfigCore.LEAD_ORE_HARVEST_LEVEL), "leadOre");
 			AbstractionLayer.Registering.registerBlock(blockSilverOre = new BlockOre("silverOre", ConfigCore.SILVER_ORE_HARVEST_LEVEL), "silverOre");
-			AbstractionLayer.Registering.registerBlock(blockLead = new BlockLead(), "blockLead");
 			AbstractionLayer.Registering.registerOre("oreLead", blockLeadOre);
 			AbstractionLayer.Registering.registerOre("oreTin", blockTinOre);
 			AbstractionLayer.Registering.registerOre("oreCopper", blockCopperOre);
