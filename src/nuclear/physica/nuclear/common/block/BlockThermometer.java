@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.library.util.ChatUtilities;
@@ -32,7 +31,7 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 		setHardness(3.5F);
 		setResistance(20);
 		setHarvestLevel("pickaxe", 2);
-		setBlockTextureName(CoreReferences.PREFIX + "thermometer");
+		setBlockTextureName(NuclearReferences.PREFIX + "thermometer");
 		setBlockName(NuclearReferences.PREFIX + "thermometer");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setTickRandomly(true);
@@ -131,7 +130,7 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		iconTop = iconRegister.registerIcon(CoreReferences.PREFIX + "thermometerTop");
+		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "thermometerTop");
 	}
 
 	@Override

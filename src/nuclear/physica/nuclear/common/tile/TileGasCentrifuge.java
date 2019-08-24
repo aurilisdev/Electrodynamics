@@ -183,7 +183,7 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	}
 
 	@Override
-	public int getElectricityUsage()
+	public int getPowerUsage()
 	{
 		return POWER_USAGE;
 	}

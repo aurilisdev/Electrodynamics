@@ -39,7 +39,7 @@ public class GuiCentrifuge extends GuiContainerBase<TileGasCentrifuge> implement
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: " + (host.hasEnoughEnergy() ? host.canProcess() ? "Processing" : "Lacking hexafluoride" : "Insufficient Power"), 8, 73);
-		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getElectricityUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getPowerUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "centrifuge.gui"), xSize / 2, 5);
 	}
 

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
+import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.common.item.ItemFrequency;
 import physica.forcefield.common.item.ItemIdentificationCard;
 import physica.library.item.ItemDescriptable;
@@ -29,17 +30,18 @@ public class ForcefieldItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			AbstractionLayer.Registering.registerItem(itemMetaShapeModule = (ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere").addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube").addSubItem("moduleShapePyramid")
-					.setCreativeTab(ForcefieldTabRegister.forcefieldTab).setMaxStackSize(1), "item.metaShapeModule");
-			AbstractionLayer.Registering.registerItem(itemMetaUpgradeModule = (ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed").addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock")
+			AbstractionLayer.Registering.registerItem(itemMetaShapeModule = (ItemMetaHolder) new ItemMetaHolder("moduleShapeSphere", ForcefieldReferences.PREFIX).addSubItem("moduleShapeHemisphere").addSubItem("moduleShapeCube")
+					.addSubItem("moduleShapePyramid").setCreativeTab(ForcefieldTabRegister.forcefieldTab).setMaxStackSize(1), "item.metaShapeModule");
+			AbstractionLayer.Registering.registerItem(itemMetaUpgradeModule = (ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed", ForcefieldReferences.PREFIX).addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock")
 					.addSubItem("moduleUpgradeDisintegration").addSubItem("moduleUpgradeInterior").addSubItem("moduleUpgradeSponge").addSubItem("moduleUpgradeStabilize").addSubItem("moduleUpgradeColorChange")
 					.addSubItem("moduleUpgradeAntiHostile").addSubItem("moduleUpgradeAntiFriendly").addSubItem("moduleUpgradeAntiPersonnel").addSubItem("moduleUpgradeAntiSpawn").addSubItem("moduleUpgradeBlockAccess")
 					.addSubItem("moduleUpgradeBlockAlter").addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").setCreativeTab(ForcefieldTabRegister.forcefieldTab), "item.metaUpgradeModule");
-
-			AbstractionLayer.Registering.registerItem(itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale").addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
+			AbstractionLayer.Registering.registerItem(
+					itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale", ForcefieldReferences.PREFIX).addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
 					"item.metaManipulationModule");
 
-			AbstractionLayer.Registering.registerItem(itemFocusMatrix = (ItemDescriptable) new ItemDescriptable("focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab), itemFocusMatrix.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemFocusMatrix = (ItemDescriptable) new ItemDescriptable(ForcefieldReferences.PREFIX, "focusMatrix").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
+					itemFocusMatrix.getUnlocalizedName());
 
 			AbstractionLayer.Registering.registerItem(itemFrequency = new ItemFrequency("frequencyCard"), itemFrequency.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemIdentifcationCard = new ItemIdentificationCard("identificationCard"), itemIdentifcationCard.getUnlocalizedName());

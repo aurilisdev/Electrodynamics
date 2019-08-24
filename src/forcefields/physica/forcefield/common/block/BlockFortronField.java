@@ -20,7 +20,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.Face;
 import physica.api.forcefield.IFortronBlock;
 import physica.forcefield.ForcefieldReferences;
@@ -40,7 +39,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 		super(Material.glass);
 		setBlockUnbreakable();
 		setResistance(Float.MAX_VALUE);
-		setBlockTextureName(CoreReferences.PREFIX + "animatedFortronField");
+		setBlockTextureName(ForcefieldReferences.PREFIX + "animatedFortronField");
 		setBlockName(ForcefieldReferences.PREFIX + "fortronField");
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
 	}

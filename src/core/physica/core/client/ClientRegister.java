@@ -8,7 +8,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import physica.CoreReferences;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
-import physica.core.client.render.item.ItemRenderEnergyCable;
 import physica.core.client.render.tile.TileRenderBlastFurnace;
 import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
@@ -35,7 +34,6 @@ public class ClientRegister implements IContent {
 					new ItemRenderObjModel("blastFurnace.obj", "blastFurnace.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEnergyCable.class, new TileRenderEnergyCable());
-			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockCable), new ItemRenderEnergyCable());
 		}
 	}
 }

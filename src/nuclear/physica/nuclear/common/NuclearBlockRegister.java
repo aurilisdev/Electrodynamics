@@ -129,17 +129,17 @@ public class NuclearBlockRegister implements IContent {
 			AbstractionLayer.Registering.registerOre("blockRadioactiveGrass", new ItemStack(blockRadioactiveGrass, 1, 15));
 
 			ItemBlockDescriptable.addDescription(blockParticleAccelerator, 0,
-					EnumChatFormatting.GOLD + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileParticleAccelerator.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileParticleAccelerator.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockQuantumAssembler, 0,
-					EnumChatFormatting.GOLD + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileQuantumAssembler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileQuantumAssembler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockCentrifuge, 0,
-					EnumChatFormatting.GOLD + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileGasCentrifuge.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileGasCentrifuge.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockChemicalBoiler, 0,
-					EnumChatFormatting.GOLD + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalBoiler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalBoiler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockChemicalExtractor, 0,
-					EnumChatFormatting.GOLD + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalExtractor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalExtractor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockFusionReactor, 0,
-					EnumChatFormatting.GOLD + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileFusionReactor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileFusionReactor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 
 			ItemBlockDescriptable.addDescriptionShifted(blockParticleAccelerator, 0, "Accelerates particles to high speeds", "in order to produce new exotic", "forms of matter.");
 			ItemBlockDescriptable.addDescriptionShifted(blockQuantumAssembler, 0, "Assembles matter from dark matter", "using a template object.");

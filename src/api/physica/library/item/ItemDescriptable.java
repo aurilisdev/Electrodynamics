@@ -7,16 +7,15 @@ import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import physica.CoreReferences;
 import physica.core.common.CoreTabRegister;
 
 public class ItemDescriptable extends ItemUpdateable {
 
 	public Set<String> lineList = new HashSet<>();
 
-	public ItemDescriptable(String name, String... customLines) {
+	public ItemDescriptable(String texturePrefix, String name, String... customLines) {
 		setUnlocalizedName(name);
-		setTextureName(CoreReferences.PREFIX + name);
+		setTextureName(texturePrefix + name);
 		lineList.addAll(Arrays.asList(customLines));
 		setCreativeTab(CoreTabRegister.coreTab);
 	}

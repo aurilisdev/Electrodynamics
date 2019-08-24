@@ -11,6 +11,7 @@ import physica.CoreReferences;
 import physica.library.client.render.ItemRenderObjModel;
 import physica.library.client.render.obj.PhysicaModelLoader;
 import physica.library.client.render.obj.model.WavefrontObject;
+import physica.nuclear.NuclearReferences;
 
 @SideOnly(Side.CLIENT)
 public class ItemRenderControlRod extends ItemRenderObjModel {
@@ -18,8 +19,8 @@ public class ItemRenderControlRod extends ItemRenderObjModel {
 	protected WavefrontObject modelCenter;
 
 	public ItemRenderControlRod(String objFile, String textureFile) {
-		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		modelCenter = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Station.obj", "Rods.obj")));
+		super(objFile, textureFile, NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		modelCenter = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Station.obj", "Rods.obj")));
 	}
 
 	@Override

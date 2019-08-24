@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import physica.CoreReferences;
+import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.common.ForcefieldTabRegister;
 
 public class ItemIdentificationCard extends Item implements ICardIdentification {
@@ -19,7 +19,7 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 
 	public ItemIdentificationCard(String name) {
 		setUnlocalizedName(name);
-		setTextureName(CoreReferences.PREFIX + name);
+		setTextureName(ForcefieldReferences.PREFIX + name);
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
 		setMaxStackSize(1);
 	}

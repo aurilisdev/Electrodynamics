@@ -7,12 +7,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.library.location.Location;
 import physica.library.tile.TileBase;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 
 public class TileTurbine extends TileBase implements IElectricityProvider {
@@ -180,7 +180,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		}
 		if (World().getWorldTime() % 20 == 0 && isGenerating && (!hasMain || isMain))
 		{
-			World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, CoreReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
+			World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, NuclearReferences.PREFIX + "block.turbine", isMain ? 0.75f : 0.1f, 1F);
 		}
 	}
 

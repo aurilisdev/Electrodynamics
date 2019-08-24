@@ -25,4 +25,9 @@ public enum EnumConductorType {
 	{
 		return transferRate;
 	}
+
+	public String asset()
+	{
+		return this == copper ? "wireCopper" : this == silver ? "wireSilver" : this == gold ? "wireGold" : this == superConductor ? "wireSuperConductor" : "wireCopper";
+	}
 }

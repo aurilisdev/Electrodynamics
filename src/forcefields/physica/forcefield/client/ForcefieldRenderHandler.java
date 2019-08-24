@@ -17,6 +17,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import physica.CoreReferences;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
+import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.client.render.tile.RenderFortronBlockInfo;
 import physica.library.client.render.TessellatorWrapper;
 import physica.library.location.VectorLocation;
@@ -31,7 +32,7 @@ public class ForcefieldRenderHandler {
 	{
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(1, 1);
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png"));
 		TessellatorWrapper.instance.startDrawingQuads();
 		for (RenderFortronBlockInfo render : renderSet)
 		{

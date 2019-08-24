@@ -10,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import physica.CoreReferences;
 import physica.core.common.CoreTabRegister;
 
 public class ItemMetaHolder extends ItemUpdateable {
@@ -19,6 +18,7 @@ public class ItemMetaHolder extends ItemUpdateable {
 	@SideOnly(Side.CLIENT)
 	public IIcon[]				subIcons;
 	public String				textureFolder;
+	public final String			prefix;
 
 	public ItemMetaHolder setTextureFolder(String textureFolder)
 	{
@@ -26,7 +26,8 @@ public class ItemMetaHolder extends ItemUpdateable {
 		return this;
 	}
 
-	public ItemMetaHolder(String name) {
+	public ItemMetaHolder(String name, String prefix) {
+		this.prefix = prefix;
 		setUnlocalizedName(name);
 		subItems.add(name);
 		setCreativeTab(CoreTabRegister.coreTab);
@@ -41,7 +42,7 @@ public class ItemMetaHolder extends ItemUpdateable {
 		subIcons = new IIcon[subItems.size()];
 		for (int i = 0; i < subItems.size(); i++)
 		{
-			subIcons[i] = register.registerIcon(CoreReferences.PREFIX + textureFolder + "/" + subItems.get(i));
+			subIcons[i] = register.registerIcon(prefix + textureFolder + "/" + subItems.get(i));
 		}
 	}
 

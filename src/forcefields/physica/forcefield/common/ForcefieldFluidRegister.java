@@ -5,7 +5,6 @@ import net.minecraftforge.client.event.TextureStitchEvent.Post;
 import net.minecraftforge.client.event.TextureStitchEvent.Pre;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import physica.CoreReferences;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.forcefield.ForcefieldReferences;
@@ -26,12 +25,12 @@ public class ForcefieldFluidRegister implements IContent {
 
 	public static void textureStitchEventPre(Pre event)
 	{
-		event.map.registerIcon(CoreReferences.PREFIX + "fluids/fortron");
+		event.map.registerIcon(ForcefieldReferences.PREFIX + "fluids/fortron");
 	}
 
 	public static void textureStitchEventPost(Post event)
 	{
-		IIcon icon = event.map.getTextureExtry(CoreReferences.PREFIX + "fluids/fortron");
+		IIcon icon = event.map.getTextureExtry(ForcefieldReferences.PREFIX + "fluids/fortron");
 		LIQUID_FORTRON.setIcons(icon);
 	}
 

@@ -8,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreBlockRegister;
@@ -29,7 +28,7 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setBlockName(NuclearReferences.PREFIX + "reactorControlPanel");
-		setBlockTextureName(CoreReferences.PREFIX + "reactorControlPanel");
+		setBlockTextureName(NuclearReferences.PREFIX + "reactorControlPanel");
 		addToRegister("Nuclear", this);
 	}
 

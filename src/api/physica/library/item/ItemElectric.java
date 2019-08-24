@@ -63,7 +63,7 @@ public class ItemElectric extends Item implements IElectricItem {
 	@Override
 	public boolean showDurabilityBar(ItemStack stack)
 	{
-		return getElectricityStored(stack) < getElectricCapacity(stack);
+		return getElectricityStored(stack) < getElectricCapacity(stack) && getElectricityStored(stack) > 0;
 	}
 
 	@SuppressWarnings("unchecked")

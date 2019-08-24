@@ -1,10 +1,10 @@
 package physica.nuclear.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
-import physica.CoreReferences;
 import physica.api.core.abstraction.Face;
 import physica.library.location.Location;
 import physica.library.tile.TileBase;
+import physica.nuclear.NuclearReferences;
 
 public class TileSiren extends TileBase {
 
@@ -26,7 +26,7 @@ public class TileSiren extends TileBase {
 					}
 				}
 				int pitch = World().getBlockMetadata(loc.xCoord, loc.yCoord, loc.zCoord);
-				World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, CoreReferences.PREFIX + "block.siren", volume, 1F - 0.18F * (pitch / 15F));
+				World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, NuclearReferences.PREFIX + "block.siren", volume, 1F - 0.18F * (pitch / 15F));
 			}
 		}
 	}

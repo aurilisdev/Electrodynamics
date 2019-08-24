@@ -215,7 +215,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	}
 
 	@Override
-	public int getElectricityUsage()
+	public int getPowerUsage()
 	{
 		return POWER_USAGE;
 	}

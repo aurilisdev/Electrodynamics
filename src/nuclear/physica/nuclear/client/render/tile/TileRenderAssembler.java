@@ -15,6 +15,7 @@ import physica.api.core.utilities.IBaseUtilities;
 import physica.library.client.render.TessellatorWrapper;
 import physica.library.client.render.TileRenderObjModel;
 import physica.library.location.Location;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.tile.TileQuantumAssembler;
 
 @SideOnly(Side.CLIENT)
@@ -24,7 +25,7 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 	protected static final RenderItem		renderItem						= (RenderItem) RenderManager.instance.getEntityClassRenderObject(EntityItem.class);
 
 	public TileRenderAssembler(String objFile, String textureFile) {
-		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		super(objFile, textureFile, NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
 	}
 
 	protected float		current		= 0, lastOperating = 0;

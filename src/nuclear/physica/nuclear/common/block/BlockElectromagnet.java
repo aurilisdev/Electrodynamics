@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.Face;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
@@ -37,7 +36,7 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 		setHardness(3.5F);
 		setResistance(20);
 		setHarvestLevel("pickaxe", 2);
-		setBlockTextureName(CoreReferences.PREFIX + "electromagnet");
+		setBlockTextureName(NuclearReferences.PREFIX + "electromagnet");
 		setBlockName(NuclearReferences.PREFIX + "electromagnet");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		addToRegister("Nuclear", this);
@@ -71,11 +70,11 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		iconTop = iconRegister.registerIcon(CoreReferences.PREFIX + "electromagnetTop");
-		iconGlass = iconRegister.registerIcon(CoreReferences.PREFIX + "electromagnetGlass");
-		containment = iconRegister.registerIcon(CoreReferences.PREFIX + "containmentBlock");
-		containmentIconTop = iconRegister.registerIcon(CoreReferences.PREFIX + "containmentTop");
-		containmentIconGlass = iconRegister.registerIcon(CoreReferences.PREFIX + "containmentGlass");
+		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "electromagnetTop");
+		iconGlass = iconRegister.registerIcon(NuclearReferences.PREFIX + "electromagnetGlass");
+		containment = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentBlock");
+		containmentIconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentTop");
+		containmentIconGlass = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentGlass");
 	}
 
 	@Override

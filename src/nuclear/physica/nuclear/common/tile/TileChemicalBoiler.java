@@ -198,7 +198,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	}
 
 	@Override
-	public int getElectricityUsage()
+	public int getPowerUsage()
 	{
 		return POWER_USAGE;
 	}

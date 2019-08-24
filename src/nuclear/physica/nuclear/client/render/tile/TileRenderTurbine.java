@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.library.client.render.obj.PhysicaModelLoader;
 import physica.library.client.render.obj.model.WavefrontObject;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.tile.TileTurbine;
 
 @SideOnly(Side.CLIENT)
@@ -24,11 +25,11 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 	protected ResourceLocation	model_texture;
 
 	public TileRenderTurbine(String objFile, String textureFile) {
-		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));
-		model_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile);
-		model_baseOptimized = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "SmallOptimized.obj")));
-		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
-		model_big = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
+		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));
+		model_texture = new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile);
+		model_baseOptimized = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "SmallOptimized.obj")));
+		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
+		model_big = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
 	}
 
 	public void renderTileAt(TileTurbine tile, double x, double y, double z, float deltaFrame)

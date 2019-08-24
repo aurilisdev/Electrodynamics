@@ -18,8 +18,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import physica.CoreReferences;
 import physica.api.core.utilities.IBaseUtilities;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearItemRegister;
 
 @SideOnly(Side.CLIENT)
@@ -64,7 +64,7 @@ public class RoentgenOverlay implements IBaseUtilities {
 			GL11.glPopMatrix();
 			if (Minecraft.getMinecraft().thePlayer.worldObj.rand.nextFloat() * 50 * RadiationSystem.toRealRoentgenConversionRate < (rounded == 3.6 ? 180 : rounded))
 			{
-				Minecraft.getMinecraft().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(CoreReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
+				Minecraft.getMinecraft().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(NuclearReferences.PREFIX + "block.geiger"), 0.3f, 0, (float) mp.posX, (float) mp.posY, (float) mp.posZ));
 			}
 		}
 	}

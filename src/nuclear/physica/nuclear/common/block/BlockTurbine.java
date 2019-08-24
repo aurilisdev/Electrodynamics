@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.nuclear.NuclearReferences;
@@ -90,7 +89,7 @@ public class BlockTurbine extends BlockContainer implements IBaseUtilities, IRec
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "siren");
+		blockIcon = reg.registerIcon(NuclearReferences.PREFIX + "siren");
 	}
 
 	@Override

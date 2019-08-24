@@ -12,6 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import physica.api.forcefield.IInvFortronTile;
+import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.common.ForcefieldBlockRegister;
 import physica.forcefield.common.ForcefieldTabRegister;
 import physica.library.item.ItemDescriptable;
@@ -19,7 +20,7 @@ import physica.library.item.ItemDescriptable;
 public class ItemFrequency extends ItemDescriptable {
 
 	public ItemFrequency(String name) {
-		super(name);
+		super(ForcefieldReferences.PREFIX, name);
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
 		setMaxStackSize(1);
 	}

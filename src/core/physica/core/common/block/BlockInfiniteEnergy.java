@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.CoreReferences;
@@ -32,7 +33,7 @@ public class BlockInfiniteEnergy extends Block implements ITileEntityProvider {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "siren");
+		blockIcon = Blocks.iron_bars.getIcon(0, 0);
 	}
 
 	@Override

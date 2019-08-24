@@ -1,6 +1,5 @@
 package physica.core.common.block;
 
-import java.awt.Color;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -17,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.CoreReferences;
@@ -43,12 +43,6 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		setBlockBounds(TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo, 1 - TileRenderEnergyCable.pixelElevenTwo,
 				1 - TileRenderEnergyCable.pixelElevenTwo);
 		addToRegister("Core", this);
-	}
-
-	@Override
-	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
-	{
-		return Color.GRAY.darker().darker().darker().getRGB();
 	}
 
 	@Override
@@ -152,17 +146,29 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	private IIcon[] icons = new IIcon[EnumConductorType.values().length];
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = Blocks.wool.getIcon(0, 0);
+		for (EnumConductorType type : EnumConductorType.values())
+		{
+			icons[type.ordinal()] = reg.registerIcon(CoreReferences.PREFIX + "wire/" + type.asset());
+		}
 	}
 
 	@Override
 	public boolean hasTileEntity(int metadata)
 	{
 		return true;
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta)
+	{
+		return icons[meta];
 	}
 
 	@Override

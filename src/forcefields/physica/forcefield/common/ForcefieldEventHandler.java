@@ -8,7 +8,6 @@ import java.util.Set;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import defense.api.ExplosionEvent.PostExplosionEvent;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
@@ -22,8 +21,6 @@ import physica.forcefield.common.tile.TileFortronField;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.forcefield.common.tile.TileInterdictionMatrix;
 import physica.library.location.Location;
-import physica.nuclear.common.NuclearItemRegister;
-import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
 public class ForcefieldEventHandler {
 
@@ -203,14 +200,7 @@ public class ForcefieldEventHandler {
 	{
 		if (event.explosion != null)
 		{
-			float size = event.explosion.explosionSize;
-			long energy = (long) size * 50;
-
-			if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
-			{
-				energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
-			}
-			onExplosionImpl(energy, size, event.world, event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
+			onExplosionImpl((long) (event.explosion.explosionSize * 50), event.explosion.explosionSize, event.world, event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
 		}
 	}
 

@@ -190,9 +190,9 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 	}
 
 	@Override
-	public int getElectricityUsage()
+	public int getPowerUsage()
 	{
-		return (int) (POWER_USAGE * Math.pow(getBlockMetadata() + 1, 2));
+		return POWER_USAGE * 3;
 	}
 
 	@Override

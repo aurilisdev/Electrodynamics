@@ -10,6 +10,7 @@ import physica.CoreReferences;
 import physica.library.client.render.TileRenderObjModel;
 import physica.library.client.render.obj.PhysicaModelLoader;
 import physica.library.client.render.obj.model.WavefrontObject;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.tile.TileFissionReactor;
 
 @SideOnly(Side.CLIENT)
@@ -18,8 +19,8 @@ public class TileRenderFissionReactor extends TileRenderObjModel<TileFissionReac
 	protected WavefrontObject model_middle;
 
 	public TileRenderFissionReactor(String objFile, String textureFile) {
-		super(objFile, textureFile, CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
+		super(objFile, textureFile, NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class GuiCoercionDriver extends GuiContainerBase<TileCoercionDriver> impl
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Transfer rate: " + host.getFortronTransferRate() / 1000.0 + "L/t", 8, 105);
 		drawString("Linked Devices: " + host.getFortronConnections().size(), 8, 95);
-		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getElectricityUsage(), Unit.RF, Unit.WATT), Unit.WATT) + "/t", 8, 85);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getPowerUsage(), Unit.RF, Unit.WATT), Unit.WATT) + "/t", 8, 85);
 		drawString("Status: " + (host.isActivated() ? "Active" : "Disabled"), 8, 75);
 		drawString("Frequency: " + host.getFrequency(), 8, 65);
 

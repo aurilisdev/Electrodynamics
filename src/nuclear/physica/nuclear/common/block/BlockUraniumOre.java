@@ -9,7 +9,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -24,7 +23,7 @@ public class BlockUraniumOre extends Block {
 		setLightLevel(0.1f);
 		setStepSound(soundTypeStone);
 		setHarvestLevel("pickaxe", ConfigNuclearPhysics.URANIUM_ORE_HARVEST_LEVEL);
-		setBlockTextureName(CoreReferences.PREFIX + "uraniumOre");
+		setBlockTextureName(NuclearReferences.PREFIX + "uraniumOre");
 		setBlockName(NuclearReferences.PREFIX + "uraniumOre");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setTickRandomly(true);

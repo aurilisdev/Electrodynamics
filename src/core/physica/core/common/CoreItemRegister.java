@@ -1,5 +1,6 @@
 package physica.core.common;
 
+import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
@@ -26,16 +27,17 @@ public class CoreItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			AbstractionLayer.Registering.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic").addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
-			AbstractionLayer.Registering.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron").addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
-			AbstractionLayer.Registering.registerItem(itemMetaIngot = new ItemMetaHolder("tinIngot").addSubItem("copperIngot").addSubItem("steelIngot").addSubItem("leadIngot").addSubItem("silverIngot").addSubItem("superConductiveIngot"),
+			AbstractionLayer.Registering.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic", CoreReferences.PREFIX).addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
+			AbstractionLayer.Registering.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron", CoreReferences.PREFIX).addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
+			AbstractionLayer.Registering.registerItem(
+					itemMetaIngot = new ItemMetaHolder("ingotTin", CoreReferences.PREFIX).addSubItem("ingotCopper").addSubItem("ingotSteel").addSubItem("ingotLead").addSubItem("ingotSilver").addSubItem("ingotSuperConductive"),
 					"item.metaIngot");
-			AbstractionLayer.Registering.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive"), "item.metaBlend");
+			AbstractionLayer.Registering.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive", CoreReferences.PREFIX), "item.metaBlend");
 			AbstractionLayer.Registering.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
-			AbstractionLayer.Registering.registerItem(itemMotor = (ItemDescriptable) new ItemDescriptable("motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemMotor = (ItemDescriptable) new ItemDescriptable(CoreReferences.PREFIX, "motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemBattery = new ItemBattery("phyBattery"), itemBattery.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemMultimeter = new ItemMultimeter(), itemMultimeter.getUnlocalizedName());
-			AbstractionLayer.Registering.registerItem(itemEmptyCell = (ItemDescriptable) new ItemDescriptable("emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
+			AbstractionLayer.Registering.registerItem(itemEmptyCell = (ItemDescriptable) new ItemDescriptable(CoreReferences.PREFIX, "emptyCell").setMaxStackSize(64), itemEmptyCell.getUnlocalizedName());
 			itemMetaPlate.setTextureFolder("plate");
 			itemMetaIngot.setTextureFolder("ingot");
 			itemMetaBlend.setTextureFolder("blend");

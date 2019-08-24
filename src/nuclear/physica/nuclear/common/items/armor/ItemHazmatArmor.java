@@ -5,6 +5,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import physica.CoreReferences;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 
 public class ItemHazmatArmor extends ItemArmor {
@@ -18,7 +19,7 @@ public class ItemHazmatArmor extends ItemArmor {
 		setMaxDamage(37500);
 		canRepair = false;
 		setUnlocalizedName(type);
-		setTextureName(CoreReferences.PREFIX + "hazmat/" + type);
+		setTextureName(NuclearReferences.PREFIX + "hazmat/" + type);
 		if (type.contains("Reinforced"))
 		{
 			setPlatingProtection(5);
@@ -28,7 +29,7 @@ public class ItemHazmatArmor extends ItemArmor {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-		return CoreReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + (getUnlocalizedName().contains("Reinforced") ? "reinforcedHazmatArmor" : "hazmatArmor") + ".png";
+		return NuclearReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + (getUnlocalizedName().contains("Reinforced") ? "reinforcedHazmatArmor" : "hazmatArmor") + ".png";
 	}
 
 	public ItemHazmatArmor setPlatingProtection(float protection)

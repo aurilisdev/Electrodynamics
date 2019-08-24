@@ -194,7 +194,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	}
 
 	@Override
-	public int getElectricityUsage()
+	public int getPowerUsage()
 	{
 		return POWER_USAGE;
 	}

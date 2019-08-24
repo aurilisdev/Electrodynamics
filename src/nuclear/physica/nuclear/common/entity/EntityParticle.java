@@ -17,11 +17,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
-import physica.CoreReferences;
 import physica.Physica;
 import physica.api.core.abstraction.Face;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.base.Measurement;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.effect.damage.DamageSourceRadiation;
 import physica.nuclear.common.tile.TileParticleAccelerator;
@@ -128,7 +128,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 			}
 			if (ticksExisted % 10 == 0)
 			{
-				worldObj.playSound(posX, posY, posZ, CoreReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)), true);
+				worldObj.playSound(posX, posY, posZ, NuclearReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)), true);
 			}
 			double acceleration = 0.002;
 			if (accelerator.getParticle() == null)

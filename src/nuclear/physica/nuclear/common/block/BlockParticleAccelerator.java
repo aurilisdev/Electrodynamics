@@ -4,7 +4,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.api.nuclear.IElectromagnet;
@@ -23,7 +22,7 @@ public class BlockParticleAccelerator extends BlockBaseContainer implements IBas
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setHarvestLevel("pickaxe", 2);
 		setBlockName(NuclearReferences.PREFIX + "accelerator");
-		setBlockTextureName(CoreReferences.PREFIX + "accelerator");
+		setBlockTextureName(NuclearReferences.PREFIX + "accelerator");
 		addToRegister("Nuclear", this);
 	}
 

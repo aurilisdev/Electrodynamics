@@ -17,13 +17,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import physica.CoreReferences;
 import physica.api.core.PhysicaAPI;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.common.CoreBlockRegister;
 import physica.library.location.Location;
 import physica.library.tile.TileBaseContainer;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.client.gui.GuiFissionReactor;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
@@ -212,7 +212,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		Location loc = getLocation();
 		if (World().getWorldTime() % 100 == 0 && temperature >= 100)
 		{
-			World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, CoreReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
+			World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, NuclearReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
 		}
 		float radius = 0.15f;
 		for (int k = 0; k < 4; k++)

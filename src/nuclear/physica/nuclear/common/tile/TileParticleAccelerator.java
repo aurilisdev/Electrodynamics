@@ -317,7 +317,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	@Override
-	public int getElectricityUsage()
+	public int getPowerUsage()
 	{
 		return POWER_USAGE;
 	}

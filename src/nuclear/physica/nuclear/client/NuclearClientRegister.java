@@ -14,6 +14,7 @@ import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.library.client.render.ItemRenderObjModel;
 import physica.library.client.render.TileRenderObjModel;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.client.render.entity.RenderParticle;
 import physica.nuclear.client.render.item.ItemRenderCentrifuge;
 import physica.nuclear.client.render.item.ItemRenderControlRod;
@@ -54,51 +55,51 @@ public class NuclearClientRegister implements IContent {
 			MinecraftForge.EVENT_BUS.register(this);
 			ClientRegistry.bindTileEntitySpecialRenderer(TileQuantumAssembler.class, new TileRenderAssembler("assembler.obj", "assembler.png"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockQuantumAssembler),
-					new ItemRenderObjModel("assembler.obj", "assembler.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("assembler.obj", "assembler.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileGasCentrifuge.class, new TileRenderCentrifuge("centrifugeStand.obj", "gasCentrifuge.png"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockCentrifuge), new ItemRenderCentrifuge("centrifugeStand.obj", "gasCentrifuge.png"));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileFissionReactor.class, new TileRenderFissionReactor("fissionReactor.obj", "fissionReactor.png"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockFissionReactor),
-					new ItemRenderObjModel("fissionReactor.obj", "fissionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("fissionReactor.obj", "fissionReactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileNeutronCaptureChamber.class, new TileRenderNeutronCaptureChamber("neutronCapturer.obj", "neutronCapture.png"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockNeutronCaptureChamber),
-					new ItemRenderObjModel("neutronCapturer.obj", "neutronCaptureEmpty.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("neutronCapturer.obj", "neutronCaptureEmpty.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockNeutronCaptureChamber),
-					new ItemRenderNeutronCaptureChamber("neutronCapturer.obj", "neutronCaptureEmpty.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderNeutronCaptureChamber("neutronCapturer.obj", "neutronCaptureEmpty.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileChemicalBoiler.class,
-					new TileRenderObjModel<TileChemicalBoiler>("chemicalBoiler.obj", "chemicalBoiler.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new TileRenderObjModel<TileChemicalBoiler>("chemicalBoiler.obj", "chemicalBoiler.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockChemicalBoiler),
-					new ItemRenderObjModel("chemicalBoiler.obj", "chemicalBoiler.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("chemicalBoiler.obj", "chemicalBoiler.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileChemicalExtractor.class,
-					new TileRenderObjModel<TileChemicalExtractor>("chemicalExtractor.obj", "chemicalExtractor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new TileRenderObjModel<TileChemicalExtractor>("chemicalExtractor.obj", "chemicalExtractor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockChemicalExtractor),
-					new ItemRenderObjModel("chemicalExtractor.obj", "chemicalExtractor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("chemicalExtractor.obj", "chemicalExtractor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileTurbine.class, new TileRenderTurbine("turbine.obj", "turbine.png"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockTurbine),
-					new ItemRenderTurbine("turbine.obj", "turbine.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderTurbine("turbine.obj", "turbine.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileFusionReactor.class,
-					new TileRenderFusionReactor("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new TileRenderFusionReactor("fusionReactor.obj", "fusionReactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockFusionReactor),
-					new ItemRenderObjModel("fusionReactor.obj", "fusionReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("fusionReactor.obj", "fusionReactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			ClientRegistry.bindTileEntitySpecialRenderer(TileRadioisotopeGenerator.class,
-					new TileRenderObjModel<TileRadioisotopeGenerator>("radioisotopeGenerator.obj", "radioisotopeGenerator.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new TileRenderObjModel<TileRadioisotopeGenerator>("radioisotopeGenerator.obj", "radioisotopeGenerator.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockRadioisotopeGenerator),
-					new ItemRenderObjModel("radioisotopeGenerator.obj", "radioisotopeGenerator.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("radioisotopeGenerator.obj", "radioisotopeGenerator.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileInsertableControlRod.class, new TileRenderControlRod());
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockInsertableControlRod), new ItemRenderControlRod("controlRodStation.obj", "fissionReactor.png"));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileMeltedReactor.class,
-					new TileRenderObjModel<TileMeltedReactor>("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new TileRenderObjModel<TileMeltedReactor>("meltedReactor.obj", "meltedReactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(NuclearBlockRegister.blockMeltedReactor),
-					new ItemRenderObjModel("meltedReactor.obj", "meltedReactor.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("meltedReactor.obj", "meltedReactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileThermometer.class, new TileRenderThermometer());
 		} else if (phase == LoadPhase.PostInitialize)

@@ -4,8 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.library.item.ItemElectric;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.NuclearTabRegister;
 
 public class ItemGeigerCounter extends ItemElectric {
@@ -13,7 +13,7 @@ public class ItemGeigerCounter extends ItemElectric {
 	public ItemGeigerCounter(String name) {
 		super((int) (250000 / 0.4D));
 		setUnlocalizedName(name);
-		setTextureName(CoreReferences.PREFIX + name);
+		setTextureName(NuclearReferences.PREFIX + name);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 	}
 

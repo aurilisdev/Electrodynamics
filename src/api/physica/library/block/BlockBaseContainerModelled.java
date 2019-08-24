@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import physica.CoreReferences;
+import net.minecraft.init.Blocks;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 
@@ -21,7 +21,7 @@ public abstract class BlockBaseContainerModelled extends BlockBaseContainer impl
 	@SideOnly(Side.CLIENT)
 	public final void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = reg.registerIcon(CoreReferences.PREFIX + "siren");
+		blockIcon = Blocks.iron_bars.getIcon(0, 0);
 	}
 
 	@Override

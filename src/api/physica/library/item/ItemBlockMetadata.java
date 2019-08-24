@@ -2,6 +2,7 @@ package physica.library.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 public class ItemBlockMetadata extends ItemBlockDescriptable {
 
@@ -21,5 +22,11 @@ public class ItemBlockMetadata extends ItemBlockDescriptable {
 	public int getMetadata(int metadata)
 	{
 		return metadata;
+	}
+
+	@Override
+	public IIcon getIconFromDamage(int damage)
+	{
+		return field_150939_a.getIcon(0, damage);
 	}
 }

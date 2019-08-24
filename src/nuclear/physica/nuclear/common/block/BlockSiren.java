@@ -7,7 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import physica.CoreReferences;
 import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.nuclear.NuclearReferences;
@@ -21,7 +20,7 @@ public class BlockSiren extends Block implements IBaseUtilities, IRecipeRegister
 		setHardness(3.5F);
 		setResistance(20);
 		setHarvestLevel("pickaxe", 2);
-		setBlockTextureName(CoreReferences.PREFIX + "siren");
+		setBlockTextureName(NuclearReferences.PREFIX + "siren");
 		setBlockName(NuclearReferences.PREFIX + "siren");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		addToRegister("Nuclear", this);

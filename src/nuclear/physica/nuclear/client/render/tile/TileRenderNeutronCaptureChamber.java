@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.library.client.render.TileRenderObjModel;
+import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
 
 @SideOnly(Side.CLIENT)
@@ -16,8 +17,8 @@ public class TileRenderNeutronCaptureChamber extends TileRenderObjModel<TileNeut
 	protected ResourceLocation filled_texture;
 
 	public TileRenderNeutronCaptureChamber(String objFile, String textureFile) {
-		super(objFile, textureFile.replace(".png", "Empty.png"), CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		filled_texture = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile.replace(".png", "Filled.png"));
+		super(objFile, textureFile.replace(".png", "Empty.png"), NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		filled_texture = new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile.replace(".png", "Filled.png"));
 	}
 
 	@Override

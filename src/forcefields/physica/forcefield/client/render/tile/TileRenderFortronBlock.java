@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import physica.CoreReferences;
 import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
+import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.client.ForcefieldRenderHandler;
 import physica.forcefield.client.render.model.ModelCube;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
@@ -22,11 +23,11 @@ import physica.library.client.render.TileRenderObjModel;
 public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> extends TileRenderObjModel<T> {
 
 	protected ResourceLocation				model_texture2;
-	public static final ResourceLocation	previewTexture	= new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcePreviewTexture.png");
+	public static final ResourceLocation	previewTexture	= new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcePreviewTexture.png");
 
 	public TileRenderFortronBlock(String objFile) {
-		super(objFile, "fortronMachineBase.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_texture2 = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "fortronMachineBasePowerless.png");
+		super(objFile, "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		model_texture2 = new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "fortronMachineBasePowerless.png");
 	}
 
 	@Override

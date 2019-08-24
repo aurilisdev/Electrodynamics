@@ -12,13 +12,13 @@ public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 
 	default boolean hasEnoughEnergy()
 	{
-		return getElectricityStored() >= getElectricityUsage();
+		return getElectricityStored() >= getPowerUsage();
 	}
 
 	default int extractEnergy()
 	{
-		setElectricityStored(Math.max(0, getElectricityStored() - getElectricityUsage()));
-		return getElectricityUsage();
+		setElectricityStored(Math.max(0, getElectricityStored() - getPowerUsage()));
+		return getPowerUsage();
 	}
 
 	@Override
@@ -66,10 +66,10 @@ public interface ITileBasePowered extends ITileBase, IElectricityReceiver {
 	@Override
 	default int getElectricCapacity(Face from)
 	{
-		return getElectricityUsage() * 20;
+		return getPowerUsage() * 20;
 	}
 
-	default int getElectricityUsage()
+	default int getPowerUsage()
 	{
 		return 0;
 	}
