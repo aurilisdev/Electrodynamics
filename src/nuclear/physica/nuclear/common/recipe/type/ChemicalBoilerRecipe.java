@@ -1,24 +1,22 @@
 package physica.nuclear.common.recipe.type;
 
-import net.minecraft.item.Item;
-import physica.library.recipe.SimpleRecipe;
+import net.minecraft.item.ItemStack;
+import physica.library.recipe.RecipeSystemTemplate;
 
-public class ChemicalBoilerRecipe {
+public class ChemicalBoilerRecipe extends RecipeSystemTemplate {
 
-	private int		waterRequired;
-	private Item	inputItem;
-	private String	oreDictName;
-	private int		hexaFluorideGenerated;
+	private int	waterRequired;
+	private int	hexaFluorideGenerated;
 
-	public ChemicalBoilerRecipe(int waterRequired, Item inputItem, int hexaFluorideGenerated) {
+	public ChemicalBoilerRecipe(int waterRequired, ItemStack inputItem, int hexaFluorideGenerated) {
+		super("", inputItem, null);
 		this.waterRequired = waterRequired;
-		this.inputItem = inputItem;
 		this.hexaFluorideGenerated = hexaFluorideGenerated;
 	}
 
 	public ChemicalBoilerRecipe(int waterRequired, String oreDictName, int hexaFluorideGenerated) {
+		super(oreDictName, null, null);
 		this.waterRequired = waterRequired;
-		this.oreDictName = oreDictName;
 		this.hexaFluorideGenerated = hexaFluorideGenerated;
 	}
 
@@ -27,18 +25,9 @@ public class ChemicalBoilerRecipe {
 		return waterRequired;
 	}
 
-	public Item getInput()
-	{
-		return inputItem;
-	}
-
 	public int getHexafluorideGenerated()
 	{
 		return hexaFluorideGenerated;
 	}
 
-	public String getOreDictName()
-	{
-		return oreDictName;
-	}
 }

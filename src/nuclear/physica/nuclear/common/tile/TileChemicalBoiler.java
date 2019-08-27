@@ -24,11 +24,11 @@ import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
+import physica.library.recipe.RecipeSystem;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiChemicalBoiler;
 import physica.nuclear.common.NuclearFluidRegister;
 import physica.nuclear.common.inventory.ContainerChemicalBoiler;
-import physica.nuclear.common.recipe.NuclearCustomRecipeHelper;
 import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
 
 public class TileChemicalBoiler extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
@@ -59,7 +59,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 				{
 					operatingTicks++;
 					ItemStack input = getStackInSlot(SLOT_INPUT2);
-					ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input);
+					ChemicalBoilerRecipe recipe = RecipeSystem.getRecipe(getClass(), input);
 					waterTank.drain(recipe.getWaterUse() / TICKS_REQUIRED, true);
 				} else
 				{
@@ -89,9 +89,9 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 		ItemStack input = getStackInSlot(SLOT_INPUT2);
 		if (input != null)
 		{
-			if (NuclearCustomRecipeHelper.isBoilerInput(input))
+			ChemicalBoilerRecipe recipe = RecipeSystem.getRecipe(getClass(), input);
+			if (recipe != null)
 			{
-				ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input);
 				if (recipe.getWaterUse() / TICKS_REQUIRED <= waterTank.getFluidAmount())
 				{
 					return hexaTank.getFluidAmount() < hexaTank.getCapacity();
@@ -104,7 +104,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	private void process()
 	{
 		ItemStack input = getStackInSlot(SLOT_INPUT2);
-		ChemicalBoilerRecipe recipe = NuclearCustomRecipeHelper.getBoilerRecipe(input);
+		ChemicalBoilerRecipe recipe = RecipeSystem.getRecipe(getClass(), input);
 		hexaTank.fill(new FluidStack(NuclearFluidRegister.LIQUID_HE, recipe.getHexafluorideGenerated()), true);
 		decrStackSize(SLOT_INPUT2, 1);
 
@@ -174,8 +174,7 @@ public class TileChemicalBoiler extends TileBasePoweredContainer implements IGui
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
-		return stack != null
-				&& (slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_INPUT2 ? NuclearCustomRecipeHelper.isBoilerInput(stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
+		return stack != null && (slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_INPUT2 ? RecipeSystem.isRecipeInput(getClass(), stack) : slot == SLOT_INPUT1 && stack.getItem() == Items.water_bucket);
 	}
 
 	@Override

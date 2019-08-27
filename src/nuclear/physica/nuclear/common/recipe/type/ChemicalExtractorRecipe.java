@@ -1,46 +1,25 @@
 package physica.nuclear.common.recipe.type;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import physica.library.recipe.SimpleRecipe;
+import physica.library.recipe.RecipeSystemTemplate;
 
-public class ChemicalExtractorRecipe {
+public class ChemicalExtractorRecipe extends RecipeSystemTemplate {
 
-	private int			waterUse;
-	private Item		inputItem;
-	private ItemStack	outputItem;
-	private String		oreDictName;
+	private int waterRequired;
 
-	public ChemicalExtractorRecipe(int waterUse, ItemStack outputItem, String oreDictName) {
-		this.waterUse = waterUse;
-		this.outputItem = outputItem;
-		this.oreDictName = oreDictName;
+	public ChemicalExtractorRecipe(int waterRequired, ItemStack inputItem, ItemStack output) {
+		super("", inputItem, output);
+		this.waterRequired = waterRequired;
 	}
 
-	public ChemicalExtractorRecipe(int waterUse, Item inputItem, ItemStack outputItem) {
-		this.waterUse = waterUse;
-		this.inputItem = inputItem;
-		this.outputItem = outputItem;
+	public ChemicalExtractorRecipe(int waterRequired, String oreDictName, ItemStack output) {
+		super(oreDictName, null, output);
+		this.waterRequired = waterRequired;
 	}
 
 	public int getWaterUse()
 	{
-		return waterUse;
-	}
-
-	public Item getInput()
-	{
-		return inputItem;
-	}
-
-	public ItemStack getOutput()
-	{
-		return outputItem;
-	}
-
-	public String getOreDictName()
-	{
-		return oreDictName;
+		return waterRequired;
 	}
 
 }

@@ -24,10 +24,10 @@ import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
+import physica.library.recipe.RecipeSystem;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiChemicalExtractor;
 import physica.nuclear.common.inventory.ContainerChemicalExtractor;
-import physica.nuclear.common.recipe.NuclearCustomRecipeHelper;
 import physica.nuclear.common.recipe.type.ChemicalExtractorRecipe;
 
 public class TileChemicalExtractor extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
@@ -87,7 +87,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	{
 		if (input != null)
 		{
-			ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input);
+			ChemicalExtractorRecipe recipe = RecipeSystem.getRecipe(getClass(), input);
 			if (recipe != null)
 			{
 				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null || output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())
@@ -101,8 +101,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 
 	private void process(ItemStack input, ItemStack output)
 	{
-		ChemicalExtractorRecipe recipe = NuclearCustomRecipeHelper.getExtractorRecipe(input);
-
+		ChemicalExtractorRecipe recipe = RecipeSystem.getRecipe(getClass(), input);
 		waterTank.drain(recipe.getWaterUse(), true);
 
 		input.stackSize--;
@@ -177,7 +176,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 	public boolean isItemValidForSlot(int slot, ItemStack stack)
 	{
 		return slot != SLOT_OUTPUT && stack != null
-				&& (slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || NuclearCustomRecipeHelper.isExtractorInput(stack));
+				&& (slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_INPUT && stack.getItem() == Items.water_bucket || RecipeSystem.isRecipeInput(getClass(), stack));
 	}
 
 	@Override

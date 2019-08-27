@@ -23,9 +23,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.core.client.nei.PhysicaRecipeHandlerBase;
+import physica.library.recipe.RecipeSystem;
 import physica.nuclear.client.gui.GuiChemicalBoiler;
 import physica.nuclear.common.NuclearFluidRegister;
-import physica.nuclear.common.recipe.NuclearCustomRecipeHelper;
 import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
 import physica.nuclear.common.tile.TileChemicalBoiler;
 
@@ -95,26 +95,26 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	{
 		if (outputId.equals(getRecipeID()))
 		{
-			for (ChemicalBoilerRecipe newRecipe : NuclearCustomRecipeHelper.getBoilerRecipes())
+			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class))
 			{
 				if (newRecipe.getInput() != null)
 				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput()));
+					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
 				} else
 				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOreDictName()));
+					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 				}
 			}
 		} else if (outputId.equals("fluid") && results[0] instanceof FluidStack && ((FluidStack) results[0]).getFluid() == NuclearFluidRegister.LIQUID_HE)
 		{
-			for (ChemicalBoilerRecipe newRecipe : NuclearCustomRecipeHelper.getBoilerRecipes())
+			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class))
 			{
 				if (newRecipe.getInput() != null)
 				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput()));
+					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
 				} else
 				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOreDictName()));
+					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 				}
 			}
 		}
@@ -123,26 +123,26 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients)
 	{
-		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && NuclearCustomRecipeHelper.getBoilerRecipe((ItemStack) ingredients[0]) != null)
+		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && RecipeSystem.getRecipe(TileChemicalBoiler.class, (ItemStack) ingredients[0]) != null)
 		{
-			ChemicalBoilerRecipe newRecipe = NuclearCustomRecipeHelper.getBoilerRecipe((ItemStack) ingredients[0]);
+			ChemicalBoilerRecipe newRecipe = RecipeSystem.getRecipe(TileChemicalBoiler.class, (ItemStack) ingredients[0]);
 			if (newRecipe.getInput() != null)
 			{
-				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput()));
+				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
 			} else
 			{
-				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOreDictName()));
+				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 			}
 		} else if (inputId.equals("fluid") && ingredients[0] instanceof FluidStack && ((FluidStack) ingredients[0]).getFluid() == FluidRegistry.WATER)
 		{
-			for (ChemicalBoilerRecipe newRecipe : NuclearCustomRecipeHelper.getBoilerRecipes())
+			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class))
 			{
 				if (newRecipe.getInput() != null)
 				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput()));
+					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
 				} else
 				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOreDictName()));
+					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 				}
 			}
 		} else

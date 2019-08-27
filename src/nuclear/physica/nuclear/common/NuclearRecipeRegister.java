@@ -8,7 +8,11 @@ import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.core.common.CoreItemRegister;
-import physica.nuclear.common.recipe.NuclearCustomRecipeHelper;
+import physica.library.recipe.RecipeSystem;
+import physica.nuclear.common.recipe.type.ChemicalBoilerRecipe;
+import physica.nuclear.common.recipe.type.ChemicalExtractorRecipe;
+import physica.nuclear.common.tile.TileChemicalBoiler;
+import physica.nuclear.common.tile.TileChemicalExtractor;
 
 public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 
@@ -50,21 +54,22 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 			addRecipe(NuclearItemRegister.itemGeigerCounter, "SAS", "SBS", "SSS", 'S', "plateSteel", 'A', "circuitAdvanced", 'B', "phyBattery");
 
 			// Boiler Recipes
-			NuclearCustomRecipeHelper.addBoilerRecipe(800, NuclearItemRegister.itemUranium238, 1750);
-			NuclearCustomRecipeHelper.addBoilerRecipe(1600, NuclearItemRegister.itemYellowcake, 2000);
-			NuclearCustomRecipeHelper.addBoilerRecipe(2400, "oreUraniumPhysica", 1250);
+			RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(800, new ItemStack(NuclearItemRegister.itemUranium238), 1750));
+			RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(1600, new ItemStack(NuclearItemRegister.itemYellowcake), 2000));
+			RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(2400, "oreUraniumPhysica", 1250));
 			if (OreDictionary.doesOreNameExist("oreUranium"))
 			{
-				NuclearCustomRecipeHelper.addBoilerRecipe(2400, "oreUranium", 1250);
+				RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(2400, "oreUranium", 1250));
 			}
 
 			// Extractor Recipes
-			NuclearCustomRecipeHelper.addExtractorRecipe(4800, CoreItemRegister.itemEmptyCell, new ItemStack(NuclearItemRegister.itemHeavyWaterCell));
-			NuclearCustomRecipeHelper.addExtractorRecipe(4800, NuclearItemRegister.itemHeavyWaterCell, new ItemStack(NuclearItemRegister.itemDeuteriumCell));
-			NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUraniumPhysica", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
+
+			RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(4800, new ItemStack(CoreItemRegister.itemEmptyCell), new ItemStack(NuclearItemRegister.itemHeavyWaterCell)));
+			RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(4800, new ItemStack(NuclearItemRegister.itemHeavyWaterCell), new ItemStack(NuclearItemRegister.itemDeuteriumCell)));
+			RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(1600, "oreUraniumPhysica", new ItemStack(NuclearItemRegister.itemYellowcake, 1)));
 			if (OreDictionary.doesOreNameExist("oreUranium"))
 			{
-				NuclearCustomRecipeHelper.addExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1));
+				RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1)));
 			}
 		}
 	}

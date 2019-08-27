@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 import physica.library.util.OreDictionaryUtilities;
 
 public class RecipeSystem {
-	private static final HashMap<Object, HashSet<SimpleRecipe>> recipeMap = new HashMap<>();
+	private static final HashMap<Object, HashSet<RecipeSystemTemplate>> recipeMap = new HashMap<>();
 
-	public static HashMap<Object, HashSet<SimpleRecipe>> getRecipemap()
+	public static HashMap<Object, HashSet<RecipeSystemTemplate>> getRecipemap()
 	{
 		return recipeMap;
 	}
 
-	public static void registerRecipe(Object handle, SimpleRecipe recipe)
+	public static <T extends RecipeSystemTemplate> void registerRecipe(Object handle, T recipe)
 	{
 		if (!recipeMap.containsKey(handle))
 		{
@@ -23,7 +23,7 @@ public class RecipeSystem {
 		recipeMap.get(handle).add(recipe);
 	}
 
-	public static void unregisterRecipe(Object handle, SimpleRecipe recipe)
+	public static <T extends RecipeSystemTemplate> void unregisterRecipe(Object handle, T recipe)
 	{
 		if (recipeMap.containsKey(handle))
 		{
@@ -31,21 +31,22 @@ public class RecipeSystem {
 		}
 	}
 
-	public static HashSet<SimpleRecipe> getHandleRecipes(Object handle)
+	@SuppressWarnings("unchecked")
+	public static <T extends RecipeSystemTemplate> HashSet<T> getHandleRecipes(Object handle)
 	{
 		if (!recipeMap.containsKey(handle))
 		{
 			recipeMap.put(handle, new HashSet<>());
 		}
-		return recipeMap.get(handle);
+		return (HashSet<T>) recipeMap.get(handle);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends SimpleRecipe> T getRecipe(Object handle, ItemStack input)
+	public static <T extends RecipeSystemTemplate> T getRecipe(Object handle, ItemStack input)
 	{
 		if (input != null)
 		{
-			for (SimpleRecipe recipe : getHandleRecipes(handle))
+			for (RecipeSystemTemplate recipe : getHandleRecipes(handle))
 			{
 				if (recipe.getInput() != null && recipe.getInput().isItemEqual(input) || recipe.getOredict() != null && OreDictionaryUtilities.isSameOre(input, recipe.getOredict()))
 				{
@@ -60,7 +61,7 @@ public class RecipeSystem {
 	{
 		if (input != null)
 		{
-			for (SimpleRecipe recipe : getHandleRecipes(handle))
+			for (RecipeSystemTemplate recipe : getHandleRecipes(handle))
 			{
 				if (recipe.getInput() != null && recipe.getInput().isItemEqual(input) || recipe.getOredict() != null && OreDictionaryUtilities.isSameOre(input, recipe.getOredict()))
 				{
