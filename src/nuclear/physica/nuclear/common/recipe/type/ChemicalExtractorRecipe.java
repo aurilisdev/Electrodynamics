@@ -2,6 +2,7 @@ package physica.nuclear.common.recipe.type;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import physica.library.recipe.SimpleRecipe;
 
 public class ChemicalExtractorRecipe {
 

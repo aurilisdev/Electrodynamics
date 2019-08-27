@@ -45,7 +45,7 @@ import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.calculations.ConstructorCalculationThread;
 import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.inventory.ContainerFortronFieldConstructor;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -82,10 +82,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	protected boolean						isActivated				= false;
 	protected Set<ITileBase>				fortronConnections		= new HashSet<>();
 
-	public Set<Location>					calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
+	public Set<GridLocation>					calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
 	public Set<TileFortronField>			activeFields			= new HashSet<>();
 
-	private Location						location;
+	private GridLocation						location;
 	private ConstructorCalculationThread	calculationThread;
 	private int[]							cachedCoordinates		= new int[3];
 	private int[]							cachedInformation		= new int[9];
@@ -147,7 +147,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		if (healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS)
 		{
 			destroyField(true);
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			loc.setBlockAir(World());
 			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
 			{
@@ -216,7 +216,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			moduleCount = ret;
 			destroyField(false);
 		}
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		ItemStack translate = ForcefieldItemRegister.moduleMap.get("moduleManipulationTranslate");
 		cachedCoordinates[0] = loc.xCoord + getModuleCountIn(translate, SLOT_EAST[0], +SLOT_EAST[1]) - getModuleCountIn(translate, SLOT_WEST[0], SLOT_WEST[1]);
 		cachedCoordinates[1] = loc.yCoord + getModuleCountIn(translate, SLOT_UP[0], SLOT_UP[1]) - getModuleCountIn(translate, SLOT_DOWN[0], SLOT_DOWN[1]);
@@ -485,9 +485,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 
 	protected void projectField()
 	{
-		Set<Location> finishedQueueItems = new HashSet<>();
+		Set<GridLocation> finishedQueueItems = new HashSet<>();
 		int currentlyGenerated = 0, currentlyMissed = 0;
-		for (Location fieldPoint : calculatedFieldPoints)
+		for (GridLocation fieldPoint : calculatedFieldPoints)
 		{
 			if (currentlyGenerated >= totalGeneratedPerTick)
 			{
@@ -553,7 +553,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 				{
 					if (shouldStabilize)
 					{
-						Location loc = getLocation();
+						GridLocation loc = getLocation();
 						for (Face dir : Face.VALID)
 						{
 							TileEntity entity = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
@@ -774,7 +774,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public Location getLocation()
+	public GridLocation getLocation()
 	{
 		if (location == null)
 		{
@@ -789,7 +789,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		if (side == Side.CLIENT)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, buttonId));
 		} else if (side == Side.SERVER)
 		{

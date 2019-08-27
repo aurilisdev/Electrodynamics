@@ -16,7 +16,7 @@ import physica.api.core.inventory.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.client.gui.GuiParticleAccelerator;
 import physica.nuclear.common.NuclearItemRegister;
@@ -136,7 +136,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
 			Face opposite = getFacing().getOpposite();
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			if (stackMatter != null && stackEmptyCell != null && EntityParticle.canSpawnParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
 			{
 				currentSessionUse = extractEnergy();
@@ -217,7 +217,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
 			Face opposite = getFacing().getOpposite();
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			if (EntityParticle.canSpawnParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ))
 			{
 				return AcceleratorStatus.Ready;

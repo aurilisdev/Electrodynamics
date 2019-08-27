@@ -22,7 +22,7 @@ import physica.forcefield.common.ForcefieldFluidRegister;
 import physica.forcefield.common.inventory.ContainerBiometricIndentifier;
 import physica.forcefield.common.item.ItemIdentificationCard;
 import physica.forcefield.common.item.Permission;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -45,10 +45,10 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 		if (ticks % 10 == 0)
 		{
 			isActivated = false;
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			for (Face dir : Face.VALID)
 			{
-				Location offset = loc.OffsetFace(dir);
+				GridLocation offset = loc.OffsetFace(dir);
 				if (offset.getTile(World()) instanceof TileInterdictionMatrix)
 				{
 					isActivated = true;
@@ -61,7 +61,7 @@ public class TileBiometricIdentifier extends TileBaseContainer implements IGuiIn
 	{
 		if (side == Side.CLIENT)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", BIOMETRIC_IDENTIFIER_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, perm.id));
 		} else
 		{

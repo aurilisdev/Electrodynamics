@@ -11,5 +11,6 @@ public class BlockCircuitPress extends BlockMachine {
 	@Override
 	public void registerRecipes()
 	{
+		// TODO: Recipe
 	}
 }

@@ -24,7 +24,7 @@ import physica.forcefield.client.gui.GuiCoercionDriver;
 import physica.forcefield.common.ForcefieldFluidRegister;
 import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.inventory.ContainerCoercionDriver;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -248,7 +248,7 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	{
 		if (side == Side.CLIENT)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, amount));
 		} else if (side == Side.SERVER)
 		{

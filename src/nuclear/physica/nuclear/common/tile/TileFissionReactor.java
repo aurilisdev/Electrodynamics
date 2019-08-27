@@ -21,7 +21,7 @@ import physica.api.core.PhysicaAPI;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.common.CoreBlockRegister;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.client.gui.GuiFissionReactor;
@@ -53,7 +53,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
 			Face direction = Face.VALID[i];
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			adjacentBlocks[i] = World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
@@ -72,7 +72,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	{
 		super.updateCommon(ticks);
 		int radius = 4;
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (ticks % 50 == 0)
 		{
 			isIncased = true;
@@ -91,7 +91,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 							{
 
 								control.reactor = this;
-								Location controlLoc = control.getLocation();
+								GridLocation controlLoc = control.getLocation();
 								World().markBlockRangeForRenderUpdate(controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord, controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord);
 							} else
 							{
@@ -121,7 +121,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 									if (control != null)
 									{
 										control.reactor = this;
-										Location controlLoc = control.getLocation();
+										GridLocation controlLoc = control.getLocation();
 										World().markBlockRangeForRenderUpdate(controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord, controlLoc.xCoord, controlLoc.yCoord, controlLoc.zCoord);
 									} else
 									{
@@ -165,7 +165,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	private boolean isBeingControlled(Block[] adjacentBlocks)
 	{
 		insertion = 0;
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		for (int i = 0; i < adjacentBlocks.length; i++)
 		{
 			Block block = adjacentBlocks[i];
@@ -209,7 +209,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 	public void updateClient(int ticks)
 	{
 		super.updateClient(ticks);
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (World().getWorldTime() % 100 == 0 && temperature >= 100)
 		{
 			World().playSoundEffect(loc.xCoord, loc.yCoord, loc.zCoord, NuclearReferences.PREFIX + "block.fission_reactor", Math.min(temperature / 100, 1), 1);
@@ -261,7 +261,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		{
 			PhysicaAPI.logger.info("Fission reactor had a meltdown at: " + getLocation().toString() + ". Reactor stats: temp: " + temperature + " insertion: " + insertion);
 		}
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(World().getWorldInfo().getWorldName().toLowerCase()))
 		{
 			if (PhysicaAPI.isDebugMode)
@@ -273,7 +273,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		}
 		int power = (int) (temperature / 125.0f);
 		setInventorySlotContents(SLOT_INPUT, null);
-		Location location = new Location(loc.xCoord, loc.yCoord, loc.zCoord);
+		GridLocation location = new GridLocation(loc.xCoord, loc.yCoord, loc.zCoord);
 		for (int i = -power; i <= power; i++)
 		{
 			for (int j = -power; j <= power; j++)
@@ -352,7 +352,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		{
 			return;
 		}
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		for (int i = 0; i < STEAM_GEN_DIAMETER; i++)
 		{
 			for (int j = 0; j < STEAM_GEN_HEIGHT; j++)

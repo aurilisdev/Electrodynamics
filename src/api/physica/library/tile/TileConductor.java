@@ -9,7 +9,7 @@ import net.minecraft.util.AxisAlignedBB;
 import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.conductor.IConductor;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.net.ElectricNetworkRegistry;
 import physica.library.net.energy.ElectricNetwork;
 
@@ -33,7 +33,7 @@ public class TileConductor extends TileEntity implements IConductor {
 		TileEntity[] cables = { null, null, null, null, null, null };
 		for (Face orientation : Face.VALID)
 		{
-			TileEntity cable = new Location(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
+			TileEntity cable = new GridLocation(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
 			if (cable instanceof IConductor)
 			{
 				cables[orientation.ordinal()] = cable;
@@ -99,7 +99,7 @@ public class TileConductor extends TileEntity implements IConductor {
 		{
 			for (Face side : Face.VALID)
 			{
-				TileEntity tileEntity = new Location(this).OffsetFace(side).getTile(worldObj);
+				TileEntity tileEntity = new GridLocation(this).OffsetFace(side).getTile(worldObj);
 				if (tileEntity instanceof IConductor)
 				{
 					getNetwork().merge(((IConductor) tileEntity).getNetwork());
@@ -144,7 +144,7 @@ public class TileConductor extends TileEntity implements IConductor {
 			return 0;
 		}
 		ArrayList<TileEntity> ignored = new ArrayList<>();
-		ignored.add(new Location(this).OffsetFace(from).getTile(worldObj));
+		ignored.add(new GridLocation(this).OffsetFace(from).getTile(worldObj));
 		return getNetwork().emit(maxReceive, ignored);
 	}
 

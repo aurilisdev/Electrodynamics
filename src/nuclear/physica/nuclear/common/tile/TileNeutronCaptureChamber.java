@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.client.gui.GuiNeutronCaptureChamber;
 import physica.nuclear.common.NuclearItemRegister;
@@ -55,7 +55,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	private float getTicksAddition()
 	{
 		Face facing = getFacing().getOpposite();
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		TileFissionReactor reactor = (TileFissionReactor) World().getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		return reactor.temperature / TICKS_REQUIRED;
 	}
@@ -63,7 +63,7 @@ public class TileNeutronCaptureChamber extends TileBaseContainer implements IGui
 	public boolean canProcess()
 	{
 		Face facing = getFacing().getOpposite();
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		TileEntity tile = World().getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		if (tile instanceof TileFissionReactor)
 		{

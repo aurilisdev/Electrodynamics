@@ -5,7 +5,7 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.configuration.ConfigCore;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 
 public class TileInfiniteEnergy extends TileBase implements IElectricityProvider {
@@ -13,7 +13,7 @@ public class TileInfiniteEnergy extends TileBase implements IElectricityProvider
 	@Override
 	public void updateServer(int ticks)
 	{
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (ConfigCore.DISABLE_INFINITE_ENERGY_CUBE)
 		{
 			loc.setBlockAir(World());

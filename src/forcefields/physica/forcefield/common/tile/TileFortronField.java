@@ -6,12 +6,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import physica.forcefield.PhysicaForcefields;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 
 public class TileFortronField extends TileBase {
 
-	private Location constructorCoord = new Location(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+	private GridLocation constructorCoord = new GridLocation(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 	public TileFortronField() {
 		sendDescPacket();
@@ -30,7 +30,7 @@ public class TileFortronField extends TileBase {
 		}
 	}
 
-	public Location getConstructorCoord()
+	public GridLocation getConstructorCoord()
 	{
 		return constructorCoord;
 	}
@@ -73,7 +73,7 @@ public class TileFortronField extends TileBase {
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		return new S35PacketUpdateTileEntity(loc.xCoord, loc.yCoord, loc.zCoord, 1, nbt);
 	}
 
@@ -102,7 +102,7 @@ public class TileFortronField extends TileBase {
 	@Override
 	public int hashCode()
 	{
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		return loc.xCoord * 2 * loc.yCoord * loc.zCoord;
 	}
 }

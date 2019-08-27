@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.radiation.RadiationSystem;
@@ -29,7 +29,7 @@ public class TileMeltedReactor extends TileBase {
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (ticks % 10 == 0)
 		{
 			if (World().getBlock(loc.xCoord, loc.yCoord - 1, loc.zCoord).getMaterial().isReplaceable())
@@ -129,7 +129,7 @@ public class TileMeltedReactor extends TileBase {
 		super.updateCommon(ticks);
 		if (radiation > 0)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			@SuppressWarnings("unchecked")
 			List<EntityLivingBase> entities = World().getEntitiesWithinAABB(EntityLivingBase.class,
 					AxisAlignedBB.getBoundingBox(loc.xCoord - RADIATION_RADIUS, loc.yCoord - RADIATION_RADIUS, loc.zCoord - RADIATION_RADIUS, loc.xCoord + RADIATION_RADIUS, loc.yCoord + RADIATION_RADIUS, loc.zCoord + RADIATION_RADIUS));
@@ -147,7 +147,7 @@ public class TileMeltedReactor extends TileBase {
 		super.updateClient(ticks);
 
 		int i = 0;
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		while (true)
 		{
 			double x2 = loc.xCoord + 0.5 + (World().rand.nextDouble() - 0.5) * RADIATION_RADIUS * 2;

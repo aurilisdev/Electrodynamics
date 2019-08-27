@@ -10,7 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import physica.api.core.abstraction.Face;
 import physica.api.nuclear.IElectromagnet;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -35,7 +35,7 @@ public class TilePlasma extends TileBase {
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (ticks == 20)
 		{
 			if (isServer())

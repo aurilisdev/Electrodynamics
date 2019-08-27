@@ -16,7 +16,7 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 import physica.api.core.abstraction.Face;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 
 public class OreGenReplace extends AbstractOreGenerator {
 
@@ -55,10 +55,10 @@ public class OreGenReplace extends AbstractOreGenerator {
 	public int generateBranch(World world, Random rand, int chunkCornerX, int chunkCornerZ, int varX, int varY, int varZ)
 	{
 		int blocksPlaced = 0;
-		Set<Location> pathed = new HashSet<>();
-		Queue<Location> toPath = new LinkedList<>();
+		Set<GridLocation> pathed = new HashSet<>();
+		Queue<GridLocation> toPath = new LinkedList<>();
 
-		toPath.add(new Location(varX, varY, varZ));
+		toPath.add(new GridLocation(varX, varY, varZ));
 
 		List<Face> directions = new ArrayList<>();
 		for (Face dir : Face.VALID)
@@ -67,7 +67,7 @@ public class OreGenReplace extends AbstractOreGenerator {
 		}
 		while (!toPath.isEmpty() && blocksPlaced < settings.amountPerBranch)
 		{
-			Location next = toPath.poll();
+			GridLocation next = toPath.poll();
 			pathed.add(next);
 
 			Block block = world.getBlock(next.xCoord, next.yCoord, next.zCoord);
@@ -82,7 +82,7 @@ public class OreGenReplace extends AbstractOreGenerator {
 			Collections.shuffle(directions);
 			for (Face direction : directions)
 			{
-				Location pos = new Location(next.xCoord + direction.offsetX, next.yCoord + direction.offsetY, next.zCoord + direction.offsetZ);
+				GridLocation pos = new GridLocation(next.xCoord + direction.offsetX, next.yCoord + direction.offsetY, next.zCoord + direction.offsetZ);
 				if (!pathed.contains(pos) && world.rand.nextBoolean())
 				{
 					if (pos.yCoord > 0 && pos.yCoord < world.getHeight() - 1 && world.blockExists(pos.xCoord, pos.yCoord, pos.zCoord))

@@ -28,7 +28,7 @@ public class BlockElectricFurnace extends BlockMachine {
 	@Override
 	public int getRenderColor(int par1)
 	{
-		return par1 == EnumElectricFurnace.NORMAL.ordinal() ? super.getRenderColor(par1) : (255 & 0xFF) << 24 | (145 & 0xFF) << 16 | (161 & 0xFF) << 8 | 175 & 0xFF;
+		return EnumElectricFurnace.values()[par1].getRenderColor();
 	}
 
 	@Override
@@ -62,7 +62,23 @@ public class BlockElectricFurnace extends BlockMachine {
 	}
 
 	public enum EnumElectricFurnace {
-		NORMAL, INDUSTRIAL;
+		NORMAL(1000, 16777215), INDUSTRIAL(2500, (255 & 0xFF) << 24 | (145 & 0xFF) << 16 | (161 & 0xFF) << 8 | 175 & 0xFF);
+		private int	usage;
+		private int	renderColor;
 
+		private EnumElectricFurnace(int usage, int renderColor) {
+			this.usage = usage;
+			this.renderColor = renderColor;
+		}
+
+		public int getUsage()
+		{
+			return usage;
+		}
+
+		public int getRenderColor()
+		{
+			return renderColor;
+		}
 	}
 }

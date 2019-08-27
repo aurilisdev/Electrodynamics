@@ -12,10 +12,9 @@ import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityHandler;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.client.gui.GuiBatteryBox;
+import physica.core.common.block.BlockBatteryBox.EnumBatteryBox;
 import physica.core.common.inventory.ContainerBatteryBox;
-import physica.library.energy.ElectricityUtilities;
-import physica.library.energy.base.Unit;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBasePoweredContainer;
 
 public class TileBatteryBox extends TileBasePoweredContainer implements IElectricityHandler, IGuiInterface {
@@ -29,7 +28,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	@Override
 	public int getElectricCapacity(Face from)
 	{
-		return ElectricityUtilities.convertEnergy(BASE_ELECTRIC_CAPACITY * (getBlockMetadata() == 0 ? 1 : getBlockMetadata() == 1 ? 4 : getBlockMetadata() == 2 ? 12 : 1), Unit.WATT, Unit.RF);
+		return EnumBatteryBox.values()[getBlockMetadata()].getCapacity();
 	}
 
 	@Override
@@ -42,7 +41,7 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 		if (cachedOutput == null || cachedOutput.isInvalid())
 		{
 			cachedOutput = null;
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			TileEntity outputTile = World().getTileEntity(loc.xCoord + out.offsetX, loc.yCoord + out.offsetY, loc.zCoord + out.offsetZ);
 			if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
 			{

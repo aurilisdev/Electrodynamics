@@ -10,7 +10,7 @@ import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
 import physica.core.common.event.FulminationEventHandler;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 
 public class TileFulmination extends TileBase implements IElectricityProvider {
@@ -37,7 +37,7 @@ public class TileFulmination extends TileBase implements IElectricityProvider {
 		{
 			FulminationEventHandler.INSTANCE.register(this);
 		}
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (energyStored > 0 && ticks % 20 == 0)
 		{
 			for (Face dir : Face.VALID)

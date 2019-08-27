@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import physica.api.core.PhysicaAPI;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 
 /**
@@ -83,10 +83,10 @@ public class PacketSystem implements IContent {
 
 	public void sendToAllAround(IPacket message, TileEntity tile, double range)
 	{
-		sendToAllAround(message, tile.getWorldObj(), new Location(tile), range);
+		sendToAllAround(message, tile.getWorldObj(), new GridLocation(tile), range);
 	}
 
-	public void sendToAllAround(IPacket message, World world, Location loc, double range)
+	public void sendToAllAround(IPacket message, World world, GridLocation loc, double range)
 	{
 		if (world != null)
 		{

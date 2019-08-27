@@ -17,7 +17,7 @@ import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.inventory.IPlayerUsing;
 import physica.api.core.misc.IRotatable;
 import physica.api.core.network.ISidedObject;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 import physica.library.network.IPacketReciever;
 import physica.library.network.netty.PacketSystem;
@@ -57,9 +57,9 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 		return 20;
 	}
 
-	default Location getLocation()
+	default GridLocation getLocation()
 	{
-		return new Location(This());
+		return new GridLocation(This());
 	}
 
 	default boolean shouldSendGuiPacket(EntityPlayerMP playerMP)

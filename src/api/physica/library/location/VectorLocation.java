@@ -113,7 +113,7 @@ public class VectorLocation {
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
-	public float getDistance(Location blockLocation)
+	public float getDistance(GridLocation blockLocation)
 	{
 		double d3 = x - blockLocation.xCoord;
 		double d4 = y - blockLocation.yCoord;
@@ -272,9 +272,9 @@ public class VectorLocation {
 		return new VectorLocation(x, y, z);
 	}
 
-	public Location BlockLocation()
+	public GridLocation BlockLocation()
 	{
-		return new Location(floorX(), floorY(), floorZ());
+		return new GridLocation(floorX(), floorY(), floorZ());
 	}
 
 	public static VectorLocation Cross(VectorLocation a, VectorLocation b)

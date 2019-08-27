@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import physica.api.core.abstraction.Face;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
@@ -56,7 +56,7 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 			{
 				return;
 			}
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			for (Face direction : Face.VALID)
 			{
 				if (direction == Face.DOWN || direction == Face.UP)

@@ -14,7 +14,7 @@ import physica.CoreReferences;
 import physica.api.core.utilities.IBaseUtilities;
 import physica.library.client.render.TessellatorWrapper;
 import physica.library.client.render.TileRenderObjModel;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.tile.TileQuantumAssembler;
 
@@ -50,7 +50,7 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 			GL11.glScalef(1 / down, 0.333f, 1 / down);
 			if (tile.getOperatingTicks() > 0)
 			{
-				Location loc = tile.getLocation();
+				GridLocation loc = tile.getLocation();
 				double centerX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down, centerY = loc.yCoord + 0.4 * down, centerZ = loc.zCoord + tile.getFacing().offsetX * down * forward + 0.5 * down;
 
 				double targetX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333, targetY = loc.yCoord + 0.9 * down * 2,

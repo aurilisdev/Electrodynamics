@@ -55,9 +55,9 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	@Override
-	public int getRenderColor(int par1)
+	public int getRenderColor(int meta)
 	{
-		return par1 == 1 ? (255 & 0xFF) << 24 | (155 & 0xFF) << 16 | (171 & 0xFF) << 8 | (185 & 0xFF) << 0 : par1 == 2 ? (255 & 0xFF) << 24 | (101 & 0xFF) << 16 | (111 & 0xFF) << 8 | (119 & 0xFF) << 0 : super.getRenderColor(par1);
+		return EnumBatteryBox.values()[meta].getRenderColor();
 	}
 
 	@Override
@@ -131,12 +131,25 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	public enum EnumBatteryBox {
-		BASIC, ADVANCED, ELITE;
+		BASIC(5000000, 16777215), ADVANCED(20000000, (255 & 0xFF) << 24 | (155 & 0xFF) << 16 | (171 & 0xFF) << 8 | (185 & 0xFF) << 0), ELITE(80000000, (255 & 0xFF) << 24 | (101 & 0xFF) << 16 | (111 & 0xFF) << 8 | (119 & 0xFF) << 0);
+		private int	capacity;
+		private int	renderColor;
 
-		public String getName()
-		{
-			return name().toLowerCase();
+		private EnumBatteryBox(int capacity, int renderColor) {
+			this.capacity = capacity;
+			this.renderColor = renderColor;
 		}
+
+		public int getCapacity()
+		{
+			return capacity;
+		}
+
+		public int getRenderColor()
+		{
+			return renderColor;
+		}
+
 	}
 
 }

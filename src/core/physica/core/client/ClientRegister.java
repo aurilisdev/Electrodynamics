@@ -12,8 +12,8 @@ import physica.core.client.render.tile.TileRenderBlastFurnace;
 import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.tile.TileBlastFurnace;
+import physica.core.common.tile.TileEnergyCable;
 import physica.core.common.tile.TileInfiniteEnergy;
-import physica.core.common.tile.cable.TileEnergyCable;
 import physica.library.client.render.ItemRenderObjModel;
 import physica.library.client.render.TileRenderObjModel;
 

@@ -10,7 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.electricity.IElectricityProvider;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 import physica.nuclear.NuclearReferences;
 import physica.nuclear.common.configuration.ConfigNuclearPhysics;
@@ -24,7 +24,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	protected boolean		isGenerating	= false;
 	public int				delayGeneration	= 10;
 	protected int			steam;
-	protected Location		mainLocation	= new Location();
+	protected GridLocation		mainLocation	= new GridLocation();
 	protected boolean		hasMain			= false;
 	protected boolean		isMain			= false;
 
@@ -38,7 +38,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	{
 		boolean canConstruct = true;
 		int radius = 1;
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		for (int i = -radius; i <= radius; i++)
 		{
 			if (!canConstruct)
@@ -81,7 +81,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	{
 		if (isMain)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			int radius = 1;
 			for (int i = -radius; i <= radius; i++)
 			{
@@ -162,7 +162,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 			clientSpin = true;
 			delayGeneration = 60;
 		}
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		if (receiver == null || receiver.isInvalid())
 		{
 			if (receiver != null && receiver.isInvalid())
@@ -230,7 +230,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 		int radius = 1;
 		if (isMain)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			for (int i = -radius; i <= radius; i++)
 			{
 				for (int j = -radius; j <= radius; j++)

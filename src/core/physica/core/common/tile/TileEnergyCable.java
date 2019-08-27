@@ -1,4 +1,4 @@
-package physica.core.common.tile.cable;
+package physica.core.common.tile;
 
 import physica.library.tile.TileConductor;
 

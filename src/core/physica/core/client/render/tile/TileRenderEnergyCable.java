@@ -13,7 +13,7 @@ import physica.CoreReferences;
 import physica.api.core.abstraction.AbstractionLayer;
 import physica.api.core.abstraction.Face;
 import physica.api.core.conductor.EnumConductorType;
-import physica.core.common.tile.cable.TileEnergyCable;
+import physica.core.common.tile.TileEnergyCable;
 import physica.library.client.render.TessellatorWrapper;
 
 @SideOnly(Side.CLIENT)

@@ -29,7 +29,7 @@ import physica.forcefield.common.ForcefieldTabRegister;
 import physica.forcefield.common.effect.damage.DamageSourceForcefield;
 import physica.forcefield.common.tile.TileFortronField;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.location.VectorLocation;
 import physica.library.util.PhysicaMath;
 
@@ -59,7 +59,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 	@Override
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
 	{
-		Location loc = new Location(x, y, z);
+		GridLocation loc = new GridLocation(x, y, z);
 		TileEntity tile = loc.getTile(world);
 		if (tile instanceof TileFortronField)
 		{
@@ -159,14 +159,14 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 						{
 							if (!constructor.isActivated())
 							{
-								HashSet<Location> removed = new HashSet<>();
+								HashSet<GridLocation> removed = new HashSet<>();
 								LinkedList<TileFortronField> invalidQueue = new LinkedList<>();
 								invalidQueue.push(field);
 
 								while (!invalidQueue.isEmpty() && removed.size() < 1000)
 								{
 									TileFortronField element = invalidQueue.pop();
-									Location loc = element.getLocation();
+									GridLocation loc = element.getLocation();
 									if (removed.contains(loc))
 									{
 										continue;

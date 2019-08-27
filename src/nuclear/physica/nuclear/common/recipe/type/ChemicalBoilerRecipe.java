@@ -1,6 +1,7 @@
 package physica.nuclear.common.recipe.type;
 
 import net.minecraft.item.Item;
+import physica.library.recipe.SimpleRecipe;
 
 public class ChemicalBoilerRecipe {
 

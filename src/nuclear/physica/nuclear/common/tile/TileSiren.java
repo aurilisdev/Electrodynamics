@@ -2,7 +2,7 @@ package physica.nuclear.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import physica.api.core.abstraction.Face;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBase;
 import physica.nuclear.NuclearReferences;
 
@@ -13,7 +13,7 @@ public class TileSiren extends TileBase {
 	{
 		if (!World().isRemote && World().getWorldTime() % 30 == 0)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			if (World().getBlockPowerInput(loc.xCoord, loc.yCoord, loc.zCoord) > 0)
 			{
 				float volume = 2.5F;

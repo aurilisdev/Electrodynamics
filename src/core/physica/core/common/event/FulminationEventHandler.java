@@ -14,7 +14,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import physica.CoreReferences;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.tile.TileFulmination;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.nuclear.common.NuclearItemRegister;
 import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
@@ -79,7 +79,7 @@ public class FulminationEventHandler {
 					if (distance <= size && distance > 0)
 					{
 						double electricity = Math.min(energy, energy / (distance / size));
-						Location loc = tile.getLocation();
+						GridLocation loc = tile.getLocation();
 						electricity = Math
 								.max(electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, loc.xCoord, loc.yCoord, loc.zCoord)) * electricity, 0.0D);
 						tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));

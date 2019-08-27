@@ -9,17 +9,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import physica.api.core.tile.ITileBase;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 
 public abstract class TileBase extends TileEntity implements ITileBase {
 	private int					_ticksRunning	= 0;
-	private Location			location;
+	private GridLocation		location;
 	protected Set<EntityPlayer>	playersUsingGUI	= new HashSet<>();
+	@SuppressWarnings("hiding")
+	@Deprecated // Deprecate field as it is removed in newer versions
+	public final int			xCoord			= 0;
+	@SuppressWarnings("hiding")
+	@Deprecated // Deprecate field as it is removed in newer versions
+	public final int			yCoord			= 0;
+	@SuppressWarnings("hiding")
+	@Deprecated // Deprecate field as it is removed in newer versions
+	public final int			zCoord			= 0;
+	@SuppressWarnings("hiding")
+	@Deprecated // Deprecate field as it is removed in newer versions
+	public final World			worldObj		= null;
 
 	@Override
-	public Location getLocation()
+	public GridLocation getLocation()
 	{
-		return location == null ? location = new Location(this) : location.set(super.xCoord, super.yCoord, super.zCoord);
+		return location == null ? location = new GridLocation(this) : location.set(super.xCoord, super.yCoord, super.zCoord);
 	}
 
 	public World World()

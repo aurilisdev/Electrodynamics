@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import physica.forcefield.common.ForcefieldItemRegister;
 import physica.forcefield.common.configuration.ConfigForcefields;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.location.VectorLocation;
 
 public class ConstructorCalculationThread extends Thread {
@@ -51,17 +51,17 @@ public class ConstructorCalculationThread extends Thread {
 				constructor.calculatedFieldPoints.clear();
 			} else
 			{
-				Location constructorLocation = constructor.getLocation();
+				GridLocation constructorLocation = constructor.getLocation();
 				if (constructor.shouldDisintegrate)
 				{
-					List<Location> exclude = new ArrayList<>();
+					List<GridLocation> exclude = new ArrayList<>();
 					for (int dx = -EXCLUDE_RADIUS; dx <= EXCLUDE_RADIUS; dx++)
 					{
 						for (int dz = -EXCLUDE_RADIUS; dz <= EXCLUDE_RADIUS; dz++)
 						{
 							for (int dy = -EXCLUDE_RADIUS; dy <= EXCLUDE_RADIUS; dy++)
 							{
-								exclude.add(new Location(constructorLocation.xCoord + dx, constructorLocation.yCoord + dy, constructorLocation.zCoord + dz));
+								exclude.add(new GridLocation(constructorLocation.xCoord + dx, constructorLocation.yCoord + dy, constructorLocation.zCoord + dz));
 							}
 						}
 					}
@@ -102,7 +102,7 @@ public class ConstructorCalculationThread extends Thread {
 					boolean isEdge = i == xRadiusNeg || i == xRadiusPos || j == yRadiusNeg || j == yRadiusPos || k == zRadiusNeg || k == zRadiusPos;
 					if (interior != isEdge)
 					{
-						constructor.calculatedFieldPoints.add(new Location(i, j, k));
+						constructor.calculatedFieldPoints.add(new GridLocation(i, j, k));
 					}
 				}
 			}
@@ -168,7 +168,7 @@ public class ConstructorCalculationThread extends Thread {
 					boolean isEdge = j == yPos || j == yNeg || (i == xNeg || i == xPos) && j >= yNeg && j <= yPos || (k == zNeg || k == zPos) && j >= yNeg && j <= yPos;
 					if (interior != isEdge)
 					{
-						constructor.calculatedFieldPoints.add(new Location(i, j, k));
+						constructor.calculatedFieldPoints.add(new GridLocation(i, j, k));
 					}
 				}
 			}

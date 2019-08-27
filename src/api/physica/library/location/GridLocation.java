@@ -9,27 +9,26 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import physica.api.core.abstraction.Face;
 
-public class Location {
-
+public class GridLocation {
 	public int	xCoord;
 	public int	yCoord;
 	public int	zCoord;
 
-	public Location() {
+	public GridLocation() {
 		this(0, 0, 0);
 	}
 
-	public Location(int x, int y, int z) {
+	public GridLocation(int x, int y, int z) {
 		xCoord = x;
 		yCoord = y;
 		zCoord = z;
 	}
 
-	public Location(TileEntity tile) {
+	public GridLocation(TileEntity tile) {
 		this(tile.xCoord, tile.yCoord, tile.zCoord);
 	}
 
-	public Location set(int x, int y, int z)
+	public GridLocation set(int x, int y, int z)
 	{
 		xCoord = x;
 		yCoord = y;
@@ -37,7 +36,7 @@ public class Location {
 		return this;
 	}
 
-	public Location set(Location location)
+	public GridLocation set(GridLocation location)
 	{
 		return set(location.xCoord, location.yCoord, location.zCoord);
 	}
@@ -68,9 +67,9 @@ public class Location {
 		return new VectorLocation(xCoord / n, yCoord / n, zCoord / n);
 	}
 
-	public Location OffsetFace(Face direction)
+	public GridLocation OffsetFace(Face direction)
 	{
-		return new Location(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+		return new GridLocation(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
 	}
 
 	public float getDistance(float x2, float y2, float z2)
@@ -97,7 +96,7 @@ public class Location {
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
-	public float getDistance(Location vector)
+	public float getDistance(GridLocation vector)
 	{
 		double d3 = xCoord - vector.xCoord;
 		double d4 = yCoord - vector.yCoord;
@@ -165,7 +164,7 @@ public class Location {
 		return world.isAirBlock(xCoord, yCoord, zCoord);
 	}
 
-	public Location sub(Location b)
+	public GridLocation sub(GridLocation b)
 	{
 		xCoord -= b.xCoord;
 		yCoord -= b.yCoord;
@@ -173,7 +172,7 @@ public class Location {
 		return this;
 	}
 
-	public Location sub(int sub)
+	public GridLocation sub(int sub)
 	{
 		xCoord -= sub;
 		yCoord -= sub;
@@ -181,7 +180,7 @@ public class Location {
 		return this;
 	}
 
-	public Location add(Location b)
+	public GridLocation add(GridLocation b)
 	{
 		xCoord += b.xCoord;
 		yCoord += b.yCoord;
@@ -189,7 +188,7 @@ public class Location {
 		return this;
 	}
 
-	public Location add(int add)
+	public GridLocation add(int add)
 	{
 		xCoord += add;
 		yCoord += add;
@@ -197,7 +196,7 @@ public class Location {
 		return this;
 	}
 
-	public Location mul(Location b)
+	public GridLocation mul(GridLocation b)
 	{
 		xCoord *= b.xCoord;
 		yCoord *= b.yCoord;
@@ -205,7 +204,7 @@ public class Location {
 		return this;
 	}
 
-	public Location mul(float mul)
+	public GridLocation mul(float mul)
 	{
 		xCoord *= mul;
 		yCoord *= mul;
@@ -213,7 +212,7 @@ public class Location {
 		return this;
 	}
 
-	public Location abs()
+	public GridLocation abs()
 	{
 		xCoord = Math.abs(xCoord);
 		yCoord = Math.abs(yCoord);
@@ -221,9 +220,9 @@ public class Location {
 		return this;
 	}
 
-	public Location Copy()
+	public GridLocation Copy()
 	{
-		return new Location(xCoord, yCoord, zCoord);
+		return new GridLocation(xCoord, yCoord, zCoord);
 	}
 
 	public VectorLocation Vector()
@@ -231,24 +230,24 @@ public class Location {
 		return new VectorLocation(xCoord, yCoord, zCoord);
 	}
 
-	public static Location Sub(Location a, Location b)
+	public static GridLocation Sub(GridLocation a, GridLocation b)
 	{
-		return new Location(a.xCoord - b.xCoord, a.yCoord - b.yCoord, a.zCoord - b.zCoord);
+		return new GridLocation(a.xCoord - b.xCoord, a.yCoord - b.yCoord, a.zCoord - b.zCoord);
 	}
 
-	public static Location Add(Location a, Location b)
+	public static GridLocation Add(GridLocation a, GridLocation b)
 	{
-		return new Location(a.xCoord + b.xCoord, a.yCoord + b.yCoord, a.zCoord + b.zCoord);
+		return new GridLocation(a.xCoord + b.xCoord, a.yCoord + b.yCoord, a.zCoord + b.zCoord);
 	}
 
-	public static Location Mul(Location a, int f)
+	public static GridLocation Mul(GridLocation a, int f)
 	{
-		return new Location(a.xCoord * f, a.yCoord * f, a.zCoord * f);
+		return new GridLocation(a.xCoord * f, a.yCoord * f, a.zCoord * f);
 	}
 
-	public static Location Abs(Location a)
+	public static GridLocation Abs(GridLocation a)
 	{
-		return new Location(Math.abs(a.xCoord), Math.abs(a.yCoord), Math.abs(a.zCoord));
+		return new GridLocation(Math.abs(a.xCoord), Math.abs(a.yCoord), Math.abs(a.zCoord));
 	}
 
 	@Override
@@ -261,7 +260,7 @@ public class Location {
 		{
 			return false;
 		}
-		Location other = (Location) obj;
+		GridLocation other = (GridLocation) obj;
 		return xCoord == other.xCoord && yCoord == other.yCoord && zCoord == other.zCoord;
 	}
 

@@ -21,7 +21,7 @@ import physica.core.common.block.BlockElectricFurnace.EnumElectricFurnace;
 import physica.core.common.inventory.ContainerElectricFurnace;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBasePoweredContainer;
 
 public class TileElectricFurnace extends TileBasePoweredContainer implements IGuiInterface, IMachineTile {
@@ -154,7 +154,7 @@ public class TileElectricFurnace extends TileBasePoweredContainer implements IGu
 		operatingTicks = buf.readInt();
 		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 		}
 	}

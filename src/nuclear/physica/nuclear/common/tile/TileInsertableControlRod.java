@@ -16,7 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.library.inventory.ContainerBase;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -39,7 +39,7 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	{
 		super.updateServer(ticks);
 		Face facing = getFacing().getOpposite();
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		TileEntity tile = World().getTileEntity(loc.xCoord + facing.offsetX, loc.yCoord + facing.offsetY, loc.zCoord + facing.offsetZ);
 		if (!(tile instanceof TileFissionReactor))
 		{
@@ -113,7 +113,7 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 	{
 		if (side == Side.CLIENT)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", CONTROL_ROD_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, amount));
 		}
 		insertion = Math.max(0, Math.min(100, insertion + amount));

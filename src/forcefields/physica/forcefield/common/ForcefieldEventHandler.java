@@ -20,7 +20,7 @@ import physica.forcefield.common.item.Permission;
 import physica.forcefield.common.tile.TileFortronField;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.forcefield.common.tile.TileInterdictionMatrix;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 
 public class ForcefieldEventHandler {
 
@@ -73,7 +73,7 @@ public class ForcefieldEventHandler {
 				iterator.remove();
 			} else if (constructor.getWorldObj().equals(world))
 			{
-				Location loc = constructor.getLocation();
+				GridLocation loc = constructor.getLocation();
 				double distSquared = Math.pow(loc.xCoord - x, 2) + Math.pow(loc.yCoord - y, 2) + Math.pow(loc.zCoord - z, 2);
 				if (distSquared < 400 * 400)
 				{

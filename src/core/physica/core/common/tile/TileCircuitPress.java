@@ -20,7 +20,7 @@ import physica.core.common.CoreItemRegister;
 import physica.core.common.inventory.ContainerCircuitPress;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.library.util.OreDictionaryUtilities;
 
@@ -60,7 +60,7 @@ public class TileCircuitPress extends TileBasePoweredContainer implements IGuiIn
 		operatingTicks = buf.readInt();
 		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 		}
 	}

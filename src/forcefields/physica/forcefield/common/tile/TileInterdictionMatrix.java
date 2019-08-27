@@ -36,7 +36,7 @@ import physica.forcefield.common.effect.damage.DamageSourceForcefield;
 import physica.forcefield.common.inventory.ContainerInterdictionMatrix;
 import physica.forcefield.common.item.ItemFrequency;
 import physica.forcefield.common.item.Permission;
-import physica.library.location.Location;
+import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
 import physica.library.network.netty.PacketSystem;
 import physica.library.network.packet.PacketTile;
@@ -125,10 +125,10 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		{
 			return true;
 		}
-		Location current = getLocation();
+		GridLocation current = getLocation();
 		for (Face direction : Face.VALID)
 		{
-			Location loc = current.OffsetFace(direction);
+			GridLocation loc = current.OffsetFace(direction);
 			TileEntity tile = loc.getTile(World());
 			if (tile instanceof TileBiometricIdentifier)
 			{
@@ -403,14 +403,14 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	public AxisAlignedBB getActiveBB()
 	{
 		int scaleCount = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		return AxisAlignedBB.getBoundingBox(loc.xCoord - scaleCount, loc.yCoord - scaleCount, loc.zCoord - scaleCount, loc.xCoord + scaleCount + 1, loc.yCoord + scaleCount + 1, loc.zCoord + scaleCount + 1);
 	}
 
 	public AxisAlignedBB getActiveWarnBB()
 	{
 		int scaleCount = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX)) * 2;
-		Location loc = getLocation();
+		GridLocation loc = getLocation();
 		return AxisAlignedBB.getBoundingBox(loc.xCoord - scaleCount, loc.yCoord - scaleCount, loc.zCoord - scaleCount, loc.xCoord + scaleCount + 1, loc.yCoord + scaleCount + 1, loc.zCoord + scaleCount + 1);
 	}
 
@@ -533,7 +533,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	{
 		if (side == Side.CLIENT)
 		{
-			Location loc = getLocation();
+			GridLocation loc = getLocation();
 			PacketSystem.INSTANCE.sendToServer(new PacketTile("", GUI_BUTTON_PACKET_ID, loc.xCoord, loc.yCoord, loc.zCoord, buttonId));
 		} else if (side == Side.SERVER)
 		{

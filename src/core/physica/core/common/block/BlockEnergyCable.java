@@ -29,7 +29,7 @@ import physica.api.core.utilities.IBaseUtilities;
 import physica.core.client.render.tile.TileRenderEnergyCable;
 import physica.core.common.CoreBlockRegister;
 import physica.core.common.CoreTabRegister;
-import physica.core.common.tile.cable.TileEnergyCable;
+import physica.core.common.tile.TileEnergyCable;
 
 public class BlockEnergyCable extends Block implements ITileEntityProvider, IBaseUtilities, IRecipeRegister {
 
