@@ -90,7 +90,7 @@ public class TileChemicalExtractor extends TileBasePoweredContainer implements I
 			ChemicalExtractorRecipe recipe = RecipeSystem.getRecipe(getClass(), input);
 			if (recipe != null)
 			{
-				if (waterTank.getFluidAmount() > recipe.getWaterUse() && output == null || output != null && output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize())
+				if (waterTank.getFluidAmount() > recipe.getWaterUse() && (output == null ? true : output.getItem() == recipe.getOutput().getItem() && output.stackSize + recipe.getOutput().stackSize <= output.getMaxStackSize()))
 				{
 					return true;
 				}

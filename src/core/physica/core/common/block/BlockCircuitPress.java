@@ -1,5 +1,7 @@
 package physica.core.common.block;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import physica.core.common.tile.TileCircuitPress;
 
 public class BlockCircuitPress extends BlockMachine {
@@ -11,6 +13,6 @@ public class BlockCircuitPress extends BlockMachine {
 	@Override
 	public void registerRecipes()
 	{
-		// TODO: Recipe
+		addRecipe(this, "ILI", "BFB", "WRW", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'L', Blocks.lever, 'B', Blocks.stone_button, 'R', Blocks.redstone_torch);
 	}
 }

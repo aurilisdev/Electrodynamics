@@ -82,10 +82,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	protected boolean						isActivated				= false;
 	protected Set<ITileBase>				fortronConnections		= new HashSet<>();
 
-	public Set<GridLocation>					calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
+	public Set<GridLocation>				calculatedFieldPoints	= Collections.synchronizedSet(new HashSet<>());
 	public Set<TileFortronField>			activeFields			= new HashSet<>();
 
-	private GridLocation						location;
+	private GridLocation					location;
 	private ConstructorCalculationThread	calculationThread;
 	private int[]							cachedCoordinates		= new int[3];
 	private int[]							cachedInformation		= new int[9];

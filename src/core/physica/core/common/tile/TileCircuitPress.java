@@ -7,20 +7,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumSkyBlock;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.core.tile.IMachineTile;
 import physica.core.client.gui.GuiCircuitPress;
-import physica.core.common.CoreItemRegister;
 import physica.core.common.inventory.ContainerCircuitPress;
+import physica.core.common.recipe.CircuitPressRecipeHandler;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.location.GridLocation;
+import physica.library.recipe.RecipeSystem;
 import physica.library.tile.TileBasePoweredContainer;
 import physica.library.util.OreDictionaryUtilities;
 
@@ -34,7 +33,7 @@ public class TileCircuitPress extends TileBasePoweredContainer implements IGuiIn
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
 	private static final int[]	ACCESSIBLE_SLOTS_SIDES	= new int[] { SLOT_INPUT2 };
 
-	public static final int		REQUIRED_TICKS			= 80;
+	public static final int		TICKS_REQUIRED			= 80;
 	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(1000, Unit.WATT, Unit.RF);
 
 	protected int				operatingTicks			= 0;
@@ -81,7 +80,7 @@ public class TileCircuitPress extends TileBasePoweredContainer implements IGuiIn
 			ItemStack input2 = getStackInSlot(SLOT_INPUT2);
 			if (canProcess(output, input, input2))
 			{
-				if (operatingTicks < REQUIRED_TICKS)
+				if (operatingTicks < TICKS_REQUIRED)
 				{
 					operatingTicks++;
 				} else
@@ -99,61 +98,23 @@ public class TileCircuitPress extends TileBasePoweredContainer implements IGuiIn
 
 	public boolean canProcess(ItemStack output, ItemStack input, ItemStack input2)
 	{
-		if (input == null || input2 == null || output != null && output.stackSize >= output.getMaxStackSize())
+		if (input == null || input2 == null || output != null && output.stackSize >= output.getMaxStackSize()) // This only supports one as the item stacksize in the recipe output
 		{
 			return false;
 		}
-		if (output != null)
+		CircuitPressRecipeHandler currentRecipe = RecipeSystem.<CircuitPressRecipeHandler>getRecipe(getClass(), input);
+		if (currentRecipe != null)
 		{
-			if (OreDictionaryUtilities.isSameOre(output, "circuitBasic"))
-			{
-				return OreDictionaryUtilities.isSameOre(input, "plateSteel") && input2.getItem() == Items.redstone;
-			} else if (OreDictionaryUtilities.isSameOre(output, "circuitAdvanced"))
-			{
-				return OreDictionaryUtilities.isSameOre(input, "circuitBasic") && input2.getItem() == Items.gold_ingot;
-			} else if (OreDictionaryUtilities.isSameOre(output, "circuitElite"))
-			{
-				return OreDictionaryUtilities.isSameOre(input, "circuitAdvanced") && input2.getItem() == Items.diamond;
-			}
-		} else
-		{
-			if (OreDictionaryUtilities.isSameOre(input, "plateSteel"))
-			{
-				return input2.getItem() == Items.redstone;
-			} else if (OreDictionaryUtilities.isSameOre(input, "circuitBasic"))
-			{
-				return input2.getItem() == Items.gold_ingot;
-			} else if (OreDictionaryUtilities.isSameOre(input, "circuitAdvanced"))
-			{
-				return input2.getItem() == Items.diamond;
-			}
+			return OreDictionaryUtilities.isSameOre(input, currentRecipe.getOredict()) && OreDictionaryUtilities.isSameOre(input2, currentRecipe.getOredict2()) && (output == null || currentRecipe.getOutput().isItemEqual(output));
 		}
-		return true;
+		return false;
 	}
 
 	private void process(ItemStack input, ItemStack input2, ItemStack output)
 	{
 		if (output == null)
 		{
-			if (OreDictionaryUtilities.isSameOre(input, "plateSteel"))
-			{
-				if (input2.getItem() == Items.redstone)
-				{
-					output = new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0);
-				}
-			} else if (OreDictionaryUtilities.isSameOre(input, "circuitBasic"))
-			{
-				if (input2.getItem() == Items.gold_ingot)
-				{
-					output = new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 1);
-				}
-			} else if (OreDictionaryUtilities.isSameOre(input, "circuitAdvanced"))
-			{
-				if (input2.getItem() == Items.diamond)
-				{
-					output = new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 2);
-				}
-			}
+			output = RecipeSystem.<CircuitPressRecipeHandler>getRecipe(getClass(), input).getOutput().copy();
 		} else
 		{
 			output.stackSize++;
@@ -179,11 +140,16 @@ public class TileCircuitPress extends TileBasePoweredContainer implements IGuiIn
 			return false;
 		} else if (slot == SLOT_INPUT)
 		{
-			return stack.getItem() == CoreItemRegister.itemMetaCircuit || OreDictionaryUtilities.isSameOre(stack, "plateSteel");
+			return RecipeSystem.isRecipeInput(getClass(), stack);
 		} else if (slot == SLOT_INPUT2)
 		{
-			Item item = stack.getItem();
-			return item == Items.redstone || item == Items.gold_ingot || item == Items.diamond;
+			for (CircuitPressRecipeHandler recipe : RecipeSystem.<CircuitPressRecipeHandler>getHandleRecipes(getClass()))
+			{
+				if (OreDictionaryUtilities.isSameOre(stack, recipe.getOredict2()))
+				{
+					return true;
+				}
+			}
 		}
 		return false;
 	}

@@ -24,7 +24,7 @@ public class TileTurbine extends TileBase implements IElectricityProvider {
 	protected boolean		isGenerating	= false;
 	public int				delayGeneration	= 10;
 	protected int			steam;
-	protected GridLocation		mainLocation	= new GridLocation();
+	protected GridLocation	mainLocation	= new GridLocation();
 	protected boolean		hasMain			= false;
 	protected boolean		isMain			= false;
 

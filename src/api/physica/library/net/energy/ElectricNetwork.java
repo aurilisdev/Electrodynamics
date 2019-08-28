@@ -330,7 +330,7 @@ public class ElectricNetwork {
 	}
 
 	public static class NetworkFinder {
-		public World			worldObj;
+		public World				worldObj;
 		public GridLocation			start;
 		public List<GridLocation>	iterated	= new ArrayList<>();
 		public List<GridLocation>	toIgnore	= new ArrayList<>();

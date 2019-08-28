@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.api.core.utilities.IBaseUtilities;
+import physica.core.common.recipe.CircuitPressRecipeHandler;
+import physica.core.common.tile.TileCircuitPress;
+import physica.library.recipe.RecipeSystem;
 
 public class CoreRecipeRegister implements IContent, IBaseUtilities {
 
@@ -36,7 +39,7 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 			// Battery
 			addRecipe(CoreItemRegister.itemBattery, " T ", "TRT", "TCT", 'T', "ingotTin", 'R', Items.redstone, 'C', Items.coal);
 
-			// Superconductive Blend
+			// Superconductor Blend
 			addRecipe(new ItemStack(CoreItemRegister.itemMetaBlend, 1, 0), "SGS", "GEG", "SGS", 'S', "ingotSilver", 'G', "ingotGold", 'E', Items.ender_pearl);
 
 			// Multimeter
@@ -48,6 +51,10 @@ public class CoreRecipeRegister implements IContent, IBaseUtilities {
 			GameRegistry.addSmelting(CoreBlockRegister.blockLeadOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 3), 1.0f);
 			GameRegistry.addSmelting(CoreBlockRegister.blockSilverOre, new ItemStack(CoreItemRegister.itemMetaIngot, 1, 4), 1.2f);
 			GameRegistry.addSmelting(new ItemStack(CoreItemRegister.itemMetaBlend, 1, 0), new ItemStack(CoreItemRegister.itemMetaIngot, 1, 5), 1.9f);
+
+			RecipeSystem.registerRecipe(TileCircuitPress.class, new CircuitPressRecipeHandler("plateSteel", "dustRedstone", null, null, new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0)));
+			RecipeSystem.registerRecipe(TileCircuitPress.class, new CircuitPressRecipeHandler("circuitBasic", "ingotGold", null, null, new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 1)));
+			RecipeSystem.registerRecipe(TileCircuitPress.class, new CircuitPressRecipeHandler("circuitAdvanced", "gemDiamond", null, null, new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 2)));
 		}
 	}
 }

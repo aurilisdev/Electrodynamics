@@ -7,6 +7,7 @@ import physica.api.core.conductor.EnumConductorType;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.core.common.block.BlockBatteryBox;
+import physica.core.common.block.BlockBatteryBox.EnumBatteryBox;
 import physica.core.common.block.BlockBlastFurnace;
 import physica.core.common.block.BlockCircuitPress;
 import physica.core.common.block.BlockCoalGenerator;
@@ -95,18 +96,16 @@ public class CoreBlockRegister implements IContent {
 			}
 			ItemBlockDescriptable.addDescription(blockBatteryBox, 0,
 					EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) TileBatteryBox.BASE_ELECTRIC_CAPACITY, Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
-					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.BASIC.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
+					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.BASIC.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockBatteryBox, 1,
 					EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) TileBatteryBox.BASE_ELECTRIC_CAPACITY * 4, Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
-					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY * 4 / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.ADVANCED.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
+					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.ADVANCED.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockBatteryBox, 2,
 					EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) TileBatteryBox.BASE_ELECTRIC_CAPACITY * 12, Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
-					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileBatteryBox.BASE_ELECTRIC_CAPACITY * 12 / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.ELITE.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
+					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.ELITE.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockElectricFurnace, 0,
 					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescription(blockElectricFurnace, 1,
@@ -120,7 +119,7 @@ public class CoreBlockRegister implements IContent {
 			ItemBlockDescriptable.addDescriptionShifted(blockCoalGenerator, 0, "Generates electricity burning coal.");
 			ItemBlockDescriptable.addDescriptionShifted(blockElectricFurnace, 0, "This block is a faster version of the furnace", "that runs on electricity.");
 			ItemBlockDescriptable.addDescriptionShifted(blockElectricFurnace, 1, "This block is a faster version of both the furnace and", "the electric furnace that runs on electricity that also", "doubles the ore output when smelted.");
-			ItemBlockDescriptable.addDescriptionShifted(blockCircuitPress, 1, "This block presses steel plates with other ingredients into circuits.");
+			ItemBlockDescriptable.addDescriptionShifted(blockCircuitPress, 0, "This block presses different ingredients into circuits");
 
 		}
 	}

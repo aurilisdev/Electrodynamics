@@ -29,7 +29,7 @@ public class ConfigNuclearPhysics implements IContent {
 	public static int				URANIUM_ORE_BRANCH_SIZE			= 3;
 	public static int				URANIUM_ORE_HARVEST_LEVEL		= 3;
 
-	public static int				PLASMA_STRENGTH					= 5;
+	public static int				PLASMA_STRENGTH					= 8;
 	public static int				DARK_MATTER_USES				= 8;
 
 	@Override

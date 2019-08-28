@@ -29,6 +29,6 @@ public class GuiCircuitPress extends GuiContainerBase<TileCircuitPress> {
 	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 
-		renderFurnaceCookArrow(80, 35, host.getOperatingTicks(), TileCircuitPress.REQUIRED_TICKS);
+		renderFurnaceCookArrow(80, 35, host.getOperatingTicks(), TileCircuitPress.TICKS_REQUIRED);
 	}
 }

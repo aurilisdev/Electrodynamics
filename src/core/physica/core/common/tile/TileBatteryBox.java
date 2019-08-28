@@ -22,7 +22,6 @@ public class TileBatteryBox extends TileBasePoweredContainer implements IElectri
 	public static final int		SLOT_OUTPUT				= 1;
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
 	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
-	public static final int		BASE_ELECTRIC_CAPACITY	= 5000000;
 	private TileEntity			cachedOutput;
 
 	@Override
