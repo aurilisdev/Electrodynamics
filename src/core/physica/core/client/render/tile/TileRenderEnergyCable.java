@@ -28,7 +28,7 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 	{
 		for (EnumConductorType type : EnumConductorType.values())
 		{
-			model_texture[type.ordinal()] = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + type.getName() + "Cable.png");
+			model_texture[type.ordinal()] = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + type.getName() + "cable.png");
 		}
 	}
 

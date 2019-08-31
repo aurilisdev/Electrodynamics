@@ -25,14 +25,15 @@ import physica.library.location.VectorLocation;
 @SideOnly(Side.CLIENT)
 public class ForcefieldRenderHandler {
 
-	public static List<RenderFortronBlockInfo> renderSet = new ArrayList<>();
+	public static List<RenderFortronBlockInfo>	renderSet	= new ArrayList<>();
+	public static ResourceLocation				location	= new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png");
 
 	@SubscribeEvent
 	public void renderLast(RenderWorldLastEvent event)
 	{
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(1, 1);
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(location);
 		TessellatorWrapper.instance.startDrawingQuads();
 		for (RenderFortronBlockInfo render : renderSet)
 		{

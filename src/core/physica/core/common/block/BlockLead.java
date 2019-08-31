@@ -16,7 +16,7 @@ public class BlockLead extends BlockCompressed implements IBaseUtilities, IRecip
 		setStepSound(soundTypeMetal);
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockName(CoreReferences.PREFIX + "blockLead");
-		setBlockTextureName(CoreReferences.PREFIX + "blockLead");
+		setBlockTextureName(CoreReferences.PREFIX + "blocklead");
 		addToRegister("Core", this);
 	}
 

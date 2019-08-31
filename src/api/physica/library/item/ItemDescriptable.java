@@ -15,7 +15,7 @@ public class ItemDescriptable extends ItemUpdateable {
 
 	public ItemDescriptable(String texturePrefix, String name, String... customLines) {
 		setUnlocalizedName(name);
-		setTextureName(texturePrefix + name);
+		setTextureName(texturePrefix + name.toLowerCase());
 		lineList.addAll(Arrays.asList(customLines));
 		setCreativeTab(CoreTabRegister.coreTab);
 	}

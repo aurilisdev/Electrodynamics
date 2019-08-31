@@ -20,7 +20,7 @@ public class ItemRenderCentrifuge extends ItemRenderObjModel {
 
 	public ItemRenderCentrifuge(String objFile, String textureFile) {
 		super(objFile, textureFile, NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Stand.obj", "Spin.obj")));
+		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("stand.obj", "spin.obj")));
 	}
 
 	@Override

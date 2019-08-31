@@ -17,8 +17,8 @@ public class TileRenderNeutronCaptureChamber extends TileRenderObjModel<TileNeut
 	protected ResourceLocation filled_texture;
 
 	public TileRenderNeutronCaptureChamber(String objFile, String textureFile) {
-		super(objFile, textureFile.replace(".png", "Empty.png"), NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		filled_texture = new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile.replace(".png", "Filled.png"));
+		super(objFile, textureFile.replace(".png", "empty.png"), NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		filled_texture = new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile.replace(".png", "filled.png"));
 	}
 
 	@Override

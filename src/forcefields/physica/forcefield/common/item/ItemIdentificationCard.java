@@ -19,7 +19,7 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 
 	public ItemIdentificationCard(String name) {
 		setUnlocalizedName(name);
-		setTextureName(ForcefieldReferences.PREFIX + name);
+		setTextureName(ForcefieldReferences.PREFIX + name.toLowerCase());
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
 		setMaxStackSize(1);
 	}

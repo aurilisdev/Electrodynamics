@@ -42,7 +42,7 @@ public class ItemMetaHolder extends ItemUpdateable {
 		subIcons = new IIcon[subItems.size()];
 		for (int i = 0; i < subItems.size(); i++)
 		{
-			subIcons[i] = register.registerIcon(prefix + textureFolder + "/" + subItems.get(i));
+			subIcons[i] = register.registerIcon(prefix + textureFolder + "/" + subItems.get(i).toLowerCase());
 		}
 	}
 

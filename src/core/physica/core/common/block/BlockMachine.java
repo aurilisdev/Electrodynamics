@@ -39,7 +39,7 @@ public abstract class BlockMachine extends BlockBaseContainer implements IBaseUt
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockName(CoreReferences.PREFIX + name);
-		setBlockTextureName(CoreReferences.PREFIX_TEXTURE_MACHINE + name);
+		setBlockTextureName(CoreReferences.PREFIX_TEXTURE_MACHINE + name.toLowerCase());
 		addToRegister("Core", this);
 	}
 
@@ -56,16 +56,16 @@ public abstract class BlockMachine extends BlockBaseContainer implements IBaseUt
 	{
 		if (hazard)
 		{
-			blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineSideHazmat");
-			iconTop = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineSide");
-			iconBottom = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineBottomHazmat");
-			iconFacing = reg.registerIcon(getTextureName() + "Facing");
-			iconFacingRunning = reg.registerIcon(getTextureName() + "FacingRunning");
+			blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machinesidehazmat");
+			iconTop = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
+			iconBottom = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machinebottomhazmat");
+			iconFacing = reg.registerIcon(getTextureName() + "facing");
+			iconFacingRunning = reg.registerIcon(getTextureName() + "facingrunning");
 		} else
 		{
-			blockIcon = iconTop = iconBottom = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineSide");
-			iconFacing = reg.registerIcon(getTextureName() + "Facing");
-			iconFacingRunning = reg.registerIcon(getTextureName() + "FacingRunning");
+			blockIcon = iconTop = iconBottom = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
+			iconFacing = reg.registerIcon(getTextureName() + "facing");
+			iconFacingRunning = reg.registerIcon(getTextureName() + "facingrunning");
 		}
 	}
 

@@ -23,7 +23,7 @@ public class BlockUraniumOre extends Block {
 		setLightLevel(0.1f);
 		setStepSound(soundTypeStone);
 		setHarvestLevel("pickaxe", ConfigNuclearPhysics.URANIUM_ORE_HARVEST_LEVEL);
-		setBlockTextureName(NuclearReferences.PREFIX + "uraniumOre");
+		setBlockTextureName(NuclearReferences.PREFIX + "uraniumore");
 		setBlockName(NuclearReferences.PREFIX + "uraniumOre");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setTickRandomly(true);

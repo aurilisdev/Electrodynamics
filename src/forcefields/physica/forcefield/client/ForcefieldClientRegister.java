@@ -33,25 +33,25 @@ public class ForcefieldClientRegister implements IContent {
 		{
 			MinecraftForge.EVENT_BUS.register(this);
 			MinecraftForge.EVENT_BUS.register(new ForcefieldRenderHandler());
-			ClientRegistry.bindTileEntitySpecialRenderer(TileCoercionDriver.class, new TileRenderFortronBlock<TileCoercionDriver>("coercionDriver.obj"));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileCoercionDriver.class, new TileRenderFortronBlock<TileCoercionDriver>("coerciondriver.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockCoercionDriver),
-					new ItemRenderObjModel("coercionDriver.obj", "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("coerciondriver.obj", "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronFieldConstructor.class, new TileRenderFortronBlock<TileFortronFieldConstructor>("fortronFieldConstructor.obj"));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronFieldConstructor.class, new TileRenderFortronBlock<TileFortronFieldConstructor>("fortronfieldconstructor.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor),
-					new ItemRenderConstructor("fortronFieldConstructor.obj", "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderConstructor("fortronfieldconstructor.obj", "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronCapacitor.class, new TileRenderFortronBlock<TileFortronCapacitor>("fortronCapacitor.obj"));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileFortronCapacitor.class, new TileRenderFortronBlock<TileFortronCapacitor>("fortroncapacitor.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronCapacitor),
-					new ItemRenderObjModel("fortronCapacitor.obj", "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("fortroncapacitor.obj", "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-			ClientRegistry.bindTileEntitySpecialRenderer(TileInterdictionMatrix.class, new TileRenderFortronBlock<TileInterdictionMatrix>("matrixModel.obj"));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileInterdictionMatrix.class, new TileRenderFortronBlock<TileInterdictionMatrix>("matrixmodel.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockInterdictionMatrix),
-					new ItemRenderObjModel("matrixModel.obj", "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("matrixmodel.obj", "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-			ClientRegistry.bindTileEntitySpecialRenderer(TileBiometricIdentifier.class, new TileRenderFortronBlock<TileBiometricIdentifier>("biometricIdentifier.obj"));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileBiometricIdentifier.class, new TileRenderFortronBlock<TileBiometricIdentifier>("biometricidentifier.obj"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ForcefieldBlockRegister.blockBiometricIdentifier),
-					new ItemRenderObjModel("biometricIdentifier.obj", "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("biometricidentifier.obj", "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 		}
 	}
 

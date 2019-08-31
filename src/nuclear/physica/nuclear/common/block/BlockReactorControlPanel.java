@@ -27,8 +27,8 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 		setResistance(5);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
-		setBlockName(NuclearReferences.PREFIX + "reactorControlPanel");
-		setBlockTextureName(NuclearReferences.PREFIX + "reactorControlPanel");
+		setBlockName(NuclearReferences.PREFIX + "reactorcontrolpanel");
+		setBlockTextureName(NuclearReferences.PREFIX + "reactorcontrolpanel");
 		addToRegister("Nuclear", this);
 	}
 

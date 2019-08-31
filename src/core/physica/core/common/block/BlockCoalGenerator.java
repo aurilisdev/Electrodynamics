@@ -35,17 +35,17 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(CoreTabRegister.coreTab);
 		setBlockName(CoreReferences.PREFIX + "coalGenerator");
-		setBlockTextureName(CoreReferences.PREFIX_TEXTURE_MACHINE + "coalGenerator");
+		setBlockTextureName(CoreReferences.PREFIX_TEXTURE_MACHINE + "coalgenerator");
 		addToRegister("Core", this);
 	}
 
 	@Override
 	public void registerBlockIcons(IIconRegister reg)
 	{
-		blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineSide");
-		machineOutput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineOutput");
-		iconFacing = reg.registerIcon(getTextureName() + "Facing");
-		iconFacingRunning = reg.registerIcon(getTextureName() + "FacingRunning");
+		blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
+		machineOutput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineoutput");
+		iconFacing = reg.registerIcon(getTextureName() + "facing");
+		iconFacingRunning = reg.registerIcon(getTextureName() + "facingrunning");
 	}
 
 	@Override

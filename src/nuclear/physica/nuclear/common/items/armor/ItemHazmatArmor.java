@@ -19,7 +19,7 @@ public class ItemHazmatArmor extends ItemArmor {
 		setMaxDamage(37500);
 		canRepair = false;
 		setUnlocalizedName(type);
-		setTextureName(NuclearReferences.PREFIX + "hazmat/" + type);
+		setTextureName(NuclearReferences.PREFIX + "hazmat/" + type.toLowerCase());
 		if (type.contains("Reinforced"))
 		{
 			setPlatingProtection(5);
@@ -29,7 +29,7 @@ public class ItemHazmatArmor extends ItemArmor {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-		return NuclearReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + (getUnlocalizedName().contains("Reinforced") ? "reinforcedHazmatArmor" : "hazmatArmor") + ".png";
+		return NuclearReferences.PREFIX + CoreReferences.MODEL_DIRECTORY + (getUnlocalizedName().contains("Reinforced") ? "reinforcedhazmatarmor" : "hazmatarmor") + ".png";
 	}
 
 	public ItemHazmatArmor setPlatingProtection(float protection)

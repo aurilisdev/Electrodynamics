@@ -1,4 +1,4 @@
-package physica.nuclear.client.gui;
+ package physica.nuclear.client.gui;
 
 import java.awt.Color;
 

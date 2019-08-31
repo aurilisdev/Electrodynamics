@@ -20,7 +20,7 @@ public class ItemRenderControlRod extends ItemRenderObjModel {
 
 	public ItemRenderControlRod(String objFile, String textureFile) {
 		super(objFile, textureFile, NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		modelCenter = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("Station.obj", "Rods.obj")));
+		modelCenter = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace("station.obj", "rods.obj")));
 	}
 
 	@Override

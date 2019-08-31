@@ -27,7 +27,7 @@ public class TileRenderTurbine extends TileEntitySpecialRenderer {
 	public TileRenderTurbine(String objFile, String textureFile) {
 		model_base = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile));
 		model_texture = new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + textureFile);
-		model_baseOptimized = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "SmallOptimized.obj")));
+		model_baseOptimized = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "smalloptimized.obj")));
 		model_middle = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_middle.obj")));
 		model_big = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + objFile.replace(".obj", "_big.obj")));
 	}

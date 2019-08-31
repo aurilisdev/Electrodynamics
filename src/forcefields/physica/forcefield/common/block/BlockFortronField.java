@@ -39,7 +39,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 		super(Material.glass);
 		setBlockUnbreakable();
 		setResistance(Float.MAX_VALUE);
-		setBlockTextureName(ForcefieldReferences.PREFIX + "animatedFortronField");
+		setBlockTextureName(ForcefieldReferences.PREFIX + "animatedfortronfield");
 		setBlockName(ForcefieldReferences.PREFIX + "fortronField");
 		setCreativeTab(ForcefieldTabRegister.forcefieldTab);
 	}

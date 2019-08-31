@@ -25,13 +25,13 @@ public class ClientRegister implements IContent {
 		if (phase == LoadPhase.ClientRegister)
 		{
 			ClientRegistry.bindTileEntitySpecialRenderer(TileInfiniteEnergy.class,
-					new TileRenderObjModel<TileInfiniteEnergy>("infEnergy.obj", "infEnergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new TileRenderObjModel<TileInfiniteEnergy>("infenergy.obj", "infenergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockInfEnergy),
-					new ItemRenderObjModel("infEnergy.obj", "infEnergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("infenergy.obj", "infenergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
-			ClientRegistry.bindTileEntitySpecialRenderer(TileBlastFurnace.class, new TileRenderBlastFurnace("blastFurnace.obj", "blastFurnace.png"));
+			ClientRegistry.bindTileEntitySpecialRenderer(TileBlastFurnace.class, new TileRenderBlastFurnace("blastfurnace.obj", "blastfurnace.png"));
 			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockBlastFurnace),
-					new ItemRenderObjModel("blastFurnace.obj", "blastFurnace.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+					new ItemRenderObjModel("blastfurnace.obj", "blastfurnace.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEnergyCable.class, new TileRenderEnergyCable());
 		}

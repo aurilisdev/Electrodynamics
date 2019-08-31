@@ -20,8 +20,8 @@ public class TileRenderControlRod extends TileRenderObjModel<TileInsertableContr
 	protected WavefrontObject modelRods;
 
 	public TileRenderControlRod() {
-		super("controlRodStation.obj", "fissionReactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		modelRods = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + "controlRodRods.obj"));
+		super("controlrodstation.obj", "fissionreactor.png", NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		modelRods = PhysicaModelLoader.loadWavefrontModel(new ResourceLocation(NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY + "controlrodrods.obj"));
 	}
 
 	@Override

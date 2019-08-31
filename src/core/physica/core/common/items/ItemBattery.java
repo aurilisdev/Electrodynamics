@@ -10,7 +10,7 @@ public class ItemBattery extends ItemElectric {
 		super((int) (250000 / 0.4));
 		setMaxTransfer((int) (2500 / 0.4));
 		setUnlocalizedName(name);
-		setTextureName(CoreReferences.PREFIX + name);
+		setTextureName(CoreReferences.PREFIX + name.toLowerCase());
 		setCreativeTab(CoreTabRegister.coreTab);
 	}
 }

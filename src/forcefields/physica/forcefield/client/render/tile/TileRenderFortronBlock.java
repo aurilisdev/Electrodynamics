@@ -23,11 +23,11 @@ import physica.library.client.render.TileRenderObjModel;
 public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> extends TileRenderObjModel<T> {
 
 	protected ResourceLocation				model_texture2;
-	public static final ResourceLocation	previewTexture	= new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcePreviewTexture.png");
+	public static final ResourceLocation	previewTexture	= new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcepreviewtexture.png");
 
 	public TileRenderFortronBlock(String objFile) {
-		super(objFile, "fortronMachineBase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
-		model_texture2 = new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "fortronMachineBasePowerless.png");
+		super(objFile, "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
+		model_texture2 = new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + "fortronmachinebasepowerless.png");
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class BlockOre extends Block {
 		setResistance(5f * harvestLevel);
 		setStepSound(soundTypeStone);
 		setHarvestLevel("pickaxe", harvestLevel);
-		setBlockTextureName(CoreReferences.PREFIX + name);
+		setBlockTextureName(CoreReferences.PREFIX + name.toLowerCase());
 		setBlockName(CoreReferences.PREFIX + name);
 		setCreativeTab(CoreTabRegister.coreTab);
 	}

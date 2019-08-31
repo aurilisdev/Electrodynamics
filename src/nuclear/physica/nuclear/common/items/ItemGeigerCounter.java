@@ -13,7 +13,7 @@ public class ItemGeigerCounter extends ItemElectric {
 	public ItemGeigerCounter(String name) {
 		super((int) (250000 / 0.4D));
 		setUnlocalizedName(name);
-		setTextureName(NuclearReferences.PREFIX + name);
+		setTextureName(NuclearReferences.PREFIX + name.toLowerCase());
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 	}
 

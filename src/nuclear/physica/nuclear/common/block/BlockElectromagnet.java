@@ -70,11 +70,11 @@ public class BlockElectromagnet extends Block implements IElectromagnet, IBaseUt
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "electromagnetTop");
-		iconGlass = iconRegister.registerIcon(NuclearReferences.PREFIX + "electromagnetGlass");
-		containment = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentBlock");
-		containmentIconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentTop");
-		containmentIconGlass = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentGlass");
+		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "electromagnettop");
+		iconGlass = iconRegister.registerIcon(NuclearReferences.PREFIX + "electromagnetglass");
+		containment = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentblock");
+		containmentIconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmenttop");
+		containmentIconGlass = iconRegister.registerIcon(NuclearReferences.PREFIX + "containmentglass");
 	}
 
 	@Override
