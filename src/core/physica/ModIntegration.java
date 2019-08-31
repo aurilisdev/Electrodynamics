@@ -61,9 +61,6 @@ public class ModIntegration implements IContent {
 						PhysicaAPI.logger.log(Level.ERROR, "Failed to integrate Physica with Mekanism.");
 					}
 				}
-			} else
-			{
-
 			}
 		}
 	}
