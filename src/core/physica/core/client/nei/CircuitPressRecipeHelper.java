@@ -1,20 +1,21 @@
 package physica.core.client.nei;
 
+import static codechicken.lib.gui.GuiDraw.changeTexture;
+import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.nei.PositionedStack;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 import physica.core.client.gui.GuiCircuitPress;
 import physica.core.common.CoreItemRegister;
 import physica.core.common.tile.TileCircuitPress;
 import physica.nuclear.common.tile.TileNeutronCaptureChamber;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static codechicken.lib.gui.GuiDraw.changeTexture;
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 
 public class CircuitPressRecipeHelper extends PhysicaRecipeHandlerBase {
 
@@ -108,7 +109,7 @@ public class CircuitPressRecipeHelper extends PhysicaRecipeHandlerBase {
 					arecipes.add(new recipe(new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 1), new ItemStack(Items.diamond), new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 2)));
 					break;
 				}
-			} else if ((((ItemStack) ingredients[0]).getItem() == CoreItemRegister.itemMetaPlate && ((ItemStack) ingredients[0]).getItemDamage() == 1) || ((ItemStack) ingredients[0]).getItem() == Items.redstone)
+			} else if (((ItemStack) ingredients[0]).getItem() == CoreItemRegister.itemMetaPlate && ((ItemStack) ingredients[0]).getItemDamage() == 1 || ((ItemStack) ingredients[0]).getItem() == Items.redstone)
 			{
 				arecipes.add(new recipe(new ItemStack(CoreItemRegister.itemMetaPlate, 1, 1), new ItemStack(Items.redstone), new ItemStack(CoreItemRegister.itemMetaCircuit, 1, 0)));
 			} else if (((ItemStack) ingredients[0]).getItem() == Items.gold_ingot)
