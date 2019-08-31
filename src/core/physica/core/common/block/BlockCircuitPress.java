@@ -13,6 +13,6 @@ public class BlockCircuitPress extends BlockMachine {
 	@Override
 	public void registerRecipes()
 	{
-		addRecipe(this, "ILI", "BFB", "WRW", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'L', Blocks.lever, 'B', Blocks.stone_button, 'R', Blocks.redstone_torch);
+		addRecipe(this, "ILI", "BFB", "WRW", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'L', Blocks.lever, 'B', Blocks.stone_button, 'R', Blocks.redstone_torch, 'W', "plateSteel");
 	}
 }
