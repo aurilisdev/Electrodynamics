@@ -19,6 +19,7 @@ import physica.api.core.tile.ITileBase;
 import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.ForcefieldReferences;
 import physica.forcefield.client.render.tile.RenderFortronBlockInfo;
+import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.client.render.TessellatorWrapper;
 import physica.library.location.VectorLocation;
 
@@ -35,6 +36,7 @@ public class ForcefieldRenderHandler {
 		GL11.glBlendFunc(1, 1);
 		Minecraft.getMinecraft().renderEngine.bindTexture(location);
 		TessellatorWrapper.instance.startDrawingQuads();
+		GL11.glColor4f(0.9f, 1, 0.8f, 1f);
 		for (RenderFortronBlockInfo render : renderSet)
 		{
 			IInvFortronTile tile = (IInvFortronTile) render.getTile();
@@ -58,6 +60,24 @@ public class ForcefieldRenderHandler {
 					double diffY = baseTile.yCoord - tile.This().yCoord;
 					double diffZ = baseTile.zCoord - tile.This().zCoord;
 					poolObject.set(start.x + diffX, start.y + diffY, start.z + diffZ);
+					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
+				}
+			}
+			if (tile instanceof TileFortronFieldConstructor)
+			{
+				if (((TileFortronFieldConstructor) tile).getProjectorMode() >= 0)
+				{
+					start.set((float) x + 0.05, (float) y + 0.45f, (float) z + 0.05);
+					poolObject.set(start.x + 0.5, start.y + 0.85 + Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, start.z + 0.5);
+					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
+					start.set((float) x + 0.95, (float) y + 0.45f, (float) z + 0.05);
+					poolObject.set(start.x - 0.5, start.y + 0.85 + Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, start.z + 0.5);
+					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
+					start.set((float) x + 0.05, (float) y + 0.45f, (float) z + 0.95);
+					poolObject.set(start.x + 0.5, start.y + 0.85 + Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, start.z - 0.5);
+					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
+					start.set((float) x + 0.95, (float) y + 0.45f, (float) z + 0.95);
+					poolObject.set(start.x - 0.5, start.y + 0.85 + Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, start.z - 0.5);
 					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
 				}
 			}

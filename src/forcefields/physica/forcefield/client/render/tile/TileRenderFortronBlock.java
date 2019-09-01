@@ -41,13 +41,14 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		wavefrontObject.render();
 		GL11.glScaled(1 / 0.0625f, 1 / 0.0625f, 1 / 0.0625f);
 		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
-		if (tile.isActivated() && tile.canSendBeam())
+		if (!(tile instanceof TileFortronFieldConstructor) && tile.isActivated() && tile.canSendBeam())
 		{
 			ForcefieldRenderHandler.renderSet.add(new RenderFortronBlockInfo(tile, x, y, z, deltaFrame));
 		}
 		GL11.glPopMatrix();
 		if (tile instanceof TileFortronFieldConstructor)
 		{
+			ForcefieldRenderHandler.renderSet.add(new RenderFortronBlockInfo(tile, x, y, z, deltaFrame));
 			GL11.glPushMatrix();
 			GL11.glTranslated(x + 0.5D, y + 1.35D, z + 0.5D);
 			int mode = ((TileFortronFieldConstructor) tile).getProjectorMode();
