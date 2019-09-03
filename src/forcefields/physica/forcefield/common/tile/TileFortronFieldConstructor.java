@@ -359,7 +359,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			ForcefieldEventHandler.INSTANCE.registerConstructor(this);
 		}
-		isFullySealed = isFinishedConstructing() && activeFields.size() >= maximumForceFieldCount;
+		if (ticks > 30)
+		{
+			isFullySealed = isFinishedConstructing() && activeFields.size() >= maximumForceFieldCount;
+		}
 		ItemStack type = getStackInSlot(SLOT_TYPE);
 		if (type != null)
 		{
@@ -687,6 +690,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		tag.setInteger("fieldColorMultiplier", fieldColorMultiplier);
 		tag.setInteger("moduleCount", moduleCount);
 		tag.setInteger("forcefieldType", forcefieldType);
+		tag.setBoolean("isFullySealed", isFullySealed);
 		fortronTank.writeToNBT(tag);
 	}
 
@@ -702,6 +706,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		fieldColorMultiplier = tag.getInteger("fieldColorMultiplier");
 		moduleCount = tag.getInteger("moduleCount");
 		forcefieldType = tag.getInteger("forcefieldType");
+		isFullySealed = tag.getBoolean("isFullySealed");
 		fortronTank.readFromNBT(tag);
 	}
 
