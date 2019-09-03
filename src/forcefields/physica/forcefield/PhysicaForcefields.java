@@ -23,6 +23,7 @@ import physica.api.core.abstraction.recipe.IRecipeRegister;
 import physica.api.core.load.ContentLoader;
 import physica.api.core.load.LoadPhase;
 import physica.forcefield.client.ForcefieldClientRegister;
+import physica.forcefield.common.ConstructorWorldData;
 import physica.forcefield.common.ForcefieldBlockRegister;
 import physica.forcefield.common.ForcefieldEventHandler;
 import physica.forcefield.common.ForcefieldFluidRegister;
@@ -118,6 +119,7 @@ public class PhysicaForcefields {
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new SetIdentityCommand());
+		ConstructorWorldData.load(event.getServer().worldServerForDimension(0));
 	}
 
 	public static ArrayList<TileFortronFieldConstructor> getRelevantConstructors(World world, double x, double y, double z)

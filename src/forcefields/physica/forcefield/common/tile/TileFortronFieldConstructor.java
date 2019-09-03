@@ -38,6 +38,7 @@ import physica.api.forcefield.IFortronConstructor;
 import physica.api.forcefield.IInvFortronTile;
 import physica.forcefield.PhysicaForcefields;
 import physica.forcefield.client.gui.GuiFortronFieldConstructor;
+import physica.forcefield.common.ConstructorWorldData;
 import physica.forcefield.common.ForcefieldBlockRegister;
 import physica.forcefield.common.ForcefieldEventHandler;
 import physica.forcefield.common.ForcefieldFluidRegister;
@@ -248,6 +249,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		invalidateConnections();
 		fortronConnections.clear();
 		findNearbyConnections(TileFortronCapacitor.class);
+		if (!World().isRemote)
+		{
+			ConstructorWorldData.register(this);
+		}
 		onInventoryChanged();
 	}
 
@@ -611,6 +616,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		super.invalidate();
 		invalidateConnections();
+		if (!World().isRemote) 
+		{
+			ConstructorWorldData.remove(this);
+		}
 	}
 
 	@Override
