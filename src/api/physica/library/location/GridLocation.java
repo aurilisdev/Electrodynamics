@@ -256,12 +256,12 @@ public class GridLocation {
 		if (this == obj)
 		{
 			return true;
-		} else if (obj == null || getClass() != obj.getClass())
+		} else if (obj instanceof GridLocation)
 		{
-			return false;
+			GridLocation other = (GridLocation) obj;
+			return xCoord == other.xCoord && yCoord == other.yCoord && zCoord == other.zCoord;
 		}
-		GridLocation other = (GridLocation) obj;
-		return xCoord == other.xCoord && yCoord == other.yCoord && zCoord == other.zCoord;
+		return false;
 	}
 
 	@Override
