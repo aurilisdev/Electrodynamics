@@ -130,7 +130,7 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "thermometerTop");
+		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "thermometertop");
 	}
 
 	@Override

@@ -48,16 +48,16 @@ public class NuclearItemRegister implements IContent {
 	{
 		if (phase == LoadPhase.RegisterObjects)
 		{
-			GameRegistry.registerItem(itemAntimatterCell125Milligram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell100Milligram", "125 Milligrams").setTextureName(NuclearReferences.PREFIX + "antimatterCell"))
+			GameRegistry.registerItem(itemAntimatterCell125Milligram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell100Milligram", "125 Milligrams").setTextureName(NuclearReferences.PREFIX + "antimattercell"))
 					.setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell125Milligram.getUnlocalizedName());
-			AbstractionLayer.Registering.registerItem(itemAntimatterCell1Gram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell1Gram", "1 Gram").setTextureName(NuclearReferences.PREFIX + "antimatterCell"))
+			AbstractionLayer.Registering.registerItem(itemAntimatterCell1Gram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("antimatterCell1Gram", "1 Gram").setTextureName(NuclearReferences.PREFIX + "antimattercell"))
 					.setUpdate(new ItemUpdateAntimatter().setScale(3)).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell1Gram.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemDarkmatterCell = (ItemDescriptable) new ItemDescriptable(NuclearReferences.PREFIX, "darkmatterCell").setUpdate(new ItemUpdateDarkMatter())
 					.setMaxDamage(ConfigNuclearPhysics.DARK_MATTER_USES).setMaxStackSize(1).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemDarkmatterCell.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemHighEnrichedFuelCell = (ItemDescriptable) new ItemDescriptable(NuclearReferences.PREFIX, "fuelCell", "High-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(4.5f))
-					.setMaxDamage(24000).setTextureName(NuclearReferences.PREFIX + "fissileFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1), itemHighEnrichedFuelCell.getUnlocalizedName() + "Fissile");
+					.setMaxDamage(24000).setTextureName(NuclearReferences.PREFIX + "fissilefuelcell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1), itemHighEnrichedFuelCell.getUnlocalizedName() + "Fissile");
 			AbstractionLayer.Registering.registerItem(itemLowEnrichedFuelCell = (ItemDescriptable) new ItemDescriptable(NuclearReferences.PREFIX, "fuelCell", "Low-Enriched Uranium").setUpdate(new ItemUpdateUranium().setScale(1.25f))
-					.setMaxDamage(26000).setTextureName(NuclearReferences.PREFIX + "breederFuelCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1), itemLowEnrichedFuelCell.getUnlocalizedName() + "Breeder");
+					.setMaxDamage(26000).setTextureName(NuclearReferences.PREFIX + "breederfuelcell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(1), itemLowEnrichedFuelCell.getUnlocalizedName() + "Breeder");
 			AbstractionLayer.Registering.registerItem(
 					itemEmptyElectromagneticCell = (ItemDescriptable) new ItemDescriptable(NuclearReferences.PREFIX, "emptyElectromagneticCell").setCreativeTab(NuclearTabRegister.nuclearPhysicsTab).setMaxStackSize(64),
 					itemEmptyElectromagneticCell.getUnlocalizedName());
