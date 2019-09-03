@@ -67,7 +67,7 @@ public class ConstructorWorldData extends WorldSavedData {
 		if (PhysicaAPI.isDebugMode)
 		{
 			System.out.println("REMOVE: " + constructor + ", " + instance.locations);
-		}		
+		}
 	}
 
 	@Override
