@@ -143,8 +143,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			return;
 		}
-		healthLost += amount / (double) fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
-		if (healthLost >= MAX_HEALTH_LOSS || amount > MAX_HEALTH_LOSS)
+		double increase = amount / (double) fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER;
+		healthLost += increase;
+		if (healthLost >= MAX_HEALTH_LOSS || increase > MAX_HEALTH_LOSS)
 		{
 			destroyField(true);
 			GridLocation loc = getLocation();
