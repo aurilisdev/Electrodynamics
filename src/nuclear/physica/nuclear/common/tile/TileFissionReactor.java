@@ -289,7 +289,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 				}
 			}
 		}
-		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, power * 2, true);
+		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, 8, true);
 		World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, NuclearBlockRegister.blockMeltedReactor);
 	}
 
