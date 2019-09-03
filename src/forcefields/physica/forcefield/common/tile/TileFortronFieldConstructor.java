@@ -616,7 +616,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		super.invalidate();
 		invalidateConnections();
-		if (!World().isRemote) 
+		if (!World().isRemote)
 		{
 			ConstructorWorldData.remove(this);
 		}

@@ -1,27 +1,27 @@
 package physica.forcefield.common;
 
+import java.util.ArrayList;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import physica.api.core.PhysicaAPI;
 import physica.forcefield.common.tile.TileFortronFieldConstructor;
 import physica.library.location.GridLocation;
 
-import java.util.ArrayList;
-
 public class ConstructorWorldData extends WorldSavedData {
 
-	private static final String DATA_FILE = "constructor_data";
+	private static final String			DATA_FILE	= "constructor_data";
 
-	private static ConstructorWorldData instance;
-	private ArrayList<GridLocation> locations = new ArrayList<>();
+	private static ConstructorWorldData	instance;
+	private ArrayList<GridLocation>		locations	= new ArrayList<>();
 
 	public ArrayList<GridLocation> getLocations()
 	{
 		return locations;
 	}
 
-	public ConstructorWorldData(String name)
-	{
+	public ConstructorWorldData(String name) {
 		super(name);
 	}
 
@@ -31,10 +31,16 @@ public class ConstructorWorldData extends WorldSavedData {
 		if (instance == null)
 		{
 			instance = new ConstructorWorldData(DATA_FILE);
-			System.out.println("Created new constructor world data");
+			if (PhysicaAPI.isDebugMode)
+			{
+				System.out.println("Created new constructor world data");
+			}
 		} else
 		{
-			System.out.println("Loaded " + instance.locations.size() + " constructor locations");
+			if (PhysicaAPI.isDebugMode)
+			{
+				System.out.println("Loaded " + instance.locations.size() + " constructor locations");
+			}
 		}
 	}
 
@@ -47,7 +53,10 @@ public class ConstructorWorldData extends WorldSavedData {
 		instance.locations.add(constructor.getLocation());
 		instance.markDirty();
 		constructor.World().setItemData(DATA_FILE, instance);
-		System.out.println("REGISTER: " + constructor + ", " + instance.locations);
+		if (PhysicaAPI.isDebugMode)
+		{
+			System.out.println("REGISTER: " + constructor + ", " + instance.locations);
+		}
 	}
 
 	public static void remove(TileFortronFieldConstructor constructor)
@@ -55,10 +64,12 @@ public class ConstructorWorldData extends WorldSavedData {
 		instance.locations.remove(constructor.getLocation());
 		instance.markDirty();
 		constructor.World().setItemData(DATA_FILE, instance);
-		System.out.println("REMOVE: " + constructor + ", " + instance.locations);
+		if (PhysicaAPI.isDebugMode)
+		{
+			System.out.println("REMOVE: " + constructor + ", " + instance.locations);
+		}		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
@@ -86,4 +97,3 @@ public class ConstructorWorldData extends WorldSavedData {
 	}
 
 }
-
