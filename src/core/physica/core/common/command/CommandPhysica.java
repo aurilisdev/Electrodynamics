@@ -63,7 +63,7 @@ public class CommandPhysica extends CommandBase {
 			if (sender instanceof EntityPlayer)
 			{
 				EntityPlayer player = (EntityPlayer) sender;
-				ItemStack itemStack = player.getItemInUse();
+				ItemStack itemStack = player.getCurrentEquippedItem();
 				if (itemStack != null)
 				{
 					sender.addChatMessage(new ChatComponentText(itemStack.getItem().getUnlocalizedName()));
