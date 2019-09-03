@@ -46,7 +46,7 @@ public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFiel
 		drawString("Usage: " + roundPrecise(host.getFortronUse() / 1000.0, 2) + "L/t", 8, 105);
 		String stats = host.isFullySealed ? "Sealed" : host.isCurrentlyConstructing ? "Constructing" : host.isCalculating ? "Calculating" : host.getFortronTank().getFluidAmount() > host.getFortronUse() ? "Unsealed" : "Needs fortron";
 		drawString(stats, 8, 92);
-		drawString("Health: " + (TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / TileFortronFieldConstructor.MAX_HEALTH_LOSS * 100 + "%", 8, 130);
+		drawString("Health: " + (int) ((TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / (double) TileFortronFieldConstructor.MAX_HEALTH_LOSS * 100) + "%", 8, 130);
 		drawString("Frequency: " + host.getFrequency(), 100, 103);
 		drawStringCentered(StatCollector.translateToLocal("tile." + ForcefieldReferences.PREFIX + "fortronFieldConstructor.gui"), (int) (xSize / 1.65), 5);
 
