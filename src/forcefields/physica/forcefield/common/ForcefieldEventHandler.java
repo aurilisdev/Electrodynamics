@@ -187,7 +187,7 @@ public class ForcefieldEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onResonantExplosion(resonant.api.explosion.ExplosionEvent.PreExplosionEvent event)
+	public void onResonantExplosion(resonant.api.explosion.ExplosionEvent.PostExplosionEvent event)
 	{
 		if (event.explosion != null)
 		{
