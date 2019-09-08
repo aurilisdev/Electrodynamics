@@ -359,7 +359,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			ForcefieldEventHandler.INSTANCE.registerConstructor(this);
 		}
-		if (ticks > 30)
+		if (!isCalculating)
 		{
 			isFullySealed = isFinishedConstructing() && activeFields.size() >= maximumForceFieldCount;
 		}
@@ -453,9 +453,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		healthLost = 0;
 		isDestroying = true;
+		isFullySealed = false;
 		isCurrentlyConstructing = false;
 		maximumForceFieldCount = 0;
-
+		
 		if (calculationThread != null)
 		{
 			calculationThread.interrupt();
