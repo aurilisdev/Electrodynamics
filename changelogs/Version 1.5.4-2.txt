@@ -1,0 +1,8 @@
+Version 1.5.4 build 2
+
+### Game Changes ###
+Fixes antimatter item names.
+The consealed status of the fortron field projector works better now and is more consistant
+Improve the control panel so it checks 8 blocks in a line behind it instead of having to be a part of the reactor
+containment build.
+Fix issues with the centrifuge model
