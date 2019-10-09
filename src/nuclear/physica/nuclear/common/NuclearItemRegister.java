@@ -54,7 +54,7 @@ public class NuclearItemRegister implements IContent {
 									.setTextureName(NuclearReferences.PREFIX + "antimattercell")).setUpdate(new ItemUpdateAntimatter()).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab),
 							itemAntimatterCell125Milligram.getUnlocalizedName());
 			AbstractionLayer.Registering
-					.registerItem(itemAntimatterCell1Gram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable("NuclearReferences.PREFIX,antimatterCell1Gram", "1 Gram").setTextureName(NuclearReferences.PREFIX + "antimattercell"))
+					.registerItem(itemAntimatterCell1Gram = (ItemDescriptable) ((ItemUpdateable) new ItemDescriptable(NuclearReferences.PREFIX, "antimatterCell1Gram", "1 Gram").setTextureName(NuclearReferences.PREFIX + "antimattercell"))
 							.setUpdate(new ItemUpdateAntimatter().setScale(3)).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemAntimatterCell1Gram.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemDarkmatterCell = (ItemDescriptable) new ItemDescriptable(NuclearReferences.PREFIX, "darkmatterCell").setUpdate(new ItemUpdateDarkMatter())
 					.setMaxDamage(ConfigNuclearPhysics.DARK_MATTER_USES).setMaxStackSize(1).setCreativeTab(NuclearTabRegister.nuclearPhysicsTab), itemDarkmatterCell.getUnlocalizedName());

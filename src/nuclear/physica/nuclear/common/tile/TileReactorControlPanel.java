@@ -44,6 +44,24 @@ public class TileReactorControlPanel extends TileBaseRotateable implements IGuiI
 						rod = (TileInsertableControlRod) tile;
 					}
 				}
+			} else
+			{
+				int index = 0;
+				GridLocation tempGrid = loc;
+				while (true)
+				{
+					index++;
+					if (index > 8)
+					{
+						break;
+					}
+					TileEntity temp = (tempGrid = tempGrid.OffsetFace(getFacing().getOpposite())).getTile(getWorldObj());
+					System.out.println(temp);
+					if (temp instanceof TileFissionReactor)
+					{
+						reactor = (TileFissionReactor) temp;
+					}
+				}
 			}
 		}
 		if (reactor != null && (reactor.isInvalid() || !reactor.isIncased))
