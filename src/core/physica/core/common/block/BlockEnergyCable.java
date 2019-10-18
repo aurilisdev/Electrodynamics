@@ -166,6 +166,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta)
 	{
 		return icons[meta];
