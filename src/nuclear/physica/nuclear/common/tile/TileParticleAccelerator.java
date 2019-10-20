@@ -99,7 +99,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 						{
 							if (World().rand.nextFloat() > 0.666f)
 							{
-								antimatterAmount = Math.min(1000, antimatterAmount + 7 + World().rand.nextInt(5));
+								antimatterAmount = (int) Math.min(1000, antimatterAmount + (7 + World().rand.nextInt(5)) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
 								particle.setDead();
 							} else if (antimatterAmount > 100)
 							{

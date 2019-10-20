@@ -36,7 +36,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 
 	public BlockEnergyCable() {
 		super(Material.cloth);
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			icons = new IIcon[EnumConductorType.values().length];
 		}
