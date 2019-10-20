@@ -2,6 +2,7 @@ package physica.core.common.block;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -35,6 +36,10 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 
 	public BlockEnergyCable() {
 		super(Material.cloth);
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			icons = new IIcon[EnumConductorType.values().length];
+		}
 		setHardness(3.5F);
 		setStepSound(soundTypeCloth);
 		setResistance(0.2F);
@@ -147,7 +152,7 @@ public class BlockEnergyCable extends Block implements ITileEntityProvider, IBas
 	}
 
 	@SideOnly(Side.CLIENT)
-	private IIcon[] icons = new IIcon[EnumConductorType.values().length];
+	private IIcon[] icons;
 
 	@Override
 	@SideOnly(Side.CLIENT)
