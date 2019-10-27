@@ -131,7 +131,7 @@ public class PhysicaForcefields {
 	{
 		for (TileFortronFieldConstructor constructor : constructors)
 		{
-			if (constructor.isInForcefield(x, y, z))
+			if (constructor.isProtecting(x, y, z))
 			{
 				return true;
 			}

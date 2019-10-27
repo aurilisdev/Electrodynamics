@@ -1,5 +1,6 @@
 package physica.forcefield.common.tile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -275,7 +276,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	}
 
 	@Override
-	public boolean isInForcefield(double x, double y, double z)
+	public boolean isProtecting(double x, double y, double z)
 	{
 		if (!isFullySealed)
 		{
@@ -497,6 +498,9 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	{
 		Set<GridLocation> finishedQueueItems = new HashSet<>();
 		int currentlyGenerated = 0, currentlyMissed = 0;
+
+		GridLocation loc = getLocation();
+		ArrayList<TileFortronFieldConstructor> relevantConstructors = shouldDisintegrate ? ForcefieldEventHandler.INSTANCE.getRelevantConstructors(World(), loc.xCoord, loc.yCoord, loc.zCoord) : null;
 		for (GridLocation fieldPoint : calculatedFieldPoints)
 		{
 			if (currentlyGenerated >= totalGeneratedPerTick)
@@ -512,7 +516,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			if (block == ForcefieldBlockRegister.blockFortronField)
 			{
 				TileFortronField field = (TileFortronField) fieldPoint.getTile(World());
-				if (field != null && field.getConstructorCoord().equals(location))
+				if (field != null && field.getConstructorCoord().equals(loc))
 				{
 					activeFields.add(field);
 					currentlyGenerated++;
@@ -541,6 +545,23 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 			{
 				if (shouldDisintegrate)
 				{
+					boolean skip = false;
+					if (relevantConstructors != null)
+					{
+						for (TileFortronFieldConstructor constructor : relevantConstructors)
+						{
+							if (constructor != this && constructor.isProtecting(fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord))
+							{
+								currentlyMissed++;
+								skip = true;
+								break;
+							}
+						}	
+					}
+					if (skip)
+					{
+						continue;
+					}
 					if (block.getBlockHardness(World(), fieldPoint.xCoord, fieldPoint.yCoord, fieldPoint.zCoord) != -1)
 					{ // Location usually has no effect
 						if (hasCollectionModule)
@@ -556,14 +577,12 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 							continue;
 						}
 						fieldPoint.setBlockAirNonUpdate(World());
-
 						currentlyGenerated++;
 					}
 				} else if (block.getMaterial().isReplaceable())
 				{
 					if (shouldStabilize)
 					{
-						GridLocation loc = getLocation();
 						for (Face dir : Face.VALID)
 						{
 							TileEntity entity = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
