@@ -73,15 +73,18 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 					{
 						decrStackSize(SLOT_INPUTCELLS, 1);
 						antimatterAmount -= 125;
-						if (stackOutputSlot != null)
+						if (stackEmptyCell.getItem() == NuclearItemRegister.itemEmptyElectromagneticCell)
 						{
-							if (stackOutputSlot.getItem() == NuclearItemRegister.itemAntimatterCell125Milligram)
+							if (stackOutputSlot != null)
 							{
-								stackOutputSlot.stackSize++;
+								if (stackOutputSlot.getItem() == NuclearItemRegister.itemAntimatterCell125Milligram)
+								{
+									stackOutputSlot.stackSize++;
+								}
+							} else
+							{
+								setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemAntimatterCell125Milligram));
 							}
-						} else
-						{
-							setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemAntimatterCell125Milligram));
 						}
 					}
 				}
