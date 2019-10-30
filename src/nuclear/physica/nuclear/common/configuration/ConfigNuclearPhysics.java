@@ -22,6 +22,7 @@ public class ConfigNuclearPhysics implements IContent {
 
 	public static HashSet<String>	PROTECTED_WORLDS				= new HashSet<>(Arrays.asList("spawn", "creative"));
 	public static HashSet<String>	QUANTUM_ASSEMBLER_BLACKLIST		= new HashSet<>();
+	public static boolean			FLIP_BLACKLIST_TO_WHITELIST		= false;
 
 	public static int				URANIUM_ORE_MIN_Y				= 10;
 	public static int				URANIUM_ORE_MAX_Y				= 40;
@@ -57,6 +58,7 @@ public class ConfigNuclearPhysics implements IContent {
 
 			QUANTUM_ASSEMBLER_BLACKLIST = new HashSet<>(
 					Arrays.asList(configuration.getStringList("quantum_assembler_blacklist", CATEGORY, QUANTUM_ASSEMBLER_BLACKLIST.toArray(new String[0]), "Items which are blacklisted from use in the quantum assembler")));
+			FLIP_BLACKLIST_TO_WHITELIST = configuration.getBoolean("flip_blacklist_to_whitelist", CATEGORY, FLIP_BLACKLIST_TO_WHITELIST, "True to turn the blacklist into a whitelist; False to ignore");
 
 			TURBINE_STEAM_TO_RF_RATIO = configuration.getFloat("turbineSteamToRfRatio", CATEGORY, TURBINE_STEAM_TO_RF_RATIO, 0.01f, 100f, "Ratio for turbines to convert one ml of steam into rf.");
 

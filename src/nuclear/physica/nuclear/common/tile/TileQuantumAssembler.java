@@ -64,7 +64,9 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 
 	public boolean isRestricted(ItemStack itemStack)
 	{
-		return itemStack == null || itemStack.stackSize <= 0 || itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell || ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName());
+		return itemStack == null || itemStack.stackSize <= 0 || itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell
+				|| (ConfigNuclearPhysics.FLIP_BLACKLIST_TO_WHITELIST ? !ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName())
+						: ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName()));
 	}
 
 	@Override

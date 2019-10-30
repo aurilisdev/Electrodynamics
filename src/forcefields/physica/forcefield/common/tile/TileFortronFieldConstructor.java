@@ -457,7 +457,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		isFullySealed = false;
 		isCurrentlyConstructing = false;
 		maximumForceFieldCount = 0;
-		
+
 		if (calculationThread != null)
 		{
 			calculationThread.interrupt();
@@ -556,7 +556,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 								skip = true;
 								break;
 							}
-						}	
+						}
 					}
 					if (skip)
 					{
