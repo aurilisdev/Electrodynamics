@@ -40,3 +40,5 @@ Working Directory/
 lib/
 libs/
 outputSplitOnly/
+
+releaseJarsOnly/
