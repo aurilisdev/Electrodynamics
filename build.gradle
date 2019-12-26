@@ -31,7 +31,8 @@ sourceSets {
                 "$projectDir/src/api",
                 "$projectDir/src/externalapi",
                 "$projectDir/src/forcefields",
-                "$projectDir/src/nuclear"
+                "$projectDir/src/nuclear",
+                "$projectDir/src/missiles"
             ]
             include '**/*.java'
         }
@@ -118,6 +119,15 @@ task forcefieldJar(type: Jar) {
         include 'physica/forcefield/**'
     }
 }
+
+task missilesJar(type: Jar) {
+    baseName = 'PhysicaMissiles'
+
+    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
+        include 'physica/missiles/**'
+    }
+}
+
 task incrementBuildNumber() {
     doLast {
         config.version_build = (config.version_build.toString().toInteger()) + 1
@@ -129,6 +139,7 @@ task incrementBuildNumber() {
 coreJar.dependsOn('reobf')
 nuclearJar.dependsOn('reobf')
 forcefieldJar.dependsOn('reobf')
+missilesJar.dependsOn('reobf')
 incrementBuildNumber.dependsOn('reobf')
 task releaseJars(type: Copy) {
 	dependsOn "reobf"
@@ -136,5 +147,6 @@ task releaseJars(type: Copy) {
 	from coreJar
 	from nuclearJar
 	from forcefieldJar
+	from missilesJar
 	destinationDir= new File('/releaseJarsOnly/')
 }

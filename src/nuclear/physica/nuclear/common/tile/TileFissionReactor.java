@@ -57,7 +57,7 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			adjacentBlocks[i] = World().getBlock(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
 		}
 		cooldownReactor(adjacentBlocks);
-		if (hasFuelRod() && !isBeingControlled(adjacentBlocks))
+		if (hasFuelRod() && !isBeingControlled(adjacentBlocks) && ticks > 50)
 		{
 			processFuelRod();
 			if (temperature > MELTDOWN_TEMPERATURE + 101 + World().rand.nextInt(5) && hasFuelRod())

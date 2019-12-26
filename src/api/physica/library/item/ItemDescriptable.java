@@ -20,7 +20,6 @@ public class ItemDescriptable extends ItemUpdateable {
 		setCreativeTab(CoreTabRegister.coreTab);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List lines, boolean par4)
 	{

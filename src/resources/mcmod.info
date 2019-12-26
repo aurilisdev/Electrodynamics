@@ -42,5 +42,20 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
+},
+{
+  "modid": "physicamissiles",
+  "name": "PhysicaMissiles",
+  "description": "PhysicaMissiles is a Minecraft Mod focused around science and technology that introduces many new machines/blocks and items into the game.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://aurilisdev.com/software/",
+  "updateUrl": "http://aurilisdev.com/download/",
+  "authorList": ["aurilisdev"],
+  "parent": "physica",
+  "credits": "Thanks to everyone who has contributed to this project.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
 }
 ]
