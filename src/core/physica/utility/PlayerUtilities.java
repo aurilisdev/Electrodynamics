@@ -8,13 +8,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class PlayerUtilities {
-	public static List<EntityPlayerMP> getPlayers()
-	{
+	public static List<EntityPlayerMP> getPlayers() {
 		List<EntityPlayerMP> playerList = new ArrayList<>();
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
-		if (server != null)
-		{
+		if (server != null) {
 			return server.getPlayerList().getPlayers();
 		}
 

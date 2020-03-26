@@ -14,20 +14,17 @@ public class BlockOre extends BlockStateHolder<EnumOreState> {
 	}
 
 	@Override
-	public Class<EnumOreState> getStateEnumClass()
-	{
+	public Class<EnumOreState> getStateEnumClass() {
 		return EnumOreState.class;
 	}
 
 	@Override
-	public EnumOreState getDefaultStateEnum()
-	{
+	public EnumOreState getDefaultStateEnum() {
 		return EnumOreState.copper;
 	}
 
 	@Override
-	public EnumOreState[] getEnumValuesByMeta()
-	{
+	public EnumOreState[] getEnumValuesByMeta() {
 		return EnumOreState.values();
 	}
 

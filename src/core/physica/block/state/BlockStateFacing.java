@@ -7,7 +7,8 @@ import physica.block.BlockRotatable;
 import physica.block.property.PropertySingle;
 
 public class BlockStateFacing extends BlockStateContainer {
-	public static final PropertySingle<EnumFacing> FACING = PropertySingle.createProperty("facing", EnumFacing.Plane.HORIZONTAL, EnumFacing.class);
+	public static final PropertySingle<EnumFacing> FACING = PropertySingle.createProperty("facing",
+			EnumFacing.Plane.HORIZONTAL, EnumFacing.class);
 
 	public BlockStateFacing(BlockRotatable block) {
 		super(block, FACING);

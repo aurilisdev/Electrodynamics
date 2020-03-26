@@ -14,8 +14,7 @@ public class ComponentsTab extends CreativeTabs {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack createIcon()
-	{
+	public ItemStack createIcon() {
 		return new ItemStack(ComponentItems.ingotBase);
 	}
 

@@ -11,14 +11,12 @@ public class ItemBlockStateHolder extends ItemBlock {
 	}
 
 	@Override
-	public int getMetadata(int damage)
-	{
+	public int getMetadata(int damage) {
 		return damage;
 	}
 
 	@Override
-	public String getTranslationKey(ItemStack stack)
-	{
+	public String getTranslationKey(ItemStack stack) {
 		return super.getTranslationKey() + "." + stack.getMetadata();
 	}
 }

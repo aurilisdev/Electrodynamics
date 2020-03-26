@@ -8,41 +8,34 @@ import physica.Physica;
 
 public class ItemBase extends Item {
 
-	protected String	name;
-	protected int		subtypes	= 0;
+	protected String name;
+	protected int subtypes = 0;
 
 	public ItemBase(String name, Integer subtypes) {
 		this.name = name;
 		setTranslationKey(name);
 		setRegistryName(name);
-		if (subtypes > 0)
-		{
+		if (subtypes > 0) {
 			this.subtypes = subtypes;
 			setHasSubtypes(true);
 		}
 	}
 
-	public ItemStack createStackFromSubtype(int subtype)
-	{
+	public ItemStack createStackFromSubtype(int subtype) {
 		return new ItemStack(this, 1, subtype);
 	}
 
 	@Override
-	public String getTranslationKey(ItemStack stack)
-	{
+	public String getTranslationKey(ItemStack stack) {
 		return super.getTranslationKey() + "." + stack.getMetadata();
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-	{
-		if (getHasSubtypes())
-		{
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (getHasSubtypes()) {
 
-			if (isInCreativeTab(tab))
-			{
-				for (int index = 0; index < subtypes; ++index)
-				{
+			if (isInCreativeTab(tab)) {
+				for (int index = 0; index < subtypes; ++index) {
 					items.add(new ItemStack(this, 1, index));
 				}
 			}
@@ -50,22 +43,18 @@ public class ItemBase extends Item {
 	}
 
 	@Override
-	public ItemBase setCreativeTab(CreativeTabs tab)
-	{
+	public ItemBase setCreativeTab(CreativeTabs tab) {
 		super.setCreativeTab(tab);
 		return this;
 	}
 
-	public void registerItemModel()
-	{
+	public void registerItemModel() {
 		registerItemModel("");
 	}
 
-	public void registerItemModel(String folder)
-	{
+	public void registerItemModel(String folder) {
 		String prefix = folder.isEmpty() ? folder : folder + "/";
-		for (int index = 0; index < subtypes; index++)
-		{
+		for (int index = 0; index < subtypes; index++) {
 			Physica.proxy.registerItemRenderer(this, index, prefix + name + index);
 		}
 	}

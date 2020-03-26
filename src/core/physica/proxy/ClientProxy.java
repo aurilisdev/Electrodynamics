@@ -15,35 +15,30 @@ import physica.References;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 	@Override
-	public void registerItemRenderer(Item item, int meta, String id)
-	{
-		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(References.DOMAIN + ":" + id, "inventory"));
+	public void registerItemRenderer(Item item, int meta, String id) {
+		ModelLoader.setCustomModelResourceLocation(item, meta,
+				new ModelResourceLocation(References.DOMAIN + ":" + id, "inventory"));
 	}
 
 	@Override
-	public void registerBlockItemRenderer(Item item, int meta, String id, String state)
-	{
-		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(References.DOMAIN + ":" + id, "state=" + state));
+	public void registerBlockItemRenderer(Item item, int meta, String id, String state) {
+		ModelLoader.setCustomModelResourceLocation(item, meta,
+				new ModelResourceLocation(References.DOMAIN + ":" + id, "state=" + state));
 	}
 
 	@Override
-	public EntityPlayer getPlayer(MessageContext context)
-	{
-		if (context.side.isServer())
-		{
+	public EntityPlayer getPlayer(MessageContext context) {
+		if (context.side.isServer()) {
 			return context.getServerHandler().player;
 		}
 		return Minecraft.getMinecraft().player;
 	}
 
 	@Override
-	public void addScheduledTask(Runnable runnable, IBlockAccess world)
-	{
-		if (world == null || !FMLCommonHandler.instance().getSide().isServer())
-		{
+	public void addScheduledTask(Runnable runnable, IBlockAccess world) {
+		if (world == null || !FMLCommonHandler.instance().getSide().isServer()) {
 			Minecraft.getMinecraft().addScheduledTask(runnable);
-		} else
-		{
+		} else {
 			super.addScheduledTask(runnable, world);
 		}
 	}

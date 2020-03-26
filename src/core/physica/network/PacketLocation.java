@@ -19,21 +19,18 @@ public abstract class PacketLocation implements IMessage {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf dataStream)
-	{
+	public void fromBytes(ByteBuf dataStream) {
 		pos = new BlockPos(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
 	}
 
 	@Override
-	public void toBytes(ByteBuf dataStream)
-	{
+	public void toBytes(ByteBuf dataStream) {
 		dataStream.writeInt(pos.getX());
 		dataStream.writeInt(pos.getY());
 		dataStream.writeInt(pos.getZ());
 	}
 
-	public BlockPos getPos()
-	{
+	public BlockPos getPos() {
 		return pos;
 	}
 }

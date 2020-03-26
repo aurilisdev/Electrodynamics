@@ -1,7 +1,8 @@
 package physica.item.subtypes;
 
 public enum EnumIngot {
-	copper("ingotCopper"), tin("ingotTin"), silver8("ingotSilver"), steel("ingotSteel"), lead("ingotLead"), superconductive("ingotSuperConductive"), bronze("ingotBronze");
+	copper("ingotCopper"), tin("ingotTin"), silver8("ingotSilver"), steel("ingotSteel"), lead("ingotLead"),
+	superconductive("ingotSuperConductive"), bronze("ingotBronze");
 
 	private String ore;
 
@@ -9,8 +10,7 @@ public enum EnumIngot {
 		this.ore = ore;
 	}
 
-	public String getOre()
-	{
+	public String getOre() {
 		return ore;
 	}
 }

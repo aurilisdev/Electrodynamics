@@ -32,81 +32,68 @@ public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> exte
 	public abstract T[] getEnumValuesByMeta();
 
 	@Override
-	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
-	{
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
 		return blockState.getValue(STATES).getHardness();
 	}
 
 	@Override
-	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
-	{
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
 		return world.getBlockState(pos).getValue(STATES).getResistance() / 5.0f;
 	}
 
 	@Override
-	public String getHarvestTool(IBlockState state)
-	{
+	public String getHarvestTool(IBlockState state) {
 		return state.getValue(STATES).getHarvestTool();
 	}
 
 	@Override
-	public int getHarvestLevel(IBlockState state)
-	{
+	public int getHarvestLevel(IBlockState state) {
 		return state.getValue(STATES).getHarvestLevel();
 	}
 
 	@Override
-	public int damageDropped(IBlockState state)
-	{
+	public int damageDropped(IBlockState state) {
 		return state.getValue(STATES).ordinal();
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
-	{
-		for (T ENUM : getEnumValuesByMeta())
-		{
+	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+		for (T ENUM : getEnumValuesByMeta()) {
 			items.add(new ItemStack(this, 1, ENUM.ordinal()));
 		}
 	}
 
 	@Override
-	public ItemBlockStateHolder createItemBlock()
-	{
+	public ItemBlockStateHolder createItemBlock() {
 		return (ItemBlockStateHolder) new ItemBlockStateHolder(this).setRegistryName(getRegistryName());
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(STATES, getEnumValuesByMeta()[meta]);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(STATES).ordinal();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] { STATES = PropertySingle.<T>createProperty("state", getStateEnumClass()) });
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this,
+				new IProperty[] { STATES = PropertySingle.<T>createProperty("state", getStateEnumClass()) });
 	}
 
 	@Override
-	public void registerItemModel(Item itemBlock)
-	{
-		for (T t : getEnumValuesByMeta())
-		{
+	public void registerItemModel(Item itemBlock) {
+		for (T t : getEnumValuesByMeta()) {
 			Physica.proxy.registerBlockItemRenderer(itemBlock, t.ordinal(), name, t.getName());
 		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public BlockStateHolder<T> setCreativeTab(CreativeTabs tab)
-	{
+	public BlockStateHolder<T> setCreativeTab(CreativeTabs tab) {
 		return (BlockStateHolder<T>) super.setCreativeTab(tab);
 	}
 }

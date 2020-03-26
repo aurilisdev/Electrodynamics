@@ -25,21 +25,19 @@ import physica.world.ComponentWorldGen;
 @Mod(modid = References.DOMAIN, name = References.NAME, version = References.VERSION)
 public class Physica {
 	@SidedProxy(serverSide = "physica.proxy.CommonProxy", clientSide = "physica.proxy.ClientProxy")
-	public static CommonProxy	proxy;
+	public static CommonProxy proxy;
 
-	public static Logger		logger;
-	public static PacketHandler	packetsystem	= new PacketHandler();
+	public static Logger logger;
+	public static PacketHandler packetsystem = new PacketHandler();
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		GameRegistry.registerWorldGenerator(new ComponentWorldGen(), 1);
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
+	public void init(FMLInitializationEvent event) {
 		ComponentDictionary.initOreDictionary();
 		ComponentRecipes.init();
 	}
@@ -47,22 +45,19 @@ public class Physica {
 	@EventBusSubscriber
 	public static class RegistrationHandler {
 		@SubscribeEvent
-		public static void registerItems(RegistryEvent.Register<Item> event)
-		{
+		public static void registerItems(RegistryEvent.Register<Item> event) {
 			ComponentItems.register(event.getRegistry());
 			ComponentBlocks.registerItemBlocks(event.getRegistry());
 		}
 
 		@SubscribeEvent
-		public static void registerItems(ModelRegistryEvent event)
-		{
+		public static void registerItems(ModelRegistryEvent event) {
 			ComponentItems.registerModels();
 			ComponentBlocks.registerModels();
 		}
 
 		@SubscribeEvent
-		public static void registerBlocks(RegistryEvent.Register<Block> event)
-		{
+		public static void registerBlocks(RegistryEvent.Register<Block> event) {
 			ComponentBlocks.register(event.getRegistry());
 		}
 

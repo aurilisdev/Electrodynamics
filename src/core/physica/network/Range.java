@@ -9,13 +9,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class Range {
-	private World	world;
-	private int		minX;
-	private int		minY;
-	private int		minZ;
-	private int		maxX;
-	private int		maxY;
-	private int		maxZ;
+	private World world;
+	private int minX;
+	private int minY;
+	private int minZ;
+	private int maxX;
+	private int maxY;
+	private int maxZ;
 
 	public Range(World world, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		this.world = world;
@@ -55,16 +55,14 @@ public class Range {
 		this(tile.getWorld(), tile.getPos());
 	}
 
-	public static Range getChunkRange(EntityPlayer player)
-	{
+	public static Range getChunkRange(EntityPlayer player) {
 		int radius = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getViewDistance();
 		ChunkPos chunkPos = new ChunkPos(player.getPosition());
 
 		return new Range(player.getEntityWorld(), chunkPos).expandChunks(radius);
 	}
 
-	public Range expandChunks(int chunks)
-	{
+	public Range expandChunks(int chunks) {
 		minX -= chunks * 16;
 		maxX += chunks * 16;
 		minZ -= chunks * 16;
@@ -73,54 +71,47 @@ public class Range {
 		return this;
 	}
 
-	public boolean intersects(Range range)
-	{
-		return maxX + 1 - 1.E-05D > range.minX && range.maxX + 1 - 1.E-05D > minX && maxY + 1 - 1.E-05D > range.minY && range.maxY + 1 - 1.E-05D > minY && maxZ + 1 - 1.E-05D > range.minZ && range.maxZ + 1 - 1.E-05D > minZ;
+	public boolean intersects(Range range) {
+		return maxX + 1 - 1.E-05D > range.minX && range.maxX + 1 - 1.E-05D > minX && maxY + 1 - 1.E-05D > range.minY
+				&& range.maxY + 1 - 1.E-05D > minY && maxZ + 1 - 1.E-05D > range.minZ
+				&& range.maxZ + 1 - 1.E-05D > minZ;
 	}
 
-	public World getWorld()
-	{
+	public World getWorld() {
 		return world;
 	}
 
-	public int getMinX()
-	{
+	public int getMinX() {
 		return minX;
 	}
 
-	public int getMinY()
-	{
+	public int getMinY() {
 		return minY;
 	}
 
-	public int getMinZ()
-	{
+	public int getMinZ() {
 		return minZ;
 	}
 
-	public int getMaxX()
-	{
+	public int getMaxX() {
 		return maxX;
 	}
 
-	public int getMaxY()
-	{
+	public int getMaxY() {
 		return maxY;
 	}
 
-	public int getMaxZ()
-	{
+	public int getMaxZ() {
 		return maxZ;
 	}
 
 	@Override
-	public boolean equals(Object object)
-	{
-		if (object instanceof Range)
-		{
+	public boolean equals(Object object) {
+		if (object instanceof Range) {
 			Range range = (Range) object;
 
-			return range.minX == minX && range.minY == minY && range.minZ == minZ && range.maxX == maxX && range.maxY == maxY && range.maxZ == maxZ && range.world.equals(world);
+			return range.minX == minX && range.minY == minY && range.minZ == minZ && range.maxX == maxX
+					&& range.maxY == maxY && range.maxZ == maxZ && range.world.equals(world);
 		}
 
 		return false;

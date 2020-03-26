@@ -18,24 +18,24 @@ public class PropertySingle<T extends Enum<T> & IStringSerializable> extends Pro
 	/**
 	 * Create a new PropertySingle with the given name
 	 */
-	public static <T extends Enum<T> & IStringSerializable> PropertySingle<T> createProperty(String name, Class<T> clasz)
-	{
+	public static <T extends Enum<T> & IStringSerializable> PropertySingle<T> createProperty(String name,
+			Class<T> clasz) {
 		return createProperty(name, Predicates.alwaysTrue(), clasz);
 	}
 
 	/**
 	 * Create a new PropertySingle with all enums that match the given Predicate
 	 */
-	public static <T extends Enum<T> & IStringSerializable> PropertySingle<T> createProperty(String name, Predicate<T> filter, Class<T> clasz)
-	{
+	public static <T extends Enum<T> & IStringSerializable> PropertySingle<T> createProperty(String name,
+			Predicate<T> filter, Class<T> clasz) {
 		return createProperty(name, Collections2.filter(Lists.newArrayList(clasz.getEnumConstants()), filter), clasz);
 	}
 
 	/**
 	 * Create a new PropertyDirection for the given direction values
 	 */
-	public static <T extends Enum<T> & IStringSerializable> PropertySingle<T> createProperty(String name, Collection<T> values, Class<T> clasz)
-	{
+	public static <T extends Enum<T> & IStringSerializable> PropertySingle<T> createProperty(String name,
+			Collection<T> values, Class<T> clasz) {
 		return new PropertySingle<>(name, values, clasz);
 	}
 }

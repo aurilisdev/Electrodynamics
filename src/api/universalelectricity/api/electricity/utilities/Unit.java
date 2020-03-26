@@ -1,12 +1,13 @@
 package universalelectricity.api.electricity.utilities;
 
 public enum Unit {
-	WATT(1, "Watt", "W"), WATTTICK(1, "Watt Tick", "Wt"), WATTSECOND(1.0 / 20.0, "Watt Second", "Ws"), WATTHOUR(1.0 / (20.0 * 60.0 * 60.0), "Watt Hour", "Wh");
+	WATT(1, "Watt", "W"), WATTTICK(1, "Watt Tick", "Wt"), WATTSECOND(1.0 / 20.0, "Watt Second", "Ws"),
+	WATTHOUR(1.0 / (20.0 * 60.0 * 60.0), "Watt Hour", "Wh");
 
-	public String	name;
-	public String	symbol;
-	public String	plural;
-	public double	ratio;
+	public String name;
+	public String symbol;
+	public String plural;
+	public double ratio;
 
 	private Unit(double ratio, String name, String symbol) {
 		this(ratio, name, symbol, "s");
@@ -19,13 +20,11 @@ public enum Unit {
 		this.ratio = ratio;
 	}
 
-	public String getPlural()
-	{
+	public String getPlural() {
 		return name + plural;
 	}
 
-	public double convertElectricity(double amount, Unit to)
-	{
+	public double convertElectricity(double amount, Unit to) {
 		return amount / ratio * to.ratio;
 	}
 }

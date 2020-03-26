@@ -9,8 +9,7 @@ public enum EnumPlate {
 		this.ore = ore;
 	}
 
-	public String getOre()
-	{
+	public String getOre() {
 		return ore;
 	}
 }

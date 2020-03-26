@@ -8,21 +8,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class CommonProxy {
 
-	public void registerItemRenderer(Item item, int meta, String id)
-	{
+	public void registerItemRenderer(Item item, int meta, String id) {
 	}
 
-	public void registerBlockItemRenderer(Item item, int meta, String id, String state)
-	{
+	public void registerBlockItemRenderer(Item item, int meta, String id, String state) {
 	}
 
-	public EntityPlayer getPlayer(MessageContext context)
-	{
+	public EntityPlayer getPlayer(MessageContext context) {
 		return context.getServerHandler().player;
 	}
 
-	public void addScheduledTask(Runnable runnable, IBlockAccess world)
-	{
+	public void addScheduledTask(Runnable runnable, IBlockAccess world) {
 		((WorldServer) world).addScheduledTask(runnable);
 	}
 }

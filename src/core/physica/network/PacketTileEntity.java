@@ -18,8 +18,8 @@ import physica.tile.ITileNetwork;
  * server to client.
  */
 public class PacketTileEntity extends PacketLocation {
-	private List<Object>	objects;
-	private ByteBuf			storedBuffer	= null;
+	private List<Object> objects;
+	private ByteBuf storedBuffer = null;
 
 	public PacketTileEntity() {
 
@@ -36,16 +36,14 @@ public class PacketTileEntity extends PacketLocation {
 	}
 
 	@Override
-	public void fromBytes(final ByteBuf dataStream)
-	{
+	public void fromBytes(final ByteBuf dataStream) {
 		super.fromBytes(dataStream);
 
 		storedBuffer = dataStream.copy();
 	}
 
 	@Override
-	public void toBytes(final ByteBuf dataStream)
-	{
+	public void toBytes(final ByteBuf dataStream) {
 		super.toBytes(dataStream);
 
 		PacketHandler.writeObjects(objects, dataStream);
@@ -53,23 +51,18 @@ public class PacketTileEntity extends PacketLocation {
 
 	public static class PacketTileEntityMessage implements IMessageHandler<PacketTileEntity, IMessage> {
 		@Override
-		public IMessage onMessage(final PacketTileEntity message, final MessageContext messageContext)
-		{
+		public IMessage onMessage(final PacketTileEntity message, final MessageContext messageContext) {
 			final World world = PacketHandler.getWorld(messageContext);
 
-			Physica.proxy.addScheduledTask(() ->
-			{
+			Physica.proxy.addScheduledTask(() -> {
 				final TileEntity tile = world.getTileEntity(message.getPos());
 
-				if (tile instanceof ITileNetwork)
-				{
+				if (tile instanceof ITileNetwork) {
 					final ITileNetwork tileNetwork = (ITileNetwork) tile;
 
-					try
-					{
+					try {
 						tileNetwork.handlePacketData(message.storedBuffer);
-					} catch (Exception e)
-					{
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 
