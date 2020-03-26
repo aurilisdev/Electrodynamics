@@ -9,6 +9,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -29,6 +30,9 @@ public class Physica {
 
 	public static Logger logger;
 	public static PacketHandler packetsystem = new PacketHandler();
+
+	@Instance(References.DOMAIN)
+	public static Physica instance;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
