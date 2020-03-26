@@ -271,25 +271,24 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			World().setBlockToAir(loc.xCoord, loc.yCoord, loc.zCoord);
 			return;
 		}
-		int power = (int) (temperature / 125.0f);
 		setInventorySlotContents(SLOT_INPUT, null);
-		GridLocation location = new GridLocation(loc.xCoord, loc.yCoord, loc.zCoord);
-		for (int i = -power; i <= power; i++)
-		{
-			for (int j = -power; j <= power; j++)
-			{
-				for (int k = -power; k <= power; k++)
-				{
-					location.set(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
-					Block block = location.getBlock(World());
-					if (block == Blocks.water || block == Blocks.flowing_water)
-					{
-						location.setBlockAirNonUpdate(World());
-					}
-				}
-			}
-		}
-		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, 8, true);
+		GridLocation currentLocation = new GridLocation(loc.xCoord, loc.yCoord, loc.zCoord); 
+		final int size = 10; 
+		for (int i = -size; i <= size; i++) { 
+			for (int j = -size; j <= size; j++) { 
+				for (int k = -size; k <= size; k++) { 
+					if (loc.getDistanceSquared(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k) >= size * size) { 
+						continue; 
+					} 
+					currentLocation.set(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k); 
+					Block block = currentLocation.getBlock(World()); 
+					if (block == Blocks.water || block == Blocks.flowing_water) { 
+						currentLocation.setBlockAirNonUpdate(World()); 
+					} 
+				} 
+			} 
+		} 
+		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, size, true); 
 		World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, NuclearBlockRegister.blockMeltedReactor);
 	}
 

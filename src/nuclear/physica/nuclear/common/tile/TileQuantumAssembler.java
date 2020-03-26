@@ -22,7 +22,7 @@ import physica.nuclear.common.inventory.ContainerQuantumAssembler;
 
 public class TileQuantumAssembler extends TileBasePoweredContainer implements IGuiInterface {
 
-	public static final int		TICKS_REQUIRED			= 120;
+	public static final int		TICKS_REQUIRED			= ConfigNuclearPhysics.QUANTUM_ASSEMBLER_TICKS_REQUIRED;
 	public static final int		SLOT_INPUT				= 6;
 	public static final int		SLOT_OUTPUT				= 7;
 	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(71000, Unit.WATT, Unit.RF);
