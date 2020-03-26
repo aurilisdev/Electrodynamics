@@ -43,11 +43,7 @@ distsDirName = "../output"
 version = "${config.minecraft_version}-${config.version_major}.${config.version_minor}.${config.version_revision}-${config.version_build}"
 group= "physica"
 archivesBaseName = "PhysicaAll"
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
-
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
     version = "1.12.2-14.23.5.2838"

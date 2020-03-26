@@ -1,47 +1,28 @@
 package physica.proxy;
 
-import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import physica.api.core.inventory.IGuiInterface;
-import physica.api.core.load.IContent;
+import net.minecraft.item.Item;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class CommonProxy implements IGuiHandler, IContent {
+public class CommonProxy {
 
-	public static final int	TILE_GUI_ID		= 5000;
-	public static final int	ENTITY_GUI_ID	= 5001;
-	public static final int	SLOT_GUI_ID		= 5002;
-
-	@Override
-	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+	public void registerItemRenderer(Item item, int meta, String id)
 	{
-		switch (id) {
-		case TILE_GUI_ID:
-			return world.getTileEntity(x, y, z) instanceof IGuiInterface ? ((IGuiInterface) world.getTileEntity(x, y, z)).getClientGuiElement(id, player) : null;
-		case ENTITY_GUI_ID:
-			return world.getEntityByID(x) instanceof IGuiInterface ? ((IGuiInterface) world.getEntityByID(x)).getClientGuiElement(id, player) : null;
-		case SLOT_GUI_ID:
-			ItemStack stack = player.inventory.getStackInSlot(x);
-			return stack == null ? null : stack.getItem() instanceof IGuiInterface ? ((IGuiInterface) stack.getItem()).getClientGuiElement(id, player) : null;
-		default:
-			return null;
-		}
 	}
 
-	@Override
-	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+	public void registerBlockItemRenderer(Item item, int meta, String id, String state)
 	{
-		switch (id) {
-		case TILE_GUI_ID:
-			return world.getTileEntity(x, y, z) instanceof IGuiInterface ? ((IGuiInterface) world.getTileEntity(x, y, z)).getServerGuiElement(id, player) : null;
-		case ENTITY_GUI_ID:
-			return world.getEntityByID(x) instanceof IGuiInterface ? ((IGuiInterface) world.getEntityByID(x)).getServerGuiElement(id, player) : null;
-		case SLOT_GUI_ID:
-			ItemStack stack = player.inventory.getStackInSlot(x);
-			return stack == null ? null : stack.getItem() instanceof IGuiInterface ? ((IGuiInterface) stack.getItem()).getServerGuiElement(id, player) : null;
-		default:
-			return null;
-		}
+	}
+
+	public EntityPlayer getPlayer(MessageContext context)
+	{
+		return context.getServerHandler().player;
+	}
+
+	public void addScheduledTask(Runnable runnable, IBlockAccess world)
+	{
+		((WorldServer) world).addScheduledTask(runnable);
 	}
 }

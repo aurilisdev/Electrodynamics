@@ -1,0 +1,39 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "physica:basiccube"
+	},
+	"variants": {
+		"state": {
+			"copper": {
+				"textures": {
+					"all": "physica:blocks/orecopper"
+				}
+			},
+			"tin": {
+				"textures": {
+					"all": "physica:blocks/oretin"
+				}
+			},
+			"silver": {
+				"textures": {
+					"all": "physica:blocks/oresilver"
+				}
+			},
+			"lead": {
+				"textures": {
+					"all": "physica:blocks/orelead"
+				}
+			},
+			"uranium": {
+				"textures": {
+					"all": "physica:blocks/oreuranium"
+				}
+			}
+		},
+		"inventory": [
+			{
+			}
+		]
+	}
+}

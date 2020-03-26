@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+		{
+			"type": "forge:ore_dict",
+			"ore": "ingotLead"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "ingotLead"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "ingotLead"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "ingotLead"
+		}
+	],
+	"result": {
+		"item": "physica:platebase",
+		"data": 2
+	}
+}
