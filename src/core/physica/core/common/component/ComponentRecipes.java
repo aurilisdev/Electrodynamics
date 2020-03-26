@@ -38,12 +38,6 @@ public class ComponentRecipes {
 				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.bronze.ordinal()), 0.45f);
 		GameRegistry.addSmelting(new ItemStack(ComponentItems.blendBase, 1, EnumBlend.superconductive.ordinal()),
 				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.superconductive.ordinal()), 0.45f);
-
-		// TODO: Shaped Recipe for superconductive ingot
-		// using dust. SiGoSi, GoEyeGo,
-		// SiGoSi
-		// TODO: Shapeless Recipe for bronze blend. 2 Copper Dust + 1 Tin Dust = 2
-		// bronze dust
 	}
 
 }
