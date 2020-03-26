@@ -11,10 +11,6 @@ public class ComponentItems {
 	public static ItemBase ingotBase = new ItemBase("ingotBase", EnumIngot.values().length)
 			.setCreativeTab(ComponentsTab.BASICCOMPONENTS);
 
-	// TODO: Shaped Recipe for superconductive ingot using dust. SiGoSi, GoEyeGo,
-	// SiGoSi
-	// TODO: Shapeless Recipe for bronze blend. 2 Copper Dust + 1 Tin Dust = 2
-	// bronze dust
 	public static ItemBase plateBase = new ItemBase("plateBase", EnumPlate.values().length)
 			.setCreativeTab(ComponentsTab.BASICCOMPONENTS);
 	public static ItemBase blendBase = new ItemBase("blendBase", EnumBlend.values().length)

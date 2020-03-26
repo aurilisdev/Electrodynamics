@@ -17,6 +17,7 @@ item.blendBase.5.name=Steel Blend
 item.blendBase.6.name=Lead Dust
 item.blendBase.7.name=Bronze Blend
 item.blendBase.8.name=Superconductive Blend
+item.blendBase.9.name=Ender Dust
 
 # Plates
 item.plateBase.0.name=Iron Plate

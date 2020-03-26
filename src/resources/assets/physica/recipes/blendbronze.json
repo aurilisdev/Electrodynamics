@@ -3,23 +3,28 @@
 	"ingredients": [
 		{
 			"type": "forge:ore_dict",
-			"ore": "ingotLead"
+			"ore": "dustCopper"
 		},
 		{
 			"type": "forge:ore_dict",
-			"ore": "ingotLead"
+			"ore": "dustCopper"
 		},
 		{
 			"type": "forge:ore_dict",
-			"ore": "ingotLead"
+			"ore": "dustCopper"
 		},
 		{
 			"type": "forge:ore_dict",
-			"ore": "ingotLead"
+			"ore": "dustCopper"
+		},
+		{
+			"type": "forge:ore_dict",
+			"ore": "dustTin"
 		}
 	],
 	"result": {
-		"item": "physica:platebase",
-		"data": 2
+		"item": "physica:blendbase",
+		"data": 7,
+		"count": 5
 	}
 }

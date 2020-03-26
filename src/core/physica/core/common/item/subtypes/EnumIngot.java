@@ -1,7 +1,7 @@
 package physica.core.common.item.subtypes;
 
 public enum EnumIngot {
-	copper("ingotCopper"), tin("ingotTin"), silver8("ingotSilver"), steel("ingotSteel"), lead("ingotLead"),
+	copper("ingotCopper"), tin("ingotTin"), silver("ingotSilver"), steel("ingotSteel"), lead("ingotLead"),
 	superconductive("ingotSuperConductive"), bronze("ingotBronze");
 
 	private String ore;

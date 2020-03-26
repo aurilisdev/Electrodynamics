@@ -25,7 +25,7 @@ import physica.core.common.world.ComponentWorldGen;
 
 @Mod(modid = References.DOMAIN, name = References.NAME, version = References.VERSION)
 public class Physica {
-	@SidedProxy(serverSide = "physica.proxy.CommonProxy", clientSide = "physica.proxy.ClientProxy")
+	@SidedProxy(serverSide = "physica.core.common.proxy.CommonProxy", clientSide = "physica.core.common.proxy.ClientProxy")
 	public static CommonProxy proxy;
 
 	public static Logger logger;

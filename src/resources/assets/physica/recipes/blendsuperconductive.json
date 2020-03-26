@@ -5,19 +5,20 @@
 		"GEG",
 		"SGS"
 	],
-    "key": {
-        "S": {
-            "type": "forge:ore_dict",
-            "ore": "dustSilver"
-        },
-        "G": {
-            "type": "forge:ore_dict",
-            "ore": "dustGold"
-        },
-        "E": {
-            "item": "minecraft:ender_pearl"
-        }
-    },
+	"key": {
+		"S": {
+			"type": "forge:ore_dict",
+			"ore": "dustSilver"
+		},
+		"G": {
+			"type": "forge:ore_dict",
+			"ore": "dustGold"
+		},
+		"E": {
+			"type": "forge:ore_dict",
+			"ore": "dustEnderEye"
+		}
+	},
 	"result": {
 		"item": "physica:blendbase",
 		"data": 8
