@@ -132,6 +132,5 @@ task releaseJars(type: Copy) {
 	from coreJar
 	from nuclearJar
 	from forcefieldJar
-	from missilesJar
 	destinationDir= new File('/releaseJarsOnly/')
 }
