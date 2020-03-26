@@ -88,6 +88,14 @@ public class GridLocation {
 		return MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
+	public double getDistanceSquared(double x2, double y2, double z2)
+	{
+		double d3 = xCoord - x2;
+		double d4 = yCoord - y2;
+		double d5 = zCoord - z2;
+		return d3 * d3 + d4 * d4 + d5 * d5;
+	}
+
 	public float getDistance(VectorLocation vector)
 	{
 		double d3 = xCoord - vector.x;

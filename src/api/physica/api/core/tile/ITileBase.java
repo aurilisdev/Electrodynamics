@@ -160,7 +160,10 @@ public interface ITileBase extends IPlayerUsing, ISidedObject, IPacketReciever, 
 			List<Object> list = new ArrayList<>();
 			writeSynchronizationPacket(list, null);
 			packetTile.addData(list);
-
+			if (list.isEmpty())
+			{
+				return;
+			}
 			PacketSystem.INSTANCE.sendToAllAround(packetTile, This());
 		}
 	}
