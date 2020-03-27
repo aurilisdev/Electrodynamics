@@ -11,11 +11,9 @@ public class PlayerUtilities {
 	public static List<EntityPlayerMP> getPlayers() {
 		List<EntityPlayerMP> playerList = new ArrayList<>();
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-
 		if (server != null) {
 			return server.getPlayerList().getPlayers();
 		}
-
 		return playerList;
 	}
 

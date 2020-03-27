@@ -86,24 +86,20 @@ public class BlockMachine extends BlockInventory {
 				double xSpeed = 0;
 				double ySpeed = type.getParticleSpeed();
 				double zSpeed = 0;
-
 				switch (TileElectricMachine.getFacing()) {
 				case NORTH:
 					world.spawnParticle(type.getParticleType(), xRandom + jRandom, yRandom, zRandom - iRandom, xSpeed,
 							ySpeed, zSpeed);
 
 					break;
-
 				case SOUTH:
 					world.spawnParticle(type.getParticleType(), xRandom + jRandom, yRandom, zRandom + iRandom, xSpeed,
 							ySpeed, zSpeed);
 					break;
-
 				case WEST:
 					world.spawnParticle(type.getParticleType(), xRandom - iRandom, yRandom, zRandom + jRandom, xSpeed,
 							ySpeed, zSpeed);
 					break;
-
 				case EAST:
 					world.spawnParticle(type.getParticleType(), xRandom + iRandom, yRandom, zRandom + jRandom, xSpeed,
 							ySpeed, zSpeed);
