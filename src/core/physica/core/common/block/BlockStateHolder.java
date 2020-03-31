@@ -92,7 +92,6 @@ public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> exte
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public BlockStateHolder<T> setCreativeTab(CreativeTabs tab) {
 		return (BlockStateHolder<T>) super.setCreativeTab(tab);
 	}

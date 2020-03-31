@@ -90,7 +90,6 @@ public class BlockMachine extends BlockInventory {
 				case NORTH:
 					world.spawnParticle(type.getParticleType(), xRandom + jRandom, yRandom, zRandom - iRandom, xSpeed,
 							ySpeed, zSpeed);
-
 					break;
 				case SOUTH:
 					world.spawnParticle(type.getParticleType(), xRandom + jRandom, yRandom, zRandom + iRandom, xSpeed,

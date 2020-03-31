@@ -29,6 +29,16 @@
 				"textures": {
 					"all": "physica:blocks/oreuranium"
 				}
+			},
+			"thorianite": {
+				"textures": {
+					"all": "physica:blocks/orethorianite"
+				}
+			},
+			"monazite": {
+				"textures": {
+					"all": "physica:blocks/oremonazite"
+				}
 			}
 		},
 		"inventory": [

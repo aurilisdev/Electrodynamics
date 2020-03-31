@@ -3,7 +3,9 @@ package physica.core.common.block.state;
 public enum EnumOreState implements IBlockStateInfo {
 	copper("oreCopper", "pickaxe", 1, 16, 8, 0, 64, 3f, 5f), tin("oreTin", "pickaxe", 1, 14, 8, 0, 64, 3f, 5f),
 	silver("oreSilver", "pickaxe", 2, 6, 6, 0, 48, 4f, 5.5f), lead("oreLead", "pickaxe", 2, 8, 8, 0, 64, 4f, 8f),
-	uranium("oreUranium", "pickaxe", 3, 4, 4, 0, 32, 10f, 6.5f); // TODO: Maybe move this into nuclear physics!
+	uranium("oreUranium", "pickaxe", 3, 4, 4, 0, 32, 10f, 6.5f),
+	thorianite("oreThorianite", "pickaxe", 3, 4, 1, 0, 32, 10f, 6.5f),
+	monazite("oreMonazite", "pickaxe", 2, 4, 4, 0, 32, 6f, 4.5f);
 	private String ore;
 	private String harvestTool;
 	private int harvestLevel;

@@ -29,7 +29,9 @@ tile.blockOre.0.name=Copper Ore
 tile.blockOre.1.name=Tin Ore
 tile.blockOre.2.name=Silver Ore
 tile.blockOre.3.name=Lead Ore
-tile.blockOre.4.name=Uranium Ore
+tile.blockOre.4.name=Uraninite Ore
+tile.blockOre.5.name=Thorianite Ore
+tile.blockOre.6.name=Monazite Ore
 
 # Creative Tabs
 itemGroup.components.creativeTab=Physica
