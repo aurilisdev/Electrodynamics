@@ -7,56 +7,31 @@
 			},
 			"electricfurnacerunning": {
 				"model": "physica:electricfurnacerunning"
+			},
+			"coalgenerator": {
+				"model": "physica:coalgenerator"
+			},
+			"coalgeneratorrunning": {
+				"model": "physica:coalgeneratorrunning"
 			}
 		},
 		"facing": {
 			"north": {
-				"y": 270,
-				"state": {
-					"electricfurnace": {
-						"model": "physica:electricfurnace"
-					},
-					"electricfurnacerunning": {
-						"model": "physica:electricfurnacerunning"
-					}
-				}
+				"y": 270
 			},
 			"south": {
-				"y": 90,
-				"state": {
-					"electricfurnace": {
-						"model": "physica:electricfurnace"
-					},
-					"electricfurnacerunning": {
-						"model": "physica:electricfurnacerunning"
-					}
-				}
+				"y": 90
 			},
 			"west": {
-				"y": 180,
-				"state": {
-					"electricfurnace": {
-						"model": "physica:electricfurnace"
-					},
-					"electricfurnacerunning": {
-						"model": "physica:electricfurnacerunning"
-					}
-				}
+				"y": 180
 			},
 			"east": {
-				"y": 0,
-				"state": {
-					"electricfurnace": {
-						"model": "physica:electricfurnace"
-					},
-					"electricfurnacerunning": {
-						"model": "physica:electricfurnacerunning"
-					}
-				}
+				"y": 0
 			}
 		},
 		"inventory": [
 			{
+				"transform": "forge:default-block"
 			}
 		]
 	}

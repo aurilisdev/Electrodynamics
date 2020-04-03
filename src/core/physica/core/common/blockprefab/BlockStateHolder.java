@@ -87,7 +87,7 @@ public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> exte
 	@Override
 	public void registerItemModel(Item itemBlock) {
 		for (T t : getEnumValuesByMeta()) {
-			Physica.proxy.registerBlockItemRenderer(itemBlock, t.ordinal(), name, t.getName());
+			Physica.proxy.registerBlockItemRenderer(itemBlock, t.ordinal(), name, "state=" + t.getName());
 		}
 	}
 

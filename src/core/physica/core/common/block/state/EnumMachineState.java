@@ -6,7 +6,9 @@ import physica.core.common.tile.TileElectricFurnace;
 
 public enum EnumMachineState implements IBlockStateInfo {
 	electricfurnace(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f),
-	electricfurnacerunning(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f);
+	electricfurnacerunning(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f),
+	coalgenerator(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f),
+	coalgeneratorrunning(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f);
 	private Class<? extends TileEntity> classType;
 	private String harvestTool;
 	private int harvestLevel;

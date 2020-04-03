@@ -23,7 +23,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerBlockItemRenderer(Item item, int meta, String id, String state) {
 		ModelLoader.setCustomModelResourceLocation(item, meta,
-				new ModelResourceLocation(References.DOMAIN + ":" + id, "state=" + state));
+				new ModelResourceLocation(References.DOMAIN + ":" + id, state));
 	}
 
 	@Override
