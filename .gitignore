@@ -42,3 +42,7 @@ libs/
 outputSplitOnly/
 
 releaseJarsOnly/
+
+Physica_Client.launch
+
+Physica_Server.launch
