@@ -54,17 +54,8 @@ minecraft {
     replaceIn "References.java"
 }
 
-repositories {
-    maven {
-        name = 'CodeChicken'
-        url = 'http://chickenbones.net/maven/'
-    }
-}
 
 dependencies {
-    compile 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
-    compile 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
-    compile 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
 }
 
 processResources {
