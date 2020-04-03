@@ -1,4 +1,4 @@
-package physica.core.common.block.property;
+package physica.core.common.blockprefab.property;
 
 import java.util.Collection;
 

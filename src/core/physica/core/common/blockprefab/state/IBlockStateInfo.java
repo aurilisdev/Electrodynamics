@@ -1,4 +1,4 @@
-package physica.core.common.block.state;
+package physica.core.common.blockprefab.state;
 
 import net.minecraft.util.IStringSerializable;
 

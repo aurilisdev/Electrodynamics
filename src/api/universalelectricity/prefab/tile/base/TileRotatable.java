@@ -23,7 +23,7 @@ public class TileRotatable extends TileBase implements ITileNetwork, ITileRotata
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		if (tag.hasKey(NBT_FACING)) {
-			facing = EnumFacing.byIndex(tag.getInteger(NBT_FACING));
+			setFacing(EnumFacing.byIndex(tag.getInteger(NBT_FACING)));
 		}
 	}
 
@@ -40,13 +40,13 @@ public class TileRotatable extends TileBase implements ITileNetwork, ITileRotata
 	public void handlePacketData(ByteBuf dataStream) {
 		if (world.isRemote) {
 			facing = EnumFacing.byIndex(dataStream.readInt());
+			world.markBlockRangeForRenderUpdate(pos, pos);
 		}
 	}
 
 	@Override
 	public List<Object> getPacketData(List<Object> objects) {
 		objects.add(facing.ordinal());
-
 		return objects;
 	}
 

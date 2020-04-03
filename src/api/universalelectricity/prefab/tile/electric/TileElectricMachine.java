@@ -13,6 +13,7 @@ public class TileElectricMachine extends TileElectric implements ITickable {
 
 	protected int energyUsed = 0;
 	protected int operatingTicks = 0;
+	protected int ticksloaded = 0;
 
 	public TileElectricMachine() {
 	}
@@ -32,7 +33,27 @@ public class TileElectricMachine extends TileElectric implements ITickable {
 	}
 
 	@Override
-	public void update() {
+	public final void update() {
+		if (ticksloaded == 0) {
+			firstUpdate(!getWorld().isRemote);
+		} else if (getWorld().isRemote) {
+			clientUpdate();
+		} else {
+			serverUpdate();
+		}
+		sharedUpdate();
+	}
+
+	public void firstUpdate(boolean isServer) {
+	}
+
+	public void clientUpdate() {
+	}
+
+	public void serverUpdate() {
+	}
+
+	public void sharedUpdate() {
 	}
 
 	@Override

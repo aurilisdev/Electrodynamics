@@ -1,4 +1,4 @@
-package physica.core.common.block;
+package physica.core.common.blockprefab;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

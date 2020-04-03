@@ -2,7 +2,7 @@ package physica.core.common.item;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import physica.core.common.block.BlockStateHolder;
+import physica.core.common.blockprefab.BlockStateHolder;
 
 public class ItemBlockStateHolder extends ItemBlock {
 	public ItemBlockStateHolder(BlockStateHolder<?> block) {

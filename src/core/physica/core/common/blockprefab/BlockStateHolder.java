@@ -1,4 +1,4 @@
-package physica.core.common.block;
+package physica.core.common.blockprefab;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -13,16 +13,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import physica.core.Physica;
-import physica.core.common.block.property.PropertySingle;
-import physica.core.common.block.state.IBlockStateInfo;
+import physica.core.common.blockprefab.property.PropertySingle;
+import physica.core.common.blockprefab.state.IBlockStateInfo;
 import physica.core.common.item.ItemBlockStateHolder;
 
 public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> extends BlockBase {
-	private PropertySingle<T> STATES;
+	protected PropertySingle<T> stateProperty;
 
 	public BlockStateHolder(Material material, String name) {
 		super(material, name);
-		setDefaultState(blockState.getBaseState().withProperty(STATES, getDefaultStateEnum()));
+		setDefaultState(blockState.getBaseState().withProperty(stateProperty, getDefaultStateEnum()));
 	}
 
 	public abstract Class<T> getStateEnumClass();
@@ -33,27 +33,27 @@ public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> exte
 
 	@Override
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		return blockState.getValue(STATES).getHardness();
+		return blockState.getValue(stateProperty).getHardness();
 	}
 
 	@Override
 	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-		return world.getBlockState(pos).getValue(STATES).getResistance() / 5.0f;
+		return world.getBlockState(pos).getValue(stateProperty).getResistance() / 5.0f;
 	}
 
 	@Override
 	public String getHarvestTool(IBlockState state) {
-		return state.getValue(STATES).getHarvestTool();
+		return state.getValue(stateProperty).getHarvestTool();
 	}
 
 	@Override
 	public int getHarvestLevel(IBlockState state) {
-		return state.getValue(STATES).getHarvestLevel();
+		return state.getValue(stateProperty).getHarvestLevel();
 	}
 
 	@Override
 	public int damageDropped(IBlockState state) {
-		return state.getValue(STATES).ordinal();
+		return state.getValue(stateProperty).ordinal();
 	}
 
 	@Override
@@ -70,18 +70,18 @@ public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> exte
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(STATES, getEnumValuesByMeta()[meta]);
+		return getDefaultState().withProperty(stateProperty, getEnumValuesByMeta()[meta]);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(STATES).ordinal();
+		return state.getValue(stateProperty).ordinal();
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this,
-				new IProperty[] { STATES = PropertySingle.<T>createProperty("state", getStateEnumClass()) });
+				new IProperty[] { stateProperty = PropertySingle.<T>createProperty("state", getStateEnumClass()) });
 	}
 
 	@Override
@@ -89,6 +89,10 @@ public abstract class BlockStateHolder<T extends Enum<T> & IBlockStateInfo> exte
 		for (T t : getEnumValuesByMeta()) {
 			Physica.proxy.registerBlockItemRenderer(itemBlock, t.ordinal(), name, t.getName());
 		}
+	}
+
+	public PropertySingle<T> getStateProperty() {
+		return stateProperty;
 	}
 
 	@Override

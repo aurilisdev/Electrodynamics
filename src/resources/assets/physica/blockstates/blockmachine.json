@@ -1,0 +1,63 @@
+{
+	"forge_marker": 1,
+	"variants": {
+		"state": {
+			"electricfurnace": {
+				"model": "physica:electricfurnace"
+			},
+			"electricfurnacerunning": {
+				"model": "physica:electricfurnacerunning"
+			}
+		},
+		"facing": {
+			"north": {
+				"y": 270,
+				"state": {
+					"electricfurnace": {
+						"model": "physica:electricfurnace"
+					},
+					"electricfurnacerunning": {
+						"model": "physica:electricfurnacerunning"
+					}
+				}
+			},
+			"south": {
+				"y": 90,
+				"state": {
+					"electricfurnace": {
+						"model": "physica:electricfurnace"
+					},
+					"electricfurnacerunning": {
+						"model": "physica:electricfurnacerunning"
+					}
+				}
+			},
+			"west": {
+				"y": 180,
+				"state": {
+					"electricfurnace": {
+						"model": "physica:electricfurnace"
+					},
+					"electricfurnacerunning": {
+						"model": "physica:electricfurnacerunning"
+					}
+				}
+			},
+			"east": {
+				"y": 0,
+				"state": {
+					"electricfurnace": {
+						"model": "physica:electricfurnace"
+					},
+					"electricfurnacerunning": {
+						"model": "physica:electricfurnacerunning"
+					}
+				}
+			}
+		},
+		"inventory": [
+			{
+			}
+		]
+	}
+}

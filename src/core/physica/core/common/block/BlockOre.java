@@ -2,6 +2,7 @@ package physica.core.common.block;
 
 import net.minecraft.block.material.Material;
 import physica.core.common.block.state.EnumOreState;
+import physica.core.common.blockprefab.BlockStateHolder;
 
 public class BlockOre extends BlockStateHolder<EnumOreState> {
 

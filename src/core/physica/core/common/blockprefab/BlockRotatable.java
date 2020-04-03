@@ -1,8 +1,9 @@
-package physica.core.common.block;
+package physica.core.common.blockprefab;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,31 +13,25 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import physica.core.common.block.state.BlockStateFacing;
+import physica.core.common.blockprefab.property.PropertySingle;
+import physica.core.common.blockprefab.state.BlockStateFacing;
+import physica.core.common.blockprefab.state.IBlockStateInfo;
 import universalelectricity.api.tile.ITileRotatable;
 
-public class BlockRotatable extends BlockContainerBase {
+public abstract class BlockRotatable<T extends Enum<T> & IBlockStateInfo> extends BlockContainerBase<T> {
+
 	protected BlockRotatable(String name, Material material) {
 		super(material, name);
-
-		setDefaultState(blockState.getBaseState().withProperty(BlockStateFacing.FACING, EnumFacing.NORTH));
+		setDefaultState(blockState.getBaseState().withProperty(stateProperty, getDefaultStateEnum())
+				.withProperty(BlockStateFacing.FACING, EnumFacing.NORTH));
 	}
 
 	@Override
 	@Nonnull
 	public BlockStateContainer createBlockState() {
-		return new BlockStateFacing(this);
-	}
-
-	@Override
-	@Nonnull
-	public IBlockState getStateFromMeta(int metadata) {
-		return getDefaultState();
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return 0;
+		return new BlockStateContainer(this,
+				new IProperty[] { stateProperty = PropertySingle.<T>createProperty("state", getStateEnumClass()),
+						BlockStateFacing.FACING });
 	}
 
 	@SuppressWarnings("deprecation")

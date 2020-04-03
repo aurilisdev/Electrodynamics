@@ -33,5 +33,9 @@ tile.blockOre.4.name=Uraninite Ore
 tile.blockOre.5.name=Thorianite Ore
 tile.blockOre.6.name=Monazite Ore
 
+# Machines
+tile.blockMachine.0.name=Electrical Furnace
+tile.blockMachine.1.name=Electrical Furnace Running
+
 # Creative Tabs
 itemGroup.components.creativeTab=Physica
