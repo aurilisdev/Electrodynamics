@@ -8,7 +8,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 import physica.core.References;
 import physica.core.common.block.BlockMachine;
 import physica.core.common.block.BlockOre;
+import physica.core.common.tile.TileCoalGenerator;
 import physica.core.common.tile.TileElectricFurnace;
+import physica.core.common.tile.TileMineralCrusher;
 
 public class ComponentBlocks {
 	public static BlockOre blockOre = (BlockOre) new BlockOre("blockOre").setCreativeTab(ComponentsTab.BASICCOMPONENTS);
@@ -18,6 +20,8 @@ public class ComponentBlocks {
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.registerAll(blockOre, blockMachine);
 		registerTile(TileElectricFurnace.class);
+		registerTile(TileCoalGenerator.class);
+		registerTile(TileMineralCrusher.class);
 	}
 
 	@SuppressWarnings("deprecation")

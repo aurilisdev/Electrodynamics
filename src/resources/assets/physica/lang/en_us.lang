@@ -38,6 +38,7 @@ tile.blockMachine.0.name=Electrical Furnace
 tile.blockMachine.1.name=Electrical Furnace Running
 tile.blockMachine.2.name=Coal Generator
 tile.blockMachine.3.name=Coal Generator Running
+tile.blockMachine.4.name=Mineral Crusher
 
 # Creative Tabs
-itemGroup.components.creativeTab=Physica
+itemGroup.components.creativeTab=Basic Components

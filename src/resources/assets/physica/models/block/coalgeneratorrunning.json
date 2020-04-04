@@ -1,13 +1,13 @@
 {
 	"parent": "block/cube_all",
-	"credit": "Made with Blockbench",
+	"credit": "aurilisdev",
 	"texture_size": [
 		64,
 		64
 	],
 	"textures": {
 		"0": "physica:models/coalgeneratorrunning",
-		"particle": "physica:models/coalgeneratorrunning"
+		"particle": "physica:models/coalgenerator"
 	},
 	"elements": [
 		{

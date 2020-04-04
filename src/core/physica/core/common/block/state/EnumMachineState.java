@@ -2,13 +2,17 @@ package physica.core.common.block.state;
 
 import net.minecraft.tileentity.TileEntity;
 import physica.core.common.blockprefab.state.IBlockStateInfo;
+import physica.core.common.tile.TileCoalGenerator;
 import physica.core.common.tile.TileElectricFurnace;
+import physica.core.common.tile.TileMineralCrusher;
 
 public enum EnumMachineState implements IBlockStateInfo {
 	electricfurnace(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f),
 	electricfurnacerunning(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f),
-	coalgenerator(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f),
-	coalgeneratorrunning(TileElectricFurnace.class, "pickaxe", 1, 3f, 5f);
+	coalgenerator(TileCoalGenerator.class, "pickaxe", 1, 3f, 5f),
+	coalgeneratorrunning(TileCoalGenerator.class, "pickaxe", 1, 3f, 5f),
+	mineralcrusher(TileMineralCrusher.class, "pickaxe", 1, 3f, 5f);
+
 	private Class<? extends TileEntity> classType;
 	private String harvestTool;
 	private int harvestLevel;

@@ -13,6 +13,9 @@
 			},
 			"coalgeneratorrunning": {
 				"model": "physica:coalgeneratorrunning"
+			},
+			"mineralcrusher": {
+				"model": "physica:mineralcrusher"
 			}
 		},
 		"facing": {
@@ -31,7 +34,6 @@
 		},
 		"inventory": [
 			{
-				"transform": "forge:default-block"
 			}
 		]
 	}

@@ -7,7 +7,7 @@
 	],
 	"textures": {
 		"0": "physica:models/electricfurnacerunning",
-		"particle": "physica:models/electricfurnacerunning"
+		"particle": "physica:models/electricfurnace"
 	},
 	"elements": [
 		{
