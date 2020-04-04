@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 import physica.core.common.item.ItemBase;
 import physica.core.common.item.subtypes.EnumBlend;
+import physica.core.common.item.subtypes.EnumImpureBlend;
 import physica.core.common.item.subtypes.EnumIngot;
 import physica.core.common.item.subtypes.EnumPlate;
 
@@ -15,17 +16,18 @@ public class ComponentItems {
 			.setCreativeTab(ComponentsTab.BASICCOMPONENTS);
 	public static ItemBase blendBase = new ItemBase("blendBase", EnumBlend.values().length)
 			.setCreativeTab(ComponentsTab.BASICCOMPONENTS);
+	public static ItemBase impureBlendBase = new ItemBase("impureBlendBase", EnumImpureBlend.values().length)
+			.setCreativeTab(ComponentsTab.BASICCOMPONENTS);
 
 	public static void register(IForgeRegistry<Item> registry) {
-		registry.registerAll(ingotBase);
-		registry.registerAll(plateBase);
-		registry.registerAll(blendBase);
+		registry.registerAll(ingotBase, plateBase, blendBase, impureBlendBase);
 	}
 
 	public static void registerModels() {
 		ingotBase.registerItemModel("ingot");
 		plateBase.registerItemModel("plate");
 		blendBase.registerItemModel("blend");
+		impureBlendBase.registerItemModel("impureblend");
 	}
 
 }

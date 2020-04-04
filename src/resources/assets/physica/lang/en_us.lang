@@ -19,6 +19,14 @@ item.blendBase.7.name=Bronze Blend
 item.blendBase.8.name=Superconductive Blend
 item.blendBase.9.name=Ender Dust
 
+# Impure Blends
+item.impureBlendBase.0.name=Impure Iron Dust
+item.impureBlendBase.1.name=Impure Gold Dust
+item.impureBlendBase.2.name=Impure Copper Dust
+item.impureBlendBase.3.name=Impure Tin Dust
+item.impureBlendBase.4.name=Impure Silver Dust
+item.impureBlendBase.5.name=Impure Lead Dust
+
 # Plates
 item.plateBase.0.name=Iron Plate
 item.plateBase.1.name=Steel Plate
