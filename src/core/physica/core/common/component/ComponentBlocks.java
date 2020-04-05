@@ -11,6 +11,7 @@ import physica.core.common.block.BlockOre;
 import physica.core.common.tile.TileCoalGenerator;
 import physica.core.common.tile.TileElectricFurnace;
 import physica.core.common.tile.TileMineralCrusher;
+import physica.core.common.tile.TileMineralGrinder;
 
 public class ComponentBlocks {
 	public static BlockOre blockOre = (BlockOre) new BlockOre("blockOre").setCreativeTab(ComponentsTab.BASICCOMPONENTS);
@@ -22,6 +23,7 @@ public class ComponentBlocks {
 		registerTile(TileElectricFurnace.class);
 		registerTile(TileCoalGenerator.class);
 		registerTile(TileMineralCrusher.class);
+		registerTile(TileMineralGrinder.class);
 	}
 
 	@SuppressWarnings("deprecation")

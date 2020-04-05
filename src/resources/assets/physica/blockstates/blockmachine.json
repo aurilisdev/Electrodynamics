@@ -16,6 +16,9 @@
 			},
 			"mineralcrusher": {
 				"model": "physica:mineralcrusher"
+			},
+			"mineralgrinder": {
+				"model": "physica:mineralgrinder"
 			}
 		},
 		"facing": {

@@ -47,6 +47,7 @@ tile.blockMachine.1.name=Electrical Furnace Running
 tile.blockMachine.2.name=Coal Generator
 tile.blockMachine.3.name=Coal Generator Running
 tile.blockMachine.4.name=Mineral Crusher
+tile.blockMachine.5.name=Mineral Grinder
 
 # Creative Tabs
 itemGroup.components.creativeTab=Basic Components
