@@ -84,9 +84,9 @@ public class InventoryUtility {
 	public static void dropItemStack(World world, double x, double y, double z, ItemStack itemStack, int delay) {
 		if (!world.isRemote && !itemStack.isEmpty()) {
 			float motion = 0.7F;
-			double motionX = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-			double motionY = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
-			double motionZ = (world.rand.nextFloat() * motion) + (1.0F - motion) * 0.5D;
+			double motionX = world.rand.nextFloat() * motion + (1.0F - motion) * 0.5D;
+			double motionY = world.rand.nextFloat() * motion + (1.0F - motion) * 0.5D;
+			double motionZ = world.rand.nextFloat() * motion + (1.0F - motion) * 0.5D;
 			EntityItem entityItem = new EntityItem(world, x + motionX, y + motionY, z + motionZ, itemStack);
 			if (itemStack.hasTagCompound()) {
 				entityItem.getItem().setTagCompound(itemStack.getTagCompound().copy());

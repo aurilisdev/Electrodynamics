@@ -32,6 +32,13 @@ item.plateBase.0.name=Iron Plate
 item.plateBase.1.name=Steel Plate
 item.plateBase.2.name=Lead Plate
 
+# Gears
+item.gearBase.0.name=Iron Gear
+item.gearBase.1.name=Copper Gear
+item.gearBase.2.name=Tin Gear
+item.gearBase.3.name=Steel Gear
+item.gearBase.4.name=Bronze Gear
+
 # Ores
 tile.blockOre.0.name=Copper Ore
 tile.blockOre.1.name=Tin Ore
