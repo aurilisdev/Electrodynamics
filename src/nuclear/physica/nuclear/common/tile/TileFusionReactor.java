@@ -72,7 +72,10 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 		} else
 		{
 			isRunning = false;
-			ticksRunning = 0;
+			if(ticksRunning >= 10000) // Just here to stop infinite power
+			{
+				ticksRunning = 0;
+			}
 		}
 	}
 
