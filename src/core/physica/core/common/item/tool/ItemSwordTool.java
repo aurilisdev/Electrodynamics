@@ -1,6 +1,7 @@
 package physica.core.common.item.tool;
 
 import net.minecraft.item.ItemSword;
+import physica.core.common.component.ComponentsTab;
 
 public class ItemSwordTool extends ItemSword {
 
@@ -8,5 +9,6 @@ public class ItemSwordTool extends ItemSword {
 		super(material);
 		setTranslationKey(name);
 		setRegistryName(name);
+		setCreativeTab(ComponentsTab.BASICCOMPONENTS);
 	}
 }
