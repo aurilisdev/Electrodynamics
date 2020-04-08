@@ -57,10 +57,10 @@ public class ComponentItems {
 		swordMap.put(ToolMaterialPhysica.LEAD, new ItemSwordTool("swordLead", ToolMaterialPhysica.LEAD));
 
 		registry.registerAll(ingotBase, plateBase, blendBase, impureBlendBase, gearBase);
-		registry.registerAll((ItemAxeTool[]) axeMap.values().toArray(new ItemAxeTool[0]));
-		registry.registerAll((ItemPickaxeTool[]) pickAxeMap.values().toArray(new ItemPickaxeTool[0]));
-		registry.registerAll((ItemSpadeTool[]) spadeMap.values().toArray(new ItemSpadeTool[0]));
-		registry.registerAll((ItemSwordTool[]) swordMap.values().toArray(new ItemSwordTool[0]));
+		registry.registerAll(axeMap.values().toArray(new ItemAxeTool[0]));
+		registry.registerAll(pickAxeMap.values().toArray(new ItemPickaxeTool[0]));
+		registry.registerAll(spadeMap.values().toArray(new ItemSpadeTool[0]));
+		registry.registerAll(swordMap.values().toArray(new ItemSwordTool[0]));
 	}
 
 	public static void registerModels() {
