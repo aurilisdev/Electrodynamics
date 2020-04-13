@@ -1,6 +1,6 @@
 {
     "parent": "physica:item/standarditem",
 	"textures": {
-		"layer0": "physica:items/tool/silver/pickaxeSilver"
+		"layer0": "physica:items/tool/silver/pickaxesilver"
 	}
 }
