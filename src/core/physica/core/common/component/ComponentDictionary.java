@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import physica.core.common.block.state.EnumOreState;
 import physica.core.common.item.subtypes.EnumBlend;
+import physica.core.common.item.subtypes.EnumImpureBlend;
 import physica.core.common.item.subtypes.EnumIngot;
 import physica.core.common.item.subtypes.EnumPlate;
 
@@ -13,6 +14,9 @@ public class ComponentDictionary {
 			OreDictionary.registerOre(ingot.getOre(), ComponentItems.ingotBase.createStackFromSubtype(ingot.ordinal()));
 		}
 		for (EnumBlend blend : EnumBlend.values()) {
+			OreDictionary.registerOre(blend.getOre(), ComponentItems.blendBase.createStackFromSubtype(blend.ordinal()));
+		}
+		for (EnumImpureBlend blend : EnumImpureBlend.values()) {
 			OreDictionary.registerOre(blend.getOre(), ComponentItems.blendBase.createStackFromSubtype(blend.ordinal()));
 		}
 		for (EnumPlate plate : EnumPlate.values()) {

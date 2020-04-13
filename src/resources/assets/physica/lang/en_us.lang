@@ -6,6 +6,7 @@ item.ingotBase.3.name=Steel Ingot
 item.ingotBase.4.name=Lead Ingot
 item.ingotBase.5.name=Superconductive Ingot
 item.ingotBase.6.name=Bronze Ingot
+item.ingotBase.7.name=Vanadium Ingot
 
 # Blends
 item.blendBase.0.name=Iron Dust
@@ -18,6 +19,7 @@ item.blendBase.6.name=Lead Dust
 item.blendBase.7.name=Bronze Blend
 item.blendBase.8.name=Superconductive Blend
 item.blendBase.9.name=Ender Dust
+item.blendBase.10.name=Vanadium Dust
 
 # Impure Blends
 item.impureBlendBase.0.name=Impure Iron Dust
@@ -26,6 +28,7 @@ item.impureBlendBase.2.name=Impure Copper Dust
 item.impureBlendBase.3.name=Impure Tin Dust
 item.impureBlendBase.4.name=Impure Silver Dust
 item.impureBlendBase.5.name=Impure Lead Dust
+item.impureBlendBase.6.name=Impure Vanadium Dust
 
 # Plates
 item.plateBase.0.name=Iron Plate
@@ -76,6 +79,7 @@ tile.blockOre.3.name=Lead Ore
 tile.blockOre.4.name=Uraninite Ore
 tile.blockOre.5.name=Thorianite Ore
 tile.blockOre.6.name=Monazite Ore
+tile.blockOre.7.name=Vanadinite Ore
 
 # Machines
 tile.blockMachine.0.name=Electrical Furnace

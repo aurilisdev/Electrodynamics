@@ -1,7 +1,8 @@
 package physica.core.common.item.subtypes;
 
 public enum EnumImpureBlend {
-	iron("dustIron"), gold("dustGold"), copper("dustCopper"), tin("dustTin"), silver("dustSilver"), lead("dustLead");
+	iron("impureDustIron"), gold("impureDustGold"), copper("impureDustCopper"), tin("impureDustTin"),
+	silver("impureDustSilver"), lead("impureDustLead"), vanadium("impureDustVanadium");
 
 	private String ore;
 

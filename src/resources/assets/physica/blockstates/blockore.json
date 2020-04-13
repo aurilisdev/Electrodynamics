@@ -39,6 +39,11 @@
 				"textures": {
 					"all": "physica:blocks/oremonazite"
 				}
+			},
+			"vanadinite": {
+				"textures": {
+					"all": "physica:blocks/orevanadinite"
+				}
 			}
 		},
 		"inventory": [

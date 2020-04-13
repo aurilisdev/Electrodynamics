@@ -7,7 +7,7 @@ import physica.core.common.block.state.EnumOreState;
 import physica.core.common.item.subtypes.EnumBlend;
 import physica.core.common.item.subtypes.EnumIngot;
 
-public class ComponentRecipes {
+public class ComponentRecipes {// TODO: Remember tool recipes
 	public static void init() {
 		GameRegistry.addSmelting(Items.IRON_INGOT, new ItemStack(ComponentItems.ingotBase, 1, 3), 0.3f);
 
