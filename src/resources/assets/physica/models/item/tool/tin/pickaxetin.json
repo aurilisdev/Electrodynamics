@@ -1,5 +1,5 @@
 {
-    "parent": "physica:item/standarditem",
+    "parent": "physica:item/standarditemheld",
 	"textures": {
 		"layer0": "physica:items/tool/tin/pickaxetin"
 	}
