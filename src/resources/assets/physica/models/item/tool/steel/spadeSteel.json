@@ -1,0 +1,6 @@
+{
+    "parent": "physica:item/standarditem",
+	"textures": {
+		"layer0": "physica:items/tool/steel/spadeSteel"
+	}
+}

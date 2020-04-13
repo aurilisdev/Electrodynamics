@@ -1,6 +1,7 @@
 package physica.core.common.component;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -46,15 +47,25 @@ public class ComponentItems {
 		spadeMap.put(ToolMaterialPhysica.TIN, new ItemSpadeTool("spadeTin", ToolMaterialPhysica.TIN));
 		swordMap.put(ToolMaterialPhysica.TIN, new ItemSwordTool("swordTin", ToolMaterialPhysica.TIN));
 
+		axeMap.put(ToolMaterialPhysica.LEAD, new ItemAxeTool("axeLead", ToolMaterialPhysica.LEAD));
+		pickAxeMap.put(ToolMaterialPhysica.LEAD, new ItemPickaxeTool("pickaxeLead", ToolMaterialPhysica.LEAD));
+		spadeMap.put(ToolMaterialPhysica.LEAD, new ItemSpadeTool("spadeLead", ToolMaterialPhysica.LEAD));
+		swordMap.put(ToolMaterialPhysica.LEAD, new ItemSwordTool("swordLead", ToolMaterialPhysica.LEAD));
+
 		axeMap.put(ToolMaterialPhysica.SILVER, new ItemAxeTool("axeSilver", ToolMaterialPhysica.SILVER));
 		pickAxeMap.put(ToolMaterialPhysica.SILVER, new ItemPickaxeTool("pickaxeSilver", ToolMaterialPhysica.SILVER));
 		spadeMap.put(ToolMaterialPhysica.SILVER, new ItemSpadeTool("spadeSilver", ToolMaterialPhysica.SILVER));
 		swordMap.put(ToolMaterialPhysica.SILVER, new ItemSwordTool("swordSilver", ToolMaterialPhysica.SILVER));
 
-		axeMap.put(ToolMaterialPhysica.LEAD, new ItemAxeTool("axeLead", ToolMaterialPhysica.LEAD));
-		pickAxeMap.put(ToolMaterialPhysica.LEAD, new ItemPickaxeTool("pickaxeLead", ToolMaterialPhysica.LEAD));
-		spadeMap.put(ToolMaterialPhysica.LEAD, new ItemSpadeTool("spadeLead", ToolMaterialPhysica.LEAD));
-		swordMap.put(ToolMaterialPhysica.LEAD, new ItemSwordTool("swordLead", ToolMaterialPhysica.LEAD));
+		axeMap.put(ToolMaterialPhysica.BRONZE, new ItemAxeTool("axeBronze", ToolMaterialPhysica.BRONZE));
+		pickAxeMap.put(ToolMaterialPhysica.BRONZE, new ItemPickaxeTool("pickaxeBronze", ToolMaterialPhysica.BRONZE));
+		spadeMap.put(ToolMaterialPhysica.BRONZE, new ItemSpadeTool("spadeBronze", ToolMaterialPhysica.BRONZE));
+		swordMap.put(ToolMaterialPhysica.BRONZE, new ItemSwordTool("swordBronze", ToolMaterialPhysica.BRONZE));
+
+		axeMap.put(ToolMaterialPhysica.STEEL, new ItemAxeTool("axeSteel", ToolMaterialPhysica.STEEL));
+		pickAxeMap.put(ToolMaterialPhysica.STEEL, new ItemPickaxeTool("pickaxeSteel", ToolMaterialPhysica.STEEL));
+		spadeMap.put(ToolMaterialPhysica.STEEL, new ItemSpadeTool("spadeSteel", ToolMaterialPhysica.STEEL));
+		swordMap.put(ToolMaterialPhysica.STEEL, new ItemSwordTool("swordSteel", ToolMaterialPhysica.STEEL));
 
 		registry.registerAll(ingotBase, plateBase, blendBase, impureBlendBase, gearBase);
 		registry.registerAll(axeMap.values().toArray(new ItemAxeTool[0]));
@@ -69,6 +80,18 @@ public class ComponentItems {
 		blendBase.registerItemModel("blend");
 		impureBlendBase.registerItemModel("impureblend");
 		gearBase.registerItemModel("gear");
+		for (Entry<ToolMaterial, ItemAxeTool> entry : axeMap.entrySet()) {
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+		}
+		for (Entry<ToolMaterial, ItemSwordTool> entry : swordMap.entrySet()) {
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+		}
+		for (Entry<ToolMaterial, ItemSpadeTool> entry : spadeMap.entrySet()) {
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+		}
+		for (Entry<ToolMaterial, ItemPickaxeTool> entry : pickAxeMap.entrySet()) {
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+		}
 	}
 
 }
