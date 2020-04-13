@@ -1,0 +1,33 @@
+texture changes made with paint dot net for future reference
+
+tin(base iron):
+light strength: +38
+
+bronze(base iron):
+	curve:
+	red:85, 147
+	green: no change
+	blue: 160, 95
+color metning: 105
+
+
+copper(base iron):
+	curve:
+	red:85, 147
+	green: no change
+	blue: 160, 95
+color metning: 75
+
+steel(base iron):
+light strength: -39
+contrast: -25
+
+silver(base iron):
+	curve:
+	red: no change
+	green: no change
+	blue: 109, 143
+
+lead(base silver):
+color metning: 125
+contrast: -25
