@@ -44,6 +44,11 @@
 				"textures": {
 					"all": "physica:blocks/orevanadinite"
 				}
+			},
+			"sulfur": {
+				"textures": {
+					"all": "physica:blocks/oresulfur"
+				}
 			}
 		},
 		"inventory": [

@@ -20,6 +20,7 @@ item.blendBase.7.name=Bronze Blend
 item.blendBase.8.name=Superconductive Blend
 item.blendBase.9.name=Ender Dust
 item.blendBase.10.name=Vanadium Dust
+item.blendBase.11.name=Sulfur Dust
 
 # Impure Blends
 item.impureBlendBase.0.name=Impure Iron Dust
@@ -80,6 +81,7 @@ tile.blockOre.4.name=Uraninite Ore
 tile.blockOre.5.name=Thorianite Ore
 tile.blockOre.6.name=Monazite Ore
 tile.blockOre.7.name=Vanadinite Ore
+tile.blockOre.8.name=Sulfur Ore
 
 # Machines
 tile.blockMachine.0.name=Electrical Furnace

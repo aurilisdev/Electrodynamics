@@ -8,7 +8,8 @@ public enum EnumOreState implements IBlockStateInfo {
 	uraninite("oreUraninite", "pickaxe", 3, 4, 8, 0, 32, 10f, 6.5f),
 	thorianite("oreThorianite", "pickaxe", 3, 4, 8, 0, 32, 10f, 6.5f),
 	monazite("oreMonazite", "pickaxe", 2, 16, 8, 0, 32, 6f, 4.5f),
-	vanadinite("oreVanadinite", "pickaxe", 2, 16, 8, 0, 32, 6f, 4.5f);
+	vanadinite("oreVanadinite", "pickaxe", 2, 13, 8, 0, 32, 6f, 4.5f),
+	sulfur("oreSulfur", "pickaxe", 2, 8, 14, 0, 28, 6f, 4.5f);
 
 	private String ore;
 	private String harvestTool;
