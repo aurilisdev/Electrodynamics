@@ -81,16 +81,16 @@ public class ComponentItems {
 		impureBlendBase.registerItemModel("impureblend");
 		gearBase.registerItemModel("gear");
 		for (Entry<ToolMaterial, ItemAxeTool> entry : axeMap.entrySet()) {
-			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phys_", ""));
 		}
 		for (Entry<ToolMaterial, ItemSwordTool> entry : swordMap.entrySet()) {
-			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phys_", ""));
 		}
 		for (Entry<ToolMaterial, ItemSpadeTool> entry : spadeMap.entrySet()) {
-			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phys_", ""));
 		}
 		for (Entry<ToolMaterial, ItemPickaxeTool> entry : pickAxeMap.entrySet()) {
-			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phy_", ""));
+			entry.getValue().registerItemModel("tool/" + entry.getKey().name().toLowerCase().replace("phys_", ""));
 		}
 	}
 
