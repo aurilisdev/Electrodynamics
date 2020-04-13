@@ -39,6 +39,35 @@ item.gearBase.2.name=Tin Gear
 item.gearBase.3.name=Steel Gear
 item.gearBase.4.name=Bronze Gear
 
+# Tools
+item.axeCopper.name=Copper Axe
+item.axeBronze.name=Bronze Axe
+item.axeSilver.name=Silver Axe
+item.axeSteel.name=Steel Axe
+item.axeLead.name=Lead Axe
+item.axeTin.name=Tin Axe
+
+item.pickaxeCopper.name=Copper Pickaxe
+item.pickaxeBronze.name=Bronze Pickaxe
+item.pickaxeSilver.name=Silver Pickaxe
+item.pickaxeSteel.name=Steel Pickaxe
+item.pickaxeLead.name=Lead Pickaxe
+item.pickaxeTin.name=Tin Pickaxe
+
+item.spadeCopper.name=Copper Shovel
+item.spadeBronze.name=Bronze Shovel
+item.spadeSilver.name=Silver Shovel
+item.spadeSteel.name=Steel Shovel
+item.spadeLead.name=Lead Shovel
+item.spadeTin.name=Tin Shovel
+
+item.swordcopper.name=Copper Sword
+item.swordBronze.name=Bronze Sword
+item.swordSilver.name=Silver Sword
+item.swordSteel.name=Steel Sword
+item.swordLead.name=Lead Sword
+item.swordTin.name=Tin Sword
+
 # Ores
 tile.blockOre.0.name=Copper Ore
 tile.blockOre.1.name=Tin Ore
