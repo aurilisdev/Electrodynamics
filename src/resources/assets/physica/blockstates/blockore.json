@@ -25,9 +25,9 @@
 					"all": "physica:blocks/orelead"
 				}
 			},
-			"uranium": {
+			"uraninite": {
 				"textures": {
-					"all": "physica:blocks/oreuranium"
+					"all": "physica:blocks/oreuraninite"
 				}
 			},
 			"thorianite": {

@@ -19,6 +19,8 @@ public class ComponentRecipes {// TODO: Remember tool recipes
 				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.silver.ordinal()), 0.7f);
 		GameRegistry.addSmelting(new ItemStack(ComponentBlocks.blockOre, 1, EnumOreState.lead.ordinal()),
 				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.lead.ordinal()), 0.7f);
+		GameRegistry.addSmelting(new ItemStack(ComponentBlocks.blockOre, 1, EnumOreState.vanadinite.ordinal()),
+				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.vanadium.ordinal()), 0.7f);
 
 		GameRegistry.addSmelting(new ItemStack(ComponentItems.blendBase, 1, EnumBlend.iron.ordinal()),
 				new ItemStack(Items.IRON_INGOT), 0.3f);
@@ -38,6 +40,8 @@ public class ComponentRecipes {// TODO: Remember tool recipes
 				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.bronze.ordinal()), 0.45f);
 		GameRegistry.addSmelting(new ItemStack(ComponentItems.blendBase, 1, EnumBlend.superconductive.ordinal()),
 				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.superconductive.ordinal()), 0.45f);
+		GameRegistry.addSmelting(new ItemStack(ComponentItems.blendBase, 1, EnumBlend.vanadium.ordinal()),
+				new ItemStack(ComponentItems.ingotBase, 1, EnumIngot.vanadium.ordinal()), 0.45f);
 	}
 
 }
