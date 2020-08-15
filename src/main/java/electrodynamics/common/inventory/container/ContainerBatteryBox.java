@@ -1,8 +1,8 @@
 package electrodynamics.common.inventory.container;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.TileBatteryBox;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;

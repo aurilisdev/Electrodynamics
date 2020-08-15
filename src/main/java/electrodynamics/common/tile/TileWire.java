@@ -1,9 +1,9 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.wire.BlockWire;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileWire;
 
 public class TileWire extends GenericTileWire implements IConductor {

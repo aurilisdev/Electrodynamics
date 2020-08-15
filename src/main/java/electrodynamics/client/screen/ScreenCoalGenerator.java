@@ -35,12 +35,12 @@ public class ScreenCoalGenerator extends GenericContainerScreen<ContainerCoalGen
 				4210752);
 		field_230712_o_.func_238422_b_(matrixStack,
 				new TranslationTextComponent("gui.coalgenerator.current",
-						ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 / TileCoalGenerator.DEFAULT_VOLTAGE, ElectricUnit.AMPERE)),
+						ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getAmps(), ElectricUnit.AMPERE)),
 				(float) field_238744_r_ + 70, (float) field_238745_s_ - 40, 4210752);
 		field_230712_o_.func_238422_b_(matrixStack,
-				new TranslationTextComponent("gui.coalgenerator.output", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT_JOULES_PER_TICK * 20, ElectricUnit.WATT)), (float) field_238744_r_ + 70,
+				new TranslationTextComponent("gui.coalgenerator.output", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getWatts(), ElectricUnit.WATT)), (float) field_238744_r_ + 70,
 				(float) field_238745_s_ - 27, 4210752);
-		field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.voltage", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_VOLTAGE, ElectricUnit.VOLTAGE)),
+		field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.voltage", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getVoltage(), ElectricUnit.VOLTAGE)),
 				(float) field_238744_r_ + 70, (float) field_238745_s_ - 14, 4210752);
 	}
 

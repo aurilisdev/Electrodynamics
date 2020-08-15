@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.item.subtype.SubtypeDust;
-import electrodynamics.common.mod.DeferredRegisters;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.material.Material;

@@ -6,11 +6,11 @@
     ],
     "key": {
         "i": {
-            "item": "electrodynamics:ingotlead"
+            "item": "electrodynamics:ingotbronze"
         }
     },
     "result": {
-        "item": "electrodynamics:platelead",
+        "item": "electrodynamics:platebronze",
         "count": 1
     }
 }

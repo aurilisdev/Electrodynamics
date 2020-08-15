@@ -8,7 +8,6 @@ import electrodynamics.client.screen.ScreenMineralGrinder;
 import electrodynamics.client.screen.ScreenWireMill;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.mod.DeferredRegisters;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;

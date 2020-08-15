@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerProvider;
@@ -8,7 +9,6 @@ import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileInventory;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -26,8 +26,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IElectricTile {
 
-	public static final double DEFAULT_VOLTAGE = 120.0;
-	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 34.0 * DEFAULT_VOLTAGE / 20.0;
+	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(34, 120);
 	public static final int[] SLOTS_UP = new int[] { 0 };
 	public static final int COAL_BURN_TIME = 1000;
 
@@ -68,8 +67,8 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			Direction facing = getBlockState().get(BlockMachine.FACING);
 			TileEntity facingTile = world.getTileEntity(new BlockPos(pos).offset(facing.getOpposite()));
 			if (facingTile instanceof IPowerReceiver) {
-				((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(DEFAULT_OUTPUT_JOULES_PER_TICK, DEFAULT_VOLTAGE), facing, false);
-			}
+				((IPowerReceiver) facingTile).receivePower(DEFAULT_OUTPUT, facing, false);
+			} // TODO: Cache output maybe?
 		}
 	}
 
@@ -151,7 +150,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
 	@Override
 	public double getVoltage(Direction from) {
-		return DEFAULT_VOLTAGE;
+		return TileCoalGenerator.DEFAULT_OUTPUT.getVoltage();
 	}
 
 	@Override

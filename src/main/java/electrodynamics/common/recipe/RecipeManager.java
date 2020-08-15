@@ -1,5 +1,6 @@
 package electrodynamics.common.recipe;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.References;
 import electrodynamics.api.tile.processing.O2OProcessingRecipe;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -7,7 +8,6 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.mod.DeferredRegisters;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

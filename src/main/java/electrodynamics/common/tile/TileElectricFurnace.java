@@ -1,10 +1,10 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -45,7 +45,7 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 			if (currentOperatingTick == 3) {
 				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 			}
-			if (!!getInput().isEmpty()) {
+			if (!getInput().isEmpty()) {
 				boolean hasRecipe = cachedRecipe != null;
 				if (!hasRecipe) {
 					for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {

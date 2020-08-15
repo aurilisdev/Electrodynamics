@@ -1,6 +1,6 @@
 package electrodynamics.api.tile.processing;
 
-import electrodynamics.common.mod.DeferredRegisters;
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.subtype.Subtype;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

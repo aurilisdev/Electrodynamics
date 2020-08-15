@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" r ",
+		"rbr",
+		" r "
+	],
+	"key": {
+		"b": {
+			"item": "minecraft:iron_ingot"
+		},
+		"r": {
+			"item": "electrodynamics:wirecopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:coil",
+		"count": 1
+	}
+}

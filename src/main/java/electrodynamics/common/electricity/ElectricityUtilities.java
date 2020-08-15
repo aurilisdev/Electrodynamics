@@ -21,7 +21,7 @@ public class ElectricityUtilities {
 	}
 
 	public static boolean canInputPower(TileEntity acceptor, Direction direction) {
-		return receivePower(acceptor, direction, TransferPack.ampsVoltage(Integer.MAX_VALUE, 1), true).getJoules() > 0;
+		return receivePower(acceptor, direction, TransferPack.joulesVoltage(Integer.MAX_VALUE, 1), true).getJoules() > 0;
 	}
 
 }

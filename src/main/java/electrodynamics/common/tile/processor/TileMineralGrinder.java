@@ -1,8 +1,8 @@
 package electrodynamics.common.tile.processor;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerMineralGrinder;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

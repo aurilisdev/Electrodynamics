@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.formatting.MeasurementUnit;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
@@ -10,7 +11,6 @@ import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

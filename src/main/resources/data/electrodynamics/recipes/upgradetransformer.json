@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"b b",
+		"cac",
+		"scs"
+	],
+	"key": {
+		"b": {
+			"item": "electrodynamics:platebronze"
+		},
+		"s": {
+			"item": "electrodynamics:platesteel"
+		},
+		"c": {
+			"item": "electrodynamics:coil"
+		},
+		"a": {
+			"item": "electrodynamics:circuitadvanced"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:battery",
+		"count": 1
+	}
+}

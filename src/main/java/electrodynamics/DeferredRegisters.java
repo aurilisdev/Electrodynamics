@@ -1,12 +1,10 @@
-package electrodynamics.common.mod;
+package electrodynamics;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
-import electrodynamics.References;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -41,8 +39,6 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.ToolItem;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -98,9 +94,9 @@ public class DeferredRegisters {
 		}
 	}
 
-	public static final RegistryObject<Item> ITEM_HAMMER = ITEMS.register("hammer", supplier(new ToolItem(4, 5.0f, ItemTier.IRON, new HashSet<>(), new Item.Properties().group(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().group(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", supplier(new Item(new Item.Properties().group(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", supplier(new Item(new Item.Properties().group(References.CORETAB))));
 
 	public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),

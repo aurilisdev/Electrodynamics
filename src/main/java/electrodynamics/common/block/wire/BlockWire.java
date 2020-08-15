@@ -9,11 +9,11 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.conductor.IConductor;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.electricity.damage.ElectricDamageSource;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

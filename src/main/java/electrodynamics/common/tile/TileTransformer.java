@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerProvider;
@@ -7,7 +8,6 @@ import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.mod.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;

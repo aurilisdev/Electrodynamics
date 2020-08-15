@@ -27,7 +27,7 @@ public class ElectricNetwork {
 	private double ampsTransmittedSavedBuffer = 0;
 	private double networkMaxTransfer = 0;
 	private double networkResistance = 0;
-	private double fixTimerTicksSinceNetworkCreate = 0;
+	private double fixTimerTicksSinceNetworkCreate = 1180;
 	private double ticksSinceNetworkRefresh = 0;
 	private boolean fixed = false;
 
@@ -51,7 +51,7 @@ public class ElectricNetwork {
 		ElectricNetworkRegistry.registerNetwork(this);
 	}
 
-	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
+	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {//TODO: Remove this emission setup. Rather add the transfer power here to some totalPower and divide it in the tick()
 		TransferPack restrictedTransfer = TransferPack.ampsVoltage(Math.min(networkMaxTransfer - ampsTransmittedBuffer, maxTransfer.getAmps()), maxTransfer.getVoltage());
 		if (restrictedTransfer.getJoules() > 0) {
 			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
@@ -65,19 +65,21 @@ public class ElectricNetwork {
 						}
 					}
 				}
+
 				if (validAcceptors.size() > 0) {
 					TransferPack perReceiver = TransferPack.ampsVoltage(restrictedTransfer.getAmps() / validAcceptors.size(), restrictedTransfer.getVoltage());
-					if (!checkForOverload(perReceiver)) {
-						for (TileEntity receiver : validAcceptors) {
+					for (TileEntity receiver : validAcceptors) {
+						if (!checkForOverload(TransferPack.ampsVoltage(ampsTransmittedBuffer, perReceiver.getVoltage()))) {
 							for (Direction connection : acceptorInputMap.get(receiver)) {
-								ampsSent += ElectricityUtilities.receivePower(receiver, connection, perReceiver, false).getAmps();
+								TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
+								ampsSent += pack.getAmps();
+								ampsTransmittedBuffer += pack.getAmps();
 							}
 						}
 
 					}
 				}
 			}
-			ampsTransmittedBuffer += ampsSent;
 			if (ampsSent > 0) {
 				if (ampsSent + ampsSent * networkResistance > maxTransfer.getAmps()) {
 					ampsSent = maxTransfer.getAmps();
@@ -91,10 +93,10 @@ public class ElectricNetwork {
 	}
 
 	private boolean checkForOverload(TransferPack attemptSend) {
-		if (attemptSend.getAmps() * 20 >= networkMaxTransfer) {
+		if (attemptSend.getAmps() >= networkMaxTransfer) {
 			HashSet<SubtypeWire> checkList = new HashSet<>();
 			for (SubtypeWire type : SubtypeWire.values()) {
-				if (type.maxAmps <= attemptSend.getAmps() * 20) {
+				if (type.maxAmps <= attemptSend.getAmps()) {
 					checkList.add(type);
 				}
 			}

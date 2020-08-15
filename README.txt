@@ -7,7 +7,7 @@ Electrodynamics has a discord where you can come chat with other Electrodynamics
 Invite link: https://discordapp.com/invite/jJANcdK
 
 ## Electrodynamics Curseforge page
-https://minecraft.curseforge.com/projects/electrodynamics
+https://www.curseforge.com/minecraft/mc-mods/electrodynamics
 ## Nuclear Physics Curseforge page
 https://minecraft.curseforge.com/projects/physica-nuclear-physics
 ## Modular Forcefield System Curseforge page

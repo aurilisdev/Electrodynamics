@@ -3,8 +3,8 @@ package electrodynamics.common.block;
 import java.util.Arrays;
 import java.util.List;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.mod.DeferredRegisters;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
