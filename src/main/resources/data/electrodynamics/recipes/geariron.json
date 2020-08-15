@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" w ",
+		"w w",
+		" w "
+	],
+	"key": {
+		"w": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:geariron",
+		"count": 1
+	}
+}

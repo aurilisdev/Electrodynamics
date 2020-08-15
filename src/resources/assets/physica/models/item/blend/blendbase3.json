@@ -1,6 +1,0 @@
-{
-    "parent": "physica:item/standarditem",
-	"textures": {
-		"layer0": "physica:items/blend/blendtin"
-	}
-}

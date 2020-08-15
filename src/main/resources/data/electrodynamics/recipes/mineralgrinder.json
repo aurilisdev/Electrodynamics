@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sbs",
+		"fmf",
+		"sfs"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:platesteel"
+		},
+		"b": {
+			"item": "electrodynamics:circuitbasic"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
+		},
+		"f": {
+			"item": "electrodynamics:gearbronze"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:mineralgrinder",
+		"count": 1
+	}
+}

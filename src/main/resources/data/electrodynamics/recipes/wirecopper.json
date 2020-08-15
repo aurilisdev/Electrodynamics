@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" w ",
+		" w ",
+		" w "
+	],
+	"key": {
+		"w": {
+			"item": "electrodynamics:ingotcopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:wirecopper",
+		"count": 1
+	}
+}

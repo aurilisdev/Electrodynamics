@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"item": "minecraft:iron_ingot"
+	},
+	"result": "electrodynamics:ingotsteel",
+	"experience": 0.0,
+	"cookingtime": 200
+}

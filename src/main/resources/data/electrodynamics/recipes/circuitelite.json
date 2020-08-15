@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"ggg",
+		"bdb",
+		"ggg"
+	],
+	"key": {
+		"g": {
+			"item": "minecraft:gold_ingot"
+		},
+		"d": {
+			"item": "minecraft:lapis_block"
+		},
+		"b": {
+			"item": "electrodynamics:circuitadvanced"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:circuitelite",
+		"count": 1
+	}
+}

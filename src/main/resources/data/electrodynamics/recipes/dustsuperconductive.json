@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"#i#",
+		"g#g",
+		"#i#"
+	],
+	"key": {
+		"#": {
+			"item": "electrodynamics:dustendereye"
+		},
+		"i": {
+			"item": "electrodynamics:dustsilver"
+		},
+		"g": {
+			"item": "electrodynamics:dustgold"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:dustsuperconductive",
+		"count": 2
+	}
+}

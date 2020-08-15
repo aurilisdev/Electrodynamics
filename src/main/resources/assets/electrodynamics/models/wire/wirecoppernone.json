@@ -1,0 +1,7 @@
+{
+	"parent": "electrodynamics:parent/wire_none",
+	"textures": {
+		"particle": "electrodynamics:block/wire/wirecopper",
+		"texture": "electrodynamics:block/wire/wirecopper"
+	}
+}

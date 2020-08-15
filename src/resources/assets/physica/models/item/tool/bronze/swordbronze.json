@@ -1,6 +1,0 @@
-{
-    "parent": "physica:item/standarditemheld",
-	"textures": {
-		"layer0": "physica:items/tool/bronze/swordbronze"
-	}
-}

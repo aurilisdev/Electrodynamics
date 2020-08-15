@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"rrr",
+		"bdb",
+		"rrr"
+	],
+	"key": {
+		"b": {
+			"item": "electrodynamics:circuitbasic"
+		},
+		"d": {
+			"item": "minecraft:diamond"
+		},
+		"r": {
+			"item": "minecraft:redstone"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:circuitadvanced",
+		"count": 1
+	}
+}

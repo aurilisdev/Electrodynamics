@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/coalgeneratorrunning",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/coalgeneratorrunning",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/coalgeneratorrunning",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/coalgeneratorrunning",
+			"y": 180
+		}
+	}
+}

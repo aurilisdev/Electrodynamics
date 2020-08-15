@@ -1,5 +1,0 @@
-Version 1.5.4 build 3
-
-### Game Changes ###
-Better antimatter generation. Now based on speed
-Fix that the mod doesnt work on servers

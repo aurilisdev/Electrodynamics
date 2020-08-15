@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+  <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Electrodynamics"/>
+  <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.minecraftforge.userdev.LaunchTesting"/>
+  <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dforge.logging.console.level=debug -Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP"/>
+  <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--mod electrodynamics --all --output &quot;C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\src\generated\resources&quot;"/>
+  <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\run"/>
+  <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+    <mapEntry key="MOD_CLASSES" value="electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main;electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main"/>
+    <mapEntry key="MCP_MAPPINGS" value="snapshot_20200514-1.16"/>
+    <mapEntry key="MCP_VERSION" value="20200625.160719"/>
+    <mapEntry key="FORGE_VERSION" value="32.0.98"/>
+    <mapEntry key="FORGE_GROUP" value="net.minecraftforge"/>
+    <mapEntry key="target" value="fmluserdevdata"/>
+    <mapEntry key="MC_VERSION" value="1.16.1"/>
+  </mapAttribute>
+</launchConfiguration>

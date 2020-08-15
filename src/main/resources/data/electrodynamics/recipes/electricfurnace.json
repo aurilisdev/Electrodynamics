@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sss",
+		"sfs",
+		"sms"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:platesteel"
+		},
+		"f": {
+			"item": "electrodynamics:circuitbasic"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:electricfurnace",
+		"count": 1
+	}
+}

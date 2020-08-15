@@ -1,0 +1,162 @@
+{
+	"multipart": [
+		{
+			"when": {
+				"down": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilvernone",
+				"x": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"down": "wire"
+					},
+					{
+						"down": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilverside",
+				"x": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"up": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilvernone",
+				"x": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"up": "wire"
+					},
+					{
+						"up": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilverside",
+				"x": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"north": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilvernone"
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"north": "wire"
+					},
+					{
+						"north": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilverside"
+			}
+		},
+		{
+			"when": {
+				"south": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilvernone",
+				"y": 180,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"south": "wire"
+					},
+					{
+						"south": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilverside",
+				"y": 180,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"west": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilvernone",
+				"y": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"west": "wire"
+					},
+					{
+						"west": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilverside",
+				"y": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"east": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilvernone",
+				"y": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"east": "wire"
+					},
+					{
+						"east": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/wiresilverside",
+				"y": 90,
+				"uvlock": true
+			}
+		}
+	]
+}

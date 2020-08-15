@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:iron_ingot"
+        },
+        {
+            "item": "electrodynamics:hammer"
+        }
+    ],
+    "result": {
+        "item": "electrodynamics:platepress",
+        "count": 1
+    }
+}

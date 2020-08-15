@@ -1,7 +1,0 @@
-Version 1.5.4 build 6
-
-### Changes ###
-- Protect against disintegration inside other sealed fields
-- Dont produce antimatter cells if you use empty quantum cells.
-- Quantum Assembler config option for turning the blacklist into a whitelist.
-- Code Cleanup

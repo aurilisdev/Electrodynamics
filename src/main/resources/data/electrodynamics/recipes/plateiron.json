@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "electrodynamics:platepress"
+    },
+    "addition": {
+        "item": "minecraft:iron_ingot"
+    },
+    "result": {
+        "item": "electrodynamics:plateiron"
+    }
+}

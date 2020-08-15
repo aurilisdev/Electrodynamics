@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"bbb",
+		"trt",
+		"bbb"
+	],
+	"key": {
+		"b": {
+			"item": "electrodynamics:battery"
+		},
+		"t": {
+			"item": "electrodynamics:platesteel"
+		},
+		"r": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:battery",
+		"count": 1
+	}
+}

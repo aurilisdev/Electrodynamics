@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pbp",
+		"mmm",
+		"sbs"
+	],
+	"key": {
+		"p": {
+			"item": "electrodynamics:platesteel"
+		},
+		"b": {
+			"item": "electrodynamics:gearbronze"
+		},
+		"m": {
+			"item": "electrodynamics:wireinsulatedgold"
+		},
+		"s": {
+			"item": "electrodynamics:circuitbasic"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:processorupgradebasicspeed",
+		"count": 1
+	}
+}

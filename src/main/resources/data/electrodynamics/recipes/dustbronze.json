@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "electrodynamics:dustcopper"
+		},
+		{
+			"item": "electrodynamics:dustcopper"
+		},
+		{
+			"item": "electrodynamics:dusttin"
+		}
+	],
+	"result": {
+		"item": "electrodynamics:dustbronze",
+		"count": 3
+	}
+}

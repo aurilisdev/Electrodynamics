@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sbs",
+		"mfm",
+		"sfs"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:platesteel"
+		},
+		"b": {
+			"item": "electrodynamics:circuitbasic"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
+		},
+		"f": {
+			"item": "electrodynamics:ingotbronze"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:wiremill",
+		"count": 1
+	}
+}

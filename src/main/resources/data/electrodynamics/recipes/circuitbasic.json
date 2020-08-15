@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"wrw",
+		"rsr",
+		"wrw"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:platesteel"
+		},
+		"r": {
+			"item": "minecraft:redstone"
+		},
+		"w": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:circuitbasic",
+		"count": 1
+	}
+}

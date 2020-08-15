@@ -1,33 +1,18 @@
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        maven { url = "https://files.minecraftforge.net/maven" }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-sourceSets {
-    main {
-        java {
-            srcDirs = [
-                "$projectDir/src/core",
-                "$projectDir/src/api",
-                "$projectDir/src/externalapi",
-                "$projectDir/src/forcefields",
-                "$projectDir/src/nuclear",
-            ]
-            include '**/*.java'
-        }
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-        resources {
-            srcDirs = [
-                 "$projectDir/src/resources"
-            ]
-        }
-    }
-}
 // define the properties file
 ext.configFile = file "build.properties"
 configFile.withReader {
@@ -41,83 +26,97 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 version = "${config.minecraft_version}-${config.version_major}.${config.version_minor}.${config.version_revision}-${config.version_build}"
-group= "physica"
-archivesBaseName = "PhysicaAll"
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+group = 'electrodynamics' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'Electrodynamics'
 
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    version = "1.12.2-14.23.5.2838"
-    runDir = "eclipse"
-    mappings = "stable_39"
+    mappings channel: 'snapshot', version: '20200514-1.16'
+    
+    runs {
+        client {
+            workingDirectory project.file('run')
 
-	replace "@VERSION@", project.version
-    replaceIn "References.java"
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                electrodynamics {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                electrodynamics {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'electrodynamics', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                electrodynamics {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
-
 
 dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.98'
+
 }
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else except the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": "electrodynamics",
+            "Specification-Vendor": "aurilisdev",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"aurilisdev",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
 
-task coreJar(type: Jar) {
-    baseName = 'PhysicaCore'
+jar.finalizedBy('reobfJar') 
 
-    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
-        exclude 'physica/nuclear/**', 'physica/forcefield/**'
-    }
-}
-
-task nuclearJar(type: Jar) {
-    baseName = 'PhysicaNuclearPhysics'
-
-    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
-        include 'physica/nuclear/**'
-    }
-}
-
-task forcefieldJar(type: Jar) {
-    baseName = 'PhysicaForcefield'
-
-    from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
-        include 'physica/forcefield/**'
-    }
-}
-
-task incrementBuildNumber() {
-    doLast {
-        config.version_build = (config.version_build.toString().toInteger()) + 1
-        configFile.withWriter {
-            config.toProperties().store(it, "")
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
         }
-     }
-}
-coreJar.dependsOn('reobf')
-nuclearJar.dependsOn('reobf')
-forcefieldJar.dependsOn('reobf')
-incrementBuildNumber.dependsOn('reobf')
-task releaseJars(type: Copy) {
-	dependsOn "reobf"
-	from incrementBuildNumber
-	from coreJar
-	from nuclearJar
-	from forcefieldJar
-	destinationDir= new File('/releaseJarsOnly/')
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
 }

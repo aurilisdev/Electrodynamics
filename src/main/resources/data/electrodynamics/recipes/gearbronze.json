@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" w ",
+		"w w",
+		" w "
+	],
+	"key": {
+		"w": {
+			"item": "electrodynamics:ingotbronze"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:geariron",
+		"count": 1
+	}
+}

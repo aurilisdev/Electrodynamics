@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"item": "electrodynamics:orecopper"
+	},
+	"result": "electrodynamics:ingotcopper",
+	"experience": 0.0,
+	"cookingtime": 200
+}

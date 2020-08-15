@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" w ",
+		"w w",
+		" w "
+	],
+	"key": {
+		"w": {
+			"item": "electrodynamics:ingottin"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:geartin",
+		"count": 1
+	}
+}

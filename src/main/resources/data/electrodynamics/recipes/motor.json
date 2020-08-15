@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"wsw",
+		"sis",
+		"wsw"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:ingotsteel"
+		},
+		"w": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		},
+		"i": {
+			"item": "minecraft:iron_ingot"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:motor",
+		"count": 1
+	}
+}
