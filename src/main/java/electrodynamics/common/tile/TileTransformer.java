@@ -22,7 +22,7 @@ public class TileTransformer extends GenericTileBase implements ITickableTileBas
 
 	@Override
 	public TransferPack extractPower(TransferPack transfer, Direction from, boolean debug) {
-		return TransferPack.EMPTY; // TODO: Add support for other mods to extract directly themselves
+		return TransferPack.EMPTY;
 	}
 
 	@Override
