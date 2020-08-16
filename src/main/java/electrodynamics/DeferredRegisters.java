@@ -18,6 +18,7 @@ import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerMineralCrusher;
 import electrodynamics.common.inventory.container.ContainerMineralGrinder;
 import electrodynamics.common.inventory.container.ContainerWireMill;
+import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeDust;
@@ -96,8 +97,9 @@ public class DeferredRegisters {
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().group(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", supplier(new Item(new Item.Properties().group(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
 	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
-	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", supplier(new Item(new Item.Properties().group(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter", supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
 
 	public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
 			() -> new TileEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));

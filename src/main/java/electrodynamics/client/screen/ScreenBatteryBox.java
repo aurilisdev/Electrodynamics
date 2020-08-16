@@ -31,23 +31,19 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-		field_230712_o_.func_238422_b_(matrixStack,
+		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+		font.func_238422_b_(matrixStack,
 				new TranslationTextComponent("gui.batterybox.current",
 						ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 / TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.AMPERE)),
-				field_238744_r_, (float) field_238745_s_ - 55, 4210752);
-		field_230712_o_.func_238422_b_(matrixStack,
-				new TranslationTextComponent("gui.batterybox.output", ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0, ElectricUnit.WATT)), field_238744_r_,
-				(float) field_238745_s_ - 42, 4210752);
-		field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.batterybox.voltage", ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.VOLTAGE)), field_238744_r_,
-				(float) field_238745_s_ - 29, 4210752);
-		field_230712_o_.func_238422_b_(matrixStack,
+				playerInventoryTitleX, (float) playerInventoryTitleY - 55, 4210752);
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.batterybox.output", ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0, ElectricUnit.WATT)),
+				playerInventoryTitleX, (float) playerInventoryTitleY - 42, 4210752);
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.batterybox.voltage", ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.VOLTAGE)), playerInventoryTitleX,
+				(float) playerInventoryTitleY - 29, 4210752);
+		font.func_238422_b_(matrixStack,
 				new TranslationTextComponent("gui.batterybox.stored",
 						ElectricityChatFormatter.getDisplayShort(container.getJoules(), ElectricUnit.JOULES) + " / "
 								+ ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_MAX_JOULES * container.getCapacityMultiplier(), ElectricUnit.JOULES)),
-				field_238744_r_, (float) field_238745_s_ - 16, 4210752);
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float delta, int mouseX, int mouseY) {
+				playerInventoryTitleX, (float) playerInventoryTitleY - 16, 4210752);
 	}
 }

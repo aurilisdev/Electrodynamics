@@ -62,15 +62,16 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	}
 
 	@Override
-	public void func_230337_a_(BlockState state, CompoundNBT compound) {
-		super.func_230337_a_(state, compound);
-		compound.putDouble(JOULES_STORED_NBT, joules);
-	}
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state, compound);
+		joules = compound.getDouble(JOULES_STORED_NBT);	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		joules = compound.getDouble(JOULES_STORED_NBT);
-		return super.write(compound);
+		super.write(compound);
+		
+		compound.putDouble(JOULES_STORED_NBT, joules);
+		return compound;
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public TransferPack extractPower(TransferPack transfer, Direction from, boolean debug) {
-		return TransferPack.EMPTY;// TODO: Add support for other mods to extract directly themselves
+		return TransferPack.EMPTY; // TODO: Add support for other mods to extract directly themselves
 	}
 
 	@Override
@@ -150,14 +151,14 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 			}
 			double received = Math.min(transfer.getJoules(), DEFAULT_MAX_JOULES * currentCapacityMultiplier - joules);
 			if (!debug) {
-				joules += received;
-			}
-			if (transfer.getVoltage() > DEFAULT_VOLTAGE) {
-				if (!debug) {
-					world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 2, Mode.DESTROY);
-					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
+					joules += received;
 				}
-				return TransferPack.EMPTY;
+				if (transfer.getVoltage() > DEFAULT_VOLTAGE) {
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1, Mode.DESTROY);
+					return TransferPack.EMPTY;
+				}
 			}
 			return TransferPack.joulesVoltage(received, transfer.getVoltage());
 		}

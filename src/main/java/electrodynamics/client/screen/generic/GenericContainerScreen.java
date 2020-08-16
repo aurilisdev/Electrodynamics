@@ -15,30 +15,23 @@ public abstract class GenericContainerScreen<T extends Container> extends Contai
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		func_230446_a_(matrixStack);
-		super.func_230430_a_(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(matrixStack);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		func_230459_a_(matrixStack, mouseX, mouseY);
 	}
 
-	@Override
-	protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-		super.func_230451_b_(matrixStack, mouseX, mouseY);
-		drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-	}
-
 	@SuppressWarnings("deprecation")
-	@Override
-	protected void func_230450_a_(MatrixStack stack, float delta, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(getScreenBackground());
-		func_238474_b_(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
-		drawGuiContainerBackgroundLayer(stack, delta, mouseX, mouseY);
+		minecraft.getTextureManager().bindTexture(getScreenBackground());
+		blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
-	protected abstract void drawGuiContainerBackgroundLayer(MatrixStack stack, float delta, int mouseX, int mouseY);
-
-	protected abstract void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY);
+	@Override
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+		super.drawGuiContainerForegroundLayer(matrixStack, mouseX,  mouseY);
+	}
 
 	public abstract ResourceLocation getScreenBackground();
 }

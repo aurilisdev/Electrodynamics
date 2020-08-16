@@ -4,9 +4,8 @@ import net.minecraft.util.IStringSerializable;
 
 public enum EnumConnectType implements IStringSerializable {
 	NONE, WIRE, INVENTORY;
-
 	@Override
-	public String func_176610_l() {
+	public String getString() {
 		return name().toLowerCase();
 	}
 }

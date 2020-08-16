@@ -17,7 +17,7 @@ public class BlockOre extends OreBlock {
 	private SubtypeOre ore;
 
 	public BlockOre(SubtypeOre subtype) {
-		super(Properties.create(Material.ROCK).func_235861_h_().hardnessAndResistance(subtype.hardness, subtype.resistance).harvestLevel(subtype.harvestLevel).harvestTool(subtype.harvestTool));
+		super(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(subtype.hardness, subtype.resistance).harvestLevel(subtype.harvestLevel).harvestTool(subtype.harvestTool));
 		ore = subtype;
 	}
 

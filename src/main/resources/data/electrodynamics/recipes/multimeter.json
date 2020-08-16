@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sws",
+		"scs",
+		"sss"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:platesteel"
+		},
+		"w": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		},
+		"c": {
+			"item": "electrodynamics:circuitbasic"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:multimeter",
+		"count": 1
+	}
+}

@@ -31,24 +31,23 @@ public class ScreenCoalGenerator extends GenericContainerScreen<ContainerCoalGen
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-		field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.timeleft", container.getBurnTicksLeft() / 20 + "s"), (float) field_238744_r_ + 70, (float) field_238745_s_ - 53,
+		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.timeleft", container.getBurnTicksLeft() / 20 + "s"), (float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 53,
 				4210752);
-		field_230712_o_.func_238422_b_(matrixStack,
-				new TranslationTextComponent("gui.coalgenerator.current",
-						ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getAmps(), ElectricUnit.AMPERE)),
-				(float) field_238744_r_ + 70, (float) field_238745_s_ - 40, 4210752);
-		field_230712_o_.func_238422_b_(matrixStack,
-				new TranslationTextComponent("gui.coalgenerator.output", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getWatts(), ElectricUnit.WATT)), (float) field_238744_r_ + 70,
-				(float) field_238745_s_ - 27, 4210752);
-		field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.voltage", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getVoltage(), ElectricUnit.VOLTAGE)),
-				(float) field_238744_r_ + 70, (float) field_238745_s_ - 14, 4210752);
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.current", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getAmps(), ElectricUnit.AMPERE)),
+				(float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 40, 4210752);
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.output", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getWatts(), ElectricUnit.WATT)),
+				(float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 27, 4210752);
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.voltage", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getVoltage(), ElectricUnit.VOLTAGE)),
+				(float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 14, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float delta, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
+		super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
 		if (container.isBurning()) {
 			int k = container.getBurnLeftScaled();
-			func_238474_b_(stack, guiLeft + 35, guiTop + 25 + 12 - k, 212, 12 - k, 14, k + 1);
+			blit(stack, guiLeft + 35, guiTop + 25 + 12 - k, 212, 12 - k, 14, k + 1);
 		}
 	}
 }

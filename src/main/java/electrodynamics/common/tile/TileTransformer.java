@@ -37,13 +37,14 @@ public class TileTransformer extends GenericTileBase implements ITickableTileBas
 			TileEntity facingTile = world.getTileEntity(new BlockPos(pos).offset(facing.getOpposite()));
 			if (facingTile instanceof IPowerReceiver) {
 				boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
-				boolean shouldTransformEnergy = transfer.getVoltage() != 480.0 && transfer.getVoltage() != 60.0;
-				return ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(shouldTransformEnergy ? transfer.getJoules() * (shouldUpgrade ? 0.45 : 1.9) : transfer.getJoules(),
-						MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 60.0, 480.0)), facing, false);
+				double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 60.0, 480.0);
+				double resultJoules = resultVoltage != transfer.getVoltage() ? (transfer.getJoules() * (shouldUpgrade ? 1.925 : 0.425)) : transfer.getJoules();
+				return debug ? TransferPack.ampsVoltage(1, 1) : ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(resultJoules, resultVoltage), facing, debug);
 			}
 			return TransferPack.EMPTY;
 		}
-	}
+	} // TODO: This crashes the game if there is a loop of transformers as it just
+		// goes from transformer to transformer and so on
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {

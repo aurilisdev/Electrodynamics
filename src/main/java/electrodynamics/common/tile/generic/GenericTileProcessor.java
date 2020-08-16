@@ -112,15 +112,16 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 	};
 
 	@Override
-	public void func_230337_a_(BlockState state, CompoundNBT compound) {
-		super.func_230337_a_(state, compound);
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state, compound);
 		compound.putDouble(JOULES_STORED_NBT, joules);
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		joules = compound.getDouble(JOULES_STORED_NBT);
-		return super.write(compound);
+		super.write(compound);
+		return compound;
 	}
 
 	public double getVoltage() {

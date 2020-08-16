@@ -17,9 +17,9 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 		super(tileEntityTypeIn);
 	}
 
-	@Override // Should be readnbt
-	public void func_230337_a_(BlockState state, CompoundNBT compound) {
-		super.func_230337_a_(state, compound);
+	@Override
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state, compound);
 		customName = ITextComponent.Serializer.func_240643_a_(compound.getString("CustomName"));
 	}
 
@@ -46,9 +46,11 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 	}
 
 	public void writePacket(CompoundNBT nbt) {
+		write(nbt);
 	}
 
 	public void readPacket(CompoundNBT nbt) {
+		read(getBlockState(), nbt);
 	}
 
 	public void sendPacket() {
