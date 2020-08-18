@@ -1,4 +1,4 @@
-package electrodynamics.common.tile;
+package electrodynamics.common.tile.processor;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
@@ -29,7 +29,7 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 
 	@Override
 	public double getJoulesPerTick() {
-		return REQUIRED_JOULES_PER_TICK;
+		return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
 	}
 
 	@Override
@@ -64,7 +64,6 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 				}
 			}
 		}
-		cachedRecipe = null;
 		return false;
 	}
 

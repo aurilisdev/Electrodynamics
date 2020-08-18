@@ -17,7 +17,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class RecipeManager {
-	// TODO: Replace with tag friendly system
 	@SubscribeEvent
 	public static void onLoadEvent(FMLLoadCompleteEvent event) {
 		for (SubtypeIngot from : SubtypeIngot.values()) {

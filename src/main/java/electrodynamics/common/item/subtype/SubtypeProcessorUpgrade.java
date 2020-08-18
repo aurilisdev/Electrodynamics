@@ -3,7 +3,7 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.common.subtype.Subtype;
 
 public enum SubtypeProcessorUpgrade implements Subtype {
-	basiccapacity(1, 1.5), basicspeed(1.5, 1);
+	basiccapacity(1, 1.5), basicspeed(1.5, 1), advancedcapacity(1, 2.25), advancedspeed(2.25, 1);
 
 	public final double speedMultiplier;
 	public final double capacityMultiplier;

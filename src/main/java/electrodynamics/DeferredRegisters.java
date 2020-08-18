@@ -15,9 +15,7 @@ import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
-import electrodynamics.common.inventory.container.ContainerMineralCrusher;
-import electrodynamics.common.inventory.container.ContainerMineralGrinder;
-import electrodynamics.common.inventory.container.ContainerWireMill;
+import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
@@ -30,12 +28,12 @@ import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.subtype.Subtype;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
-import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWire;
-import electrodynamics.common.tile.processor.TileMineralCrusher;
-import electrodynamics.common.tile.processor.TileMineralGrinder;
-import electrodynamics.common.tile.processor.TileWireMill;
+import electrodynamics.common.tile.processor.TileElectricFurnace;
+import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
+import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
+import electrodynamics.common.tile.processor.o2o.TileWireMill;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
@@ -121,9 +119,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<ContainerType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS.register(SubtypeMachine.coalgenerator.tag(), () -> new ContainerType<>(ContainerCoalGenerator::new));
 	public static final RegistryObject<ContainerType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS.register(SubtypeMachine.electricfurnace.tag(),
 			() -> new ContainerType<>(ContainerElectricFurnace::new));
-	public static final RegistryObject<ContainerType<ContainerWireMill>> CONTAINER_WIREMILL = CONTAINERS.register(SubtypeMachine.wiremill.tag(), () -> new ContainerType<>(ContainerWireMill::new));
-	public static final RegistryObject<ContainerType<ContainerMineralGrinder>> CONTAINER_MINERALGRINDER = CONTAINERS.register(SubtypeMachine.mineralgrinder.tag(), () -> new ContainerType<>(ContainerMineralGrinder::new));
-	public static final RegistryObject<ContainerType<ContainerMineralCrusher>> CONTAINER_MINERALCRUSHER = CONTAINERS.register(SubtypeMachine.mineralcrusher.tag(), () -> new ContainerType<>(ContainerMineralCrusher::new));
+	public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor", () -> new ContainerType<>(ContainerO2OProcessor::new));
 	public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(), () -> new ContainerType<>(ContainerBatteryBox::new));
 
 	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {

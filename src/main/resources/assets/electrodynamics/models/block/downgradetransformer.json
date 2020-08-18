@@ -1,5 +1,5 @@
 {
-	"credit": "Made with Blockbench",
+	"credit": "aurilisdev",
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {

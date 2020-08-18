@@ -10,7 +10,6 @@ import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
-import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.generic.GenericTileInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -31,6 +30,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
 	public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
 	protected double currentCapacityMultiplier = 1;
+	protected double receiveLimitLeft = 0;
 	protected double joules = 0;
 
 	public TileBatteryBox() {
@@ -39,11 +39,12 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public void tickServer() {
+		receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 		if (joules > 0) {
 			Direction facing = getBlockState().get(BlockMachine.FACING);
 			TileEntity facingTile = world.getTileEntity(new BlockPos(pos).offset(facing.getOpposite()));
 			if (facingTile instanceof IPowerReceiver) {
-				TransferPack taken = ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK), DEFAULT_VOLTAGE), facing, false);
+				TransferPack taken = ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), facing, false);
 				joules -= taken.getJoules();
 			}
 		}
@@ -64,12 +65,13 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Override
 	public void read(BlockState state, CompoundNBT compound) {
 		super.read(state, compound);
-		joules = compound.getDouble(JOULES_STORED_NBT);	}
+		joules = compound.getDouble(JOULES_STORED_NBT);
+	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
-		
+
 		compound.putDouble(JOULES_STORED_NBT, joules);
 		return compound;
 	}
@@ -122,11 +124,6 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	};
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return stack.getItem() == DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basiccapacity);
-	}
-
-	@Override
 	public ITextComponent getDisplayName() {
 		return new TranslationTextComponent("container.batterybox");
 	}
@@ -137,8 +134,22 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	}
 
 	@Override
-	public TransferPack extractPower(TransferPack transfer, Direction from, boolean debug) {
-		return TransferPack.EMPTY; // TODO: Add support for other mods to extract directly themselves
+	@Deprecated // This method might be bugged
+	public TransferPack extractPower(TransferPack transfer, Direction dir, boolean debug) {
+		if (dir != getBlockState().get(BlockMachine.FACING)) {
+			return TransferPack.EMPTY;
+		} else {
+			if (!canConnectElectrically(dir)) {
+				return TransferPack.EMPTY;
+			}
+			double removed = Math.min(transfer.getJoules(), joules);
+			if (!debug) {
+				if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
+					joules -= removed;
+				}
+			}
+			return TransferPack.joulesVoltage(removed, transfer.getVoltage());
+		}
 	}
 
 	@Override
@@ -149,10 +160,11 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 			if (!canConnectElectrically(dir)) {
 				return TransferPack.EMPTY;
 			}
-			double received = Math.min(transfer.getJoules(), DEFAULT_MAX_JOULES * currentCapacityMultiplier - joules);
+			double received = Math.min(Math.min(receiveLimitLeft, transfer.getJoules()), DEFAULT_MAX_JOULES * currentCapacityMultiplier - joules);
 			if (!debug) {
 				if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
 					joules += received;
+					receiveLimitLeft -= received;
 				}
 				if (transfer.getVoltage() > DEFAULT_VOLTAGE) {
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());

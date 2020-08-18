@@ -3,9 +3,7 @@ package electrodynamics;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenElectricFurnace;
-import electrodynamics.client.screen.ScreenMineralCrusher;
-import electrodynamics.client.screen.ScreenMineralGrinder;
-import electrodynamics.client.screen.ScreenWireMill;
+import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import net.minecraft.client.gui.ScreenManager;
@@ -46,9 +44,7 @@ public class Electrodynamics {
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_WIREMILL.get(), ScreenWireMill::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_MINERALGRINDER.get(), ScreenMineralGrinder::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_MINERALCRUSHER.get(), ScreenMineralCrusher::new);
+		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
 		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
 
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());

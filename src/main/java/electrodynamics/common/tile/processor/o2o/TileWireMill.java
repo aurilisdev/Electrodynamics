@@ -1,8 +1,8 @@
-package electrodynamics.common.tile.processor;
+package electrodynamics.common.tile.processor.o2o;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
-import electrodynamics.common.inventory.container.ContainerWireMill;
+import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -25,7 +25,7 @@ public class TileWireMill extends GenericTileProcessor implements IO2OProcessor 
 
 	@Override
 	public double getJoulesPerTick() {
-		return REQUIRED_JOULES_PER_TICK;
+		return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class TileWireMill extends GenericTileProcessor implements IO2OProcessor 
 
 	@Override
 	protected Container createMenu(int id, PlayerInventory player) {
-		return new ContainerWireMill(id, player, this, inventorydata);
+		return new ContainerO2OProcessor(id, player, this, inventorydata);
 	}
 
 	@Override

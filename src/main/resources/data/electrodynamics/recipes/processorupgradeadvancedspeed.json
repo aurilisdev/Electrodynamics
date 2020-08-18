@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pbp",
+		"cmc",
+		"sbs"
+	],
+	"key": {
+		"p": {
+			"item": "electrodynamics:platesteel"
+		},
+		"b": {
+			"item": "electrodynamics:gearbronze"
+		},
+		"m": {
+			"item": "electrodynamics:wireinsulatedgold"
+		},
+		"s": {
+			"item": "electrodynamics:circuitadvanced"
+		},
+		"c": {
+			"item": "electrodynamics:processorupgradebasicspeed"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:processorupgradeadvancedspeed",
+		"count": 1
+	}
+}

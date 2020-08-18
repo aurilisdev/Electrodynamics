@@ -61,7 +61,7 @@ public class ElectricNetwork {
 		ElectricNetworkRegistry.registerNetwork(this);
 	}
 
-	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {// TODO: Remove this emission setup. Rather add the transfer power here to some
+	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
 		if (maxTransfer.getJoules() > 0) {
 			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
 			double ampsSent = 0;
@@ -76,7 +76,7 @@ public class ElectricNetwork {
 				}
 
 				if (validAcceptors.size() > 0) {
-					TransferPack perReceiver = TransferPack.ampsVoltage((maxTransfer.getAmps() / (validAcceptors.size()) / networkResistance), maxTransfer.getVoltage());
+					TransferPack perReceiver = TransferPack.ampsVoltage(maxTransfer.getAmps() / validAcceptors.size() / networkResistance, maxTransfer.getVoltage());
 					for (TileEntity receiver : validAcceptors) {
 						if (!checkForOverload(TransferPack.ampsVoltage(ampsTransmittedBuffer, perReceiver.getVoltage()))) {
 							for (Direction connection : acceptorInputMap.get(receiver)) {

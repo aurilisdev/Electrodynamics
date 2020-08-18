@@ -16,6 +16,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class TileTransformer extends GenericTileBase implements ITickableTileBase, IPowerProvider, IPowerReceiver, IElectricTile {
 
+	private boolean locked = false;
+
 	public TileTransformer() {
 		super(DeferredRegisters.TILE_TRANSFORMER.get());
 	}
@@ -27,7 +29,7 @@ public class TileTransformer extends GenericTileBase implements ITickableTileBas
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getBlockState().get(BlockMachine.FACING).getOpposite()) {
+		if (locked || dir != getBlockState().get(BlockMachine.FACING).getOpposite()) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -38,13 +40,15 @@ public class TileTransformer extends GenericTileBase implements ITickableTileBas
 			if (facingTile instanceof IPowerReceiver) {
 				boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
 				double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 60.0, 480.0);
-				double resultJoules = resultVoltage != transfer.getVoltage() ? (transfer.getJoules() * (shouldUpgrade ? 1.925 : 0.425)) : transfer.getJoules();
-				return debug ? TransferPack.ampsVoltage(1, 1) : ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(resultJoules, resultVoltage), facing, debug);
+				double resultJoules = resultVoltage != transfer.getVoltage() ? transfer.getJoules() * (shouldUpgrade ? 1.925 : 0.425) : transfer.getJoules();
+				locked = true;
+				TransferPack returner = debug ? TransferPack.ampsVoltage(1, 1) : ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(resultJoules, resultVoltage), facing, debug);
+				locked = false;
+				return returner;
 			}
 			return TransferPack.EMPTY;
 		}
-	} // TODO: This crashes the game if there is a loop of transformers as it just
-		// goes from transformer to transformer and so on
+	}
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {

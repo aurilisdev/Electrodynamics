@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pbp",
+		"bmb",
+		"sbs"
+	],
+	"key": {
+		"p": {
+			"item": "electrodynamics:platesteel"
+		},
+		"b": {
+			"item": "electrodynamics:processorupgradebasiccapacity"
+		},
+		"m": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		},
+		"s": {
+			"item": "electrodynamics:circuitadvanced"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:processorupgradeadvancedcapacity",
+		"count": 1
+	}
+}

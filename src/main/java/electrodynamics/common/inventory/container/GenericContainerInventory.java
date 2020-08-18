@@ -58,6 +58,10 @@ public abstract class GenericContainerInventory extends Container {
 		return inventory.getSizeInventory();
 	}
 
+	public IInventory getIInventory() {
+		return inventory;
+	}
+
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
 		return inventory.isUsableByPlayer(player);

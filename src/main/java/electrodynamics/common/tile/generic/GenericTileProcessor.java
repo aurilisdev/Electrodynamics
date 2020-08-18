@@ -26,6 +26,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 	protected HashSet<Integer> upgradeSlots = new HashSet<>();
 	protected double currentOperatingTick = 0;
 	protected double joules = 0;
+	protected double currentSpeedMultiplier = 1;
 	protected long ticks = 0;
 
 	public GenericTileProcessor(TileEntityType<?> tileEntityTypeIn) {
@@ -63,7 +64,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 	}
 
 	protected void increaseOperatingTick() {
-		double currentSpeedMultiplier = 1;
+		currentSpeedMultiplier = 1;
 		for (Integer in : upgradeSlots) {
 			ItemStack stack = items.get(in);
 			if (!stack.isEmpty()) {
@@ -90,6 +91,12 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 			switch (index) {
 			case 0:
 				return (int) currentOperatingTick;
+			case 1:
+				return (int) getVoltage();
+			case 2:
+				return (int) Math.ceil(getJoulesPerTick());
+			case 3:
+				return (int) getRequiredTicks() == 0 ? 1 : getRequiredTicks();
 			default:
 				return 0;
 			}
@@ -101,26 +108,28 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 			case 0:
 				currentOperatingTick = value;
 				break;
+			default:
+				break;
 			}
 
 		}
 
 		@Override
 		public int size() {
-			return 1;
+			return 4;
 		}
 	};
 
 	@Override
 	public void read(BlockState state, CompoundNBT compound) {
 		super.read(state, compound);
-		compound.putDouble(JOULES_STORED_NBT, joules);
+		joules = compound.getDouble(JOULES_STORED_NBT);
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		joules = compound.getDouble(JOULES_STORED_NBT);
 		super.write(compound);
+		compound.putDouble(JOULES_STORED_NBT, joules);
 		return compound;
 	}
 
@@ -160,7 +169,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 		}
 		double received = Math.min(transfer.getJoules(), getMaxJoulesStored() - joules);
 		if (!debug) {
-			if (transfer.getVoltage() == getVoltage()) {
+			if ((int) transfer.getVoltage() == (int) getVoltage()) {
 				joules += received;
 			}
 			if (transfer.getVoltage() > getVoltage()) {

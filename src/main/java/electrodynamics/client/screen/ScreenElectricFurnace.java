@@ -7,8 +7,6 @@ import electrodynamics.api.formatting.ElectricUnit;
 import electrodynamics.api.utilities.ElectricityChatFormatter;
 import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
-import electrodynamics.common.tile.TileElectricFurnace;
-import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -33,16 +31,16 @@ public class ScreenElectricFurnace extends GenericContainerScreenUpgradeable<Con
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.electricfurnace.usage", ElectricityChatFormatter.getDisplayShort(TileElectricFurnace.REQUIRED_JOULES_PER_TICK * 20, ElectricUnit.WATT)),
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.o2oprocessor.usage", ElectricityChatFormatter.getDisplayShort(container.getJoulesPerTick() * 20, ElectricUnit.WATT)),
 				(float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.electricfurnace.voltage", ElectricityChatFormatter.getDisplayShort(GenericTileProcessor.DEFAULT_BASIC_MACHINE_VOLTAGE, ElectricUnit.VOLTAGE)),
+		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.o2oprocessor.voltage", ElectricityChatFormatter.getDisplayShort(container.getVoltage(), ElectricUnit.VOLTAGE)),
 				(float) playerInventoryTitleX + 77, playerInventoryTitleY, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
 		super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
-		if (container.isBurning()) {
+		if (container.isProcessing()) {
 			int progress = 12;
 			blit(stack, guiLeft + 39, guiTop + 36 + 12 - progress, 212, 12 - progress, 14, progress + 1);
 		}
