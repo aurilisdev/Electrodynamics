@@ -25,11 +25,10 @@ public class ItemMultimeter extends Item {
 			if (tile instanceof TileWire) {
 				TileWire wire = (TileWire) tile;
 				ElectricNetwork net = wire.getNetwork();
-				String finalString = ElectricityChatFormatter.getDisplay(net.getSavedAmpsTransmissionBuffer(), ElectricUnit.AMPERE) + " / "
+				String finalString = ElectricityChatFormatter.getDisplay(net.getSavedAmpsTransmissionBuffer() / net.getLockedSavedVoltage() * 20, ElectricUnit.AMPERE) + " / "
 						+ ElectricityChatFormatter.getDisplay(net.getNetworkMaxTransfer(), ElectricUnit.AMPERE) + ", ";
-				for (Double db : net.getTransferVoltages()) {
-					finalString += ElectricityChatFormatter.getDisplay(db, ElectricUnit.VOLTAGE) + ", ";
-				}
+				finalString += ElectricityChatFormatter.getDisplay(net.getLockedSavedVoltage(), ElectricUnit.VOLTAGE) + ", ";
+				finalString += ElectricityChatFormatter.getDisplay(net.getSavedAmpsTransmissionBuffer(), ElectricUnit.WATT) + ", ";
 				finalString += ElectricityChatFormatter.getDisplay(net.getNetworkResistance() - 1, ElectricUnit.RESISTANCE);
 				context.getPlayer().sendMessage(new StringTextComponent(finalString), UUID.randomUUID());
 			}

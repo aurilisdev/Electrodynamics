@@ -1,10 +1,14 @@
 package electrodynamics.api.tile.processing;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
 public interface IO2OProcessor extends IElectricProcessor {
-	TileEntityType<?> getType();
+	default TileEntityType<?> getType()
+	{
+		return ((TileEntity)this).getType();
+	}
 
 	ItemStack getInput();
 

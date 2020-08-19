@@ -96,7 +96,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 			case 2:
 				return (int) Math.ceil(getJoulesPerTick());
 			case 3:
-				return (int) getRequiredTicks() == 0 ? 1 : getRequiredTicks();
+				return getRequiredTicks() == 0 ? 1 : getRequiredTicks();
 			default:
 				return 0;
 			}

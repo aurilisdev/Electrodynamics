@@ -6,6 +6,7 @@ import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
@@ -17,7 +18,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
@@ -32,6 +32,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	protected double currentCapacityMultiplier = 1;
 	protected double receiveLimitLeft = 0;
 	protected double joules = 0;
+	private CachedTileOutput output;
 
 	public TileBatteryBox() {
 		super(DeferredRegisters.TILE_BATTERYBOX.get());
@@ -39,12 +40,14 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public void tickServer() {
+		if (output == null) {
+			output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
+		}
 		receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 		if (joules > 0) {
-			Direction facing = getBlockState().get(BlockMachine.FACING);
-			TileEntity facingTile = world.getTileEntity(new BlockPos(pos).offset(facing.getOpposite()));
-			if (facingTile instanceof IPowerReceiver) {
-				TransferPack taken = ((IPowerReceiver) facingTile).receivePower(TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), facing, false);
+			if (output.get() instanceof IPowerReceiver) {
+				TransferPack taken = output.<IPowerReceiver>get().receivePower(TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), getFacing(),
+						false);
 				joules -= taken.getJoules();
 			}
 		}

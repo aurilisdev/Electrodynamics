@@ -106,7 +106,7 @@ public class BlockWire extends Block {
 			if (wire != null) {
 				if (wire.getNetwork() != null) {
 					if (wire.getNetwork().getSavedAmpsTransmissionBuffer() > 0) {
-						entityIn.attackEntityFrom(ElectricDamageSource.ELECTRICITY, (float) (wire.getNetwork().getSavedAmpsTransmissionBuffer() * 2));
+						entityIn.attackEntityFrom(ElectricDamageSource.ELECTRICITY, (float) (wire.getNetwork().getSavedAmpsTransmissionBuffer() / 120));
 					}
 				}
 			}
@@ -202,6 +202,7 @@ public class BlockWire extends Block {
 		return false;
 	}
 
+//TODO: Maybe add some random block tick update here which we use to electrocute players in water
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;

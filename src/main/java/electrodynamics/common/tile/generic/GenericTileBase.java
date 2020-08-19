@@ -1,11 +1,13 @@
 package electrodynamics.common.tile.generic;
 
+import electrodynamics.common.block.BlockMachine;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 
@@ -73,4 +75,7 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 		return getCustomName();
 	}
 
+	protected Direction getFacing() {
+		return getBlockState().get(BlockMachine.FACING);
+	}
 }

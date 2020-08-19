@@ -5,6 +5,7 @@ import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -15,7 +16,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.SoundCategory;
@@ -30,6 +30,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	public static final int[] SLOTS_UP = new int[] { 0 };
 	public static final int COAL_BURN_TIME = 1000;
 
+	protected CachedTileOutput output;
 	protected int burnTime;
 
 	public TileCoalGenerator() {
@@ -42,6 +43,9 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
 	@Override
 	public void tickServer() {
+		if (output == null) {
+			output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
+		}
 		if (!isBurning() && !items.get(0).isEmpty()) {
 			burnTime = COAL_BURN_TIME;
 			decrStackSize(0, 1);
@@ -63,12 +67,11 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 						getBlockState().get(BlockMachine.FACING)), 3);
 			}
 		}
+
 		if (isBurning()) {
-			Direction facing = getBlockState().get(BlockMachine.FACING);
-			TileEntity facingTile = world.getTileEntity(new BlockPos(pos).offset(facing.getOpposite()));
-			if (facingTile instanceof IPowerReceiver) {
-				((IPowerReceiver) facingTile).receivePower(DEFAULT_OUTPUT, facing, false);
-			} // TODO: Cache output maybe?
+			if (output.get() instanceof IPowerReceiver) {
+				output.<IPowerReceiver>get().receivePower(DEFAULT_OUTPUT, getFacing(), false);
+			}
 		}
 	}
 

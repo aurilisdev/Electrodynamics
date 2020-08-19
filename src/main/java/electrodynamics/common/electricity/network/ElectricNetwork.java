@@ -23,10 +23,10 @@ public class ElectricNetwork {
 	private HashSet<TileEntity> acceptorSet = new HashSet<>();
 	private HashMap<TileEntity, HashSet<Direction>> acceptorInputMap = new HashMap<>();
 	private HashMap<SubtypeWire, HashSet<IConductor>> conductorTypeMap = new HashMap<>();
-	private double ampsTransmittedBuffer = 0;
-	private double ampsTransmittedSavedBuffer = 0;
-	private HashSet<Double> transferVoltages = new HashSet<>();
-	private HashSet<Double> transferSavedVoltages = new HashSet<>();
+	private double joulesTransmittedBuffer = 0;
+	private double joulesTransmittedSavedBuffer = 0;
+	private double lockedVoltage = 0.0;
+	private double lockedSavedVoltage = 0.0;
 	private double networkMaxTransfer = 0;
 	private double networkResistance = 0;
 	private double fixTimerTicksSinceNetworkCreate = 1180;
@@ -34,15 +34,15 @@ public class ElectricNetwork {
 	private boolean fixed = false;
 
 	public double getSavedAmpsTransmissionBuffer() {
-		return ampsTransmittedSavedBuffer;
+		return joulesTransmittedSavedBuffer;
 	}
 
 	public double getNetworkMaxTransfer() {
 		return networkMaxTransfer;
 	}
 
-	public HashSet<Double> getTransferVoltages() {
-		return transferSavedVoltages;
+	public double getLockedSavedVoltage() {
+		return lockedSavedVoltage;
 	}
 
 	public ElectricNetwork(IConductor... varCables) {
@@ -62,10 +62,14 @@ public class ElectricNetwork {
 	}
 
 	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
-		if (maxTransfer.getJoules() > 0) {
+
+		if ((lockedVoltage == 0 || lockedVoltage == maxTransfer.getVoltage()) && maxTransfer.getJoules() > 0) {
 			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
-			double ampsSent = 0;
+			double joulesSent = 0;
 			if (!availableAcceptors.isEmpty()) {
+				if (lockedVoltage == 0.0) {
+					lockedVoltage = maxTransfer.getVoltage();
+				}
 				HashSet<TileEntity> validAcceptors = new HashSet<>();
 				for (TileEntity acceptor : availableAcceptors) {
 					if (!ignored.contains(acceptor)) {
@@ -76,25 +80,23 @@ public class ElectricNetwork {
 				}
 
 				if (validAcceptors.size() > 0) {
-					TransferPack perReceiver = TransferPack.ampsVoltage(maxTransfer.getAmps() / validAcceptors.size() / networkResistance, maxTransfer.getVoltage());
+					TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / validAcceptors.size() / networkResistance, maxTransfer.getVoltage());
 					for (TileEntity receiver : validAcceptors) {
-						if (!checkForOverload(TransferPack.ampsVoltage(ampsTransmittedBuffer, perReceiver.getVoltage()))) {
-							for (Direction connection : acceptorInputMap.get(receiver)) {
-								TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
-								ampsSent += pack.getAmps();
-								ampsTransmittedBuffer += pack.getAmps();
-							}
+						for (Direction connection : acceptorInputMap.get(receiver)) {
+							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
+							joulesSent += pack.getJoules();
+							joulesTransmittedBuffer += pack.getJoules();
 						}
+						checkForOverload(TransferPack.joulesVoltage(joulesTransmittedBuffer, perReceiver.getVoltage()));
 
 					}
 				}
 			}
-			if (ampsSent > 0.0) {
-				double lost = maxTransfer.getAmps() - maxTransfer.getAmps() / networkResistance;
-				transferVoltages.add(maxTransfer.getVoltage());
-				ampsSent += lost;
+			if (joulesSent > 0.0) {
+				double lost = maxTransfer.getJoules() - maxTransfer.getJoules() / networkResistance;
+				joulesSent += lost;
 			}
-			return TransferPack.ampsVoltage(ampsSent, maxTransfer.getVoltage());
+			return TransferPack.joulesVoltage(joulesSent, maxTransfer.getVoltage());
 		}
 		return TransferPack.EMPTY;
 
@@ -331,10 +333,10 @@ public class ElectricNetwork {
 	}
 
 	public void clearTransmissionBuffer() {
-		ampsTransmittedSavedBuffer = ampsTransmittedBuffer;
-		ampsTransmittedBuffer = 0;
-		transferSavedVoltages.addAll(transferVoltages);
-		transferVoltages.clear();
+		joulesTransmittedSavedBuffer = joulesTransmittedBuffer;
+		joulesTransmittedBuffer = 0;
+		lockedSavedVoltage = lockedVoltage;
+		lockedVoltage = 0;
 	}
 
 }

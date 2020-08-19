@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sgs",
+		"bsb",
+		"sgs"
+	],
+	"key": {
+		"g": {
+			"item": "electrodynamics:platesteel"
+		},
+		"s": {
+			"item": "electrodynamics:dustobsidian"
+		},
+		"b": {
+			"item": "electrodynamics:circuitelite"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:circuitultimate",
+		"count": 1
+	}
+}
