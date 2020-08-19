@@ -13,6 +13,6 @@ public class ItemGroupElectrodynamics extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer));
+		return new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer));
 	}
 }

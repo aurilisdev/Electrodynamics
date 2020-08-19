@@ -37,8 +37,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 public class BlockWire extends Block {
 
@@ -185,21 +183,6 @@ public class BlockWire extends Block {
 		} else {
 			return stateIn.with(property, EnumConnectType.NONE);
 		}
-	}
-
-	public static boolean isEnergy(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		return hasCapabilityDir(facing, world, facingPos, CapabilityEnergy.ENERGY);
-	}
-
-	private static boolean hasCapabilityDir(Direction facing, IWorld world, BlockPos facingPos, Capability<?> cap) {
-		if (facing == null) {
-			return false;
-		}
-		TileEntity neighbor = world.getTileEntity(facingPos);
-		if (neighbor != null && neighbor.getCapability(cap, facing.getOpposite()).orElse(null) != null) {
-			return true;
-		}
-		return false;
 	}
 
 //TODO: Maybe add some random block tick update here which we use to electrocute players in water

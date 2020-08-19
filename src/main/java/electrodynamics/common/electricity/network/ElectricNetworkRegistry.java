@@ -14,11 +14,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ElectricNetworkRegistry {
 	private static HashSet<ElectricNetwork> networks = new HashSet<>();
 
-	public static void registerNetwork(ElectricNetwork network) {
+	public static void register(ElectricNetwork network) {
 		networks.add(network);
 	}
 
-	public static void removeNetwork(ElectricNetwork network) {
+	public static void deregister(ElectricNetwork network) {
 		if (networks.contains(network)) {
 			networks.remove(network);
 		}
@@ -27,7 +27,7 @@ public class ElectricNetworkRegistry {
 	public static void pruneEmptyNetworks() {
 		for (ElectricNetwork e : new HashSet<>(networks)) {
 			if (e.conductorSet.size() == 0) {
-				removeNetwork(e);
+				deregister(e);
 			}
 		}
 	}

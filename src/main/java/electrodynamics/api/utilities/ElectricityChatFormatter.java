@@ -6,9 +6,9 @@ import electrodynamics.api.formatting.MeasurementUnit;
 public class ElectricityChatFormatter {
 	public static String getDisplay(double value, ElectricUnit unit, int decimalPlaces, boolean isShort) {
 		if (value < Long.MIN_VALUE + 10000) {
-			return "-Infinite";
+			return "-Infinite" + (isShort ? unit.symbol : unit.getPlural());
 		} else if (value > Long.MAX_VALUE - 10000) {
-			return "Infinite";
+			return "Infinite " + (isShort ? unit.symbol : unit.getPlural());
 		}
 		String unitName = unit.name;
 		if (isShort) {

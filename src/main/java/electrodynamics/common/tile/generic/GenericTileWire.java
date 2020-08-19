@@ -3,6 +3,8 @@ package electrodynamics.common.tile.generic;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.google.common.collect.Sets;
+
 import electrodynamics.api.conductor.IConductor;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.electricity.network.ElectricNetwork;
@@ -24,7 +26,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	private HashSet<IConductor> getConnectedConductors() {
 		HashSet<IConductor> set = new HashSet<>();
 		for (Direction dir : Direction.values()) {
-			TileEntity facing = world.getTileEntity(new BlockPos(pos).add(dir.getXOffset(), dir.getYOffset(), dir.getZOffset()));
+			TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
 			if (facing instanceof IConductor) {
 				set.add((IConductor) facing);
 			}
@@ -71,10 +73,21 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	@Override
 	public void refreshNetwork() {
 		if (!world.isRemote) {
+			ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
-				TileEntity facing = world.getTileEntity(new BlockPos(pos).add(dir.getXOffset(), dir.getYOffset(), dir.getZOffset()));
+				TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
 				if (facing instanceof IConductor) {
-					getNetwork().merge(((IConductor) facing).getNetwork());
+					foundNetworks.add(((IConductor) facing).getNetwork());
+				}
+			}
+			if (foundNetworks.size() > 0) {
+				foundNetworks.get(0).addAllCables(Sets.newHashSet(this));
+				electricNetwork = foundNetworks.get(0);
+				if (foundNetworks.size() > 1) {
+					foundNetworks.remove(0);
+					for (ElectricNetwork network : foundNetworks) {
+						getNetwork().merge(network);
+					}
 				}
 			}
 			getNetwork().refresh();

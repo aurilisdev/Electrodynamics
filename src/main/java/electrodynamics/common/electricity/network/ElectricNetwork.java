@@ -16,7 +16,6 @@ import electrodynamics.common.electricity.ElectricityUtilities;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class ElectricNetwork {
 	public HashSet<IConductor> conductorSet = new HashSet<>();
@@ -45,9 +44,13 @@ public class ElectricNetwork {
 		return lockedSavedVoltage;
 	}
 
+	public double getNetworkResistance() {
+		return networkResistance;
+	}
+
 	public ElectricNetwork(IConductor... varCables) {
 		conductorSet.addAll(Arrays.asList(varCables));
-		ElectricNetworkRegistry.registerNetwork(this);
+		ElectricNetworkRegistry.register(this);
 	}
 
 	public ElectricNetwork(Set<ElectricNetwork> networks) {
@@ -58,38 +61,27 @@ public class ElectricNetwork {
 			}
 		}
 		refresh();
-		ElectricNetworkRegistry.registerNetwork(this);
+		ElectricNetworkRegistry.register(this);
 	}
 
 	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
-
 		if ((lockedVoltage == 0 || lockedVoltage == maxTransfer.getVoltage()) && maxTransfer.getJoules() > 0) {
 			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
 			double joulesSent = 0;
+			availableAcceptors.removeAll(ignored);
 			if (!availableAcceptors.isEmpty()) {
 				if (lockedVoltage == 0.0) {
 					lockedVoltage = maxTransfer.getVoltage();
 				}
-				HashSet<TileEntity> validAcceptors = new HashSet<>();
-				for (TileEntity acceptor : availableAcceptors) {
-					if (!ignored.contains(acceptor)) {
-						if (ElectricityUtilities.isElectricReceiver(acceptor)) {
-							validAcceptors.add(acceptor);
-						}
+				TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / availableAcceptors.size() / networkResistance, maxTransfer.getVoltage());
+				for (TileEntity receiver : availableAcceptors) {
+					for (Direction connection : acceptorInputMap.get(receiver)) {
+						TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
+						joulesSent += pack.getJoules();
+						joulesTransmittedBuffer += pack.getJoules();
 					}
-				}
+					checkForOverload(TransferPack.joulesVoltage(joulesTransmittedBuffer, perReceiver.getVoltage()));
 
-				if (validAcceptors.size() > 0) {
-					TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / validAcceptors.size() / networkResistance, maxTransfer.getVoltage());
-					for (TileEntity receiver : validAcceptors) {
-						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
-							joulesSent += pack.getJoules();
-							joulesTransmittedBuffer += pack.getJoules();
-						}
-						checkForOverload(TransferPack.joulesVoltage(joulesTransmittedBuffer, perReceiver.getVoltage()));
-
-					}
 				}
 			}
 			if (joulesSent > 0.0) {
@@ -100,10 +92,6 @@ public class ElectricNetwork {
 		}
 		return TransferPack.EMPTY;
 
-	}
-
-	public double getNetworkResistance() {
-		return networkResistance;
 	}
 
 	private boolean checkForOverload(TransferPack attemptSend) {
@@ -138,18 +126,6 @@ public class ElectricNetwork {
 		return toReturn;
 	}
 
-	public TileEntity[] getConnectedEnergyAcceptors(TileEntity tileEntity) {
-		TileEntity[] acceptors = { null, null, null, null, null, null };
-		for (Direction orientation : Direction.values()) {
-			TileEntity acceptor = tileEntity.getWorld().getTileEntity(new BlockPos(tileEntity.getPos()).add(orientation.getXOffset(), orientation.getYOffset(), orientation.getZOffset()));
-			if (ElectricityUtilities.isElectricReceiver(acceptor) && !ElectricityUtilities.isConductor(acceptor) && acceptor instanceof IElectricTile
-					&& ((IElectricTile) acceptor).canConnectElectrically(orientation.getOpposite())) {
-				acceptors[orientation.getOpposite().ordinal()] = acceptor;
-			}
-		}
-		return acceptors;
-	}
-
 	public void refresh() {
 		@SuppressWarnings("unchecked")
 		Set<IConductor> iterCables = (Set<IConductor>) conductorSet.clone();
@@ -167,12 +143,14 @@ public class ElectricNetwork {
 			}
 		}
 		for (IConductor cable : iterCables) {
-			TileEntity[] acceptors = getConnectedEnergyAcceptors((TileEntity) cable);
-			for (TileEntity acceptor : acceptors) {
-				if (acceptor != null && !ElectricityUtilities.isConductor(acceptor)) {
+			TileEntity tileEntity = (TileEntity) cable;
+			for (Direction orientation : Direction.values()) {
+				TileEntity acceptor = tileEntity.getWorld().getTileEntity(new BlockPos(tileEntity.getPos()).add(orientation.getXOffset(), orientation.getYOffset(), orientation.getZOffset()));
+				if (ElectricityUtilities.isElectricReceiver(acceptor) && !ElectricityUtilities.isConductor(acceptor) && acceptor instanceof IElectricTile
+						&& ((IElectricTile) acceptor).canConnectElectrically(orientation.getOpposite())) {
 					acceptorSet.add(acceptor);
 					HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
-					directions.add(Direction.values()[Arrays.asList(acceptors).indexOf(acceptor)]);
+					directions.add(orientation.getOpposite());
 					acceptorInputMap.put(acceptor, directions);
 				}
 			}
@@ -276,47 +254,14 @@ public class ElectricNetwork {
 
 	public void deregister() {
 		conductorSet.clear();
-		ElectricNetworkRegistry.removeNetwork(this);
-	}
-
-	public static class NetworkFinder {
-		public World worldObj;
-		public BlockPos start;
-		public List<BlockPos> iterated = new ArrayList<>();
-		public List<BlockPos> toIgnore = new ArrayList<>();
-
-		public NetworkFinder(World world, BlockPos location, BlockPos... ignore) {
-			worldObj = world;
-			start = location;
-			if (ignore.length > 0) {
-				toIgnore = Arrays.asList(ignore);
-			}
-		}
-
-		public void loopAll(BlockPos location) {
-			if (worldObj.getTileEntity(location) instanceof IConductor) {
-				iterated.add(location);
-			}
-			for (Direction direction : Direction.values()) {
-				BlockPos obj = new BlockPos(location).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
-				if (!iterated.contains(obj) && !toIgnore.contains(obj)) {
-					TileEntity tileEntity = worldObj.getTileEntity(obj);
-					if (ElectricityUtilities.isConductor(tileEntity)) {
-						loopAll(obj);
-					}
-				}
-			}
-		}
-
-		public List<BlockPos> exploreNetwork() {
-			loopAll(start);
-
-			return iterated;
-		}
+		ElectricNetworkRegistry.deregister(this);
 	}
 
 	public void tick() {
-		clearTransmissionBuffer();
+		joulesTransmittedSavedBuffer = joulesTransmittedBuffer;
+		joulesTransmittedBuffer = 0;
+		lockedSavedVoltage = lockedVoltage;
+		lockedVoltage = 0;
 		if (!fixed) {
 			fixTimerTicksSinceNetworkCreate += 1;
 			if (fixTimerTicksSinceNetworkCreate > 1200) {
@@ -330,13 +275,6 @@ public class ElectricNetwork {
 			ticksSinceNetworkRefresh = 0;
 			refresh();
 		}
-	}
-
-	public void clearTransmissionBuffer() {
-		joulesTransmittedSavedBuffer = joulesTransmittedBuffer;
-		joulesTransmittedBuffer = 0;
-		lockedSavedVoltage = lockedVoltage;
-		lockedVoltage = 0;
 	}
 
 }
