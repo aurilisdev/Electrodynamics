@@ -1,6 +1,7 @@
 package electrodynamics.common.block.wire;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,9 @@ public class BlockWire extends Block {
 	protected final VoxelShape AABB_SOUTH;
 	protected final VoxelShape AABB_WEST;
 	protected final VoxelShape AABB_EAST;
+
+	protected HashMap<HashSet<Direction>, VoxelShape> AABBSTATES = new HashMap<>();
+
 	public final SubtypeWire wire;
 
 	public BlockWire(SubtypeWire wire) {
@@ -93,8 +97,59 @@ public class BlockWire extends Block {
 		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
 	}
 
-	private boolean shapeConnects(BlockState state, EnumProperty<EnumConnectType> dirctionProperty) {
-		return !state.get(dirctionProperty).equals(EnumConnectType.NONE);
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		VoxelShape shape = AABB;
+		HashSet<Direction> checked = new HashSet<>();
+		if (!state.get(UP).equals(EnumConnectType.NONE)) {
+			checked.add(Direction.UP);
+		}
+		if (!state.get(DOWN).equals(EnumConnectType.NONE)) {
+			checked.add(Direction.DOWN);
+		}
+		if (!state.get(WEST).equals(EnumConnectType.NONE)) {
+			checked.add(Direction.WEST);
+		}
+		if (!state.get(EAST).equals(EnumConnectType.NONE)) {
+			checked.add(Direction.EAST);
+		}
+		if (!state.get(NORTH).equals(EnumConnectType.NONE)) {
+			checked.add(Direction.NORTH);
+		}
+		if (!state.get(SOUTH).equals(EnumConnectType.NONE)) {
+			checked.add(Direction.SOUTH);
+		}
+		for (HashSet<Direction> set : AABBSTATES.keySet()) {
+			if (set.equals(checked)) {
+				return AABBSTATES.get(set);
+			}
+		}
+		for (Direction dir : checked) {
+			switch (dir) {
+			case DOWN:
+				shape = VoxelShapes.combineAndSimplify(shape, AABB_DOWN, IBooleanFunction.OR);
+				break;
+			case EAST:
+				shape = VoxelShapes.combineAndSimplify(shape, AABB_EAST, IBooleanFunction.OR);
+				break;
+			case NORTH:
+				shape = VoxelShapes.combineAndSimplify(shape, AABB_NORTH, IBooleanFunction.OR);
+				break;
+			case SOUTH:
+				shape = VoxelShapes.combineAndSimplify(shape, AABB_SOUTH, IBooleanFunction.OR);
+				break;
+			case UP:
+				shape = VoxelShapes.combineAndSimplify(shape, AABB_UP, IBooleanFunction.OR);
+				break;
+			case WEST:
+				shape = VoxelShapes.combineAndSimplify(shape, AABB_WEST, IBooleanFunction.OR);
+				break;
+			default:
+				break;
+			}
+		}
+		AABBSTATES.put(checked, shape);
+		return shape;
 	}
 
 	@Override
@@ -109,30 +164,6 @@ public class BlockWire extends Block {
 				}
 			}
 		}
-	}
-
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		VoxelShape shape = AABB;
-		if (shapeConnects(state, UP)) {
-			shape = VoxelShapes.combine(shape, AABB_UP, IBooleanFunction.OR);
-		}
-		if (shapeConnects(state, DOWN)) {
-			shape = VoxelShapes.combine(shape, AABB_DOWN, IBooleanFunction.OR);
-		}
-		if (!state.get(WEST).equals(EnumConnectType.NONE)) {
-			shape = VoxelShapes.combine(shape, AABB_WEST, IBooleanFunction.OR);
-		}
-		if (!state.get(EAST).equals(EnumConnectType.NONE)) {
-			shape = VoxelShapes.combine(shape, AABB_EAST, IBooleanFunction.OR);
-		}
-		if (!state.get(NORTH).equals(EnumConnectType.NONE)) {
-			shape = VoxelShapes.combine(shape, AABB_NORTH, IBooleanFunction.OR);
-		}
-		if (!state.get(SOUTH).equals(EnumConnectType.NONE)) {
-			shape = VoxelShapes.combine(shape, AABB_SOUTH, IBooleanFunction.OR);
-		}
-		return shape;
 	}
 
 	@Override
@@ -185,7 +216,8 @@ public class BlockWire extends Block {
 		}
 	}
 
-//TODO: Maybe add some random block tick update here which we use to electrocute players in water
+	// TODO: Maybe add some random block tick update here which we use to
+	// electrocute players in water
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
