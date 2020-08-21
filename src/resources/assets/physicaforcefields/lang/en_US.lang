@@ -32,6 +32,7 @@ item.moduleUpgradeBlockAccess.name=Block Access Module
 item.moduleUpgradeBlockAlter.name=Block Alter Module
 item.moduleUpgradeConfiscate.name=Confiscate Module
 item.moduleUpgradeCollection.name=Collection Module
+item.moduleUpgradeStrength.name=Strength Module
 item.moduleManipulationScale.name=Scale Module
 item.moduleManipulationTranslate.name=Translate Module
 item.focusMatrix.name=Focus Matrix

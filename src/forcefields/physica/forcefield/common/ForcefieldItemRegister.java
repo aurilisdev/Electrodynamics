@@ -35,7 +35,7 @@ public class ForcefieldItemRegister implements IContent {
 			AbstractionLayer.Registering.registerItem(itemMetaUpgradeModule = (ItemMetaHolder) new ItemMetaHolder("moduleUpgradeSpeed", ForcefieldReferences.PREFIX).addSubItem("moduleUpgradeCapacity").addSubItem("moduleUpgradeShock")
 					.addSubItem("moduleUpgradeDisintegration").addSubItem("moduleUpgradeInterior").addSubItem("moduleUpgradeSponge").addSubItem("moduleUpgradeStabilize").addSubItem("moduleUpgradeColorChange")
 					.addSubItem("moduleUpgradeAntiHostile").addSubItem("moduleUpgradeAntiFriendly").addSubItem("moduleUpgradeAntiPersonnel").addSubItem("moduleUpgradeAntiSpawn").addSubItem("moduleUpgradeBlockAccess")
-					.addSubItem("moduleUpgradeBlockAlter").addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").setCreativeTab(ForcefieldTabRegister.forcefieldTab), "item.metaUpgradeModule");
+					.addSubItem("moduleUpgradeBlockAlter").addSubItem("moduleUpgradeConfiscate").addSubItem("moduleUpgradeCollection").addSubItem("moduleUpgradeStrength").setCreativeTab(ForcefieldTabRegister.forcefieldTab), "item.metaUpgradeModule");
 			AbstractionLayer.Registering.registerItem(
 					itemMetaManipulationModule = (ItemMetaHolder) new ItemMetaHolder("moduleManipulationScale", ForcefieldReferences.PREFIX).addSubItem("moduleManipulationTranslate").setCreativeTab(ForcefieldTabRegister.forcefieldTab),
 					"item.metaManipulationModule");
@@ -70,6 +70,7 @@ public class ForcefieldItemRegister implements IContent {
 			moduleMap.put("moduleUpgradeBlockAlter", new ItemStack(itemMetaUpgradeModule, 1, 13));
 			moduleMap.put("moduleUpgradeConfiscate", new ItemStack(itemMetaUpgradeModule, 1, 14));
 			moduleMap.put("moduleUpgradeCollection", new ItemStack(itemMetaUpgradeModule, 1, 15));
+			moduleMap.put("moduleUpgradeStrength", new ItemStack(itemMetaUpgradeModule, 1, 16));
 
 			moduleMap.put("moduleManipulationScale", new ItemStack(itemMetaManipulationModule, 1, 0));
 			moduleMap.put("moduleManipulationTranslate", new ItemStack(itemMetaManipulationModule, 1, 1));

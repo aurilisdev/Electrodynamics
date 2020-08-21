@@ -93,6 +93,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	private int[]							cachedInformation		= new int[9];
 	private boolean							hasInterior				= false;
 	protected FluidTank						fortronTank				= new FluidTank(ForcefieldFluidRegister.LIQUID_FORTRON, 0, getMaxFortron());
+	private final double MAX_STRENGTH_FRACTION = 50; //Maximum factor the health increase can be divided by from strength modules
 
 	public boolean hasUpgrade(String name)
 	{
@@ -145,7 +146,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		{
 			return;
 		}
+
+		int strengthModules = getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeStrength"), SLOT_UPGRADES[0], SLOT_UPGRADES[SLOT_UPGRADES.length - 1]);
 		double increase = amount / (double) fortronUse * ConfigForcefields.FORCEFIELD_HEALTHLOSS_MODIFIER * 100000;
+		increase /= (1 + (MAX_STRENGTH_FRACTION * strengthModules / (SLOT_UPGRADES.length * 64)));
 		healthLost += increase;
 		if (healthLost >= MAX_HEALTH_LOSS || increase > MAX_HEALTH_LOSS)
 		{
