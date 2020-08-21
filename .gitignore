@@ -15,6 +15,7 @@ crash-reports/
 eclipse/
 .gradle/
 output/
+ignored/
 .cache
 *.iml
 *.ipr

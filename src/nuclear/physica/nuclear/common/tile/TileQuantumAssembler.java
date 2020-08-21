@@ -22,7 +22,7 @@ import physica.nuclear.common.inventory.ContainerQuantumAssembler;
 
 public class TileQuantumAssembler extends TileBasePoweredContainer implements IGuiInterface {
 
-	public static final int		TICKS_REQUIRED			= ConfigNuclearPhysics.QUANTUM_ASSEMBLER_TICKS_REQUIRED;
+	private static final int	TICKS_REQUIRED			= ConfigNuclearPhysics.QUANTUM_ASSEMBLER_TICKS_REQUIRED;
 	public static final int		SLOT_INPUT				= 6;
 	public static final int		SLOT_OUTPUT				= 7;
 	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(71000, Unit.WATT, Unit.RF);
@@ -31,6 +31,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
 	private static final int[]	ACCESSIBLE_SLOTS_ELSE	= new int[] { 0, 1, 2, 3, 4, 5 };
 	protected int				operatingTicks			= 0;
+	protected int				ticksRequired			= TICKS_REQUIRED;
 	protected EntityItem		entityItem				= null;
 
 	@Override
@@ -65,8 +66,8 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	public boolean isRestricted(ItemStack itemStack)
 	{
 		return itemStack == null || itemStack.stackSize <= 0 || itemStack.getItem() == NuclearItemRegister.itemDarkmatterCell
-				|| (ConfigNuclearPhysics.FLIP_BLACKLIST_TO_WHITELIST ? !ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName())
-						: ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName()));
+			       || (ConfigNuclearPhysics.FLIP_BLACKLIST_TO_WHITELIST ? !ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName())
+				           : ConfigNuclearPhysics.QUANTUM_ASSEMBLER_BLACKLIST.contains(itemStack.getUnlocalizedName()));
 	}
 
 	@Override
@@ -154,6 +155,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(operatingTicks);
+		dataList.add(ticksRequired);
 	}
 
 	@Override
@@ -161,6 +163,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	{
 		super.readClientGuiPacket(buf, player);
 		operatingTicks = buf.readInt();
+		ticksRequired = buf.readInt();
 	}
 
 	public EntityItem getEntityItem()
@@ -171,6 +174,11 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 	public int getOperatingTicks()
 	{
 		return operatingTicks;
+	}
+
+	public int getTicksRequired()
+	{
+		return ticksRequired;
 	}
 
 	@Override
