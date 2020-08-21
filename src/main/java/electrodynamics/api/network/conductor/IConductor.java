@@ -1,15 +1,15 @@
-package electrodynamics.api.conductor;
+package electrodynamics.api.network.conductor;
 
+import electrodynamics.api.network.INetwork;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.electricity.network.ElectricNetwork;
 
 public interface IConductor extends IPowerReceiver {
-	ElectricNetwork getNetwork();
+	INetwork getNetwork();
 
-	ElectricNetwork getNetwork(boolean createIfNull);
+	INetwork getNetwork(boolean createIfNull);
 
-	void setNetwork(ElectricNetwork network);
+	void setNetwork(INetwork network);
 
 	void refreshNetwork();
 

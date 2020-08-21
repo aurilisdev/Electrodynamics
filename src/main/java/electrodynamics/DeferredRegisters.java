@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
+import electrodynamics.api.References;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.subtype.SubtypeMachine;

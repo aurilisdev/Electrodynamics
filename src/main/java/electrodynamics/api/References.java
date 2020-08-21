@@ -1,4 +1,4 @@
-package electrodynamics;
+package electrodynamics.api;
 
 import electrodynamics.common.tab.ItemGroupElectrodynamics;
 

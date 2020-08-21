@@ -1,7 +1,5 @@
 package electrodynamics.common.item;
 
-import java.util.UUID;
-
 import electrodynamics.api.formatting.ElectricUnit;
 import electrodynamics.api.utilities.ElectricityChatFormatter;
 import electrodynamics.common.electricity.network.ElectricNetwork;
@@ -30,7 +28,7 @@ public class ItemMultimeter extends Item {
 				finalString += ElectricityChatFormatter.getDisplay(net.getLockedSavedVoltage(), ElectricUnit.VOLTAGE) + ", ";
 				finalString += ElectricityChatFormatter.getDisplay(net.getSavedAmpsTransmissionBuffer() * 20.0, ElectricUnit.WATT) + ", ";
 				finalString += ElectricityChatFormatter.getDisplay(net.getNetworkResistance() - 1, ElectricUnit.RESISTANCE) + " ( -" + (int) Math.round(100.0 - 100.0 / net.getNetworkResistance()) + "% )";
-				context.getPlayer().sendMessage(new StringTextComponent(finalString), UUID.randomUUID());
+				context.getPlayer().sendStatusMessage(new StringTextComponent(finalString), true);
 			}
 		}
 		return super.onItemUse(context);

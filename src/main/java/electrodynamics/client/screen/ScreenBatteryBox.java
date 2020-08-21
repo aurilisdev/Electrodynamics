@@ -2,7 +2,7 @@ package electrodynamics.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.References;
+import electrodynamics.api.References;
 import electrodynamics.api.formatting.ElectricUnit;
 import electrodynamics.api.utilities.ElectricityChatFormatter;
 import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;

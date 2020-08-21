@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.api.conductor.IConductor;
+import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.electricity.ElectricityUtilities;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class NetworkFinder {
+public class ElectricNetworkFinder {
 	public World worldObj;
 	public BlockPos start;
 	public List<BlockPos> iterated = new ArrayList<>();
 	public List<BlockPos> toIgnore = new ArrayList<>();
 
-	public NetworkFinder(World world, BlockPos location, BlockPos... ignore) {
+	public ElectricNetworkFinder(World world, BlockPos location, BlockPos... ignore) {
 		worldObj = world;
 		start = location;
 		if (ignore.length > 0) {

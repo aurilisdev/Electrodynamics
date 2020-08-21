@@ -1,6 +1,6 @@
 package electrodynamics.common.electricity;
 
-import electrodynamics.api.conductor.IConductor;
+import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.TransferPack;
 import net.minecraft.tileentity.TileEntity;

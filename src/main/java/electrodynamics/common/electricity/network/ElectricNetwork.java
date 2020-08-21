@@ -8,16 +8,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import electrodynamics.api.conductor.IConductor;
+import electrodynamics.api.network.ITickableNetwork;
+import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.electricity.ElectricityUtilities;
+import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
-public class ElectricNetwork {
+public class ElectricNetwork implements ITickableNetwork {
 	public HashSet<IConductor> conductorSet = new HashSet<>();
 	private HashSet<TileEntity> acceptorSet = new HashSet<>();
 	private HashMap<TileEntity, HashSet<Direction>> acceptorInputMap = new HashMap<>();
@@ -50,7 +52,7 @@ public class ElectricNetwork {
 
 	public ElectricNetwork(IConductor... varCables) {
 		conductorSet.addAll(Arrays.asList(varCables));
-		ElectricNetworkRegistry.register(this);
+		NetworkRegistry.register(this);
 	}
 
 	public ElectricNetwork(Set<ElectricNetwork> networks) {
@@ -61,7 +63,7 @@ public class ElectricNetwork {
 			}
 		}
 		refresh();
-		ElectricNetworkRegistry.register(this);
+		NetworkRegistry.register(this);
 	}
 
 	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
@@ -200,7 +202,8 @@ public class ElectricNetwork {
 			for (int countOne = 0; countOne < connectedTiles.length; countOne++) {
 				TileEntity connectedBlockA = connectedTiles[countOne];
 				if (connectedBlockA instanceof IConductor && dealtWith[countOne] == false) {
-					NetworkFinder finder = new NetworkFinder(((TileEntity) splitPoint).getWorld(), new BlockPos(connectedBlockA.getPos()), new BlockPos[] { new BlockPos(((TileEntity) splitPoint).getPos()) });
+					ElectricNetworkFinder finder = new ElectricNetworkFinder(((TileEntity) splitPoint).getWorld(), new BlockPos(connectedBlockA.getPos()),
+							new BlockPos[] { new BlockPos(((TileEntity) splitPoint).getPos()) });
 					List<BlockPos> partNetwork = finder.exploreNetwork();
 					for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
 						TileEntity connectedBlockB = connectedTiles[countTwo];
@@ -228,7 +231,7 @@ public class ElectricNetwork {
 
 	public void fixMessedUpNetwork(IConductor cable) {
 		if (cable instanceof TileEntity) {
-			NetworkFinder finder = new NetworkFinder(((TileEntity) cable).getWorld(), new BlockPos(((TileEntity) cable).getPos()));
+			ElectricNetworkFinder finder = new ElectricNetworkFinder(((TileEntity) cable).getWorld(), new BlockPos(((TileEntity) cable).getPos()));
 			List<BlockPos> partNetwork = finder.exploreNetwork();
 			Set<IConductor> newCables = new HashSet<>();
 			for (BlockPos node : partNetwork) {
@@ -254,9 +257,15 @@ public class ElectricNetwork {
 
 	public void deregister() {
 		conductorSet.clear();
-		ElectricNetworkRegistry.deregister(this);
+		NetworkRegistry.deregister(this);
 	}
 
+	@Override
+	public int getSize() {
+		return conductorSet.size();
+	}
+
+	@Override
 	public void tick() {
 		joulesTransmittedSavedBuffer = joulesTransmittedBuffer;
 		joulesTransmittedBuffer = 0;

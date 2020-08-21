@@ -1,7 +1,7 @@
 package electrodynamics.common.recipe;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.References;
+import electrodynamics.api.References;
 import electrodynamics.api.tile.processing.O2OProcessingRecipe;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeWire;

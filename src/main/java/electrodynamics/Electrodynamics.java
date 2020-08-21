@@ -1,5 +1,6 @@
 package electrodynamics;
 
+import electrodynamics.api.References;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenElectricFurnace;

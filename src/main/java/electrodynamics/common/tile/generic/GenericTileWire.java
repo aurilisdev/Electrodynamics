@@ -5,10 +5,11 @@ import java.util.HashSet;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.conductor.IConductor;
+import electrodynamics.api.network.INetwork;
+import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.electricity.network.ElectricNetwork;
-import electrodynamics.common.electricity.network.ElectricNetworkRegistry;
+import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -45,8 +46,8 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 			HashSet<IConductor> adjacentCables = getConnectedConductors();
 			HashSet<ElectricNetwork> connectedNets = new HashSet<>();
 			for (IConductor wire : adjacentCables) {
-				if (wire.getNetwork(false) != null) {
-					connectedNets.add(wire.getNetwork());
+				if (wire.getNetwork(false) != null && wire.getNetwork() instanceof ElectricNetwork) {
+					connectedNets.add((ElectricNetwork) wire.getNetwork());
 				}
 			}
 			if (connectedNets.size() == 0) {
@@ -63,10 +64,10 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	}
 
 	@Override
-	public void setNetwork(ElectricNetwork network) {
-		if (electricNetwork != network) {
+	public void setNetwork(INetwork network) {
+		if (electricNetwork != network && network instanceof ElectricNetwork) {
 			removeFromNetwork();
-			electricNetwork = network;
+			electricNetwork = (ElectricNetwork) network;
 		}
 	}
 
@@ -76,8 +77,8 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 			ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
 				TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
-				if (facing instanceof IConductor) {
-					foundNetworks.add(((IConductor) facing).getNetwork());
+				if (facing instanceof IConductor && ((IConductor) facing).getNetwork() instanceof ElectricNetwork) {
+					foundNetworks.add((ElectricNetwork) ((IConductor) facing).getNetwork());
 				}
 			}
 			if (foundNetworks.size() > 0) {
@@ -122,7 +123,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	@Override
 	public void onChunkUnloaded() {
 		remove();
-		ElectricNetworkRegistry.pruneEmptyNetworks();
+		NetworkRegistry.pruneEmptyNetworks();
 	}
 
 	@Override

@@ -1,7 +1,7 @@
-package electrodynamics.common.electricity.network;
+package electrodynamics.common.network;
 
-import electrodynamics.References;
-import electrodynamics.api.conductor.IConductor;
+import electrodynamics.api.References;
+import electrodynamics.api.network.conductor.IConductor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class NetworkLoader {
+
 	@SubscribeEvent
 	public void onChunkLoad(ChunkEvent.Load event) {
 		if (event.getChunk() != null) {

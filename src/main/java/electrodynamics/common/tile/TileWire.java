@@ -1,7 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.conductor.IConductor;
+import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.wire.BlockWire;
 import electrodynamics.common.tile.generic.GenericTileWire;
