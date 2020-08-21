@@ -160,7 +160,7 @@ public class BlockFortronFieldConstructor extends BlockBaseContainerModelled {
 							colorName = "orange";
 						} else if (vanilla && damage == 15 || defaultDisplayName.contains("white"))
 						{
-							color = super.colorMultiplier(world, x, y, z);
+							color = Color.WHITE.getRGB();
 							colorName = "white";
 						}
 						constructor.setFieldColorMultiplier(color);
