@@ -12,9 +12,11 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.wire.BlockWire;
+import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
+import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemMultimeter;
@@ -24,6 +26,7 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
+import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.subtype.Subtype;
@@ -31,6 +34,7 @@ import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
+import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
 import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
 import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
 import electrodynamics.common.tile.processor.o2o.TileWireMill;
@@ -38,7 +42,6 @@ import electrodynamics.common.tile.wire.TileLogisticalWire;
 import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -74,7 +77,7 @@ public class DeferredRegisters {
 
 	private static void registerSubtypeBlockItem(Subtype[] array) {
 		for (Subtype subtype : array) {
-			ITEMS.register(subtype.tag(), supplier(new BlockItem(SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
+			ITEMS.register(subtype.tag(), supplier(new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
 		}
 	}
 
@@ -87,12 +90,16 @@ public class DeferredRegisters {
 		registerSubtypeItem(SubtypeIngot.values());
 		registerSubtypeItem(SubtypeDust.values());
 		registerSubtypeItem(SubtypeImpureDust.values());
+		registerSubtypeItem(SubtypeOxide.values());
 		registerSubtypeItem(SubtypeGear.values());
 		registerSubtypeItem(SubtypePlate.values());
 		registerSubtypeItem(SubtypeCircuit.values());
 		for (SubtypeProcessorUpgrade subtype : SubtypeProcessorUpgrade.values()) {
 			ITEMS.register(subtype.tag(), supplier(new ItemProcessorUpgrade(new Item.Properties().group(References.CORETAB), subtype), subtype));
 		}
+
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer), "|translate|tooltip.transformer.energyloss");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer), "|translate|tooltip.transformer.energyloss");
 	}
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().group(References.CORETAB))));
@@ -115,6 +122,8 @@ public class DeferredRegisters {
 			() -> new TileEntityType<>(TileBatteryBox::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
 	public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
 			() -> new TileEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
+	public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(SubtypeMachine.oxidationfurnace.tag(),
+			() -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
 
 	public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile", () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile", () -> new TileEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
@@ -122,6 +131,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<ContainerType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS.register(SubtypeMachine.electricfurnace.tag(),
 			() -> new ContainerType<>(ContainerElectricFurnace::new));
 	public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor", () -> new ContainerType<>(ContainerO2OProcessor::new));
+	public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS.register("do2oprocessor", () -> new ContainerType<>(ContainerDO2OProcessor::new));
 	public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(), () -> new ContainerType<>(ContainerBatteryBox::new));
 
 	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {

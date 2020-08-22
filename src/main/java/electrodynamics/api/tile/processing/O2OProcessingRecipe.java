@@ -39,11 +39,11 @@ public class O2OProcessingRecipe {
 				output = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
 			}
 		} else if (objects[nextStack] instanceof ItemStack) {
-			input = (ItemStack) objects[nextStack];
+			output = (ItemStack) objects[nextStack];
 		} else if (objects[nextStack] instanceof Item) {
-			input = new ItemStack((Item) objects[nextStack]);
+			output = new ItemStack((Item) objects[nextStack]);
 		} else if (objects[nextStack] instanceof Block) {
-			input = new ItemStack((Block) objects[nextStack]);
+			output = new ItemStack((Block) objects[nextStack]);
 		}
 	}
 

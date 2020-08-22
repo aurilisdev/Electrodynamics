@@ -61,6 +61,5 @@ public class RecipeManager {
 		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.GOLD_ORE, SubtypeImpureDust.gold, 3));
 		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeImpureDust.iron, 3));
 		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.OBSIDIAN, SubtypeDust.obsidian, 2));
-
 	}
 }

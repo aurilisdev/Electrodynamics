@@ -46,7 +46,7 @@ public class ContainerO2OProcessor extends GenericContainerInventory {
 
 	@OnlyIn(Dist.CLIENT)
 	public int getBurnLeftScaled() {
-		return inventorydata.get(0) * 24 / inventorydata.get(3);
+		return inventorydata.get(0) * 24 / (inventorydata.get(3) == 0 ? 1 : inventorydata.get(3));
 	}
 
 	@OnlyIn(Dist.CLIENT)
