@@ -146,6 +146,7 @@ public class TileQuantumAssembler extends TileBasePoweredContainer implements IG
 		{
 			ItemStack clone = input.copy();
 			clone.stackTagCompound = null;
+			clone.stackSize = 1;
 			setInventorySlotContents(SLOT_OUTPUT, clone);
 		}
 	}
