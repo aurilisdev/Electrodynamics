@@ -15,7 +15,8 @@ import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.electricity.damage.ElectricDamageSource;
-import electrodynamics.common.tile.TileWire;
+import electrodynamics.common.tile.wire.TileLogisticalWire;
+import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -84,6 +85,11 @@ public class BlockWire extends Block {
 		AABB_WEST = Block.makeCuboidShape(0, sm, sm, lg, lg, lg);
 		AABB_EAST = Block.makeCuboidShape(sm, sm, sm, 16, lg, lg);
 		WIRESET.add(this);
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return super.canConnectRedstone(state, world, pos, side);
 	}
 
 	@Override
@@ -204,6 +210,25 @@ public class BlockWire extends Block {
 	}
 
 	@Override
+	public boolean canProvidePower(BlockState state) {
+		return ((BlockWire) state.getBlock()).wire.logistical ? true : false;
+	}
+
+	@Override
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		return blockState.getWeakPower(blockAccess, pos, side);
+	}
+
+	@Override
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		TileEntity tile = blockAccess.getTileEntity(pos);
+		if (tile instanceof TileLogisticalWire) {
+			return ((TileLogisticalWire) tile).isPowered ? 15 : 0;
+		}
+		return 0;
+	}
+
+	@Override
 	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(facing);
 		TileEntity tile = world.getTileEntity(facingPos);
@@ -225,6 +250,6 @@ public class BlockWire extends Block {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TileWire();
+		return ((BlockWire) state.getBlock()).wire.logistical ? new TileLogisticalWire() : new TileWire();
 	}
 }

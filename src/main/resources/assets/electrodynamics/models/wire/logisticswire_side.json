@@ -1,0 +1,7 @@
+{
+	"parent": "electrodynamics:parent/logisticswire_side",
+	"textures": {
+		"particle": "electrodynamics:block/wire/logisticswire_base",
+		"texture": "electrodynamics:block/wire/logisticswire_base"
+	}
+}

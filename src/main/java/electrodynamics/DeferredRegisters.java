@@ -30,11 +30,12 @@ import electrodynamics.common.subtype.Subtype;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileTransformer;
-import electrodynamics.common.tile.TileWire;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
 import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
 import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
 import electrodynamics.common.tile.processor.o2o.TileWireMill;
+import electrodynamics.common.tile.wire.TileLogisticalWire;
+import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
@@ -116,7 +117,7 @@ public class DeferredRegisters {
 			() -> new TileEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
 
 	public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile", () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
-
+	public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile", () -> new TileEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<ContainerType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS.register(SubtypeMachine.coalgenerator.tag(), () -> new ContainerType<>(ContainerCoalGenerator::new));
 	public static final RegistryObject<ContainerType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS.register(SubtypeMachine.electricfurnace.tag(),
 			() -> new ContainerType<>(ContainerElectricFurnace::new));

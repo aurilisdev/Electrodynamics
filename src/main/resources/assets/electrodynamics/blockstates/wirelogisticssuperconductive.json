@@ -1,0 +1,162 @@
+{
+	"multipart": [
+		{
+			"when": {
+				"down": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_none",
+				"x": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"down": "wire"
+					},
+					{
+						"down": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_side",
+				"x": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"up": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_none",
+				"x": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"up": "wire"
+					},
+					{
+						"up": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_side",
+				"x": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"north": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_none"
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"north": "wire"
+					},
+					{
+						"north": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_side"
+			}
+		},
+		{
+			"when": {
+				"south": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_none",
+				"y": 180,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"south": "wire"
+					},
+					{
+						"south": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_side",
+				"y": 180,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"west": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_none",
+				"y": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"west": "wire"
+					},
+					{
+						"west": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_side",
+				"y": 270,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"east": "none"
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_none",
+				"y": 90,
+				"uvlock": true
+			}
+		},
+		{
+			"when": {
+				"OR": [
+					{
+						"east": "wire"
+					},
+					{
+						"east": "inventory"
+					}
+				]
+			},
+			"apply": {
+				"model": "electrodynamics:wire/logisticswire_side",
+				"y": 90,
+				"uvlock": true
+			}
+		}
+	]
+}
