@@ -34,6 +34,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	private boolean		didCollide;
 	private int			hostLocationX, hostLocationY, hostLocationZ;
 	private Face		movementDirection		= Face.NORTH;
+	private int mass = 1;
 
 	public EntityParticle(World world) {
 		super(world);
@@ -41,7 +42,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		setSize(0.1F, 0.1F);
 	}
 
-	public EntityParticle(World world, int x, int y, int z, Face movementDirection) {
+	public EntityParticle(World world, int x, int y, int z, Face movementDirection, int mass) {
 		this(world);
 		this.movementDirection = movementDirection;
 		hostLocationX = x + this.movementDirection.getOpposite().offsetX;
@@ -49,7 +50,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		hostLocationZ = z + this.movementDirection.getOpposite().offsetZ;
 		accelerateParticle(0.001f);
 		setPosition(x + 0.5, y + 0.5, z + 0.5);
-
+		this.mass = mass;
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 			{
 				worldObj.playSound(posX, posY, posZ, NuclearReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)), true);
 			}
-			double acceleration = 0.002;
+			double acceleration = 0.001 + (1D / mass / 100);
 			if (accelerator.getParticle() == null)
 			{
 				accelerator.setParticle(this);
@@ -266,6 +267,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		hostLocationY = tag.getInteger("tileLocationY");
 		hostLocationZ = tag.getInteger("tileLocationZ");
 		movementDirection = Face.getOrientation(tag.getByte("direction"));
+		mass = tag.getInteger("mass");
 	}
 
 	@Override
@@ -275,6 +277,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		tag.setDouble("tileLocationY", hostLocationY);
 		tag.setDouble("tileLocationZ", hostLocationZ);
 		tag.setByte("direction", (byte) movementDirection.ordinal());
+		tag.setInteger("mass", mass);
 	}
 
 	@Override
@@ -347,5 +350,10 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	public boolean didCollide()
 	{
 		return didCollide;
+	}
+
+	public int getMass()
+	{
+		return mass;
 	}
 }

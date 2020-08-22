@@ -25,11 +25,12 @@ public class GuiParticleAccelerator extends GuiContainerBase<TileParticleAcceler
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		drawString("Velocity: " + roundPrecise((double) (host.getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED * 100.0F), 1) + "%", 8, 19);
-		drawString("Status: " + host.getAcceleratorStatus().name(), 8, 30);
-		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getPowerUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 41);
-		drawString("Antimatter: " + host.getAntimatterAmount() + " mg", 8, ySize - 96 + 2, 4210752);
-		drawString("Used: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getSessionUse() * host.getCurrentSessionTicks(), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR), 8, 52);
+		drawString("Velocity: " + roundPrecise((double) (host.getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED * 100.0F), 1) + "%", 8, 18);
+		drawString("Status: " + host.getAcceleratorStatus().name(), 8, 28);
+		drawString("Usage: " + ElectricityDisplay.getDisplayShortTicked(ElectricityUtilities.convertEnergy(host.getPowerUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 38);
+		drawString("Used: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getSessionUse() * host.getCurrentSessionTicks(), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR), 8, 48);
+		drawString("Mass: " + host.getInputMass() + " ng", 8, 58);
+		drawString("Antimatter: " + host.getAntimatterAmount() + " micrograms", 8, ySize - 96 + 2, 4210752);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "accelerator.gui"), xSize / 2, 5);
 	}
 }
