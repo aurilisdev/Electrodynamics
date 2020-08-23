@@ -77,7 +77,7 @@ public class BlockMachine extends Block {
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return machine == SubtypeMachine.coalgeneratorrunning ? 12 : machine == SubtypeMachine.electricfurnacerunning ? 8 : super.getLightValue(state, world, pos);
+		return machine == SubtypeMachine.coalgeneratorrunning ? 12 : machine == SubtypeMachine.electricfurnacerunning ? 8 : machine == SubtypeMachine.oxidationfurnacerunning ? 8 : super.getLightValue(state, world, pos);
 	}
 
 	@SuppressWarnings("deprecation")

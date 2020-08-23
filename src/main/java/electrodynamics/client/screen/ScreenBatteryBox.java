@@ -34,7 +34,7 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
 		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 		font.func_238422_b_(matrixStack,
 				new TranslationTextComponent("gui.batterybox.current",
-						ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 / TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.AMPERE)),
+						ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * container.getCapacityMultiplier() / TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.AMPERE)),
 				playerInventoryTitleX, (float) playerInventoryTitleY - 55, 4210752);
 		font.func_238422_b_(matrixStack,
 				new TranslationTextComponent("gui.batterybox.transfer",

@@ -42,7 +42,7 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 	@Override
 	public boolean canProcess() {
 		if (joules >= getJoulesPerTick()) {
-			if (currentOperatingTick == 3) {
+			if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
 				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 			}
 			if (!getInput().isEmpty()) {
@@ -63,6 +63,8 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 					return (output.isEmpty() || ItemStack.areItemsEqual(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 				}
 			}
+		} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)) {
+			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 		}
 		return false;
 	}
@@ -70,7 +72,6 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 	@Override
 	protected void failedOperation() {
 		super.failedOperation();
-		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 		cachedRecipe = null;
 	}
 

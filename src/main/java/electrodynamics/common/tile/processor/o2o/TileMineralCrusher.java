@@ -12,7 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileMineralCrusher extends GenericTileProcessor implements IO2OProcessor {
-	public static final double REQUIRED_JOULES_PER_TICK = 250;
+	public static final double REQUIRED_JOULES_PER_TICK = 110;
 	public static final int REQUIRED_TICKS = 200;
 
 	public static final int[] SLOTS_UP = new int[] { 0 };

@@ -43,10 +43,10 @@ public class TileTransformer extends GenericTileBase implements IPowerProvider, 
 				double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 1920.0);
 				locked = true;
 				TransferPack returner = debug ? TransferPack.ampsVoltage(1, 1)
-						: output.<IPowerReceiver>get().receivePower(TransferPack.joulesVoltage(transfer.getJoules() * 0.9, resultVoltage), getFacing().getOpposite(), debug);
+						: output.<IPowerReceiver>get().receivePower(TransferPack.joulesVoltage(transfer.getJoules() * 0.95, resultVoltage), getFacing().getOpposite(), debug);
 				locked = false;
 				if (returner.getJoules() > 0) {
-					returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * 0.9, resultVoltage);
+					returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * 0.05, resultVoltage);
 				}
 				return returner;
 			}

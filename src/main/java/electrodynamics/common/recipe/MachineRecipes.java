@@ -32,6 +32,7 @@ public class MachineRecipes {
 			list = do2orecipemap.get(type);
 		}
 		list.add(recipe);
+		list.add(new DO2OProcessingRecipe(recipe.getInput2(), recipe.getInput1(), recipe.getOutput()));
 	}
 
 	public static boolean canProcess(IElectricProcessor processor) {

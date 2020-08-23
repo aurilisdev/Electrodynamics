@@ -241,8 +241,6 @@ public class BlockWire extends Block {
 		}
 	}
 
-	// TODO: Maybe add some random block tick update here which we use to
-	// electrocute players in water
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;

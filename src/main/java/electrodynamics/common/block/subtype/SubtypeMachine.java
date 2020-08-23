@@ -38,6 +38,8 @@ public enum SubtypeMachine implements Subtype {
 				return false;
 			} else if (mb == coalgenerator && ma == coalgeneratorrunning || mb == coalgeneratorrunning && ma == coalgenerator) {
 				return false;
+			} else if (mb == oxidationfurnace && ma == oxidationfurnacerunning || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
+				return false;
 			}
 		}
 		return true;

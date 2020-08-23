@@ -122,6 +122,6 @@
 	"tooltip.itemwire.info.logistical": "Emits redstone when powered",
 	"tooltip.info.capacityupgrade": "Multiplies Energy Capacity and Transfer by %sx",
 	"tooltip.info.speedupgrade": "Multiplies Speed by %sx",
-	"tooltip.transformer.energyloss": "Energy Loss: 10%",
+	"tooltip.transformer.energyloss": "Energy Loss: 5%",
 	"death.attack.electricity": "%s was electrocuted"
 }

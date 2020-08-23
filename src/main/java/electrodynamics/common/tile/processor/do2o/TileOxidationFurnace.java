@@ -14,7 +14,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OProcessor {
-	public static final double REQUIRED_JOULES_PER_TICK = 250;
+	public static final double REQUIRED_JOULES_PER_TICK = 90;
 	public static final int REQUIRED_TICKS = 250;
 
 	public static final int[] SLOTS_UP = new int[] { 0 };
@@ -28,10 +28,12 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 	@Override
 	public boolean canProcess() {
 		if (super.canProcess()) {
-			if (ticks == 3) {
+			if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace)) {
 				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 			}
 			return true;
+		} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)) {
+			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 		}
 		return false;
 	}
@@ -39,7 +41,6 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 	@Override
 	protected void failedOperation() {
 		super.failedOperation();
-		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
 	}
 
 	@Override
