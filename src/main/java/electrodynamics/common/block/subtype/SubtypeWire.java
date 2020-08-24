@@ -1,6 +1,6 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.common.subtype.Subtype;
+import electrodynamics.api.subtype.Subtype;
 
 public enum SubtypeWire implements Subtype {
 	tin(0.00645, 60, false, false), iron(0.0466, 100, false, false), copper(0.00806, 360, false, false), silver(0.00763, 600, false, false), gold(0.0117, 1000, false, false),

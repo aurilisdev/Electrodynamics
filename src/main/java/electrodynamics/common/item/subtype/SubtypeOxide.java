@@ -1,6 +1,6 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.common.subtype.Subtype;
+import electrodynamics.api.subtype.Subtype;
 
 public enum SubtypeOxide implements Subtype {
 	vanadium, disulfur, trisulfur;

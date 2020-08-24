@@ -1,6 +1,6 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.common.subtype.Subtype;
+import electrodynamics.api.subtype.Subtype;
 
 public enum SubtypeImpureDust implements Subtype {
 	iron, gold, copper, tin, silver, lead, vanadium;

@@ -1,6 +1,6 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.common.subtype.Subtype;
+import electrodynamics.api.subtype.Subtype;
 import net.minecraftforge.common.ToolType;
 
 public enum SubtypeOre implements Subtype {

@@ -6,6 +6,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
 import electrodynamics.api.References;
+import electrodynamics.api.subtype.Subtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -29,7 +30,6 @@ import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
-import electrodynamics.common.subtype.Subtype;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileTransformer;

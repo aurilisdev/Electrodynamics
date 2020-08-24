@@ -1,7 +1,7 @@
 package electrodynamics.common.block.subtype;
 
+import electrodynamics.api.subtype.Subtype;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.subtype.Subtype;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileTransformer;
