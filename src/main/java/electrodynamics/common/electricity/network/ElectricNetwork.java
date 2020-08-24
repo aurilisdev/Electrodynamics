@@ -77,13 +77,14 @@ public class ElectricNetwork implements ITickableNetwork {
 				}
 				TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / availableAcceptors.size() / networkResistance, maxTransfer.getVoltage());
 				for (TileEntity receiver : availableAcceptors) {
-					for (Direction connection : acceptorInputMap.get(receiver)) {
-						TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
-						joulesSent += pack.getJoules();
-						joulesTransmittedBuffer += pack.getJoules();
+					if (acceptorInputMap.containsKey(receiver)) {
+						for (Direction connection : acceptorInputMap.get(receiver)) {
+							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
+							joulesSent += pack.getJoules();
+							joulesTransmittedBuffer += pack.getJoules();
+						}
+						checkForOverload(TransferPack.joulesVoltage(joulesTransmittedBuffer, perReceiver.getVoltage()));
 					}
-					checkForOverload(TransferPack.joulesVoltage(joulesTransmittedBuffer, perReceiver.getVoltage()));
-
 				}
 			}
 			if (joulesSent > 0.0) {
