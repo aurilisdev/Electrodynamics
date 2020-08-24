@@ -88,7 +88,7 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.1-32.0.108'
-
+    compile fileTree("libs")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -108,6 +108,19 @@ jar {
 
 jar.finalizedBy('reobfJar') 
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+}
+task deobfJar(type: Jar) {
+	from sourceSets.main.output
+	classifier = 'deobf'
+}
+
+artifacts {
+	archives sourcesJar
+	archives deobfJar
+}
 publishing {
     publications {
         mavenJava(MavenPublication) {
