@@ -88,11 +88,6 @@ public class BlockWire extends Block {
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return super.canConnectRedstone(state, world, pos, side);
-	}
-
-	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		return Arrays.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(wire)));
 	}

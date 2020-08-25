@@ -22,7 +22,6 @@ public abstract class GenericContainerScreen<T extends Container> extends Contai
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(getScreenBackground());
