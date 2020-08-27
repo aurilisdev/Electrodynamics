@@ -2,7 +2,7 @@ package electrodynamics.common.tile.processor;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
-import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
@@ -43,7 +43,8 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 	public boolean canProcess() {
 		if (joules >= getJoulesPerTick()) {
 			if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
-				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
+				world.setBlockState(pos,
+						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 3);
 			}
 			if (!getInput().isEmpty()) {
 				boolean hasRecipe = cachedRecipe != null;
@@ -64,7 +65,7 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 				}
 			}
 		} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)) {
-			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
+			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 3);
 		}
 		return false;
 	}

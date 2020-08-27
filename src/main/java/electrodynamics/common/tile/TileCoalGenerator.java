@@ -7,6 +7,7 @@ import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
@@ -63,8 +64,8 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 				}
 			}
 			if (update) {
-				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(isBurning() ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).getDefaultState().with(BlockMachine.FACING,
-						getBlockState().get(BlockMachine.FACING)), 3);
+				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(isBurning() ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).getDefaultState().with(BlockGenericMachine.FACING,
+						getBlockState().get(BlockGenericMachine.FACING)), 3);
 			}
 		}
 
@@ -85,7 +86,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	@Override
 	public void tickClient() {
 		if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
-			Direction dir = getBlockState().get(BlockMachine.FACING);
+			Direction dir = getBlockState().get(BlockGenericMachine.FACING);
 			if (world.rand.nextInt(10) == 0) {
 				world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.6F,
 						false);
@@ -163,7 +164,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {
-		return getBlockState().get(BlockMachine.FACING).getOpposite() == direction;
+		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction;
 	}
 
 }

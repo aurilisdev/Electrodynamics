@@ -2,7 +2,7 @@ package electrodynamics.common.tile.processor.do2o;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IDO2OProcessor;
-import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
@@ -29,11 +29,12 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 	public boolean canProcess() {
 		if (super.canProcess()) {
 			if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace)) {
-				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
+				world.setBlockState(pos,
+						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 3);
 			}
 			return true;
 		} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)) {
-			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace).getDefaultState().with(BlockMachine.FACING, getBlockState().get(BlockMachine.FACING)), 3);
+			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 3);
 		}
 		return false;
 	}

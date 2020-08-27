@@ -21,6 +21,7 @@ public abstract class GenericContainerScreen<T extends Container> extends Contai
 		func_230459_a_(matrixStack, mouseX, mouseY);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

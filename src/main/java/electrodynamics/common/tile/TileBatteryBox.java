@@ -8,7 +8,7 @@ import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
-import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.tile.generic.GenericTileInventory;
@@ -139,7 +139,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Override
 	@Deprecated // This method might be bugged
 	public TransferPack extractPower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getBlockState().get(BlockMachine.FACING)) {
+		if (dir != getBlockState().get(BlockGenericMachine.FACING)) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -157,7 +157,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getBlockState().get(BlockMachine.FACING)) {
+		if (dir != getBlockState().get(BlockGenericMachine.FACING)) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -181,7 +181,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {
-		return getBlockState().get(BlockMachine.FACING).getOpposite() == direction || getBlockState().get(BlockMachine.FACING) == direction;
+		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction || getBlockState().get(BlockGenericMachine.FACING) == direction;
 	}
 
 }

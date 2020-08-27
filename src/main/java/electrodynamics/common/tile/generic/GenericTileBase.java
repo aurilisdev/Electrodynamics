@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.generic;
 
-import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.BlockGenericMachine;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -76,6 +76,6 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 	}
 
 	protected Direction getFacing() {
-		return getBlockState().get(BlockMachine.FACING);
+		return getBlockState().get(BlockGenericMachine.FACING);
 	}
 }

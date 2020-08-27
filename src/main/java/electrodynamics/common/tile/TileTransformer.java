@@ -6,6 +6,7 @@ import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tile.generic.GenericTileBase;
@@ -29,7 +30,7 @@ public class TileTransformer extends GenericTileBase implements IPowerProvider, 
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (locked || dir != getBlockState().get(BlockMachine.FACING).getOpposite()) {
+		if (locked || dir != getBlockState().get(BlockGenericMachine.FACING).getOpposite()) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -56,7 +57,7 @@ public class TileTransformer extends GenericTileBase implements IPowerProvider, 
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {
-		return getBlockState().get(BlockMachine.FACING).getOpposite() == direction || getBlockState().get(BlockMachine.FACING) == direction;
+		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction || getBlockState().get(BlockGenericMachine.FACING) == direction;
 	}
 
 	@Override

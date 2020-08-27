@@ -9,7 +9,7 @@ import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.tile.processing.IElectricProcessor;
 import electrodynamics.api.utilities.TransferPack;
-import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import net.minecraft.block.BlockState;
@@ -183,6 +183,6 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {
-		return getBlockState().get(BlockMachine.FACING).getOpposite() == direction;
+		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction;
 	}
 }
