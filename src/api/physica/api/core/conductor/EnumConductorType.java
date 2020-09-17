@@ -28,6 +28,6 @@ public enum EnumConductorType {
 
 	public String asset()
 	{
-		return this == copper ? "wirecopper" : this == silver ? "wiresilver" : this == gold ? "wiregold" : this == superConductor ? "wiresuperconductor" : "wirecopper";
+		return this == copper ? "wirecopper" : this == silver ? "wiresilver" : this == gold ? "wiregold" : this == superconductor ? "wiresuperconductor" : "wirecopper";
 	}
 }
