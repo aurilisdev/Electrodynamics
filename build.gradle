@@ -87,7 +87,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.2-33.0.37'
+    minecraft 'net.minecraftforge:forge:1.16.3-34.0.7'
     compile fileTree("libs")
 }
 

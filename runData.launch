@@ -8,10 +8,10 @@
   <mapAttribute key="org.eclipse.debug.core.environmentVariables">
     <mapEntry key="MOD_CLASSES" value="electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main;electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main"/>
     <mapEntry key="MCP_MAPPINGS" value="snapshot_20200820-1.16.1"/>
-    <mapEntry key="MCP_VERSION" value="20200812.004259"/>
-    <mapEntry key="FORGE_VERSION" value="33.0.37"/>
+    <mapEntry key="MCP_VERSION" value="20200911.084530"/>
+    <mapEntry key="FORGE_VERSION" value="34.0.7"/>
     <mapEntry key="FORGE_GROUP" value="net.minecraftforge"/>
     <mapEntry key="target" value="fmluserdevdata"/>
-    <mapEntry key="MC_VERSION" value="1.16.2"/>
+    <mapEntry key="MC_VERSION" value="1.16.3"/>
   </mapAttribute>
 </launchConfiguration>

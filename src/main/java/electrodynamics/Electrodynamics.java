@@ -68,7 +68,8 @@ public class Electrodynamics {
 	public static void onLoadEvent(FMLLoadCompleteEvent event) {
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
-			Registry.register(WorldGenRegistries.field_243653_e, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(), Feature.ORE.withConfiguration(feature).func_242733_d(ore.maxY).func_242731_b(ore.veinsPerChunk).func_242728_a());
+			Registry.register(WorldGenRegistries.field_243653_e, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
+					Feature.ORE.withConfiguration(feature).func_242733_d(ore.maxY).func_242731_b(ore.veinsPerChunk).func_242728_a());
 		}
 		setupGen();
 	}
@@ -85,8 +86,7 @@ public class Electrodynamics {
 	}
 
 	public static void addFeatureToBiome(Biome biome, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> configuredFeature) {
-		List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(biome.func_242440_e().func_242498_c() /* List of Configured Features */
-		);
+		List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(biome.func_242440_e().func_242498_c());
 
 		while (biomeFeatures.size() <= decoration.ordinal()) {
 			biomeFeatures.add(Lists.newArrayList());
