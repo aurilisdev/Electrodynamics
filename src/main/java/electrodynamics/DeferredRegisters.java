@@ -52,6 +52,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class DeferredRegisters {
 	public static final HashMap<Subtype, Item> SUBTYPEITEM_MAPPINGS = new HashMap<>();
 	public static final HashMap<Subtype, Block> SUBTYPEBLOCK_MAPPINGS = new HashMap<>();
+	public static final HashMap<Subtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
 	public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
@@ -59,13 +60,13 @@ public class DeferredRegisters {
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
-			BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
 		}
 		for (SubtypeMachine subtype : SubtypeMachine.values()) {
-			BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
 		}
 		for (SubtypeWire subtype : SubtypeWire.values()) {
-			BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
 		}
 	}
 

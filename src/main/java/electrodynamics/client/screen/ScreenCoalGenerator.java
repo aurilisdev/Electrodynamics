@@ -32,13 +32,13 @@ public class ScreenCoalGenerator extends GenericContainerScreen<ContainerCoalGen
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.timeleft", container.getBurnTicksLeft() / 20 + "s"), (float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 53,
+		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.timeleft", container.getBurnTicksLeft() / 20 + "s"), (float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 53,
 				4210752);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.current", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getAmps(), ElectricUnit.AMPERE)),
+		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.current", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getAmps(), ElectricUnit.AMPERE)),
 				(float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 40, 4210752);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.output", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getWatts(), ElectricUnit.WATT)),
+		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.output", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getWatts(), ElectricUnit.WATT)),
 				(float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 27, 4210752);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.coalgenerator.voltage", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getVoltage(), ElectricUnit.VOLTAGE)),
+		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.voltage", ElectricityChatFormatter.getDisplayShort(TileCoalGenerator.DEFAULT_OUTPUT.getVoltage(), ElectricUnit.VOLTAGE)),
 				(float) playerInventoryTitleX + 70, (float) playerInventoryTitleY - 14, 4210752);
 	}
 

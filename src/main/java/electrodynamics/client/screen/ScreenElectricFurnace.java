@@ -31,9 +31,9 @@ public class ScreenElectricFurnace extends GenericContainerScreenUpgradeable<Con
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.o2oprocessor.usage", ElectricityChatFormatter.getDisplayShort(container.getJoulesPerTick() * 20, ElectricUnit.WATT)),
+		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.o2oprocessor.usage", ElectricityChatFormatter.getDisplayShort(container.getJoulesPerTick() * 20, ElectricUnit.WATT)),
 				(float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
-		font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.o2oprocessor.voltage", ElectricityChatFormatter.getDisplayShort(container.getVoltage(), ElectricUnit.VOLTAGE)),
+		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.o2oprocessor.voltage", ElectricityChatFormatter.getDisplayShort(container.getVoltage(), ElectricUnit.VOLTAGE)),
 				(float) playerInventoryTitleX + 77, playerInventoryTitleY, 4210752);
 	}
 

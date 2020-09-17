@@ -18,7 +18,7 @@ public abstract class GenericContainerScreen<T extends Container> extends Contai
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		func_230459_a_(matrixStack, mouseX, mouseY);
+		renderHoveredTooltip(matrixStack, mouseX, mouseY);
 	}
 
 	@SuppressWarnings("deprecation")
