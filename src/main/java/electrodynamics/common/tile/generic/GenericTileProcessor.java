@@ -174,7 +174,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 			}
 			if (transfer.getVoltage() > getVoltage()) {
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1, Mode.DESTROY);
+				world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), Mode.DESTROY);
 				return TransferPack.EMPTY;
 			}
 		}

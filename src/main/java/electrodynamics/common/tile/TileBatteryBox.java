@@ -171,7 +171,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 				}
 				if (transfer.getVoltage() > DEFAULT_VOLTAGE) {
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1, Mode.DESTROY);
+					world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / DEFAULT_VOLTAGE), Mode.DESTROY);
 					return TransferPack.EMPTY;
 				}
 			}
