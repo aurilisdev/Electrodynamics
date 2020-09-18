@@ -129,11 +129,10 @@ public class ElectricNetwork implements ITickableNetwork {
 		return toReturn;
 	}
 
-	public void refresh() {
+	public void refresh() {// TODO: This method is probably called way too much! Might cause lag
 		@SuppressWarnings("unchecked")
 		Set<IConductor> iterCables = (Set<IConductor>) conductorSet.clone();
 		Iterator<IConductor> it = iterCables.iterator();
-
 		acceptorSet.clear();
 		acceptorInputMap.clear();
 		while (it.hasNext()) {
