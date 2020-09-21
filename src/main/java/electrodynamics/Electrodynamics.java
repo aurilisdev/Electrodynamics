@@ -62,6 +62,7 @@ public class Electrodynamics {
 
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
+
 	}
 
 	@SubscribeEvent
@@ -96,7 +97,6 @@ public class Electrodynamics {
 		features.add(() -> configuredFeature);
 		biomeFeatures.set(decoration.ordinal(), features);
 
-		/* Change field_242484_f that contains the Configured Features of the Biome */
 		ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.func_242440_e(), biomeFeatures, "field_242484_f");
 	}
 }

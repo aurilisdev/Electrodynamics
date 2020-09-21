@@ -2,8 +2,10 @@ package electrodynamics.common.block.subtype;
 
 import electrodynamics.api.subtype.Subtype;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
 import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
@@ -18,7 +20,8 @@ import net.minecraft.world.IBlockReader;
 public enum SubtypeMachine implements Subtype {
 	electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class), coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
 	wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class), mineralgrinder(true, TileMineralGrinder.class), batterybox(true, TileBatteryBox.class),
-	oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class);
+	oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
+	solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class);
 
 	public final Class<? extends TileEntity> tileclass;
 	public final boolean showInItemGroup;

@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 public class BlockMachine extends BlockGenericMachine {
 	private static final VoxelShape transformershape = VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1);
+	private static final VoxelShape solargenshape = VoxelShapes.create(0, 0, 0, 1, 9.0 / 16.0, 1);
 	public final SubtypeMachine machine;
 
 	public BlockMachine(SubtypeMachine machine) {
@@ -31,7 +32,8 @@ public class BlockMachine extends BlockGenericMachine {
 	@SuppressWarnings("deprecation")
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.downgradetransformer ? transformershape : super.getShape(state, worldIn, pos, context);
+		return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.downgradetransformer ? transformershape
+				: machine == SubtypeMachine.solarpanel ? solargenshape : super.getShape(state, worldIn, pos, context);
 	}
 
 	@Override

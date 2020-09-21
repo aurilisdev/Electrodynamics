@@ -32,6 +32,7 @@ import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
 import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
@@ -111,6 +112,10 @@ public class DeferredRegisters {
 
 	public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
 			() -> new TileEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
+	public static final RegistryObject<TileEntityType<TileSolarPanel>> TILE_SOLARPANEL = TILES.register(SubtypeMachine.solarpanel.tag(),
+			() -> new TileEntityType<>(TileSolarPanel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel)), null));
+	public static final RegistryObject<TileEntityType<TileSolarPanel>> TILE_ADVANCEDSOLARPANEL = TILES.register(SubtypeMachine.advancedsolarpanel.tag(),
+			() -> new TileEntityType<>(TileSolarPanel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel)), null));
 	public static final RegistryObject<TileEntityType<TileElectricFurnace>> TILE_ELECTRICFURNACE = TILES.register(SubtypeMachine.electricfurnace.tag(),
 			() -> new TileEntityType<>(TileElectricFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)), null));
 	public static final RegistryObject<TileEntityType<TileWireMill>> TILE_WIREMILL = TILES.register(SubtypeMachine.wiremill.tag(),
