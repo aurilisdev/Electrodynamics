@@ -56,7 +56,7 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 
 	@Override
 	public double getVoltage() {
-		return DEFAULT_BASIC_MACHINE_VOLTAGE * 4;
+		return DEFAULT_BASIC_MACHINE_VOLTAGE * 2;
 	}
 
 	@Override
