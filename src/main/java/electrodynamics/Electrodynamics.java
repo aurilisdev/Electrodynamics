@@ -75,7 +75,7 @@ public class Electrodynamics {
 		setupGen();
 	}
 
-	@SuppressWarnings("deprecation")
+	@Deprecated
 	public static void setupGen() {
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.field_243657_i.getEntries()) {

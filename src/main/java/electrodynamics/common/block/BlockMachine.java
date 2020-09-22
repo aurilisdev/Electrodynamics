@@ -29,7 +29,7 @@ public class BlockMachine extends BlockGenericMachine {
 		this.machine = machine;
 	}
 
-	@SuppressWarnings("deprecation")
+	@Deprecated
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.downgradetransformer ? transformershape
@@ -54,7 +54,7 @@ public class BlockMachine extends BlockGenericMachine {
 		return machine == SubtypeMachine.coalgeneratorrunning ? 12 : machine == SubtypeMachine.electricfurnacerunning ? 8 : machine == SubtypeMachine.oxidationfurnacerunning ? 8 : super.getLightValue(state, world, pos);
 	}
 
-	@SuppressWarnings("deprecation")
+	@Deprecated
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (machine.shouldBreakOnReplaced(state, newState)) {
