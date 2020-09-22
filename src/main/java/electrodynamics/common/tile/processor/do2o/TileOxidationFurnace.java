@@ -2,6 +2,7 @@ package electrodynamics.common.tile.processor.do2o;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IDO2OProcessor;
+import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
@@ -17,8 +18,9 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 	public static final double REQUIRED_JOULES_PER_TICK = 90;
 	public static final int REQUIRED_TICKS = 250;
 
-	public static final int[] SLOTS_UP = new int[] { 0 };
-	public static final int[] SLOTS_DOWN = new int[] { 1 };
+	public static final int[] SLOTS_INPUT1 = new int[] { 0 };
+	public static final int[] SLOTS_INPUT2 = new int[] { 1 };
+	public static final int[] SLOTS_OUTPUT = new int[] { 2 };
 
 	public TileOxidationFurnace() {
 		super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
@@ -66,7 +68,8 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 
 	@Override
 	public int[] getSlotsForFace(Direction side) {
-		return side == Direction.UP ? SLOTS_UP : side == Direction.DOWN ? SLOTS_DOWN : SLOTS_EMPTY;
+		return side == Direction.UP ? SLOTS_INPUT1
+				: side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT2 : side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_OUTPUT : SLOTS_EMPTY;
 	}
 
 	@Override

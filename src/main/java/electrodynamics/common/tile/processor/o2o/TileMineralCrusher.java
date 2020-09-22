@@ -2,6 +2,7 @@ package electrodynamics.common.tile.processor.o2o;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
+import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,8 +16,8 @@ public class TileMineralCrusher extends GenericTileProcessor implements IO2OProc
 	public static final double REQUIRED_JOULES_PER_TICK = 110;
 	public static final int REQUIRED_TICKS = 200;
 
-	public static final int[] SLOTS_UP = new int[] { 0 };
-	public static final int[] SLOTS_DOWN = new int[] { 1 };
+	public static final int[] SLOTS_INPUT = new int[] { 0 };
+	public static final int[] SLOTS_OUTPUT = new int[] { 1 };
 
 	public TileMineralCrusher() {
 		super(DeferredRegisters.TILE_MINERALCRUSHER.get());
@@ -45,7 +46,8 @@ public class TileMineralCrusher extends GenericTileProcessor implements IO2OProc
 
 	@Override
 	public int[] getSlotsForFace(Direction side) {
-		return side == Direction.UP ? SLOTS_UP : side == Direction.DOWN ? SLOTS_DOWN : SLOTS_EMPTY;
+		return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT
+				: side == Direction.DOWN || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_OUTPUT : SLOTS_EMPTY;
 	}
 
 	@Override

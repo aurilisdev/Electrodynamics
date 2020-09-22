@@ -2,6 +2,7 @@ package electrodynamics.common.tile.processor;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
+import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
@@ -19,8 +20,8 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 	public static final double REQUIRED_JOULES_PER_TICK = 175;
 	public static final int REQUIRED_TICKS = 100;
 
-	public static final int[] SLOTS_UP = new int[] { 0 };
-	public static final int[] SLOTS_DOWN = new int[] { 1 };
+	public static final int[] SLOTS_INPUT = new int[] { 0 };
+	public static final int[] SLOTS_OUTPUT = new int[] { 1 };
 
 	public TileElectricFurnace() {
 		super(DeferredRegisters.TILE_ELECTRICFURNACE.get());
@@ -95,7 +96,8 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 
 	@Override
 	public int[] getSlotsForFace(Direction side) {
-		return side == Direction.UP ? SLOTS_UP : side == Direction.DOWN ? SLOTS_DOWN : SLOTS_EMPTY;
+		return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT
+				: side == Direction.DOWN || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_OUTPUT : SLOTS_EMPTY;
 	}
 
 	@Override

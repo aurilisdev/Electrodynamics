@@ -6,6 +6,7 @@ import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
+import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
@@ -28,7 +29,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IElectricTile {
 
 	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(34, 120);
-	public static final int[] SLOTS_UP = new int[] { 0 };
+	public static final int[] SLOTS_INPUT = new int[] { 0 };
 	public static final int COAL_BURN_TIME = 1000;
 
 	protected CachedTileOutput output;
@@ -107,7 +108,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
 	@Override
 	public int[] getSlotsForFace(Direction side) {
-		return side == Direction.UP ? SLOTS_UP : SLOTS_EMPTY;
+		return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT : SLOTS_EMPTY;
 	}
 
 	@Override
