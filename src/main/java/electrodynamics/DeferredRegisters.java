@@ -113,6 +113,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
 	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter", supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
+	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", supplier(new Item(new Item.Properties().group(References.CORETAB))));
 
 	public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
 			() -> new TileEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
