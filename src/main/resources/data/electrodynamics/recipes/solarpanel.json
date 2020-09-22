@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sps",
+		"cic",
+		"idi"
+	],
+	"key": {
+		"s": {
+			"item": "electrodynamics:solarpanelplate"
+		},
+		"p": {
+			"item": "electrodynamics:platesteel"
+		},
+		"c": {
+			"item": "electrodynamics:circuitbasic"
+		},
+		"i": {
+			"item": "minecraft:ingot_iron"
+		},
+		"d": {
+			"item": "electrodynamics:dustcopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:solarpanel",
+		"count": 1
+	}
+}

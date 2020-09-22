@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sss",
+		"ppp"
+	],
+	"key": {
+		"p": {
+			"item": "electrodynamics:platesteel"
+		},
+		"s": {
+			"item": "electrodynamics:solarpanel"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:solarpanelplate",
+		"count": 1
+	}
+}
