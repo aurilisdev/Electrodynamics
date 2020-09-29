@@ -11,7 +11,7 @@
 <mapEntry key="FORGE_VERSION" value="32.0.108"/>
 <mapEntry key="MCP_MAPPINGS" value="snapshot_20200723-1.16.1"/>
 <mapEntry key="MCP_VERSION" value="20200625.160719"/>
-<mapEntry key="MC_VERSION" value="1.16.1"/>
+<mapEntry key="MC_VERSION" value="1.16.3"/>
 <mapEntry key="MOD_CLASSES" value="electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main;electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main"/>
 <mapEntry key="assetDirectory" value="C:\Users\Auril\.gradle\caches\forge_gradle\assets"/>
 <mapEntry key="assetIndex" value="1.16"/>
