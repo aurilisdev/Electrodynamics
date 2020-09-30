@@ -1,5 +1,6 @@
 package physica.nuclear.common.tile;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -175,7 +176,12 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			Block block = ((ItemBlock) itemStack.getItem()).field_150939_a;
 			try
 			{
-				mass = (int) Block.class.getDeclaredField("blockResistance").getFloat(block);
+				Field f = Block.class.getDeclaredField("field_149782_v");
+				f.setAccessible(true);
+				int hardness = Math.round(f.getFloat(block));
+				if(hardness == -1)
+					hardness = 100; // hack(block is unbreakable): could just set to 1?
+				mass = hardness;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
