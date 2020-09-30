@@ -194,10 +194,7 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 							if (entity instanceof EntityParticle && entity != this)
 							{
 								((EntityParticle) entity).onParticleSmash(this);
-								if (!isDead)
-								{
-									onParticleSmash((EntityParticle) entity);
-								}
+								onParticleSmash((EntityParticle) entity);
 								withParticle = true;
 							} else
 							{
