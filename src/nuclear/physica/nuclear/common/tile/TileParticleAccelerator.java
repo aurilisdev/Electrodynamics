@@ -138,10 +138,6 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 										antimatterAmount = 0;
 										setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemDarkmatterCell));
 									}
-								} else {
-									int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
-									antimatterAmount = (int) Math.min(1_000_000, antimatterAmount + (particle.getMass() + randomAmount) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
-									particle.setDead();
 								}
 							}
 						}
