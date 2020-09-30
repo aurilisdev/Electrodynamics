@@ -1,7 +1,7 @@
 package physica.api.core.conductor;
 
 public enum EnumConductorType {
-	copper(120, 15360), silver(240, 61440), gold(360, 138240), superConductor(-1, 307200);
+	copper(120, 15360), silver(240, 61440), gold(360, 138240), superconductor(-1, 307200);
 
 	public String getName()
 	{
@@ -28,6 +28,6 @@ public enum EnumConductorType {
 
 	public String asset()
 	{
-		return this == copper ? "wirecopper" : this == silver ? "wiresilver" : this == gold ? "wiregold" : this == superConductor ? "wiresuperconductor" : "wirecopper";
+		return this == copper ? "wirecopper" : this == silver ? "wiresilver" : this == gold ? "wiregold" : this == superconductor ? "wiresuperconductor" : "wirecopper";
 	}
 }

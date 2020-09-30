@@ -36,7 +36,7 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 	public void registerBlockIcons(IIconRegister register)
 	{
 		blockIcon = register.registerIcon(getTextureName());
-		blockIconOff = register.registerIcon(getTextureName() + "Off");
+		blockIconOff = register.registerIcon(getTextureName() + "off");
 	}
 
 	@Override

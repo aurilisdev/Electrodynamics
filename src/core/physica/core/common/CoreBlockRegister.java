@@ -81,7 +81,7 @@ public class CoreBlockRegister implements IContent {
 
 			for (EnumConductorType en : EnumConductorType.values())
 			{
-				if (en == EnumConductorType.superConductor)
+				if (en == EnumConductorType.superconductor)
 				{
 					ItemBlockDescriptable.addDescription(blockCable, en.ordinal(),
 							EnumChatFormatting.GREEN + "Max Power: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy((double) en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
