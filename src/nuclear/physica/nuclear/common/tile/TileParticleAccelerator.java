@@ -114,24 +114,34 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 					{
 						if (stackEmptyCell != null)
 						{
-							if (World().rand.nextFloat() > 0.666f)
+							if(stackEmptyCell.getItem() == NuclearItemRegister.itemEmptyQuantumCell)
 							{
-								int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
-								antimatterAmount = (int) Math.min(1_000_000, antimatterAmount + (particle.getMass() + randomAmount) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
-								particle.setDead();
-							} else if (antimatterAmount > 100)
-							{
-								decrStackSize(SLOT_INPUTCELLS, 1);
-								antimatterAmount = 0;
-								if (stackOutputSlot != null)
+								if (World().rand.nextFloat() > 0.666f)
 								{
-									if (stackOutputSlot.getItem() == NuclearItemRegister.itemDarkmatterCell)
+									int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
+									antimatterAmount = (int) Math.min(1_000_000, antimatterAmount + (particle.getMass() + randomAmount) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
+									particle.setDead();
+								}
+								else if (antimatterAmount > 100)
+								{
+									if (stackOutputSlot != null)
 									{
-										stackOutputSlot.stackSize++;
+										if (stackOutputSlot.getItem() == NuclearItemRegister.itemDarkmatterCell)
+										{
+											decrStackSize(SLOT_INPUTCELLS, 1);
+											antimatterAmount = 0;
+											stackOutputSlot.stackSize++;
+										}
+									} else
+									{
+										decrStackSize(SLOT_INPUTCELLS, 1);
+										antimatterAmount = 0;
+										setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemDarkmatterCell));
 									}
-								} else if (stackEmptyCell.getItem() == NuclearItemRegister.itemEmptyQuantumCell)
-								{
-									setInventorySlotContents(SLOT_OUTPUT, new ItemStack(NuclearItemRegister.itemDarkmatterCell));
+								} else {
+									int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
+									antimatterAmount = (int) Math.min(1_000_000, antimatterAmount + (particle.getMass() + randomAmount) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
+									particle.setDead();
 								}
 							}
 						}
