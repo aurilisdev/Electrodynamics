@@ -143,6 +143,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 						}
 					}
 					particle = null;
+					velocity = 0;
 				} else if (velocity >= ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)
 				{
 					int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
@@ -183,12 +184,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			Block block = ((ItemBlock) itemStack.getItem()).field_150939_a;
 			try
 			{
-				Field f = Block.class.getDeclaredField("field_149782_v");
-				f.setAccessible(true);
-				int hardness = Math.round(f.getFloat(block));
-				if(hardness == -1)
-					hardness = 100; // hack(block is unbreakable): could just set to 1?
-				mass = hardness;
+				mass = (int) Math.max(1, block.getExplosionResistance(null));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
