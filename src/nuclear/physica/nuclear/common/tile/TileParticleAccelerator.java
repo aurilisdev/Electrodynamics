@@ -68,10 +68,13 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		ItemStack stackOutputSlot = getStackInSlot(SLOT_OUTPUT);
 
 		if (stackMatter != null) {
-			inputMass = getMass(stackMatter);
-			lastInput = stackMatter.getItem();
+			if (stackMatter.getItem() != lastInput) {
+				inputMass = getMass(stackMatter);
+				lastInput = stackMatter.getItem();
+			}
 		} else {
 			inputMass = 0;
+			lastInput = null;
 		}
 
 		if (particle != null)
