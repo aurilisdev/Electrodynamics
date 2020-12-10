@@ -113,6 +113,8 @@
 	"gui.o2oprocessor.voltage": "Voltage: %s",
 	"gui.do2oprocessor.usage": "Usage: %s",
 	"gui.do2oprocessor.voltage": "Voltage: %s",
+	"gui.lao2lprocessor.usage": "Usage: %s",
+	"gui.lao2lprocessor.voltage": "Voltage: %s",
 	"gui.batterybox.transfer": "Transfer: %s",
 	"gui.batterybox.current": "Current: %s",
 	"gui.batterybox.voltage": "Voltage: %s",

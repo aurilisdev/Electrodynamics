@@ -15,11 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ContainerCoalGenerator extends GenericContainerInventory {
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(1));
+		this(id, playerinv, new Inventory(2));
 	}
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory) {
-		this(id, playerinv, inventory, new IntArray(1));
+		this(id, playerinv, inventory, new IntArray(2));
 	}
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -28,7 +28,7 @@ public class ContainerCoalGenerator extends GenericContainerInventory {
 
 	@Override
 	public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 35, 42, Items.CHARCOAL, Items.COAL));
+		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -44,6 +44,11 @@ public class ContainerCoalGenerator extends GenericContainerInventory {
 	@OnlyIn(Dist.CLIENT)
 	public boolean isBurning() {
 		return inventorydata.get(0) > 0;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public int getHeat() {
+		return inventorydata.get(1);
 	}
 
 }

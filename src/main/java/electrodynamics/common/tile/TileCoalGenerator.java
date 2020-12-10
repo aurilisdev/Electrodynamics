@@ -11,6 +11,7 @@ import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.config.Constants;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.tile.generic.GenericTileInventory;
 import net.minecraft.entity.player.PlayerInventory;
@@ -27,12 +28,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IElectricTile {
-
-	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(34, 120);
+	public TransferPack currentOutput = TransferPack.EMPTY;
 	public static final int[] SLOTS_INPUT = new int[] { 0 };
 	public static final int COAL_BURN_TIME = 1000;
 
 	protected CachedTileOutput output;
+	protected double heat = 27;
 	protected int burnTime;
 
 	public TileCoalGenerator() {
@@ -70,11 +71,13 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			}
 		}
 
-		if (isBurning()) {
+		if (heat > 27) {
 			if (output.get() instanceof IPowerReceiver) {
-				output.<IPowerReceiver>get().receivePower(DEFAULT_OUTPUT, getFacing(), false);
+				output.<IPowerReceiver>get().receivePower(currentOutput, getFacing(), false);
 			}
 		}
+		heat = isBurning() ? heat * 1.00788 > 3000 ? 3000 : heat * 1.00788 : heat * 0.99212 < 27 ? 27 : heat * 0.99212;
+		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((double) (heat - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	@Override
@@ -122,6 +125,8 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			switch (index) {
 			case 0:
 				return burnTime;
+			case 1:
+				return (int) heat;
 			default:
 				return 0;
 			}
@@ -133,13 +138,16 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			case 0:
 				burnTime = value;
 				break;
+			case 1:
+				heat = value;
+				break;
 			}
 
 		}
 
 		@Override
 		public int size() {
-			return 1;
+			return 2;
 		}
 	};
 
@@ -155,7 +163,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
 	@Override
 	public double getVoltage(Direction from) {
-		return TileCoalGenerator.DEFAULT_OUTPUT.getVoltage();
+		return Constants.COALGENERATOR_MAX_OUTPUT.getVoltage();
 	}
 
 	@Override
