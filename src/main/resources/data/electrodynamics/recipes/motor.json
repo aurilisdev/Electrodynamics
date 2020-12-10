@@ -7,13 +7,13 @@
 	],
 	"key": {
 		"s": {
-			"item": "electrodynamics:ingotsteel"
+			"tag": "forge:ingots/steel"
 		},
 		"w": {
 			"item": "electrodynamics:wireinsulatedcopper"
 		},
 		"i": {
-			"item": "minecraft:iron_ingot"
+			"tag": "forge:ingots/iron"
 		}
 	},
 	"result": {

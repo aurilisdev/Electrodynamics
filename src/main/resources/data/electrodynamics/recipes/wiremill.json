@@ -7,16 +7,16 @@
 	],
 	"key": {
 		"s": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"b": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "forge:circuits/basic"
 		},
 		"m": {
 			"item": "electrodynamics:motor"
 		},
 		"f": {
-			"item": "electrodynamics:ingotbronze"
+			"tag": "forge:ingots/bronze"
 		}
 	},
 	"result": {

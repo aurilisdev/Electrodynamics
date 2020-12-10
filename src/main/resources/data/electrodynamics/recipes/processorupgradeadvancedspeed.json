@@ -7,16 +7,16 @@
 	],
 	"key": {
 		"p": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"b": {
-			"item": "electrodynamics:gearbronze"
+			"tag": "forge:gears/bronze"
 		},
 		"m": {
 			"item": "electrodynamics:wireinsulatedgold"
 		},
 		"s": {
-			"item": "electrodynamics:circuitadvanced"
+			"tag": "forge:circuits/advanced"
 		},
 		"c": {
 			"item": "electrodynamics:processorupgradebasicspeed"

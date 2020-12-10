@@ -7,16 +7,16 @@
 	],
 	"key": {
 		"b": {
-			"item": "electrodynamics:platebronze"
+			"tag": "forge:plates/bronze"
 		},
 		"s": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"c": {
 			"item": "electrodynamics:coil"
 		},
 		"a": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "forge:circuits/basic"
 		}
 	},
 	"result": {

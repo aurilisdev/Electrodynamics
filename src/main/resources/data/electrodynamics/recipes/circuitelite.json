@@ -13,7 +13,7 @@
 			"item": "minecraft:lapis_block"
 		},
 		"b": {
-			"item": "electrodynamics:circuitadvanced"
+			"tag": "forge:circuits/advanced"
 		}
 	},
 	"result": {

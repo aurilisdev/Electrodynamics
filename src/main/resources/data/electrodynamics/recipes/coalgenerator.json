@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"s": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"f": {
 			"item": "minecraft:furnace"

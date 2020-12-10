@@ -10,7 +10,7 @@
 			"item": "minecraft:charcoal"
 		},
 		"t": {
-			"item": "electrodynamics:ingottin"
+			"tag": "forge:ingots/tin"
 		},
 		"r": {
 			"item": "minecraft:redstone"

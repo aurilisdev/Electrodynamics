@@ -7,13 +7,13 @@
 	],
 	"key": {
 		"s": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"w": {
 			"item": "electrodynamics:wireinsulatedcopper"
 		},
 		"c": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "forge:circuits/basic"
 		}
 	},
 	"result": {

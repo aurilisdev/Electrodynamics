@@ -13,10 +13,10 @@
 			"item": "minecraft:gray_stained_glass_pane"
 		},
 		"i": {
-			"item": "minecraft:iron_ingot"
+			"tag": "forge:ingots/iron"
 		},
 		"c": {
-			"item": "electrodynamics:ingotcopper"
+			"tag": "forge:ingots/copper"
 		},
 		"r": {
 			"item": "minecraft:redstone"

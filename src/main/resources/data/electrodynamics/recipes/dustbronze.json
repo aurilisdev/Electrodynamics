@@ -2,13 +2,13 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "electrodynamics:dustcopper"
+			"tag": "forge:dusts/copper"
 		},
 		{
-			"item": "electrodynamics:dustcopper"
+			"tag": "forge:dusts/copper"
 		},
 		{
-			"item": "electrodynamics:dusttin"
+			"tag": "forge:dusts/tin"
 		}
 	],
 	"result": {

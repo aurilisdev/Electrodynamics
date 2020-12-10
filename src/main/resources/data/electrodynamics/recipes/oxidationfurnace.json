@@ -7,13 +7,13 @@
 	],
 	"key": {
 		"s": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"f": {
-			"item": "electrodynamics:circuitadvanced"
+			"tag": "forge:circuits/advanced"
 		},
 		"a": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "forge:circuits/basic"
 		},
 		"m": {
 			"item": "electrodynamics:motor"

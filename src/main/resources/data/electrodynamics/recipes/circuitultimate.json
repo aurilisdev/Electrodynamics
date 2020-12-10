@@ -7,13 +7,13 @@
 	],
 	"key": {
 		"g": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"s": {
-			"item": "electrodynamics:dustobsidian"
+			"tag": "forge:dusts/obsidian"
 		},
 		"b": {
-			"item": "electrodynamics:circuitelite"
+			"tag": "forge:circuits/elite"
 		}
 	},
 	"result": {

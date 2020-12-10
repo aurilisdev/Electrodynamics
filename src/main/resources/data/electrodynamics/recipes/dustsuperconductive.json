@@ -7,13 +7,13 @@
 	],
 	"key": {
 		"#": {
-			"item": "electrodynamics:dustendereye"
+			"tag": "forge:dusts/endereye"
 		},
 		"i": {
-			"item": "electrodynamics:dustsilver"
+			"tag": "forge:dusts/silver"
 		},
 		"g": {
-			"item": "electrodynamics:dustgold"
+			"tag": "forge:dusts/gold"
 		}
 	},
 	"result": {

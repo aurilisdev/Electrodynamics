@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockReader;
 
 public enum SubtypeMachine implements Subtype {
 	electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class), coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
-	wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class), mineralgrinder(true, TileMineralGrinder.class), batterybox(true, TileBatteryBox.class),
+	wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class), mineralgrinder(true, TileMineralGrinder.class),/*TODO: Recipe with lead and acid?*/ batterybox(true, TileBatteryBox.class),
 	oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
 	solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class);
 

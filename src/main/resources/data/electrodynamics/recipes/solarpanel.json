@@ -10,16 +10,16 @@
 			"item": "electrodynamics:solarpanelplate"
 		},
 		"p": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"c": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "forge:circuits/basic"
 		},
 		"i": {
-			"item": "minecraft:iron_ingot"
+			"tag": "forge:ingots/iron"
 		},
 		"d": {
-			"item": "electrodynamics:dustcopper"
+			"tag": "forge:dusts/copper"
 		}
 	},
 	"result": {

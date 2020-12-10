@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"w": {
-			"item": "electrodynamics:ingotcopper"
+			"tag": "forge:ingots/copper"
 		}
 	},
 	"result": {

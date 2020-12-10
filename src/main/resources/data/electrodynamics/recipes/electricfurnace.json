@@ -7,10 +7,10 @@
 	],
 	"key": {
 		"s": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"f": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "forge:circuits/basic"
 		},
 		"m": {
 			"item": "electrodynamics:motor"

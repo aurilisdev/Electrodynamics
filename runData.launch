@@ -7,11 +7,11 @@
   <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\run"/>
   <mapAttribute key="org.eclipse.debug.core.environmentVariables">
     <mapEntry key="MOD_CLASSES" value="electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main;electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main"/>
-    <mapEntry key="MCP_MAPPINGS" value="snapshot_20200820-1.16.1"/>
-    <mapEntry key="MCP_VERSION" value="20200911.084530"/>
-    <mapEntry key="FORGE_VERSION" value="34.0.7"/>
+    <mapEntry key="MCP_MAPPINGS" value="snapshot_20201028-1.16.3"/>
+    <mapEntry key="MCP_VERSION" value="20201102.104115"/>
+    <mapEntry key="FORGE_VERSION" value="35.1.11"/>
     <mapEntry key="FORGE_GROUP" value="net.minecraftforge"/>
     <mapEntry key="target" value="fmluserdevdata"/>
-    <mapEntry key="MC_VERSION" value="1.16.3"/>
+    <mapEntry key="MC_VERSION" value="1.16.4"/>
   </mapAttribute>
 </launchConfiguration>

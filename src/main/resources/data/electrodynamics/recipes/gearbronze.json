@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"w": {
-			"item": "electrodynamics:ingotbronze"
+			"tag": "forge:ingots/bronze"
 		}
 	},
 	"result": {

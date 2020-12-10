@@ -10,7 +10,7 @@
 			"item": "electrodynamics:battery"
 		},
 		"t": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"r": {
 			"item": "electrodynamics:wireinsulatedcopper"

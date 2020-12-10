@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"b": {
-			"item": "electrodynamics:circuitbasic"
+			"tag": "force:circuits/basic"
 		},
 		"d": {
 			"item": "minecraft:diamond"

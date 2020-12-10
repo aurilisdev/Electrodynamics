@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"w": {
-			"item": "minecraft:iron_ingot"
+			"item": "forge:ingots/iron"
 		}
 	},
 	"result": {

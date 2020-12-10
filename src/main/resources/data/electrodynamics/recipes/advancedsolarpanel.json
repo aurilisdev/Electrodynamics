@@ -6,7 +6,7 @@
 	],
 	"key": {
 		"p": {
-			"item": "electrodynamics:platesteel"
+			"tag": "forge:plates/steel"
 		},
 		"s": {
 			"item": "electrodynamics:solarpanel"

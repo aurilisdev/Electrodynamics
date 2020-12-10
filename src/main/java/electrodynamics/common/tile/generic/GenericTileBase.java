@@ -22,7 +22,7 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 	@Override
 	public void read(BlockState state, CompoundNBT compound) {
 		super.read(state, compound);
-		customName = ITextComponent.Serializer.func_240643_a_(compound.getString("CustomName"));
+		customName = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
 	}
 
 	@Override
