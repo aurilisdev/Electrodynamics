@@ -14,21 +14,21 @@ import net.minecraft.util.IntArray;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ContainerLAO2L extends GenericContainerInventory {
+public class ContainerLAO2LProcessor extends GenericContainerInventory {
 
-	public ContainerLAO2L(int id, PlayerInventory playerinv) {
+	public ContainerLAO2LProcessor(int id, PlayerInventory playerinv) {
 		this(id, playerinv, new Inventory(5));
 	}
 
-	public ContainerLAO2L(int id, PlayerInventory playerinv, IInventory inventory) {
+	public ContainerLAO2LProcessor(int id, PlayerInventory playerinv, IInventory inventory) {
 		this(id, playerinv, inventory, new IntArray(4));
 	}
 
-	public ContainerLAO2L(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+	public ContainerLAO2LProcessor(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 		super(DeferredRegisters.CONTAINER_LAO2LPROCESSOR.get(), id, playerinv, inventory, inventorydata);
 	}
 
-	public ContainerLAO2L(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+	public ContainerLAO2LProcessor(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 		super(type, id, playerinv, inventory, inventorydata);
 	}
 

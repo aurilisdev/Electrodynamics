@@ -6,7 +6,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.formatting.ElectricUnit;
 import electrodynamics.api.utilities.ElectricityChatFormatter;
 import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
-import electrodynamics.common.inventory.container.ContainerLAO2L;
+import electrodynamics.common.inventory.container.ContainerLAO2LProcessor;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -16,10 +16,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenLAO2LProcessor extends GenericContainerScreenUpgradeable<ContainerLAO2L> implements IHasContainer<ContainerLAO2L> {
+public class ScreenLAO2LProcessor extends GenericContainerScreenUpgradeable<ContainerLAO2LProcessor> implements IHasContainer<ContainerLAO2LProcessor> {
 	public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/lao2lprocessor.png");
 
-	public ScreenLAO2LProcessor(ContainerLAO2L container, PlayerInventory playerInventory, ITextComponent title) {
+	public ScreenLAO2LProcessor(ContainerLAO2LProcessor container, PlayerInventory playerInventory, ITextComponent title) {
 		super(container, playerInventory, title);
 	}
 

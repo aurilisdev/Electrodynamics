@@ -19,6 +19,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
@@ -47,6 +48,16 @@ public class BlockGenericMachine extends Block {
 			player.addStat(Stats.INTERACT_WITH_FURNACE);
 			return ActionResultType.CONSUME;
 		}
+	}
+
+	@Override
+	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return worldIn.getMaxLightLevel();
+	}
+
+	@Override
+	public boolean isTransparent(BlockState state) {
+		return true;
 	}
 
 	@Override
