@@ -8,17 +8,8 @@ import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
-import electrodynamics.client.screen.ScreenBatteryBox;
-import electrodynamics.client.screen.ScreenCoalGenerator;
-import electrodynamics.client.screen.ScreenDO2OProcessor;
-import electrodynamics.client.screen.ScreenElectricFurnace;
-import electrodynamics.client.screen.ScreenLAO2LProcessor;
-import electrodynamics.client.screen.ScreenO2OProcessor;
-import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeOre;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -55,16 +46,7 @@ public class Electrodynamics {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onClientSetup(FMLClientSetupEvent event) {
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_LAO2LPROCESSOR.get(), ScreenLAO2LProcessor::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
-
-		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
-
+		ClientRegister.setup();
 	}
 
 	@SubscribeEvent

@@ -19,7 +19,6 @@ import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
-import electrodynamics.common.inventory.container.ContainerLAO2LProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
@@ -144,7 +143,6 @@ public class DeferredRegisters {
 			() -> new ContainerType<>(ContainerElectricFurnace::new));
 	public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor", () -> new ContainerType<>(ContainerO2OProcessor::new));
 	public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS.register("do2oprocessor", () -> new ContainerType<>(ContainerDO2OProcessor::new));
-	public static final RegistryObject<ContainerType<ContainerLAO2LProcessor>> CONTAINER_LAO2LPROCESSOR = CONTAINERS.register("lao2lprocessor", () -> new ContainerType<>(ContainerLAO2LProcessor::new));
 	public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(), () -> new ContainerType<>(ContainerBatteryBox::new));
 
 	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
