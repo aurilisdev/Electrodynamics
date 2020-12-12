@@ -50,5 +50,4 @@ public class ContainerCoalGenerator extends GenericContainerInventory {
 	public int getHeat() {
 		return inventorydata.get(1);
 	}
-
 }

@@ -24,7 +24,7 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 
 	public TileOxidationFurnace() {
 		super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
-		addUpgradeSlots(2, 3, 4, 5);
+		addUpgradeSlots(3, 4, 5);
 	}
 
 	@Override
