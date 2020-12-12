@@ -5,7 +5,7 @@ import electrodynamics.api.utilities.TransferPack;
 import net.minecraft.util.Direction;
 
 public class TileAdvancedSolarPanel extends TileSolarPanel {
-	public static final TransferPack DEFAULT_OUTPUT_SETTINGS = TransferPack.ampsVoltage(3.5, 240);
+	public static final TransferPack DEFAULT_OUTPUT_SETTINGS = TransferPack.ampsVoltage(3 * 3.5, 240);
 
 	public TileAdvancedSolarPanel() {
 		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());

@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"w": {
-			"item": "forge:ingots/tin"
+			"tag": "forge:ingots/tin"
 		}
 	},
 	"result": {

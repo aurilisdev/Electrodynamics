@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"w": {
-			"item": "forge:ingots/steel"
+			"tag": "forge:ingots/steel"
 		}
 	},
 	"result": {

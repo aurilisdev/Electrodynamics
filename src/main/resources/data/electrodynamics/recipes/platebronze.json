@@ -6,7 +6,7 @@
     ],
     "key": {
         "i": {
-            "item": "forge:ingots/bronze"
+            "tag": "forge:ingots/bronze"
         }
     },
     "result": {
