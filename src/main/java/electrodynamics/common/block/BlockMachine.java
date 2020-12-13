@@ -6,8 +6,6 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import net.minecraft.block.BlockState;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
@@ -58,10 +56,6 @@ public class BlockMachine extends BlockGenericMachine {
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (machine.shouldBreakOnReplaced(state, newState)) {
-			TileEntity tile = worldIn.getTileEntity(pos);
-			if (tile instanceof IInventory) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
-			}
 			super.onReplaced(state, worldIn, pos, newState, isMoving);
 		} else {
 			worldIn.markBlockRangeForRenderUpdate(pos, state, newState);

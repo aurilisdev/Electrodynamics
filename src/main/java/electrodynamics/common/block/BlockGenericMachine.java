@@ -6,6 +6,8 @@ import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
@@ -19,6 +21,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
@@ -30,9 +33,24 @@ public class BlockGenericMachine extends Block {
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
+	@Deprecated
+	@Override
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile instanceof IInventory) {
+			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
+		}
+		super.onReplaced(state, worldIn, pos, newState, isMoving);
+	}
+
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
+	}
+
+	@Override
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return 1.0f;
 	}
 
 	@Override
