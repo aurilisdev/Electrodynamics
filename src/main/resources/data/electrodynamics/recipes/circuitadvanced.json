@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"b": {
-			"tag": "force:circuits/basic"
+			"tag": "forge:circuits/basic"
 		},
 		"d": {
 			"item": "minecraft:diamond"

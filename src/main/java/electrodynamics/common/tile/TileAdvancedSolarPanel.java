@@ -10,7 +10,7 @@ public class TileAdvancedSolarPanel extends TileSolarPanel {
 	public TileAdvancedSolarPanel() {
 		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
 	}
-
+//TODO: Tile isnt saved? wtf not
 	@Override
 	public TransferPack getOutput() {
 		TransferPack def = super.getOutput();

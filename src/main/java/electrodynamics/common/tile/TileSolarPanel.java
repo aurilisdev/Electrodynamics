@@ -35,7 +35,7 @@ public class TileSolarPanel extends GenericTileBase implements ITickableTileBase
 				output = new CachedTileOutput(world, new BlockPos(pos).offset(Direction.DOWN));
 			}
 			if (output.get() instanceof IPowerReceiver) {
-				output.<IPowerReceiver>get().receivePower(getOutput(), getFacing(), false);
+				output.<IPowerReceiver>get().receivePower(getOutput(), Direction.UP, false);
 			}
 		}
 	}
