@@ -77,7 +77,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			}
 		}
 		heat = isBurning() ? heat * 1.00788 > 3000 ? 3000 : heat * 1.00788 : heat * 0.99212 < 27 ? 27 : heat * 0.99212;
-		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((double) (heat - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	@Override

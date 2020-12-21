@@ -26,7 +26,7 @@ public class ItemProcessorUpgrade extends Item {
 			tooltip.add(new TranslationTextComponent("tooltip.info.capacityupgrade", subtype.capacityMultiplier).mergeStyle(TextFormatting.GRAY));
 		}
 		if (subtype.speedMultiplier != 1.0) {
-			tooltip.add(new TranslationTextComponent("tooltip.info.speedupgrade", subtype.speedMultiplier).mergeStyle( TextFormatting.GRAY));
+			tooltip.add(new TranslationTextComponent("tooltip.info.speedupgrade", subtype.speedMultiplier).mergeStyle(TextFormatting.GRAY));
 		}
 	}
 }

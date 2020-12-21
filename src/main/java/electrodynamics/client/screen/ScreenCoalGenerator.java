@@ -33,7 +33,7 @@ public class ScreenCoalGenerator extends GenericContainerScreen<ContainerCoalGen
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-		TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min(((double) (container.getHeat()-27.0) / (3000.0 - 27.0)), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((container.getHeat() - 27.0) / (3000.0 - 27.0), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.timeleft", container.getBurnTicksLeft() / 20 + "s"), (float) playerInventoryTitleX + 60, (float) playerInventoryTitleY - 53,
 				4210752);
 		font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.current", ElectricityChatFormatter.getDisplayShort(output.getAmps(), ElectricUnit.AMPERE)), (float) playerInventoryTitleX + 60,
