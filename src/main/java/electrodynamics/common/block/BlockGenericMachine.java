@@ -49,8 +49,8 @@ public class BlockGenericMachine extends Block {
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return 1.0f;
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return 0;
 	}
 
 	@Override
