@@ -22,6 +22,7 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
 
 	public ScreenBatteryBox(ContainerBatteryBox container, PlayerInventory playerInventory, ITextComponent title) {
 		super(container, playerInventory, title);
+		xSize = 176;
 	}
 
 	@Override
