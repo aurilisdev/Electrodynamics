@@ -120,7 +120,7 @@ public class BlockWire extends Block {
 		if (!state.get(SOUTH).equals(EnumConnectType.NONE)) {
 			checked.add(Direction.SOUTH);
 		}
-		for (HashSet<Direction> set : new HashSet<HashSet<Direction>>(AABBSTATES.keySet())) {
+		for (HashSet<Direction> set : new HashSet<>(AABBSTATES.keySet())) {
 			if (set.equals(checked)) {
 				return AABBSTATES.get(set);
 			}
