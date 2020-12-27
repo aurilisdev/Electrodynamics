@@ -9,7 +9,7 @@ import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.config.Constants;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
