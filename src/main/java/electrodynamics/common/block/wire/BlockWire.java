@@ -14,7 +14,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.electricity.damage.ElectricDamageSource;
+import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.tile.wire.TileLogisticalWire;
 import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;
@@ -160,7 +160,7 @@ public class BlockWire extends Block {
 			if (wire != null) {
 				if (wire.getNetwork() != null) {
 					if (wire.getNetwork().getSavedAmpsTransmissionBuffer() > 0) {
-						entityIn.attackEntityFrom(ElectricDamageSource.ELECTRICITY, (float) (wire.getNetwork().getSavedAmpsTransmissionBuffer() / 120));
+						entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) (wire.getNetwork().getSavedAmpsTransmissionBuffer() / 120));
 					}
 				}
 			}
