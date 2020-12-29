@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ContainerCoalGenerator extends GenericContainerInventory {
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(2));
+		this(id, playerinv, new Inventory(1));
 	}
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory) {
