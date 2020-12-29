@@ -120,7 +120,9 @@ public class BlockWire extends Block {
 		if (!state.get(SOUTH).equals(EnumConnectType.NONE)) {
 			checked.add(Direction.SOUTH);
 		}
-		for (HashSet<Direction> set : new HashSet<>(AABBSTATES.keySet())) {
+		@SuppressWarnings("unchecked")
+		HashMap<HashSet<Direction>, VoxelShape> copy = (HashMap<HashSet<Direction>, VoxelShape>) AABBSTATES.clone();
+		for (HashSet<Direction> set : new HashSet<>(copy.keySet())) {
 			if (set.equals(checked)) {
 				return AABBSTATES.get(set);
 			}
