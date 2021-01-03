@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
-  <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Electrodynamics"/>
-  <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.minecraftforge.userdev.LaunchTesting"/>
-  <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dforge.logging.console.level=debug -Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump &quot;-Dos.name=Windows 10&quot; -Dos.version=10.0"/>
-  <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value=""/>
-  <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\run"/>
-  <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-    <mapEntry key="MOD_CLASSES" value="electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main;electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main"/>
-    <mapEntry key="MCP_MAPPINGS" value="snapshot_20201028-1.16.3"/>
-    <mapEntry key="MCP_VERSION" value="20201102.104115"/>
-    <mapEntry key="FORGE_VERSION" value="35.1.11"/>
-    <mapEntry key="assetIndex" value="1.16"/>
-    <mapEntry key="assetDirectory" value="C:\Users\Auril\.gradle\caches\forge_gradle\assets"/>
-    <mapEntry key="nativesDirectory" value="C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\build\natives"/>
-    <mapEntry key="FORGE_GROUP" value="net.minecraftforge"/>
-    <mapEntry key="target" value="fmluserdevclient"/>
-    <mapEntry key="MC_VERSION" value="1.16.4"/>
-  </mapAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/Electrodynamics"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="FORGE_GROUP" value="net.minecraftforge"/>
+<mapEntry key="FORGE_VERSION" value="35.1.11"/>
+<mapEntry key="MCP_MAPPINGS" value="snapshot_20201028-1.16.3"/>
+<mapEntry key="MCP_VERSION" value="20201102.104115"/>
+<mapEntry key="MC_VERSION" value="1.16.4"/>
+<mapEntry key="MOD_CLASSES" value="electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main;electrodynamics%%C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\bin\main"/>
+<mapEntry key="assetDirectory" value="C:\Users\Auril\.gradle\caches\forge_gradle\assets"/>
+<mapEntry key="assetIndex" value="1.16"/>
+<mapEntry key="nativesDirectory" value="C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\build\natives"/>
+<mapEntry key="target" value="fmluserdevclient"/>
+</mapAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.minecraftforge.userdev.LaunchTesting"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Electrodynamics"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dforge.logging.console.level=debug -Dforge.logging.markers=SCAN,REGISTRIES,REGISTRYDUMP -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump &quot;-Dos.name=Windows 10&quot; -Dos.version=10.0"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\Users\Auril\Desktop\Physica Projects\Electrodynamics\run"/>
 </launchConfiguration>

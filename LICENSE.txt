@@ -1,24 +1,31 @@
-AURILIS LICENSE
-Version 1.2, July 2019
+AURILISDEV LICENSE
+Version 1.0.0, January 2021
 
-Copyright (C) 2019 Sebastian Siljuholtet Johansen
+Copyright (C) 2021 Sebastian Siljuholtet Johansen
 
 All Rights Reserved unless otherwise explicitly stated.
 
-The following license is subject to change at any time with or without notice and will take effect immediately. By using this license, you agree to all the following terms below.
+“The software” refers to any copyrightable work licensed under this License.
 
-If you would like to request permission to distribute a modified version of this software please send an e-mail to aurilisdev@gmail.com or contact aurilisdev#4673 on discord.
+The present license is subject to change at any time with or without notice and will take effect immediately.
+The user of this is subject to the newest version of this license.
 
-You are allowed to 
+By using this license, you agree to all the terms included in this document.
 
-> Use the software in whatever way you like without any limitations.
-> Installing the software and use it without restriction.
+If you wish to request permission to distribute a version of the software publicly please send an e-mail to aurilisdev@gmail.com or contact aurilisdev#4673 on discord.
+
+You are allowed to:
+
+> Install the software and use the binaries
+> Decompile the binaries
+> Modify the source code for personal use. This does not apply for server use where other users interact with the software as special rules apply in this case. In such case, the users who interact with the software must be informed that they are interacting with a modified version of the software
 > Look at the source code, decompile it and learn from it.
-> Modify the code for personal use.
+> Modify the source code for educational purposes
+> Install the software and use it without restriction
 
-You are not allowed to
+You are not allowed to: 
 
-> Copy any part of the softare's source code and redistribute publish or any means of public distribution.
+> Copy any part of the software's source code and redistribute publish or any means of public distribution.
 > Redistribute the original source code or its binary form without the licencor’s permission.
 > Redistribute your modified changes or derivative work either its binary form or in source code form without the licensor's permission.
 
@@ -30,21 +37,10 @@ The term “Distribution” refers to the act of distributing, redistributing and or
 > Any of the acts above are subject to the distribution terms of the Program.
 > Original binary or source forms of the Program files
 
-The present license is granted to any user of The software. The Terms of license may change anytime with or without notice. The user of this software agrees and will be subject to the newest version of this license.
+An exception to the restrictions of distribution is a private modpack.
+> Private mod packs are defined as a set of mods distributed as a bundle to provide access to game servers with ease. In which the pack is only distrubuted for personal use or small server usage. The User is allowed to distribute this Mod as part of a private mod pack if and only if the User provides proper attribution to the Owner (in the form of credit) and a URL to the Mod’s official download page were the pack is accessed. The user is warned that the pack should never be publically accessible for download if considered as private. If the pack can be downloaded publically then it is defined as a public mod pack.
 
 The software is provided ‘as is’ with no warranties, implied or otherwise. The owner of the software takes no responsibility for any damages incurred from the use of the software. All damages caused by the use or misuse of the software fall on the user.
-
-Modpacks
-
-> An exception to the restrictions of distribution is a modpack. A modpack is defined as a set of mods distributed as a collection. The user is allowed to distribute this software as a part of such a modpack if the user follows the terms below.
-
-Terms of distribution
-
-> If the software is distributed it cannot be modified without permission from the owner. The software must be provided with no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
-
-Terms if distribution permission is granted by the owner. This applies to modified versions of the software
-
-> A modified version of sources and binaries, as well as files containing sections copied from the software, must be distributed under the terms of the present license. The source code of the modified version of the software must be provided publicly and entirely at no costs. The user must also provide proper acknowledgement to the owner (in the form of credits) and a URL to the software's official download page on the website where it is distributed.
 
 Contributions
 
@@ -54,5 +50,5 @@ Contributions
 > No contributor shall be entitled, by a claim to copyright relating to 
 their contribution or any other code or material in this software, or by any 
 other means, to interfere with the overriding principle.  In particular, no 
-contributor shall be entitled, by reason of that contribution or otherwise, 
+contributor shall be entitled, because of that contribution or otherwise, 
 to attempt to prevent the continuing publication of the software's source code.
