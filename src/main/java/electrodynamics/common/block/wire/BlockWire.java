@@ -151,7 +151,8 @@ public class BlockWire extends Block {
 				break;
 			}
 		}
-		AABBSTATES.put(checked, shape);
+		copy.put(checked, shape);
+		AABBSTATES = copy;
 		return shape;
 	}
 
