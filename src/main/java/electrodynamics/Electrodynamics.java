@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.packet.NetworkHandler;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -41,6 +43,11 @@ public class Electrodynamics {
 		DeferredRegisters.ITEMS.register(bus);
 		DeferredRegisters.TILES.register(bus);
 		DeferredRegisters.CONTAINERS.register(bus);
+	}
+
+	@SubscribeEvent
+	public static void onCommonSetup(FMLCommonSetupEvent event) {
+		NetworkHandler.init();
 	}
 
 	@SubscribeEvent

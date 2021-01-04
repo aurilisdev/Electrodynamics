@@ -23,4 +23,5 @@ public interface ITickableTileBase extends ITickableTileEntity {
 
 	default void tickCommon() {
 	}
+
 }

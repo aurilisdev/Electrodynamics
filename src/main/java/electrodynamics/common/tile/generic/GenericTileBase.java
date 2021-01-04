@@ -1,17 +1,16 @@
 package electrodynamics.common.tile.generic;
 
+import electrodynamics.api.tile.IUpdateableTile;
 import electrodynamics.common.block.BlockGenericMachine;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 
-public abstract class GenericTileBase extends TileEntity implements INameable {
+public abstract class GenericTileBase extends TileEntity implements INameable, IUpdateableTile {
 
 	private ITextComponent customName;
 
@@ -37,32 +36,7 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		sendPacket();
-	}
-
-	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
-		writePacket(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
-	}
-
-	public void writePacket(CompoundNBT nbt) {
-		write(nbt);
-	}
-
-	public void readPacket(CompoundNBT nbt) {
-		read(getBlockState(), nbt);
-	}
-
-	public void sendPacket() {
 		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		super.onDataPacket(net, pkt);
-		readPacket(pkt.getNbtCompound());
 	}
 
 	@Override
@@ -77,5 +51,14 @@ public abstract class GenericTileBase extends TileEntity implements INameable {
 
 	protected Direction getFacing() {
 		return getBlockState().get(BlockGenericMachine.FACING);
+	}
+
+	@Override
+	public CompoundNBT createUpdateTag() {
+		return new CompoundNBT();
+	}
+
+	@Override
+	public void handleUpdatePacket(CompoundNBT nbt) {
 	}
 }
