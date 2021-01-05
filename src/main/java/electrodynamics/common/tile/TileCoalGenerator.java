@@ -71,13 +71,12 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 						getBlockState().get(BlockGenericMachine.FACING)), 3);
 			}
 		}
-
 		if (heat.get() > 27) {
 			if (output.get() instanceof IPowerReceiver) {
 				output.<IPowerReceiver>get().receivePower(currentOutput, getFacing(), false);
 			}
 		}
-		heat.flush(isBurning() ? 3000 : 27, 1.00788);
+		heat.rangeParameterize(27, 3000, isBurning() ? 3000 : 27, heat.get(), 600).flush();
 		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 

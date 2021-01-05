@@ -27,6 +27,13 @@ public class TargetValue {
 		return this;
 	}
 
+	public TargetValue rangeParameterize(double starttarget, double endtarget, double currentTarget, double value, int ticks) {
+		this.val = value;
+		this.target = currentTarget;
+		this.acceleration = Math.pow(endtarget / starttarget, 1.0 / ticks);
+		return this;
+	}
+
 	public TargetValue flush() {
 		return flush(target, acceleration);
 	}
