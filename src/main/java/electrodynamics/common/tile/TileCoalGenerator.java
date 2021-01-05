@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.TargetValue;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.api.tile.electric.IPowerProvider;
@@ -33,7 +34,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	public static final int COAL_BURN_TIME = 1000;
 
 	protected CachedTileOutput output;
-	protected double heat = 27;
+	protected TargetValue heat = new TargetValue(27);
 	protected int burnTime;
 
 	public TileCoalGenerator() {
@@ -71,13 +72,13 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			}
 		}
 
-		if (heat > 27) {
+		if (heat.get() > 27) {
 			if (output.get() instanceof IPowerReceiver) {
 				output.<IPowerReceiver>get().receivePower(currentOutput, getFacing(), false);
 			}
 		}
-		heat = isBurning() ? heat * 1.00788 > 3000 ? 3000 : heat * 1.00788 : heat * 0.99212 < 27 ? 27 : heat * 0.99212;
-		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		heat.flush(isBurning() ? 3000 : 27, 1.00788);
+		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			case 0:
 				return burnTime;
 			case 1:
-				return (int) heat;
+				return (int) heat.get();
 			default:
 				return 0;
 			}
@@ -139,7 +140,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 				burnTime = value;
 				break;
 			case 1:
-				heat = value;
+				heat.set(value);
 				break;
 			}
 
