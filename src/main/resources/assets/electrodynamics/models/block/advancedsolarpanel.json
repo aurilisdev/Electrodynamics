@@ -1,6 +1,7 @@
 {
 	"credit": "aurilisdev",
 	"parent": "block/cube_all",
+	"ambientocclusion": "false",
 	"texture_size": [128, 128],
 	"textures": {
 		"0": "electrodynamics:model/solarpanel",

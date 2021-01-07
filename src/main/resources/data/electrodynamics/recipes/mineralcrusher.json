@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sas",
+		"gpg",
+		"scs"
+	],
+	"key": {
+		"s": {
+			"tag": "forge:ingots/steel"
+		},
+		"a": {
+			"tag": "forge:circuits/advanced"
+		},
+		"g": {
+			"tag": "forge:gears/bronze"
+		},
+		"p": {
+			"tag": "forge:plates/bronze"
+		},
+		"c": {
+			"tag": "electrodynamics:wirecopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:mineralcrusher",
+		"count": 1
+	}
+}

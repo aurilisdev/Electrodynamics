@@ -1,6 +1,7 @@
 {
 	"parent": "block/cube_all",
 	"credit": "aurilisdev",
+	"ambientocclusion": "false",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "electrodynamics:model/mineralcrusher",

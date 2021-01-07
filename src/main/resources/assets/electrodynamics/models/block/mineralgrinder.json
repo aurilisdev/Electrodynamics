@@ -2,6 +2,7 @@
 	"credit": "aurilisdev",
 	"parent": "block/cube_all",
 	"texture_size": [128, 128],
+	"ambientocclusion": "false",
 	"textures": {
 		"0": "electrodynamics:model/mineralgrinder",
 		"particle": "electrodynamics:model/mineralgrinder"
