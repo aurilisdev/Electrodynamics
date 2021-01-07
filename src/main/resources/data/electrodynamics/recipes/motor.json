@@ -13,7 +13,7 @@
 			"item": "electrodynamics:wireinsulatedcopper"
 		},
 		"i": {
-			"tag": "forge:ingots/iron"
+			"item": "electrodynamics:coil"
 		}
 	},
 	"result": {
