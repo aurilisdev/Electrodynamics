@@ -28,9 +28,9 @@ public class TargetValue {
 	}
 
 	public TargetValue rangeParameterize(double starttarget, double endtarget, double currentTarget, double value, int ticks) {
-		this.val = value;
-		this.target = currentTarget;
-		this.acceleration = Math.pow(endtarget / starttarget, 1.0 / ticks);
+		val = value;
+		target = currentTarget;
+		acceleration = Math.pow(endtarget / starttarget, 1.0 / ticks);
 		return this;
 	}
 
