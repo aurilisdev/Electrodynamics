@@ -26,12 +26,10 @@ public class WrenchHandler {
 			Item item = stack.getItem();
 			if (block instanceof IWrenchable && item instanceof IWrench) {
 				if (player.isSneaking()) {
-					System.out.println("works sneak");
 					if (((IWrench) item).onPickup(stack, event.getPos(), player)) {
 						((IWrenchable) block).onPickup(stack, event.getPos(), player);
 					}
 				} else {
-					System.out.println("works normal");
 					if (((IWrench) item).onRotate(stack, event.getPos(), player)) {
 						((IWrenchable) block).onRotate(stack, event.getPos(), player);
 					}
