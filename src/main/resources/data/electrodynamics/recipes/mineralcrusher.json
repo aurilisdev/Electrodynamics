@@ -19,7 +19,7 @@
 			"tag": "forge:plates/bronze"
 		},
 		"c": {
-			"tag": "electrodynamics:wirecopper"
+			"item": "electrodynamics:wirecopper"
 		}
 	},
 	"result": {
