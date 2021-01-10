@@ -1,15 +1,20 @@
 package electrodynamics.common.block;
 
+import electrodynamics.api.item.IWrench;
+import electrodynamics.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.stats.Stats;
@@ -25,7 +30,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-public class BlockGenericMachine extends Block {
+public class BlockGenericMachine extends Block implements IWrenchable {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	public BlockGenericMachine() {
@@ -38,7 +43,9 @@ public class BlockGenericMachine extends Block {
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof IInventory) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
+			if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
+			}
 		}
 		super.onReplaced(state, worldIn, pos, newState, isMoving);
 	}
@@ -62,7 +69,7 @@ public class BlockGenericMachine extends Block {
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (worldIn.isRemote) {
 			return ActionResultType.SUCCESS;
-		} else {
+		} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrench)) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 			if (tileentity instanceof INamedContainerProvider) {
 				player.openContainer((INamedContainerProvider) tileentity);
@@ -70,6 +77,7 @@ public class BlockGenericMachine extends Block {
 			player.addStat(Stats.INTERACT_WITH_FURNACE);
 			return ActionResultType.CONSUME;
 		}
+		return ActionResultType.FAIL;
 	}
 
 	@Override
@@ -91,5 +99,18 @@ public class BlockGenericMachine extends Block {
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
+	}
+
+	@Override
+	public void onRotate(ItemStack stack, BlockPos pos, PlayerEntity player) {
+		player.world.setBlockState(pos, rotate(player.world.getBlockState(pos), Rotation.CLOCKWISE_90));
+	}
+
+	@Override
+	public void onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
+		World world = player.world;
+		InventoryHelper.dropInventoryItems(player.world, pos, (IInventory) world.getTileEntity(pos));
+		world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(getSelf())));
 	}
 }
