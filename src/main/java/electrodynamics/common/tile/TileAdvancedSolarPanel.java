@@ -15,7 +15,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.RainType;
 
 public class TileAdvancedSolarPanel extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile {
-	public static final TransferPack DEFAULT_OUTPUT_SETTINGS = TransferPack.ampsVoltage(3 * 3.5, 240);
+	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(3 * 3.5, 240);
 
 	public TileAdvancedSolarPanel() {
 		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
@@ -58,14 +58,11 @@ public class TileAdvancedSolarPanel extends GenericTileBase implements ITickable
 		Biome b = world.getBiomeManager().getBiome(getPos());
 		float tempEff = 0.3F * (0.8F - b.getTemperature(getPos()));
 		float humidityEff = -0.3F * (b.getPrecipitation() != RainType.NONE ? b.getDownfall() : 0.0F);
-		TransferPack def = TransferPack.ampsVoltage(TileSolarPanel.DEFAULT_OUTPUT.getAmps() * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1),
-				TileSolarPanel.DEFAULT_OUTPUT.getVoltage());
-
-		return TransferPack.ampsVoltage(def.getAmps() * DEFAULT_OUTPUT_SETTINGS.getAmps(), DEFAULT_OUTPUT_SETTINGS.getVoltage());
+		return TransferPack.ampsVoltage(DEFAULT_OUTPUT.getAmps() * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), DEFAULT_OUTPUT.getVoltage());
 	}
 
 	@Override
 	public double getVoltage(Direction from) {
-		return DEFAULT_OUTPUT_SETTINGS.getVoltage();
+		return DEFAULT_OUTPUT.getVoltage();
 	}
 }

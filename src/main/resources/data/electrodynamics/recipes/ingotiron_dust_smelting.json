@@ -1,9 +1,9 @@
 {
 	"type": "minecraft:smelting",
 	"ingredient": {
-		"item": "electrodynamics:dusttin"
+		"item": "electrodynamics:dustiron"
 	},
-	"result": "electrodynamics:ingottin",
+	"result": "minecraft:iron_ingot",
 	"experience": 0.0,
 	"cookingtime": 200
 }

@@ -18,14 +18,20 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion.Mode;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullConsumer;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IPowerReceiver, IElectricTile {
+public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IPowerReceiver, IElectricTile, IEnergyStorage {
 	public static final double DEFAULT_VOLTAGE = 120.0;
 	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
 	public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
@@ -49,6 +55,18 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 				TransferPack taken = output.<IPowerReceiver>get().receivePower(TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), getFacing(),
 						false);
 				joules -= taken.getJoules();
+			} else if (output.get() != null) {
+				TileEntity tile = output.get();
+				LazyOptional<IEnergyStorage> storage = tile.getCapability(CapabilityEnergy.ENERGY, getFacing());
+				storage.ifPresent(new NonNullConsumer<IEnergyStorage>() {
+					@Override
+					public void accept(IEnergyStorage storage) {
+						if (storage.canReceive()) {
+							int taken = storage.receiveEnergy((int) Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), false);
+							joules -= taken;
+						}
+					}
+				});
 			}
 		}
 		currentCapacityMultiplier = 1;
@@ -136,10 +154,19 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 		return DEFAULT_VOLTAGE;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
+		if (capability == CapabilityEnergy.ENERGY && facing != null) {
+			return (LazyOptional<T>) LazyOptional.of(() -> this);
+		}
+		return super.getCapability(capability, facing);
+	}
+
 	@Override
 	@Deprecated // This method might be bugged
 	public TransferPack extractPower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getBlockState().get(BlockGenericMachine.FACING)) {
+		if (dir != getBlockState().get(BlockGenericMachine.FACING).getOpposite()) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -182,6 +209,50 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Override
 	public boolean canConnectElectrically(Direction direction) {
 		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction || getBlockState().get(BlockGenericMachine.FACING) == direction;
+	}
+
+	@Override
+	@Deprecated
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		int calVoltage = 120;
+		TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), getBlockState().get(BlockGenericMachine.FACING), simulate);
+		int received = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
+		return received;
+	}
+
+	@Override
+	@Deprecated
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		int calVoltage = 120;
+		TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), getBlockState().get(BlockGenericMachine.FACING).getOpposite(), simulate);
+		int extracted = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
+		return extracted;
+	}
+
+	@Override
+	@Deprecated
+	public int getEnergyStored() {
+		int proper = (int) Math.min(Integer.MAX_VALUE, joules);
+		return proper;
+	}
+
+	@Override
+	@Deprecated
+	public int getMaxEnergyStored() {
+		int proper = (int) Math.min(Integer.MAX_VALUE, DEFAULT_MAX_JOULES * currentCapacityMultiplier);
+		return proper;
+	}
+
+	@Override
+	@Deprecated
+	public boolean canExtract() {
+		return true;
+	}
+
+	@Override
+	@Deprecated
+	public boolean canReceive() {
+		return true;
 	}
 
 }
