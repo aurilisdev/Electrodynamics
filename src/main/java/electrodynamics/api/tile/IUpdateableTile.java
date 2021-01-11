@@ -9,7 +9,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 public interface IUpdateableTile {
 	CompoundNBT createUpdateTag();
@@ -29,8 +28,6 @@ public interface IUpdateableTile {
 			((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false).forEach(p -> {
 				NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 			});
-		} else {
-			NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos.getX() >> 4, pos.getZ() >> 4)), packet);
 		}
 	}
 }

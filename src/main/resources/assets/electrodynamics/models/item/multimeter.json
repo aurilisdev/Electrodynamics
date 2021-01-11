@@ -1,6 +1,16 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "electrodynamics:item/multimeter"
-	}
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "electrodynamics:item/multimeter/multimeter1"
+    },
+    "overrides": [
+        { "predicate": { "number": 0.2 }, "model": "electrodynamics:item/multimeter2" },
+        { "predicate": { "number": 0.3 }, "model": "electrodynamics:item/multimeter3" },
+        { "predicate": { "number": 0.4 }, "model": "electrodynamics:item/multimeter4" },
+        { "predicate": { "number": 0.5 }, "model": "electrodynamics:item/multimeter5" },
+        { "predicate": { "number": 0.6 }, "model": "electrodynamics:item/multimeter6" },
+        { "predicate": { "number": 0.7 }, "model": "electrodynamics:item/multimeter7" },
+        { "predicate": { "number": 0.8 }, "model": "electrodynamics:item/multimeter8" },
+        { "predicate": { "number": 0.9 }, "model": "electrodynamics:item/multimeter9" }
+    ]
 }

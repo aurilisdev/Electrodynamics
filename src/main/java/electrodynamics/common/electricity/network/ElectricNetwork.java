@@ -15,6 +15,7 @@ import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.electricity.ElectricityUtilities;
 import electrodynamics.common.network.NetworkRegistry;
+import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -267,6 +268,17 @@ public class ElectricNetwork implements ITickableNetwork {
 
 	@Override
 	public void tick() {
+		if (ticksSinceNetworkRefresh % 30 == 0) {
+			for (IConductor conductor : conductorSet) {
+				if (conductor instanceof TileWire) {
+					TileWire wire = (TileWire) conductor;
+					if (joulesTransmittedSavedBuffer > 0 && wire.transmit <= 0 || joulesTransmittedSavedBuffer <= 0 && wire.transmit > 0) {
+						wire.transmit = joulesTransmittedSavedBuffer;
+						wire.sendUpdatePacket();
+					}
+				}
+			}
+		}
 		joulesTransmittedSavedBuffer = joulesTransmittedBuffer;
 		joulesTransmittedBuffer = 0;
 		lockedSavedVoltage = lockedVoltage;
