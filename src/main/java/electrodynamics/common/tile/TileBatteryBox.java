@@ -27,7 +27,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -58,13 +57,10 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 			} else if (output.get() != null) {
 				TileEntity tile = output.get();
 				LazyOptional<IEnergyStorage> storage = tile.getCapability(CapabilityEnergy.ENERGY, getFacing());
-				storage.ifPresent(new NonNullConsumer<IEnergyStorage>() {
-					@Override
-					public void accept(IEnergyStorage storage) {
-						if (storage.canReceive()) {
-							int taken = storage.receiveEnergy((int) Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), false);
-							joules -= taken;
-						}
+				storage.ifPresent(storage1 -> {
+					if (storage1.canReceive()) {
+						int taken = storage1.receiveEnergy((int) Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), false);
+						joules -= taken;
 					}
 				});
 			}
