@@ -153,6 +153,9 @@ public class BlockWire extends Block {
 		}
 		copy.put(checked, shape);
 		AABBSTATES = copy;
+		if (shape == null) {
+			return VoxelShapes.empty();
+		}
 		return shape;
 	}
 
