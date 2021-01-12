@@ -15,7 +15,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.RainType;
 
 public class TileAdvancedSolarPanel extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile {
-	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(3 * 3.5*1.5, 240);
+	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(3 * 3.5 * 1.5, 240);
 
 	public TileAdvancedSolarPanel() {
 		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());

@@ -44,6 +44,7 @@ public class ClientRegister {
 			private double num = 0;
 			private long lastCheck = 0;
 
+			@Override
 			public float call(ItemStack p_call_1_, @Nullable ClientWorld p_call_2_, @Nullable LivingEntity p_call_3_) {
 				boolean goesUp = false;
 				if (p_call_3_ instanceof PlayerEntity) {
