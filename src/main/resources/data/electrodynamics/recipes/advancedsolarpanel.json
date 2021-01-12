@@ -1,8 +1,9 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sss",
-		"ppp"
+		" s ",
+		"sps",
+		"iii"
 	],
 	"key": {
 		"p": {
@@ -10,6 +11,9 @@
 		},
 		"s": {
 			"item": "electrodynamics:solarpanel"
+		},
+		"i": {
+			"item": "minecraft:iron_ingot"
 		}
 	},
 	"result": {

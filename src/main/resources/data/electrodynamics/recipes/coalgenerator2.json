@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sss",
+		"sfs",
+		"sms"
+	],
+	"key": {
+		"s": {
+			"tag": "forge:plates/bronze"
+		},
+		"f": {
+			"item": "minecraft:furnace"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:coalgenerator",
+		"count": 1
+	}
+}
