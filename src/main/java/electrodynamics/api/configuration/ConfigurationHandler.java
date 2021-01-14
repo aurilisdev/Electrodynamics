@@ -45,79 +45,77 @@ public class ConfigurationHandler {
 					file.createNewFile();
 					BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 					for (Field field : declaredFields) {
-						if (field.isAccessible()) {
-							String name = field.getName();
+						String name = field.getName();
+						writer.newLine();
+						if (field.isAnnotationPresent(IntValue.class)) {
+							String comment = field.getAnnotation(IntValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
+							}
 							writer.newLine();
-							if (field.isAnnotationPresent(IntValue.class)) {
-								String comment = field.getAnnotation(IntValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								int value = field.getInt(null);
-								writer.write("I:default>" + field.getAnnotation(IntValue.class).def() + ":" + name
-										+ ":'" + value + "'");
+							int value = field.getInt(null);
+							writer.write("I:default>" + field.getAnnotation(IntValue.class).def() + ":" + name + ":'"
+									+ value + "'");
+						}
+						if (field.isAnnotationPresent(LongValue.class)) {
+							String comment = field.getAnnotation(LongValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
 							}
-							if (field.isAnnotationPresent(LongValue.class)) {
-								String comment = field.getAnnotation(LongValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								long value = field.getLong(null);
-								writer.write("L:default>" + field.getAnnotation(LongValue.class).def() + ":" + name
-										+ ":'" + value + "'");
+							writer.newLine();
+							long value = field.getLong(null);
+							writer.write("L:default>" + field.getAnnotation(LongValue.class).def() + ":" + name + ":'"
+									+ value + "'");
+						}
+						if (field.isAnnotationPresent(FloatValue.class)) {
+							String comment = field.getAnnotation(FloatValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
 							}
-							if (field.isAnnotationPresent(FloatValue.class)) {
-								String comment = field.getAnnotation(FloatValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								float value = field.getFloat(null);
-								writer.write("F:default>" + field.getAnnotation(FloatValue.class).def() + ":" + name
-										+ ":'" + value + "'");
+							writer.newLine();
+							float value = field.getFloat(null);
+							writer.write("F:default>" + field.getAnnotation(FloatValue.class).def() + ":" + name + ":'"
+									+ value + "'");
+						}
+						if (field.isAnnotationPresent(DoubleValue.class)) {
+							String comment = field.getAnnotation(DoubleValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
 							}
-							if (field.isAnnotationPresent(DoubleValue.class)) {
-								String comment = field.getAnnotation(DoubleValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								double value = field.getDouble(null);
-								writer.write("D:default>" + field.getAnnotation(DoubleValue.class).def() + ":" + name
-										+ ":'" + value + "'");
+							writer.newLine();
+							double value = field.getDouble(null);
+							writer.write("D:default>" + field.getAnnotation(DoubleValue.class).def() + ":" + name + ":'"
+									+ value + "'");
+						}
+						if (field.isAnnotationPresent(StringValue.class)) {
+							String comment = field.getAnnotation(StringValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
 							}
-							if (field.isAnnotationPresent(StringValue.class)) {
-								String comment = field.getAnnotation(StringValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								String value = (String) field.get(null);
-								writer.write("S:default>" + field.getAnnotation(StringValue.class).def() + ":" + name
-										+ ":'" + value + "'");
+							writer.newLine();
+							String value = (String) field.get(null);
+							writer.write("S:default>" + field.getAnnotation(StringValue.class).def() + ":" + name + ":'"
+									+ value + "'");
+						}
+						if (field.isAnnotationPresent(BooleanValue.class)) {
+							String comment = field.getAnnotation(BooleanValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
 							}
-							if (field.isAnnotationPresent(BooleanValue.class)) {
-								String comment = field.getAnnotation(BooleanValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								boolean value = field.getBoolean(null);
-								writer.write("T:default>" + field.getAnnotation(BooleanValue.class).def() + ":" + name
-										+ ":'" + value + "'");
+							writer.newLine();
+							boolean value = field.getBoolean(null);
+							writer.write("T:default>" + field.getAnnotation(BooleanValue.class).def() + ":" + name
+									+ ":'" + value + "'");
+						}
+						if (field.isAnnotationPresent(ByteValue.class)) {
+							String comment = field.getAnnotation(ByteValue.class).comment();
+							if (!comment.isEmpty()) {
+								writer.write("Comment: '" + comment + "'");
 							}
-							if (field.isAnnotationPresent(ByteValue.class)) {
-								String comment = field.getAnnotation(ByteValue.class).comment();
-								if (!comment.isEmpty()) {
-									writer.write("Comment: '" + comment + "'");
-								}
-								writer.newLine();
-								byte value = field.getByte(null);
-								writer.write("B:default>" + field.getAnnotation(ByteValue.class).def() + ":" + name
-										+ ":'" + value + "'");
-							}
+							writer.newLine();
+							byte value = field.getByte(null);
+							writer.write("B:default>" + field.getAnnotation(ByteValue.class).def() + ":" + name + ":'"
+									+ value + "'");
 						}
 					}
 					writer.close();

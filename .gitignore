@@ -48,3 +48,9 @@ Physica_Client.launch
 Physica_Server.launch
 
 .DS_Store
+
+runClient.launch
+
+runData.launch
+
+runServer.launch
