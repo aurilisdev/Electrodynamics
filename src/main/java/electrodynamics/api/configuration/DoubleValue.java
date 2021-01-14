@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DoubleValue {
-	String comment();
+	String comment() default "";
 
 	double def();
 }

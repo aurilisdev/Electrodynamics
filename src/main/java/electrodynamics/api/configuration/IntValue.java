@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntValue {
-	String comment();
+	String comment() default "";
 
 	int def();
 }

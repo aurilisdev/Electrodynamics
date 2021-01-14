@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LongValue {
-	String comment();
+	String comment() default "";
 
 	long def();
 }

@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BooleanValue {
-	String comment();
+	String comment() default "";
 
 	boolean def();
 }
