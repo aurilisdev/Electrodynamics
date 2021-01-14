@@ -7,7 +7,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.world.World;
@@ -69,96 +68,11 @@ public abstract class GenericContainerInventory extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
-		Slot slot = inventorySlots.get(index);
-
-		if (slot != null && slot.getStack() != null && !slot.getStack().isEmpty()) {
-			ItemStack itemStack = slot.getStack();
-			ItemStack originalStack = itemStack.copy();
-
-			if (index < slotCount) {
-				if (!mergeItemStack(itemStack, slotCount, inventorySlots.size(), true)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (!mergeItemStack(itemStack, 0, slotCount, false)) {
-				return ItemStack.EMPTY;
-			}
-
-			if (itemStack.getCount() == 0) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
-			return originalStack;
-		}
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	protected boolean mergeItemStack(ItemStack stack, int min, int max, boolean negative) {
-		boolean flag1 = false;
-		int k = negative ? max - 1 : min;
-		Slot slot;
-		ItemStack itemstack1;
-		if (stack.isStackable()) {
-			while (stack.getCount() > 0 && (!negative && k < max || negative && k >= min)) {
-				slot = inventorySlots.get(k);
-				itemstack1 = slot.getStack();
-
-				if (itemstack1 != null && !itemstack1.isEmpty() && itemstack1.getItem() == stack.getItem() && stack.getDamage() == itemstack1.getDamage() && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
-
-					int l = itemstack1.getCount() + stack.getCount();
-
-					if (l <= stack.getMaxStackSize()) {
-						stack.setCount(0);
-						itemstack1.setCount(l);
-						slot.onSlotChanged();
-						flag1 = true;
-					} else if (itemstack1.getCount() < stack.getMaxStackSize()) {
-						stack.setCount(stack.getCount() - (stack.getMaxStackSize() - itemstack1.getCount()));
-						itemstack1.setCount(stack.getMaxStackSize());
-						slot.onSlotChanged();
-						flag1 = true;
-					}
-				}
-
-				if (negative) {
-					--k;
-				} else {
-					++k;
-				}
-			}
-		}
-
-		if (stack.getCount() > 0) {
-			k = negative ? max - 1 : min;
-			while (!negative && k < max || negative && k >= min) {
-				slot = inventorySlots.get(k);
-				itemstack1 = slot.getStack();
-
-				if (itemstack1 == null || itemstack1.isEmpty()) {
-					if (slot.isItemValid(stack)) {
-						slot.putStack(stack.copy());
-						slot.onSlotChanged();
-						stack.setCount(0);
-						flag1 = true;
-						break;
-					}
-				}
-
-				if (negative) {
-					--k;
-				} else {
-					++k;
-				}
-			}
-		}
-		return flag1;
+		return Containers.handleShiftClick(inventorySlots, player, index);
 	}
 
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, PlayerEntity player) {
-		detectAndSendChanges();
 		return super.slotClick(slotId, dragType, clickTypeIn, player);
 	}
 
