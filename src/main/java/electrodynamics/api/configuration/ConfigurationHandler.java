@@ -19,7 +19,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class ConfigurationHandler {
-	private static final HashSet<Class<?>> configurationMappings = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> configurationMappings = new HashSet<>();
 
 	public static void registerConfig(Class<?> configclass) {
 		if (configclass.isAnnotationPresent(Configuration.class)) {

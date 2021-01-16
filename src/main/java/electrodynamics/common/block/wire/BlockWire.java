@@ -99,6 +99,11 @@ public class BlockWire extends Block {
 	}
 
 	@Override
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+		return true;
+	}
+
+	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		VoxelShape shape = AABB;
 		HashSet<Direction> checked = new HashSet<>();

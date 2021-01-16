@@ -51,7 +51,7 @@ public final class Containers {
 
 			while (sourceStack.getCount() > 0 && (reverse ? idx >= 0 : idx < len)) {
 				Slot targetSlot = slots.get(idx);
-				if ((targetSlot.inventory == playerInv) == mergeIntoPlayer) {
+				if (targetSlot.inventory == playerInv == mergeIntoPlayer) {
 					ItemStack target = targetSlot.getStack();
 					if (ItemStack.areItemStacksEqual(sourceStack, target)) { // also checks target != null, because stack is never null
 						int targetMax = Math.min(targetSlot.getSlotStackLimit(), target.getMaxStackSize());
@@ -80,7 +80,7 @@ public final class Containers {
 		idx = reverse ? len - 1 : 0;
 		while (reverse ? idx >= 0 : idx < len) {
 			Slot targetSlot = slots.get(idx);
-			if ((targetSlot.inventory == playerInv) == mergeIntoPlayer && !targetSlot.getHasStack() && targetSlot.isItemValid(sourceStack)) {
+			if (targetSlot.inventory == playerInv == mergeIntoPlayer && !targetSlot.getHasStack() && targetSlot.isItemValid(sourceStack)) {
 				targetSlot.putStack(sourceStack);
 				sourceSlot.putStack(ItemStack.EMPTY);
 				return true;
