@@ -41,7 +41,7 @@ public class ClientRegister {
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
 		ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"), new IItemPropertyGetter() {
-			private double num = 0;
+			private double num = 0.1;
 			private long lastCheck = 0;
 
 			@Override
@@ -60,9 +60,11 @@ public class ClientRegister {
 						}
 					}
 				}
-				if (lastCheck != p_call_3_.world.getGameTime()) {
-					lastCheck = p_call_3_.world.getGameTime();
-					num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
+				if (p_call_2_ != null) {
+					if (lastCheck != p_call_2_.getGameTime()) {
+						lastCheck = p_call_2_.getGameTime();
+						num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
+					}
 				}
 				return (float) num;
 			}
