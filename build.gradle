@@ -25,7 +25,7 @@ distsDirName = "../output"
 
 def	version_minor="2"
 def	version_revision='1'
-def	minecraft_version='1.16.4'
+def	minecraft_version='1.16.5'
 def	version_build='5'
 def	version_major='0'
 
@@ -138,7 +138,7 @@ publishing {
     }
 }
 
-ext.gittagnew = '1.16.x/'+project.version
+ext.gittagnew = 'v'+project.version
 
 task createTag(type: GitTag) {
    repoPath = rootDir
