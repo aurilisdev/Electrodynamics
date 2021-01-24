@@ -132,5 +132,6 @@
 	"tooltip.oxidationfurnace.voltage": "Voltage: 240 Volts",
 	"tooltip.oxidationfurnacerunning.voltage": "Voltage: 240 Volts",
 	"tooltip.advancedsolarpanel.voltage": "Voltage: 240 Volts",
+	"tooltip.mineralcrusher.voltage": "Voltage: 240 Volts",
 	"death.attack.electricity": "%s was electrocuted"
 }
