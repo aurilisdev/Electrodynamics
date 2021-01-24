@@ -13,5 +13,5 @@ public class Constants {
 	public static double COALGENERATOR_AMPERAGE = 34.0;
 	@DoubleValue(def = 120.0)
 	public static double COALGENERATOR_VOLTAGE = 120.0;
-	public static final TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, COALGENERATOR_VOLTAGE);
+	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, COALGENERATOR_VOLTAGE);
 }
