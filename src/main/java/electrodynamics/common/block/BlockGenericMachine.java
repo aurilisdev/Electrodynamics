@@ -109,7 +109,10 @@ public class BlockGenericMachine extends Block implements IWrenchable {
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
 		World world = player.world;
-		InventoryHelper.dropInventoryItems(player.world, pos, (IInventory) world.getTileEntity(pos));
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof IInventory) {
+			InventoryHelper.dropInventoryItems(player.world, pos, (IInventory) te);
+		}
 		world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(getSelf())));
 	}
