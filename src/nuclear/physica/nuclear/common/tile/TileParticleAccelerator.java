@@ -1,6 +1,5 @@
 package physica.nuclear.common.tile;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -47,6 +46,8 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	private int                 inputMass;
 	private Item                lastInput;
 
+	private int idleTicks;
+
 	@Override
 	public void onChunkUnload()
 	{
@@ -63,6 +64,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
+
 		ItemStack stackMatter = getStackInSlot(SLOT_INPUTMATTER);
 		ItemStack stackEmptyCell = getStackInSlot(SLOT_INPUTCELLS);
 		ItemStack stackOutputSlot = getStackInSlot(SLOT_OUTPUT);
@@ -75,6 +77,11 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		} else {
 			inputMass = 0;
 			lastInput = null;
+		}
+
+		if (idleTicks > 0) {
+			idleTicks--;
+			return;
 		}
 
 		if (particle != null)
@@ -162,6 +169,9 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 				velocity = 0;
 				currentSessionUse = 0;
 				currentSessionTicks = 0;
+				if (!hasEnoughEnergy()) {
+					idleTicks = 80;
+				}
 			}
 		} else if (isPoweredByRedstone() && hasEnoughEnergy())
 		{
@@ -355,7 +365,17 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	}
 
 	public enum AcceleratorStatus {
-		Disabled, Idle, Accelerating, Done, Ready, Failure
+		Disabled("No Power"), Idle("Idle"), Accelerating("Accelerating"), Done("Done"), Ready("Ready"), Failure("Failure");
+
+		private String str;
+
+		AcceleratorStatus(String str){
+			this.str = str;
+		}
+
+		public String getDisplayString() {
+			return this.str;
+		}
 	}
 
 	@Override
