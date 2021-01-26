@@ -186,7 +186,7 @@ public class BlockFortronField extends Block implements ITileEntityProvider, IFo
 								}
 								return;
 							}
-							float volatilityPercent = (float) constructor.getHealthLost() / TileFortronFieldConstructor.MAX_HEALTH_LOSS;
+							float volatilityPercent = constructor.getHealthLost() / TileFortronFieldConstructor.MAX_HEALTH_LOSS;
 							if (volatilityPercent > 0.5)
 							{
 								world.createExplosion(null, entity.posX, entity.posY, entity.posZ, PhysicaMath.map(volatilityPercent, 0.5F, 1F, 0.5F, 5F), true);

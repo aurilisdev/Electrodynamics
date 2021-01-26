@@ -80,7 +80,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public static final int					SLOT_TYPE				= 19;
 
 	public static final int					BASE_FORTRON			= 1300;
-	public static final int					MAX_HEALTH_LOSS			= 10000;
+	public static final float				MAX_HEALTH_LOSS			= 10000;
 	protected boolean						isActivated				= false;
 	protected Set<ITileBase>				fortronConnections		= new HashSet<>();
 
@@ -125,10 +125,10 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 		return cachedInformation[7] + cachedInformation[8] + (shouldDisintegrate ? 25000 : 0);
 	}
 
-	private int		healthLost	= 0;
+	private float	healthLost	= 0;
 	private boolean	isOverriden;
 
-	public int getHealthLost()
+	public float getHealthLost()
 	{
 		return healthLost;
 	}

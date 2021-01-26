@@ -1,6 +1,8 @@
 package physica.forcefield.client.gui;
 
 import java.awt.Rectangle;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,6 +18,12 @@ import physica.library.inventory.tooltip.ToolTipTank;
 
 @SideOnly(Side.CLIENT)
 public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFieldConstructor> implements IBaseUtilities {
+
+	private static final DecimalFormat HEALTH_FORMAT = new DecimalFormat("#.##");
+
+	static {
+		HEALTH_FORMAT.setRoundingMode(RoundingMode.HALF_UP);
+	}
 
 	public GuiFortronFieldConstructor(EntityPlayer player, TileFortronFieldConstructor host) {
 		super(new ContainerFortronFieldConstructor(player, host), host);
@@ -46,7 +54,7 @@ public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFiel
 		drawString("Usage: " + roundPrecise(host.getFortronUse() / 1000.0, 2) + "L/t", 8, 105);
 		String stats = host.isFullySealed ? "Sealed" : host.isCurrentlyConstructing ? "Constructing" : host.isCalculating ? "Calculating" : host.getFortronTank().getFluidAmount() > host.getFortronUse() ? "Unsealed" : "Needs fortron";
 		drawString(stats, 8, 92);
-		drawString("Health: " + (int) ((TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / (double) TileFortronFieldConstructor.MAX_HEALTH_LOSS * 100) + "%", 8, 130);
+		drawString("Health: " + HEALTH_FORMAT.format((TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / (double) TileFortronFieldConstructor.MAX_HEALTH_LOSS * 100) + "%", 8, 130);
 		drawString("Frequency: " + host.getFrequency(), 100, 103);
 		drawStringCentered(StatCollector.translateToLocal("tile." + ForcefieldReferences.PREFIX + "fortronFieldConstructor.gui"), (int) (xSize / 1.65), 5);
 
@@ -57,6 +65,6 @@ public class GuiFortronFieldConstructor extends GuiContainerBase<TileFortronFiel
 	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawElectricity(8, 115, (float) host.getFortronTank().getFluidAmount() / host.getMaxFortron());
-		drawElectricity(8, 140, (float) (TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / TileFortronFieldConstructor.MAX_HEALTH_LOSS);
+		drawElectricity(8, 140, (TileFortronFieldConstructor.MAX_HEALTH_LOSS - host.getHealthLost()) / TileFortronFieldConstructor.MAX_HEALTH_LOSS);
 	}
 }
