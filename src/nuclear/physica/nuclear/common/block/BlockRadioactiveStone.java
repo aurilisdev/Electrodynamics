@@ -21,7 +21,7 @@ public class BlockRadioactiveStone extends BlockStone {
 		setBlockName(NuclearReferences.PREFIX + "radioactiveStone");
 		setBlockTextureName("stone");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
-		setTickRandomly(true);
+//		setTickRandomly(true);
 	}
 
 	@Override

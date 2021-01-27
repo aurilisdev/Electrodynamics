@@ -27,8 +27,8 @@ public class TileCoalGenerator extends TileBaseContainer implements IGuiInterfac
 
 	public static final int		SLOT_INPUT			= 0;
 	private static final int[]	ACCESSIBLE_SLOTS	= new int[] { SLOT_INPUT };
-	public static final int		MAX_GENERATE		= 5100;
-	public static final int		MIN_GENERATE		= 100;
+	public static final int		MAX_GENERATE		= 500;
+	public static final int		MIN_GENERATE		= 5;
 	private static final float	BASE_ACCELERATION	= 0.3F;
 	public double				prevGenerateWatts;
 	public double				generate;

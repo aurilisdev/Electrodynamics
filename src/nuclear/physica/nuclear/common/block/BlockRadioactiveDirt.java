@@ -22,7 +22,7 @@ public class BlockRadioactiveDirt extends Block {
 		setBlockTextureName("dirt");
 		setBlockName(NuclearReferences.PREFIX + "radioactiveDirt");
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
-		setTickRandomly(true);
+//		setTickRandomly(true);
 	}
 
 	@Override

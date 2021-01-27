@@ -45,13 +45,13 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 
 	public int getMaxFortron()
 	{
-		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))
-				+ BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
+		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.051, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))
+				+ BASE_FORTRON * 30 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
 	}
 
 	public int getFortronTransferRate()
 	{
-		return (int) (BASE_FORTRON + BASE_FORTRON * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))) / 2;
+		return (int) (BASE_FORTRON + BASE_FORTRON * 300 * Math.pow(1.051, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))) / 2;
 	}
 
 	@Override
@@ -85,7 +85,10 @@ public class TileFortronCapacitor extends TileBaseContainer implements IInvFortr
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		isActivated = isOverriden ? true : isPoweredByRedstone();
+		isActivated = isOverriden || isPoweredByRedstone();
+		if (!isActivated) {
+			return;
+		}
 		if (ticks % 20 == 0)
 		{
 			validateConnections();

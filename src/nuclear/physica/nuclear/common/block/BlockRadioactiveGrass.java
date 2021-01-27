@@ -29,12 +29,12 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	private IIcon	snowVersion;
 
 	public BlockRadioactiveGrass() {
-		setTickRandomly(true);
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
 		setBlockName(NuclearReferences.PREFIX + "radioactiveGrass");
 		setHardness(0.6F);
 		setStepSound(soundTypeGrass);
 		setBlockTextureName("grass");
+//		setTickRandomly(true);
 	}
 
 	@Override
