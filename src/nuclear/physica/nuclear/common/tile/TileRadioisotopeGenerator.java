@@ -39,7 +39,7 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		generate = getStackInSlot(SLOT_INPUT) == null ? 0 : getStackInSlot(SLOT_INPUT).stackSize * (ElectricityUtilities.convertEnergy(640, Unit.WATT, Unit.RF) / getInventoryStackLimit());
+		generate = getStackInSlot(SLOT_INPUT) == null ? 0 : getStackInSlot(SLOT_INPUT).stackSize * (ElectricityUtilities.convertEnergy(64, Unit.WATT, Unit.RF) / getInventoryStackLimit());
 		if (generate > 0)
 		{
 			int validReceivers = 0;
@@ -153,6 +153,6 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	@Override
 	public int getElectricCapacity(Face from)
 	{
-		return ElectricityUtilities.convertEnergy(6400, Unit.WATT, Unit.RF);
+		return ElectricityUtilities.convertEnergy(640, Unit.WATT, Unit.RF);
 	}
 }

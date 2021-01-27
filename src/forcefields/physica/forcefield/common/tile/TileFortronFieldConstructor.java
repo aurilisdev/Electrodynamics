@@ -359,7 +359,7 @@ public class TileFortronFieldConstructor extends TileBaseContainer implements II
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		isActivated = isOverriden ? true : isPoweredByRedstone();
+		isActivated = isOverriden || isPoweredByRedstone();
 		if (!ForcefieldEventHandler.INSTANCE.isConstructorRegistered(this))
 		{
 			ForcefieldEventHandler.INSTANCE.registerConstructor(this);

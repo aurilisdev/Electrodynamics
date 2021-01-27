@@ -57,6 +57,8 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 	private int					frequency;
 	private boolean				isOverriden;
 
+	private static final int MAX_SIZE = 128;
+
 	public int getMaxFortron()
 	{
 		return getFortronUse() * 3 + BASE_FORTRON;
@@ -187,7 +189,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 		{
 			validateConnections();
 		}
-		isActivated = isOverriden ? true : isPoweredByRedstone();
+		isActivated = isOverriden || isPoweredByRedstone();
 		if (isActivated() && fortronTank.getFluidAmount() > getFortronUse())
 		{
 			fortronTank.drain(getFortronUse(), true);
@@ -223,7 +225,7 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 						EntityPlayer player = (EntityPlayer) obj;
 						if (!isPlayerValidated(player, null))
 						{
-							player.addChatMessage(new ChatComponentText("Warning! Leave this zone immediately. You have no right to enter."));
+							player.addChatMessage(new ChatComponentText("Warning! Do not enter this zone or you will be vaporized."));
 						}
 					}
 				}
@@ -402,14 +404,15 @@ public class TileInterdictionMatrix extends TileBaseContainer implements IInvFor
 
 	public AxisAlignedBB getActiveBB()
 	{
-		int scaleCount = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
+		int scaleCount = Math.min(MAX_SIZE, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX));
 		GridLocation loc = getLocation();
 		return AxisAlignedBB.getBoundingBox(loc.xCoord - scaleCount, loc.yCoord - scaleCount, loc.zCoord - scaleCount, loc.xCoord + scaleCount + 1, loc.yCoord + scaleCount + 1, loc.zCoord + scaleCount + 1);
 	}
 
 	public AxisAlignedBB getActiveWarnBB()
 	{
-		int scaleCount = Math.min(128, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleManipulationScale"), SLOT_STARTMODULEINDEX, SLOT_ENDMODULEINDEX)) * 2;
+		int activeRange = getActionRange();
+		int scaleCount = activeRange + 5 + (int) (((float) activeRange/MAX_SIZE) * 20);
 		GridLocation loc = getLocation();
 		return AxisAlignedBB.getBoundingBox(loc.xCoord - scaleCount, loc.yCoord - scaleCount, loc.zCoord - scaleCount, loc.xCoord + scaleCount + 1, loc.yCoord + scaleCount + 1, loc.zCoord + scaleCount + 1);
 	}

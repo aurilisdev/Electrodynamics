@@ -45,8 +45,8 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 
 	public int getMaxEnergyStored()
 	{
-		return (int) (BASE_ENERGY + BASE_ENERGY * 10 * Math.pow(1.02, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))
-				+ BASE_ENERGY * 10 * Math.pow(1.02, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
+		return (int) (BASE_ENERGY + BASE_ENERGY * 10 * Math.pow(1.051, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))
+				+ BASE_ENERGY * 30 * Math.pow(1.051, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeCapacity"), SLOT_MODULE1, SLOT_MODULE3) * 2));
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 
 	public int getFortronTransferRate()
 	{
-		return (int) (BASE_ENERGY + BASE_ENERGY * 10 * Math.pow(1.021, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))) / 3;
+		return (int) (BASE_ENERGY + BASE_ENERGY * 300 * Math.pow(1.051, getModuleCount(ForcefieldItemRegister.moduleMap.get("moduleUpgradeSpeed"), SLOT_MODULE1, SLOT_MODULE3))) / 3;
 	}
 
 	@Override
@@ -78,7 +78,10 @@ public class TileCoercionDriver extends TileBasePoweredContainer implements IInv
 	public void updateServer(int ticks)
 	{
 		super.updateServer(ticks);
-		isActivated = isOverriden ? true : isPoweredByRedstone();
+		isActivated = isOverriden || isPoweredByRedstone();
+		if (!isActivated) {
+			return;
+		}
 		if (ticks % 20 == 0)
 		{
 			validateConnections();
