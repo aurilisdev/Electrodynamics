@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.formatting.MeasurementUnit;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
+import electrodynamics.api.tile.electric.IJoulesStorage;
 import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
@@ -30,7 +31,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IPowerReceiver, IElectricTile, IEnergyStorage {
+public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IPowerReceiver, IElectricTile, IEnergyStorage, IJoulesStorage {
 	public static final double DEFAULT_VOLTAGE = 120.0;
 	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
 	public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
@@ -249,6 +250,21 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Deprecated
 	public boolean canReceive() {
 		return true;
+	}
+
+	@Override
+	public void setJoulesStored(double joules) {
+		this.joules = joules;
+	}
+
+	@Override
+	public double getJoulesStored() {
+		return joules;
+	}
+
+	@Override
+	public double getMaxJoulesStored() {
+		return DEFAULT_MAX_JOULES * currentCapacityMultiplier;
 	}
 
 }

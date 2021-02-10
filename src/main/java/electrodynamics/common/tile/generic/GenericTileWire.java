@@ -115,7 +115,9 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	@Override
 	public void remove() {
 		if (!world.isRemote) {
-			getNetwork().split(this);
+			if (electricNetwork != null) {
+				getNetwork().split(this);
+			}
 		}
 		super.remove();
 	}
