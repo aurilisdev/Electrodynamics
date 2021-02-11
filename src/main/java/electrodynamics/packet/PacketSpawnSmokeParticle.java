@@ -22,7 +22,7 @@ public class PacketSpawnSmokeParticle {
 		ctx.enqueueWork(() -> {
 			ClientWorld world = Minecraft.getInstance().world;
 			if (world != null) {
-				world.addParticle(ParticleTypes.EXPLOSION, message.pos.getX() + 0.5, message.pos.getY() + 0.5, message.pos.getZ() + 0.5, 0, 0, 0);
+				world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, message.pos.getX() + 0.5, message.pos.getY() + 0.5, message.pos.getZ() + 0.5, 0, 0, 0);
 			}
 		});
 		ctx.setPacketHandled(true);
