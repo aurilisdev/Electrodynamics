@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.api.network.conductor.IConductor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +26,7 @@ public class AbstractNetworkFinder {
 	}
 
 	public void loopAll(BlockPos location) {
-		if (worldObj.getTileEntity(location) instanceof IConductor) {
+		if (net.isConductor(worldObj.getTileEntity(location))) {
 			iterated.add(location);
 		}
 		for (Direction direction : Direction.values()) {

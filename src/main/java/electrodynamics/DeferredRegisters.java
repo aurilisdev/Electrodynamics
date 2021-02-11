@@ -9,10 +9,12 @@ import electrodynamics.api.References;
 import electrodynamics.api.subtype.Subtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.connect.BlockPipe;
+import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.block.wire.BlockWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
@@ -34,6 +36,7 @@ import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
@@ -42,6 +45,7 @@ import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
 import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
 import electrodynamics.common.tile.processor.o2o.TileWireMill;
 import electrodynamics.common.tile.wire.TileLogisticalWire;
+import electrodynamics.common.tile.wire.TilePipe;
 import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
@@ -71,6 +75,9 @@ public class DeferredRegisters {
 		for (SubtypeWire subtype : SubtypeWire.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
 		}
+		for (SubtypePipe subtype : SubtypePipe.values()) {
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
+		}
 	}
 
 	private static void registerSubtypeItem(Subtype[] array) {
@@ -90,6 +97,9 @@ public class DeferredRegisters {
 		registerSubtypeBlockItem(SubtypeMachine.values());
 		for (SubtypeWire subtype : SubtypeWire.values()) {
 			ITEMS.register(subtype.tag(), supplier(new BlockItemWire((BlockWire) SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
+		}
+		for (SubtypePipe subtype : SubtypePipe.values()) {
+			ITEMS.register(subtype.tag(), supplier(new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
 		}
 		registerSubtypeItem(SubtypeIngot.values());
 		registerSubtypeItem(SubtypeDust.values());
@@ -138,9 +148,12 @@ public class DeferredRegisters {
 			() -> new TileEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
 	public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(SubtypeMachine.oxidationfurnace.tag(),
 			() -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
+	public static final RegistryObject<TileEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
+			() -> new TileEntityType<>(TileElectricPump::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
 
 	public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile", () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile", () -> new TileEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
+	public static final RegistryObject<TileEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile", () -> new TileEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
 	public static final RegistryObject<ContainerType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS.register(SubtypeMachine.coalgenerator.tag(), () -> new ContainerType<>(ContainerCoalGenerator::new));
 	public static final RegistryObject<ContainerType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS.register(SubtypeMachine.electricfurnace.tag(),
 			() -> new ContainerType<>(ContainerElectricFurnace::new));

@@ -4,7 +4,7 @@ import java.util.List;
 
 import electrodynamics.api.formatting.ElectricUnit;
 import electrodynamics.api.utilities.ElectricityChatFormatter;
-import electrodynamics.common.block.wire.BlockWire;
+import electrodynamics.common.block.connect.BlockWire;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;

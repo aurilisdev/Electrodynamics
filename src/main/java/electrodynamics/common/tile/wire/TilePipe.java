@@ -1,45 +1,45 @@
 package electrodynamics.common.tile.wire;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.tile.generic.GenericTileWire;
+import electrodynamics.api.network.pipe.IPipe;
+import electrodynamics.common.block.connect.BlockPipe;
+import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.tile.generic.GenericTilePipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 
-public class TileWire extends GenericTileWire implements IConductor {
+public class TilePipe extends GenericTilePipe implements IPipe {
 	public double transmit = 0;
 
-	public TileWire() {
-		super(DeferredRegisters.TILE_WIRE.get());
+	public TilePipe() {
+		super(DeferredRegisters.TILE_PIPE.get());
 	}
 
-	public TileWire(TileEntityType<?> tile) {
+	public TilePipe(TileEntityType<?> tile) {
 		super(tile);
 	}
 
-	public SubtypeWire wire = null;
+	public SubtypePipe pipe = null;
 
 	@Override
-	public SubtypeWire getWireType() {
-		if (wire == null) {
-			wire = ((BlockWire) getBlockState().getBlock()).wire;
+	public SubtypePipe getPipeType() {
+		if (pipe == null) {
+			pipe = ((BlockPipe) getBlockState().getBlock()).pipe;
 		}
-		return wire;
+		return pipe;
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		compound.putInt("ord", wire.ordinal());
+		compound.putInt("ord", pipe.ordinal());
 		return super.write(compound);
 	}
 
 	@Override
 	public void read(BlockState state, CompoundNBT compound) {
 		super.read(state, compound);
-		wire = SubtypeWire.values()[compound.getInt("ord")];
+		pipe = SubtypePipe.values()[compound.getInt("ord")];
 	}
 
 	@Override

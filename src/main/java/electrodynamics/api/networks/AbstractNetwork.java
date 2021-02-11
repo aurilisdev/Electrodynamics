@@ -20,8 +20,8 @@ public abstract class AbstractNetwork<Conductor extends IAbstractConductor, Cond
 	public HashMap<Acceptor, HashSet<Direction>> acceptorInputMap = new HashMap<>();
 	public HashMap<ConductorType, HashSet<Conductor>> conductorTypeMap = new HashMap<>();
 	public double networkMaxTransfer;
-	public long transmittedLastTick;
-	public long transmittedThisTick;
+	public double transmittedLastTick;
+	public double transmittedThisTick;
 	public long ticksSinceNetworkRefresh;
 	public long ticksSinceLastFix = 1180;
 	public boolean fixed;
@@ -56,7 +56,7 @@ public abstract class AbstractNetwork<Conductor extends IAbstractConductor, Cond
 		updateStatistics();
 	}
 
-	public long getTransmittedLastTick() {
+	public double getTransmittedLastTick() {
 		return transmittedLastTick;
 	}
 

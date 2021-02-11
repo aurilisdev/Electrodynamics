@@ -5,6 +5,7 @@ import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
@@ -21,7 +22,7 @@ public enum SubtypeMachine implements Subtype {
 	electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class), coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
 	wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class), mineralgrinder(true, TileMineralGrinder.class), /* TODO: Recipe with lead and acid? */ batterybox(true, TileBatteryBox.class),
 	oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
-	solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class);
+	solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class), electricpump(true, TileElectricPump.class);
 
 	public final Class<? extends TileEntity> tileclass;
 	public final boolean showInItemGroup;
