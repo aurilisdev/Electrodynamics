@@ -15,7 +15,7 @@ public class TileLogisticalWire extends TileWire implements ITickableTileBase {
 	public void tickServer() {
 		_ticks++;
 		if (_ticks % 10 == 0) {
-			boolean shouldPower = getNetwork().getSavedAmpsTransmissionBuffer() > 0;
+			boolean shouldPower = getNetwork().getTransmittedLastTick() > 0;
 			if (shouldPower != isPowered) {
 				isPowered = shouldPower;
 				world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());

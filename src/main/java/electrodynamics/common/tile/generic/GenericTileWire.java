@@ -5,8 +5,8 @@ import java.util.HashSet;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.network.INetwork;
 import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.networks.AbstractNetwork;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.electricity.network.ElectricNetwork;
 import electrodynamics.common.network.NetworkRegistry;
@@ -51,12 +51,12 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 				}
 			}
 			if (connectedNets.size() == 0) {
-				electricNetwork = new ElectricNetwork(new IConductor[] { this });
+				electricNetwork = new ElectricNetwork(Sets.newHashSet(this));
 			} else if (connectedNets.size() == 1) {
 				electricNetwork = (ElectricNetwork) connectedNets.toArray()[0];
 				electricNetwork.conductorSet.add(this);
 			} else {
-				electricNetwork = new ElectricNetwork(connectedNets);
+				electricNetwork = new ElectricNetwork(connectedNets, false);
 				electricNetwork.conductorSet.add(this);
 			}
 		}
@@ -64,7 +64,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	}
 
 	@Override
-	public void setNetwork(INetwork network) {
+	public void setNetwork(AbstractNetwork<?, ?, ?, ?> network) {
 		if (electricNetwork != network && network instanceof ElectricNetwork) {
 			removeFromNetwork();
 			electricNetwork = (ElectricNetwork) network;
@@ -82,7 +82,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 				}
 			}
 			if (foundNetworks.size() > 0) {
-				foundNetworks.get(0).addAllCables(Sets.newHashSet(this));
+				foundNetworks.get(0).conductorSet.add(this);
 				electricNetwork = foundNetworks.get(0);
 				if (foundNetworks.size() > 1) {
 					foundNetworks.remove(0);
@@ -98,7 +98,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	@Override
 	public void removeFromNetwork() {
 		if (electricNetwork != null) {
-			electricNetwork.removeWire(this);
+			electricNetwork.removeFromNetwork(this);
 		}
 	}
 

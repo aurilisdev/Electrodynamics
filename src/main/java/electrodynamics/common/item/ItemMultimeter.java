@@ -23,11 +23,12 @@ public class ItemMultimeter extends Item {
 			if (tile instanceof TileWire) {
 				TileWire wire = (TileWire) tile;
 				ElectricNetwork net = wire.getNetwork();
-				String finalString = ElectricityChatFormatter.getDisplay(net.getSavedAmpsTransmissionBuffer() / net.getLockedSavedVoltage() * 20, ElectricUnit.AMPERE).replace(" Amps", " Amp").replace(" Amp", "") + " / "
-						+ ElectricityChatFormatter.getDisplay(net.getNetworkMaxTransfer(), ElectricUnit.AMPERE) + ", ";
-				finalString += ElectricityChatFormatter.getDisplay(net.getLockedSavedVoltage(), ElectricUnit.VOLTAGE) + ", ";
-				finalString += ElectricityChatFormatter.getDisplay(net.getSavedAmpsTransmissionBuffer() * 20.0, ElectricUnit.WATT) + ", ";
+				String finalString = ElectricityChatFormatter.getDisplay(net.getTransmittedLastTick() / net.getNetworkSavedVoltage() * 20, ElectricUnit.AMPERE).replace(" Amps", " Amp").replace(" Amp", "") + " / "
+						+ ElectricityChatFormatter.getDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
+				finalString += ElectricityChatFormatter.getDisplay(net.getNetworkSavedVoltage(), ElectricUnit.VOLTAGE) + ", ";
+				finalString += ElectricityChatFormatter.getDisplay(net.getTransmittedLastTick() * 20.0, ElectricUnit.WATT) + ", ";
 				finalString += ElectricityChatFormatter.getDisplay(net.getNetworkResistance() - 1, ElectricUnit.RESISTANCE) + " ( -" + (int) Math.round(100.0 - 100.0 / net.getNetworkResistance()) + "% )";
+				finalString += net.getSize();
 				context.getPlayer().sendStatusMessage(new StringTextComponent(finalString), true);
 			}
 		}

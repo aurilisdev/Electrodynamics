@@ -170,8 +170,8 @@ public class BlockWire extends Block {
 			TileWire wire = (TileWire) worldIn.getTileEntity(pos);
 			if (wire != null) {
 				if (wire.getNetwork() != null) {
-					if (wire.getNetwork().getSavedAmpsTransmissionBuffer() > 0) {
-						entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) (wire.getNetwork().getSavedAmpsTransmissionBuffer() / 120));
+					if (wire.getNetwork().getTransmittedLastTick() > 0) {
+						entityIn.attackEntityFrom(DamageSources.ELECTRICITY, wire.getNetwork().getTransmittedLastTick() / 120);
 					}
 				}
 			}
