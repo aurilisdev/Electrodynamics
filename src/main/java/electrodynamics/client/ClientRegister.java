@@ -40,6 +40,7 @@ public class ClientRegister {
 
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
 		ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"), new IItemPropertyGetter() {
 			private double num = 0.1;
 			private long lastCheck = 0;

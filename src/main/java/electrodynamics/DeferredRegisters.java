@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import electrodynamics.api.References;
 import electrodynamics.api.subtype.Subtype;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
@@ -37,6 +38,7 @@ import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
@@ -64,7 +66,7 @@ public class DeferredRegisters {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
 	public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
 	public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, References.ID);
-
+	public static BlockMultiSubnode multi;
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
@@ -119,6 +121,8 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher), "|translate|tooltip.mineralcrusher.voltage");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning), "|translate|tooltip.oxidationfurnacerunning.voltage");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel), "|translate|tooltip.advancedsolarpanel.voltage");
+		BLOCKS.register("multisubnode", supplier(multi = new BlockMultiSubnode()));
+		ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
 	}
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().group(References.CORETAB))));
@@ -150,6 +154,7 @@ public class DeferredRegisters {
 			() -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
 	public static final RegistryObject<TileEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
 			() -> new TileEntityType<>(TileElectricPump::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
+	public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode", () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
 
 	public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile", () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile", () -> new TileEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));

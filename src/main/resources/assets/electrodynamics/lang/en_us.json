@@ -99,6 +99,7 @@
 	"block.electrodynamics.wirelogisticsgold": "Logistical Gold Wire",
 	"block.electrodynamics.wirelogisticssuperconductive": "Logistical Superconductive Wire",
 	"block.electrodynamics.pipesteel": "Steel Pipe",
+	"block.electrodynamics.multisubnode": "Multiblock Subnode",
 	"container.coalgenerator": "Coal Generator",
 	"container.electricfurnace": "Electric Furnace",
 	"container.wiremill": "Wire Mill",

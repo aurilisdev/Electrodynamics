@@ -1,5 +1,7 @@
 package electrodynamics.common.tile;
 
+import java.util.HashSet;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.IElectricTile;
@@ -7,6 +9,9 @@ import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.multiblock.IMultiblockTileNode;
+import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +19,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.RainType;
 
-public class TileAdvancedSolarPanel extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile {
+public class TileAdvancedSolarPanel extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile, IMultiblockTileNode {
 	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(3 * 3.5 * 1.5, 240);
 
 	public TileAdvancedSolarPanel() {
@@ -64,5 +69,10 @@ public class TileAdvancedSolarPanel extends GenericTileBase implements ITickable
 	@Override
 	public double getVoltage(Direction from) {
 		return DEFAULT_OUTPUT.getVoltage();
+	}
+
+	@Override
+	public HashSet<Subnode> getSubNodes() {
+		return BlockMachine.advancedsolarpanelsubnodes;
 	}
 }

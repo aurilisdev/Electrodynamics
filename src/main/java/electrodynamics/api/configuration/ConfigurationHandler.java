@@ -123,7 +123,7 @@ public class ConfigurationHandler {
 						}
 					}
 					while (line != null) {
-						if (!line.startsWith("Comment: ") && !line.startsWith("//") && !line.isEmpty()) {
+						if (!line.startsWith("Comment: ") && !line.startsWith("//") && !line.isEmpty() && line.contains(":")) {
 							line = line.substring(10);
 							line = line.substring(line.indexOf(":"));
 							line = line.replace("'", "");
