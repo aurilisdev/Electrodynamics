@@ -71,7 +71,7 @@ public class BlockPipe extends Block {
 	public BlockPipe(SubtypePipe pipe) {
 		super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(0.15f).variableOpacity());
 		this.pipe = pipe;
-		double w = 2;
+		double w = 3;
 		double sm = 8 - w;
 		double lg = 8 + w;
 		AABB = Block.makeCuboidShape(sm, sm, sm, lg, lg, lg);
