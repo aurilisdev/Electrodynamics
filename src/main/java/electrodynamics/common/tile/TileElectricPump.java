@@ -11,6 +11,7 @@ import electrodynamics.api.tile.processing.IElectricProcessor;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.fluid.FluidUtilities;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,7 +28,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileElectricPump extends GenericTileBase implements IPowerReceiver, IElectricTile, IElectricProcessor, ITickableTileBase, IFluidHandler {
-	public static final double REQUIRED_JOULES_PER_TICK = 50;
 	private double joules;
 	private boolean hasWater;
 
@@ -42,7 +42,7 @@ public class TileElectricPump extends GenericTileBase implements IPowerReceiver,
 
 	@Override
 	public double getMaxJoulesStored() {
-		return REQUIRED_JOULES_PER_TICK * 10;
+		return Constants.ELECTRICPUMP_USAGE_PER_TICK * 20;
 	}
 
 	protected CachedTileOutput output;
@@ -56,8 +56,8 @@ public class TileElectricPump extends GenericTileBase implements IPowerReceiver,
 			FluidState state = world.getBlockState(pos.offset(Direction.DOWN)).getFluidState();
 			hasWater = state.isSource() && state.getFluid() == Fluids.WATER;
 		}
-		if (hasWater && joules > REQUIRED_JOULES_PER_TICK) {
-			joules -= REQUIRED_JOULES_PER_TICK;
+		if (hasWater && joules > Constants.ELECTRICPUMP_USAGE_PER_TICK) {
+			joules -= Constants.ELECTRICPUMP_USAGE_PER_TICK;
 			if (FluidUtilities.isFluidReceiver(output.get())) {
 				FluidUtilities.receivePower(output.get(), getFacing().rotateY().getOpposite(), 50, false);
 			}
@@ -122,7 +122,7 @@ public class TileElectricPump extends GenericTileBase implements IPowerReceiver,
 
 	@Override
 	public double getJoulesPerTick() {
-		return REQUIRED_JOULES_PER_TICK;
+		return Constants.ELECTRICPUMP_USAGE_PER_TICK;
 	}
 
 	@Override

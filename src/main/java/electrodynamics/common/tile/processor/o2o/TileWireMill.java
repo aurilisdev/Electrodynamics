@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
 import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -13,8 +14,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileWireMill extends GenericTileProcessor implements IO2OProcessor {
-	public static final double REQUIRED_JOULES_PER_TICK = 125;
-	public static final int REQUIRED_TICKS = 200;
 
 	public static final int[] SLOTS_INPUT = new int[] { 0 };
 	public static final int[] SLOTS_OUTPUT = new int[] { 1 };
@@ -26,12 +25,12 @@ public class TileWireMill extends GenericTileProcessor implements IO2OProcessor 
 
 	@Override
 	public double getJoulesPerTick() {
-		return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
+		return Constants.WIREMILL_USAGE_PER_TICK * currentSpeedMultiplier;
 	}
 
 	@Override
 	public int getRequiredTicks() {
-		return REQUIRED_TICKS;
+		return Constants.WIREMILL_REQUIRED_TICKS;
 	}
 
 	@Override

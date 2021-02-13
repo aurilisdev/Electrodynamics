@@ -12,6 +12,7 @@ import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.RainType;
 
 public class TileAdvancedSolarPanel extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile, IMultiblockTileNode {
-	public static final TransferPack DEFAULT_OUTPUT = TransferPack.ampsVoltage(3 * 3.5 * 1.5, 240);
 
 	public TileAdvancedSolarPanel() {
 		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
@@ -63,12 +63,12 @@ public class TileAdvancedSolarPanel extends GenericTileBase implements ITickable
 		Biome b = world.getBiomeManager().getBiome(getPos());
 		float tempEff = 0.3F * (0.8F - b.getTemperature(getPos()));
 		float humidityEff = -0.3F * (b.getPrecipitation() != RainType.NONE ? b.getDownfall() : 0.0F);
-		return TransferPack.ampsVoltage(DEFAULT_OUTPUT.getAmps() * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), DEFAULT_OUTPUT.getVoltage());
+		return TransferPack.ampsVoltage(Constants.ADVANCEDSOLARPANEL_AMPERAGE * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), getVoltage(Direction.UP));
 	}
 
 	@Override
 	public double getVoltage(Direction from) {
-		return DEFAULT_OUTPUT.getVoltage();
+		return 240;
 	}
 
 	@Override

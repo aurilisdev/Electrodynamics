@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.processing.IO2OProcessor;
 import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -26,7 +27,7 @@ public class TileMineralCrusher extends GenericTileProcessor implements IO2OProc
 
 	@Override
 	public double getJoulesPerTick() {
-		return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
+		return Constants.MINERALCRUSHER_USAGE_PER_TICK * currentSpeedMultiplier;
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class TileMineralCrusher extends GenericTileProcessor implements IO2OProc
 
 	@Override
 	public int getRequiredTicks() {
-		return REQUIRED_TICKS;
+		return Constants.MINERALCRUSHER_REQUIRED_TICKS;
 	}
 
 	@Override

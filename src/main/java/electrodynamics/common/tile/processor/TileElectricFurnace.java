@@ -6,6 +6,7 @@ import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -17,8 +18,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileElectricFurnace extends GenericTileProcessor implements IO2OProcessor {
-	public static final double REQUIRED_JOULES_PER_TICK = 175;
-	public static final int REQUIRED_TICKS = 100;
 
 	public static final int[] SLOTS_INPUT = new int[] { 0 };
 	public static final int[] SLOTS_OUTPUT = new int[] { 1 };
@@ -30,12 +29,12 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 
 	@Override
 	public double getJoulesPerTick() {
-		return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
+		return Constants.ELECTRICFURNACE_USAGE_PER_TICK * currentSpeedMultiplier;
 	}
 
 	@Override
 	public int getRequiredTicks() {
-		return REQUIRED_TICKS;
+		return Constants.ELECTRICFURNACE_REQUIRED_TICKS;
 	}
 
 	protected IRecipe<?> cachedRecipe = null;

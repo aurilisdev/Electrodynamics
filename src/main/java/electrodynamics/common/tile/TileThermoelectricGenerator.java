@@ -7,13 +7,13 @@ import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
 public class TileThermoelectricGenerator extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile {
-	public static final double GENERATED_JOULES_PER_TICK = 500.0 / 20.0;
 	protected CachedTileOutput output;
 	protected boolean hasHeat = false;
 
@@ -31,7 +31,7 @@ public class TileThermoelectricGenerator extends GenericTileBase implements ITic
 		}
 		if (hasHeat) {
 			if (output.get() instanceof IPowerReceiver) {
-				output.<IPowerReceiver>get().receivePower(TransferPack.joulesVoltage(GENERATED_JOULES_PER_TICK, getVoltage(Direction.UP)), Direction.UP, false);
+				output.<IPowerReceiver>get().receivePower(TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE, getVoltage(Direction.UP)), Direction.UP, false);
 			}
 		}
 	}
