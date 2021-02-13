@@ -123,9 +123,9 @@ public class ConfigurationHandler {
 						}
 					}
 					while (line != null) {
-						if (!line.startsWith("Comment: ") && !line.startsWith("//") && !line.isEmpty() && line.contains(":")) {
+						if (!line.startsWith("Comment: ") && !line.startsWith("//") && !line.isEmpty() && line.contains(" -> ")) {
 							line = line.substring(10);
-							line = line.substring(line.indexOf(":"));
+							line = line.substring(line.indexOf(" -> "));
 							line = line.replace("'", "");
 							line = line.substring(4);
 							String[] split = line.split("=");
@@ -159,6 +159,7 @@ public class ConfigurationHandler {
 								System.out.println("Field: " + split[0]);
 								System.out.println("Value: " + split[1]);
 							}
+							System.out.println("Parsed config field '" + split[0] + "' as -> " + split[1]);
 						}
 						line = reader.readLine();
 					}
