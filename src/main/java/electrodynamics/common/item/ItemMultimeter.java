@@ -28,7 +28,6 @@ public class ItemMultimeter extends Item {
 				finalString += ElectricityChatFormatter.getDisplay(net.getNetworkSavedVoltage(), ElectricUnit.VOLTAGE) + ", ";
 				finalString += ElectricityChatFormatter.getDisplay(net.getTransmittedLastTick() * 20.0, ElectricUnit.WATT) + ", ";
 				finalString += ElectricityChatFormatter.getDisplay(net.getNetworkResistance() - 1, ElectricUnit.RESISTANCE) + " ( -" + (int) Math.round(100.0 - 100.0 / net.getNetworkResistance()) + "% )";
-				finalString += net.getSize();
 				context.getPlayer().sendStatusMessage(new StringTextComponent(finalString), true);
 			}
 		}

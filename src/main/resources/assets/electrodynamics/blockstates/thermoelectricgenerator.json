@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/thermoelectricgenerator",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/thermoelectricgenerator",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/thermoelectricgenerator",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/thermoelectricgenerator",
+			"y": 180
+		}
+	}
+}

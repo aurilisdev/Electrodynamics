@@ -40,6 +40,7 @@ import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileSolarPanel;
+import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.processor.TileElectricFurnace;
 import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
@@ -154,6 +155,8 @@ public class DeferredRegisters {
 			() -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
 	public static final RegistryObject<TileEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
 			() -> new TileEntityType<>(TileElectricPump::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
+	public static final RegistryObject<TileEntityType<TileThermoelectricGenerator>> TILE_THERMOELECTRICGENERATOR = TILES.register(SubtypeMachine.thermoelectricgenerator.tag(),
+			() -> new TileEntityType<>(TileThermoelectricGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.thermoelectricgenerator)), null));
 	public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode", () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
 
 	public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile", () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
