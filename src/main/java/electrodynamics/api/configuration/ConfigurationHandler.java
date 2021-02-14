@@ -174,6 +174,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(IntValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								int value = field.getInt(null);
 								writer.write("I:default=" + field.getAnnotation(IntValue.class).def() + " -> " + name + "='" + value + "'");
@@ -182,6 +183,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(LongValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								long value = field.getLong(null);
 								writer.write("L:default=" + field.getAnnotation(LongValue.class).def() + " -> " + name + "='" + value + "'");
@@ -190,6 +192,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(FloatValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								float value = field.getFloat(null);
 								writer.write("F:default=" + field.getAnnotation(FloatValue.class).def() + " -> " + name + "='" + value + "'");
@@ -198,6 +201,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(DoubleValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								double value = field.getDouble(null);
 								writer.write("D:default=" + field.getAnnotation(DoubleValue.class).def() + " -> " + name + "='" + value + "'");
@@ -206,6 +210,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(StringValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								String value = (String) field.get(null);
 								writer.write("S:default=" + field.getAnnotation(StringValue.class).def() + " -> " + name + "='" + value + "'");
@@ -214,6 +219,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(BooleanValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								boolean value = field.getBoolean(null);
 								writer.write("T:default=" + field.getAnnotation(BooleanValue.class).def() + " -> " + name + "='" + value + "'");
@@ -222,6 +228,7 @@ public class ConfigurationHandler {
 								String comment = field.getAnnotation(ByteValue.class).comment();
 								if (!comment.isEmpty()) {
 									writer.write("Comment: '" + comment + "'");
+									writer.newLine();
 								}
 								byte value = field.getByte(null);
 								writer.write("B:default=" + field.getAnnotation(ByteValue.class).def() + " -> " + name + "='" + value + "'");
