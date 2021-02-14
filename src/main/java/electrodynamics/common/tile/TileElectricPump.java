@@ -59,7 +59,7 @@ public class TileElectricPump extends GenericTileBase implements IPowerReceiver,
 		if (hasWater && joules > Constants.ELECTRICPUMP_USAGE_PER_TICK) {
 			joules -= Constants.ELECTRICPUMP_USAGE_PER_TICK;
 			if (FluidUtilities.isFluidReceiver(output.get())) {
-				FluidUtilities.receivePower(output.get(), getFacing().rotateY().getOpposite(), 50, false);
+				FluidUtilities.receiveFluid(output.get(), getFacing().rotateY().getOpposite(), new FluidStack(Fluids.WATER, 50), false);
 			}
 		}
 	}

@@ -168,7 +168,7 @@ public class BlockPipe extends Block {
 			if (facingTile instanceof IPipe) {
 				stateIn = stateIn.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
 				worldIn.setBlockState(pos, stateIn);
-			} else if (FluidUtilities.isFluidReceiver(facingTile) && FluidUtilities.canInputPower(facingTile, d.getOpposite())) {
+			} else if (FluidUtilities.isFluidReceiver(facingTile, d.getOpposite())) {
 				stateIn = stateIn.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.INVENTORY);
 				worldIn.setBlockState(pos, stateIn);
 			}
@@ -204,7 +204,7 @@ public class BlockPipe extends Block {
 		TileEntity tile = world.getTileEntity(facingPos);
 		if (tile instanceof IPipe) {
 			return stateIn.with(property, EnumConnectType.WIRE);
-		} else if (FluidUtilities.isFluidReceiver(tile) && FluidUtilities.canInputPower(tile, facing.getOpposite())) {
+		} else if (FluidUtilities.isFluidReceiver(tile, facing.getOpposite())) {
 			return stateIn.with(property, EnumConnectType.INVENTORY);
 		} else {
 			return stateIn.with(property, EnumConnectType.NONE);

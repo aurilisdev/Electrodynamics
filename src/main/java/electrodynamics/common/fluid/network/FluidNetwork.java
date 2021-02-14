@@ -7,14 +7,14 @@ import java.util.Set;
 
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.api.networks.AbstractNetwork;
-import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.fluid.FluidUtilities;
 import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraftforge.fluids.FluidStack;
 
-public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer> {
+public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> {
 	public FluidNetwork() {
 		this(new HashSet<IPipe>());
 	}
@@ -24,8 +24,8 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 		NetworkRegistry.register(this);
 	}
 
-	public FluidNetwork(Set<AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer>> networks) {
-		for (AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer> net : networks) {
+	public FluidNetwork(Set<AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack>> networks) {
+		for (AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> net : networks) {
 			if (net != null) {
 				conductorSet.addAll(net.conductorSet);
 				net.deregister();
@@ -47,18 +47,18 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 	}
 
 	@Override
-	public Integer emit(Integer maxTransfer, ArrayList<TileEntity> ignored) {
-		if (maxTransfer > 0) {
-			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
-			Integer joulesSent = 0;
+	public FluidStack emit(FluidStack transfer, ArrayList<TileEntity> ignored) {
+		if (transfer.getAmount() > 0) {
+			Set<TileEntity> availableAcceptors = getFluidAcceptors(transfer);
+			FluidStack joulesSent = new FluidStack(transfer.getFluid(), 0);
 			availableAcceptors.removeAll(ignored);
 			if (!availableAcceptors.isEmpty()) {
-				Integer perReceiver = maxTransfer / availableAcceptors.size();
+				FluidStack perReceiver = new FluidStack(transfer.getFluid(), transfer.getAmount() / availableAcceptors.size());
 				for (TileEntity receiver : availableAcceptors) {
 					if (acceptorInputMap.containsKey(receiver)) {
 						for (Direction connection : acceptorInputMap.get(receiver)) {
-							int rec = FluidUtilities.receivePower(receiver, connection, perReceiver, false);
-							joulesSent += rec;
+							int rec = FluidUtilities.receiveFluid(receiver, connection, perReceiver, false);
+							joulesSent.setAmount(joulesSent.getAmount() + rec);
 							transmittedThisTick += rec;
 						}
 						checkForOverload((int) transmittedThisTick);
@@ -67,15 +67,15 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 			}
 			return joulesSent;
 		}
-		return 0;
+		return FluidStack.EMPTY;
 	}
 
-	public Set<TileEntity> getEnergyAcceptors() {
+	public Set<TileEntity> getFluidAcceptors(FluidStack compare) {
 		Set<TileEntity> toReturn = new HashSet<>();
 		for (TileEntity acceptor : acceptorSet) {
 			if (FluidUtilities.isFluidReceiver(acceptor)) {
 				for (Direction connection : acceptorInputMap.get(acceptor)) {
-					if (FluidUtilities.canInputPower(acceptor, connection)) {
+					if (FluidUtilities.canInputFluid(acceptor, connection, compare)) {
 						toReturn.add(acceptor);
 					}
 				}
@@ -84,7 +84,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 		return toReturn;
 	}
 
-	private boolean checkForOverload(Integer attemptSend) {
+	private boolean checkForOverload(int attemptSend) {
 		if (attemptSend >= networkMaxTransfer) {
 			HashSet<SubtypePipe> checkList = new HashSet<>();
 			for (SubtypePipe type : SubtypePipe.values()) {
@@ -113,17 +113,17 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer> createInstance() {
+	public AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> createInstance() {
 		return new FluidNetwork();
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer> createInstanceConductor(Set<IPipe> conductors) {
+	public AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> createInstanceConductor(Set<IPipe> conductors) {
 		return new FluidNetwork(conductors);
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer> createInstance(Set<AbstractNetwork<IPipe, SubtypePipe, TileEntity, Integer>> networks) {
+	public AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> createInstance(Set<AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack>> networks) {
 		return new FluidNetwork(networks);
 
 	}
@@ -135,6 +135,6 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 
 	@Override
 	public boolean canConnect(TileEntity acceptor, Direction orientation) {
-		return acceptor instanceof IElectricTile && FluidUtilities.canInputPower(acceptor, orientation.getOpposite());
+		return FluidUtilities.isFluidReceiver(acceptor, orientation.getOpposite());
 	}
 }

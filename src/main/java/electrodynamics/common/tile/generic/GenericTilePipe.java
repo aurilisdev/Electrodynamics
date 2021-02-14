@@ -71,7 +71,7 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 					}
 					ArrayList<TileEntity> ignored = new ArrayList<>();
 					ignored.add(world.getTileEntity(new BlockPos(pos).offset(dirrr)));
-					return fluidNetwork.emit(resource.getAmount(), ignored);
+					return fluidNetwork.emit(resource, ignored).getAmount();
 				}
 
 				@Override
