@@ -31,6 +31,19 @@ public class TileMultiSubnode extends GenericTileBase {
 	public void read(BlockState state, CompoundNBT compound) {
 		super.read(state, compound);
 		node = new BlockPos(compound.getInt("nodeX"), compound.getInt("nodeY"), compound.getInt("nodeZ"));
+		sendUpdatePacket();
+	}
+
+	@Override
+	public void handleUpdatePacket(CompoundNBT tag) {
+		read(getBlockState(), tag);
+	}
+
+	@Override
+	public CompoundNBT createUpdateTag() {
+		CompoundNBT nbt = super.createUpdateTag();
+		write(nbt);
+		return super.createUpdateTag();
 	}
 
 	public VoxelShape getShape() {

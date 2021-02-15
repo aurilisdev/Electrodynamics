@@ -81,8 +81,9 @@ public final class Containers {
 		while (reverse ? idx >= 0 : idx < len) {
 			Slot targetSlot = slots.get(idx);
 			if (targetSlot.inventory == playerInv == mergeIntoPlayer && !targetSlot.getHasStack() && targetSlot.isItemValid(sourceStack)) {
-				targetSlot.putStack(sourceStack);
+				targetSlot.putStack(sourceStack.copy());
 				sourceSlot.putStack(ItemStack.EMPTY);
+				sourceStack.setCount(0);
 				return true;
 			}
 

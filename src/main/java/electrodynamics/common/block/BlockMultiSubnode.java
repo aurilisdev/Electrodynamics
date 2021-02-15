@@ -81,10 +81,41 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 		if (tile instanceof TileMultiSubnode) {
 			TileMultiSubnode subnode = (TileMultiSubnode) tile;
 			if (subnode.node != null) {
-				worldIn.getBlockState(subnode.node).getBlock().onBlockActivated(state, worldIn, pos, player, handIn, hit);
+				worldIn.getBlockState(subnode.node).getBlock().onBlockActivated(worldIn.getBlockState(subnode.node), worldIn, subnode.node, player, handIn, hit);
 			}
 		}
 		return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+	}
+
+	@Override
+	public boolean canProvidePower(BlockState state) {
+		return true;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		TileEntity tile = blockAccess.getTileEntity(pos);
+		if (tile instanceof TileMultiSubnode) {
+			TileMultiSubnode subnode = (TileMultiSubnode) tile;
+			if (subnode.node != null) {
+				return blockAccess.getBlockState(subnode.node).getBlock().getStrongPower(blockAccess.getBlockState(subnode.node), blockAccess, subnode.node, side);
+			}
+		}
+		return super.getStrongPower(blockState, blockAccess, pos, side);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		TileEntity tile = blockAccess.getTileEntity(pos);
+		if (tile instanceof TileMultiSubnode) {
+			TileMultiSubnode subnode = (TileMultiSubnode) tile;
+			if (subnode.node != null) {
+				return blockAccess.getBlockState(subnode.node).getBlock().getWeakPower(blockAccess.getBlockState(subnode.node), blockAccess, subnode.node, side);
+			}
+		}
+		return super.getWeakPower(blockState, blockAccess, pos, side);
 	}
 
 	@SuppressWarnings("deprecation")

@@ -1,5 +1,8 @@
 package electrodynamics.common.block;
 
+import java.util.Arrays;
+import java.util.List;
+
 import electrodynamics.api.item.IWrench;
 import electrodynamics.api.tile.IWrenchable;
 import net.minecraft.block.Block;
@@ -15,6 +18,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.stats.Stats;
@@ -99,6 +103,11 @@ public class BlockGenericMachine extends Block implements IWrenchable {
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		return Arrays.asList(new ItemStack(this));
 	}
 
 	@Override
