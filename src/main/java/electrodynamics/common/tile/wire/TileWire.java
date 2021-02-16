@@ -32,7 +32,7 @@ public class TileWire extends GenericTileWire implements IConductor {
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		compound.putInt("ord", wire.ordinal());
+		compound.putInt("ord", getWireType().ordinal());
 		return super.write(compound);
 	}
 

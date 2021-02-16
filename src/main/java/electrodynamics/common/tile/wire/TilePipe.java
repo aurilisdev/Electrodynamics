@@ -32,7 +32,7 @@ public class TilePipe extends GenericTilePipe implements IPipe {
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		compound.putInt("ord", pipe.ordinal());
+		compound.putInt("ord", getPipeType().ordinal());
 		return super.write(compound);
 	}
 
