@@ -84,7 +84,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 				worldIn.getBlockState(subnode.node).getBlock().onBlockActivated(worldIn.getBlockState(subnode.node), worldIn, subnode.node, player, handIn, hit);
 			}
 		}
-		return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override
