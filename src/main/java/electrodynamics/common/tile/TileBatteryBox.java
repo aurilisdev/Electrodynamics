@@ -9,7 +9,6 @@ import electrodynamics.api.tile.electric.IPowerProvider;
 import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
-import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.tile.generic.GenericTileInventory;
@@ -36,7 +35,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
 	public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
 	protected double currentCapacityMultiplier = 1;
-	protected double receiveLimitLeft = 0;
+	protected double receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 	protected double joules = 0;
 	private CachedTileOutput output;
 
@@ -154,7 +153,8 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-		if (capability == CapabilityEnergy.ENERGY && facing != null) {
+		Direction facAc = getFacing();
+		if (capability == CapabilityEnergy.ENERGY && facing != null && facing == facAc || facing == facAc.getOpposite()) {
 			return (LazyOptional<T>) LazyOptional.of(() -> this);
 		}
 		return super.getCapability(capability, facing);
@@ -163,7 +163,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Override
 	@Deprecated // This method might be bugged
 	public TransferPack extractPower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getBlockState().get(BlockGenericMachine.FACING).getOpposite()) {
+		if (dir != getFacing().getOpposite()) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -181,7 +181,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getBlockState().get(BlockGenericMachine.FACING)) {
+		if (dir != getFacing()) {
 			return TransferPack.EMPTY;
 		} else {
 			if (!canConnectElectrically(dir)) {
@@ -205,14 +205,15 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public boolean canConnectElectrically(Direction direction) {
-		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction || getBlockState().get(BlockGenericMachine.FACING) == direction;
+		Direction fac = getFacing();
+		return direction == fac || direction == fac.getOpposite();
 	}
 
 	@Override
 	@Deprecated
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 		int calVoltage = 120;
-		TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), getBlockState().get(BlockGenericMachine.FACING), simulate);
+		TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), getFacing(), simulate);
 		int received = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 		return received;
 	}
@@ -221,7 +222,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Deprecated
 	public int extractEnergy(int maxExtract, boolean simulate) {
 		int calVoltage = 120;
-		TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), getBlockState().get(BlockGenericMachine.FACING).getOpposite(), simulate);
+		TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), getFacing().getOpposite(), simulate);
 		int extracted = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 		return extracted;
 	}

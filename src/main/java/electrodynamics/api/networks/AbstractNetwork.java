@@ -45,11 +45,15 @@ public abstract class AbstractNetwork<Conductor extends IAbstractConductor, Cond
 			TileEntity tileEntity = (TileEntity) conductor;
 			for (Direction direction : Direction.values()) {
 				TileEntity acceptor = tileEntity.getWorld().getTileEntity(new BlockPos(tileEntity.getPos()).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
-				if (isAcceptor(acceptor, direction) && canConnect(acceptor, direction) && !isConductor(acceptor)) {
-					acceptorSet.add((Acceptor) acceptor);
-					HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
-					directions.add(direction.getOpposite());
-					acceptorInputMap.put((Acceptor) acceptor, directions);
+				if (!isConductor(acceptor)) {
+					if (isAcceptor(acceptor, direction)) {
+						if (canConnect(acceptor, direction)) {
+							acceptorSet.add((Acceptor) acceptor);
+							HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
+							directions.add(direction.getOpposite());
+							acceptorInputMap.put((Acceptor) acceptor, directions);
+						}
+					}
 				}
 			}
 		}
@@ -174,7 +178,11 @@ public abstract class AbstractNetwork<Conductor extends IAbstractConductor, Cond
 			ticksSinceLastFix += 1;
 			if (ticksSinceLastFix > 1200) {
 				ticksSinceLastFix = 0;
-				fixMessedUpNetwork((Conductor) conductorSet.toArray()[0]);
+				if (conductorSet.size() > 0) {
+					fixMessedUpNetwork((Conductor) conductorSet.toArray()[0]);
+				} else {
+					deregister();
+				}
 			}
 
 		}
