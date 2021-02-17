@@ -58,7 +58,20 @@ public class FluidUtilities {
 	}
 
 	public static boolean canInputFluid(TileEntity acceptor, Direction direction, FluidStack stack) {
-		return receiveFluid(acceptor, direction, new FluidStack(stack.getFluid(), Integer.MAX_VALUE), true) > 0;
+		LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
+		IFluidHandler handler = null;
+		FluidStack per = new FluidStack(stack.getFluid(), Integer.MAX_VALUE);
+		if (cap.isPresent()) {
+			handler = cap.resolve().get();
+		}
+		if (handler != null) {
+			for (int i = 0; i < handler.getTanks(); i++) {
+				if (handler.isFluidValid(i, per)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

@@ -26,7 +26,7 @@ public class ElectricityUtilities {
 	}
 
 	public static boolean isElectricReceiver(TileEntity tile, Direction dir) {
-		if (tile instanceof IPowerReceiver || (tile instanceof IElectricTile && ((IElectricTile) tile).canConnectElectrically(dir))) {
+		if (tile instanceof IPowerReceiver || tile instanceof IElectricTile && ((IElectricTile) tile).canConnectElectrically(dir)) {
 			return true;
 		}
 		return isEnergyReceiver(tile, dir);
@@ -51,11 +51,8 @@ public class ElectricityUtilities {
 		} else if (isElectricReceiver(tile)) {
 			if (tile != null) {
 				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
-				IEnergyStorage handler = null;
 				if (cap.isPresent()) {
-					handler = cap.resolve().get();
-				}
-				if (handler != null) {
+					IEnergyStorage handler = cap.resolve().get();
 					return TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
 				}
 			}
@@ -64,8 +61,18 @@ public class ElectricityUtilities {
 
 	}
 
-	public static boolean canInputPower(TileEntity acceptor, Direction direction) {
-		return receivePower(acceptor, direction, TransferPack.joulesVoltage(Integer.MAX_VALUE, 120), true).getJoules() > 0;
+	public static boolean canInputPower(TileEntity tile, Direction direction) {
+		if (tile instanceof IPowerReceiver || tile instanceof IElectricTile && ((IElectricTile) tile).canConnectElectrically(direction)) {
+			return true;
+		} else if (isElectricReceiver(tile)) {
+			if (tile != null) {
+				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
+				if (cap.isPresent()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

@@ -8,6 +8,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,6 +19,7 @@ public abstract class GenericContainerInventory extends Container {
 	protected final IIntArray inventorydata;
 	protected final World world;
 	protected final int slotCount;
+	protected final TileEntity tile;
 	private int nextIndex = 0;
 
 	public int nextIndex() {
@@ -41,6 +43,12 @@ public abstract class GenericContainerInventory extends Container {
 
 		for (int k = 0; k < 9; ++k) {
 			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142));
+		}
+
+		if (inventory instanceof TileEntity) {
+			tile = (TileEntity) inventory;
+		} else {
+			tile = null;
 		}
 
 		trackIntArray(inventorydata);

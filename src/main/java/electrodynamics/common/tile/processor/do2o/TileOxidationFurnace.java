@@ -42,11 +42,6 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 	}
 
 	@Override
-	protected void failedOperation() {
-		super.failedOperation();
-	}
-
-	@Override
 	public double getJoulesPerTick() {
 		return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
 	}

@@ -13,7 +13,6 @@ import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import universalcables.common.tile.TileUniversalCable;
 
 public abstract class AbstractNetwork<Conductor extends IAbstractConductor, ConductorType, Acceptor, TransferPacket> implements ITickableNetwork {
 	public HashSet<Conductor> conductorSet = new HashSet<>();
@@ -46,10 +45,6 @@ public abstract class AbstractNetwork<Conductor extends IAbstractConductor, Cond
 			TileEntity tileEntity = (TileEntity) conductor;
 			for (Direction direction : Direction.values()) {
 				TileEntity acceptor = tileEntity.getWorld().getTileEntity(new BlockPos(tileEntity.getPos()).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
-				if(acceptor instanceof TileUniversalCable)
-				{
-					System.out.println("lol");
-				}
 				if (!isConductor(acceptor)) {
 					if (isAcceptor(acceptor, direction)) {
 						if (canConnect(acceptor, direction)) {

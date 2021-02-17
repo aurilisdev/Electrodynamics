@@ -15,10 +15,12 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileInventory;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
@@ -164,6 +166,20 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	@Override
 	public double getVoltage(Direction from) {
 		return Constants.COALGENERATOR_MAX_OUTPUT.getVoltage();
+	}
+
+	@Override
+	public CompoundNBT write(CompoundNBT compound) {
+		compound.putDouble("heat", heat.get());
+		compound.putInt("burnTime", burnTime);
+		return super.write(compound);
+	}
+
+	@Override
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state, compound);
+		heat.set(compound.getDouble("heat"));
+		burnTime = compound.getInt("burnTime");
 	}
 
 	@Override
