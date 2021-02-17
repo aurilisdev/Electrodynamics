@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
 import electrodynamics.api.configuration.ConfigurationHandler;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.settings.Constants;
@@ -51,6 +52,7 @@ public class Electrodynamics {
 
 	@SubscribeEvent
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
+		CapabilityElectrodynamic.register();
 		NetworkHandler.init();
 	}
 

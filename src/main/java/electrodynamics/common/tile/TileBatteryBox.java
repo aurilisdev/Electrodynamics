@@ -3,22 +3,18 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.formatting.MeasurementUnit;
 import electrodynamics.api.tile.ITickableTileBase;
-import electrodynamics.api.tile.electric.IElectricTile;
-import electrodynamics.api.tile.electric.IJoulesStorage;
-import electrodynamics.api.tile.electric.IPowerProvider;
-import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.generic.GenericTileInventory;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +26,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IPowerReceiver, IElectricTile, IEnergyStorage, IJoulesStorage {
+public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IEnergyStorage, IElectrodynamic {
 	public static final double DEFAULT_VOLTAGE = 120.0;
 	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
 	public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
@@ -65,19 +61,6 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 		if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
 			joules = DEFAULT_MAX_JOULES * currentCapacityMultiplier;
 		}
-	}
-
-	@Override
-	public void read(BlockState state, CompoundNBT compound) {
-		super.read(state, compound);
-		joules = compound.getDouble(JOULES_STORED_NBT);
-	}
-
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
-		compound.putDouble(JOULES_STORED_NBT, joules);
-		return compound;
 	}
 
 	@Override
@@ -132,48 +115,22 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 		return new TranslationTextComponent("container.batterybox");
 	}
 
-	@Override
-	public double getVoltage(Direction from) {
-		return DEFAULT_VOLTAGE;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
 		Direction facAc = getFacing();
-		if (capability == CapabilityEnergy.ENERGY && facing != null && facing == facAc || facing == facAc.getOpposite()) {
+		if ((capability == CapabilityElectrodynamic.ELECTRODYNAMIC || capability == CapabilityEnergy.ENERGY) && (facing != null && facing == facAc || facing == facAc.getOpposite())) {
+			lastDir = facing;
 			return (LazyOptional<T>) LazyOptional.of(() -> this);
 		}
 		return super.getCapability(capability, facing);
 	}
 
-	@Override
-	@Deprecated // This method might be bugged
-	public TransferPack extractPower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getFacing().getOpposite()) {
-			return TransferPack.EMPTY;
-		} else {
-			if (!canConnectElectrically(dir)) {
-				return TransferPack.EMPTY;
-			}
-			double removed = Math.min(transfer.getJoules(), joules);
-			if (!debug) {
-				if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
-					joules -= removed;
-				}
-			}
-			return TransferPack.joulesVoltage(removed, transfer.getVoltage());
-		}
-	}
+	private Direction lastDir = null;
 
 	@Override
-	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (dir != getFacing()) {
-			return TransferPack.EMPTY;
-		} else {
-			if (!canConnectElectrically(dir)) {
-				return TransferPack.EMPTY;
-			}
+	public TransferPack receivePower(TransferPack transfer, boolean debug) {
+		if (lastDir == getFacing()) {
 			double received = Math.min(Math.min(receiveLimitLeft, transfer.getJoules()), DEFAULT_MAX_JOULES * currentCapacityMultiplier - joules);
 			if (!debug) {
 				if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
@@ -188,19 +145,14 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 			}
 			return TransferPack.joulesVoltage(received, transfer.getVoltage());
 		}
-	}
-
-	@Override
-	public boolean canConnectElectrically(Direction direction) {
-		Direction fac = getFacing();
-		return direction == fac || direction == fac.getOpposite();
+		return TransferPack.EMPTY;
 	}
 
 	@Override
 	@Deprecated
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 		int calVoltage = 120;
-		TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), getFacing(), simulate);
+		TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), simulate);
 		int received = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 		return received;
 	}
@@ -209,7 +161,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	@Deprecated
 	public int extractEnergy(int maxExtract, boolean simulate) {
 		int calVoltage = 120;
-		TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), getFacing().getOpposite(), simulate);
+		TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), simulate);
 		int extracted = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 		return extracted;
 	}

@@ -3,19 +3,15 @@ package electrodynamics.common.network;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.networks.AbstractNetwork;
-import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.tile.TileBatteryBox;
-import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion.Mode;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> {
 	private double networkResistance;
@@ -67,32 +63,39 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
 	@Override
 	public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
-		if ((networkVoltage == 0 || networkVoltage == maxTransfer.getVoltage()) && maxTransfer.getJoules() > 0) {
-			Set<TileEntity> availableAcceptors = getEnergyAcceptors();
+		if (networkVoltage == 0.0) {
+			networkVoltage = maxTransfer.getVoltage();
+		}
+		if (maxTransfer.getJoules() > 0) {
+			Set<TileEntity> availableAcceptors = new HashSet<>(getEnergyAcceptors());
 			double joulesSent = 0;
 			availableAcceptors.removeAll(ignored);
 			if (!availableAcceptors.isEmpty()) {
-				if (networkVoltage == 0.0) {
-					networkVoltage = maxTransfer.getVoltage();
+				Iterator<TileEntity> it = availableAcceptors.iterator();
+				while (it.hasNext()) {
+					TileEntity receiver = it.next();
+					if (acceptorInputMap.containsKey(receiver)) {
+						for (Direction connection : acceptorInputMap.get(receiver)) {
+							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, maxTransfer, true);
+							if (pack.getJoules() == 0) {
+								it.remove();
+							}
+						}
+					}
 				}
 				TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / availableAcceptors.size() / networkResistance, maxTransfer.getVoltage());
+
 				for (TileEntity receiver : availableAcceptors) {
 					if (acceptorInputMap.containsKey(receiver)) {
 						for (Direction connection : acceptorInputMap.get(receiver)) {
 							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
 							joulesSent += pack.getJoules();
 							transmittedThisTick += pack.getJoules();
-							if (pack.getJoules() > 0) {
-								if (!(receiver instanceof IPowerReceiver) && networkVoltage > TileBatteryBox.DEFAULT_VOLTAGE) {
-									BlockPos pos = receiver.getPos();
-									receiver.getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
-									receiver.getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + pack.getVoltage() / TileBatteryBox.DEFAULT_VOLTAGE), Mode.DESTROY);
-								}
-							}
 						}
 						checkForOverload(TransferPack.joulesVoltage(transmittedThisTick, perReceiver.getVoltage()));
 					}
 				}
+
 			}
 			if (joulesSent > 0.0) {
 				double lost = maxTransfer.getJoules() - maxTransfer.getJoules() / networkResistance;

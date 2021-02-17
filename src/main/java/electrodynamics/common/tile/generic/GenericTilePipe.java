@@ -42,7 +42,6 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 		super(tileEntityTypeIn);
 		for (Direction dir : Direction.values()) {
 			handler.add(new IFluidHandler() {
-				Direction dirrr = dir;
 
 				@Override
 				public int getTanks() {
@@ -70,7 +69,7 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 						return 0;
 					}
 					ArrayList<TileEntity> ignored = new ArrayList<>();
-					ignored.add(world.getTileEntity(new BlockPos(pos).offset(dirrr)));
+					ignored.add(world.getTileEntity(new BlockPos(pos).offset(dir)));
 					return fluidNetwork.emit(resource, ignored).getAmount();
 				}
 

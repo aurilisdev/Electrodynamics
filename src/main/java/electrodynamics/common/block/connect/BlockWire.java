@@ -182,7 +182,7 @@ public class BlockWire extends Block {
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
 		for (Direction d : Direction.values()) {
 			TileEntity facingTile = worldIn.getTileEntity(pos.offset(d));
-			if (facingTile instanceof IConductor) {
+			if (ElectricityUtilities.isConductor(facingTile)) {
 				stateIn = stateIn.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
 				worldIn.setBlockState(pos, stateIn);
 			} else if (ElectricityUtilities.isElectricReceiver(facingTile, d.getOpposite())) {

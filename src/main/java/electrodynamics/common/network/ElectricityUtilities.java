@@ -1,11 +1,15 @@
 package electrodynamics.common.network;
 
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.tile.electric.IElectricTile;
-import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.api.utilities.TransferPack;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion.Mode;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -13,9 +17,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class ElectricityUtilities {
 
 	public static boolean isElectricReceiver(TileEntity tile) {
-		if (tile instanceof IPowerReceiver) {
-			return true;
-		}
 		for (Direction dir : Direction.values()) {
 			boolean is = isElectricReceiver(tile, dir);
 			if (is) {
@@ -26,14 +27,10 @@ public class ElectricityUtilities {
 	}
 
 	public static boolean isElectricReceiver(TileEntity tile, Direction dir) {
-		if (tile instanceof IPowerReceiver || tile instanceof IElectricTile && ((IElectricTile) tile).canConnectElectrically(dir)) {
-			return tile instanceof IElectricTile ? ((IElectricTile) tile).canConnectElectrically(dir) : true;
-		}
-		return isEnergyReceiver(tile, dir);
-	}
-
-	public static boolean isEnergyReceiver(TileEntity tile, Direction dir) {
 		if (tile != null) {
+			if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, dir).isPresent()) {
+				return true;
+			}
 			if (tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
 				return true;
 			}
@@ -46,33 +43,35 @@ public class ElectricityUtilities {
 	}
 
 	public static TransferPack receivePower(TileEntity tile, Direction direction, TransferPack transfer, boolean debug) {
-		if (tile instanceof IPowerReceiver) {
-			return ((IPowerReceiver) tile).receivePower(transfer, direction, debug);
-		} else if (isElectricReceiver(tile)) {
-			if (tile != null) {
+		if (isElectricReceiver(tile, direction)) {
+			if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction).isPresent()) {
+				LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
+				if (cap.isPresent()) {
+					IElectrodynamic handler = cap.resolve().get();
+					return handler.receivePower(transfer, debug);
+				}
+			} else {
 				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
 				if (cap.isPresent()) {
 					IEnergyStorage handler = cap.resolve().get();
-					return TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
+					TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
+					if (transfer.getJoules() > CapabilityElectrodynamic.DEFAULT_VOLTAGE) {
+						World world = tile.getWorld();
+						BlockPos pos = tile.getPos();
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
+						world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE), Mode.DESTROY);
+					}
+					return returner;
 				}
 			}
+
 		}
 		return TransferPack.EMPTY;
 
 	}
 
 	public static boolean canInputPower(TileEntity tile, Direction direction) {
-		if (tile instanceof IPowerReceiver) {
-			return tile instanceof IElectricTile ? ((IElectricTile) tile).canConnectElectrically(direction) : true;
-		} else if (isElectricReceiver(tile)) {
-			if (tile != null) {
-				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
-				if (cap.isPresent()) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return isElectricReceiver(tile, direction);
 	}
 
 }

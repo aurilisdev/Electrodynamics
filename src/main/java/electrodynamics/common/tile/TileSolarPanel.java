@@ -1,12 +1,15 @@
 package electrodynamics.common.tile;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.ITickableTileBase;
-import electrodynamics.api.tile.electric.IElectricTile;
-import electrodynamics.api.tile.electric.IPowerProvider;
-import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.tileentity.TileEntityType;
@@ -15,8 +18,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.RainType;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
-public class TileSolarPanel extends GenericTileBase implements ITickableTileBase, IPowerProvider, IElectricTile {
+public class TileSolarPanel extends GenericTileBase implements ITickableTileBase, IElectrodynamic {
 
 	protected CachedTileOutput output;
 
@@ -34,9 +39,7 @@ public class TileSolarPanel extends GenericTileBase implements ITickableTileBase
 			if (output == null) {
 				output = new CachedTileOutput(world, new BlockPos(pos).offset(Direction.DOWN));
 			}
-			if (output.get() instanceof IPowerReceiver) {
-				output.<IPowerReceiver>get().receivePower(getOutput(), Direction.UP, false);
-			}
+			ElectricityUtilities.receivePower(output.get(), Direction.UP, getOutput(), false);
 		}
 	}
 
@@ -53,22 +56,31 @@ public class TileSolarPanel extends GenericTileBase implements ITickableTileBase
 		Biome b = world.getBiomeManager().getBiome(getPos());
 		float tempEff = 0.3F * (0.8F - b.getTemperature(getPos()));
 		float humidityEff = -0.3F * (b.getPrecipitation() != RainType.NONE ? b.getDownfall() : 0.0F);
-		return TransferPack.ampsVoltage(Constants.SOLARPANEL_AMPERAGE * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), getVoltage(Direction.UP));
+		return TransferPack.ampsVoltage(Constants.SOLARPANEL_AMPERAGE * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), getVoltage());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Nonnull
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && facing == Direction.DOWN) {
+			return (LazyOptional<T>) LazyOptional.of(() -> this);
+		}
+		return super.getCapability(capability, facing);
 	}
 
 	@Override
-	public double getVoltage(Direction from) {
-		return 120;
+	public void setJoulesStored(double joules) {
 	}
 
 	@Override
-	public TransferPack extractPower(TransferPack transfer, Direction from, boolean debug) {
-		return TransferPack.EMPTY;
+	public double getJoulesStored() {
+		return 0;
 	}
 
 	@Override
-	public boolean canConnectElectrically(Direction direction) {
-		return direction == Direction.DOWN;
+	public double getMaxJoulesStored() {
+		return 0;
 	}
 
 }

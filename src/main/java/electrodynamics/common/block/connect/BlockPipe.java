@@ -165,7 +165,7 @@ public class BlockPipe extends Block {
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
 		for (Direction d : Direction.values()) {
 			TileEntity facingTile = worldIn.getTileEntity(pos.offset(d));
-			if (facingTile instanceof IPipe) {
+			if (FluidUtilities.isConductor(facingTile)) {
 				stateIn = stateIn.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
 				worldIn.setBlockState(pos, stateIn);
 			} else if (FluidUtilities.isFluidReceiver(facingTile, d.getOpposite())) {

@@ -5,29 +5,24 @@ import javax.annotation.Nullable;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.ITickableTileBase;
-import electrodynamics.api.tile.electric.IElectricTile;
-import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.api.tile.processing.IElectricProcessor;
 import electrodynamics.api.utilities.CachedTileOutput;
-import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion.Mode;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileElectricPump extends GenericTileBase implements IPowerReceiver, IElectricTile, IElectricProcessor, ITickableTileBase, IFluidHandler {
+public class TileElectricPump extends GenericTileBase implements IElectrodynamic, IElectricProcessor, ITickableTileBase, IFluidHandler {
 	private double joules;
 	private boolean hasWater;
 
@@ -58,61 +53,23 @@ public class TileElectricPump extends GenericTileBase implements IPowerReceiver,
 		}
 		if (hasWater && joules > Constants.ELECTRICPUMP_USAGE_PER_TICK) {
 			joules -= Constants.ELECTRICPUMP_USAGE_PER_TICK;
-			if (FluidUtilities.isFluidReceiver(output.get())) {
 				FluidUtilities.receiveFluid(output.get(), getFacing().rotateY().getOpposite(), new FluidStack(Fluids.WATER, 50), false);
-			}
 		}
 	}
 
 	private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> this);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Nonnull
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == getFacing().rotateY()) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == Direction.UP) {
 			return holder.cast();
 		}
+		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && getFacing() == facing.getOpposite()) {
+			return (LazyOptional<T>) LazyOptional.of(() -> this);
+		}
 		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (!canConnectElectrically(dir)) {
-			return TransferPack.EMPTY;
-		}
-		double received = Math.min(transfer.getJoules(), getMaxJoulesStored() - joules);
-		if (!debug) {
-			if ((int) transfer.getVoltage() == (int) getVoltage(dir)) {
-				joules += received;
-			}
-			if (transfer.getVoltage() > getVoltage(dir)) {
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage(dir)), Mode.DESTROY);
-				return TransferPack.EMPTY;
-			}
-		}
-		return TransferPack.joulesVoltage(received, transfer.getVoltage());
-	}
-
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		compound.putDouble(JOULES_STORED_NBT, joules);
-		return super.write(compound);
-	}
-
-	@Override
-	public void read(BlockState state, CompoundNBT compound) {
-		super.read(state, compound);
-		joules = compound.getDouble(JOULES_STORED_NBT);
-	}
-
-	@Override
-	public boolean canConnectElectrically(Direction direction) {
-		return direction == Direction.UP;
-	}
-
-	public double getVoltage(Direction from) {
-		return 120.0;
 	}
 
 	@Override

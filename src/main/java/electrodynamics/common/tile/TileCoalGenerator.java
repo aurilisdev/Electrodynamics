@@ -1,11 +1,13 @@
 package electrodynamics.common.tile;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.TargetValue;
 import electrodynamics.api.tile.ITickableTileBase;
-import electrodynamics.api.tile.electric.IElectricTile;
-import electrodynamics.api.tile.electric.IPowerProvider;
-import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.api.utilities.TransferPack;
@@ -13,6 +15,7 @@ import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
+import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileInventory;
 import net.minecraft.block.BlockState;
@@ -29,8 +32,10 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
-public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IPowerProvider, IElectricTile {
+public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IElectrodynamic {
 	public TransferPack currentOutput = TransferPack.EMPTY;
 	public static final int[] SLOTS_INPUT = new int[] { 0 };
 	public static final int COAL_BURN_TIME = 1000;
@@ -74,9 +79,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			}
 		}
 		if (heat.get() > 27) {
-			if (output.get() instanceof IPowerReceiver) {
-				output.<IPowerReceiver>get().receivePower(currentOutput, getFacing(), false);
-			}
+			ElectricityUtilities.receivePower(output.get(), getFacing(), currentOutput, false);
 		}
 		heat.rangeParameterize(27, 3000, isBurning() ? 3000 : 27, heat.get(), 600).flush();
 		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
@@ -92,7 +95,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	@Override
 	public void tickClient() {
 		if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
-			Direction dir = getBlockState().get(BlockGenericMachine.FACING);
+			Direction dir = getFacing();
 			if (world.rand.nextInt(10) == 0) {
 				world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.6F,
 						false);
@@ -164,11 +167,6 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	}
 
 	@Override
-	public double getVoltage(Direction from) {
-		return Constants.COALGENERATOR_MAX_OUTPUT.getVoltage();
-	}
-
-	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		compound.putDouble("heat", heat.get());
 		compound.putInt("burnTime", burnTime);
@@ -182,14 +180,28 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 		burnTime = compound.getInt("burnTime");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public TransferPack extractPower(TransferPack transfer, Direction from, boolean debug) {
-		return TransferPack.EMPTY;
+	@Nonnull
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && getFacing().getOpposite() == facing) {
+			return (LazyOptional<T>) LazyOptional.of(() -> this);
+		}
+		return super.getCapability(capability, facing);
 	}
 
 	@Override
-	public boolean canConnectElectrically(Direction direction) {
-		return getBlockState().get(BlockGenericMachine.FACING).getOpposite() == direction;
+	public void setJoulesStored(double joules) {
+	}
+
+	@Override
+	public double getJoulesStored() {
+		return 0;
+	}
+
+	@Override
+	public double getMaxJoulesStored() {
+		return 0;
 	}
 
 }

@@ -5,22 +5,18 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import electrodynamics.api.tile.ITickableTileBase;
-import electrodynamics.api.tile.electric.IElectricTile;
-import electrodynamics.api.tile.electric.IPowerReceiver;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.api.tile.processing.IElectricProcessor;
-import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
-import net.minecraft.world.Explosion.Mode;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
-public abstract class GenericTileProcessor extends GenericTileInventory implements ITickableTileBase, IElectricTile, IPowerReceiver, IElectricProcessor {
+public abstract class GenericTileProcessor extends GenericTileInventory implements ITickableTileBase, IElectricProcessor {
 	public static final double DEFAULT_BASIC_MACHINE_VOLTAGE = 120.0;
 	protected HashSet<Integer> upgradeSlots = new HashSet<>();
 	protected double currentOperatingTick = 0;
@@ -119,19 +115,6 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 		}
 	};
 
-	@Override
-	public void read(BlockState state, CompoundNBT compound) {
-		super.read(state, compound);
-		joules = compound.getDouble(JOULES_STORED_NBT);
-	}
-
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
-		compound.putDouble(JOULES_STORED_NBT, joules);
-		return compound;
-	}
-
 	public double getVoltage() {
 		return DEFAULT_BASIC_MACHINE_VOLTAGE;
 	}
@@ -161,27 +144,16 @@ public abstract class GenericTileProcessor extends GenericTileInventory implemen
 		return getJoulesPerTick() * 10;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public TransferPack receivePower(TransferPack transfer, Direction dir, boolean debug) {
-		if (!canConnectElectrically(dir)) {
-			return TransferPack.EMPTY;
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
+		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && compareCapabilityDirectionElectricity(facing)) {
+			return (LazyOptional<T>) LazyOptional.of(() -> this);
 		}
-		double received = Math.min(transfer.getJoules(), getMaxJoulesStored() - joules);
-		if (!debug) {
-			if ((int) transfer.getVoltage() == (int) getVoltage()) {
-				joules += received;
-			}
-			if (transfer.getVoltage() > getVoltage()) {
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), Mode.DESTROY);
-				return TransferPack.EMPTY;
-			}
-		}
-		return TransferPack.joulesVoltage(received, transfer.getVoltage());
+		return super.getCapability(capability, facing);
 	}
 
-	@Override
-	public boolean canConnectElectrically(Direction direction) {
-		return getFacing().getOpposite() == direction;
+	public boolean compareCapabilityDirectionElectricity(Direction dir) {
+		return getFacing().getOpposite() == dir;
 	}
 }

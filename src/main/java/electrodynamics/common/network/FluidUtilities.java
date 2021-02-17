@@ -35,13 +35,10 @@ public class FluidUtilities {
 	}
 
 	public static Integer receiveFluid(TileEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
-		if (acceptor != null) {
+		if (isFluidReceiver(acceptor, direction)) {
 			LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
-			IFluidHandler handler = null;
 			if (cap.isPresent()) {
-				handler = cap.resolve().get();
-			}
-			if (handler != null) {
+				IFluidHandler handler = cap.resolve().get();
 				boolean canPass = false;
 				for (int i = 0; i < handler.getTanks(); i++) {
 					if (handler.isFluidValid(i, perReceiver)) {
@@ -58,20 +55,7 @@ public class FluidUtilities {
 	}
 
 	public static boolean canInputFluid(TileEntity acceptor, Direction direction, FluidStack stack) {
-		LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
-		IFluidHandler handler = null;
-		FluidStack per = new FluidStack(stack.getFluid(), Integer.MAX_VALUE);
-		if (cap.isPresent()) {
-			handler = cap.resolve().get();
-		}
-		if (handler != null) {
-			for (int i = 0; i < handler.getTanks(); i++) {
-				if (handler.isFluidValid(i, per)) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return isFluidReceiver(acceptor, direction);
 	}
 
 }

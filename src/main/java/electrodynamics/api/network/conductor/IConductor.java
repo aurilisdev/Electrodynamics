@@ -3,10 +3,9 @@ package electrodynamics.api.network.conductor;
 import electrodynamics.api.network.INetwork;
 import electrodynamics.api.networks.AbstractNetwork;
 import electrodynamics.api.networks.IAbstractConductor;
-import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.common.block.subtype.SubtypeWire;
 
-public interface IConductor extends IPowerReceiver, IAbstractConductor {
+public interface IConductor extends IAbstractConductor {
 	INetwork getNetwork();
 
 	INetwork getNetwork(boolean createIfNull);
