@@ -27,7 +27,7 @@ public class ElectricityUtilities {
 
 	public static boolean isElectricReceiver(TileEntity tile, Direction dir) {
 		if (tile instanceof IPowerReceiver || tile instanceof IElectricTile && ((IElectricTile) tile).canConnectElectrically(dir)) {
-			return true;
+			return tile instanceof IElectricTile ? ((IElectricTile) tile).canConnectElectrically(dir) : true;
 		}
 		return isEnergyReceiver(tile, dir);
 	}

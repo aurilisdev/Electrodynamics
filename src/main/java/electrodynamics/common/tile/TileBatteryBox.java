@@ -50,7 +50,8 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 		}
 		receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 		if (joules > 0) {
-			joules -= ElectricityUtilities.receivePower(output.get(), getFacing(), TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), false).getJoules();
+			joules -= ElectricityUtilities.receivePower(output.get(), getFacing(), TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), false)
+					.getJoules();
 		}
 		currentCapacityMultiplier = 1;
 		for (ItemStack stack : items) {
