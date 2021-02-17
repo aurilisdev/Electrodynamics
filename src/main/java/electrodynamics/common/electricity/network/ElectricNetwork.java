@@ -7,13 +7,17 @@ import java.util.Set;
 
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.networks.AbstractNetwork;
-import electrodynamics.api.tile.electric.IElectricTile;
+import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.electricity.ElectricityUtilities;
 import electrodynamics.common.network.NetworkRegistry;
+import electrodynamics.common.tile.TileBatteryBox;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion.Mode;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> {
 	private double networkResistance;
@@ -80,6 +84,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
 							joulesSent += pack.getJoules();
 							transmittedThisTick += pack.getJoules();
+							if (pack.getJoules() > 0) {
+								if (!(receiver instanceof IPowerReceiver) && networkVoltage > TileBatteryBox.DEFAULT_VOLTAGE) {
+									BlockPos pos = receiver.getPos();
+									receiver.getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
+									receiver.getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + pack.getVoltage() / TileBatteryBox.DEFAULT_VOLTAGE), Mode.DESTROY);
+								}
+							}
 						}
 						checkForOverload(TransferPack.joulesVoltage(transmittedThisTick, perReceiver.getVoltage()));
 					}
@@ -147,7 +158,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
 	@Override
 	public boolean isConductor(TileEntity tile) {
-		return tile instanceof IConductor;
+		return ElectricityUtilities.isConductor(tile);
 	}
 
 	@Override
@@ -178,6 +189,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
 	@Override
 	public boolean canConnect(TileEntity acceptor, Direction orientation) {
-		return acceptor instanceof IElectricTile && ElectricityUtilities.canInputPower(acceptor, orientation.getOpposite());
+		return ElectricityUtilities.canInputPower(acceptor, orientation.getOpposite());
 	}
 }

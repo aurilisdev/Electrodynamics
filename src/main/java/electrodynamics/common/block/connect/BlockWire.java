@@ -12,9 +12,9 @@ import com.google.common.collect.Maps;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.tile.electric.IElectricTile;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.damage.DamageSources;
+import electrodynamics.common.electricity.ElectricityUtilities;
 import electrodynamics.common.tile.wire.TileLogisticalWire;
 import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;
@@ -185,7 +185,7 @@ public class BlockWire extends Block {
 			if (facingTile instanceof IConductor) {
 				stateIn = stateIn.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
 				worldIn.setBlockState(pos, stateIn);
-			} else if (facingTile instanceof IElectricTile && ((IElectricTile) facingTile).canConnectElectrically(d.getOpposite())) {
+			} else if (ElectricityUtilities.isElectricReceiver(facingTile, d.getOpposite())) {
 				stateIn = stateIn.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.INVENTORY);
 				worldIn.setBlockState(pos, stateIn);
 			}
@@ -240,7 +240,7 @@ public class BlockWire extends Block {
 		TileEntity tile = world.getTileEntity(facingPos);
 		if (tile instanceof IConductor) {
 			return stateIn.with(property, EnumConnectType.WIRE);
-		} else if (tile instanceof IElectricTile && ((IElectricTile) tile).canConnectElectrically(facing.getOpposite())) {
+		} else if (ElectricityUtilities.isElectricReceiver(tile, facing.getOpposite())) {
 			return stateIn.with(property, EnumConnectType.INVENTORY);
 		} else {
 			return stateIn.with(property, EnumConnectType.NONE);
