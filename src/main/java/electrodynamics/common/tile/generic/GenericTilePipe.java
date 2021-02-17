@@ -10,7 +10,7 @@ import com.google.common.collect.Sets;
 
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.api.networks.AbstractNetwork;
-import electrodynamics.common.fluid.network.FluidNetwork;
+import electrodynamics.common.network.FluidNetwork;
 import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;

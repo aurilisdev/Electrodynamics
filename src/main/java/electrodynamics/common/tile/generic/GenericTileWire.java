@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.networks.AbstractNetwork;
 import electrodynamics.api.utilities.TransferPack;
-import electrodynamics.common.electricity.network.ElectricNetwork;
+import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;

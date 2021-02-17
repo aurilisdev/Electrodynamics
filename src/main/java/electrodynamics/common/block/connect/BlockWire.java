@@ -14,7 +14,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.damage.DamageSources;
-import electrodynamics.common.electricity.ElectricityUtilities;
+import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.wire.TileLogisticalWire;
 import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.block.Block;

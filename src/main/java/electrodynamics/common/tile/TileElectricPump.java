@@ -10,7 +10,7 @@ import electrodynamics.api.tile.electric.IPowerReceiver;
 import electrodynamics.api.tile.processing.IElectricProcessor;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
-import electrodynamics.common.fluid.FluidUtilities;
+import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.block.BlockState;

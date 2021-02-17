@@ -1,4 +1,4 @@
-package electrodynamics.common.fluid;
+package electrodynamics.common.network;
 
 import electrodynamics.api.network.pipe.IPipe;
 import net.minecraft.tileentity.TileEntity;

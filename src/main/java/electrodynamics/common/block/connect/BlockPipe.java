@@ -13,7 +13,7 @@ import com.google.common.collect.Maps;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
-import electrodynamics.common.fluid.FluidUtilities;
+import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.tile.wire.TilePipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

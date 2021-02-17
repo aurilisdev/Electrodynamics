@@ -1,4 +1,4 @@
-package electrodynamics.common.fluid.network;
+package electrodynamics.common.network;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +8,6 @@ import java.util.Set;
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.api.networks.AbstractNetwork;
 import electrodynamics.common.block.subtype.SubtypePipe;
-import electrodynamics.common.fluid.FluidUtilities;
-import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
