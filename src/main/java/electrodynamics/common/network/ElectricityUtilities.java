@@ -47,8 +47,11 @@ public class ElectricityUtilities {
 			if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction).isPresent()) {
 				LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
 				if (cap.isPresent()) {
-					IElectrodynamic handler = cap.resolve().get();
-					return handler.receivePower(transfer, debug);
+					Object obj = cap.resolve().get(); // TODO: WTF do i have to test this?
+					if (obj instanceof IElectrodynamic) {
+						IElectrodynamic handler = (IElectrodynamic) obj;
+						return handler.receivePower(transfer, debug);
+					}
 				}
 			} else {
 				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
