@@ -46,25 +46,29 @@ public class ElectricityUtilities {
 		if (isElectricReceiver(tile, direction)) {
 			if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction).isPresent()) {
 				LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
-				if (cap.isPresent()) {
-					Object obj = cap.resolve().get(); // TODO: WTF do i have to test this?
-					if (obj instanceof IElectrodynamic) {
-						IElectrodynamic handler = (IElectrodynamic) obj;
+				Object resolved = cap.resolve().get();
+				if (cap.isPresent() && (LazyOptional<?>) cap != LazyOptional.empty()) {
+					if (resolved instanceof IElectrodynamic) {
+						IElectrodynamic handler = (IElectrodynamic) resolved;
 						return handler.receivePower(transfer, debug);
 					}
 				}
-			} else {
+			}
+			if (tile.getCapability(CapabilityEnergy.ENERGY, direction).isPresent()) {
 				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
-				if (cap.isPresent()) {
-					IEnergyStorage handler = cap.resolve().get();
-					TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
-					if (transfer.getJoules() > CapabilityElectrodynamic.DEFAULT_VOLTAGE) {
-						World world = tile.getWorld();
-						BlockPos pos = tile.getPos();
-						world.setBlockState(pos, Blocks.AIR.getDefaultState());
-						world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE), Mode.DESTROY);
+				if (cap.isPresent() && (LazyOptional<?>) cap != LazyOptional.empty()) {
+					Object resolved = cap.resolve().get();
+					if (resolved instanceof IEnergyStorage) {
+						IEnergyStorage handler = (IEnergyStorage) resolved;
+						TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
+						if (transfer.getVoltage() > CapabilityElectrodynamic.DEFAULT_VOLTAGE) {
+							World world = tile.getWorld();
+							BlockPos pos = tile.getPos();
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
+							world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE), Mode.DESTROY);
+						}
+						return returner;
 					}
-					return returner;
 				}
 			}
 
