@@ -67,7 +67,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			networkVoltage = maxTransfer.getVoltage();
 		}
 		if (maxTransfer.getJoules() > 0) {
-			Set<TileEntity> availableAcceptors = new HashSet<>(getEnergyAcceptors());
+			Set<TileEntity> availableAcceptors = new HashSet<>();
+			availableAcceptors.addAll(getEnergyAcceptors());
 			double joulesSent = 0;
 			availableAcceptors.removeAll(ignored);
 			if (!availableAcceptors.isEmpty()) {
@@ -79,6 +80,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, maxTransfer, true);
 							if (pack.getJoules() == 0) {
 								it.remove();
+								break;
 							}
 						}
 					}
