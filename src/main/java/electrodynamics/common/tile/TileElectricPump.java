@@ -63,10 +63,10 @@ public class TileElectricPump extends GenericTileBase implements IElectrodynamic
 	@Override
 	@Nonnull
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing == Direction.UP) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getFacing().rotateY() == facing) {
 			return holder.cast();
 		}
-		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && getFacing() == facing.getOpposite()) {
+		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && facing == Direction.UP) {
 			return (LazyOptional<T>) LazyOptional.of(() -> this);
 		}
 		return super.getCapability(capability, facing);

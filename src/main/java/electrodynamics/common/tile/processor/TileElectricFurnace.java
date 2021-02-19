@@ -38,13 +38,17 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 	}
 
 	protected IRecipe<?> cachedRecipe = null;
+	protected long timeSinceChange = 0;
 
 	@Override
 	public boolean canProcess() {
+		timeSinceChange++;
 		if (joules >= getJoulesPerTick()) {
-			if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
+			if (timeSinceChange > 40 && getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
 				world.setBlockState(pos,
-						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 3);
+						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
+						2 | 16 | 32);
+				timeSinceChange = 0;
 			}
 			if (!getInput().isEmpty()) {
 				boolean hasRecipe = cachedRecipe != null;
@@ -64,8 +68,10 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 					return (output.isEmpty() || ItemStack.areItemsEqual(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 				}
 			}
-		} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)) {
-			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 3);
+		} else if (timeSinceChange > 40 && getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)) {
+			timeSinceChange = 0;
+			world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
+					2 | 16 | 32);
 		}
 		return false;
 	}
