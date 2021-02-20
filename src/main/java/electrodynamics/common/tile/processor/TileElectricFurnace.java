@@ -51,6 +51,11 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 				timeSinceChange = 0;
 			}
 			if (!getInput().isEmpty()) {
+				if (cachedRecipe != null) {
+					if (!cachedRecipe.getIngredients().get(0).test(getInput())) {
+						cachedRecipe = null;
+					}
+				}
 				boolean hasRecipe = cachedRecipe != null;
 				if (!hasRecipe) {
 					for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {
@@ -91,7 +96,12 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 		} else {
 			setInventorySlotContents(1, result.copy());
 		}
-		decrStackSize(0, 1);
+		ItemStack input = getInput();
+		input.shrink(1);
+		if(input.getCount() == 0)
+		{
+			setInventorySlotContents(0, ItemStack.EMPTY);
+		}
 	}
 
 	@Override

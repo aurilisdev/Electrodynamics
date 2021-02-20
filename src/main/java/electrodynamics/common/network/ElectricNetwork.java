@@ -76,17 +76,20 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 				while (it.hasNext()) {
 					TileEntity receiver = it.next();
 					if (acceptorInputMap.containsKey(receiver)) {
+						boolean shouldRemove = true;
 						for (Direction connection : acceptorInputMap.get(receiver)) {
 							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, maxTransfer, true);
-							if (pack.getJoules() == 0) {
-								it.remove();
+							if (pack.getJoules() != 0) {
+								shouldRemove = false;
 								break;
 							}
+						}
+						if (shouldRemove) {
+							it.remove();
 						}
 					}
 				}
 				TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / availableAcceptors.size() / networkResistance, maxTransfer.getVoltage());
-
 				for (TileEntity receiver : availableAcceptors) {
 					if (acceptorInputMap.containsKey(receiver)) {
 						for (Direction connection : acceptorInputMap.get(receiver)) {
