@@ -7,11 +7,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public class CapabilityElectrodynamic {
 	public static final double DEFAULT_VOLTAGE = 120.0;
-	@CapabilityInject(IEnergyStorage.class)
+	@CapabilityInject(IElectrodynamic.class)
 	public static Capability<IElectrodynamic> ELECTRODYNAMIC = null;
 
 	public static void register() {

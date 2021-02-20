@@ -103,10 +103,10 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
 			}
 			if (joulesSent > 0.0) {
-				double lost = maxTransfer.getJoules() - maxTransfer.getJoules() / networkResistance;
+				double lost = joulesSent - joulesSent / networkResistance;
 				joulesSent += lost;
 			}
-			return TransferPack.joulesVoltage(joulesSent, maxTransfer.getVoltage());
+			return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
 		}
 		return TransferPack.EMPTY;
 	}
@@ -152,7 +152,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	@Override
 	public void updateStatistics() {
 		networkResistance = 1;
+		System.out.println("reset resistanece");
 		super.updateStatistics();
+		System.out.println("to " + networkResistance);
 	}
 
 	@Override
