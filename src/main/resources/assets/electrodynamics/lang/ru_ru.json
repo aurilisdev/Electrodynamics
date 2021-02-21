@@ -128,7 +128,7 @@
 	"tooltip.itemwire.info.logistical": "Излучает редстоун при включении",
 	"tooltip.info.capacityupgrade": "Увеличивает энергоемкость и передачу на %sx",
 	"tooltip.info.speedupgrade": "Увеличивает скорость на %sx",
-	"tooltip.transformer.energyloss": "Эффективность": 95%",
+	"tooltip.transformer.energyloss": "Эффективность",
 	"tooltip.oxidationfurnace.voltage": "Напряжение: 240 вольт",
 	"tooltip.oxidationfurnacerunning.voltage": "Напряжение: 240 вольт",
 	"tooltip.advancedsolarpanel.voltage": "Напряжение: 240 вольт",
