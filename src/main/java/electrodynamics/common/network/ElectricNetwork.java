@@ -152,9 +152,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	@Override
 	public void updateStatistics() {
 		networkResistance = 1;
-		System.out.println("reset resistanece");
 		super.updateStatistics();
-		System.out.println("to " + networkResistance);
 	}
 
 	@Override

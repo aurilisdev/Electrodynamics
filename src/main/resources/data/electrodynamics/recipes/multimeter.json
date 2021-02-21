@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"s": {
-			"tag": "forge:plates/steel"
+			"tag": "forge:ingots/steel"
 		},
 		"w": {
 			"item": "electrodynamics:wireinsulatedcopper"
