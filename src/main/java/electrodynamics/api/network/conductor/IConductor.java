@@ -6,32 +6,32 @@ import electrodynamics.api.networks.IAbstractConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 
 public interface IConductor extends IAbstractConductor {
-	INetwork getNetwork();
+    INetwork getNetwork();
 
-	INetwork getNetwork(boolean createIfNull);
+    INetwork getNetwork(boolean createIfNull);
 
-	void refreshNetwork();
+    void refreshNetwork();
 
-	@Override
-	void removeFromNetwork();
+    @Override
+    void removeFromNetwork();
 
-	void fixNetwork();
+    void fixNetwork();
 
-	void destroyViolently();
+    void destroyViolently();
 
-	SubtypeWire getWireType();
+    SubtypeWire getWireType();
 
-	@Override
-	void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
+    @Override
+    void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
 
-	@Override
-	default Object getConductorType() {
-		return getWireType();
-	}
+    @Override
+    default Object getConductorType() {
+	return getWireType();
+    }
 
-	@Override
-	default double getMaxTransfer() {
-		return getWireType().maxAmps;
-	}
+    @Override
+    default double getMaxTransfer() {
+	return getWireType().maxAmps;
+    }
 
 }

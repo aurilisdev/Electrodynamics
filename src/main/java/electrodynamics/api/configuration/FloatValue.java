@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FloatValue {
-	String comment() default "";
+    String comment() default "";
 
-	float def();
+    float def();
 }

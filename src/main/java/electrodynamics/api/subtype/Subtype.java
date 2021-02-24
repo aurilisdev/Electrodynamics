@@ -1,9 +1,9 @@
 package electrodynamics.api.subtype;
 
 public interface Subtype {
-	String tag();
+    String tag();
 
-	String forgeTag();
+    String forgeTag();
 
-	boolean isItem();
+    boolean isItem();
 }

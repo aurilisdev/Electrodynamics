@@ -19,48 +19,49 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileThermoelectricGenerator extends GenericTileBase implements ITickableTileBase, IElectrodynamic {
-	protected CachedTileOutput output;
-	protected boolean hasHeat = false;
+    protected CachedTileOutput output;
+    protected boolean hasHeat = false;
 
-	public TileThermoelectricGenerator() {
-		super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get());
-	}
+    public TileThermoelectricGenerator() {
+	super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get());
+    }
 
-	@Override
-	public void tickServer() {
-		if (output == null) {
-			output = new CachedTileOutput(world, new BlockPos(pos).offset(Direction.UP));
-		}
-		if (world.getWorldInfo().getDayTime() % 20 == 0) {
-			hasHeat = world.getBlockState(new BlockPos(pos).offset(getFacing().getOpposite())).getFluidState().getFluid() == Fluids.LAVA;
-		}
-		if (hasHeat) {
-			ElectricityUtilities.receivePower(output.get(), Direction.UP, TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE, getVoltage()), false);
-		}
+    @Override
+    public void tickServer() {
+	if (output == null) {
+	    output = new CachedTileOutput(world, new BlockPos(pos).offset(Direction.UP));
 	}
+	if (world.getWorldInfo().getDayTime() % 20 == 0) {
+	    hasHeat = world.getBlockState(new BlockPos(pos).offset(getFacing().getOpposite())).getFluidState()
+		    .getFluid() == Fluids.LAVA;
+	}
+	if (hasHeat) {
+	    ElectricityUtilities.receivePower(output.get(), Direction.UP,
+		    TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE, getVoltage()), false);
+	}
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	@Nonnull
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && facing == Direction.UP) {
-			return (LazyOptional<T>) LazyOptional.of(() -> this);
-		}
-		return super.getCapability(capability, facing);
+    @Override
+    @Nonnull
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && facing == Direction.UP) {
+	    return (LazyOptional<T>) LazyOptional.of(() -> this);
 	}
+	return super.getCapability(capability, facing);
+    }
 
-	@Override
-	public void setJoulesStored(double joules) {
-	}
+    @Override
+    public void setJoulesStored(double joules) {
+    }
 
-	@Override
-	public double getJoulesStored() {
-		return 0;
-	}
+    @Override
+    public double getJoulesStored() {
+	return 0;
+    }
 
-	@Override
-	public double getMaxJoulesStored() {
-		return 0;
-	}
+    @Override
+    public double getMaxJoulesStored() {
+	return 0;
+    }
 
 }

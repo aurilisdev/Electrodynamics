@@ -12,38 +12,38 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class PacketUpdateTile {
 
-	private final CompoundNBT updateTag;
-	private final BlockPos pos;
+    private final CompoundNBT updateTag;
+    private final BlockPos pos;
 
-	public PacketUpdateTile(IUpdateableTile tile) {
-		this(tile.getTile().getPos(), tile.createUpdateTag());
-	}
+    public PacketUpdateTile(IUpdateableTile tile) {
+	this(tile.getTile().getPos(), tile.createUpdateTag());
+    }
 
-	private PacketUpdateTile(BlockPos pos, CompoundNBT updateTag) {
-		this.pos = pos;
-		this.updateTag = updateTag;
-	}
+    private PacketUpdateTile(BlockPos pos, CompoundNBT updateTag) {
+	this.pos = pos;
+	this.updateTag = updateTag;
+    }
 
-	public static void handle(PacketUpdateTile message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ClientWorld world = Minecraft.getInstance().world;
-			if (world != null) {
-				IUpdateableTile tile = (IUpdateableTile) world.getTileEntity(message.pos);
-				if (tile != null) {
-					tile.handleUpdatePacket(message.updateTag);
-				}
-			}
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static void handle(PacketUpdateTile message, Supplier<Context> context) {
+	Context ctx = context.get();
+	ctx.enqueueWork(() -> {
+	    ClientWorld world = Minecraft.getInstance().world;
+	    if (world != null) {
+		IUpdateableTile tile = (IUpdateableTile) world.getTileEntity(message.pos);
+		if (tile != null) {
+		    tile.handleUpdatePacket(message.updateTag);
+		}
+	    }
+	});
+	ctx.setPacketHandled(true);
+    }
 
-	public static void encode(PacketUpdateTile pkt, PacketBuffer buf) {
-		buf.writeBlockPos(pkt.pos);
-		buf.writeCompoundTag(pkt.updateTag);
-	}
+    public static void encode(PacketUpdateTile pkt, PacketBuffer buf) {
+	buf.writeBlockPos(pkt.pos);
+	buf.writeCompoundTag(pkt.updateTag);
+    }
 
-	public static PacketUpdateTile decode(PacketBuffer buf) {
-		return new PacketUpdateTile(buf.readBlockPos(), buf.readCompoundTag());
-	}
+    public static PacketUpdateTile decode(PacketBuffer buf) {
+	return new PacketUpdateTile(buf.readBlockPos(), buf.readCompoundTag());
+    }
 }

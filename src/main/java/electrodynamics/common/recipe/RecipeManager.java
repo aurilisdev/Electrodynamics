@@ -19,55 +19,76 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class RecipeManager {
-	@SubscribeEvent
-	public static void onLoadEvent(FMLLoadCompleteEvent event) {
-		for (SubtypeIngot from : SubtypeIngot.values()) {
-			for (SubtypeWire to : SubtypeWire.values()) {
-				if (from.name().equals(to.name())) {
-					MachineRecipes.registerRecipe(DeferredRegisters.TILE_WIREMILL.get(), new O2OProcessingRecipe(from, to));
-				}
-			}
-			for (SubtypeDust to : SubtypeDust.values()) {
-				if (from.name().equals(to.name())) {
-					MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to));
-				}
-			}
+    @SubscribeEvent
+    public static void onLoadEvent(FMLLoadCompleteEvent event) {
+	for (SubtypeIngot from : SubtypeIngot.values()) {
+	    for (SubtypeWire to : SubtypeWire.values()) {
+		if (from.name().equals(to.name())) {
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_WIREMILL.get(),
+			    new O2OProcessingRecipe(from, to));
 		}
-		for (SubtypeDust to : SubtypeDust.values()) {
-			for (SubtypeOre from : SubtypeOre.values()) {
-				if (to.name().equals(from.name())) {
-					MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to, 2));
-				}
-			}
-			for (SubtypeImpureDust from : SubtypeImpureDust.values()) {
-				if (to.name().equals(from.name())) {
-					MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to, 1));
-				}
-			}
+	    }
+	    for (SubtypeDust to : SubtypeDust.values()) {
+		if (from.name().equals(to.name())) {
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+			    new O2OProcessingRecipe(from, to));
 		}
-		for (SubtypeImpureDust to : SubtypeImpureDust.values()) {
-			for (SubtypeOre from : SubtypeOre.values()) {
-				if (to.name().equals(from.name())) {
-					MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(from, to, 3));
-				}
-			}
-		}
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_WIREMILL.get(), new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeWire.gold));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_WIREMILL.get(), new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeWire.iron));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(SubtypeOre.sulfur, SubtypeDust.sulfur, 1));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.GOLD_ORE, SubtypeDust.gold, 2));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeDust.iron, 2));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.ENDER_EYE, SubtypeDust.endereye));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeDust.gold));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeDust.iron));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.GOLD_ORE, SubtypeImpureDust.gold, 3));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeImpureDust.iron, 3));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.OBSIDIAN, SubtypeDust.obsidian, 2));
-
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), new DO2OProcessingRecipe(Items.COAL, SubtypeDust.sulfur, SubtypeOxide.disulfur));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), new DO2OProcessingRecipe(Items.CHARCOAL, SubtypeDust.sulfur, SubtypeOxide.disulfur));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), new DO2OProcessingRecipe(Items.COAL, SubtypeDust.vanadium, SubtypeOxide.vanadium));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), new DO2OProcessingRecipe(Items.CHARCOAL, SubtypeDust.vanadium, SubtypeOxide.vanadium));
-		MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), new DO2OProcessingRecipe(SubtypeOxide.vanadium, SubtypeOxide.disulfur, SubtypeOxide.trisulfur));
+	    }
 	}
+	for (SubtypeDust to : SubtypeDust.values()) {
+	    for (SubtypeOre from : SubtypeOre.values()) {
+		if (to.name().equals(from.name())) {
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+			    new O2OProcessingRecipe(from, to, 2));
+		}
+	    }
+	    for (SubtypeImpureDust from : SubtypeImpureDust.values()) {
+		if (to.name().equals(from.name())) {
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+			    new O2OProcessingRecipe(from, to, 1));
+		}
+	    }
+	}
+	for (SubtypeImpureDust to : SubtypeImpureDust.values()) {
+	    for (SubtypeOre from : SubtypeOre.values()) {
+		if (to.name().equals(from.name())) {
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(),
+			    new O2OProcessingRecipe(from, to, 3));
+		}
+	    }
+	}
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_WIREMILL.get(),
+		new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeWire.gold));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_WIREMILL.get(),
+		new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeWire.iron));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+		new O2OProcessingRecipe(SubtypeOre.sulfur, SubtypeDust.sulfur, 1));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+		new O2OProcessingRecipe(Blocks.GOLD_ORE, SubtypeDust.gold, 2));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+		new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeDust.iron, 2));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+		new O2OProcessingRecipe(Items.ENDER_EYE, SubtypeDust.endereye));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+		new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeDust.gold));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(),
+		new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeDust.iron));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(),
+		new O2OProcessingRecipe(Blocks.GOLD_ORE, SubtypeImpureDust.gold, 3));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(),
+		new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeImpureDust.iron, 3));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(),
+		new O2OProcessingRecipe(Blocks.OBSIDIAN, SubtypeDust.obsidian, 2));
+
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(),
+		new DO2OProcessingRecipe(Items.COAL, SubtypeDust.sulfur, SubtypeOxide.disulfur));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(),
+		new DO2OProcessingRecipe(Items.CHARCOAL, SubtypeDust.sulfur, SubtypeOxide.disulfur));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(),
+		new DO2OProcessingRecipe(Items.COAL, SubtypeDust.vanadium, SubtypeOxide.vanadium));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(),
+		new DO2OProcessingRecipe(Items.CHARCOAL, SubtypeDust.vanadium, SubtypeOxide.vanadium));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_OXIDATIONFURNACE.get(),
+		new DO2OProcessingRecipe(SubtypeOxide.vanadium, SubtypeOxide.disulfur, SubtypeOxide.trisulfur));
+    }
 }

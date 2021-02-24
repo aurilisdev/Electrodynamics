@@ -23,64 +23,64 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class TileSolarPanel extends GenericTileBase implements ITickableTileBase, IElectrodynamic {
 
-	protected CachedTileOutput output;
+    protected CachedTileOutput output;
 
-	public TileSolarPanel() {
-		this(DeferredRegisters.TILE_SOLARPANEL.get());
-	}
+    public TileSolarPanel() {
+	this(DeferredRegisters.TILE_SOLARPANEL.get());
+    }
 
-	public TileSolarPanel(TileEntityType<TileSolarPanel> tileEntityType) {
-		super(tileEntityType);
-	}
+    public TileSolarPanel(TileEntityType<TileSolarPanel> tileEntityType) {
+	super(tileEntityType);
+    }
 
-	@Override
-	public void tickServer() {
-		if (world.isDaytime() && world.canSeeSky(pos.add(0, 1, 0))) {
-			if (output == null) {
-				output = new CachedTileOutput(world, new BlockPos(pos).offset(Direction.DOWN));
-			}
-			ElectricityUtilities.receivePower(output.get(), Direction.UP, getOutput(), false);
-		}
+    @Override
+    public void tickServer() {
+	if (world.isDaytime() && world.canSeeSky(pos.add(0, 1, 0))) {
+	    if (output == null) {
+		output = new CachedTileOutput(world, new BlockPos(pos).offset(Direction.DOWN));
+	    }
+	    ElectricityUtilities.receivePower(output.get(), Direction.UP, getOutput(), false);
 	}
+    }
 
-	public float getSunBrightness() {
-		float mod = 1.0F - (MathHelper.cos(world.func_242415_f(1f) * ((float) Math.PI * 2F)) * 2.0F + 0.2F);
-		mod = MathHelper.clamp(mod, 0.0F, 1.0F);
-		mod = 1.0F - mod;
-		mod = (float) (mod * (1.0D - world.getRainStrength(1f) * 5.0F / 16.0D));
-		mod = (float) (mod * (1.0D - world.getThunderStrength(1f) * 5.0F / 16.0D));
-		return mod * 0.8F + 0.2F;
-	}
+    public float getSunBrightness() {
+	float mod = 1.0F - (MathHelper.cos(world.func_242415_f(1f) * ((float) Math.PI * 2F)) * 2.0F + 0.2F);
+	mod = MathHelper.clamp(mod, 0.0F, 1.0F);
+	mod = 1.0F - mod;
+	mod = (float) (mod * (1.0D - world.getRainStrength(1f) * 5.0F / 16.0D));
+	mod = (float) (mod * (1.0D - world.getThunderStrength(1f) * 5.0F / 16.0D));
+	return mod * 0.8F + 0.2F;
+    }
 
-	public TransferPack getOutput() {
-		Biome b = world.getBiomeManager().getBiome(getPos());
-		float tempEff = 0.3F * (0.8F - b.getTemperature(getPos()));
-		float humidityEff = -0.3F * (b.getPrecipitation() != RainType.NONE ? b.getDownfall() : 0.0F);
-		return TransferPack.ampsVoltage(Constants.SOLARPANEL_AMPERAGE * (1 + humidityEff + tempEff) * getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), getVoltage());
-	}
+    public TransferPack getOutput() {
+	Biome b = world.getBiomeManager().getBiome(getPos());
+	float tempEff = 0.3F * (0.8F - b.getTemperature(getPos()));
+	float humidityEff = -0.3F * (b.getPrecipitation() != RainType.NONE ? b.getDownfall() : 0.0F);
+	return TransferPack.ampsVoltage(Constants.SOLARPANEL_AMPERAGE * (1 + humidityEff + tempEff) * getSunBrightness()
+		* (world.isRaining() || world.isThundering() ? 0.7f : 1), getVoltage());
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	@Nonnull
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && facing == Direction.DOWN) {
-			return (LazyOptional<T>) LazyOptional.of(() -> this);
-		}
-		return super.getCapability(capability, facing);
+    @Override
+    @Nonnull
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && facing == Direction.DOWN) {
+	    return (LazyOptional<T>) LazyOptional.of(() -> this);
 	}
+	return super.getCapability(capability, facing);
+    }
 
-	@Override
-	public void setJoulesStored(double joules) {
-	}
+    @Override
+    public void setJoulesStored(double joules) {
+    }
 
-	@Override
-	public double getJoulesStored() {
-		return 0;
-	}
+    @Override
+    public double getJoulesStored() {
+	return 0;
+    }
 
-	@Override
-	public double getMaxJoulesStored() {
-		return 0;
-	}
+    @Override
+    public double getMaxJoulesStored() {
+	return 0;
+    }
 
 }

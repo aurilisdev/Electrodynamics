@@ -2,11 +2,11 @@ package electrodynamics.api.networks;
 
 public interface IAbstractConductor {
 
-	void removeFromNetwork();
+    void removeFromNetwork();
 
-	void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
+    void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
 
-	Object getConductorType();
+    Object getConductorType();
 
-	double getMaxTransfer();
+    double getMaxTransfer();
 }

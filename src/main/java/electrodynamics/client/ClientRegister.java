@@ -31,45 +31,50 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ClientRegister {
 
-	public static void setup() {
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
-		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
+    public static void setup() {
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
 
-		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
-		ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"), new IItemPropertyGetter() {
-			private double num = 0.1;
-			private long lastCheck = 0;
+	RenderTypeLookup.setRenderLayer(
+		DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning),
+		RenderType.getCutout());
+	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill),
+		RenderType.getCutout());
+	RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
+	ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"),
+		new IItemPropertyGetter() {
+		    private double num = 0.1;
+		    private long lastCheck = 0;
 
-			@Override
-			public float call(ItemStack p_call_1_, @Nullable ClientWorld p_call_2_, @Nullable LivingEntity p_call_3_) {
-				boolean goesUp = false;
-				if (p_call_3_ instanceof PlayerEntity) {
-					RayTraceResult res = Minecraft.getInstance().objectMouseOver;
-					if (res.getType() == Type.BLOCK) {
-						BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult) res;
-						TileEntity tile = p_call_3_.world.getTileEntity(blockraytraceresult.getPos());
-						if (tile instanceof TileWire) {
-							TileWire wire = (TileWire) tile;
-							if (wire.transmit > 0) {
-								goesUp = true;
-							}
-						}
-					}
+		    @Override
+		    public float call(ItemStack p_call_1_, @Nullable ClientWorld p_call_2_,
+			    @Nullable LivingEntity p_call_3_) {
+			boolean goesUp = false;
+			if (p_call_3_ instanceof PlayerEntity) {
+			    RayTraceResult res = Minecraft.getInstance().objectMouseOver;
+			    if (res.getType() == Type.BLOCK) {
+				BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult) res;
+				TileEntity tile = p_call_3_.world.getTileEntity(blockraytraceresult.getPos());
+				if (tile instanceof TileWire) {
+				    TileWire wire = (TileWire) tile;
+				    if (wire.transmit > 0) {
+					goesUp = true;
+				    }
 				}
-				if (p_call_2_ != null) {
-					if (lastCheck != p_call_2_.getGameTime()) {
-						lastCheck = p_call_2_.getGameTime();
-						num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
-					}
-				}
-				return (float) num;
+			    }
 			}
+			if (p_call_2_ != null) {
+			    if (lastCheck != p_call_2_.getGameTime()) {
+				lastCheck = p_call_2_.getGameTime();
+				num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
+			    }
+			}
+			return (float) num;
+		    }
 		});
 
-	}
+    }
 }

@@ -16,69 +16,76 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricityUtilities {
 
-	public static boolean isElectricReceiver(TileEntity tile) {
-		for (Direction dir : Direction.values()) {
-			boolean is = isElectricReceiver(tile, dir);
-			if (is) {
-				return true;
-			}
+    public static boolean isElectricReceiver(TileEntity tile) {
+	for (Direction dir : Direction.values()) {
+	    boolean is = isElectricReceiver(tile, dir);
+	    if (is) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
+    public static boolean isElectricReceiver(TileEntity tile, Direction dir) {
+	if (tile != null) {
+	    if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, dir).isPresent()) {
+		return true;
+	    }
+	    if (tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
+    public static boolean isConductor(TileEntity acceptor) {
+	return acceptor instanceof IConductor;
+    }
+
+    public static TransferPack receivePower(TileEntity tile, Direction direction, TransferPack transfer,
+	    boolean debug) {
+	if (isElectricReceiver(tile, direction)) {
+	    if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction).isPresent()) {
+		LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC,
+			direction);
+		Object resolved = cap.resolve().get();
+		if (cap.isPresent() && (LazyOptional<?>) cap != LazyOptional.empty()) {
+		    if (resolved instanceof IElectrodynamic) {
+			IElectrodynamic handler = (IElectrodynamic) resolved;
+			return handler.receivePower(transfer, debug);
+		    }
 		}
-		return false;
-	}
-
-	public static boolean isElectricReceiver(TileEntity tile, Direction dir) {
-		if (tile != null) {
-			if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, dir).isPresent()) {
-				return true;
+	    }
+	    if (tile.getCapability(CapabilityEnergy.ENERGY, direction).isPresent()) {
+		LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
+		if (cap.isPresent() && (LazyOptional<?>) cap != LazyOptional.empty()) {
+		    Object resolved = cap.resolve().get();
+		    if (resolved instanceof IEnergyStorage) {
+			IEnergyStorage handler = (IEnergyStorage) resolved;
+			TransferPack returner = TransferPack.joulesVoltage(
+				handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug),
+				transfer.getVoltage());
+			if (transfer.getVoltage() > CapabilityElectrodynamic.DEFAULT_VOLTAGE) {
+			    World world = tile.getWorld();
+			    BlockPos pos = tile.getPos();
+			    world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(),
+				    (float) Math.log10(
+					    10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE),
+				    Mode.DESTROY);
 			}
-			if (tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
-				return true;
-			}
+			return returner;
+		    }
 		}
-		return false;
-	}
-
-	public static boolean isConductor(TileEntity acceptor) {
-		return acceptor instanceof IConductor;
-	}
-
-	public static TransferPack receivePower(TileEntity tile, Direction direction, TransferPack transfer, boolean debug) {
-		if (isElectricReceiver(tile, direction)) {
-			if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction).isPresent()) {
-				LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
-				Object resolved = cap.resolve().get();
-				if (cap.isPresent() && (LazyOptional<?>) cap != LazyOptional.empty()) {
-					if (resolved instanceof IElectrodynamic) {
-						IElectrodynamic handler = (IElectrodynamic) resolved;
-						return handler.receivePower(transfer, debug);
-					}
-				}
-			}
-			if (tile.getCapability(CapabilityEnergy.ENERGY, direction).isPresent()) {
-				LazyOptional<IEnergyStorage> cap = tile.getCapability(CapabilityEnergy.ENERGY, direction);
-				if (cap.isPresent() && (LazyOptional<?>) cap != LazyOptional.empty()) {
-					Object resolved = cap.resolve().get();
-					if (resolved instanceof IEnergyStorage) {
-						IEnergyStorage handler = (IEnergyStorage) resolved;
-						TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
-						if (transfer.getVoltage() > CapabilityElectrodynamic.DEFAULT_VOLTAGE) {
-							World world = tile.getWorld();
-							BlockPos pos = tile.getPos();
-							world.setBlockState(pos, Blocks.AIR.getDefaultState());
-							world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE), Mode.DESTROY);
-						}
-						return returner;
-					}
-				}
-			}
-
-		}
-		return TransferPack.EMPTY;
+	    }
 
 	}
+	return TransferPack.EMPTY;
 
-	public static boolean canInputPower(TileEntity tile, Direction direction) {
-		return isElectricReceiver(tile, direction);
-	}
+    }
+
+    public static boolean canInputPower(TileEntity tile, Direction direction) {
+	return isElectricReceiver(tile, direction);
+    }
 
 }

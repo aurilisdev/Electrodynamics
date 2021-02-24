@@ -14,40 +14,40 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerCoalGenerator extends GenericContainerInventory {
 
-	public ContainerCoalGenerator(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(1));
-	}
+    public ContainerCoalGenerator(int id, PlayerInventory playerinv) {
+	this(id, playerinv, new Inventory(1));
+    }
 
-	public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory) {
-		this(id, playerinv, inventory, new IntArray(2));
-	}
+    public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory) {
+	this(id, playerinv, inventory, new IntArray(2));
+    }
 
-	public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
-		super(DeferredRegisters.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+	super(DeferredRegisters.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
-	}
+    @Override
+    public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
+	addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	public int getBurnLeftScaled() {
-		return inventorydata.get(0) * 13 / TileCoalGenerator.COAL_BURN_TIME;
-	}
+    @OnlyIn(Dist.CLIENT)
+    public int getBurnLeftScaled() {
+	return inventorydata.get(0) * 13 / TileCoalGenerator.COAL_BURN_TIME;
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	public int getBurnTicksLeft() {
-		return inventorydata.get(0);
-	}
+    @OnlyIn(Dist.CLIENT)
+    public int getBurnTicksLeft() {
+	return inventorydata.get(0);
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	public boolean isBurning() {
-		return inventorydata.get(0) > 0;
-	}
+    @OnlyIn(Dist.CLIENT)
+    public boolean isBurning() {
+	return inventorydata.get(0) > 0;
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	public int getHeat() {
-		return inventorydata.get(1);
-	}
+    @OnlyIn(Dist.CLIENT)
+    public int getHeat() {
+	return inventorydata.get(1);
+    }
 }

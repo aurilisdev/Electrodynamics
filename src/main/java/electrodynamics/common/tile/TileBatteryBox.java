@@ -27,184 +27,189 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTileInventory implements ITickableTileBase, IEnergyStorage, IElectrodynamic {
-	public static final double DEFAULT_VOLTAGE = 120.0;
-	public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
-	public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
-	protected double currentCapacityMultiplier = 1;
-	protected double receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
-	protected double joules = 0;
-	private CachedTileOutput output;
+    public static final double DEFAULT_VOLTAGE = 120.0;
+    public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * DEFAULT_VOLTAGE / 20.0;
+    public static final double DEFAULT_MAX_JOULES = MeasurementUnit.MEGA.value * 5;
+    protected double currentCapacityMultiplier = 1;
+    protected double receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
+    protected double joules = 0;
+    private CachedTileOutput output;
 
-	public TileBatteryBox() {
-		super(DeferredRegisters.TILE_BATTERYBOX.get());
+    public TileBatteryBox() {
+	super(DeferredRegisters.TILE_BATTERYBOX.get());
+    }
+
+    @Override
+    public void tickServer() {
+	if (output == null) {
+	    output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
 	}
-
-	@Override
-	public void tickServer() {
-		if (output == null) {
-			output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
+	receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
+	if (joules > 0) {
+	    joules -= ElectricityUtilities.receivePower(output.get(), getFacing(),
+		    TransferPack.joulesVoltage(
+			    Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier),
+			    DEFAULT_VOLTAGE),
+		    false).getJoules();
+	}
+	currentCapacityMultiplier = 1;
+	for (ItemStack stack : items) {
+	    if (!stack.isEmpty()) {
+		if (stack.getItem() instanceof ItemProcessorUpgrade) {
+		    ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+		    currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
 		}
-		receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
-		if (joules > 0) {
-			joules -= ElectricityUtilities.receivePower(output.get(), getFacing(), TransferPack.joulesVoltage(Math.min(joules, DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), DEFAULT_VOLTAGE), false)
-					.getJoules();
+	    }
+	}
+	if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
+	    joules = DEFAULT_MAX_JOULES * currentCapacityMultiplier;
+	}
+    }
+
+    @Override
+    public int getSizeInventory() {
+	return 3;
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+	return SLOTS_EMPTY;
+    }
+
+    @Override
+    protected Container createMenu(int id, PlayerInventory player) {
+	return new ContainerBatteryBox(id, player, this, inventorydata);
+    }
+
+    protected final IIntArray inventorydata = new IIntArray() {
+	@Override
+	public int get(int index) {
+	    switch (index) {
+	    case 0:
+		return (int) (joules / (DEFAULT_MAX_JOULES * currentCapacityMultiplier) * 10000);
+	    case 1:
+		return (int) (currentCapacityMultiplier * 10000);
+	    default:
+		return 0;
+	    }
+	}
+
+	@Override
+	public void set(int index, int value) {
+	    switch (index) {
+	    case 0:
+		joules = value;
+		break;
+	    case 1:
+		currentCapacityMultiplier = value;
+		break;
+	    }
+
+	}
+
+	@Override
+	public int size() {
+	    return 2;
+	}
+    };
+
+    @Override
+    public ITextComponent getDisplayName() {
+	return new TranslationTextComponent("container.batterybox");
+    }
+
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
+	Direction facAc = getFacing();
+	if ((capability == CapabilityElectrodynamic.ELECTRODYNAMIC || capability == CapabilityEnergy.ENERGY)
+		&& (facing != null && facing == facAc || facing == facAc.getOpposite())) {
+	    lastDir = facing;
+	    return (LazyOptional<T>) LazyOptional.of(() -> this);
+	}
+	return super.getCapability(capability, facing);
+    }
+
+    private Direction lastDir = null;
+
+    @Override
+    public TransferPack receivePower(TransferPack transfer, boolean debug) {
+	if (lastDir == getFacing()) {
+	    double received = Math.min(Math.min(receiveLimitLeft, transfer.getJoules()),
+		    DEFAULT_MAX_JOULES * currentCapacityMultiplier - joules);
+	    if (!debug) {
+		if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
+		    joules += received;
+		    receiveLimitLeft -= received;
 		}
-		currentCapacityMultiplier = 1;
-		for (ItemStack stack : items) {
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ItemProcessorUpgrade) {
-					ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
-					currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-				}
-			}
+		if (transfer.getVoltage() > DEFAULT_VOLTAGE) {
+		    world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(),
+			    (float) Math.log10(10 + transfer.getVoltage() / DEFAULT_VOLTAGE), Mode.DESTROY);
+		    return TransferPack.EMPTY;
 		}
-		if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
-			joules = DEFAULT_MAX_JOULES * currentCapacityMultiplier;
-		}
+	    }
+	    return TransferPack.joulesVoltage(received, transfer.getVoltage());
 	}
+	return TransferPack.EMPTY;
+    }
 
-	@Override
-	public int getSizeInventory() {
-		return 3;
-	}
+    @Override
+    @Deprecated
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+	int calVoltage = 120;
+	TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), simulate);
+	int received = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
+	return received;
+    }
 
-	@Override
-	public int[] getSlotsForFace(Direction side) {
-		return SLOTS_EMPTY;
-	}
+    @Override
+    @Deprecated
+    public int extractEnergy(int maxExtract, boolean simulate) {
+	int calVoltage = 120;
+	TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), simulate);
+	int extracted = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
+	return extracted;
+    }
 
-	@Override
-	protected Container createMenu(int id, PlayerInventory player) {
-		return new ContainerBatteryBox(id, player, this, inventorydata);
-	}
+    @Override
+    @Deprecated
+    public int getEnergyStored() {
+	int proper = (int) Math.min(Integer.MAX_VALUE, joules);
+	return proper;
+    }
 
-	protected final IIntArray inventorydata = new IIntArray() {
-		@Override
-		public int get(int index) {
-			switch (index) {
-			case 0:
-				return (int) (joules / (DEFAULT_MAX_JOULES * currentCapacityMultiplier) * 10000);
-			case 1:
-				return (int) (currentCapacityMultiplier * 10000);
-			default:
-				return 0;
-			}
-		}
+    @Override
+    @Deprecated
+    public int getMaxEnergyStored() {
+	int proper = (int) Math.min(Integer.MAX_VALUE, DEFAULT_MAX_JOULES * currentCapacityMultiplier);
+	return proper;
+    }
 
-		@Override
-		public void set(int index, int value) {
-			switch (index) {
-			case 0:
-				joules = value;
-				break;
-			case 1:
-				currentCapacityMultiplier = value;
-				break;
-			}
+    @Override
+    @Deprecated
+    public boolean canExtract() {
+	return true;
+    }
 
-		}
+    @Override
+    @Deprecated
+    public boolean canReceive() {
+	return true;
+    }
 
-		@Override
-		public int size() {
-			return 2;
-		}
-	};
+    @Override
+    public void setJoulesStored(double joules) {
+	this.joules = joules;
+    }
 
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent("container.batterybox");
-	}
+    @Override
+    public double getJoulesStored() {
+	return joules;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-		Direction facAc = getFacing();
-		if ((capability == CapabilityElectrodynamic.ELECTRODYNAMIC || capability == CapabilityEnergy.ENERGY) && (facing != null && facing == facAc || facing == facAc.getOpposite())) {
-			lastDir = facing;
-			return (LazyOptional<T>) LazyOptional.of(() -> this);
-		}
-		return super.getCapability(capability, facing);
-	}
-
-	private Direction lastDir = null;
-
-	@Override
-	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (lastDir == getFacing()) {
-			double received = Math.min(Math.min(receiveLimitLeft, transfer.getJoules()), DEFAULT_MAX_JOULES * currentCapacityMultiplier - joules);
-			if (!debug) {
-				if (transfer.getVoltage() == DEFAULT_VOLTAGE) {
-					joules += received;
-					receiveLimitLeft -= received;
-				}
-				if (transfer.getVoltage() > DEFAULT_VOLTAGE) {
-					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / DEFAULT_VOLTAGE), Mode.DESTROY);
-					return TransferPack.EMPTY;
-				}
-			}
-			return TransferPack.joulesVoltage(received, transfer.getVoltage());
-		}
-		return TransferPack.EMPTY;
-	}
-
-	@Override
-	@Deprecated
-	public int receiveEnergy(int maxReceive, boolean simulate) {
-		int calVoltage = 120;
-		TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), simulate);
-		int received = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
-		return received;
-	}
-
-	@Override
-	@Deprecated
-	public int extractEnergy(int maxExtract, boolean simulate) {
-		int calVoltage = 120;
-		TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), simulate);
-		int extracted = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
-		return extracted;
-	}
-
-	@Override
-	@Deprecated
-	public int getEnergyStored() {
-		int proper = (int) Math.min(Integer.MAX_VALUE, joules);
-		return proper;
-	}
-
-	@Override
-	@Deprecated
-	public int getMaxEnergyStored() {
-		int proper = (int) Math.min(Integer.MAX_VALUE, DEFAULT_MAX_JOULES * currentCapacityMultiplier);
-		return proper;
-	}
-
-	@Override
-	@Deprecated
-	public boolean canExtract() {
-		return true;
-	}
-
-	@Override
-	@Deprecated
-	public boolean canReceive() {
-		return true;
-	}
-
-	@Override
-	public void setJoulesStored(double joules) {
-		this.joules = joules;
-	}
-
-	@Override
-	public double getJoulesStored() {
-		return joules;
-	}
-
-	@Override
-	public double getMaxJoulesStored() {
-		return DEFAULT_MAX_JOULES * currentCapacityMultiplier;
-	}
+    @Override
+    public double getMaxJoulesStored() {
+	return DEFAULT_MAX_JOULES * currentCapacityMultiplier;
+    }
 
 }

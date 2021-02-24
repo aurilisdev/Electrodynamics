@@ -40,60 +40,68 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class Electrodynamics {
 
-	public Electrodynamics() {
-		ConfigurationHandler.registerConfig(Constants.class);
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		DeferredRegisters.BLOCKS.register(bus);
-		DeferredRegisters.ITEMS.register(bus);
-		DeferredRegisters.TILES.register(bus);
-		DeferredRegisters.CONTAINERS.register(bus);
+    public Electrodynamics() {
+	ConfigurationHandler.registerConfig(Constants.class);
+	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+	DeferredRegisters.BLOCKS.register(bus);
+	DeferredRegisters.ITEMS.register(bus);
+	DeferredRegisters.TILES.register(bus);
+	DeferredRegisters.CONTAINERS.register(bus);
 
+    }
+
+    @SubscribeEvent
+    public static void onCommonSetup(FMLCommonSetupEvent event) {
+	CapabilityElectrodynamic.register();
+	NetworkHandler.init();
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void onClientSetup(FMLClientSetupEvent event) {
+	ClientRegister.setup();
+    }
+
+    @SubscribeEvent
+    public static void onLoadEvent(FMLLoadCompleteEvent event) {
+	for (SubtypeOre ore : SubtypeOre.values()) {
+	    OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
+		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
+	    Registry.register(WorldGenRegistries.CONFIGURED_FEATURE,
+		    DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
+		    Feature.ORE.withConfiguration(feature).range(ore.maxY).func_242731_b(ore.veinsPerChunk).square());
 	}
+	setupGen();
+    }
 
-	@SubscribeEvent
-	public static void onCommonSetup(FMLCommonSetupEvent event) {
-		CapabilityElectrodynamic.register();
-		NetworkHandler.init();
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void onClientSetup(FMLClientSetupEvent event) {
-		ClientRegister.setup();
-	}
-
-	@SubscribeEvent
-	public static void onLoadEvent(FMLLoadCompleteEvent event) {
-		for (SubtypeOre ore : SubtypeOre.values()) {
-			OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
-			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
-					Feature.ORE.withConfiguration(feature).range(ore.maxY).func_242731_b(ore.veinsPerChunk).square());
+    @Deprecated
+    public static void setupGen() {
+	for (SubtypeOre ore : SubtypeOre.values()) {
+	    for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.BIOME.getEntries()) {
+		if (!biome.getValue().getCategory().equals(Biome.Category.NETHER)
+			&& !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
+		    addFeatureToBiome(biome.getValue(), GenerationStage.Decoration.UNDERGROUND_ORES,
+			    WorldGenRegistries.CONFIGURED_FEATURE
+				    .getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
 		}
-		setupGen();
+	    }
+	}
+    }
+
+    public static void addFeatureToBiome(Biome biome, GenerationStage.Decoration decoration,
+	    ConfiguredFeature<?, ?> configuredFeature) {
+	List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(
+		biome.getGenerationSettings().getFeatures());
+
+	while (biomeFeatures.size() <= decoration.ordinal()) {
+	    biomeFeatures.add(Lists.newArrayList());
 	}
 
-	@Deprecated
-	public static void setupGen() {
-		for (SubtypeOre ore : SubtypeOre.values()) {
-			for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.BIOME.getEntries()) {
-				if (!biome.getValue().getCategory().equals(Biome.Category.NETHER) && !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
-					addFeatureToBiome(biome.getValue(), GenerationStage.Decoration.UNDERGROUND_ORES, WorldGenRegistries.CONFIGURED_FEATURE.getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
-				}
-			}
-		}
-	}
+	List<Supplier<ConfiguredFeature<?, ?>>> features = new ArrayList<>(biomeFeatures.get(decoration.ordinal()));
+	features.add(() -> configuredFeature);
+	biomeFeatures.set(decoration.ordinal(), features);
 
-	public static void addFeatureToBiome(Biome biome, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> configuredFeature) {
-		List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(biome.getGenerationSettings().getFeatures());
-
-		while (biomeFeatures.size() <= decoration.ordinal()) {
-			biomeFeatures.add(Lists.newArrayList());
-		}
-
-		List<Supplier<ConfiguredFeature<?, ?>>> features = new ArrayList<>(biomeFeatures.get(decoration.ordinal()));
-		features.add(() -> configuredFeature);
-		biomeFeatures.set(decoration.ordinal(), features);
-
-		ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(), biomeFeatures, "field_242484_f");
-	}
+	ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(),
+		biomeFeatures, "field_242484_f");
+    }
 }

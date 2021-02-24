@@ -12,53 +12,53 @@ import net.minecraft.util.text.ITextComponent;
 
 public abstract class GenericTileBase extends TileEntity implements INameable, IUpdateableTile {
 
-	private ITextComponent customName;
+    private ITextComponent customName;
 
-	public GenericTileBase(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn);
-	}
+    public GenericTileBase(TileEntityType<?> tileEntityTypeIn) {
+	super(tileEntityTypeIn);
+    }
 
-	@Override
-	public void read(BlockState state, CompoundNBT compound) {
-		super.read(state, compound);
-		customName = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
-	}
+    @Override
+    public void read(BlockState state, CompoundNBT compound) {
+	super.read(state, compound);
+	customName = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
+    }
 
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
-		if (customName != null) {
-			compound.putString("CustomName", ITextComponent.Serializer.toJson(customName));
-		}
-		return compound;
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+	super.write(compound);
+	if (customName != null) {
+	    compound.putString("CustomName", ITextComponent.Serializer.toJson(customName));
 	}
+	return compound;
+    }
 
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
-	}
+    @Override
+    public void markDirty() {
+	super.markDirty();
+	world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+    }
 
-	@Override
-	public ITextComponent getCustomName() {
-		return customName;
-	}
+    @Override
+    public ITextComponent getCustomName() {
+	return customName;
+    }
 
-	@Override
-	public ITextComponent getName() {
-		return getCustomName();
-	}
+    @Override
+    public ITextComponent getName() {
+	return getCustomName();
+    }
 
-	protected Direction getFacing() {
-		return getBlockState().get(BlockGenericMachine.FACING);
-	}
+    protected Direction getFacing() {
+	return getBlockState().get(BlockGenericMachine.FACING);
+    }
 
-	@Override
-	public CompoundNBT createUpdateTag() {
-		return new CompoundNBT();
-	}
+    @Override
+    public CompoundNBT createUpdateTag() {
+	return new CompoundNBT();
+    }
 
-	@Override
-	public void handleUpdatePacket(CompoundNBT nbt) {
-	}
+    @Override
+    public void handleUpdatePacket(CompoundNBT nbt) {
+    }
 }

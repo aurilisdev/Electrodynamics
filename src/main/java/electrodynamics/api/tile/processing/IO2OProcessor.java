@@ -5,13 +5,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
 public interface IO2OProcessor extends IElectricProcessor {
-	default TileEntityType<?> getType() {
-		return ((TileEntity) this).getType();
-	}
+    default TileEntityType<?> getType() {
+	return ((TileEntity) this).getType();
+    }
 
-	ItemStack getInput();
+    ItemStack getInput();
 
-	ItemStack getOutput();
+    ItemStack getOutput();
 
-	void setOutput(ItemStack stack);
+    void setOutput(ItemStack stack);
 }

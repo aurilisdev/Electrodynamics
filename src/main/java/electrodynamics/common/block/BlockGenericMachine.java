@@ -35,94 +35,97 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
 public class BlockGenericMachine extends Block implements IWrenchable {
-	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-	public BlockGenericMachine() {
-		super(Properties.create(Material.IRON).hardnessAndResistance(3.5F).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).notSolid());
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
-	}
+    public BlockGenericMachine() {
+	super(Properties.create(Material.IRON).hardnessAndResistance(3.5F).sound(SoundType.METAL)
+		.harvestTool(ToolType.PICKAXE).notSolid());
+	setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+    }
 
-	@Deprecated
-	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-		if (tile instanceof IInventory) {
-			if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
-			}
-		}
-		super.onReplaced(state, worldIn, pos, newState, isMoving);
+    @Deprecated
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	TileEntity tile = worldIn.getTileEntity(pos);
+	if (tile instanceof IInventory) {
+	    if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))) {
+		InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
+	    }
 	}
+	super.onReplaced(state, worldIn, pos, newState, isMoving);
+    }
 
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+	return true;
+    }
 
-	@Override
-	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return 0;
-	}
+    @Override
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+	return 0;
+    }
 
-	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return 1;
-	}
+    @Override
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	return 1;
+    }
 
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isRemote) {
-			return ActionResultType.SUCCESS;
-		} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrench)) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
-			if (tileentity instanceof INamedContainerProvider) {
-				player.openContainer((INamedContainerProvider) tileentity);
-			}
-			player.addStat(Stats.INTERACT_WITH_FURNACE);
-			return ActionResultType.CONSUME;
-		}
-		return ActionResultType.FAIL;
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
+	    Hand handIn, BlockRayTraceResult hit) {
+	if (worldIn.isRemote) {
+	    return ActionResultType.SUCCESS;
+	} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrench)) {
+	    TileEntity tileentity = worldIn.getTileEntity(pos);
+	    if (tileentity instanceof INamedContainerProvider) {
+		player.openContainer((INamedContainerProvider) tileentity);
+	    }
+	    player.addStat(Stats.INTERACT_WITH_FURNACE);
+	    return ActionResultType.CONSUME;
 	}
+	return ActionResultType.FAIL;
+    }
 
-	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
-	}
+    @Override
+    public BlockState rotate(BlockState state, Rotation rot) {
+	return state.with(FACING, rot.rotate(state.get(FACING)));
+    }
 
-	@Deprecated
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-	}
+    @Deprecated
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirrorIn) {
+	return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+    }
 
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-	}
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+	return getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+    }
 
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	builder.add(FACING);
+    }
 
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		return Arrays.asList(new ItemStack(this));
-	}
+    @Override
+    public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	return Arrays.asList(new ItemStack(this));
+    }
 
-	@Override
-	public void onRotate(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		player.world.setBlockState(pos, rotate(player.world.getBlockState(pos), Rotation.CLOCKWISE_90));
-	}
+    @Override
+    public void onRotate(ItemStack stack, BlockPos pos, PlayerEntity player) {
+	player.world.setBlockState(pos, rotate(player.world.getBlockState(pos), Rotation.CLOCKWISE_90));
+    }
 
-	@Override
-	public void onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		World world = player.world;
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof IInventory) {
-			InventoryHelper.dropInventoryItems(player.world, pos, (IInventory) te);
-		}
-		world.setBlockState(pos, Blocks.AIR.getDefaultState());
-		world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(getSelf())));
+    @Override
+    public void onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
+	World world = player.world;
+	TileEntity te = world.getTileEntity(pos);
+	if (te instanceof IInventory) {
+	    InventoryHelper.dropInventoryItems(player.world, pos, (IInventory) te);
 	}
+	world.setBlockState(pos, Blocks.AIR.getDefaultState());
+	world.addEntity(
+		new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(getSelf())));
+    }
 }

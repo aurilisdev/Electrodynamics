@@ -11,22 +11,22 @@ import net.minecraft.world.World;
 
 public class ItemWrench extends Item implements IWrench {
 
-	public ItemWrench(Properties properties) {
-		super(properties);
-	}
+    public ItemWrench(Properties properties) {
+	super(properties);
+    }
 
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
-	}
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+	return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
+    }
 
-	@Override
-	public boolean onRotate(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		return true;
-	}
+    @Override
+    public boolean onRotate(ItemStack stack, BlockPos pos, PlayerEntity player) {
+	return true;
+    }
 
-	@Override
-	public boolean onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		return true;
-	}
+    @Override
+    public boolean onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
+	return true;
+    }
 }

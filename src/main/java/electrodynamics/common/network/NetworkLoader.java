@@ -12,18 +12,18 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class NetworkLoader {
 
-	@SubscribeEvent
-	public void onChunkLoad(ChunkEvent.Load event) {
-		if (event.getChunk() != null) {
-			for (BlockPos pos : event.getChunk().getTileEntitiesPos()) {
-				TileEntity obj = event.getWorld().getTileEntity(pos);
-				if (obj instanceof TileEntity) {
-					TileEntity tileEntity = obj;
-					if (tileEntity instanceof IConductor) {
-						((IConductor) tileEntity).refreshNetwork();
-					}
-				}
-			}
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event) {
+	if (event.getChunk() != null) {
+	    for (BlockPos pos : event.getChunk().getTileEntitiesPos()) {
+		TileEntity obj = event.getWorld().getTileEntity(pos);
+		if (obj != null) {
+		    TileEntity tileEntity = obj;
+		    if (tileEntity instanceof IConductor) {
+			((IConductor) tileEntity).refreshNetwork();
+		    }
 		}
+	    }
 	}
+    }
 }

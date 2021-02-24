@@ -20,59 +20,67 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
 
 public enum SubtypeMachine implements Subtype {
-	electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class), coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
-	wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class), mineralgrinder(true, TileMineralGrinder.class), /* TODO: Recipe with lead and acid? */ batterybox(true, TileBatteryBox.class),
-	oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
-	solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class), electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class);
+    electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
+    coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
+    wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class),
+    mineralgrinder(true, TileMineralGrinder.class),
+    /* TODO: Recipe with lead and acid? */ batterybox(true, TileBatteryBox.class),
+    oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
+    downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
+    solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
+    electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class);
 
-	public final Class<? extends TileEntity> tileclass;
-	public final boolean showInItemGroup;
+    public final Class<? extends TileEntity> tileclass;
+    public final boolean showInItemGroup;
 
-	private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass) {
-		this.showInItemGroup = showInItemGroup;
-		this.tileclass = tileclass;
-	}
+    private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass) {
+	this.showInItemGroup = showInItemGroup;
+	this.tileclass = tileclass;
+    }
 
-	public boolean shouldBreakOnReplaced(BlockState before, BlockState after) {
-		Block bb = before.getBlock();
-		Block ba = after.getBlock();
-		if (bb instanceof BlockMachine && ba instanceof BlockMachine) {
-			SubtypeMachine mb = ((BlockMachine) bb).machine;
-			SubtypeMachine ma = ((BlockMachine) ba).machine;
-			if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace) {
-				return false;
-			} else if (mb == coalgenerator && ma == coalgeneratorrunning || mb == coalgeneratorrunning && ma == coalgenerator) {
-				return false;
-			} else if (mb == oxidationfurnace && ma == oxidationfurnacerunning || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public TileEntity createTileEntity(IBlockReader worldIn) {
-		if (tileclass != null) {
-			try {
-				return tileclass.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public String tag() {
-		return name();
-	}
-
-	@Override
-	public String forgeTag() {
-		return tag();
-	}
-
-	@Override
-	public boolean isItem() {
+    public static boolean shouldBreakOnReplaced(BlockState before, BlockState after) {
+	Block bb = before.getBlock();
+	Block ba = after.getBlock();
+	if (bb instanceof BlockMachine && ba instanceof BlockMachine) {
+	    SubtypeMachine mb = ((BlockMachine) bb).machine;
+	    SubtypeMachine ma = ((BlockMachine) ba).machine;
+	    if (mb == electricfurnace && ma == electricfurnacerunning
+		    || mb == electricfurnacerunning && ma == electricfurnace) {
 		return false;
+	    } else if (mb == coalgenerator && ma == coalgeneratorrunning
+		    || mb == coalgeneratorrunning && ma == coalgenerator) {
+		return false;
+	    } else if (mb == oxidationfurnace && ma == oxidationfurnacerunning
+		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
+		return false;
+	    }
 	}
+	return true;
+    }
+
+    public TileEntity createTileEntity(IBlockReader worldIn) {
+	if (tileclass != null) {
+	    try {
+		return tileclass.newInstance();
+	    } catch (InstantiationException | IllegalAccessException e) {
+		e.printStackTrace();
+	    }
+	}
+	return null;
+    }
+
+    @Override
+    public String tag() {
+	return name();
+    }
+
+    @Override
+    public String forgeTag() {
+	return tag();
+    }
+
+    @Override
+    public boolean isItem() {
+	return false;
+    }
 }

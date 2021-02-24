@@ -36,172 +36,180 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IElectrodynamic {
-	public TransferPack currentOutput = TransferPack.EMPTY;
-	public static final int[] SLOTS_INPUT = new int[] { 0 };
-	public static final int COAL_BURN_TIME = 1000;
+    public TransferPack currentOutput = TransferPack.EMPTY;
+    public static final int[] SLOTS_INPUT = new int[] { 0 };
+    public static final int COAL_BURN_TIME = 1000;
 
-	protected CachedTileOutput output;
-	protected TargetValue heat = new TargetValue(27);
-	protected int burnTime;
+    protected CachedTileOutput output;
+    protected TargetValue heat = new TargetValue(27);
+    protected int burnTime;
 
-	public TileCoalGenerator() {
-		super(DeferredRegisters.TILE_COALGENERATOR.get());
+    public TileCoalGenerator() {
+	super(DeferredRegisters.TILE_COALGENERATOR.get());
+    }
+
+    private boolean isBurning() {
+	return burnTime > 0;
+    }
+
+    @Override
+    public void tickServer() {
+	if (output == null) {
+	    output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
 	}
-
-	private boolean isBurning() {
-		return burnTime > 0;
+	if (!isBurning() && !items.get(0).isEmpty()) {
+	    burnTime = COAL_BURN_TIME;
+	    decrStackSize(0, 1);
 	}
-
-	@Override
-	public void tickServer() {
-		if (output == null) {
-			output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
-		}
-		if (!isBurning() && !items.get(0).isEmpty()) {
-			burnTime = COAL_BURN_TIME;
-			decrStackSize(0, 1);
-		}
-		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
-		if (machine != null) {
-			boolean update = false;
-			if (machine.machine == SubtypeMachine.coalgenerator) {
-				if (isBurning()) {
-					update = true;
-				}
-			} else {
-				if (!isBurning()) {
-					update = true;
-				}
-			}
-			if (update) {
-				world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(isBurning() ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).getDefaultState().with(BlockGenericMachine.FACING,
-						getBlockState().get(BlockGenericMachine.FACING)), 3);
-			}
-		}
-		if (heat.get() > 27) {
-			ElectricityUtilities.receivePower(output.get(), getFacing(), currentOutput, false);
-		}
-		heat.rangeParameterize(27, 3000, isBurning() ? 3000 : 27, heat.get(), 600).flush();
-		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-	}
-
-	@Override
-	public void tickCommon() {
+	BlockMachine machine = (BlockMachine) getBlockState().getBlock();
+	if (machine != null) {
+	    boolean update = false;
+	    if (machine.machine == SubtypeMachine.coalgenerator) {
 		if (isBurning()) {
-			--burnTime;
+		    update = true;
 		}
-	}
-
-	@Override
-	public void tickClient() {
-		if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
-			Direction dir = getFacing();
-			if (world.rand.nextInt(10) == 0) {
-				world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.6F,
-						false);
-			}
-
-			if (world.rand.nextInt(10) == 0) {
-				for (int i = 0; i < world.rand.nextInt(1) + 1; ++i) {
-					world.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, dir.getXOffset(), 0.0, dir.getZOffset());
-				}
-			}
+	    } else {
+		if (!isBurning()) {
+		    update = true;
 		}
+	    }
+	    if (update) {
+		world.setBlockState(pos,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
+				.get(isBurning() ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
+				.getDefaultState()
+				.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
+			3);
+	    }
 	}
-
-	@Override
-	public int getSizeInventory() {
-		return 1;
+	if (heat.get() > 27) {
+	    ElectricityUtilities.receivePower(output.get(), getFacing(), currentOutput, false);
 	}
+	heat.rangeParameterize(27, 3000, isBurning() ? 3000 : 27, heat.get(), 600).flush();
+	currentOutput = TransferPack.ampsVoltage(
+		Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
+		Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+    }
 
-	@Override
-	public int[] getSlotsForFace(Direction side) {
-		return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT : SLOTS_EMPTY;
+    @Override
+    public void tickCommon() {
+	if (isBurning()) {
+	    --burnTime;
 	}
+    }
 
-	@Override
-	protected Container createMenu(int id, PlayerInventory player) {
-		return new ContainerCoalGenerator(id, player, this, inventorydata);
-	}
+    @Override
+    public void tickClient() {
+	if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
+	    Direction dir = getFacing();
+	    if (world.rand.nextInt(10) == 0) {
+		world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+			SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + world.rand.nextFloat(),
+			world.rand.nextFloat() * 0.7F + 0.6F, false);
+	    }
 
-	protected final IIntArray inventorydata = new IIntArray() {
-		@Override
-		public int get(int index) {
-			switch (index) {
-			case 0:
-				return burnTime;
-			case 1:
-				return (int) heat.get();
-			default:
-				return 0;
-			}
+	    if (world.rand.nextInt(10) == 0) {
+		for (int i = 0; i < world.rand.nextInt(1) + 1; ++i) {
+		    world.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+			    dir.getXOffset(), 0.0, dir.getZOffset());
 		}
-
-		@Override
-		public void set(int index, int value) {
-			switch (index) {
-			case 0:
-				burnTime = value;
-				break;
-			case 1:
-				heat.set(value);
-				break;
-			}
-
-		}
-
-		@Override
-		public int size() {
-			return 2;
-		}
-	};
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL;
+	    }
 	}
+    }
 
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent("container.coalgenerator");
-	}
+    @Override
+    public int getSizeInventory() {
+	return 1;
+    }
 
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		compound.putDouble("heat", heat.get());
-		compound.putInt("burnTime", burnTime);
-		return super.write(compound);
-	}
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+	return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT
+		: SLOTS_EMPTY;
+    }
 
-	@Override
-	public void read(BlockState state, CompoundNBT compound) {
-		super.read(state, compound);
-		heat.set(compound.getDouble("heat"));
-		burnTime = compound.getInt("burnTime");
-	}
+    @Override
+    protected Container createMenu(int id, PlayerInventory player) {
+	return new ContainerCoalGenerator(id, player, this, inventorydata);
+    }
 
-	@SuppressWarnings("unchecked")
+    protected final IIntArray inventorydata = new IIntArray() {
 	@Override
-	@Nonnull
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && getFacing().getOpposite() == facing) {
-			return (LazyOptional<T>) LazyOptional.of(() -> this);
-		}
-		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public void setJoulesStored(double joules) {
-	}
-
-	@Override
-	public double getJoulesStored() {
+	public int get(int index) {
+	    switch (index) {
+	    case 0:
+		return burnTime;
+	    case 1:
+		return (int) heat.get();
+	    default:
 		return 0;
+	    }
 	}
 
 	@Override
-	public double getMaxJoulesStored() {
-		return 0;
+	public void set(int index, int value) {
+	    switch (index) {
+	    case 0:
+		burnTime = value;
+		break;
+	    case 1:
+		heat.set(value);
+		break;
+	    }
+
 	}
+
+	@Override
+	public int size() {
+	    return 2;
+	}
+    };
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+	return stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+	return new TranslationTextComponent("container.coalgenerator");
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+	compound.putDouble("heat", heat.get());
+	compound.putInt("burnTime", burnTime);
+	return super.write(compound);
+    }
+
+    @Override
+    public void read(BlockState state, CompoundNBT compound) {
+	super.read(state, compound);
+	heat.set(compound.getDouble("heat"));
+	burnTime = compound.getInt("burnTime");
+    }
+
+    @Override
+    @Nonnull
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && getFacing().getOpposite() == facing) {
+	    return (LazyOptional<T>) LazyOptional.of(() -> this);
+	}
+	return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void setJoulesStored(double joules) {
+    }
+
+    @Override
+    public double getJoulesStored() {
+	return 0;
+    }
+
+    @Override
+    public double getMaxJoulesStored() {
+	return 0;
+    }
 
 }

@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.wire;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.tile.generic.GenericTilePipe;
@@ -9,49 +8,49 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 
-public class TilePipe extends GenericTilePipe implements IPipe {
-	public double transmit = 0;
+public class TilePipe extends GenericTilePipe {
+    public double transmit = 0;
 
-	public TilePipe() {
-		super(DeferredRegisters.TILE_PIPE.get());
+    public TilePipe() {
+	super(DeferredRegisters.TILE_PIPE.get());
+    }
+
+    public TilePipe(TileEntityType<?> tile) {
+	super(tile);
+    }
+
+    public SubtypePipe pipe = null;
+
+    @Override
+    public SubtypePipe getPipeType() {
+	if (pipe == null) {
+	    pipe = ((BlockPipe) getBlockState().getBlock()).pipe;
 	}
+	return pipe;
+    }
 
-	public TilePipe(TileEntityType<?> tile) {
-		super(tile);
-	}
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+	compound.putInt("ord", getPipeType().ordinal());
+	return super.write(compound);
+    }
 
-	public SubtypePipe pipe = null;
+    @Override
+    public void read(BlockState state, CompoundNBT compound) {
+	super.read(state, compound);
+	pipe = SubtypePipe.values()[compound.getInt("ord")];
+    }
 
-	@Override
-	public SubtypePipe getPipeType() {
-		if (pipe == null) {
-			pipe = ((BlockPipe) getBlockState().getBlock()).pipe;
-		}
-		return pipe;
-	}
+    @Override
+    public CompoundNBT createUpdateTag() {
+	CompoundNBT nbt = super.createUpdateTag();
+	nbt.putDouble("transmit", transmit);
+	return nbt;
+    }
 
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		compound.putInt("ord", getPipeType().ordinal());
-		return super.write(compound);
-	}
-
-	@Override
-	public void read(BlockState state, CompoundNBT compound) {
-		super.read(state, compound);
-		pipe = SubtypePipe.values()[compound.getInt("ord")];
-	}
-
-	@Override
-	public CompoundNBT createUpdateTag() {
-		CompoundNBT nbt = super.createUpdateTag();
-		nbt.putDouble("transmit", transmit);
-		return nbt;
-	}
-
-	@Override
-	public void handleUpdatePacket(CompoundNBT nbt) {
-		super.handleUpdatePacket(nbt);
-		transmit = nbt.getDouble("transmit");
-	}
+    @Override
+    public void handleUpdatePacket(CompoundNBT nbt) {
+	super.handleUpdatePacket(nbt);
+	transmit = nbt.getDouble("transmit");
+    }
 }

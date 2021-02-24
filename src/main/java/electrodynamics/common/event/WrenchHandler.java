@@ -16,25 +16,25 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class WrenchHandler {
 
-	@SubscribeEvent
-	public static void onPlayerInteract(RightClickBlock event) {
-		PlayerEntity player = event.getPlayer();
-		if (!player.world.isRemote) {
-			BlockState state = event.getWorld().getBlockState(event.getPos());
-			Block block = state.getBlock();
-			ItemStack stack = event.getItemStack();
-			Item item = stack.getItem();
-			if (block instanceof IWrenchable && item instanceof IWrench) {
-				if (player.isSneaking()) {
-					if (((IWrench) item).onPickup(stack, event.getPos(), player)) {
-						((IWrenchable) block).onPickup(stack, event.getPos(), player);
-					}
-				} else {
-					if (((IWrench) item).onRotate(stack, event.getPos(), player)) {
-						((IWrenchable) block).onRotate(stack, event.getPos(), player);
-					}
-				}
-			}
+    @SubscribeEvent
+    public static void onPlayerInteract(RightClickBlock event) {
+	PlayerEntity player = event.getPlayer();
+	if (!player.world.isRemote) {
+	    BlockState state = event.getWorld().getBlockState(event.getPos());
+	    Block block = state.getBlock();
+	    ItemStack stack = event.getItemStack();
+	    Item item = stack.getItem();
+	    if (block instanceof IWrenchable && item instanceof IWrench) {
+		if (player.isSneaking()) {
+		    if (((IWrench) item).onPickup(stack, event.getPos(), player)) {
+			((IWrenchable) block).onPickup(stack, event.getPos(), player);
+		    }
+		} else {
+		    if (((IWrench) item).onRotate(stack, event.getPos(), player)) {
+			((IWrenchable) block).onRotate(stack, event.getPos(), player);
+		    }
 		}
+	    }
 	}
+    }
 }

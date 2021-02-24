@@ -20,61 +20,61 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileTransformer extends GenericTileBase implements IElectrodynamic {
-	private boolean locked = false;
-	private CachedTileOutput output;
+    private boolean locked = false;
+    private CachedTileOutput output;
 
-	public TileTransformer() {
-		super(DeferredRegisters.TILE_TRANSFORMER.get());
+    public TileTransformer() {
+	super(DeferredRegisters.TILE_TRANSFORMER.get());
+    }
+
+    @Override
+    public TransferPack receivePower(TransferPack transfer, boolean debug) {
+	Direction facing = getFacing();
+	if (locked || lastDir != facing.getOpposite()) {
+	    return TransferPack.EMPTY;
 	}
-
-	@Override
-	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		Direction facing = getFacing();
-		if (locked || lastDir != facing.getOpposite()) {
-			return TransferPack.EMPTY;
-		} else {
-			if (output == null) {
-				output = new CachedTileOutput(world, new BlockPos(pos).offset(facing));
-			}
-			boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
-			double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 1920.0);
-			locked = true;
-			TransferPack returner = debug ? TransferPack.ampsVoltage(1, 1)
-					: ElectricityUtilities.receivePower(output.get(), lastDir, TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
-			locked = false;
-			if (returner.getJoules() > 0) {
-				returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * 0.05, resultVoltage);
-			}
-			return returner;
-		}
+	if (output == null) {
+	    output = new CachedTileOutput(world, new BlockPos(pos).offset(facing));
 	}
-
-	private Direction lastDir;
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Nonnull
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		Direction face = getFacing();
-		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && face == facing || face.getOpposite() == facing) {
-			lastDir = facing;
-			return (LazyOptional<T>) LazyOptional.of(() -> this);
-		}
-		return super.getCapability(capability, facing);
+	boolean shouldUpgrade = ((BlockMachine) getBlockState()
+		.getBlock()).machine == SubtypeMachine.upgradetransformer;
+	double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 1920.0);
+	locked = true;
+	TransferPack returner = debug ? TransferPack.ampsVoltage(1, 1)
+		: ElectricityUtilities.receivePower(output.get(), lastDir, TransferPack
+			.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
+	locked = false;
+	if (returner.getJoules() > 0) {
+	    returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * 0.05, resultVoltage);
 	}
+	return returner;
+    }
 
-	@Override
-	public void setJoulesStored(double joules) {
-	}
+    private Direction lastDir;
 
-	@Override
-	public double getJoulesStored() {
-		return 0;
+    @Override
+    @Nonnull
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+	Direction face = getFacing();
+	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && face == facing || face.getOpposite() == facing) {
+	    lastDir = facing;
+	    return (LazyOptional<T>) LazyOptional.of(() -> this);
 	}
+	return super.getCapability(capability, facing);
+    }
 
-	@Override
-	public double getMaxJoulesStored() {
-		return 0;
-	}
+    @Override
+    public void setJoulesStored(double joules) {
+    }
+
+    @Override
+    public double getJoulesStored() {
+	return 0;
+    }
+
+    @Override
+    public double getMaxJoulesStored() {
+	return 0;
+    }
 
 }

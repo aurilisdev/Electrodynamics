@@ -15,78 +15,79 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class GenericContainerInventory extends Container {
-	protected final IInventory inventory;
-	protected final IIntArray inventorydata;
-	protected final World world;
-	protected final int slotCount;
-	protected final TileEntity tile;
-	private int nextIndex = 0;
+    protected final IInventory inventory;
+    protected final IIntArray inventorydata;
+    protected final World world;
+    protected final int slotCount;
+    protected final TileEntity tile;
+    private int nextIndex = 0;
 
-	public int nextIndex() {
-		return nextIndex++;
+    public int nextIndex() {
+	return nextIndex++;
+    }
+
+    protected GenericContainerInventory(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory,
+	    IIntArray inventorydata) {
+	super(type, id);
+	assertInventorySize(inventory, inventory.getSizeInventory());
+	assertIntArraySize(inventorydata, inventorydata.size());
+	this.inventory = inventory;
+	this.inventorydata = inventorydata;
+	world = playerinv.player.world;
+	addInventorySlots(inventory, playerinv);
+	slotCount = inventorySlots.size();
+	for (int i = 0; i < 3; ++i) {
+	    for (int j = 0; j < 9; ++j) {
+		addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+	    }
 	}
 
-	protected GenericContainerInventory(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
-		super(type, id);
-		assertInventorySize(inventory, inventory.getSizeInventory());
-		assertIntArraySize(inventorydata, inventorydata.size());
-		this.inventory = inventory;
-		this.inventorydata = inventorydata;
-		world = playerinv.player.world;
-		addInventorySlots(inventory, playerinv);
-		slotCount = inventorySlots.size();
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 9; ++j) {
-				addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-			}
-		}
-
-		for (int k = 0; k < 9; ++k) {
-			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142));
-		}
-
-		if (inventory instanceof TileEntity) {
-			tile = (TileEntity) inventory;
-		} else {
-			tile = null;
-		}
-
-		trackIntArray(inventorydata);
+	for (int k = 0; k < 9; ++k) {
+	    addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142));
 	}
 
-	public abstract void addInventorySlots(IInventory inv, PlayerInventory playerinv);
-
-	public void clear() {
-		inventory.clear();
+	if (inventory instanceof TileEntity) {
+	    tile = (TileEntity) inventory;
+	} else {
+	    tile = null;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public int getSize() {
-		return inventory.getSizeInventory();
-	}
+	trackIntArray(inventorydata);
+    }
 
-	public IInventory getIInventory() {
-		return inventory;
-	}
+    public abstract void addInventorySlots(IInventory inv, PlayerInventory playerinv);
 
-	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return inventory.isUsableByPlayer(player);
-	}
+    public void clear() {
+	inventory.clear();
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
-		return Containers.handleShiftClick(inventorySlots, player, index);
-	}
+    @OnlyIn(Dist.CLIENT)
+    public int getSize() {
+	return inventory.getSizeInventory();
+    }
 
-	@Override
-	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, PlayerEntity player) {
-		return super.slotClick(slotId, dragType, clickTypeIn, player);
-	}
+    public IInventory getIInventory() {
+	return inventory;
+    }
 
-	@Override
-	public void onContainerClosed(PlayerEntity player) {
-		super.onContainerClosed(player);
-		inventory.closeInventory(player);
-	}
+    @Override
+    public boolean canInteractWith(PlayerEntity player) {
+	return inventory.isUsableByPlayer(player);
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+	return Containers.handleShiftClick(inventorySlots, player, index);
+    }
+
+    @Override
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, PlayerEntity player) {
+	return super.slotClick(slotId, dragType, clickTypeIn, player);
+    }
+
+    @Override
+    public void onContainerClosed(PlayerEntity player) {
+	super.onContainerClosed(player);
+	inventory.closeInventory(player);
+    }
 }
