@@ -21,7 +21,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.RainType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -56,9 +55,7 @@ public class TileAdvancedSolarPanel extends GenericTileBase
 
     public TransferPack getOutput() {
 	Biome b = world.getBiomeManager().getBiome(getPos());
-	float tempEff = 0.3F * (0.8F - b.getTemperature(getPos()));
-	float humidityEff = -0.3F * (b.getPrecipitation() != RainType.NONE ? b.getDownfall() : 0.0F);
-	return TransferPack.ampsVoltage(Constants.ADVANCEDSOLARPANEL_AMPERAGE * (1 + humidityEff + tempEff)
+	return TransferPack.ampsVoltage(Constants.ADVANCEDSOLARPANEL_AMPERAGE * (b.getTemperature(getPos()) / 2.0)
 		* getSunBrightness() * (world.isRaining() || world.isThundering() ? 0.7f : 1), getVoltage());
     }
 

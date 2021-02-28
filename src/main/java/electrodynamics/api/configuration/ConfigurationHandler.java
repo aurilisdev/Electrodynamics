@@ -163,7 +163,7 @@ public class ConfigurationHandler {
 				    field.setByte(null, Byte.parseByte(split[1]));
 				}
 				found.remove(field);
-			    } catch (@SuppressWarnings("unused") Exception e) {
+			    } catch (Exception e) {
 				System.out.println("Invalid field found in config file '" + file.getName() + "'");
 				System.out.println("Full: " + line);
 				System.out.println("Field: " + split[0]);

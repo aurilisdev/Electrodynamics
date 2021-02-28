@@ -14,12 +14,12 @@ public class Constants {
     public static double COALGENERATOR_AMPERAGE = 34.0;
     @DoubleValue(def = 4.166667)
     public static double THERMOELECTRICGENERATOR_AMPERAGE = 4.166667;
-    @DoubleValue(def = 9)
-    public static double SOLARPANEL_AMPERAGE = 9;
+    @DoubleValue(def = 10)
+    public static double SOLARPANEL_AMPERAGE = 10;
     @DoubleValue(def = 50.0)
     public static double ELECTRICPUMP_USAGE_PER_TICK = 50.0;
-    @DoubleValue(def = 15.75)
-    public static double ADVANCEDSOLARPANEL_AMPERAGE = 15.75;
+    @DoubleValue(def = 20.0)
+    public static double ADVANCEDSOLARPANEL_AMPERAGE = 20.0;
     @DoubleValue(def = 175)
     public static double ELECTRICFURNACE_USAGE_PER_TICK = 175.0;
     @IntValue(def = 100)
