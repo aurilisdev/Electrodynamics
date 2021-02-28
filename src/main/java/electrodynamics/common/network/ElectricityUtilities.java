@@ -68,7 +68,6 @@ public class ElectricityUtilities {
 		    }
 		}
 	    }
-
 	}
 	return TransferPack.EMPTY;
 
