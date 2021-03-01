@@ -52,12 +52,13 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Deprecated
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-	return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.downgradetransformer
+	return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer
 		? transformershape
 		: machine == SubtypeMachine.solarpanel ? solargenshape : super.getShape(state, worldIn, pos, context);
     }
 
     @Override
+    @Deprecated
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 	return isValidMultiblockPlacement(state, worldIn, pos,
 		machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes : new HashSet<Subnode>());
@@ -71,11 +72,13 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
+    @Deprecated
     public BlockRenderType getRenderType(BlockState state) {
 	return machine == SubtypeMachine.advancedsolarpanel ? BlockRenderType.INVISIBLE : BlockRenderType.MODEL;
     }
 
     @Override
+    @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays
 		.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS

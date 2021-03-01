@@ -36,10 +36,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileCoalGenerator extends GenericTileInventory implements ITickableTileBase, IElectrodynamic {
-    public TransferPack currentOutput = TransferPack.EMPTY;
-    public static final int[] SLOTS_INPUT = new int[] { 0 };
     public static final int COAL_BURN_TIME = 1000;
+    protected static final int[] SLOTS_INPUT = new int[] { 0 };
 
+    protected TransferPack currentOutput = TransferPack.EMPTY;
     protected CachedTileOutput output;
     protected TargetValue heat = new TargetValue(27);
     protected int burnTime;
@@ -61,6 +61,17 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	    burnTime = COAL_BURN_TIME;
 	    decrStackSize(0, 1);
 	}
+	updateIfNecessary();
+	if (heat.get() > 27) {
+	    ElectricityUtilities.receivePower(output.get(), getFacing(), currentOutput, false);
+	}
+	heat.rangeParameterize(27, 3000, isBurning() ? 3000 : 27, heat.get(), 600).flush();
+	currentOutput = TransferPack.ampsVoltage(
+		Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
+		Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+    }
+
+    public void updateIfNecessary() {
 	BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 	if (machine != null) {
 	    boolean update = false;
@@ -82,13 +93,6 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 			3);
 	    }
 	}
-	if (heat.get() > 27) {
-	    ElectricityUtilities.receivePower(output.get(), getFacing(), currentOutput, false);
-	}
-	heat.rangeParameterize(27, 3000, isBurning() ? 3000 : 27, heat.get(), 600).flush();
-	currentOutput = TransferPack.ampsVoltage(
-		Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
-		Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
     }
 
     @Override
@@ -148,15 +152,11 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
 	@Override
 	public void set(int index, int value) {
-	    switch (index) {
-	    case 0:
+	    if (index == 0) {
 		burnTime = value;
-		break;
-	    case 1:
+	    } else if (index == 1) {
 		heat.set(value);
-		break;
 	    }
-
 	}
 
 	@Override
@@ -200,6 +200,7 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
     @Override
     public void setJoulesStored(double joules) {
+	// Cant set joules here.
     }
 
     @Override
