@@ -18,6 +18,7 @@ import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileBase;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
@@ -32,6 +33,11 @@ public class TileAdvancedSolarPanel extends GenericTileBase
     }
 
     protected CachedTileOutput output;
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+	return super.getRenderBoundingBox().grow(2);
+    }
 
     @Override
     public void tickServer() {

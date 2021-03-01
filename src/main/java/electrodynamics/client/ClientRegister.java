@@ -3,6 +3,8 @@ package electrodynamics.client;
 import javax.annotation.Nullable;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.References;
+import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
@@ -27,11 +29,22 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientRegister {
 
+    public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(
+	    References.ID + ":block/advancedsolarpaneltop");
+    public static final ResourceLocation MODEL_ADVSOLARBASE = new ResourceLocation(
+	    References.ID + ":block/advancedsolarpanelbase");
+
     public static void setup() {
+	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
+	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
+
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);

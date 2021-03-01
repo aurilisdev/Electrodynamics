@@ -9,6 +9,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemGroup;
@@ -67,6 +68,11 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	if (machine.showInItemGroup) {
 	    items.add(new ItemStack(this));
 	}
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+	return machine == SubtypeMachine.advancedsolarpanel ? BlockRenderType.INVISIBLE : BlockRenderType.MODEL;
     }
 
     @Override
