@@ -1,6 +1,8 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.scheduler.Scheduler;
+import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.generic.GenericTileBase;
@@ -11,8 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 
-public class TileMultiSubnode extends GenericTileBase {
-    public BlockPos node;
+public class TileMultiSubnode extends GenericTileBase implements ITickableTileBase {
+    public BlockPos nodePos;
     public VoxelShape shapeCache;
 
     public TileMultiSubnode() {
@@ -21,17 +23,19 @@ public class TileMultiSubnode extends GenericTileBase {
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-	compound.putInt("nodeX", node.getX());
-	compound.putInt("nodeY", node.getY());
-	compound.putInt("nodeZ", node.getZ());
+	if (nodePos != null) {
+	    compound.putInt("nodeX", nodePos.getX());
+	    compound.putInt("nodeY", nodePos.getY());
+	    compound.putInt("nodeZ", nodePos.getZ());
+	}
 	return super.write(compound);
     }
 
     @Override
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);
-	node = new BlockPos(compound.getInt("nodeX"), compound.getInt("nodeY"), compound.getInt("nodeZ"));
-	sendUpdatePacket();
+	nodePos = new BlockPos(compound.getInt("nodeX"), compound.getInt("nodeY"), compound.getInt("nodeZ"));
+	Scheduler.schedule(5, () -> sendUpdatePacket());
     }
 
     @Override
@@ -43,15 +47,15 @@ public class TileMultiSubnode extends GenericTileBase {
     public CompoundNBT createUpdateTag() {
 	CompoundNBT nbt = super.createUpdateTag();
 	write(nbt);
-	return super.createUpdateTag();
+	return nbt;
     }
 
     public VoxelShape getShape() {
 	if (shapeCache != null) {
 	    return shapeCache;
 	}
-	if (node != null) {
-	    TileEntity tile = world.getTileEntity(node);
+	if (nodePos != null) {
+	    TileEntity tile = world.getTileEntity(nodePos);
 	    if (tile instanceof IMultiblockTileNode) {
 		IMultiblockTileNode node = (IMultiblockTileNode) tile;
 		BlockPos tp = tile.getPos();

@@ -54,11 +54,9 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	}
 	currentCapacityMultiplier = 1;
 	for (ItemStack stack : items) {
-	    if (!stack.isEmpty()) {
-		if (stack.getItem() instanceof ItemProcessorUpgrade) {
-		    ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
-		    currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-		}
+	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
+		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
 	    }
 	}
 	if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
@@ -96,15 +94,11 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 
 	@Override
 	public void set(int index, int value) {
-	    switch (index) {
-	    case 0:
+	    if (index == 0) {
 		joules = value;
-		break;
-	    case 1:
+	    } else if (index == 1) {
 		currentCapacityMultiplier = value;
-		break;
 	    }
-
 	}
 
 	@Override
@@ -158,8 +152,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
     public int receiveEnergy(int maxReceive, boolean simulate) {
 	int calVoltage = 120;
 	TransferPack pack = receivePower(TransferPack.joulesVoltage(maxReceive, calVoltage), simulate);
-	int received = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
-	return received;
+	return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
     }
 
     @Override
@@ -167,22 +160,19 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
     public int extractEnergy(int maxExtract, boolean simulate) {
 	int calVoltage = 120;
 	TransferPack pack = extractPower(TransferPack.joulesVoltage(maxExtract, calVoltage), simulate);
-	int extracted = (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
-	return extracted;
+	return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
     }
 
     @Override
     @Deprecated
     public int getEnergyStored() {
-	int proper = (int) Math.min(Integer.MAX_VALUE, joules);
-	return proper;
+	return (int) Math.min(Integer.MAX_VALUE, joules);
     }
 
     @Override
     @Deprecated
     public int getMaxEnergyStored() {
-	int proper = (int) Math.min(Integer.MAX_VALUE, DEFAULT_MAX_JOULES * currentCapacityMultiplier);
-	return proper;
+	return (int) Math.min(Integer.MAX_VALUE, DEFAULT_MAX_JOULES * currentCapacityMultiplier);
     }
 
     @Override

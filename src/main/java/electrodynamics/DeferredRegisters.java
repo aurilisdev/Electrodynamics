@@ -69,7 +69,7 @@ public class DeferredRegisters {
 	    .create(ForgeRegistries.TILE_ENTITIES, References.ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister
 	    .create(ForgeRegistries.CONTAINERS, References.ID);
-    public static BlockMultiSubnode multi;
+    public static BlockMultiSubnode multi = new BlockMultiSubnode();
     static {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
 	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
@@ -138,7 +138,7 @@ public class DeferredRegisters {
 		"|translate|tooltip.oxidationfurnacerunning.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
 		"|translate|tooltip.advancedsolarpanel.voltage");
-	BLOCKS.register("multisubnode", supplier(multi = new BlockMultiSubnode()));
+	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
 

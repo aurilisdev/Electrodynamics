@@ -14,7 +14,7 @@ public abstract class GenericTileBase extends TileEntity implements INameable, I
 
     private ITextComponent customName;
 
-    public GenericTileBase(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileBase(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }
 

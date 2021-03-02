@@ -65,6 +65,7 @@ public class TileTransformer extends GenericTileBase implements IElectrodynamic 
 
     @Override
     public void setJoulesStored(double joules) {
+	// This doesn't actually hold joules.
     }
 
     @Override

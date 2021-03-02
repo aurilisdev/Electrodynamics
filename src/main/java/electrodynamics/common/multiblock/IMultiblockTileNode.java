@@ -28,12 +28,12 @@ public interface IMultiblockTileNode {
 		}
 		TileMultiSubnode subnode = (TileMultiSubnode) world.getTileEntity(offset);
 		if (subnode != null) {
-		    subnode.node = new BlockPos(pos);
+		    subnode.nodePos = new BlockPos(pos);
 		}
 	    } else {
 		if (inBlock instanceof IMultiblockSubnode) {
 		    TileMultiSubnode subnode = (TileMultiSubnode) world.getTileEntity(offset);
-		    if (subnode != null && subnode.node.equals(pos)) {
+		    if (subnode != null && subnode.nodePos.equals(pos)) {
 			world.setBlockState(offset, Blocks.AIR.getDefaultState());
 		    }
 		}

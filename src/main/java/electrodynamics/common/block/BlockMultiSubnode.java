@@ -36,6 +36,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     }
 
     @Override
+    @Deprecated
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 	TileEntity tile = worldIn.getTileEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
@@ -46,6 +47,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     }
 
     @Override
+    @Deprecated
     public BlockRenderType getRenderType(BlockState state) {
 	return BlockRenderType.INVISIBLE;
     }
@@ -76,63 +78,69 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     }
 
     @Override
+    @Deprecated
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
 	    Hand handIn, BlockRayTraceResult hit) {
 	TileEntity tile = worldIn.getTileEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
-	    if (subnode.node != null) {
-		worldIn.getBlockState(subnode.node).getBlock().onBlockActivated(worldIn.getBlockState(subnode.node),
-			worldIn, subnode.node, player, handIn, hit);
+	    if (subnode.nodePos != null) {
+		worldIn.getBlockState(subnode.nodePos).getBlock().onBlockActivated(
+			worldIn.getBlockState(subnode.nodePos), worldIn, subnode.nodePos, player, handIn, hit);
 	    }
 	}
 	return ActionResultType.SUCCESS;
     }
 
     @Override
+    @Deprecated
     public boolean canProvidePower(BlockState state) {
 	return true;
     }
 
     @Override
+    @Deprecated
     public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 	TileEntity tile = blockAccess.getTileEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
-	    if (subnode.node != null) {
-		return blockAccess.getBlockState(subnode.node).getBlock()
-			.getStrongPower(blockAccess.getBlockState(subnode.node), blockAccess, subnode.node, side);
+	    if (subnode.nodePos != null) {
+		return blockAccess.getBlockState(subnode.nodePos).getBlock()
+			.getStrongPower(blockAccess.getBlockState(subnode.nodePos), blockAccess, subnode.nodePos, side);
 	    }
 	}
 	return super.getStrongPower(blockState, blockAccess, pos, side);
     }
 
     @Override
+    @Deprecated
     public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 	TileEntity tile = blockAccess.getTileEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
-	    if (subnode.node != null) {
-		return blockAccess.getBlockState(subnode.node).getBlock()
-			.getWeakPower(blockAccess.getBlockState(subnode.node), blockAccess, subnode.node, side);
+	    if (subnode.nodePos != null) {
+		return blockAccess.getBlockState(subnode.nodePos).getBlock()
+			.getWeakPower(blockAccess.getBlockState(subnode.nodePos), blockAccess, subnode.nodePos, side);
 	    }
 	}
 	return super.getWeakPower(blockState, blockAccess, pos, side);
     }
 
     @Override
+    @Deprecated
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	TileEntity tile = worldIn.getTileEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
-	    if (subnode.node != null) {
-		worldIn.setBlockState(subnode.node, Blocks.AIR.getDefaultState());
+	    if (subnode.nodePos != null) {
+		worldIn.setBlockState(subnode.nodePos, Blocks.AIR.getDefaultState());
 	    }
 	}
 	super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
+    @Deprecated
     public boolean hasTileEntity(BlockState state) {
 	return true;
     }

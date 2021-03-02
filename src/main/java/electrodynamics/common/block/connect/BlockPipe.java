@@ -46,7 +46,7 @@ public class BlockPipe extends Block {
     public static final EnumProperty<EnumConnectType> WEST = EnumProperty.create("west", EnumConnectType.class);
     public static final EnumProperty<EnumConnectType> EAST = EnumProperty.create("east", EnumConnectType.class);
     public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util
-	    .make(Maps.newEnumMap(Direction.class), (p) -> {
+	    .make(Maps.newEnumMap(Direction.class), p -> {
 		p.put(Direction.NORTH, NORTH);
 		p.put(Direction.EAST, EAST);
 		p.put(Direction.SOUTH, SOUTH);
