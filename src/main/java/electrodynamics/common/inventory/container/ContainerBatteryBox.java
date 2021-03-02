@@ -41,10 +41,10 @@ public class ContainerBatteryBox extends GenericContainerInventory {
 
     @OnlyIn(Dist.CLIENT)
     public double getJoules() {
-	return inventorydata.get(0) / 10000.0 * (TileBatteryBox.DEFAULT_MAX_JOULES * getCapacityMultiplier());
+	return inventorydata.get(0) / 100000.0 * (TileBatteryBox.DEFAULT_MAX_JOULES * getCapacityMultiplier());
     }
 
     public double getCapacityMultiplier() {
-	return inventorydata.get(1) / 10000.0;
+	return inventorydata.get(1) / 100000.0;
     }
 }

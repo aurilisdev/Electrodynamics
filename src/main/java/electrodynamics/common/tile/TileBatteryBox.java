@@ -84,9 +84,9 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	public int get(int index) {
 	    switch (index) {
 	    case 0:
-		return (int) (joules / (DEFAULT_MAX_JOULES * currentCapacityMultiplier) * 10000);
+		return (int) (joules / (DEFAULT_MAX_JOULES * currentCapacityMultiplier) * 100000);
 	    case 1:
-		return (int) (currentCapacityMultiplier * 10000);
+		return (int) (currentCapacityMultiplier * 100000);
 	    default:
 		return 0;
 	    }
