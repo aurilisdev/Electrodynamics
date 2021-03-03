@@ -47,10 +47,9 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	TileEntity tile = worldIn.getTileEntity(pos);
-	if (tile instanceof IInventory) {
-	    if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))) {
-		InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
-	    }
+	if (tile instanceof IInventory
+		&& !(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))) {
+	    InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
 	}
 	super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
@@ -66,11 +65,13 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     }
 
     @Override
+    @Deprecated
     public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 	return 1;
     }
 
     @Override
+    @Deprecated
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
 	    Hand handIn, BlockRayTraceResult hit) {
 	if (worldIn.isRemote) {
@@ -87,6 +88,7 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     }
 
     @Override
+    @Deprecated
     public BlockState rotate(BlockState state, Rotation rot) {
 	return state.with(FACING, rot.rotate(state.get(FACING)));
     }
@@ -108,6 +110,7 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     }
 
     @Override
+    @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(this));
     }

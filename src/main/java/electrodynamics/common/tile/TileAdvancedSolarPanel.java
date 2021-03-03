@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.TargetValue;
 import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.api.tile.electric.IElectrodynamic;
@@ -22,11 +23,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileAdvancedSolarPanel extends GenericTileBase
 	implements ITickableTileBase, IElectrodynamic, IMultiblockTileNode {
+    @OnlyIn(Dist.CLIENT)
+    public TargetValue currentRotation = new TargetValue(0);
 
     public TileAdvancedSolarPanel() {
 	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());

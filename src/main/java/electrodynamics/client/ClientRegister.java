@@ -43,7 +43,8 @@ public class ClientRegister {
     public static void setup() {
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(),
+		RenderAdvancedSolarPanel::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

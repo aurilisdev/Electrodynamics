@@ -35,7 +35,7 @@ public class TileMultiSubnode extends GenericTileBase implements ITickableTileBa
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);
 	nodePos = new BlockPos(compound.getInt("nodeX"), compound.getInt("nodeY"), compound.getInt("nodeZ"));
-	Scheduler.schedule(5, () -> sendUpdatePacket());
+	Scheduler.schedule(20, () -> sendUpdatePacket());
     }
 
     @Override
