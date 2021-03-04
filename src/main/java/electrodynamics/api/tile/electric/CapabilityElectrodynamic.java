@@ -21,6 +21,7 @@ public class CapabilityElectrodynamic {
 	    }
 
 	    @Override
+	    @Deprecated
 	    public void readNBT(Capability<IElectrodynamic> capability, IElectrodynamic instance, Direction side,
 		    INBT nbt) {
 		instance.setJoulesStored(((DoubleNBT) nbt).getDouble());
