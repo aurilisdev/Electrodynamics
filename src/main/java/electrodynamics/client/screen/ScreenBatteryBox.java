@@ -33,25 +33,30 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 	super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-	font.func_243248_b(matrixStack, new TranslationTextComponent("gui.batterybox.current",
-		ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0
-			* container.getCapacityMultiplier() / TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.AMPERE)),
-		playerInventoryTitleX, (float) playerInventoryTitleY - 55, 4210752);
-	font.func_243248_b(matrixStack,
-		new TranslationTextComponent("gui.batterybox.transfer",
-			ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0
-				* container.getCapacityMultiplier(), ElectricUnit.WATT)),
-		playerInventoryTitleX, (float) playerInventoryTitleY - 42, 4210752);
-	font.func_243248_b(matrixStack,
-		new TranslationTextComponent("gui.batterybox.voltage",
-			ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.VOLTAGE)),
-		playerInventoryTitleX, (float) playerInventoryTitleY - 29, 4210752);
-	font.func_243248_b(matrixStack,
-		new TranslationTextComponent("gui.batterybox.stored",
-			ElectricityChatFormatter.getDisplayShort(container.getJoules(), ElectricUnit.JOULES) + " / "
-				+ ElectricityChatFormatter.getDisplayShort(
-					TileBatteryBox.DEFAULT_MAX_JOULES * container.getCapacityMultiplier(),
-					ElectricUnit.JOULES)),
-		playerInventoryTitleX, (float) playerInventoryTitleY - 16, 4210752);
+	TileBatteryBox box = container.getHostFromIntArray(playerInventory.player.world);
+	if (box != null) {
+	    font.func_243248_b(matrixStack, new TranslationTextComponent("gui.batterybox.current",
+		    ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0
+			    * box.getCapacityMultiplier() / TileBatteryBox.DEFAULT_VOLTAGE, ElectricUnit.AMPERE)),
+		    playerInventoryTitleX, (float) playerInventoryTitleY - 55, 4210752);
+	    font.func_243248_b(matrixStack,
+		    new TranslationTextComponent("gui.batterybox.transfer",
+			    ElectricityChatFormatter.getDisplayShort(
+				    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.getCapacityMultiplier(),
+				    ElectricUnit.WATT)),
+		    playerInventoryTitleX, (float) playerInventoryTitleY - 42, 4210752);
+	    font.func_243248_b(matrixStack,
+		    new TranslationTextComponent("gui.batterybox.voltage",
+			    ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_VOLTAGE,
+				    ElectricUnit.VOLTAGE)),
+		    playerInventoryTitleX, (float) playerInventoryTitleY - 29, 4210752);
+	    font.func_243248_b(matrixStack,
+		    new TranslationTextComponent("gui.batterybox.stored",
+			    ElectricityChatFormatter.getDisplayShort(box.getJoulesStored(), ElectricUnit.JOULES) + " / "
+				    + ElectricityChatFormatter.getDisplayShort(
+					    TileBatteryBox.DEFAULT_MAX_JOULES * box.getCapacityMultiplier(),
+					    ElectricUnit.JOULES)),
+		    playerInventoryTitleX, (float) playerInventoryTitleY - 16, 4210752);
+	}
     }
 }

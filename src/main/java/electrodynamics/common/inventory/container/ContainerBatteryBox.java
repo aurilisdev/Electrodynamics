@@ -3,14 +3,11 @@ package electrodynamics.common.inventory.container;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
-import electrodynamics.common.tile.TileBatteryBox;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerBatteryBox extends GenericContainerInventory {
 
@@ -19,7 +16,7 @@ public class ContainerBatteryBox extends GenericContainerInventory {
     }
 
     public ContainerBatteryBox(int id, PlayerInventory playerinv, IInventory inventory) {
-	this(id, playerinv, inventory, new IntArray(2));
+	this(id, playerinv, inventory, new IntArray(3));
     }
 
     public ContainerBatteryBox(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -39,12 +36,4 @@ public class ContainerBatteryBox extends GenericContainerInventory {
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedcapacity)));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public double getJoules() {
-	return inventorydata.get(0) / 100000.0 * (TileBatteryBox.DEFAULT_MAX_JOULES * getCapacityMultiplier());
-    }
-
-    public double getCapacityMultiplier() {
-	return inventorydata.get(1) / 100000.0;
-    }
 }

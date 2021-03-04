@@ -4,12 +4,12 @@ import electrodynamics.common.inventory.container.slot.GenericSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -81,13 +81,17 @@ public abstract class GenericContainerInventory extends Container {
     }
 
     @Override
-    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, PlayerEntity player) {
-	return super.slotClick(slotId, dragType, clickTypeIn, player);
-    }
-
-    @Override
     public void onContainerClosed(PlayerEntity player) {
 	super.onContainerClosed(player);
 	inventory.closeInventory(player);
+    }
+
+    public <T extends TileEntity> T getHostFromIntArray(World world) {
+	BlockPos block = new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2));
+	try {
+	    return (T) world.getTileEntity(block);
+	} catch (Exception e) {
+	    return null;
+	}
     }
 }
