@@ -14,7 +14,8 @@ public interface IElectrodynamic {
      * @param joules
      */
     @Deprecated
-    void setJoulesStored(double joules);
+    default void setJoulesStored(double joules) {
+    }
 
     double getJoulesStored();
 

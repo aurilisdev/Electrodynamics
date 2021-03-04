@@ -12,13 +12,11 @@ import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.generic.GenericTileInventory;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -64,24 +62,19 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
 	    joules = DEFAULT_MAX_JOULES * currentCapacityMultiplier;
 	}
-	if (viewers > 0 && world.getWorldInfo().getDayTime() % 3 == 0) {
-	    sendUpdatePacket();
-	}
     }
 
-    private int viewers;
-
     @Override
-    public CompoundNBT createUpdateTag() {
-	CompoundNBT nbt = super.createUpdateTag();
+    public CompoundNBT writeGUIPacket() {
+	CompoundNBT nbt = super.writeGUIPacket();
 	nbt.putDouble("joules", joules);
 	nbt.putDouble("currentCapacityMultiplier", currentCapacityMultiplier);
 	return nbt;
     }
 
     @Override
-    public void handleUpdatePacket(CompoundNBT nbt) {
-	super.handleUpdatePacket(nbt);
+    public void readGUIPacket(CompoundNBT nbt) {
+	super.readGUIPacket(nbt);
 	joules = nbt.getDouble("joules");
 	currentCapacityMultiplier = nbt.getDouble("currentCapacityMultiplier");
     }
@@ -97,50 +90,13 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
     }
 
     @Override
-    protected Container createMenu(int id, PlayerInventory player) {
-	viewers++;
-	return new ContainerBatteryBox(id, player, this, inventorydata);
-    }
-
-    @Override
-    public void closeInventory(PlayerEntity player) {
-	viewers--;
-	super.closeInventory(player);
-    }
-
-    protected final IIntArray inventorydata = new IIntArray() {
-	@Override
-	public int get(int index) {
-	    switch (index) {
-	    case 0:
-		return pos.getX();
-	    case 1:
-		return pos.getY();
-	    case 2:
-		return pos.getZ();
-	    default:
-		return 0;
-	    }
-	}
-
-	@Override
-	public void set(int index, int value) {
-	    if (index == 0) {
-		joules = value;
-	    } else if (index == 1) {
-		currentCapacityMultiplier = value;
-	    }
-	}
-
-	@Override
-	public int size() {
-	    return 3;
-	}
-    };
-
-    @Override
     public ITextComponent getDisplayName() {
 	return new TranslationTextComponent("container.batterybox");
+    }
+
+    @Override
+    protected Container createMenu(int id, PlayerInventory player) {
+	return new ContainerBatteryBox(id, player, this, getInventoryData());
     }
 
     @Override
@@ -219,6 +175,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
     }
 
     @Override
+    @Deprecated
     public void setJoulesStored(double joules) {
 	this.joules = joules;
     }

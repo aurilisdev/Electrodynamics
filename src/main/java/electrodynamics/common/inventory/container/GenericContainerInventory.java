@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public abstract class GenericContainerInventory extends Container {
+public abstract class GenericContainerInventory<T extends TileEntity> extends Container {
     protected final IInventory inventory;
     protected final IIntArray inventorydata;
     protected final World world;
@@ -86,7 +86,7 @@ public abstract class GenericContainerInventory extends Container {
 	inventory.closeInventory(player);
     }
 
-    public <T extends TileEntity> T getHostFromIntArray(World world) {
+    public T getHostFromIntArray() {
 	BlockPos block = new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2));
 	try {
 	    return (T) world.getTileEntity(block);

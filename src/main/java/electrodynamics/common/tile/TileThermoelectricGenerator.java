@@ -51,11 +51,6 @@ public class TileThermoelectricGenerator extends GenericTileBase implements ITic
     }
 
     @Override
-    public void setJoulesStored(double joules) {
-	// Cant set joules here.
-    }
-
-    @Override
     public double getJoulesStored() {
 	return 0;
     }

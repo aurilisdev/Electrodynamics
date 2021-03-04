@@ -27,14 +27,10 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 
     public ElectricNetwork electricNetwork;
 
-    public GenericTileWire(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileWire(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
 	for (Direction dir : Direction.values()) {
 	    handler.add(new IElectrodynamic() {
-		@Override
-		public void setJoulesStored(double joules) {
-		}
-
 		@Override
 		public double getMaxJoulesStored() {
 		    return 0;

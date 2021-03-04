@@ -26,7 +26,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -54,6 +53,8 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
     @Override
     public void tickServer() {
+	trackInteger(0, burnTime);
+	trackInteger(1, (int) heat.get());
 	if (output == null) {
 	    output = new CachedTileOutput(world, new BlockPos(pos).offset(getFacing().getOpposite()));
 	}
@@ -134,36 +135,8 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 
     @Override
     protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerCoalGenerator(id, player, this, inventorydata);
+	return new ContainerCoalGenerator(id, player, this, getInventoryData());
     }
-
-    protected final IIntArray inventorydata = new IIntArray() {
-	@Override
-	public int get(int index) {
-	    switch (index) {
-	    case 0:
-		return burnTime;
-	    case 1:
-		return (int) heat.get();
-	    default:
-		return 0;
-	    }
-	}
-
-	@Override
-	public void set(int index, int value) {
-	    if (index == 0) {
-		burnTime = value;
-	    } else if (index == 1) {
-		heat.set(value);
-	    }
-	}
-
-	@Override
-	public int size() {
-	    return 2;
-	}
-    };
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -196,11 +169,6 @@ public class TileCoalGenerator extends GenericTileInventory implements ITickable
 	    return (LazyOptional<T>) LazyOptional.of(() -> this);
 	}
 	return super.getCapability(capability, facing);
-    }
-
-    @Override
-    public void setJoulesStored(double joules) {
-	// Cant set joules here.
     }
 
     @Override

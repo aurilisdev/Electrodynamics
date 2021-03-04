@@ -14,14 +14,17 @@ public class PacketUpdateTile {
 
     private final CompoundNBT updateTag;
     private final BlockPos pos;
+    private boolean isGUI;
 
-    public PacketUpdateTile(IUpdateableTile tile) {
-	this(tile.getTile().getPos(), tile.createUpdateTag());
+    public PacketUpdateTile(IUpdateableTile tile, boolean isGUI) {
+	this(tile.getTile().getPos(), isGUI ? tile.writeGUIPacket() : tile.writeCustomPacket(), isGUI);
+	this.isGUI = isGUI;
     }
 
-    private PacketUpdateTile(BlockPos pos, CompoundNBT updateTag) {
+    private PacketUpdateTile(BlockPos pos, CompoundNBT updateTag, boolean isGUI) {
 	this.pos = pos;
 	this.updateTag = updateTag;
+	this.isGUI = isGUI;
     }
 
     public static void handle(PacketUpdateTile message, Supplier<Context> context) {
@@ -31,7 +34,11 @@ public class PacketUpdateTile {
 	    if (world != null) {
 		IUpdateableTile tile = (IUpdateableTile) world.getTileEntity(message.pos);
 		if (tile != null) {
-		    tile.handleUpdatePacket(message.updateTag);
+		    if (message.isGUI) {
+			tile.readGUIPacket(message.updateTag);
+		    } else {
+			tile.readCustomPacket(message.updateTag);
+		    }
 		}
 	    }
 	});
@@ -41,9 +48,10 @@ public class PacketUpdateTile {
     public static void encode(PacketUpdateTile pkt, PacketBuffer buf) {
 	buf.writeBlockPos(pkt.pos);
 	buf.writeCompoundTag(pkt.updateTag);
+	buf.writeBoolean(pkt.isGUI);
     }
 
     public static PacketUpdateTile decode(PacketBuffer buf) {
-	return new PacketUpdateTile(buf.readBlockPos(), buf.readCompoundTag());
+	return new PacketUpdateTile(buf.readBlockPos(), buf.readCompoundTag(), buf.readBoolean());
     }
 }

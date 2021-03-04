@@ -72,6 +72,7 @@ public class TileElectricPump extends GenericTileBase implements IElectricProces
     }
 
     @Override
+    @Deprecated
     public void setJoulesStored(double joules) {
 	this.joules = joules;
     }

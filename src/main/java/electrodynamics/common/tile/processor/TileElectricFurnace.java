@@ -125,7 +125,7 @@ public class TileElectricFurnace extends GenericTileProcessor implements IO2OPro
 
     @Override
     protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerElectricFurnace(id, player, this, inventorydata);
+	return new ContainerElectricFurnace(id, player, this, getInventoryData());
     }
 
     @Override

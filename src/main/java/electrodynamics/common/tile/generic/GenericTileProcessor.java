@@ -12,7 +12,6 @@ import electrodynamics.common.recipe.MachineRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -25,7 +24,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory
     protected double currentSpeedMultiplier = 1;
     protected long ticks = 0;
 
-    public GenericTileProcessor(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileProcessor(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }
 
@@ -41,6 +40,10 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 
     @Override
     public void tickServer() {
+	trackInteger(0, (int) currentOperatingTick);
+	trackInteger(1, (int) getVoltage());
+	trackInteger(2, (int) Math.ceil(getJoulesPerTick()));
+	trackInteger(3, getRequiredTicks() == 0 ? 1 : getRequiredTicks());
 	boolean failed = false;
 	if (canProcess()) {
 	    joules -= getJoulesPerTick();
@@ -63,11 +66,9 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 	currentSpeedMultiplier = 1;
 	for (Integer in : upgradeSlots) {
 	    ItemStack stack = items.get(in);
-	    if (!stack.isEmpty()) {
-		if (stack.getItem() instanceof ItemProcessorUpgrade) {
-		    ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
-		    currentSpeedMultiplier *= upgrade.subtype.speedMultiplier;
-		}
+	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
+		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+		currentSpeedMultiplier *= upgrade.subtype.speedMultiplier;
 	    }
 	}
 	currentOperatingTick += currentSpeedMultiplier;
@@ -80,41 +81,6 @@ public abstract class GenericTileProcessor extends GenericTileInventory
     public boolean isProcessing() {
 	return currentOperatingTick > 0;
     }
-
-    protected final IIntArray inventorydata = new IIntArray() {
-	@Override
-	public int get(int index) {
-	    switch (index) {
-	    case 0:
-		return (int) currentOperatingTick;
-	    case 1:
-		return (int) getVoltage();
-	    case 2:
-		return (int) Math.ceil(getJoulesPerTick());
-	    case 3:
-		return getRequiredTicks() == 0 ? 1 : getRequiredTicks();
-	    default:
-		return 0;
-	    }
-	}
-
-	@Override
-	public void set(int index, int value) {
-	    switch (index) {
-	    case 0:
-		currentOperatingTick = value;
-		break;
-	    default:
-		break;
-	    }
-
-	}
-
-	@Override
-	public int size() {
-	    return 4;
-	}
-    };
 
     @Override
     public double getVoltage() {

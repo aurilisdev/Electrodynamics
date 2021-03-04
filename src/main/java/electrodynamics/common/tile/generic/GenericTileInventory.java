@@ -1,5 +1,8 @@
 package electrodynamics.common.tile.generic;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -13,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,8 +31,9 @@ public abstract class GenericTileInventory extends GenericTileBase implements IN
     protected LazyOptional<?> itemHandler = LazyOptional.of(() -> createUnSidedHandler());
     protected LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP,
 	    Direction.DOWN, Direction.NORTH);
+    protected HashSet<PlayerEntity> viewing = new HashSet<>();
 
-    public GenericTileInventory(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileInventory(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }
 
@@ -48,10 +53,23 @@ public abstract class GenericTileInventory extends GenericTileBase implements IN
     @Override
     @Nullable
     public final Container createMenu(int id, PlayerInventory inv, PlayerEntity player) {
-	return isUsableByPlayer(player) ? createMenu(id, inv) : null;
+	if (isUsableByPlayer(player)) {
+	    viewing.add(player);
+	    return createMenu(id, inv);
+	}
+	return null;
+    }
+
+    @Override
+    public void closeInventory(PlayerEntity player) {
+	viewing.remove(player);
     }
 
     protected abstract Container createMenu(int id, PlayerInventory player);
+
+    public HashSet<PlayerEntity> getViewing() {
+	return viewing;
+    }
 
     @Override
     public ITextComponent getDisplayName() {
@@ -128,6 +146,43 @@ public abstract class GenericTileInventory extends GenericTileBase implements IN
 	    return itemHandler.cast();
 	}
 	return super.getCapability(capability, facing);
+    }
+
+    private HashMap<Integer, Integer> extradata = new HashMap<>();
+
+    private final IIntArray inventorydata = new IIntArray() {
+	@Override
+	public int get(int index) {
+	    if (index == 0) {
+		return pos.getX();
+	    } else if (index == 1) {
+		return pos.getY();
+	    } else if (index == 2) {
+		return pos.getZ();
+	    }
+	    if (extradata != null && extradata.containsKey(index)) {
+		return extradata.get(index);
+	    }
+	    return 0;
+	}
+
+	@Override
+	public void set(int index, int value) {
+	    // Doesn't do anything
+	}
+
+	@Override
+	public int size() {
+	    return 3 + extradata.size();
+	}
+    };
+
+    protected void trackInteger(Integer id, Integer value) {
+	extradata.put(id + 3, value);
+    }
+
+    public IIntArray getInventoryData() {
+	return inventorydata;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class TileMineralCrusher extends GenericTileProcessor implements IO2OProc
 
     @Override
     protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerO2OProcessor(id, player, this, inventorydata);
+	return new ContainerO2OProcessor(id, player, this, getInventoryData());
     }
 
     @Override

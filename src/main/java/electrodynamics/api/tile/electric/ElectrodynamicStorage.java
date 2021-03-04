@@ -10,6 +10,7 @@ public class ElectrodynamicStorage implements IElectrodynamic {
     }
 
     @Override
+    @Deprecated
     public void setJoulesStored(double joules) {
 	this.joules = joules;
     }

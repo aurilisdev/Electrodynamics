@@ -90,11 +90,6 @@ public class TileAdvancedSolarPanel extends GenericTileBase
     }
 
     @Override
-    public void setJoulesStored(double joules) {
-	// Doesnt need this.
-    }
-
-    @Override
     public double getJoulesStored() {
 	return 0;
     }

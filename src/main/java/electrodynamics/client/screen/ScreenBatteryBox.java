@@ -33,7 +33,7 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 	super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-	TileBatteryBox box = container.getHostFromIntArray(playerInventory.player.world);
+	TileBatteryBox box = container.getHostFromIntArray();
 	if (box != null) {
 	    font.func_243248_b(matrixStack, new TranslationTextComponent("gui.batterybox.current",
 		    ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0

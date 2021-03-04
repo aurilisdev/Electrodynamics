@@ -48,7 +48,7 @@ public class TileWireMill extends GenericTileProcessor implements IO2OProcessor 
 
     @Override
     protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerO2OProcessor(id, player, this, inventorydata);
+	return new ContainerO2OProcessor(id, player, this, getInventoryData());
     }
 
     @Override

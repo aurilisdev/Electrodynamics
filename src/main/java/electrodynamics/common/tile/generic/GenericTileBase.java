@@ -54,11 +54,20 @@ public abstract class GenericTileBase extends TileEntity implements INameable, I
     }
 
     @Override
-    public CompoundNBT createUpdateTag() {
+    public CompoundNBT writeCustomPacket() {
 	return new CompoundNBT();
     }
 
     @Override
-    public void handleUpdatePacket(CompoundNBT nbt) {
+    public void readCustomPacket(CompoundNBT nbt) {
+    }
+
+    @Override
+    public CompoundNBT writeGUIPacket() {
+	return new CompoundNBT();
+    }
+
+    @Override
+    public void readGUIPacket(CompoundNBT nbt) {
     }
 }

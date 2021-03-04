@@ -14,7 +14,7 @@ public class ContainerElectricFurnace extends ContainerO2OProcessor {
     }
 
     public ContainerElectricFurnace(int id, PlayerInventory playerinv, IInventory inventory) {
-	this(id, playerinv, inventory, new IntArray(4));
+	this(id, playerinv, inventory, new IntArray(7));
     }
 
     public ContainerElectricFurnace(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

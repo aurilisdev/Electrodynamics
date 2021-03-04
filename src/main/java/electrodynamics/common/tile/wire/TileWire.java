@@ -42,15 +42,15 @@ public class TileWire extends GenericTileWire {
     }
 
     @Override
-    public CompoundNBT createUpdateTag() {
-	CompoundNBT nbt = super.createUpdateTag();
+    public CompoundNBT writeCustomPacket() {
+	CompoundNBT nbt = super.writeCustomPacket();
 	nbt.putDouble("transmit", transmit);
 	return nbt;
     }
 
     @Override
-    public void handleUpdatePacket(CompoundNBT nbt) {
-	super.handleUpdatePacket(nbt);
+    public void readCustomPacket(CompoundNBT nbt) {
+	super.readCustomPacket(nbt);
 	transmit = nbt.getDouble("transmit");
     }
 }

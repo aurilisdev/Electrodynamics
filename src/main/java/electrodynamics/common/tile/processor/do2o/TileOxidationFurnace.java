@@ -79,7 +79,7 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 
     @Override
     protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerDO2OProcessor(id, player, this, inventorydata);
+	return new ContainerDO2OProcessor(id, player, this, getInventoryData());
     }
 
     @Override

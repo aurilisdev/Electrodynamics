@@ -67,10 +67,6 @@ public class TileSolarPanel extends GenericTileBase implements ITickableTileBase
     }
 
     @Override
-    public void setJoulesStored(double joules) {
-    }
-
-    @Override
     public double getJoulesStored() {
 	return 0;
     }
