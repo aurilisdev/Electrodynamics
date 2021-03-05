@@ -56,7 +56,7 @@ public class TileTransformer extends GenericTileBase implements IElectrodynamic 
     @Nonnull
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 	Direction face = getFacing();
-	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && face == facing || face.getOpposite() == facing) {
+	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && (face == facing || face.getOpposite() == facing)) {
 	    lastDir = facing;
 	    return (LazyOptional<T>) LazyOptional.of(() -> this);
 	}
