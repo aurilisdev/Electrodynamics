@@ -20,10 +20,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Util;
@@ -83,6 +87,22 @@ public class BlockPipe extends Block {
 	AABB_WEST = Block.makeCuboidShape(0, sm, sm, lg, lg, lg);
 	AABB_EAST = Block.makeCuboidShape(sm, sm, sm, 16, lg, lg);
 	PIPESET.add(this);
+	setDefaultState(stateContainer.getBaseState().with(BlockStateProperties.WATERLOGGED, false));
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+	FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+	return super.getStateForPlacement(context).with(BlockStateProperties.WATERLOGGED,
+		Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
+    }
+
+    @Override
+    @Deprecated
+    public FluidState getFluidState(BlockState state) {
+	return state.get(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getStillFluidState(false)
+		: super.getFluidState(state);
     }
 
     @Override
@@ -94,6 +114,7 @@ public class BlockPipe extends Block {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 	super.fillStateContainer(builder);
 	builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
+	builder.add(BlockStateProperties.WATERLOGGED);
     }
 
     @Override
@@ -202,6 +223,9 @@ public class BlockPipe extends Block {
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world,
 	    BlockPos currentPos, BlockPos facingPos) {
+	if (stateIn.get(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
+	    world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	}
 	EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(facing);
 	TileEntity tile = world.getTileEntity(facingPos);
 	if (tile instanceof IPipe) {
