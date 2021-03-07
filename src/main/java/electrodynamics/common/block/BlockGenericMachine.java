@@ -20,6 +20,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.state.DirectionProperty;
@@ -150,8 +151,6 @@ public class BlockGenericMachine extends Block implements IWrenchable {
 	if (te instanceof IInventory) {
 	    InventoryHelper.dropInventoryItems(player.world, pos, (IInventory) te);
 	}
-	world.setBlockState(pos, Blocks.AIR.getDefaultState());
-	world.addEntity(
-		new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(getSelf())));
+	world.destroyBlock(pos, true);
     }
 }

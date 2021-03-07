@@ -47,6 +47,7 @@ import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
 import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
 import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
 import electrodynamics.common.tile.processor.o2o.TileWireMill;
+import electrodynamics.common.tile.quantumcapacitor.TileQuantumCapacitor;
 import electrodynamics.common.tile.wire.TileLogisticalWire;
 import electrodynamics.common.tile.wire.TilePipe;
 import electrodynamics.common.tile.wire.TileWire;
@@ -186,6 +187,9 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileBatteryBox>> TILE_BATTERYBOX = TILES
 	    .register(SubtypeMachine.batterybox.tag(), () -> new TileEntityType<>(TileBatteryBox::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
+    public static final RegistryObject<TileEntityType<TileQuantumCapacitor>> TILE_QUANTUMCAPACITOR = TILES
+	    .register(SubtypeMachine.quantumcapacitor.tag(), () -> new TileEntityType<>(TileQuantumCapacitor::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quantumcapacitor)), null));
     public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
 	    () -> new TileEntityType<>(TileTransformer::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
