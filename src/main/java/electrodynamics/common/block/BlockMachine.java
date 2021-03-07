@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
@@ -15,6 +16,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -74,19 +76,24 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     @Deprecated
     public BlockRenderType getRenderType(BlockState state) {
-	return machine == SubtypeMachine.advancedsolarpanel ? BlockRenderType.INVISIBLE : BlockRenderType.MODEL;
+	return (machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.batterybox)
+		? BlockRenderType.ENTITYBLOCK_ANIMATED
+		: BlockRenderType.MODEL;
     }
 
     @Override
     @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	return Arrays
-		.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS
-			.get(machine == SubtypeMachine.coalgeneratorrunning ? SubtypeMachine.coalgenerator
-				: machine == SubtypeMachine.electricfurnacerunning ? SubtypeMachine.electricfurnace
-					: machine == SubtypeMachine.oxidationfurnacerunning
-						? SubtypeMachine.oxidationfurnace
-						: machine)));
+	ItemStack addstack = new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS
+		.get(machine == SubtypeMachine.coalgeneratorrunning ? SubtypeMachine.coalgenerator
+			: machine == SubtypeMachine.electricfurnacerunning ? SubtypeMachine.electricfurnace
+				: machine == SubtypeMachine.oxidationfurnacerunning ? SubtypeMachine.oxidationfurnace
+					: machine));
+	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
+	if (tile instanceof IElectrodynamic) {
+	    addstack.getOrCreateTag().putDouble("joules", ((IElectrodynamic) tile).getJoulesStored());
+	}
+	return Arrays.asList(addstack);
     }
 
     @Override
@@ -98,14 +105,17 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
+    @Deprecated
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	if (hasMultiBlock()) {
-	    TileEntity tile = worldIn.getTileEntity(pos);
-	    if (tile instanceof IMultiblockTileNode) {
-		IMultiblockTileNode multi = (IMultiblockTileNode) tile;
-		multi.onNodePlaced(worldIn, pos, state, placer, stack);
-	    }
+	TileEntity tile = worldIn.getTileEntity(pos);
+	if (hasMultiBlock() && tile instanceof IMultiblockTileNode) {
+	    IMultiblockTileNode multi = (IMultiblockTileNode) tile;
+	    multi.onNodePlaced(worldIn, pos, state, placer, stack);
+	}
+	if (tile instanceof IElectrodynamic) {
+	    IElectrodynamic el = (IElectrodynamic) tile;
+	    el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"));
 	}
     }
 

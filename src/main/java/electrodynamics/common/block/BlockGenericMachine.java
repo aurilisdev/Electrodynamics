@@ -5,6 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.item.IWrench;
 import electrodynamics.api.tile.IWrenchable;
+import electrodynamics.api.tile.electric.IElectrodynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -18,6 +19,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -112,7 +114,12 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     @Override
     @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	return Arrays.asList(new ItemStack(this));
+	ItemStack stack = new ItemStack(this);
+	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
+	if (tile instanceof IElectrodynamic) {
+	    stack.getOrCreateTag().putDouble("joules", ((IElectrodynamic) tile).getJoulesStored());
+	}
+	return Arrays.asList(stack);
     }
 
     @Override

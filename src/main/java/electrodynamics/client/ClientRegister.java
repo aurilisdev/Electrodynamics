@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
+import electrodynamics.client.render.tile.RenderBatteryBox;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
@@ -39,12 +40,27 @@ public class ClientRegister {
 	    References.ID + ":block/advancedsolarpaneltop");
     public static final ResourceLocation MODEL_ADVSOLARBASE = new ResourceLocation(
 	    References.ID + ":block/advancedsolarpanelbase");
+    public static final ResourceLocation MODEL_BATTERYBOX = new ResourceLocation(References.ID + ":block/batterybox");
+    public static final ResourceLocation MODEL_BATTERYBOX2 = new ResourceLocation(References.ID + ":block/batterybox2");
+    public static final ResourceLocation MODEL_BATTERYBOX3 = new ResourceLocation(References.ID + ":block/batterybox3");
+    public static final ResourceLocation MODEL_BATTERYBOX4 = new ResourceLocation(References.ID + ":block/batterybox4");
+    public static final ResourceLocation MODEL_BATTERYBOX5 = new ResourceLocation(References.ID + ":block/batterybox5");
+    public static final ResourceLocation MODEL_BATTERYBOX6 = new ResourceLocation(References.ID + ":block/batterybox6");
+    public static final ResourceLocation MODEL_BATTERYBOX7 = new ResourceLocation(References.ID + ":block/batterybox7");
 
     public static void setup() {
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(),
 		RenderAdvancedSolarPanel::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

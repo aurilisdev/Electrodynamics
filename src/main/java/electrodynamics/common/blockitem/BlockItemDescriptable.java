@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import electrodynamics.api.formatting.ElectricUnit;
+import electrodynamics.api.utilities.ElectricityChatFormatter;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
@@ -48,5 +50,15 @@ public class BlockItemDescriptable extends BlockItem {
 		}
 	    }
 	}
+	double joules = stack.getOrCreateTag().getDouble("joules");
+	if (joules > 0) {
+	    tooltip.add(new StringTextComponent(
+		    "Stored: " + ElectricityChatFormatter.getDisplay(joules, ElectricUnit.JOULES, 2, false)));
+	}
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack) {
+	return stack.getOrCreateTag().getDouble("joules") > 0 ? 1 : super.getItemStackLimit(stack);
     }
 }

@@ -11,6 +11,7 @@ import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.generic.GenericTileInventory;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -62,6 +63,9 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
 	    joules = DEFAULT_MAX_JOULES * currentCapacityMultiplier;
 	}
+	if (world.getWorldInfo().getDayTime() % 20 == 0) {
+	    sendGUIPacket();
+	}
     }
 
     @Override
@@ -77,6 +81,18 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	super.readGUIPacket(nbt);
 	joules = nbt.getDouble("joules");
 	currentCapacityMultiplier = nbt.getDouble("currentCapacityMultiplier");
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+	compound.putDouble("joules", joules);
+	return super.write(compound);
+    }
+
+    @Override
+    public void read(BlockState state, CompoundNBT compound) {
+	super.read(state, compound);
+	this.joules = compound.getDouble("joules");
     }
 
     @Override

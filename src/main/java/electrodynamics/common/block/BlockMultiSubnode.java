@@ -6,7 +6,6 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -133,7 +132,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		worldIn.setBlockState(subnode.nodePos, Blocks.AIR.getDefaultState());
+		worldIn.destroyBlock(subnode.nodePos, true);
 	    }
 	}
 	super.onReplaced(state, worldIn, pos, newState, isMoving);
