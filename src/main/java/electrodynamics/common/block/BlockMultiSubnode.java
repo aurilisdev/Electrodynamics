@@ -22,12 +22,13 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 
 public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 
     public BlockMultiSubnode() {
 	super(AbstractBlock.Properties.create(Material.GLASS).hardnessAndResistance(3.5F).sound(SoundType.METAL)
-		.setOpaque(BlockMultiSubnode::isntSolid).notSolid());
+		.setOpaque(BlockMultiSubnode::isntSolid).harvestTool(ToolType.PICKAXE).notSolid());
     }
 
     private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {

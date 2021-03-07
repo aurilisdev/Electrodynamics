@@ -91,7 +91,10 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 					: machine));
 	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
 	if (tile instanceof IElectrodynamic) {
-	    addstack.getOrCreateTag().putDouble("joules", ((IElectrodynamic) tile).getJoulesStored());
+	    double joules = ((IElectrodynamic) tile).getJoulesStored();
+	    if (joules > 0) {
+		addstack.getOrCreateTag().putDouble("joules", joules);
+	    }
 	}
 	return Arrays.asList(addstack);
     }
@@ -112,10 +115,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	if (hasMultiBlock() && tile instanceof IMultiblockTileNode) {
 	    IMultiblockTileNode multi = (IMultiblockTileNode) tile;
 	    multi.onNodePlaced(worldIn, pos, state, placer, stack);
-	}
-	if (tile instanceof IElectrodynamic) {
-	    IElectrodynamic el = (IElectrodynamic) tile;
-	    el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"));
 	}
     }
 
