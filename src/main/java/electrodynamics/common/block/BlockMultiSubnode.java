@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 
     public BlockMultiSubnode() {
-	super(AbstractBlock.Properties.create(Material.GLASS).sound(SoundType.METAL)
+	super(AbstractBlock.Properties.create(Material.GLASS).hardnessAndResistance(3.5F).sound(SoundType.METAL)
 		.setOpaque(BlockMultiSubnode::isntSolid).notSolid());
     }
 
