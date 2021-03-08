@@ -1,5 +1,5 @@
 AURILISDEV LICENSE
-Version 1.0.0, January 2021
+Version 1.0.1, January 2021
 
 Copyright (C) 2021 Sebastian Siljuholtet Johansen
 
@@ -8,7 +8,6 @@ All Rights Reserved unless otherwise explicitly stated.
 “The software” refers to any copyrightable work licensed under this License.
 
 The present license is subject to change at any time with or without notice and will take effect immediately.
-The user of this is subject to the newest version of this license.
 
 By using this license, you agree to all the terms included in this document.
 
