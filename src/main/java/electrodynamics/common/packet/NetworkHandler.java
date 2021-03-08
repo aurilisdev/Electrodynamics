@@ -1,4 +1,4 @@
-package electrodynamics.packet;
+package electrodynamics.common.packet;
 
 import java.util.Optional;
 
@@ -10,16 +10,19 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class NetworkHandler {
     private static final String PROTOCOL_VERSION = "1";
+    private static int disc = 0;
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
 	    new ResourceLocation(References.ID, "main"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals,
 	    PROTOCOL_VERSION::equals);
 
     public static void init() {
-	int disc = 0;
 	CHANNEL.registerMessage(disc++, PacketUpdateTile.class, PacketUpdateTile::encode, PacketUpdateTile::decode,
 		PacketUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 	CHANNEL.registerMessage(disc++, PacketSpawnSmokeParticle.class, PacketSpawnSmokeParticle::encode,
 		PacketSpawnSmokeParticle::decode, PacketSpawnSmokeParticle::handle,
 		Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+	CHANNEL.registerMessage(disc++, PacketSetQuantumCapacitorData.class, PacketSetQuantumCapacitorData::encode,
+		PacketSetQuantumCapacitorData::decode, PacketSetQuantumCapacitorData::handle,
+		Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

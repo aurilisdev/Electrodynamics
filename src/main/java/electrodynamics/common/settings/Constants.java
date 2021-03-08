@@ -8,8 +8,8 @@ import electrodynamics.api.utilities.TransferPack;
 
 @Configuration(name = "Electrodynamics")
 public class Constants {
-    @FloatValue(def = 0.95f)
-    public static float TRANSFORMER_EFFICIENCY = 0.95f;
+    @FloatValue(def = 0.98f)
+    public static float TRANSFORMER_EFFICIENCY = 0.98f;
     @DoubleValue(def = 34)
     public static double COALGENERATOR_AMPERAGE = 34.0;
     @DoubleValue(def = 4.166667)

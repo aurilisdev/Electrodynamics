@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.LazyOptional;
 public class TileTransformer extends GenericTileBase implements IElectrodynamic {
     private boolean locked = false;
     private CachedTileOutput output;
+    public double lastTransfer = 0;
 
     public TileTransformer() {
 	super(DeferredRegisters.TILE_TRANSFORMER.get());
@@ -47,6 +48,7 @@ public class TileTransformer extends GenericTileBase implements IElectrodynamic 
 	if (returner.getJoules() > 0) {
 	    returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * 0.05, resultVoltage);
 	}
+	lastTransfer = returner.getJoules();
 	return returner;
     }
 

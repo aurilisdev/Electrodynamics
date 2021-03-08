@@ -12,8 +12,8 @@ import electrodynamics.api.configuration.ConfigurationHandler;
 import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.packet.NetworkHandler;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -47,6 +47,7 @@ public class Electrodynamics {
 	DeferredRegisters.ITEMS.register(bus);
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
+	DeferredRegisters.SOUNDS.register(bus);
 
     }
 
@@ -63,6 +64,7 @@ public class Electrodynamics {
     }
 
     @SubscribeEvent
+    @Deprecated
     public static void onLoadEvent(FMLLoadCompleteEvent event) {
 	for (SubtypeOre ore : SubtypeOre.values()) {
 	    OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,

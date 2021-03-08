@@ -23,6 +23,7 @@ import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.inventory.container.ContainerQuantumCapacitor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemWrench;
@@ -55,6 +56,8 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -70,6 +73,8 @@ public class DeferredRegisters {
 	    .create(ForgeRegistries.TILE_ENTITIES, References.ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister
 	    .create(ForgeRegistries.CONTAINERS, References.ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,
+	    References.ID);
     public static BlockMultiSubnode multi = new BlockMultiSubnode();
     static {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -139,6 +144,8 @@ public class DeferredRegisters {
 		"|translate|tooltip.oxidationfurnacerunning.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
 		"|translate|tooltip.advancedsolarpanel.voltage");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quantumcapacitor),
+		"|translate|tooltip.quantumcapacitor.voltage");
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
@@ -227,6 +234,11 @@ public class DeferredRegisters {
 	    .register("do2oprocessor", () -> new ContainerType<>(ContainerDO2OProcessor::new));
     public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS
 	    .register(SubtypeMachine.batterybox.tag(), () -> new ContainerType<>(ContainerBatteryBox::new));
+    public static final RegistryObject<ContainerType<ContainerQuantumCapacitor>> CONTAINER_QUANTUMCAPACITOR = CONTAINERS
+	    .register(SubtypeMachine.quantumcapacitor.tag(), () -> new ContainerType<>(ContainerQuantumCapacitor::new));
+
+    public static final RegistryObject<SoundEvent> SOUND_BATTERYBOX = SOUNDS.register("batterybox",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":batterybox")));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;

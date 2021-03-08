@@ -78,7 +78,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 		    if (acceptorInputMap.containsKey(receiver)) {
 			boolean shouldRemove = true;
 			for (Direction connection : acceptorInputMap.get(receiver)) {
-			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, maxTransfer,
+			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
+				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()),
 				    true);
 			    if (pack.getJoules() != 0) {
 				shouldRemove = false;

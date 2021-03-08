@@ -8,19 +8,16 @@ import electrodynamics.api.tile.IWrenchable;
 import electrodynamics.api.tile.electric.IElectrodynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.state.DirectionProperty;
@@ -131,11 +128,6 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     @Deprecated
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	TileEntity tile = worldIn.getTileEntity(pos);
-	if (tile instanceof IElectrodynamic && stack.hasTag()) {
-	    IElectrodynamic el = (IElectrodynamic) tile;
-	    el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"));
-	}
     }
 
     @Deprecated

@@ -1,4 +1,4 @@
-package electrodynamics.packet;
+package electrodynamics.common.packet;
 
 import java.util.function.Supplier;
 

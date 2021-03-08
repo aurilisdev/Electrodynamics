@@ -18,6 +18,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -63,8 +64,16 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
 	if (joules > DEFAULT_MAX_JOULES * currentCapacityMultiplier) {
 	    joules = DEFAULT_MAX_JOULES * currentCapacityMultiplier;
 	}
-	if (world.getWorldInfo().getDayTime() % 20 == 0) {
+	if (world.getWorldInfo().getDayTime() % 50 == 0) {
 	    sendGUIPacket();
+	}
+    }
+
+    @Override
+    public void tickClient() {
+	if (world.getWorldInfo().getDayTime() % 220 == 0) {
+	    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+		    DeferredRegisters.SOUND_BATTERYBOX.get(), SoundCategory.BLOCKS, 1, 1, false);
 	}
     }
 
@@ -92,7 +101,7 @@ public class TileBatteryBox extends GenericTileInventory implements ITickableTil
     @Override
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);
-	this.joules = compound.getDouble("joules");
+	joules = compound.getDouble("joules");
     }
 
     @Override

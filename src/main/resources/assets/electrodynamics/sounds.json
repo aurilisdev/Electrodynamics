@@ -1,0 +1,9 @@
+{
+	"batterybox": {
+		"category": "blocks",
+		"subtitle": "electrodynamic.batterybox",
+		"sounds": [
+			"electrodynamics:batterybox"
+		]
+	}
+}

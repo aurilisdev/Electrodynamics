@@ -1,7 +1,7 @@
 package electrodynamics.api.tile;
 
-import electrodynamics.packet.NetworkHandler;
-import electrodynamics.packet.PacketUpdateTile;
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.PacketUpdateTile;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

@@ -14,6 +14,7 @@ import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
 import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
 import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
 import electrodynamics.common.tile.processor.o2o.TileWireMill;
+import electrodynamics.common.tile.quantumcapacitor.TileQuantumCapacitor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +29,8 @@ public enum SubtypeMachine implements Subtype {
     oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
     downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
     solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
-    electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class);
+    electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class),
+    quantumcapacitor(true, TileQuantumCapacitor.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

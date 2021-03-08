@@ -1,5 +1,7 @@
 package electrodynamics.common.inventory.container;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.inventory.container.slot.GenericSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -86,6 +88,7 @@ public abstract class GenericContainerInventory<T extends TileEntity> extends Co
 	inventory.closeInventory(player);
     }
 
+    @Nullable
     public T getHostFromIntArray() {
 	BlockPos block = new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2));
 	try {
