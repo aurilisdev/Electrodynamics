@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import electrodynamics.api.References;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
@@ -14,7 +13,7 @@ import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
 
 public class QuantumCapacitorData extends WorldSavedData {
-    public static final String DATANAME = References.ID + "_QUANTUMCAPACITOR";
+    public static final String DATANAME = "quantumcapacitordata";
     public HashMap<UUID, HashMap<Integer, Double>> powermapping = new HashMap<>();
 
     public QuantumCapacitorData() {
@@ -24,11 +23,11 @@ public class QuantumCapacitorData extends WorldSavedData {
     @Override
     public void read(CompoundNBT source) {
 	powermapping.clear();
-	ListNBT list = source.getList("list", 9);
+	ListNBT list = source.getList("list", 10);
 	for (INBT en : list) {
 	    CompoundNBT compound = (CompoundNBT) en;
 	    UUID id = compound.getUniqueId("uuid");
-	    ListNBT entryList = compound.getList("entrylist", 9);
+	    ListNBT entryList = compound.getList("entrylist", 10);
 	    HashMap<Integer, Double> info = new HashMap<>();
 	    for (INBT entryInside : entryList) {
 		CompoundNBT inside = (CompoundNBT) entryInside;
@@ -57,7 +56,7 @@ public class QuantumCapacitorData extends WorldSavedData {
 	    }
 	    list.add(compound);
 	}
-	return source;
+ 	return source;
     }
 
     public static QuantumCapacitorData get(World world) {
@@ -71,6 +70,11 @@ public class QuantumCapacitorData extends WorldSavedData {
 	    return instance;
 	}
 	return null;
+    }
+
+    @Override
+    public boolean isDirty() {
+	return true;
     }
 
     public double getJoules(UUID uuid, int frequency) {
@@ -90,7 +94,6 @@ public class QuantumCapacitorData extends WorldSavedData {
     public void setJoules(UUID uuid, int frequency, double value) {
 	getJoules(uuid, frequency); // load
 	powermapping.get(uuid).put(frequency, value);
-	setDirty(true);
     }
 
 }
