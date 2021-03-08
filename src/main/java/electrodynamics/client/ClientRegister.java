@@ -6,13 +6,11 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
-import electrodynamics.client.render.tile.RenderQuantumCapacitor;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
 import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenO2OProcessor;
-import electrodynamics.client.screen.ScreenQuantumCapacitor;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tile.wire.TileWire;
 import net.minecraft.client.Minecraft;
@@ -64,15 +62,12 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(),
 		RenderAdvancedSolarPanel::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_QUANTUMCAPACITOR.get(),
-		RenderQuantumCapacitor::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
-	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_QUANTUMCAPACITOR.get(), ScreenQuantumCapacitor::new);
 
 	RenderTypeLookup.setRenderLayer(
 		DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning),

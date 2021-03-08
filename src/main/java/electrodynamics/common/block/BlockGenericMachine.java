@@ -128,6 +128,11 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     @Deprecated
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	TileEntity tile = worldIn.getTileEntity(pos);
+	if (tile instanceof IElectrodynamic && stack.hasTag()) {
+	    IElectrodynamic el = (IElectrodynamic) tile;
+	    el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"));
+	}
     }
 
     @Deprecated

@@ -21,8 +21,5 @@ public class NetworkHandler {
 	CHANNEL.registerMessage(disc++, PacketSpawnSmokeParticle.class, PacketSpawnSmokeParticle::encode,
 		PacketSpawnSmokeParticle::decode, PacketSpawnSmokeParticle::handle,
 		Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-	CHANNEL.registerMessage(disc++, PacketSetQuantumCapacitorData.class, PacketSetQuantumCapacitorData::encode,
-		PacketSetQuantumCapacitorData::decode, PacketSetQuantumCapacitorData::handle,
-		Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

@@ -75,7 +75,6 @@
 	"block.electrodynamics.mineralcrusher": "Mineral Crusher",
 	"block.electrodynamics.mineralgrinder": "Mineral Grinder",
 	"block.electrodynamics.batterybox": "Battery Box",
-	"block.electrodynamics.quantumcapacitor": "Quantum Capacitor",
 	"block.electrodynamics.oxidationfurnace": "Oxidation Furnace",
 	"block.electrodynamics.oxidationfurnacerunning": "Oxidation Furnace Running",
 	"block.electrodynamics.downgradetransformer": "Downgrade Transformer",
@@ -109,7 +108,6 @@
 	"container.mineralcrusher": "Mineral Crusher",
 	"container.oxidationfurnace": "Oxidation Furnace",
 	"container.batterybox": "Battery Box",
-	"container.quantumcapacitor": "Quantum Capacitor",
 	"gui.coalgenerator.timeleft": "Time Left: %s",
 	"gui.coalgenerator.output": "Output: %s",
 	"gui.coalgenerator.current": "Current: %s",
@@ -126,10 +124,6 @@
 	"gui.batterybox.current": "Current: %s",
 	"gui.batterybox.voltage": "Voltage: %s",
 	"gui.batterybox.stored": "Stored: %s",
-	"gui.quantumcapacitor.transfer": "Output: %s",
-	"gui.quantumcapacitor.current": "Current: %s",
-	"gui.quantumcapacitor.voltage": "Voltage: %s",
-	"gui.quantumcapacitor.stored": "Stored: %s",
 	"itemGroup.itemgroupelectrodynamics": "Electrodynamics",
 	"tooltip.itemwire.resistance": "Resistance: %s",
 	"tooltip.itemwire.maxamps": "Max Amps: %s",
@@ -143,6 +137,5 @@
 	"tooltip.oxidationfurnacerunning.voltage": "Voltage: 240 Volts",
 	"tooltip.advancedsolarpanel.voltage": "Voltage: 240 Volts",
 	"tooltip.mineralcrusher.voltage": "Voltage: 240 Volts",
-	"tooltip.quantumcapacitor.voltage": "Voltage: 1.92 kV",
 	"death.attack.electricity": "%s was electrocuted"
 }

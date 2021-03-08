@@ -12,12 +12,10 @@ import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileTransformer;
-import electrodynamics.common.tile.quantumcapacitor.TileQuantumCapacitor;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
@@ -112,10 +110,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 		addstack.getOrCreateTag().putDouble("joules", joules);
 	    }
 	}
-	if (tile instanceof TileQuantumCapacitor) {
-	    addstack.getOrCreateTag().putInt("frequency", ((TileQuantumCapacitor) tile).frequency);
-	    addstack.getOrCreateTag().putUniqueId("uuid", ((TileQuantumCapacitor) tile).uuid);
-	}
 	return Arrays.asList(addstack);
     }
 
@@ -130,18 +124,8 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     @Deprecated
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	TileEntity tile = worldIn.getTileEntity(pos);
-	if (tile instanceof TileQuantumCapacitor) {
-	    ((TileQuantumCapacitor) tile).frequency = stack.getOrCreateTag().getInt("frequency");
-	    if (stack.getOrCreateTag().contains("uuid")) {
-		((TileQuantumCapacitor) tile).uuid = stack.getOrCreateTag().getUniqueId("uuid");
-	    } else if (placer instanceof PlayerEntity) {
-		((TileQuantumCapacitor) tile).uuid = ((PlayerEntity) placer).getGameProfile().getId();
-	    } 
-	} else if (tile instanceof IElectrodynamic && stack.hasTag()) {
-	    IElectrodynamic el = (IElectrodynamic) tile;
-	    el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"));
-	}
 	if (hasMultiBlock() && tile instanceof IMultiblockTileNode) {
 	    IMultiblockTileNode multi = (IMultiblockTileNode) tile;
 	    multi.onNodePlaced(worldIn, pos, state, placer, stack);

@@ -23,7 +23,6 @@ import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
-import electrodynamics.common.inventory.container.ContainerQuantumCapacitor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemWrench;
@@ -48,7 +47,6 @@ import electrodynamics.common.tile.processor.do2o.TileOxidationFurnace;
 import electrodynamics.common.tile.processor.o2o.TileMineralCrusher;
 import electrodynamics.common.tile.processor.o2o.TileMineralGrinder;
 import electrodynamics.common.tile.processor.o2o.TileWireMill;
-import electrodynamics.common.tile.quantumcapacitor.TileQuantumCapacitor;
 import electrodynamics.common.tile.wire.TileLogisticalWire;
 import electrodynamics.common.tile.wire.TilePipe;
 import electrodynamics.common.tile.wire.TileWire;
@@ -144,8 +142,6 @@ public class DeferredRegisters {
 		"|translate|tooltip.oxidationfurnacerunning.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
 		"|translate|tooltip.advancedsolarpanel.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quantumcapacitor),
-		"|translate|tooltip.quantumcapacitor.voltage");
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
@@ -194,9 +190,6 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileBatteryBox>> TILE_BATTERYBOX = TILES
 	    .register(SubtypeMachine.batterybox.tag(), () -> new TileEntityType<>(TileBatteryBox::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
-    public static final RegistryObject<TileEntityType<TileQuantumCapacitor>> TILE_QUANTUMCAPACITOR = TILES
-	    .register(SubtypeMachine.quantumcapacitor.tag(), () -> new TileEntityType<>(TileQuantumCapacitor::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quantumcapacitor)), null));
     public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
 	    () -> new TileEntityType<>(TileTransformer::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
@@ -234,8 +227,6 @@ public class DeferredRegisters {
 	    .register("do2oprocessor", () -> new ContainerType<>(ContainerDO2OProcessor::new));
     public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS
 	    .register(SubtypeMachine.batterybox.tag(), () -> new ContainerType<>(ContainerBatteryBox::new));
-    public static final RegistryObject<ContainerType<ContainerQuantumCapacitor>> CONTAINER_QUANTUMCAPACITOR = CONTAINERS
-	    .register(SubtypeMachine.quantumcapacitor.tag(), () -> new ContainerType<>(ContainerQuantumCapacitor::new));
 
     public static final RegistryObject<SoundEvent> SOUND_BATTERYBOX = SOUNDS.register("batterybox",
 	    () -> new SoundEvent(new ResourceLocation(References.ID + ":batterybox")));
