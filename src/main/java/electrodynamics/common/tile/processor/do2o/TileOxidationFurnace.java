@@ -71,9 +71,9 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 
     @Override
     public int[] getSlotsForFace(Direction side) {
-	return side == Direction.UP ? SLOTS_INPUT1
-		: side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT2
-			: side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_OUTPUT
+	return side == Direction.DOWN ? SLOTS_OUTPUT
+		: side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT1
+			: side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT2
 				: SLOTS_EMPTY;
     }
 

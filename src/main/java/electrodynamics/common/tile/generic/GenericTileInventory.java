@@ -1,5 +1,6 @@
 package electrodynamics.common.tile.generic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -197,7 +198,11 @@ public abstract class GenericTileInventory extends GenericTileBase implements IN
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
-	return true;
+	ArrayList<Integer> test = new ArrayList<>();
+	for (int i : getSlotsForFace(direction)) {
+	    test.add(i);
+	}
+	return test.contains(index);
     }
 
 }
