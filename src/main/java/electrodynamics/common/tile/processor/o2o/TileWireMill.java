@@ -40,8 +40,8 @@ public class TileWireMill extends GenericTileProcessor implements IO2OProcessor 
 
     @Override
     public int[] getSlotsForFace(Direction side) {
-	return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT
-		: side == Direction.DOWN || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST)
+	return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT
+		: side == Direction.DOWN || side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST)
 			? SLOTS_OUTPUT
 			: SLOTS_EMPTY;
     }
