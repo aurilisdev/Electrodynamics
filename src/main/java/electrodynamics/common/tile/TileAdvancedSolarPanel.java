@@ -30,7 +30,6 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class TileAdvancedSolarPanel extends GenericTileBase
 	implements ITickableTileBase, IElectrodynamic, IMultiblockTileNode {
-    @OnlyIn(Dist.CLIENT)
     public TargetValue currentRotation = new TargetValue(0);
 
     public TileAdvancedSolarPanel() {

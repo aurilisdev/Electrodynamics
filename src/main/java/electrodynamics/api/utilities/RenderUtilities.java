@@ -14,6 +14,7 @@ public class RenderUtilities {
 
     @Deprecated
     public static void renderStar(float time, int starFrags, float r, float g, float b, float a, boolean star) {
+	GlStateManager.pushMatrix();
 	Tessellator tessellator = Tessellator.getInstance();
 	BufferBuilder bufferBuilder = tessellator.getBuffer();
 	GlStateManager.disableTexture();
@@ -69,6 +70,7 @@ public class RenderUtilities {
 	GlStateManager.color4f(1, 1, 1, 1);
 	GlStateManager.enableTexture();
 	GlStateManager.enableAlphaTest();
+	GlStateManager.popMatrix();
     }
 
 }
