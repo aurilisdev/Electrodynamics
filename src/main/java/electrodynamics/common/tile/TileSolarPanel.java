@@ -19,7 +19,7 @@ public class TileSolarPanel extends GenericTileTickable {
 
     public TileSolarPanel() {
 	super(DeferredRegisters.TILE_SOLARPANEL.get());
-	addComponent(new ComponentTickable().setTickServer(() -> tickServer()));
+	addComponent(new ComponentTickable().setTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic().addOutputDirection(Direction.DOWN));
     }
 

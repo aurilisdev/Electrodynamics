@@ -5,7 +5,9 @@ import java.util.function.BiFunction;
 
 import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.api.tile.electric.IElectrodynamic;
+import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.block.BlockState;
@@ -15,11 +17,21 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class ComponentElectrodynamic implements Component, IElectrodynamic {
-    protected HashSet<Direction> inputDirections = new HashSet<>();
+    private GenericTile holder;
+
+    @Override
+    public void setHolder(GenericTile holder) {
+	this.holder = holder;
+    }
+
+    protected BiFunction<TransferPack, Boolean, TransferPack> receivePower = IElectrodynamic.super::receivePower;
+    protected BiFunction<TransferPack, Boolean, TransferPack> extractPower = IElectrodynamic.super::extractPower;
+    protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
+    protected HashSet<Direction> relativeInputDirections = new HashSet<>();
     protected HashSet<Direction> outputDirections = new HashSet<>();
-    protected BiFunction<TransferPack, Boolean, TransferPack> guiPacketWriter;
-    protected double joules = 0;
+    protected HashSet<Direction> inputDirections = new HashSet<>();
     protected double maxJoules = 0;
+    protected double joules = 0;
     private Direction lastReturnedSide = Direction.UP;
 
     @Override
@@ -42,7 +54,14 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
-	return (inputDirections.contains(side) || outputDirections.contains(side))
+	return (inputDirections.contains(side) || outputDirections.contains(side)
+		|| (holder.hasComponent(ComponentType.Direction) && (relativeInputDirections
+			.contains(TileUtilities.getRelativeSide(
+				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+				lastReturnedSide))
+			|| relativeOutputDirections.contains(TileUtilities.getRelativeSide(
+				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+				lastReturnedSide)))))
 		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC;
     }
 
@@ -54,16 +73,22 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public TransferPack extractPower(TransferPack transfer, boolean debug) {
-	if (outputDirections.contains(lastReturnedSide)) {
-	    return IElectrodynamic.super.extractPower(transfer, debug);
+	if (outputDirections.contains(lastReturnedSide) || (holder.hasComponent(ComponentType.Direction)
+		&& relativeOutputDirections.contains(TileUtilities.getRelativeSide(
+			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+			lastReturnedSide)))) {
+	    return extractPower.apply(transfer, debug);
 	}
 	return TransferPack.EMPTY;
     }
 
     @Override
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
-	if (inputDirections.contains(lastReturnedSide)) {
-	    return IElectrodynamic.super.receivePower(transfer, debug);
+	if (inputDirections.contains(lastReturnedSide) || (holder.hasComponent(ComponentType.Direction)
+		&& relativeInputDirections.contains(TileUtilities.getRelativeSide(
+			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+			lastReturnedSide)))) {
+	    return receivePower.apply(transfer, debug);
 	}
 	return TransferPack.EMPTY;
     }
@@ -85,6 +110,26 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     public ComponentElectrodynamic addOutputDirection(Direction dir) {
 	outputDirections.add(dir);
+	return this;
+    }
+
+    public ComponentElectrodynamic addRelativeInputDirection(Direction dir) {
+	relativeInputDirections.add(dir);
+	return this;
+    }
+
+    public ComponentElectrodynamic addRelativeOutputDirection(Direction dir) {
+	relativeOutputDirections.add(dir);
+	return this;
+    }
+
+    public ComponentElectrodynamic setReceivePower(BiFunction<TransferPack, Boolean, TransferPack> receivePower) {
+	this.receivePower = receivePower;
+	return this;
+    }
+
+    public ComponentElectrodynamic setExtractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
+	this.extractPower = extractPower;
 	return this;
     }
 

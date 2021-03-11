@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
 
+import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
-import electrodynamics.common.tile.generic.component.ComponentHolder;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +13,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -22,10 +21,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class ComponentInventory implements Component, ISidedInventory {
-    protected ComponentHolder holder = null;
+    protected GenericTile holder = null;
 
     @Override
-    public void setHolder(ComponentHolder holder) {
+    public void setHolder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -163,7 +162,7 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public void markDirty() {
-	((TileEntity) holder).markDirty();
+	holder.markDirty();
     }
 
 }

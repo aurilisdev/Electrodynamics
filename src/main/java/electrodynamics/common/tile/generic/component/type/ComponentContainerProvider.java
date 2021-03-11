@@ -4,7 +4,6 @@ import java.util.function.BiFunction;
 
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
-import electrodynamics.common.tile.generic.component.ComponentHolder;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,10 +13,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ComponentContainerProvider implements Component, INamedContainerProvider {
-    protected ComponentHolder holder = null;
+    protected GenericTile holder = null;
 
     @Override
-    public void setHolder(ComponentHolder holder) {
+    public void setHolder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -35,14 +34,13 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
     @Override
     public Container createMenu(int id, PlayerInventory inv, PlayerEntity pl) {
 	if (createMenuFunction != null) {
-	    GenericTile tile = (GenericTile) holder;
-	    if (tile.hasComponent(ComponentType.Inventory)) {
-		ComponentInventory componentinv = tile.getComponent(ComponentType.Inventory);
+	    if (holder.hasComponent(ComponentType.Inventory)) {
+		ComponentInventory componentinv = holder.getComponent(ComponentType.Inventory);
 		if (!componentinv.isUsableByPlayer(pl)) {
 		    componentinv.openInventory(pl);
-		    return createMenuFunction.apply(id, inv);
+		} else {
+		    return null;
 		}
-		return null;
 	    }
 	    return createMenuFunction.apply(id, inv);
 	}
