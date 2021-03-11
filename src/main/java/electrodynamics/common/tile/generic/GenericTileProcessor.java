@@ -55,10 +55,8 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 	} else {
 	    failed = true;
 	}
-	if (failed) {
-	    if (currentOperatingTick > 0) {
-		failedOperation();
-	    }
+	if (failed && currentOperatingTick > 0) {
+	    failedOperation();
 	}
     }
 
@@ -98,6 +96,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory
     }
 
     @Override
+    @Deprecated
     public void setJoulesStored(double joules) {
 	this.joules = Math.min(getMaxJoulesStored(), joules);
     }

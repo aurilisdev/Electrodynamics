@@ -38,7 +38,7 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 	return super.getCapability(capability, facing);
     }
 
-    public GenericTilePipe(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTilePipe(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
 	for (Direction dir : Direction.values()) {
 	    handler.add(new IFluidHandler() {
@@ -112,7 +112,7 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 		    connectedNets.add((FluidNetwork) wire.getNetwork());
 		}
 	    }
-	    if (connectedNets.size() == 0) {
+	    if (connectedNets.isEmpty()) {
 		fluidNetwork = new FluidNetwork(Sets.newHashSet(this));
 	    } else if (connectedNets.size() == 1) {
 		fluidNetwork = (FluidNetwork) connectedNets.toArray()[0];
@@ -143,7 +143,7 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 		    foundNetworks.add((FluidNetwork) ((IPipe) facing).getNetwork());
 		}
 	    }
-	    if (foundNetworks.size() > 0) {
+	    if (!foundNetworks.isEmpty()) {
 		foundNetworks.get(0).conductorSet.add(this);
 		fluidNetwork = foundNetworks.get(0);
 		if (foundNetworks.size() > 1) {
@@ -176,10 +176,8 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 
     @Override
     public void remove() {
-	if (!world.isRemote) {
-	    if (fluidNetwork != null) {
-		getNetwork().split(this);
-	    }
+	if (!world.isRemote && fluidNetwork != null) {
+	    getNetwork().split(this);
 	}
 	super.remove();
     }

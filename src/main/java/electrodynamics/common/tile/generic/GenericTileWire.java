@@ -91,7 +91,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 		    connectedNets.add((ElectricNetwork) wire.getNetwork());
 		}
 	    }
-	    if (connectedNets.size() == 0) {
+	    if (connectedNets.isEmpty()) {
 		electricNetwork = new ElectricNetwork(Sets.newHashSet(this));
 	    } else if (connectedNets.size() == 1) {
 		electricNetwork = (ElectricNetwork) connectedNets.toArray()[0];
@@ -122,7 +122,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 		    foundNetworks.add((ElectricNetwork) ((IConductor) facing).getNetwork());
 		}
 	    }
-	    if (foundNetworks.size() > 0) {
+	    if (!foundNetworks.isEmpty()) {
 		foundNetworks.get(0).conductorSet.add(this);
 		electricNetwork = foundNetworks.get(0);
 		if (foundNetworks.size() > 1) {
@@ -155,10 +155,8 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 
     @Override
     public void remove() {
-	if (!world.isRemote) {
-	    if (electricNetwork != null) {
-		getNetwork().split(this);
-	    }
+	if (!world.isRemote && electricNetwork != null) {
+	    getNetwork().split(this);
 	}
 	super.remove();
     }
