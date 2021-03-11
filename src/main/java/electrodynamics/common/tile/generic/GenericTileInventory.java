@@ -127,8 +127,7 @@ public abstract class GenericTileInventory extends GenericTileBase implements IN
     @Override
     public boolean isUsableByPlayer(PlayerEntity player) {
 	return world.getTileEntity(pos) == this
-		? player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64
-		: false;
+		&& player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
     }
 
     @Override

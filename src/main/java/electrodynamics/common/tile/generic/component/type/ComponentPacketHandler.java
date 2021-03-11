@@ -1,14 +1,16 @@
-package electrodynamics.common.tile.generic.component;
+package electrodynamics.common.tile.generic.component.type;
 
 import java.util.function.Supplier;
 
+import electrodynamics.common.tile.generic.component.Component;
+import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.nbt.CompoundNBT;
 
 public class ComponentPacketHandler implements Component {
-    private Supplier<CompoundNBT> customPacketSupplier;
-    private Supplier<CompoundNBT> guiPacketSupplier;
-    private Supplier<Void> customPacketWriter;
-    private Supplier<Void> guiPacketWriter;
+    protected Supplier<CompoundNBT> customPacketSupplier;
+    protected Supplier<CompoundNBT> guiPacketSupplier;
+    protected Runnable customPacketWriter;
+    protected Runnable guiPacketWriter;
 
     public ComponentPacketHandler setCustomPacketSupplier(Supplier<CompoundNBT> customPacketSupplier) {
 	this.customPacketSupplier = customPacketSupplier;
@@ -20,12 +22,12 @@ public class ComponentPacketHandler implements Component {
 	return this;
     }
 
-    public ComponentPacketHandler setCustomPacketWriter(Supplier<Void> customPacketWriter) {
+    public ComponentPacketHandler setCustomPacketWriter(Runnable customPacketWriter) {
 	this.customPacketWriter = customPacketWriter;
 	return this;
     }
 
-    public ComponentPacketHandler setGuiPacketWriter(Supplier<Void> guiPacketWriter) {
+    public ComponentPacketHandler setGuiPacketWriter(Runnable guiPacketWriter) {
 	this.guiPacketWriter = guiPacketWriter;
 	return this;
     }
@@ -38,11 +40,11 @@ public class ComponentPacketHandler implements Component {
 	return guiPacketSupplier;
     }
 
-    public Supplier<Void> getCustomPacketWriter() {
+    public Runnable getCustomPacketWriter() {
 	return customPacketWriter;
     }
 
-    public Supplier<Void> getGuiPacketWriter() {
+    public Runnable getGuiPacketWriter() {
 	return guiPacketWriter;
     }
 

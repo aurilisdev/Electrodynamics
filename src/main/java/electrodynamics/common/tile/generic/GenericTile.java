@@ -5,8 +5,8 @@ import java.util.EnumMap;
 import electrodynamics.api.References;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentHolder;
-import electrodynamics.common.tile.generic.component.ComponentName;
 import electrodynamics.common.tile.generic.component.ComponentType;
+import electrodynamics.common.tile.generic.component.type.ComponentName;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +30,7 @@ public class GenericTile extends TileEntity implements INameable, ComponentHolde
 	return !hasComponent(type) ? null : (T) componentMap.get(type);
     }
 
-    public GenericTile registerComponent(Component component) {
+    public GenericTile addComponent(Component component) {
 	if (hasComponent(component.getType())) {
 	    new Exception("Component of type: " + component.getType().name() + " already registered!")
 		    .printStackTrace();
@@ -41,6 +41,7 @@ public class GenericTile extends TileEntity implements INameable, ComponentHolde
 
     @Override
     public void read(BlockState state, CompoundNBT compound) {
+	super.read(state, compound);
 	for (Component component : componentMap.values()) {
 	    component.setHolder(this);
 	    component.saveToNBT(compound);
@@ -53,7 +54,7 @@ public class GenericTile extends TileEntity implements INameable, ComponentHolde
 	    component.setHolder(this);
 	    component.saveToNBT(compound);
 	}
-	return compound;
+	return super.write(compound);
     }
 
     protected GenericTile(TileEntityType<?> tileEntityTypeIn) {
@@ -93,6 +94,6 @@ public class GenericTile extends TileEntity implements INameable, ComponentHolde
 
     @Override
     public boolean valid() {
-	return !removed;
+	return !isRemoved();
     }
 }

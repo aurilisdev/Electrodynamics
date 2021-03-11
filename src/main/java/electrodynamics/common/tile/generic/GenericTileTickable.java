@@ -1,11 +1,11 @@
 package electrodynamics.common.tile.generic;
 
-import electrodynamics.common.tile.generic.component.ComponentTickable;
 import electrodynamics.common.tile.generic.component.ComponentType;
-import net.minecraft.client.renderer.texture.ITickable;
+import electrodynamics.common.tile.generic.component.type.ComponentTickable;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public class GenericTileTickable extends GenericTile implements ITickable {
+public class GenericTileTickable extends GenericTile implements ITickableTileEntity {
 
     protected GenericTileTickable(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
@@ -15,11 +15,11 @@ public class GenericTileTickable extends GenericTile implements ITickable {
     public void tick() {
 	if (hasComponent(ComponentType.Tickable)) {
 	    ComponentTickable tickable = getComponent(ComponentType.Tickable);
-	    tickable.getTickCommon().get();
+	    tickable.tickCommon();
 	    if (!world.isRemote) {
-		tickable.getTickServer().get();
+		tickable.tickServer();
 	    } else {
-		tickable.getTickClient().get();
+		tickable.tickClient();
 	    }
 	}
     }

@@ -1,9 +1,12 @@
-package electrodynamics.common.tile.generic.component;
+package electrodynamics.common.tile.generic.component.type;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
 
+import electrodynamics.common.tile.generic.component.Component;
+import electrodynamics.common.tile.generic.component.ComponentHolder;
+import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;

@@ -1,8 +1,11 @@
-package electrodynamics.common.tile.generic.component;
+package electrodynamics.common.tile.generic.component.type;
 
 import java.util.function.BiFunction;
 
 import electrodynamics.common.tile.generic.GenericTile;
+import electrodynamics.common.tile.generic.component.Component;
+import electrodynamics.common.tile.generic.component.ComponentHolder;
+import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -18,8 +21,8 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
 	this.holder = holder;
     }
 
-    private BiFunction<Integer, PlayerInventory, Container> createMenuFunction;
-    private String name = "";
+    protected BiFunction<Integer, PlayerInventory, Container> createMenuFunction;
+    protected String name = "";
 
     public ComponentContainerProvider(String name) {
 	this.name = name;
