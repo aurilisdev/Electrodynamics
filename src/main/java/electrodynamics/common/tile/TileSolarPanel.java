@@ -1,12 +1,12 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileTickable;
+import electrodynamics.common.tile.generic.component.ComponentType;
 import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
 import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.util.Direction;
@@ -36,7 +36,7 @@ public class TileSolarPanel extends GenericTileTickable {
 	    TransferPack pack = TransferPack.ampsVoltage(
 		    Constants.SOLARPANEL_AMPERAGE * (b.getTemperature(getPos()) / 2.0) * mod
 			    * (world.isRaining() || world.isThundering() ? 0.7f : 1),
-		    CapabilityElectrodynamic.DEFAULT_VOLTAGE);
+		    this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	    ElectricityUtilities.receivePower(output.get(), Direction.UP, pack, false);
 	}
     }

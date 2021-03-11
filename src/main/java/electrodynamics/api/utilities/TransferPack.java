@@ -2,7 +2,8 @@ package electrodynamics.api.utilities;
 
 public class TransferPack {
     public static final TransferPack EMPTY = new TransferPack(0, 0);
-    private double joules, voltage;
+    private double joules;
+    private double voltage;
 
     private TransferPack(double joules, double voltage) {
 	this.joules = joules;

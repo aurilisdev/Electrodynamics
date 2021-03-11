@@ -54,10 +54,6 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return voltage;
     }
 
-    public void setVoltage(double voltage) {
-	this.voltage = voltage;
-    }
-
     @Override
     @Deprecated
     public void setJoulesStored(double joules) {
@@ -69,8 +65,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return (inputDirections.contains(side) || outputDirections.contains(side)
 		|| (holder.hasComponent(ComponentType.Direction) && (relativeInputDirections
 			.contains(TileUtilities.getRelativeSide(
-				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-				side))
+				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
 			|| relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
 				side)))))
@@ -142,6 +137,11 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     public ComponentElectrodynamic setExtractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
 	this.extractPower = extractPower;
+	return this;
+    }
+
+    public ComponentElectrodynamic setVoltage(double voltage) {
+	this.voltage = voltage;
 	return this;
     }
 

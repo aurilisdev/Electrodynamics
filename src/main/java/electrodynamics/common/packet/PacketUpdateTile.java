@@ -52,7 +52,11 @@ public class PacketUpdateTile {
 		} else if (tile instanceof GenericTile) {
 		    GenericTile generic = (GenericTile) tile;
 		    if (generic.hasComponent(ComponentType.PacketHandler)) {
+			ComponentPacketHandler handler = generic.getComponent(ComponentType.PacketHandler);
 			if (message.isGUI) {
+			    handler.getGuiPacketConsumer().accept(message.updateTag);
+			} else {
+			    handler.getCustomPacketConsumer().accept(message.updateTag);
 			}
 		    }
 		}
