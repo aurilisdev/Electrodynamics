@@ -13,7 +13,6 @@ import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileElectricPump extends GenericTileTickable {
@@ -34,7 +33,7 @@ public class TileElectricPump extends GenericTileTickable {
     public void tickServer() {
 	Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().rotateY();
 	if (output == null) {
-	    output = new CachedTileOutput(world, new BlockPos(pos).offset(direction));
+	    output = new CachedTileOutput(world, pos.offset(direction));
 	}
 	if (world.getWorldInfo().getGameTime() % 20 == 0) {
 	    FluidState state = world.getBlockState(pos.offset(Direction.DOWN)).getFluidState();

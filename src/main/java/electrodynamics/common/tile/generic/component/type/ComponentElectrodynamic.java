@@ -30,20 +30,32 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     protected HashSet<Direction> relativeInputDirections = new HashSet<>();
     protected HashSet<Direction> outputDirections = new HashSet<>();
     protected HashSet<Direction> inputDirections = new HashSet<>();
+    protected double voltage = CapabilityElectrodynamic.DEFAULT_VOLTAGE;
     protected double maxJoules = 0;
     protected double joules = 0;
     private Direction lastReturnedSide = Direction.UP;
 
     @Override
     public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-	joules = nbt.getDouble("joules");
 	maxJoules = nbt.getDouble("maxJoules");
+	voltage = nbt.getDouble("voltage");
+	joules = nbt.getDouble("joules");
     }
 
     @Override
     public void saveToNBT(CompoundNBT nbt) {
-	nbt.putDouble("joules", joules);
 	nbt.putDouble("maxJoules", maxJoules);
+	nbt.putDouble("voltage", voltage);
+	nbt.putDouble("joules", joules);
+    }
+
+    @Override
+    public double getVoltage() {
+	return voltage;
+    }
+
+    public void setVoltage(double voltage) {
+	this.voltage = voltage;
     }
 
     @Override

@@ -2,7 +2,6 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.scheduler.Scheduler;
-import electrodynamics.api.tile.ITickableTileBase;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.generic.GenericTileBase;
@@ -13,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 
-public class TileMultiSubnode extends GenericTileBase implements ITickableTileBase {
+public class TileMultiSubnode extends GenericTileBase {
     public BlockPos nodePos;
     public VoxelShape shapeCache;
 
