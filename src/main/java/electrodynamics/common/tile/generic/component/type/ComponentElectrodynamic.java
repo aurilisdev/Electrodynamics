@@ -70,10 +70,10 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 		|| (holder.hasComponent(ComponentType.Direction) && (relativeInputDirections
 			.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-				lastReturnedSide))
+				side))
 			|| relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-				lastReturnedSide)))))
+				side)))))
 		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC;
     }
 

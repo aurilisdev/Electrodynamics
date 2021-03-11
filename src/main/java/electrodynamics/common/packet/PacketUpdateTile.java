@@ -3,10 +3,14 @@ package electrodynamics.common.packet;
 import java.util.function.Supplier;
 
 import electrodynamics.api.tile.IUpdateableTile;
+import electrodynamics.common.tile.generic.GenericTile;
+import electrodynamics.common.tile.generic.component.ComponentType;
+import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
@@ -21,6 +25,11 @@ public class PacketUpdateTile {
 	this.isGUI = isGUI;
     }
 
+    public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI) {
+	this(pos, isGUI ? component.getGuiPacketSupplier().get() : component.getCustomPacketSupplier().get(), isGUI);
+	this.isGUI = isGUI;
+    }
+
     private PacketUpdateTile(BlockPos pos, CompoundNBT updateTag, boolean isGUI) {
 	this.pos = pos;
 	this.updateTag = updateTag;
@@ -32,12 +41,19 @@ public class PacketUpdateTile {
 	ctx.enqueueWork(() -> {
 	    ClientWorld world = Minecraft.getInstance().world;
 	    if (world != null) {
-		IUpdateableTile tile = (IUpdateableTile) world.getTileEntity(message.pos);
-		if (tile != null) {
+		TileEntity tile = world.getTileEntity(message.pos);
+		if (tile instanceof IUpdateableTile) {
+		    IUpdateableTile updateable = (IUpdateableTile) tile;
 		    if (message.isGUI) {
-			tile.readGUIPacket(message.updateTag);
+			updateable.readGUIPacket(message.updateTag);
 		    } else {
-			tile.readCustomPacket(message.updateTag);
+			updateable.readCustomPacket(message.updateTag);
+		    }
+		} else if (tile instanceof GenericTile) {
+		    GenericTile generic = (GenericTile) tile;
+		    if (generic.hasComponent(ComponentType.PacketHandler)) {
+			if (message.isGUI) {
+			}
 		    }
 		}
 	    }

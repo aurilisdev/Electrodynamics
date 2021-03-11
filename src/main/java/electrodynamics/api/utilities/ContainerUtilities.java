@@ -1,4 +1,4 @@
-package electrodynamics.common.inventory.container;
+package electrodynamics.api.utilities;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
-public final class Containers {
+public final class ContainerUtilities {
 
     static final int PLAYER_INV_Y_DEFAULT = 84;
     static final int PLAYER_INV_X_DEFAULT = 8;

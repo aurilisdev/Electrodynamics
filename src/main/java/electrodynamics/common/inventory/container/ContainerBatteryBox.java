@@ -10,18 +10,14 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-public class ContainerBatteryBox extends GenericContainerInventory<TileBatteryBox> {
+public class ContainerBatteryBox extends GenericContainer<TileBatteryBox> {
 
     public ContainerBatteryBox(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(9));
+	this(id, playerinv, new Inventory(9), new IntArray(3));
     }
 
-    public ContainerBatteryBox(int id, PlayerInventory playerinv, IInventory inventory) {
-	this(id, playerinv, inventory, new IntArray(3));
-    }
-
-    public ContainerBatteryBox(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
-	super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, playerinv, inventory, inventorydata);
+    public ContainerBatteryBox(int id, PlayerInventory pinv, IInventory inv, IIntArray data) {
+	super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
     }
 
     @Override

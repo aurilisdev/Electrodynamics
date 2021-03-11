@@ -12,7 +12,7 @@ import net.minecraft.util.IntArray;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ContainerCoalGenerator extends GenericContainerInventory<TileCoalGenerator> {
+public class ContainerCoalGenerator extends GenericContainer<TileCoalGenerator> {
 
     public ContainerCoalGenerator(int id, PlayerInventory playerinv) {
 	this(id, playerinv, new Inventory(1));

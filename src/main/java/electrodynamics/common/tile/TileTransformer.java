@@ -18,7 +18,6 @@ public class TileTransformer extends GenericTile {
     public CachedTileOutput output;
     public double lastTransfer = 0;
     public boolean locked = false;
-    public Direction lastDir;
 
     public TileTransformer() {
 	super(DeferredRegisters.TILE_TRANSFORMER.get());
@@ -29,7 +28,7 @@ public class TileTransformer extends GenericTile {
 
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	if (locked || lastDir != facing.getOpposite()) {
+	if (locked) {
 	    return TransferPack.EMPTY;
 	}
 	if (output == null) {
@@ -40,7 +39,7 @@ public class TileTransformer extends GenericTile {
 	double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 1920.0);
 	locked = true;
 	TransferPack returner = debug ? TransferPack.ampsVoltage(1, 1)
-		: ElectricityUtilities.receivePower(output.get(), lastDir, TransferPack
+		: ElectricityUtilities.receivePower(output.get(), facing, TransferPack
 			.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
 	locked = false;
 	if (returner.getJoules() > 0) {
@@ -50,11 +49,5 @@ public class TileTransformer extends GenericTile {
 	}
 	lastTransfer = returner.getJoules();
 	return returner;
-    }
-
-    public boolean testDirection(Direction direction, boolean isOutput) {
-	lastDir = direction;
-	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	return isOutput ? lastDir == facing : lastDir == facing.getOpposite();
     }
 }

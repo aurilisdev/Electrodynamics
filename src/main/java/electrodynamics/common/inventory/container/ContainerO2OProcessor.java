@@ -15,7 +15,7 @@ import net.minecraft.util.IntArray;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ContainerO2OProcessor extends GenericContainerInventory<TileEntity> {
+public class ContainerO2OProcessor extends GenericContainer<TileEntity> {
 
     public ContainerO2OProcessor(int id, PlayerInventory playerinv) {
 	this(id, playerinv, new Inventory(5));
