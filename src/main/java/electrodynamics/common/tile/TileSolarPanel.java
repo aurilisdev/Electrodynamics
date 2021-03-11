@@ -5,7 +5,7 @@ import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTickable;
+import electrodynamics.common.tile.generic.GenericTileTicking;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
 import electrodynamics.common.tile.generic.component.type.ComponentTickable;
@@ -13,7 +13,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 
-public class TileSolarPanel extends GenericTileTickable {
+public class TileSolarPanel extends GenericTileTicking {
     private CachedTileOutput output;
 
     public TileSolarPanel() {

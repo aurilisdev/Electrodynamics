@@ -5,7 +5,7 @@ import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTickable;
+import electrodynamics.common.tile.generic.GenericTileTicking;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import electrodynamics.common.tile.generic.component.type.ComponentDirection;
 import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
@@ -13,7 +13,7 @@ import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 
-public class TileThermoelectricGenerator extends GenericTileTickable {
+public class TileThermoelectricGenerator extends GenericTileTicking {
     protected CachedTileOutput output;
     protected boolean hasHeat = false;
 

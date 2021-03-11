@@ -5,9 +5,9 @@ import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public class GenericTileTickable extends GenericTile implements ITickableTileEntity {
+public class GenericTileTicking extends GenericTile implements ITickableTileEntity {
 
-    protected GenericTileTickable(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileTicking(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }
 

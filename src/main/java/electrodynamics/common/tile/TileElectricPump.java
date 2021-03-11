@@ -4,7 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.utilities.CachedTileOutput;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTickable;
+import electrodynamics.common.tile.generic.GenericTileTicking;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import electrodynamics.common.tile.generic.component.type.ComponentDirection;
 import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
@@ -15,7 +15,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileElectricPump extends GenericTileTickable {
+public class TileElectricPump extends GenericTileTicking {
     private boolean hasWater;
 
     public TileElectricPump() {

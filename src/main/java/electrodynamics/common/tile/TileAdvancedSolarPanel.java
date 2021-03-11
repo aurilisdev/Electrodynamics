@@ -12,7 +12,7 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTile;
+import electrodynamics.common.tile.generic.GenericTileTicking;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
 import electrodynamics.common.tile.generic.component.type.ComponentTickable;
@@ -23,7 +23,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTileNode {
+public class TileAdvancedSolarPanel extends GenericTileTicking implements IMultiblockTileNode {
     public TargetValue currentRotation = new TargetValue(0);
     protected CachedTileOutput output;
 
