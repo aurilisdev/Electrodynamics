@@ -4,8 +4,8 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.ITickableTileBase;
 
 public class TileLogisticalWire extends TileWire implements ITickableTileBase {
-    private int _ticks;
     public boolean isPowered = false;
+    private int ticks;
 
     public TileLogisticalWire() {
 	super(DeferredRegisters.TILE_LOGISTICALWIRE.get());
@@ -13,8 +13,8 @@ public class TileLogisticalWire extends TileWire implements ITickableTileBase {
 
     @Override
     public void tickServer() {
-	_ticks++;
-	if (_ticks % 10 == 0) {
+	ticks++;
+	if (ticks % 10 == 0) {
 	    boolean shouldPower = getNetwork().getTransmittedLastTick() > 0;
 	    if (shouldPower != isPowered) {
 		isPowered = shouldPower;

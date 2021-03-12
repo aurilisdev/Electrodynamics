@@ -9,8 +9,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Items;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerCoalGenerator extends GenericContainer<TileCoalGenerator> {
 
@@ -19,7 +17,7 @@ public class ContainerCoalGenerator extends GenericContainer<TileCoalGenerator> 
     }
 
     public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory) {
-	this(id, playerinv, inventory, new IntArray(5));
+	this(id, playerinv, inventory, new IntArray(3));
     }
 
     public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -31,23 +29,4 @@ public class ContainerCoalGenerator extends GenericContainer<TileCoalGenerator> 
 	addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public int getBurnLeftScaled() {
-	return inventorydata.get(3) * 13 / TileCoalGenerator.COAL_BURN_TIME;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getBurnTicksLeft() {
-	return inventorydata.get(3);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean isBurning() {
-	return inventorydata.get(3) > 0;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getHeat() {
-	return inventorydata.get(4);
-    }
 }

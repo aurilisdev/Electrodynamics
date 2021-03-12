@@ -12,8 +12,10 @@ import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.api.networks.AbstractNetwork;
 import electrodynamics.common.network.FluidNetwork;
 import electrodynamics.common.network.NetworkRegistry;
+import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -24,7 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
+public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     public FluidNetwork fluidNetwork;
     private ArrayList<IFluidHandler> handler = new ArrayList<>();
@@ -84,6 +86,8 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 		}
 	    });
 	}
+	addComponent(new ComponentPacketHandler().setCustomPacketConsumer(this::readCustomPacket)
+		.setCustomPacketSupplier(this::writeCustomPacket));
     }
 
     private HashSet<IPipe> getConnectedConductors() {
@@ -187,5 +191,9 @@ public abstract class GenericTilePipe extends GenericTileBase implements IPipe {
 	remove();
 	NetworkRegistry.pruneEmptyNetworks();
     }
+
+    protected abstract CompoundNBT writeCustomPacket();
+
+    protected abstract void readCustomPacket(CompoundNBT nbt);
 
 }

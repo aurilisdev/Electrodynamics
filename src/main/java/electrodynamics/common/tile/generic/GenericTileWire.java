@@ -15,7 +15,9 @@ import electrodynamics.api.tile.electric.IElectrodynamic;
 import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.network.NetworkRegistry;
+import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -23,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
-public abstract class GenericTileWire extends GenericTileBase implements IConductor {
+public abstract class GenericTileWire extends GenericTile implements IConductor {
 
     public ElectricNetwork electricNetwork;
 
@@ -52,6 +54,8 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 		}
 	    });
 	}
+	addComponent(new ComponentPacketHandler().setCustomPacketConsumer(this::readCustomPacket)
+		.setCustomPacketSupplier(this::writeCustomPacket));
     }
 
     private ArrayList<IElectrodynamic> handler = new ArrayList<>();
@@ -73,7 +77,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
     private HashSet<IConductor> getConnectedConductors() {
 	HashSet<IConductor> set = new HashSet<>();
 	for (Direction dir : Direction.values()) {
-	    TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
+	    TileEntity facing = world.getTileEntity(pos.offset(dir));
 	    if (facing instanceof IConductor) {
 		set.add((IConductor) facing);
 	    }
@@ -117,7 +121,7 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	if (!world.isRemote) {
 	    ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
-		TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
+		TileEntity facing = world.getTileEntity(pos.offset(dir));
 		if (facing instanceof IConductor && ((IConductor) facing).getNetwork() instanceof ElectricNetwork) {
 		    foundNetworks.add((ElectricNetwork) ((IConductor) facing).getNetwork());
 		}
@@ -166,5 +170,9 @@ public abstract class GenericTileWire extends GenericTileBase implements IConduc
 	remove();
 	NetworkRegistry.pruneEmptyNetworks();
     }
+
+    protected abstract CompoundNBT writeCustomPacket();
+
+    protected abstract void readCustomPacket(CompoundNBT nbt);
 
 }

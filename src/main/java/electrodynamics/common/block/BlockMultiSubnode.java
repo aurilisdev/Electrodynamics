@@ -85,8 +85,8 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		worldIn.getBlockState(subnode.nodePos).getBlock().onBlockActivated(
-			worldIn.getBlockState(subnode.nodePos), worldIn, subnode.nodePos, player, handIn, hit);
+		subnode.nodePos.getBlock(worldIn).onBlockActivated(subnode.nodePos.getBlockState(worldIn), worldIn,
+			subnode.nodePos.toBlockPos(), player, handIn, hit);
 	    }
 	}
 	return ActionResultType.SUCCESS;
@@ -105,8 +105,8 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		return blockAccess.getBlockState(subnode.nodePos).getBlock()
-			.getStrongPower(blockAccess.getBlockState(subnode.nodePos), blockAccess, subnode.nodePos, side);
+		return subnode.nodePos.getBlock(blockAccess).getStrongPower(subnode.nodePos.getBlockState(blockAccess),
+			blockAccess, subnode.nodePos.toBlockPos(), side);
 	    }
 	}
 	return super.getStrongPower(blockState, blockAccess, pos, side);
@@ -119,8 +119,8 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		return blockAccess.getBlockState(subnode.nodePos).getBlock()
-			.getWeakPower(blockAccess.getBlockState(subnode.nodePos), blockAccess, subnode.nodePos, side);
+		return subnode.nodePos.getBlock(blockAccess).getWeakPower(subnode.nodePos.getBlockState(blockAccess),
+			blockAccess, subnode.nodePos.toBlockPos(), side);
 	    }
 	}
 	return super.getWeakPower(blockState, blockAccess, pos, side);
@@ -133,7 +133,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		worldIn.destroyBlock(subnode.nodePos, true);
+		worldIn.destroyBlock(subnode.nodePos.toBlockPos(), true);
 	    }
 	}
 	super.onReplaced(state, worldIn, pos, newState, isMoving);

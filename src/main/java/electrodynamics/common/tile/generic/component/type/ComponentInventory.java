@@ -3,6 +3,7 @@ package electrodynamics.common.tile.generic.component.type;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.function.BiPredicate;
 
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
@@ -31,6 +32,7 @@ public class ComponentInventory implements Component, ISidedInventory {
     protected static final int[] SLOTS_EMPTY = new int[] {};
     protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
     protected LazyOptional<?> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
+    protected BiPredicate<Integer, ItemStack> itemValidPredicate = (x, y) -> true;
     protected HashSet<PlayerEntity> viewing = new HashSet<>();
     protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
     protected int inventorySize;
@@ -46,6 +48,11 @@ public class ComponentInventory implements Component, ISidedInventory {
 	    directionMappings.put(face, new ArrayList<>());
 	}
 	directionMappings.get(face).add(slot);
+	return this;
+    }
+
+    public ComponentInventory setItemValidPredicate(BiPredicate<Integer, ItemStack> itemValidPredicate) {
+	this.itemValidPredicate = itemValidPredicate;
 	return this;
     }
 
@@ -134,6 +141,11 @@ public class ComponentInventory implements Component, ISidedInventory {
     @Override
     public int[] getSlotsForFace(Direction side) {
 	return directionMappings.get(side).stream().mapToInt(i -> i).toArray();
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+	return itemValidPredicate.test(index, stack);
     }
 
     @Override

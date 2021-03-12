@@ -3,8 +3,10 @@ package electrodynamics.api.math;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -33,6 +35,12 @@ public final class Location {
 	x = vec.getX();
 	y = vec.getY();
 	z = vec.getZ();
+    }
+
+    public Location(Vector3d vec) {
+	x = vec.x;
+	y = vec.y;
+	z = vec.z;
     }
 
     public Location(Location loc) {
@@ -90,7 +98,7 @@ public final class Location {
 	return this;
     }
 
-    public Location normalize(Location loc) {
+    public Location normalize() {
 	double dis = distance(new Location());
 	x /= dis;
 	y /= dis;
@@ -144,8 +152,7 @@ public final class Location {
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
-	long temp;
-	temp = Double.doubleToLongBits(x);
+	long temp = Double.doubleToLongBits(x);
 	result = prime * result + (int) (temp ^ temp >>> 32);
 	temp = Double.doubleToLongBits(y);
 	result = prime * result + (int) (temp ^ temp >>> 32);
@@ -159,22 +166,22 @@ public final class Location {
 	if (this == obj) {
 	    return true;
 	}
-	if (obj == null) {
-	    return false;
-	}
-	if (getClass() != obj.getClass()) {
+	if (obj == null || getClass() != obj.getClass()) {
 	    return false;
 	}
 	Location other = (Location) obj;
-	if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
-	    return false;
-	}
-	if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
-	    return false;
-	}
-	if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z)) {
-	    return false;
-	}
-	return true;
+	return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
+		&& Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y)
+		&& Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
+    }
+
+    public static Location readFromNBT(CompoundNBT nbt, String name) {
+	return new Location(nbt.getDouble(name + "X"), nbt.getDouble(name + "Y"), nbt.getDouble(name + "Z"));
+    }
+
+    public void writeToNBT(CompoundNBT nbt, String name) {
+	nbt.putDouble(name + "X", x);
+	nbt.putDouble(name + "Y", y);
+	nbt.putDouble(name + "Z", z);
     }
 }

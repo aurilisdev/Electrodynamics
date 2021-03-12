@@ -46,7 +46,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	addComponent(new ComponentInventory().setInventorySize(3));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player,
-			this.<ComponentInventory>getComponent(ComponentType.Inventory), getCoordsArray())));
+			getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     public void tickServer() {
