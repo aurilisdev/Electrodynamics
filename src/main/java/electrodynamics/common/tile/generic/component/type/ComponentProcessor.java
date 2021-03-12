@@ -26,7 +26,11 @@ public class ComponentProcessor implements Component {
     private Predicate<ComponentProcessor> canProcess = component -> false;
     private Consumer<ComponentProcessor> process;
     private Consumer<ComponentProcessor> failed;
+    private ComponentProcessorType processorType;
     private HashSet<Integer> upgradeSlots = new HashSet<>();
+    private int inputOne;
+    private int inputTwo;
+    private int output;
 
     public ComponentProcessor(GenericTile source) {
 	setHolder(source);
@@ -90,6 +94,10 @@ public class ComponentProcessor implements Component {
 	requiredTicks = nbt.getLong("requiredTicks");
     }
 
+    public ComponentProcessorType getProcessorType() {
+	return processorType;
+    }
+
     public ComponentProcessor setProcess(Consumer<ComponentProcessor> process) {
 	this.process = process;
 	return this;
@@ -105,10 +113,50 @@ public class ComponentProcessor implements Component {
 	return this;
     }
 
+    public ComponentProcessor setType(ComponentProcessorType type) {
+	this.processorType = type;
+	this.inputOne = 0;
+	this.inputTwo = 1;
+	this.output = type == ComponentProcessorType.DoubleObjectToObject ? 2 : 1;
+	return this;
+    }
+
     public ComponentProcessor addUpgradeSlots(int... slot) {
 	for (int i : slot) {
 	    upgradeSlots.add(i);
 	}
+	return this;
+    }
+
+    public ComponentProcessor setInputSlot(int inputOne) {
+	this.inputOne = inputOne;
+	return this;
+    }
+
+    public ComponentProcessor setSecondInputSlot(int inputTwo) {
+	this.inputTwo = inputTwo;
+	return this;
+    }
+
+    public ComponentProcessor setOutputSlot(int output) {
+	this.output = output;
+	return this;
+    }
+
+    public ItemStack getInput() {
+	return holder.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(inputOne);
+    }
+
+    public ItemStack getSecondInput() {
+	return holder.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(inputTwo);
+    }
+
+    public ItemStack getOutput() {
+	return holder.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(output);
+    }
+
+    public ComponentProcessor setOutput(ItemStack stack) {
+	holder.<ComponentInventory>getComponent(ComponentType.Inventory).setInventorySlotContents(output, stack);
 	return this;
     }
 

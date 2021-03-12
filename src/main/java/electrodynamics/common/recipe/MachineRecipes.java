@@ -13,6 +13,7 @@ import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
 import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessorType;
 import net.minecraft.tileentity.TileEntityType;
 
 public class MachineRecipes {
@@ -41,7 +42,8 @@ public class MachineRecipes {
     }
 
     public static boolean canProcess(IElectricProcessor processor) {
-	if (processor instanceof IElectrodynamic && ((IElectrodynamic) processor).getJoulesStored() >= processor.getJoulesPerTick()) {
+	if (processor instanceof IElectrodynamic
+		&& ((IElectrodynamic) processor).getJoulesStored() >= processor.getJoulesPerTick()) {
 	    if (processor instanceof IO2OProcessor) {
 		IO2OProcessor stackProcessor = (IO2OProcessor) processor;
 		TileEntityType<?> type = stackProcessor.getType();
@@ -88,41 +90,37 @@ public class MachineRecipes {
     }
 
     public static boolean canProcess(GenericTile tile) {
-	if (!tile.hasComponent(ComponentType.Electrodynamic)
-		|| tile.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() > tile
-			.<ComponentProcessor>getComponent(ComponentType.Processor).getJoulesPerTick()) {
-	    if (tile instanceof IO2OProcessor) {
-		IO2OProcessor stackProcessor = (IO2OProcessor) tile;
-		TileEntityType<?> type = stackProcessor.getType();
-		if (!stackProcessor.getInput().isEmpty() && o2orecipemap.containsKey(type)) {
+	ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
+	ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
+	if (electro.getJoulesStored() > processor.getJoulesPerTick()) {
+	    if (processor.getProcessorType() == ComponentProcessorType.ObjectToObject) {
+		TileEntityType<?> type = tile.getType();
+		if (!processor.getInput().isEmpty() && o2orecipemap.containsKey(type)) {
 		    for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {
-			if (recipe.getInput().getItem() == stackProcessor.getInput().getItem()
-				&& recipe.getInput().getCount() <= stackProcessor.getInput().getCount()) {
-			    if (stackProcessor.getOutput().isEmpty() ? true
-				    : stackProcessor.getOutput().getItem() == recipe.getOutput().getItem()
-					    && stackProcessor.getOutput().getCount() + recipe.getOutput()
-						    .getCount() <= stackProcessor.getOutput().getMaxStackSize()) {
-				return true;
-			    }
+			if (recipe.getInput().getItem() == processor.getInput().getItem()
+				&& recipe.getInput().getCount() <= processor.getInput().getCount()
+				&& (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe
+					.getOutput().getItem()
+					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
+						.getOutput().getMaxStackSize())) {
+			    return true;
 			}
 		    }
 		}
-	    } else if (tile instanceof IDO2OProcessor) {
-		IDO2OProcessor stackProcessor = (IDO2OProcessor) tile;
-		TileEntityType<?> type = stackProcessor.getType();
-		if (!stackProcessor.getInput1().isEmpty() && !stackProcessor.getInput2().isEmpty()
+	    } else if (processor.getProcessorType() == ComponentProcessorType.DoubleObjectToObject) {
+		TileEntityType<?> type = tile.getType();
+		if (!processor.getInput().isEmpty() && !processor.getSecondInput().isEmpty()
 			&& do2orecipemap.containsKey(type)) {
 		    for (DO2OProcessingRecipe recipe : do2orecipemap.get(type)) {
-			if (recipe.getInput1().getItem() == stackProcessor.getInput1().getItem()
-				&& recipe.getInput1().getCount() <= stackProcessor.getInput1().getCount()
-				&& recipe.getInput2().getItem() == stackProcessor.getInput2().getItem()
-				&& recipe.getInput2().getCount() <= stackProcessor.getInput2().getCount()) {
-			    if (stackProcessor.getOutput().isEmpty() ? true
-				    : stackProcessor.getOutput().getItem() == recipe.getOutput().getItem()
-					    && stackProcessor.getOutput().getCount() + recipe.getOutput()
-						    .getCount() <= stackProcessor.getOutput().getMaxStackSize()) {
-				return true;
-			    }
+			if (recipe.getInput1().getItem() == processor.getInput().getItem()
+				&& recipe.getInput1().getCount() <= processor.getInput().getCount()
+				&& recipe.getInput2().getItem() == processor.getSecondInput().getItem()
+				&& recipe.getInput2().getCount() <= processor.getSecondInput().getCount()
+				&& (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe
+					.getOutput().getItem()
+					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
+						.getOutput().getMaxStackSize())) {
+			    return true;
 			}
 		    }
 		}
@@ -131,6 +129,61 @@ public class MachineRecipes {
 	    }
 	}
 	return false;
+    }
+
+    public static void process(GenericTile tile) {
+	ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
+	ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
+	if (electro.getJoulesStored() > processor.getJoulesPerTick()) {
+	    if (processor.getProcessorType() == ComponentProcessorType.ObjectToObject) {
+		TileEntityType<?> type = tile.getType();
+		if (o2orecipemap.containsKey(type) && !processor.getInput().isEmpty()) {
+		    for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {
+			if (recipe.getInput().getItem() == processor.getInput().getItem()
+				&& recipe.getInput().getCount() <= processor.getInput().getCount()
+				&& processor.getOutput().isEmpty()
+				|| processor.getOutput().getItem() == recipe.getOutput().getItem()
+					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
+						.getOutput().getMaxStackSize()) {
+			    if (processor.getOutput().isEmpty()) {
+				processor.setOutput(recipe.getOutput().copy());
+			    } else {
+				processor.getOutput()
+					.setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
+			    }
+			    processor.getInput()
+				    .setCount(processor.getInput().getCount() - recipe.getInput().getCount());
+			}
+		    }
+		}
+	    } else if (processor.getProcessorType() == ComponentProcessorType.DoubleObjectToObject) {
+		TileEntityType<?> type = tile.getType();
+		if (do2orecipemap.containsKey(type) && !processor.getInput().isEmpty()
+			&& !processor.getSecondInput().isEmpty()) {
+		    for (DO2OProcessingRecipe recipe : do2orecipemap.get(type)) {
+			if (recipe.getInput1().getItem() == processor.getInput().getItem()
+				&& recipe.getInput1().getCount() <= processor.getSecondInput().getCount()
+				&& recipe.getInput2().getItem() == processor.getSecondInput().getItem()
+				&& recipe.getInput2().getCount() <= processor.getSecondInput().getCount()
+				&& (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe
+					.getOutput().getItem()
+					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
+						.getOutput().getMaxStackSize())) {
+			    if (processor.getOutput().isEmpty()) {
+				processor.setOutput(recipe.getOutput().copy());
+			    } else {
+				processor.getOutput()
+					.setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
+			    }
+			    processor.getInput()
+				    .setCount(processor.getInput().getCount() - recipe.getInput1().getCount());
+			    processor.getSecondInput()
+				    .setCount(processor.getSecondInput().getCount() - recipe.getInput2().getCount());
+			}
+		    }
+		}
+	    }
+	}
     }
 
     public static void process(IElectricProcessor processor) {
@@ -163,68 +216,6 @@ public class MachineRecipes {
 		}
 	    } else if (processor instanceof IDO2OProcessor) {
 		IDO2OProcessor stackProcessor = (IDO2OProcessor) processor;
-		TileEntityType<?> type = stackProcessor.getType();
-		if (do2orecipemap.containsKey(type)) {
-		    if (!stackProcessor.getInput1().isEmpty() && !stackProcessor.getInput2().isEmpty()) {
-			for (DO2OProcessingRecipe recipe : do2orecipemap.get(type)) {
-			    if (recipe.getInput1().getItem() == stackProcessor.getInput1().getItem()
-				    && recipe.getInput1().getCount() <= stackProcessor.getInput1().getCount()
-				    && recipe.getInput2().getItem() == stackProcessor.getInput2().getItem()
-				    && recipe.getInput2().getCount() <= stackProcessor.getInput2().getCount()) {
-				if (stackProcessor.getOutput().isEmpty() ? true
-					: stackProcessor.getOutput().getItem() == recipe.getOutput().getItem()
-						&& stackProcessor.getOutput().getCount() + recipe.getOutput()
-							.getCount() <= stackProcessor.getOutput().getMaxStackSize()) {
-				    if (stackProcessor.getOutput().isEmpty()) {
-					stackProcessor.setOutput(recipe.getOutput().copy());
-				    } else {
-					stackProcessor.getOutput().setCount(
-						stackProcessor.getOutput().getCount() + recipe.getOutput().getCount());
-				    }
-				    stackProcessor.getInput1().setCount(
-					    stackProcessor.getInput1().getCount() - recipe.getInput1().getCount());
-				    stackProcessor.getInput2().setCount(
-					    stackProcessor.getInput2().getCount() - recipe.getInput2().getCount());
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-    }
-
-    public static void process(GenericTile tile) {
-	if (!tile.hasComponent(ComponentType.Electrodynamic)
-		|| tile.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() > tile
-			.<ComponentProcessor>getComponent(ComponentType.Processor).getJoulesPerTick()) {
-	    if (tile instanceof IO2OProcessor) {
-		IO2OProcessor stackProcessor = (IO2OProcessor) tile;
-		TileEntityType<?> type = stackProcessor.getType();
-		if (o2orecipemap.containsKey(type)) {
-		    if (!stackProcessor.getInput().isEmpty()) {
-			for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {
-			    if (recipe.getInput().getItem() == stackProcessor.getInput().getItem()
-				    && recipe.getInput().getCount() <= stackProcessor.getInput().getCount()) {
-				if (stackProcessor.getOutput().isEmpty() ? true
-					: stackProcessor.getOutput().getItem() == recipe.getOutput().getItem()
-						&& stackProcessor.getOutput().getCount() + recipe.getOutput()
-							.getCount() <= stackProcessor.getOutput().getMaxStackSize()) {
-				    if (stackProcessor.getOutput().isEmpty()) {
-					stackProcessor.setOutput(recipe.getOutput().copy());
-				    } else {
-					stackProcessor.getOutput().setCount(
-						stackProcessor.getOutput().getCount() + recipe.getOutput().getCount());
-				    }
-				    stackProcessor.getInput().setCount(
-					    stackProcessor.getInput().getCount() - recipe.getInput().getCount());
-				}
-			    }
-			}
-		    }
-		}
-	    } else if (tile instanceof IDO2OProcessor) {
-		IDO2OProcessor stackProcessor = (IDO2OProcessor) tile;
 		TileEntityType<?> type = stackProcessor.getType();
 		if (do2orecipemap.containsKey(type)) {
 		    if (!stackProcessor.getInput1().isEmpty() && !stackProcessor.getInput2().isEmpty()) {

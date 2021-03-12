@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.processor;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.processing.IO2OProcessor;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
@@ -14,13 +13,14 @@ import electrodynamics.common.tile.generic.component.type.ComponentElectrodynami
 import electrodynamics.common.tile.generic.component.type.ComponentInventory;
 import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessorType;
 import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.Direction;
 
-public class TileElectricFurnace extends GenericTileTicking implements IO2OProcessor {
+public class TileElectricFurnace extends GenericTileTicking {
 
     protected IRecipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;
@@ -39,19 +39,20 @@ public class TileElectricFurnace extends GenericTileTicking implements IO2OProce
 	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4).setCanProcess(this::canProcess)
 		.setFailed(component -> cachedRecipe = null).setProcess(this::process)
 		.setRequiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS)
-		.setJoulesPerTick(Constants.ELECTRICFURNACE_USAGE_PER_TICK));
+		.setJoulesPerTick(Constants.ELECTRICFURNACE_USAGE_PER_TICK)
+		.setType(ComponentProcessorType.ObjectToObject));
     }
 
     protected void process(ComponentProcessor component) {
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
-	ItemStack output = getOutput();
+	ItemStack output = component.getOutput();
 	ItemStack result = cachedRecipe.getRecipeOutput();
 	if (!output.isEmpty()) {
 	    output.setCount(output.getCount() + result.getCount());
 	} else {
-	    inv.setInventorySlotContents(1, result.copy());
+	    component.setOutput(result.copy());
 	}
-	ItemStack input = getInput();
+	ItemStack input = component.getInput();
 	input.shrink(1);
 	if (input.getCount() == 0) {
 	    inv.setInventorySlotContents(0, ItemStack.EMPTY);
@@ -61,7 +62,7 @@ public class TileElectricFurnace extends GenericTileTicking implements IO2OProce
     protected boolean canProcess(ComponentProcessor component) {
 	timeSinceChange++;
 	if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
-		.getJoulesStored() >= getJoulesPerTick() * component.operatingSpeed) {
+		.getJoulesStored() >= component.getJoulesPerTick() * component.operatingSpeed) {
 	    if (timeSinceChange > 40 && getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
 		    .get(SubtypeMachine.electricfurnace)) {
 		world.setBlockState(pos,
@@ -71,22 +72,22 @@ public class TileElectricFurnace extends GenericTileTicking implements IO2OProce
 			2 | 16 | 32);
 		timeSinceChange = 0;
 	    }
-	    if (!getInput().isEmpty()) {
-		if (cachedRecipe != null && !cachedRecipe.getIngredients().get(0).test(getInput())) {
+	    if (!component.getInput().isEmpty()) {
+		if (cachedRecipe != null && !cachedRecipe.getIngredients().get(0).test(component.getInput())) {
 		    cachedRecipe = null;
 		}
 		boolean hasRecipe = cachedRecipe != null;
 		if (!hasRecipe) {
 		    for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {
 			if (recipe.getType() == IRecipeType.SMELTING
-				&& recipe.getIngredients().get(0).test(getInput())) {
+				&& recipe.getIngredients().get(0).test(component.getInput())) {
 			    hasRecipe = true;
 			    cachedRecipe = recipe;
 			}
 		    }
 		}
-		if (hasRecipe && cachedRecipe.getIngredients().get(0).test(getInput())) {
-		    ItemStack output = getOutput();
+		if (hasRecipe && cachedRecipe.getIngredients().get(0).test(component.getInput())) {
+		    ItemStack output = component.getOutput();
 		    ItemStack result = cachedRecipe.getRecipeOutput();
 		    return (output.isEmpty() || ItemStack.areItemsEqual(output, result))
 			    && output.getCount() + result.getCount() <= output.getMaxStackSize();
@@ -101,29 +102,5 @@ public class TileElectricFurnace extends GenericTileTicking implements IO2OProce
 		    2 | 16 | 32);
 	}
 	return false;
-    }
-
-    @Override
-    public double getJoulesPerTick() {
-	return this.<ComponentProcessor>getComponent(ComponentType.Processor).joulesPerTick;
-	// TODO: REMOVE THIS IN THE FUTURE;
-    }
-
-    @Override
-    public ItemStack getInput() {
-	return this.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(0);
-	// TODO: REMOVE THIS IN THE FUTURE;
-    }
-
-    @Override
-    public ItemStack getOutput() {
-	return this.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(1);
-	// TODO: REMOVE THIS IN THE FUTURE;
-    }
-
-    @Override
-    public void setOutput(ItemStack stack) {
-	this.<ComponentInventory>getComponent(ComponentType.Inventory).setInventorySlotContents(1, stack);
-	// TODO: REMOVE THIS IN THE FUTURE;
     }
 }
