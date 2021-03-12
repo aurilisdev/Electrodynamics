@@ -48,19 +48,19 @@ public class ComponentProcessor implements Component {
     }
 
     private void tickServer(ComponentTickable tickable) {
-	operatingSpeed = 1;
-	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	for (int slot : upgradeSlots) {
-	    ItemStack stack = inv.getStackInSlot(slot);
-	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-		operatingSpeed *= ((ItemProcessorUpgrade) stack.getItem()).subtype.speedMultiplier;
-	    }
-	}
 	if (holder.hasComponent(ComponentType.Electrodynamic)) {
 	    ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	    electro.setMaxJoules(joulesPerTick * operatingSpeed * 10);
 	}
 	if (canProcess.test(this)) {
+	    operatingSpeed = 1;
+	    ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+	    for (int slot : upgradeSlots) {
+		ItemStack stack = inv.getStackInSlot(slot);
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
+		    operatingSpeed *= ((ItemProcessorUpgrade) stack.getItem()).subtype.speedMultiplier;
+		}
+	    }
 	    operatingTicks += operatingSpeed;
 	    if (operatingTicks >= requiredTicks && process != null) {
 		process.accept(this);

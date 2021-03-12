@@ -39,9 +39,11 @@ public class ScreenElectricFurnace extends GenericContainerScreenUpgradeable<Con
 	TileElectricFurnace furnace = container.getHostFromIntArray();
 	if (furnace != null) {
 	    ComponentElectrodynamic electro = furnace.getComponent(ComponentType.Electrodynamic);
+	    ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.o2oprocessor.usage",
-			    ElectricityChatFormatter.getDisplayShort(electro.getMaxJoulesStored(), ElectricUnit.WATT)),
+			    ElectricityChatFormatter.getDisplayShort(processor.getJoulesPerTick() * 20,
+				    ElectricUnit.WATT)),
 		    (float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.o2oprocessor.voltage",
@@ -56,7 +58,6 @@ public class ScreenElectricFurnace extends GenericContainerScreenUpgradeable<Con
 	TileElectricFurnace furnace = container.getHostFromIntArray();
 	if (furnace != null) {
 	    ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-
 	    if (processor.operatingTicks > 0) {
 		int progress = 12;
 		blit(stack, guiLeft + 39, guiTop + 36 + 12 - progress, 212, 12 - progress, 14, progress + 1);
