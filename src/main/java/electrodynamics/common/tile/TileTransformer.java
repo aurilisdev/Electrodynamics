@@ -22,11 +22,11 @@ public class TileTransformer extends GenericTile {
     public TileTransformer() {
 	super(DeferredRegisters.TILE_TRANSFORMER.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentElectrodynamic().setReceivePower(this::receivePower)
+	addComponent(new ComponentElectrodynamic(this).setReceivePower(this::receivePower)
 		.addRelativeOutputDirection(Direction.SOUTH).addRelativeInputDirection(Direction.NORTH));
     }
 
-    public TransferPack receivePower(TransferPack transfer, boolean debug) {
+    protected TransferPack receivePower(TransferPack transfer, boolean debug) {
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (locked) {
 	    return TransferPack.EMPTY;

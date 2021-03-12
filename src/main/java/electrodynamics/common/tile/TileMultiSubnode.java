@@ -21,8 +21,8 @@ public class TileMultiSubnode extends GenericTile {
 
     public TileMultiSubnode() {
 	super(DeferredRegisters.TILE_MULTI.get());
-	addComponent(new ComponentPacketHandler().addCustomPacketConsumer(this::readCustomPacket)
-		.setCustomPacketSupplier(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket)
+		.addCustomPacketWriter(this::writeCustomPacket));
     }
 
     @Override
@@ -41,12 +41,12 @@ public class TileMultiSubnode extends GenericTile {
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler)::sendCustomPacket);
     }
 
-    public void readCustomPacket(CompoundNBT tag) {
+    protected void readCustomPacket(CompoundNBT tag) {
 	read(getBlockState(), tag);
     }
 
-    public CompoundNBT writeCustomPacket() {
-	return write(new CompoundNBT());
+    protected void writeCustomPacket(CompoundNBT nbt) {
+	write(nbt);
     }
 
     public VoxelShape getShape() {

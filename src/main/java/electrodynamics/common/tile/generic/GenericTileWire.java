@@ -54,8 +54,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().addCustomPacketConsumer(this::readCustomPacket)
-		.setCustomPacketSupplier(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket)
+		.addCustomPacketWriter(this::writeCustomPacket));
     }
 
     private ArrayList<IElectrodynamic> handler = new ArrayList<>();
@@ -171,7 +171,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	NetworkRegistry.pruneEmptyNetworks();
     }
 
-    protected abstract CompoundNBT writeCustomPacket();
+    protected abstract void writeCustomPacket(CompoundNBT nbt);
 
     protected abstract void readCustomPacket(CompoundNBT nbt);
 

@@ -20,7 +20,7 @@ public class TileElectricPump extends GenericTileTicking {
 
     public TileElectricPump() {
 	super(DeferredRegisters.TILE_ELECTRICPUMP.get());
-	addComponent(new ComponentElectrodynamic().setMaxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20)
+	addComponent(new ComponentElectrodynamic(this).setMaxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20)
 		.addInputDirection(Direction.UP));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().addTickServer(this::tickServer));
@@ -30,7 +30,7 @@ public class TileElectricPump extends GenericTileTicking {
 
     protected CachedTileOutput output;
 
-    public void tickServer(ComponentTickable tickable) {
+    protected void tickServer(ComponentTickable tickable) {
 	Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().rotateY();
 	if (output == null) {
 	    output = new CachedTileOutput(world, pos.offset(direction));

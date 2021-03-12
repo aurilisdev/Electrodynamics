@@ -36,20 +36,21 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 
     public TileBatteryBox() {
 	super(DeferredRegisters.TILE_BATTERYBOX.get());
-	addComponent(new ComponentElectrodynamic().setMaxJoules(DEFAULT_MAX_JOULES)
-		.addRelativeInputDirection(Direction.SOUTH).addRelativeOutputDirection(Direction.NORTH));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(new ComponentPacketHandler().setCustomPacketSupplier(this::createPacket)
-		.setGuiPacketSupplier(this::createPacket).addCustomPacketConsumer(this::readPacket)
-		.addGuiPacketConsumer(this::readPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket)
+		.addGuiPacketWriter(this::createPacket).addCustomPacketReader(this::readPacket)
+		.addGuiPacketReader(this::readPacket));
 	addComponent(new ComponentInventory().setInventorySize(3));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player,
 			getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentElectrodynamic(this).setMaxJoules(DEFAULT_MAX_JOULES)
+		.addRelativeInputDirection(Direction.SOUTH).addRelativeOutputDirection(Direction.NORTH));
+
     }
 
-    public void tickServer(ComponentTickable tickable) {
+    protected void tickServer(ComponentTickable tickable) {
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (output == null) {
@@ -81,13 +82,12 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 	    electro.setJoules(electro.getMaxJoulesStored());
 	}
-	if (tickable.getTicks()% 50 == 0) {
+	if (tickable.getTicks() % 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
     }
 
-    public CompoundNBT createPacket() {
-	CompoundNBT nbt = new CompoundNBT();
+    protected void createPacket(CompoundNBT nbt) {
 	nbt.putDouble("clientMaxJoulesStored",
 		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
 	nbt.putDouble("clientJoules",
@@ -95,10 +95,9 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	nbt.putDouble("clientVoltage",
 		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	nbt.putDouble("currentCapacityMultiplier", currentCapacityMultiplier);
-	return nbt;
     }
 
-    public void readPacket(CompoundNBT nbt) {
+    protected void readPacket(CompoundNBT nbt) {
 	clientJoules = nbt.getDouble("clientJoules");
 	clientVoltage = nbt.getDouble("clientVoltage");
 	clientMaxJoulesStored = nbt.getDouble("clientMaxJoulesStored");

@@ -42,14 +42,12 @@ public class TilePipe extends GenericTilePipe {
     }
 
     @Override
-    public CompoundNBT writeCustomPacket() {
-	CompoundNBT nbt = new CompoundNBT();
+    protected void writeCustomPacket(CompoundNBT nbt) {
 	nbt.putDouble("transmit", transmit);
-	return nbt;
     }
 
     @Override
-    public void readCustomPacket(CompoundNBT nbt) {
+    protected void readCustomPacket(CompoundNBT nbt) {
 	transmit = nbt.getDouble("transmit");
     }
 }

@@ -39,6 +39,27 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     protected double joules = 0;
     private Direction lastReturnedSide = Direction.UP;
 
+    public ComponentElectrodynamic(GenericTile source) {
+	setHolder(source);
+	if (holder.hasComponent(ComponentType.PacketHandler)) {
+	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
+	    handler.addGuiPacketWriter(this::writeGuiPacket);
+	    handler.addGuiPacketReader(this::readGuiPacket);
+	}
+    }
+
+    private void writeGuiPacket(CompoundNBT nbt) {
+	nbt.putDouble("voltage", voltage);
+	nbt.putDouble("maxJoules", maxJoules);
+	nbt.putDouble("joules", joules);
+    }
+
+    private void readGuiPacket(CompoundNBT nbt) {
+	voltage = nbt.getDouble("voltage");
+	maxJoules = nbt.getDouble("maxJoules");
+	joules = nbt.getDouble("joules");
+    }
+
     @Override
     public void loadFromNBT(BlockState state, CompoundNBT nbt) {
 	maxJoules = nbt.getDouble("maxJoules");

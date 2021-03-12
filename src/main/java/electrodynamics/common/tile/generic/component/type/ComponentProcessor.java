@@ -4,12 +4,10 @@ import java.util.HashSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.utilities.TransferPack;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentType;
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -21,11 +19,10 @@ public class ComponentProcessor implements Component {
 	this.holder = holder;
     }
 
-    protected double speedMultiplier;
-    protected double operatingTicks;
-    protected double joulesPerTick;
-    protected long requiredTicks = 100;
-    protected long ticks;
+    public double operatingSpeed;
+    public double operatingTicks;
+    public double joulesPerTick;
+    public long requiredTicks = 100;
     private Predicate<ComponentProcessor> canProcess = component -> false;
     private Consumer<ComponentProcessor> process;
     private Consumer<ComponentProcessor> failed;
@@ -43,25 +40,35 @@ public class ComponentProcessor implements Component {
 	    throw new UnsupportedOperationException(
 		    "You need to implement a tickable component to use the processor component!");
 	}
+	if (holder.hasComponent(ComponentType.PacketHandler)) {
+	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
+	    handler.addGuiPacketWriter(this::writeGuiPacket);
+	    handler.addGuiPacketReader(this::readGuiPacket);
+	}
     }
 
     private void tickServer(ComponentTickable tickable) {
-	ticks++;
+	operatingSpeed = 1;
+	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+	for (int slot : upgradeSlots) {
+	    ItemStack stack = inv.getStackInSlot(slot);
+	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
+		operatingSpeed *= ((ItemProcessorUpgrade) stack.getItem()).subtype.speedMultiplier;
+	    }
+	}
+	if (holder.hasComponent(ComponentType.Electrodynamic)) {
+	    ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+	    electro.setMaxJoules(joulesPerTick * operatingSpeed * 10);
+	}
 	if (canProcess.test(this)) {
-	    if (holder.hasComponent(ComponentType.Electrodynamic)) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.extractPower(TransferPack.joulesVoltage(joulesPerTick, electro.getVoltage()), false);
-	    }
-	    speedMultiplier = 1;
-	    ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	    for (int slot : upgradeSlots) {
-		ItemStack stack = inv.getStackInSlot(slot);
-		if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-		    speedMultiplier *= ((ItemProcessorUpgrade) stack.getItem()).subtype.speedMultiplier;
-		}
-	    }
+	    operatingTicks += operatingSpeed;
 	    if (operatingTicks >= requiredTicks && process != null) {
 		process.accept(this);
+		operatingTicks = 0;
+	    }
+	    if (holder.hasComponent(ComponentType.Electrodynamic)) {
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.setJoules(electro.getJoulesStored() - joulesPerTick * operatingSpeed);
 	    }
 	} else if (operatingTicks > 0) {
 	    operatingTicks = 0;
@@ -70,16 +77,17 @@ public class ComponentProcessor implements Component {
 	    }
 	}
     }
-    
 
-    @Override
-    public void saveToNBT(CompoundNBT nbt) {
+    private void writeGuiPacket(CompoundNBT nbt) {
 	nbt.putDouble("operatingTicks", operatingTicks);
+	nbt.putDouble("joulesPerTick", joulesPerTick * operatingSpeed);
+	nbt.putLong("requiredTicks", requiredTicks);
     }
 
-    @Override
-    public void loadFromNBT(BlockState state, CompoundNBT nbt) {
+    private void readGuiPacket(CompoundNBT nbt) {
 	operatingTicks = nbt.getDouble("operatingTicks");
+	joulesPerTick = nbt.getDouble("joulesPerTick");
+	requiredTicks = nbt.getLong("requiredTicks");
     }
 
     public ComponentProcessor setProcess(Consumer<ComponentProcessor> process) {
@@ -89,6 +97,11 @@ public class ComponentProcessor implements Component {
 
     public ComponentProcessor setFailed(Consumer<ComponentProcessor> failed) {
 	this.failed = failed;
+	return this;
+    }
+
+    public ComponentProcessor setCanProcess(Predicate<ComponentProcessor> canProcess) {
+	this.canProcess = canProcess;
 	return this;
     }
 
@@ -102,6 +115,10 @@ public class ComponentProcessor implements Component {
     public ComponentProcessor setJoulesPerTick(double joulesPerTick) {
 	this.joulesPerTick = joulesPerTick;
 	return this;
+    }
+
+    public double getJoulesPerTick() {
+	return joulesPerTick;
     }
 
     public ComponentProcessor setRequiredTicks(long requiredTicks) {

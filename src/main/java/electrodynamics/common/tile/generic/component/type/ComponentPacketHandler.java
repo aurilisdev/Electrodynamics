@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.generic.component.type;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.PacketUpdateTile;
@@ -23,57 +22,65 @@ public class ComponentPacketHandler implements Component {
 	this.holder = holder;
     }
 
-    protected Supplier<CompoundNBT> customPacketSupplier = () -> new CompoundNBT();
-    protected Supplier<CompoundNBT> guiPacketSupplier = () -> new CompoundNBT();
-    protected Consumer<CompoundNBT> customPacketConsumer;
-    protected Consumer<CompoundNBT> guiPacketConsumer;
+    protected Consumer<CompoundNBT> customPacketWriter;
+    protected Consumer<CompoundNBT> guiPacketWriter;
+    protected Consumer<CompoundNBT> customPacketReader;
+    protected Consumer<CompoundNBT> guiPacketReader;
 
-    public ComponentPacketHandler setCustomPacketSupplier(Supplier<CompoundNBT> supplier) {
-	customPacketSupplier = supplier;
-	return this;
-    }
-
-    public ComponentPacketHandler setGuiPacketSupplier(Supplier<CompoundNBT> supplier) {
-	guiPacketSupplier = supplier;
-	return this;
-    }
-
-    public ComponentPacketHandler addCustomPacketConsumer(Consumer<CompoundNBT> consumer) {
+    public ComponentPacketHandler addCustomPacketWriter(Consumer<CompoundNBT> consumer) {
 	Consumer<CompoundNBT> safe = consumer;
-	if (customPacketConsumer != null) {
-	    safe = safe.andThen(customPacketConsumer);
+	if (customPacketWriter != null) {
+	    safe = safe.andThen(customPacketWriter);
 	}
-	customPacketConsumer = safe;
+	customPacketWriter = safe;
 	return this;
     }
 
-    public ComponentPacketHandler addGuiPacketConsumer(Consumer<CompoundNBT> consumer) {
+    public ComponentPacketHandler addGuiPacketWriter(Consumer<CompoundNBT> consumer) {
 	Consumer<CompoundNBT> safe = consumer;
-	if (guiPacketConsumer != null) {
-	    safe = safe.andThen(guiPacketConsumer);
+	if (guiPacketWriter != null) {
+	    safe = safe.andThen(guiPacketWriter);
 	}
-	guiPacketConsumer = safe;
+	guiPacketWriter = safe;
 	return this;
     }
 
-    public Supplier<CompoundNBT> getCustomPacketSupplier() {
-	return customPacketSupplier;
+    public ComponentPacketHandler addCustomPacketReader(Consumer<CompoundNBT> consumer) {
+	Consumer<CompoundNBT> safe = consumer;
+	if (customPacketReader != null) {
+	    safe = safe.andThen(customPacketReader);
+	}
+	customPacketReader = safe;
+	return this;
     }
 
-    public Supplier<CompoundNBT> getGuiPacketSupplier() {
-	return guiPacketSupplier;
+    public ComponentPacketHandler addGuiPacketReader(Consumer<CompoundNBT> consumer) {
+	Consumer<CompoundNBT> safe = consumer;
+	if (guiPacketReader != null) {
+	    safe = safe.andThen(guiPacketReader);
+	}
+	guiPacketReader = safe;
+	return this;
+    }
+
+    public Consumer<CompoundNBT> getCustomPacketSupplier() {
+	return customPacketWriter;
+    }
+
+    public Consumer<CompoundNBT> getGuiPacketSupplier() {
+	return guiPacketWriter;
     }
 
     public Consumer<CompoundNBT> getCustomPacketConsumer() {
-	return customPacketConsumer;
+	return customPacketReader;
     }
 
     public Consumer<CompoundNBT> getGuiPacketConsumer() {
-	return guiPacketConsumer;
+	return guiPacketReader;
     }
 
     public void sendCustomPacket() {
-	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), false);
+	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), false, new CompoundNBT());
 	World world = holder.getWorld();
 	BlockPos pos = holder.getPos();
 	if (world instanceof ServerWorld) {
@@ -84,7 +91,7 @@ public class ComponentPacketHandler implements Component {
     }
 
     public void sentGuiPacketToTracking() {
-	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), true);
+	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), true, new CompoundNBT());
 	World world = holder.getWorld();
 	BlockPos pos = holder.getPos();
 	if (world instanceof ServerWorld) {

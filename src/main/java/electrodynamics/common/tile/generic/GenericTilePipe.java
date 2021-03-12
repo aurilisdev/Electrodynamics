@@ -86,8 +86,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().addCustomPacketConsumer(this::readCustomPacket)
-		.setCustomPacketSupplier(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket)
+		.addCustomPacketWriter(this::writeCustomPacket));
     }
 
     private HashSet<IPipe> getConnectedConductors() {
@@ -192,7 +192,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	NetworkRegistry.pruneEmptyNetworks();
     }
 
-    protected abstract CompoundNBT writeCustomPacket();
+    protected abstract void writeCustomPacket(CompoundNBT nbt);
 
     protected abstract void readCustomPacket(CompoundNBT nbt);
 

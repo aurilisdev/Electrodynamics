@@ -19,10 +19,10 @@ public class TileSolarPanel extends GenericTileTicking {
     public TileSolarPanel() {
 	super(DeferredRegisters.TILE_SOLARPANEL.get());
 	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(new ComponentElectrodynamic().addOutputDirection(Direction.DOWN));
+	addComponent(new ComponentElectrodynamic(this).addOutputDirection(Direction.DOWN));
     }
 
-    public void tickServer(ComponentTickable tickable) {
+    protected void tickServer(ComponentTickable tickable) {
 	if (world.isDaytime() && world.canSeeSky(pos.add(0, 1, 0))) {
 	    if (output == null) {
 		output = new CachedTileOutput(world, pos.offset(Direction.DOWN));

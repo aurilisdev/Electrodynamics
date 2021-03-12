@@ -25,8 +25,13 @@ public class PacketUpdateTile {
 	this.isGUI = isGUI;
     }
 
-    public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI) {
-	this(pos, isGUI ? component.getGuiPacketSupplier().get() : component.getCustomPacketSupplier().get(), isGUI);
+    public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI, CompoundNBT base) {
+	this(pos, base, isGUI);
+	if (isGUI) {
+	    component.getGuiPacketSupplier().accept(base);
+	} else {
+	    component.getCustomPacketSupplier().accept(base);
+	}
 	this.isGUI = isGUI;
     }
 
