@@ -40,5 +40,4 @@ public class TileSolarPanel extends GenericTileTicking {
 	    ElectricityUtilities.receivePower(output.get(), Direction.UP, pack, false);
 	}
     }
-
 }

@@ -15,12 +15,9 @@ import electrodynamics.common.tile.generic.component.type.ComponentElectrodynami
 import electrodynamics.common.tile.generic.component.type.ComponentInventory;
 import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import electrodynamics.common.tile.generic.component.type.ComponentTickable;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -42,12 +39,14 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	addComponent(new ComponentElectrodynamic().setMaxJoules(DEFAULT_MAX_JOULES)
 		.addRelativeInputDirection(Direction.SOUTH).addRelativeOutputDirection(Direction.NORTH));
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().setTickServer(this::tickServer).setTickClient(this::tickClient));
+	addComponent(new ComponentTickable().setTickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().setCustomPacketSupplier(this::createPacket)
 		.setGuiPacketSupplier(this::createPacket).setCustomPacketConsumer(this::readPacket)
 		.setGuiPacketConsumer(this::readPacket));
 	addComponent(new ComponentInventory().setInventorySize(3));
-	addComponent(new ComponentContainerProvider("container.batterybox").setCreateMenuFunction(this::createMenu));
+	addComponent(new ComponentContainerProvider("container.batterybox")
+		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player,
+			this.<ComponentInventory>getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     public void tickServer() {
@@ -87,13 +86,6 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	}
     }
 
-    public void tickClient() {
-	if (world.getWorldInfo().getDayTime() % 220 == 0) {
-	    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-		    DeferredRegisters.SOUND_BATTERYBOX.get(), SoundCategory.BLOCKS, 1, 1, false);
-	}
-    }
-
     public CompoundNBT createPacket() {
 	CompoundNBT nbt = new CompoundNBT();
 	nbt.putDouble("clientMaxJoulesStored",
@@ -111,11 +103,6 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	clientVoltage = nbt.getDouble("clientVoltage");
 	clientMaxJoulesStored = nbt.getDouble("clientMaxJoulesStored");
 	currentCapacityMultiplier = nbt.getDouble("currentCapacityMultiplier");
-    }
-
-    protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerBatteryBox(id, player, this.<ComponentInventory>getComponent(ComponentType.Inventory),
-		getCoordsArray());
     }
 
     @Override
