@@ -23,19 +23,19 @@ public class TileElectricPump extends GenericTileTicking {
 	addComponent(new ComponentElectrodynamic().setMaxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20)
 		.addInputDirection(Direction.UP));
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().setTickServer(this::tickServer));
+	addComponent(new ComponentTickable().addTickServer(this::tickServer));
 	addComponent(
 		new ComponentFluidHandler().addFluidTank(Fluids.WATER, 0).addRelativeInputDirection(Direction.EAST));
     }
 
     protected CachedTileOutput output;
 
-    public void tickServer() {
+    public void tickServer(ComponentTickable tickable) {
 	Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().rotateY();
 	if (output == null) {
 	    output = new CachedTileOutput(world, pos.offset(direction));
 	}
-	if (world.getWorldInfo().getGameTime() % 20 == 0) {
+	if (tickable.getTicks() % 20 == 0) {
 	    FluidState state = world.getBlockState(pos.offset(Direction.DOWN)).getFluidState();
 	    hasWater = state.isSource() && state.getFluid() == Fluids.WATER;
 	}

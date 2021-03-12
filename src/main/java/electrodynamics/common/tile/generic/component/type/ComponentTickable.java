@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.generic.component.type;
 
+import java.util.function.Consumer;
+
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentType;
@@ -12,36 +14,50 @@ public class ComponentTickable implements Component {
 	this.holder = holder;
     }
 
-    protected Runnable tickCommon;
-    protected Runnable tickClient;
-    protected Runnable tickServer;
+    protected Consumer<ComponentTickable> tickCommon;
+    protected Consumer<ComponentTickable> tickClient;
+    protected Consumer<ComponentTickable> tickServer;
+    private long ticks = 0;
 
-    public ComponentTickable setTickCommon(Runnable tickCommon) {
-	this.tickCommon = tickCommon;
+    public ComponentTickable addTickCommon(Consumer<ComponentTickable> consumer) {
+	Consumer<ComponentTickable> safe = consumer;
+	if (tickCommon != null) {
+	    safe = safe.andThen(tickCommon);
+	}
+	tickCommon = safe;
 	return this;
     }
 
-    public ComponentTickable setTickClient(Runnable tickClient) {
-	this.tickClient = tickClient;
+    public ComponentTickable addTickClient(Consumer<ComponentTickable> consumer) {
+	Consumer<ComponentTickable> safe = consumer;
+	if (tickClient != null) {
+	    safe = safe.andThen(tickClient);
+	}
+	tickClient = safe;
 	return this;
     }
 
-    public ComponentTickable setTickServer(Runnable tickServer) {
-	this.tickServer = tickServer;
+    public ComponentTickable addTickServer(Consumer<ComponentTickable> consumer) {
+	Consumer<ComponentTickable> safe = consumer;
+	if (tickServer != null) {
+	    safe = safe.andThen(tickServer);
+	}
+	tickServer = safe;
 	return this;
     }
 
     public void tickCommon() {
+	ticks++;
 	if (tickCommon != null) {
-	    tickCommon.run();
+	    tickCommon.accept(this);
 	}
     }
 
     public void tickServer() {
 	if (tickServer != null) {
-	    tickServer.run();
+	    tickServer.accept(this);
 	}
-	if (holder.getWorld().getWorldInfo().getDayTime() % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler)
+	if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler)
 		&& holder.hasComponent(ComponentType.Inventory)
 		&& !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
 	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sentGuiPacketToTracking();
@@ -50,8 +66,12 @@ public class ComponentTickable implements Component {
 
     public void tickClient() {
 	if (tickClient != null) {
-	    tickClient.run();
+	    tickClient.accept(this);
 	}
+    }
+
+    public long getTicks() {
+	return ticks;
     }
 
     @Override

@@ -54,7 +54,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().setCustomPacketConsumer(this::readCustomPacket)
+	addComponent(new ComponentPacketHandler().addCustomPacketConsumer(this::readCustomPacket)
 		.setCustomPacketSupplier(this::writeCustomPacket));
     }
 

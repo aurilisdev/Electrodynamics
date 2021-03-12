@@ -42,10 +42,10 @@ public class TileCoalGenerator extends GenericTileTicking {
 	super(DeferredRegisters.TILE_COALGENERATOR.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler().setCustomPacketSupplier(this::createPacket)
-		.setGuiPacketSupplier(this::createPacket).setCustomPacketConsumer(this::readPacket)
-		.setGuiPacketConsumer(this::readPacket));
-	addComponent(new ComponentTickable().setTickClient(this::tickClient).setTickCommon(this::tickCommon)
-		.setTickServer(this::tickServer));
+		.setGuiPacketSupplier(this::createPacket).addCustomPacketConsumer(this::readPacket)
+		.addGuiPacketConsumer(this::readPacket));
+	addComponent(new ComponentTickable().addTickClient(this::tickClient).addTickCommon(this::tickCommon)
+		.addTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic().addRelativeOutputDirection(Direction.NORTH));
 	addComponent(new ComponentInventory().setInventorySize(1).addSlotOnFace(Direction.UP, 0)
 		.addSlotOnFace(Direction.DOWN, 0).addSlotOnFace(Direction.EAST, 0).addSlotOnFace(Direction.WEST, 0)
@@ -56,7 +56,7 @@ public class TileCoalGenerator extends GenericTileTicking {
 			getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
-    public void tickServer() {
+    public void tickServer(ComponentTickable tickable) {
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	if (output == null) {
 	    output = new CachedTileOutput(world, new BlockPos(pos).offset(direction.getDirection().getOpposite()));
@@ -96,13 +96,13 @@ public class TileCoalGenerator extends GenericTileTicking {
 		Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
     }
 
-    public void tickCommon() {
+    public void tickCommon(ComponentTickable tickable) {
 	if (burnTime > 0) {
 	    --burnTime;
 	}
     }
 
-    public void tickClient() {
+    public void tickClient(ComponentTickable tickable) {
 	if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
 	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    if (world.rand.nextInt(10) == 0) {

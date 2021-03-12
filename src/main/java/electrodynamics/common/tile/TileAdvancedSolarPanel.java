@@ -29,12 +29,12 @@ public class TileAdvancedSolarPanel extends GenericTileTicking implements IMulti
 
     public TileAdvancedSolarPanel() {
 	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
-	addComponent(new ComponentTickable().setTickServer(this::tickServer));
+	addComponent(new ComponentTickable().addTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic().addOutputDirection(Direction.DOWN)
 		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
     }
 
-    public void tickServer() {
+    public void tickServer(ComponentTickable tickable) {
 	if (world.isDaytime() && world.canSeeSky(pos.add(0, 1, 0))) {
 	    if (output == null) {
 		output = new CachedTileOutput(world, pos.offset(Direction.DOWN));

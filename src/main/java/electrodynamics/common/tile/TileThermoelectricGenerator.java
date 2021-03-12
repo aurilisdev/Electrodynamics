@@ -20,17 +20,17 @@ public class TileThermoelectricGenerator extends GenericTileTicking {
     public TileThermoelectricGenerator() {
 	super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().setTickServer(this::tickServer));
+	addComponent(new ComponentTickable().addTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic().addRelativeOutputDirection(Direction.UP));
     }
 
-    public void tickServer() {
+    public void tickServer(ComponentTickable tickable) {
 	if (output == null) {
 	    output = new CachedTileOutput(world, pos.offset(Direction.UP));
 	}
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-	if (world.getWorldInfo().getDayTime() % 20 == 0) {
+	if (tickable.getTicks() % 20 == 0) {
 	    hasHeat = world.getBlockState(pos.offset(direction.getDirection().getOpposite())).getFluidState()
 		    .getFluid() == Fluids.LAVA;
 	}

@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import electrodynamics.api.tile.ITickableTileBase;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
-import electrodynamics.api.tile.processing.IElectricProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
+import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
+import electrodynamics.common.tile.generic.component.type.ComponentInventory;
+import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
-public abstract class GenericTileProcessor extends GenericTileInventory
-	implements ITickableTileBase, IElectricProcessor {
-    public static final double DEFAULT_BASIC_MACHINE_VOLTAGE = 120.0;
+public abstract class GenericTileProcessor extends GenericTileTicking {
     protected HashSet<Integer> upgradeSlots = new HashSet<>();
     protected double currentOperatingTick = 0;
     protected double joules = 0;
@@ -26,20 +21,18 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 
     protected GenericTileProcessor(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
+	addComponent(new ComponentElectrodynamic());
+	addComponent(new ComponentTickable().addTickServer(this::tickServer));
+	addComponent(new ComponentInventory());
+
     }
 
     protected void addUpgradeSlots(Integer... i) {
 	upgradeSlots.addAll(new ArrayList<>(Arrays.asList(i)));
     }
 
-    @Override
-    public void tick() {
-	ticks++;
-	ITickableTileBase.super.tick();
-    }
-
-    @Override
     public void tickServer() {
+	ticks++;
 	trackInteger(0, (int) currentOperatingTick);
 	trackInteger(1, (int) getVoltage());
 	trackInteger(2, (int) Math.ceil(getJoulesPerTick()));
@@ -56,7 +49,7 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 	    failed = true;
 	}
 	if (failed && currentOperatingTick > 0) {
-	    failedOperation();
+	    currentOperatingTick = 0;
 	}
     }
 
@@ -72,17 +65,8 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 	currentOperatingTick += currentSpeedMultiplier;
     }
 
-    protected void failedOperation() {
-	currentOperatingTick = 0;
-    }
-
     public boolean isProcessing() {
 	return currentOperatingTick > 0;
-    }
-
-    @Override
-    public double getVoltage() {
-	return DEFAULT_BASIC_MACHINE_VOLTAGE;
     }
 
     public abstract int getRequiredTicks();
@@ -95,31 +79,6 @@ public abstract class GenericTileProcessor extends GenericTileInventory
 	MachineRecipes.process(this);
     }
 
-    @Override
-    @Deprecated
-    public void setJoulesStored(double joules) {
-	this.joules = Math.min(getMaxJoulesStored(), joules);
-    }
+    public abstract double getJoulesPerTick();
 
-    @Override
-    public double getJoulesStored() {
-	return joules;
-    }
-
-    @Override
-    public double getMaxJoulesStored() {
-	return getJoulesPerTick() * 10;
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-	if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC && compareCapabilityDirectionElectricity(facing)) {
-	    return (LazyOptional<T>) LazyOptional.of(() -> this);
-	}
-	return super.getCapability(capability, facing);
-    }
-
-    public boolean compareCapabilityDirectionElectricity(Direction dir) {
-	return getFacing().getOpposite() == dir;
-    }
 }

@@ -86,7 +86,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().setCustomPacketConsumer(this::readCustomPacket)
+	addComponent(new ComponentPacketHandler().addCustomPacketConsumer(this::readCustomPacket)
 		.setCustomPacketSupplier(this::writeCustomPacket));
     }
 

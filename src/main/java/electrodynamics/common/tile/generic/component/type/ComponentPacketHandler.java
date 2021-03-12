@@ -23,8 +23,8 @@ public class ComponentPacketHandler implements Component {
 	this.holder = holder;
     }
 
-    protected Supplier<CompoundNBT> customPacketSupplier;
-    protected Supplier<CompoundNBT> guiPacketSupplier;
+    protected Supplier<CompoundNBT> customPacketSupplier = () -> new CompoundNBT();
+    protected Supplier<CompoundNBT> guiPacketSupplier = () -> new CompoundNBT();
     protected Consumer<CompoundNBT> customPacketConsumer;
     protected Consumer<CompoundNBT> guiPacketConsumer;
 
@@ -38,13 +38,21 @@ public class ComponentPacketHandler implements Component {
 	return this;
     }
 
-    public ComponentPacketHandler setCustomPacketConsumer(Consumer<CompoundNBT> consumer) {
-	customPacketConsumer = consumer;
+    public ComponentPacketHandler addCustomPacketConsumer(Consumer<CompoundNBT> consumer) {
+	Consumer<CompoundNBT> safe = consumer;
+	if (customPacketConsumer != null) {
+	    safe = safe.andThen(customPacketConsumer);
+	}
+	customPacketConsumer = safe;
 	return this;
     }
 
-    public ComponentPacketHandler setGuiPacketConsumer(Consumer<CompoundNBT> consumer) {
-	guiPacketConsumer = consumer;
+    public ComponentPacketHandler addGuiPacketConsumer(Consumer<CompoundNBT> consumer) {
+	Consumer<CompoundNBT> safe = consumer;
+	if (guiPacketConsumer != null) {
+	    safe = safe.andThen(guiPacketConsumer);
+	}
+	guiPacketConsumer = safe;
 	return this;
     }
 

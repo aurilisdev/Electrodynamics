@@ -39,17 +39,17 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	addComponent(new ComponentElectrodynamic().setMaxJoules(DEFAULT_MAX_JOULES)
 		.addRelativeInputDirection(Direction.SOUTH).addRelativeOutputDirection(Direction.NORTH));
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().setTickServer(this::tickServer));
+	addComponent(new ComponentTickable().addTickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().setCustomPacketSupplier(this::createPacket)
-		.setGuiPacketSupplier(this::createPacket).setCustomPacketConsumer(this::readPacket)
-		.setGuiPacketConsumer(this::readPacket));
+		.setGuiPacketSupplier(this::createPacket).addCustomPacketConsumer(this::readPacket)
+		.addGuiPacketConsumer(this::readPacket));
 	addComponent(new ComponentInventory().setInventorySize(3));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player,
 			getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
-    public void tickServer() {
+    public void tickServer(ComponentTickable tickable) {
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (output == null) {
@@ -81,7 +81,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 	    electro.setJoules(electro.getMaxJoulesStored());
 	}
-	if (world.getWorldInfo().getDayTime() % 50 == 0) {
+	if (tickable.getTicks()% 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
     }
