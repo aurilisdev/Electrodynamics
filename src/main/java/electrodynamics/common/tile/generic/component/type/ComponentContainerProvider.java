@@ -27,8 +27,10 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
 	this.name = name;
     }
 
-    public void setCreateMenuFunction(BiFunction<Integer, PlayerInventory, Container> createMenuFunction) {
+    public ComponentContainerProvider setCreateMenuFunction(
+	    BiFunction<Integer, PlayerInventory, Container> createMenuFunction) {
 	this.createMenuFunction = createMenuFunction;
+	return this;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
 	if (createMenuFunction != null) {
 	    if (holder.hasComponent(ComponentType.Inventory)) {
 		ComponentInventory componentinv = holder.getComponent(ComponentType.Inventory);
-		if (!componentinv.isUsableByPlayer(pl)) {
+		if (componentinv.isUsableByPlayer(pl)) {
 		    componentinv.openInventory(pl);
 		} else {
 		    return null;

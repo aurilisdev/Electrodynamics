@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.INameable;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -44,7 +45,7 @@ public class GenericTile extends TileEntity implements INameable {
 	super.read(state, compound);
 	for (Component component : componentMap.values()) {
 	    component.setHolder(this);
-	    component.saveToNBT(compound);
+	    component.loadFromNBT(state, compound);
 	}
     }
 
@@ -85,6 +86,14 @@ public class GenericTile extends TileEntity implements INameable {
 	    component.setHolder(this);
 	    component.remove();
 	}
+    }
+
+    public IntArray getCoordsArray() {
+	IntArray array = new IntArray(3);
+	array.set(0, pos.getX());
+	array.set(1, pos.getY());
+	array.set(2, pos.getZ());
+	return array;
     }
 
     @Override

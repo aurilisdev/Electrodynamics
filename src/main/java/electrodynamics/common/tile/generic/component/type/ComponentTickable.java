@@ -1,9 +1,17 @@
 package electrodynamics.common.tile.generic.component.type;
 
+import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentType;
 
 public class ComponentTickable implements Component {
+    private GenericTile holder;
+
+    @Override
+    public void setHolder(GenericTile holder) {
+	this.holder = holder;
+    }
+
     protected Runnable tickCommon;
     protected Runnable tickClient;
     protected Runnable tickServer;
@@ -32,6 +40,11 @@ public class ComponentTickable implements Component {
     public void tickServer() {
 	if (tickServer != null) {
 	    tickServer.run();
+	}
+	if (holder.getWorld().getWorldInfo().getDayTime() % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler)
+		&& holder.hasComponent(ComponentType.Inventory)
+		&& !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
+	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sentGuiPacketToTracking();
 	}
     }
 

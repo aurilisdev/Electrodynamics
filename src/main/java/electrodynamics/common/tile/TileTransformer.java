@@ -23,7 +23,7 @@ public class TileTransformer extends GenericTile {
 	super(DeferredRegisters.TILE_TRANSFORMER.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentElectrodynamic().setReceivePower(this::receivePower)
-		.addRelativeInputDirection(Direction.NORTH).addRelativeOutputDirection(Direction.SOUTH));
+		.addRelativeOutputDirection(Direction.SOUTH).addRelativeInputDirection(Direction.NORTH));
     }
 
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -39,7 +39,7 @@ public class TileTransformer extends GenericTile {
 	double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 1920.0);
 	locked = true;
 	TransferPack returner = debug ? TransferPack.ampsVoltage(1, 1)
-		: ElectricityUtilities.receivePower(output.get(), facing, TransferPack
+		: ElectricityUtilities.receivePower(output.get(), facing.getOpposite(), TransferPack
 			.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
 	locked = false;
 	if (returner.getJoules() > 0) {

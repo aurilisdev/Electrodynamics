@@ -99,8 +99,8 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	Direction relative = TileUtilities
 		.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
 	return (inputDirections.contains(side) || outputDirections.contains(side)
-		|| (holder.hasComponent(ComponentType.Direction)
-			&& (relativeInputDirections.contains(relative) || relativeOutputDirections.contains(relative))))
+		|| holder.hasComponent(ComponentType.Direction)
+			&& (relativeInputDirections.contains(relative) || relativeOutputDirections.contains(relative)))
 		&& capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 

@@ -11,8 +11,12 @@ import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion.Mode;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -63,12 +67,12 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
 	return (inputDirections.contains(side) || outputDirections.contains(side)
-		|| (holder.hasComponent(ComponentType.Direction) && (relativeInputDirections
+		|| holder.hasComponent(ComponentType.Direction) && (relativeInputDirections
 			.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
 			|| relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-				side)))))
+				side))))
 		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC;
     }
 
@@ -80,10 +84,10 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public TransferPack extractPower(TransferPack transfer, boolean debug) {
-	if (outputDirections.contains(lastReturnedSide) || (holder.hasComponent(ComponentType.Direction)
+	if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction)
 		&& relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-			lastReturnedSide)))) {
+			lastReturnedSide))) {
 	    return extractPower.apply(transfer, debug);
 	}
 	return TransferPack.EMPTY;
@@ -91,10 +95,10 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
-	if (inputDirections.contains(lastReturnedSide) || (holder.hasComponent(ComponentType.Direction)
+	if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction)
 		&& relativeInputDirections.contains(TileUtilities.getRelativeSide(
 			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-			lastReturnedSide)))) {
+			lastReturnedSide))) {
 	    return receivePower.apply(transfer, debug);
 	}
 	return TransferPack.EMPTY;
@@ -153,6 +157,15 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     public double getMaxJoulesStored() {
 	return maxJoules;
+    }
+
+    @Override
+    public void overVoltage(TransferPack transfer) {
+	World world = holder.getWorld();
+	BlockPos pos = holder.getPos();
+	world.setBlockState(pos, Blocks.AIR.getDefaultState());
+	world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(),
+		(float) Math.log10(10 + transfer.getVoltage() / getVoltage()), Mode.DESTROY);
     }
 
     @Override

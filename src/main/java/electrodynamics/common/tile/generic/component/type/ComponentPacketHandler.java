@@ -29,22 +29,22 @@ public class ComponentPacketHandler implements Component {
     protected Consumer<CompoundNBT> guiPacketConsumer;
 
     public ComponentPacketHandler setCustomPacketSupplier(Supplier<CompoundNBT> supplier) {
-	this.customPacketSupplier = supplier;
+	customPacketSupplier = supplier;
 	return this;
     }
 
     public ComponentPacketHandler setGuiPacketSupplier(Supplier<CompoundNBT> supplier) {
-	this.guiPacketSupplier = supplier;
+	guiPacketSupplier = supplier;
 	return this;
     }
 
     public ComponentPacketHandler setCustomPacketConsumer(Consumer<CompoundNBT> consumer) {
-	this.customPacketConsumer = consumer;
+	customPacketConsumer = consumer;
 	return this;
     }
 
     public ComponentPacketHandler setGuiPacketConsumer(Consumer<CompoundNBT> consumer) {
-	this.guiPacketConsumer = consumer;
+	guiPacketConsumer = consumer;
 	return this;
     }
 
@@ -75,7 +75,7 @@ public class ComponentPacketHandler implements Component {
 	}
     }
 
-    public void sendGUIPacket() {
+    public void sentGuiPacketToTracking() {
 	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), true);
 	World world = holder.getWorld();
 	BlockPos pos = holder.getPos();
