@@ -1,35 +1,48 @@
 package electrodynamics.common.tile.processor.do2o;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.processing.IDO2OProcessor;
-import electrodynamics.api.utilities.TileUtilities;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
-import electrodynamics.common.tile.generic.GenericTileProcessor;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
+import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.recipe.MachineRecipes;
+import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tile.generic.GenericTileTicking;
+import electrodynamics.common.tile.generic.component.ComponentType;
+import electrodynamics.common.tile.generic.component.type.ComponentContainerProvider;
+import electrodynamics.common.tile.generic.component.type.ComponentDirection;
+import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
+import electrodynamics.common.tile.generic.component.type.ComponentInventory;
+import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessorType;
+import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
-public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OProcessor {
-    public static final double REQUIRED_JOULES_PER_TICK = 90;
-    public static final int REQUIRED_TICKS = 250;
-
-    public static final int[] SLOTS_INPUT1 = new int[] { 0 };
-    public static final int[] SLOTS_INPUT2 = new int[] { 1 };
+public class TileOxidationFurnace extends GenericTileTicking {
     public static final int[] SLOTS_OUTPUT = new int[] { 2 };
 
     public TileOxidationFurnace() {
 	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
-	addUpgradeSlots(3, 4, 5);
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentPacketHandler());
+	addComponent(new ComponentTickable());
+	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
+		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentInventory().setInventorySize(5).addSlotOnFace(Direction.UP, 0)
+		.addSlotOnFace(Direction.UP, 1).addSlotOnFace(Direction.DOWN, 2));
+	addComponent(new ComponentContainerProvider("container.mineralcrusher")
+		.setCreateMenuFunction((id, player) -> new ContainerO2OProcessor(id, player,
+			getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentProcessor(this).addUpgradeSlots(3, 4, 5).setCanProcess(this::canProcess)
+		.setProcess(component -> MachineRecipes.process(this))
+		.setRequiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
+		.setJoulesPerTick(Constants.OXIDATIONFURNACE_USAGE_PER_TICK)
+		.setType(ComponentProcessorType.ObjectToObject));
     }
 
-    @Override
-    public boolean canProcess() {
-	if (super.canProcess()) {
+    protected boolean canProcess(ComponentProcessor component) {
+	if (MachineRecipes.canProcess(this)) {
 	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
 		    .get(SubtypeMachine.oxidationfurnace)) {
 		world.setBlockState(pos,
@@ -47,64 +60,6 @@ public class TileOxidationFurnace extends GenericTileProcessor implements IDO2OP
 		    3);
 	}
 	return false;
-    }
-
-    @Override
-    public double getJoulesPerTick() {
-	return REQUIRED_JOULES_PER_TICK * currentSpeedMultiplier;
-    }
-
-    @Override
-    public int getRequiredTicks() {
-	return REQUIRED_TICKS;
-    }
-
-    @Override
-    public double getVoltage() {
-	return DEFAULT_BASIC_MACHINE_VOLTAGE * 2;
-    }
-
-    @Override
-    public int getSizeInventory() {
-	return 6;
-    }
-
-    @Override
-    public int[] getSlotsForFace(Direction side) {
-	return side == Direction.DOWN ? SLOTS_OUTPUT
-		: side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST) ? SLOTS_INPUT1
-			: side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT2
-				: SLOTS_EMPTY;
-    }
-
-    @Override
-    protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerDO2OProcessor(id, player, this, getInventoryData());
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-	return new TranslationTextComponent("container.oxidationfurnace");
-    }
-
-    @Override
-    public ItemStack getInput1() {
-	return getStackInSlot(0);
-    }
-
-    @Override
-    public ItemStack getInput2() {
-	return getStackInSlot(1);
-    }
-
-    @Override
-    public ItemStack getOutput() {
-	return getStackInSlot(2);
-    }
-
-    @Override
-    public void setOutput(ItemStack stack) {
-	setInventorySlotContents(2, stack);
     }
 
 }

@@ -63,8 +63,7 @@ public class ScreenElectricFurnace extends GenericContainerScreenUpgradeable<Con
 		blit(stack, guiLeft + 39, guiTop + 36 + 12 - progress, 212, 12 - progress, 14, progress + 1);
 	    }
 
-	    int l = (int) (processor.operatingTicks * 24 / processor.requiredTicks);
-	    blit(stack, guiLeft + 79, guiTop + 34, 212, 14, l + 1, 16);
+	    blit(stack, guiLeft + 79, guiTop + 34, 212, 14, (int) (processor.operatingTicks * 24 / processor.requiredTicks + 1), 16);
 	}
     }
 }

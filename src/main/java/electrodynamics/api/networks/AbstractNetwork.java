@@ -189,7 +189,7 @@ public abstract class AbstractNetwork<Conductor extends IAbstractConductor, Cond
 	    ticksSinceLastFix += 1;
 	    if (ticksSinceLastFix > 1200) {
 		ticksSinceLastFix = 0;
-		if (conductorSet.size() > 0) {
+		if (!conductorSet.isEmpty()) {
 		    fixMessedUpNetwork((Conductor) conductorSet.toArray()[0]);
 		} else {
 		    deregister();

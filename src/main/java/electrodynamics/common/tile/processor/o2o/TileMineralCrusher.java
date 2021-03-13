@@ -1,19 +1,23 @@
 package electrodynamics.common.tile.processor.o2o;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.processing.IO2OProcessor;
-import electrodynamics.api.utilities.TileUtilities;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileProcessor;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
+import electrodynamics.common.tile.generic.GenericTileTicking;
+import electrodynamics.common.tile.generic.component.ComponentType;
+import electrodynamics.common.tile.generic.component.type.ComponentContainerProvider;
+import electrodynamics.common.tile.generic.component.type.ComponentDirection;
+import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
+import electrodynamics.common.tile.generic.component.type.ComponentInventory;
+import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessorType;
+import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
-public class TileMineralCrusher extends GenericTileProcessor implements IO2OProcessor {
+public class TileMineralCrusher extends GenericTileTicking {
     public static final double REQUIRED_JOULES_PER_TICK = 110;
     public static final int REQUIRED_TICKS = 200;
 
@@ -22,59 +26,22 @@ public class TileMineralCrusher extends GenericTileProcessor implements IO2OProc
 
     public TileMineralCrusher() {
 	super(DeferredRegisters.TILE_MINERALCRUSHER.get());
-	addUpgradeSlots(2, 3, 4);
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentPacketHandler());
+	addComponent(new ComponentTickable());
+	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
+		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentInventory().setInventorySize(5).addSlotOnFace(Direction.UP, 0)
+		.addSlotOnFace(Direction.DOWN, 1));
+	addComponent(new ComponentContainerProvider("container.mineralcrusher")
+		.setCreateMenuFunction((id, player) -> new ContainerO2OProcessor(id, player,
+			getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4)
+		.setCanProcess(component -> MachineRecipes.canProcess(this))
+		.setProcess(component -> MachineRecipes.process(this))
+		.setRequiredTicks(Constants.MINERALCRUSHER_REQUIRED_TICKS)
+		.setJoulesPerTick(Constants.MINERALCRUSHER_USAGE_PER_TICK)
+		.setType(ComponentProcessorType.ObjectToObject));
     }
 
-    @Override
-    public double getJoulesPerTick() {
-	return Constants.MINERALCRUSHER_USAGE_PER_TICK * currentSpeedMultiplier;
-    }
-
-    @Override
-    public double getVoltage() {
-	return DEFAULT_BASIC_MACHINE_VOLTAGE * 2;
-    }
-
-    @Override
-    public int getRequiredTicks() {
-	return Constants.MINERALCRUSHER_REQUIRED_TICKS;
-    }
-
-    @Override
-    public int getSizeInventory() {
-	return 5;
-    }
-
-    @Override
-    public int[] getSlotsForFace(Direction side) {
-	return side == Direction.UP || side == TileUtilities.getRelativeSide(getFacing(), Direction.EAST) ? SLOTS_INPUT
-		: side == Direction.DOWN || side == TileUtilities.getRelativeSide(getFacing(), Direction.WEST)
-			? SLOTS_OUTPUT
-			: SLOTS_EMPTY;
-    }
-
-    @Override
-    protected Container createMenu(int id, PlayerInventory player) {
-	return new ContainerO2OProcessor(id, player, this, getInventoryData());
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-	return new TranslationTextComponent("container.mineralcrusher");
-    }
-
-    @Override
-    public ItemStack getInput() {
-	return getStackInSlot(0);
-    }
-
-    @Override
-    public ItemStack getOutput() {
-	return getStackInSlot(1);
-    }
-
-    @Override
-    public void setOutput(ItemStack stack) {
-	setInventorySlotContents(1, stack);
-    }
 }

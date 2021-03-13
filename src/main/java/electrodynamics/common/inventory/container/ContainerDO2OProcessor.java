@@ -4,25 +4,19 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.slot.GenericSlot;
 import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.tile.generic.GenericTile;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.FurnaceResultSlot;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ContainerDO2OProcessor extends GenericContainer<TileEntity> {
+public class ContainerDO2OProcessor extends GenericContainer<GenericTile> {
 
     public ContainerDO2OProcessor(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(6));
-    }
-
-    public ContainerDO2OProcessor(int id, PlayerInventory playerinv, IInventory inventory) {
-	this(id, playerinv, inventory, new IntArray(7));
+	this(id, playerinv, new Inventory(6), new IntArray(3));
     }
 
     public ContainerDO2OProcessor(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -49,25 +43,4 @@ public class ContainerDO2OProcessor extends GenericContainer<TileEntity> {
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
     }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getBurnLeftScaled() {
-	return inventorydata.get(3) * 24 / (inventorydata.get(6) == 0 ? 1 : inventorydata.get(6));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean isProcessing() {
-	return inventorydata.get(3) > 0;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getVoltage() {
-	return inventorydata.get(4);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getJoulesPerTick() {
-	return inventorydata.get(5);
-    }
-
 }

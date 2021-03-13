@@ -7,6 +7,10 @@ import electrodynamics.api.formatting.ElectricUnit;
 import electrodynamics.api.utilities.ElectricityChatFormatter;
 import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.tile.generic.GenericTile;
+import electrodynamics.common.tile.generic.component.ComponentType;
+import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
+import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -31,21 +35,33 @@ public class ScreenO2OProcessor extends GenericContainerScreenUpgradeable<Contai
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 	super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-	font.func_243248_b(matrixStack,
-		new TranslationTextComponent("gui.o2oprocessor.usage",
-			ElectricityChatFormatter.getDisplayShort(container.getJoulesPerTick() * 20, ElectricUnit.WATT)),
-		(float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
-	font.func_243248_b(matrixStack,
-		new TranslationTextComponent("gui.o2oprocessor.voltage",
-			ElectricityChatFormatter.getDisplayShort(container.getVoltage(), ElectricUnit.VOLTAGE)),
-		(float) playerInventoryTitleX + 77, playerInventoryTitleY, 4210752);
+	GenericTile tile = container.getHostFromIntArray();
+	if (tile != null) {
+	    ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
+	    ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
+	    font.func_243248_b(matrixStack,
+		    new TranslationTextComponent("gui.o2oprocessor.usage",
+			    ElectricityChatFormatter.getDisplayShort(processor.getJoulesPerTick() * 20,
+				    ElectricUnit.WATT)),
+		    (float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
+	    font.func_243248_b(matrixStack,
+		    new TranslationTextComponent("gui.o2oprocessor.voltage",
+			    ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE)),
+		    (float) playerInventoryTitleX + 77, playerInventoryTitleY, 4210752);
 
+	}
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
 	super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
-	blit(stack, guiLeft + 79, guiTop + 34, 212, 14, container.getBurnLeftScaled() + 1, 16);
+	GenericTile tile = container.getHostFromIntArray();
+	if (tile != null) {
+	    ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
+
+	    blit(stack, guiLeft + 79, guiTop + 34, 212, 14,
+		    (int) (processor.operatingTicks * 24 / processor.requiredTicks + 1), 16);
+	}
     }
 
 }
