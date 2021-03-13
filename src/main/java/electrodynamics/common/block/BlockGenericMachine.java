@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.item.IWrench;
 import electrodynamics.api.tile.IWrenchable;
-import electrodynamics.api.tile.electric.IElectrodynamic;
+import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.ComponentType;
 import net.minecraft.block.Block;
@@ -15,9 +15,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
@@ -50,14 +48,11 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	TileEntity tile = worldIn.getTileEntity(pos);
-	if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))) {
-	    if (tile instanceof IInventory) {
-		InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tile);
-	    } else if (tile instanceof GenericTile) {
-		GenericTile generic = (GenericTile) tile;
-		if (generic.hasComponent(ComponentType.Inventory)) {
-		    InventoryHelper.dropInventoryItems(worldIn, pos, generic.getComponent(ComponentType.Inventory));
-		}
+	if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))
+		&& tile instanceof GenericTile) {
+	    GenericTile generic = (GenericTile) tile;
+	    if (generic.hasComponent(ComponentType.Inventory)) {
+		InventoryHelper.dropInventoryItems(worldIn, pos, generic.getComponent(ComponentType.Inventory));
 	    }
 	}
 	super.onReplaced(state, worldIn, pos, newState, isMoving);
@@ -87,9 +82,7 @@ public class BlockGenericMachine extends Block implements IWrenchable {
 	    return ActionResultType.SUCCESS;
 	} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrench)) {
 	    TileEntity tile = worldIn.getTileEntity(pos);
-	    if (tile instanceof INamedContainerProvider) {
-		player.openContainer((INamedContainerProvider) tile);
-	    } else if (tile instanceof GenericTile) {
+	    if (tile instanceof GenericTile) {
 		GenericTile generic = (GenericTile) tile;
 		if (generic.hasComponent(ComponentType.ContainerProvider)) {
 		    player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
@@ -128,12 +121,12 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	ItemStack stack = new ItemStack(this);
 	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
-	if (tile instanceof IElectrodynamic) {
-	    double joules = ((IElectrodynamic) tile).getJoulesStored();
+	tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
+	    double joules = el.getJoulesStored();
 	    if (joules > 0) {
 		stack.getOrCreateTag().putDouble("joules", joules);
 	    }
-	}
+	});
 	return Arrays.asList(stack);
     }
 
@@ -142,9 +135,9 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	TileEntity tile = worldIn.getTileEntity(pos);
-	if (tile instanceof IElectrodynamic && stack.hasTag()) {
-	    IElectrodynamic el = (IElectrodynamic) tile;
-	    el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"));
+	if (stack.hasTag()) {
+	    tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
+		    .ifPresent(el -> el.setJoulesStored(stack.getOrCreateTag().getDouble("joules")));
 	}
     }
 
@@ -158,14 +151,12 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     public void onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
 	World world = player.world;
 	TileEntity tile = world.getTileEntity(pos);
-	if (tile instanceof IInventory) {
-	    InventoryHelper.dropInventoryItems(world, pos, (IInventory) tile);
-	} else if (tile instanceof GenericTile) {
+	if (tile instanceof GenericTile) {
 	    GenericTile generic = (GenericTile) tile;
 	    if (generic.hasComponent(ComponentType.Inventory)) {
 		InventoryHelper.dropInventoryItems(world, pos, generic.getComponent(ComponentType.Inventory));
 	    }
 	}
-	world.destroyBlock(pos, true);
+	world.destroyBlock(pos, true, player);
     }
 }

@@ -18,7 +18,6 @@ import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -47,14 +46,13 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 			getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentElectrodynamic(this).setMaxJoules(DEFAULT_MAX_JOULES)
 		.addRelativeInputDirection(Direction.SOUTH).addRelativeOutputDirection(Direction.NORTH));
-
     }
 
     protected void tickServer(ComponentTickable tickable) {
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (output == null) {
-	    output = new CachedTileOutput(world, new BlockPos(pos).offset(facing.getOpposite()));
+	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
 	}
 	receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 	if (electro.getJoulesStored() > 0) {
