@@ -17,10 +17,6 @@ import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.util.Direction;
 
 public class TileWireMill extends GenericTileTicking {
-
-    public static final int[] SLOTS_INPUT = new int[] { 0 };
-    public static final int[] SLOTS_OUTPUT = new int[] { 1 };
-
     public TileWireMill() {
 	super(DeferredRegisters.TILE_WIREMILL.get());
 	addComponent(new ComponentDirection());

@@ -17,7 +17,6 @@ import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.util.Direction;
 
 public class TileMineralGrinder extends GenericTileTicking {
-
     public TileMineralGrinder() {
 	super(DeferredRegisters.TILE_MINERALGRINDER.get());
 	addComponent(new ComponentDirection());
