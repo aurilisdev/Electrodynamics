@@ -35,7 +35,7 @@ public class TileWireMill extends GenericTileTicking {
 	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4)
 		.setCanProcess(component -> MachineRecipes.canProcess(this))
 		.setProcess(component -> MachineRecipes.process(this))
-		.setRequiredTicks(Constants.WIREMILL_REQUIRED_TICKS)
-		.setJoulesPerTick(Constants.WIREMILL_USAGE_PER_TICK).setType(ComponentProcessorType.ObjectToObject));
+		.setRequiredTicks(Constants.WIREMILL_REQUIRED_TICKS).setJoulesPerTick(Constants.WIREMILL_USAGE_PER_TICK)
+		.setType(ComponentProcessorType.ObjectToObject));
     }
 }

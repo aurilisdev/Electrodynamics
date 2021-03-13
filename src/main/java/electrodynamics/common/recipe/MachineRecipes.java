@@ -17,9 +17,9 @@ public class MachineRecipes {
     private static final HashMap<TileEntityType<?>, HashSet<DO2OProcessingRecipe>> do2orecipemap = new HashMap<>();
 
     public static void registerRecipe(TileEntityType<?> type, O2OProcessingRecipe recipe) {
-	HashSet<O2OProcessingRecipe> list;
+	HashSet<O2OProcessingRecipe> list = new HashSet<>();
 	if (!o2orecipemap.containsKey(type)) {
-	    o2orecipemap.put(type, list = new HashSet<>());
+	    o2orecipemap.put(type, list);
 	} else {
 	    list = o2orecipemap.get(type);
 	}
@@ -27,9 +27,9 @@ public class MachineRecipes {
     }
 
     public static void registerRecipe(TileEntityType<?> type, DO2OProcessingRecipe recipe) {
-	HashSet<DO2OProcessingRecipe> list;
+	HashSet<DO2OProcessingRecipe> list = new HashSet<>();
 	if (!do2orecipemap.containsKey(type)) {
-	    do2orecipemap.put(type, list = new HashSet<>());
+	    do2orecipemap.put(type, list);
 	} else {
 	    list = do2orecipemap.get(type);
 	}

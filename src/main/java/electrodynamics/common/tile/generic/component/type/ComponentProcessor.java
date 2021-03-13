@@ -117,10 +117,10 @@ public class ComponentProcessor implements Component {
     }
 
     public ComponentProcessor setType(ComponentProcessorType type) {
-	this.processorType = type;
-	this.inputOne = 0;
-	this.inputTwo = 1;
-	this.output = type == ComponentProcessorType.DoubleObjectToObject ? 2 : 1;
+	processorType = type;
+	inputOne = 0;
+	inputTwo = 1;
+	output = type == ComponentProcessorType.DoubleObjectToObject ? 2 : 1;
 	return this;
     }
 

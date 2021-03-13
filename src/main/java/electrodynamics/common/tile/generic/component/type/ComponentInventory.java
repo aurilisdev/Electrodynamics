@@ -1,9 +1,11 @@
 package electrodynamics.common.tile.generic.component.type;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
@@ -36,6 +38,12 @@ public class ComponentInventory implements Component, ISidedInventory {
     protected HashSet<PlayerEntity> viewing = new HashSet<>();
     protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
     protected int inventorySize;
+    protected Function<Direction, Collection<Integer>> getSlotsFunction;
+
+    public ComponentInventory setGetSlotsFunction(Function<Direction, Collection<Integer>> getSlotsFunction) {
+	this.getSlotsFunction = getSlotsFunction;
+	return this;
+    }
 
     public ComponentInventory setInventorySize(int inventorySize) {
 	this.inventorySize = inventorySize;
@@ -140,6 +148,9 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public int[] getSlotsForFace(Direction side) {
+	if (getSlotsFunction != null) {
+	    getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
+	}
 	return directionMappings.get(side).stream().mapToInt(i -> i).toArray();
     }
 

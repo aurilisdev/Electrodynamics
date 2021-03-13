@@ -81,14 +81,13 @@ public class ClientRegister {
 		    private long lastCheck = 0;
 
 		    @Override
-		    public float call(ItemStack p_call_1_, @Nullable ClientWorld p_call_2_,
-			    @Nullable LivingEntity p_call_3_) {
+		    public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			boolean goesUp = false;
-			if (p_call_3_ instanceof PlayerEntity) {
+			if (entity instanceof PlayerEntity) {
 			    RayTraceResult res = Minecraft.getInstance().objectMouseOver;
 			    if (res.getType() == Type.BLOCK) {
 				BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult) res;
-				TileEntity tile = p_call_3_.world.getTileEntity(blockraytraceresult.getPos());
+				TileEntity tile = entity.world.getTileEntity(blockraytraceresult.getPos());
 				if (tile instanceof TileWire) {
 				    TileWire wire = (TileWire) tile;
 				    if (wire.transmit > 0) {
@@ -97,11 +96,9 @@ public class ClientRegister {
 				}
 			    }
 			}
-			if (p_call_2_ != null) {
-			    if (lastCheck != p_call_2_.getGameTime()) {
-				lastCheck = p_call_2_.getGameTime();
-				num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
-			    }
+			if (world != null && lastCheck != world.getGameTime()) {
+			    lastCheck = world.getGameTime();
+			    num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
 			}
 			return (float) num;
 		    }
