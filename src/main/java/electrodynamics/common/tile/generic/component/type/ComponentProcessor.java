@@ -28,9 +28,9 @@ public class ComponentProcessor implements Component {
     private Consumer<ComponentProcessor> failed;
     private ComponentProcessorType processorType;
     private HashSet<Integer> upgradeSlots = new HashSet<>();
-    private int inputOne;
-    private int inputTwo;
-    private int output;
+    private int inputOne = 0;
+    private int inputTwo = 1;
+    private int output = 1;
 
     public ComponentProcessor(GenericTile source) {
 	setHolder(source);

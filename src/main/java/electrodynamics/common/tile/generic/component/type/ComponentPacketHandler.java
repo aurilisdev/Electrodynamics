@@ -90,7 +90,7 @@ public class ComponentPacketHandler implements Component {
 	}
     }
 
-    public void sentGuiPacketToTracking() {
+    public void sendGuiPacketToTracking() {
 	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), true, new CompoundNBT());
 	World world = holder.getWorld();
 	BlockPos pos = holder.getPos();

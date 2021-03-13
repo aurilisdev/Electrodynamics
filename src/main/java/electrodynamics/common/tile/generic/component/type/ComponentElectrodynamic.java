@@ -2,6 +2,8 @@ package electrodynamics.common.tile.generic.component.type;
 
 import java.util.HashSet;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 
 import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.api.tile.electric.IElectrodynamic;
@@ -28,8 +30,9 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	this.holder = holder;
     }
 
-    protected BiFunction<TransferPack, Boolean, TransferPack> receivePower = IElectrodynamic.super::receivePower;
-    protected BiFunction<TransferPack, Boolean, TransferPack> extractPower = IElectrodynamic.super::extractPower;
+    protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = IElectrodynamic.super::receivePower;
+    protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = IElectrodynamic.super::extractPower;
+    protected Consumer<Double> setJoules = null;
     protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
     protected HashSet<Direction> relativeInputDirections = new HashSet<>();
     protected HashSet<Direction> outputDirections = new HashSet<>();
@@ -37,6 +40,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     protected double voltage = CapabilityElectrodynamic.DEFAULT_VOLTAGE;
     protected double maxJoules = 0;
     protected double joules = 0;
+    protected DoubleSupplier getJoules = () -> joules;
     private Direction lastReturnedSide = Direction.UP;
 
     public ComponentElectrodynamic(GenericTile source) {
@@ -109,7 +113,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 		&& relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
 			lastReturnedSide))) {
-	    return extractPower.apply(transfer, debug);
+	    return functionExtractPower.apply(transfer, debug);
 	}
 	return TransferPack.EMPTY;
     }
@@ -120,18 +124,29 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 		&& relativeInputDirections.contains(TileUtilities.getRelativeSide(
 			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
 			lastReturnedSide))) {
-	    return receivePower.apply(transfer, debug);
+	    return functionReceivePower.apply(transfer, debug);
 	}
 	return TransferPack.EMPTY;
     }
 
     public ComponentElectrodynamic setJoules(double joules) {
-	this.joules = Math.max(0, Math.min(maxJoules, joules));
+	if (setJoules != null) {
+	    setJoules.accept(joules);
+	} else {
+	    this.joules = Math.max(0, Math.min(maxJoules, joules));
+	}
 	return this;
     }
 
     public ComponentElectrodynamic setMaxJoules(double maxJoules) {
 	this.maxJoules = maxJoules;
+	return this;
+    }
+
+    public ComponentElectrodynamic enableUniversalInput() {
+	for (Direction dir : Direction.values()) {
+	    addInputDirection(dir);
+	}
 	return this;
     }
 
@@ -155,13 +170,24 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return this;
     }
 
-    public ComponentElectrodynamic setReceivePower(BiFunction<TransferPack, Boolean, TransferPack> receivePower) {
-	this.receivePower = receivePower;
+    public ComponentElectrodynamic setFunctionReceivePower(
+	    BiFunction<TransferPack, Boolean, TransferPack> receivePower) {
+	this.functionReceivePower = receivePower;
 	return this;
     }
 
-    public ComponentElectrodynamic setExtractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
-	this.extractPower = extractPower;
+    public ComponentElectrodynamic setFunctionExt(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
+	this.functionExtractPower = extractPower;
+	return this;
+    }
+
+    public ComponentElectrodynamic setFunctionSetJoules(Consumer<Double> setJoules) {
+	this.setJoules = setJoules;
+	return this;
+    }
+
+    public ComponentElectrodynamic setFunctionGetJoules(DoubleSupplier getJoules) {
+	this.getJoules = getJoules;
 	return this;
     }
 
@@ -172,7 +198,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public double getJoulesStored() {
-	return joules;
+	return getJoules.getAsDouble();
     }
 
     @Override

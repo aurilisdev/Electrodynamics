@@ -34,6 +34,23 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     protected HashSet<Direction> outputDirections = new HashSet<>();
     protected HashSet<Direction> inputDirections = new HashSet<>();
 
+    public ComponentFluidHandler(GenericTile source) {
+	if (holder.hasComponent(ComponentType.PacketHandler)) {
+	    setHolder(source);
+	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
+	    handler.addGuiPacketWriter(this::writeGuiPacket);
+	    handler.addGuiPacketReader(this::readGuiPacket);
+	}
+    }
+
+    private void writeGuiPacket(CompoundNBT nbt) {
+	saveToNBT(nbt);
+    }
+
+    private void readGuiPacket(CompoundNBT nbt) {
+	loadFromNBT(null, nbt);
+    }
+
     public ComponentFluidHandler addInputDirection(Direction dir) {
 	inputDirections.add(dir);
 	return this;
