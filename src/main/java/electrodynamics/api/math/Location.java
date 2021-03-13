@@ -12,9 +12,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public final class Location {
-    public double x;
-    public double y;
-    public double z;
+    protected double x;
+    protected double y;
+    protected double z;
 
     public Location() {
     }
@@ -23,6 +23,30 @@ public final class Location {
 	this.x = x;
 	this.y = y;
 	this.z = z;
+    }
+
+    public double x() {
+	return x;
+    }
+
+    public double y() {
+	return y;
+    }
+
+    public double z() {
+	return z;
+    }
+
+    public int intX() {
+	return (int) Math.floor(x);
+    }
+
+    public int intY() {
+	return (int) Math.floor(y);
+    }
+
+    public int intZ() {
+	return (int) Math.floor(z);
     }
 
     public Location(BlockPos pos) {

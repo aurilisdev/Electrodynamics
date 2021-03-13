@@ -24,7 +24,7 @@ public interface IMultiblockTileNode {
 	    BlockState inState = world.getBlockState(offset);
 	    Block inBlock = inState.getBlock();
 	    if (update) {
-		if (inBlock == Blocks.AIR) {
+		if (inState.getMaterial().isReplaceable()) {
 		    world.setBlockState(offset, DeferredRegisters.multi.getDefaultState());
 		}
 		TileMultiSubnode subnode = (TileMultiSubnode) world.getTileEntity(offset);
