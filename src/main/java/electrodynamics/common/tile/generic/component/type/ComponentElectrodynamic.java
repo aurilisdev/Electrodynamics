@@ -176,7 +176,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return this;
     }
 
-    public ComponentElectrodynamic setFunctionExt(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
+    public ComponentElectrodynamic setFunctionExtractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
 	this.functionExtractPower = extractPower;
 	return this;
     }
