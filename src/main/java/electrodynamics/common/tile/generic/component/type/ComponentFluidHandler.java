@@ -88,6 +88,10 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	return ((FluidTank) fluids.values().toArray()[tank]).getFluid();
     }
 
+    public FluidStack getStackFromFluid(Fluid fluid) {
+	return fluids.get(fluid).getFluid();
+    }
+
     public ComponentFluidHandler setFluidInTank(FluidStack stack, int tank) {
 	((FluidTank) fluids.values().toArray()[tank]).setFluid(stack);
 	return this;
