@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileTicking;
@@ -24,7 +25,9 @@ public class TileMineralGrinder extends GenericTileTicking {
 	addComponent(new ComponentTickable());
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH));
 	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0)
-		.addSlotsOnFace(Direction.DOWN, 1));
+		.addSlotsOnFace(Direction.DOWN, 1).addRelativeSlotsOnFace(Direction.EAST, 0)
+		.addRelativeSlotsOnFace(Direction.WEST, 1).setItemValidPredicate(
+			(slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade));
 	addComponent(new ComponentContainerProvider("container.mineralgrinder")
 		.setCreateMenuFunction((id, player) -> new ContainerO2OProcessor(id, player,
 			getComponent(ComponentType.Inventory), getCoordsArray())));

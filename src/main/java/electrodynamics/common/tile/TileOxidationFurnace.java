@@ -5,6 +5,7 @@ import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileTicking;
@@ -30,7 +31,9 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
 		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
 	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0, 1)
-		.addSlotsOnFace(Direction.DOWN, 2));
+		.addSlotsOnFace(Direction.DOWN, 2).addRelativeSlotsOnFace(Direction.EAST, 1)
+		.addRelativeSlotsOnFace(Direction.WEST, 2).setItemValidPredicate(
+			(slot, stack) -> slot == 0 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
 	addComponent(new ComponentContainerProvider("container.mineralcrusher")
 		.setCreateMenuFunction((id, player) -> new ContainerO2OProcessor(id, player,
 			getComponent(ComponentType.Inventory), getCoordsArray())));

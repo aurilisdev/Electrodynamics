@@ -48,8 +48,8 @@ public class TileCoalGenerator extends GenericTileTicking {
 		.addTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.NORTH));
 	addComponent(new ComponentInventory().setInventorySize(1).addSlotsOnFace(Direction.UP, 0)
-		.addSlotsOnFace(Direction.DOWN, 0).addSlotsOnFace(Direction.EAST, 0).addSlotsOnFace(Direction.WEST, 0)
-		.addSlotsOnFace(Direction.SOUTH, 0).addSlotsOnFace(Direction.NORTH, 0).setItemValidPredicate(
+		.addSlotsOnFace(Direction.EAST, 0).addSlotsOnFace(Direction.WEST, 0).addSlotsOnFace(Direction.SOUTH, 0)
+		.addSlotsOnFace(Direction.NORTH, 0).setItemValidPredicate(
 			(index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL));
 	addComponent(new ComponentContainerProvider("container.coalgenerator")
 		.setCreateMenuFunction((id, player) -> new ContainerCoalGenerator(id, player,
