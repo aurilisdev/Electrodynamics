@@ -69,8 +69,10 @@ public class ComponentProcessor implements Component {
 	}
 	if (canProcess.test(this)) {
 	    operatingTicks += operatingSpeed;
-	    if (operatingTicks >= requiredTicks && process != null) {
-		process.accept(this);
+	    if (operatingTicks >= requiredTicks) {
+		if (process != null) {
+		    process.accept(this);
+		}
 		operatingTicks = 0;
 	    }
 	    if (holder.hasComponent(ComponentType.Electrodynamic)) {

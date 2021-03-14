@@ -153,7 +153,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	for (INBT tag : list) {
 	    CompoundNBT compound = (CompoundNBT) tag;
 	    FluidTank tank = new FluidTank(0).readFromNBT(compound);
-	    fluids.get(tank.getFluid().getFluid()).setFluid(tank.getFluid());
+	    fluids.get(tank.getFluid().getRawFluid()).setFluid(tank.getFluid());
 	}
     }
 
@@ -162,6 +162,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	ListNBT list = new ListNBT();
 	for (FluidTank stack : fluids.values()) {
 	    CompoundNBT tag = new CompoundNBT();
+	    // Don't use native read cause it doesn't use getRawFluid
 	    tag.putString("FluidName", stack.getFluid().getRawFluid().getRegistryName().toString());
 	    tag.putInt("Amount", stack.getFluid().getAmount());
 
