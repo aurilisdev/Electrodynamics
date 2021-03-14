@@ -29,8 +29,8 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	addComponent(new ComponentTickable());
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
 		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-	addComponent(new ComponentInventory().setInventorySize(5).addSlotOnFace(Direction.UP, 0)
-		.addSlotOnFace(Direction.UP, 1).addSlotOnFace(Direction.DOWN, 2));
+	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0, 1)
+		.addSlotsOnFace(Direction.DOWN, 2));
 	addComponent(new ComponentContainerProvider("container.mineralcrusher")
 		.setCreateMenuFunction((id, player) -> new ContainerO2OProcessor(id, player,
 			getComponent(ComponentType.Inventory), getCoordsArray())));

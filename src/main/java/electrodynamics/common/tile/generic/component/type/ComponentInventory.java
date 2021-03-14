@@ -6,7 +6,11 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import electrodynamics.api.utilities.TileUtilities;
 import electrodynamics.common.tile.generic.GenericTile;
 import electrodynamics.common.tile.generic.component.Component;
 import electrodynamics.common.tile.generic.component.ComponentType;
@@ -21,9 +25,11 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class ComponentInventory implements Component, ISidedInventory {
+public class ComponentInventory implements Component, IItemHandler, ISidedInventory {
     protected GenericTile holder = null;
 
     @Override
@@ -33,10 +39,13 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     protected static final int[] SLOTS_EMPTY = new int[] {};
     protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
-    protected LazyOptional<?> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
+    protected LazyOptional<?> itemHandler = LazyOptional.of(() -> this);
     protected BiPredicate<Integer, ItemStack> itemValidPredicate = (x, y) -> true;
     protected HashSet<PlayerEntity> viewing = new HashSet<>();
+    protected InvWrapper wrapper = new InvWrapper(this);
     protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
+    protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
+    protected Direction lastDirection = null;
     protected int inventorySize;
     protected Function<Direction, Collection<Integer>> getSlotsFunction;
 
@@ -51,11 +60,23 @@ public class ComponentInventory implements Component, ISidedInventory {
 	return this;
     }
 
-    public ComponentInventory addSlotOnFace(Direction face, Integer slot) {
+    public ComponentInventory addSlotsOnFace(Direction face, Integer... slot) {
 	if (!directionMappings.containsKey(face)) {
 	    directionMappings.put(face, new ArrayList<>());
 	}
-	directionMappings.get(face).add(slot);
+	for (Integer sl : slot) {
+	    directionMappings.get(face).add(sl);
+	}
+	return this;
+    }
+
+    public ComponentInventory addRelativeSlotsOnFace(Direction face, Integer... slot) {
+	if (!relativeDirectionMappings.containsKey(face)) {
+	    relativeDirectionMappings.put(face, new ArrayList<>());
+	}
+	for (Integer sl : slot) {
+	    relativeDirectionMappings.get(face).add(sl);
+	}
 	return this;
     }
 
@@ -86,7 +107,11 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
-	return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+	lastDirection = side;
+	return (side == null || (directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction)
+		&& (relativeDirectionMappings.containsKey(TileUtilities.getRelativeSide(
+			holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))))
+		&& capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     }
 
     @Override
@@ -126,11 +151,9 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-	if (isItemValidForSlot(index, stack)) {
-	    items.set(index, stack);
-	    if (stack.getCount() > getInventoryStackLimit()) {
-		stack.setCount(getInventoryStackLimit());
-	    }
+	items.set(index, stack);
+	if (stack.getCount() > getInventoryStackLimit()) {
+	    stack.setCount(getInventoryStackLimit());
 	}
     }
 
@@ -151,7 +174,20 @@ public class ComponentInventory implements Component, ISidedInventory {
 	if (getSlotsFunction != null) {
 	    getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
 	}
+	if (holder.hasComponent(ComponentType.Inventory)) {
+	    Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
+	    Stream<Integer> stRel = relativeDirectionMappings.containsKey(TileUtilities.getRelativeSide(
+		    holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
+			    ? relativeDirectionMappings.get(TileUtilities.getRelativeSide(
+				    holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+				    side)).stream()
+			    : null;
+	    return ArrayUtils.addAll(st == null ? new int[0] : st.mapToInt(i -> i).toArray(),
+		    stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
+
+	}
 	return directionMappings.get(side).stream().mapToInt(i -> i).toArray();
+
     }
 
     @Override
@@ -161,16 +197,44 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
-	return isItemValidForSlot(index, itemStackIn);
+	lastDirection = direction;
+	ArrayList<Integer> test = new ArrayList<>();
+	for (int i : getSlotsForFace(direction)) {
+	    test.add(i);
+	}
+	return test.contains(index) && isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+	lastDirection = direction;
 	ArrayList<Integer> test = new ArrayList<>();
 	for (int i : getSlotsForFace(direction)) {
 	    test.add(i);
 	}
 	return test.contains(index);
+    }
+
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+	return canInsertItem(slot, stack, lastDirection) ? wrapper.insertItem(slot, stack, simulate) : stack;
+    }
+
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+	return canExtractItem(slot, new ItemStack(getStackInSlot(slot).getItem(), amount), lastDirection)
+		? wrapper.extractItem(slot, amount, simulate)
+		: ItemStack.EMPTY;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+	return getInventoryStackLimit();
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack) {
+	return isItemValidForSlot(slot, stack);
     }
 
     public NonNullList<ItemStack> getItems() {
@@ -194,6 +258,11 @@ public class ComponentInventory implements Component, ISidedInventory {
     @Override
     public void markDirty() {
 	holder.markDirty();
+    }
+
+    @Override
+    public int getSlots() {
+	return items.size();
     }
 
 }

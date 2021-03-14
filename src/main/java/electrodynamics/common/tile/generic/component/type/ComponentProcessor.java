@@ -22,7 +22,7 @@ public class ComponentProcessor implements Component {
     public double operatingSpeed;
     public double operatingTicks;
     public double joulesPerTick;
-    public long requiredTicks = 100;
+    public long requiredTicks;
     private Predicate<ComponentProcessor> canProcess = component -> false;
     private Consumer<ComponentProcessor> process;
     private Consumer<ComponentProcessor> failed;

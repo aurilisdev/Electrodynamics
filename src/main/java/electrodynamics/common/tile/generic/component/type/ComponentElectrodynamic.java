@@ -2,6 +2,7 @@ package electrodynamics.common.tile.generic.component.type;
 
 import java.util.HashSet;
 import java.util.function.BiFunction;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
@@ -41,6 +42,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     protected double maxJoules = 0;
     protected double joules = 0;
     protected DoubleSupplier getJoules = () -> joules;
+    protected BooleanSupplier hasCapability = () -> true;
     private Direction lastReturnedSide = Direction.UP;
 
     public ComponentElectrodynamic(GenericTile source) {
@@ -98,7 +100,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 			|| relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
 				side)))))
-		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC;
+		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC && hasCapability.getAsBoolean();
     }
 
     @Override
@@ -219,5 +221,10 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     public ComponentType getType() {
 	return ComponentType.Electrodynamic;
+    }
+
+    public ComponentElectrodynamic setCapabilityTest(BooleanSupplier test) {
+	this.hasCapability = test;
+	return this;
     }
 }

@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
+import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileTicking;
 import electrodynamics.common.tile.generic.component.ComponentType;
@@ -31,8 +32,11 @@ public class TileElectricFurnace extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable());
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH));
-	addComponent(new ComponentInventory().setInventorySize(5).addSlotOnFace(Direction.UP, 0)
-		.addSlotOnFace(Direction.DOWN, 1));
+	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0)
+		.addSlotsOnFace(Direction.DOWN, 1)
+		.setItemValidPredicate(
+			(slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade)
+		.addRelativeSlotsOnFace(Direction.EAST, 0).addRelativeSlotsOnFace(Direction.WEST, 1));
 	addComponent(new ComponentContainerProvider("container.electricfurnace")
 		.setCreateMenuFunction((id, player) -> new ContainerElectricFurnace(id, player,
 			getComponent(ComponentType.Inventory), getCoordsArray())));
