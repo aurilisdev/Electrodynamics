@@ -1,4 +1,4 @@
-package electrodynamics.common.tile.processor.do2o;
+package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.tile.electric.CapabilityElectrodynamic;

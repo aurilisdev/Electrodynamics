@@ -52,6 +52,13 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	loadFromNBT(null, nbt);
     }
 
+    public ComponentFluidHandler enableUniversalInput() {
+	for (Direction dir : Direction.values()) {
+	    addInputDirection(dir);
+	}
+	return this;
+    }
+
     public ComponentFluidHandler addInputDirection(Direction dir) {
 	inputDirections.add(dir);
 	return this;
@@ -146,7 +153,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	for (INBT tag : list) {
 	    CompoundNBT compound = (CompoundNBT) tag;
 	    FluidTank tank = new FluidTank(0).readFromNBT(compound);
-	    fluids.put(tank.getFluid().getFluid(), tank);
+	    fluids.get(tank.getFluid().getFluid()).setFluid(tank.getFluid());
 	}
     }
 
