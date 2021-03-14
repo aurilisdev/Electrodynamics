@@ -35,6 +35,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     protected HashSet<Direction> inputDirections = new HashSet<>();
 
     public ComponentFluidHandler(GenericTile source) {
+	setHolder(source);
 	if (holder.hasComponent(ComponentType.PacketHandler)) {
 	    setHolder(source);
 	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
