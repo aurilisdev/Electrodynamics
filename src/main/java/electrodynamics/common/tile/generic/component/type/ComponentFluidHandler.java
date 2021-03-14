@@ -74,6 +74,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     public ComponentFluidHandler addFluidTank(Fluid fluid, int capacity) {
 	fluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+	fluids.get(fluid).setFluid(new FluidStack(fluid, 0));
 	return this;
     }
 
