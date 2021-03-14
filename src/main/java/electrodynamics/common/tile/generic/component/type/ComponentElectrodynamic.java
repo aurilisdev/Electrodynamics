@@ -91,13 +91,13 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
-	return (inputDirections.contains(side) || outputDirections.contains(side)
+	return (side == null || (inputDirections.contains(side) || outputDirections.contains(side)
 		|| holder.hasComponent(ComponentType.Direction) && (relativeInputDirections
 			.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
 			|| relativeOutputDirections.contains(TileUtilities.getRelativeSide(
 				holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-				side))))
+				side)))))
 		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC;
     }
 
@@ -176,7 +176,8 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return this;
     }
 
-    public ComponentElectrodynamic setFunctionExtractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
+    public ComponentElectrodynamic setFunctionExtractPower(
+	    BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
 	this.functionExtractPower = extractPower;
 	return this;
     }

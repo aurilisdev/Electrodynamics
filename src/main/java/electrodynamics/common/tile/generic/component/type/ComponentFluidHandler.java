@@ -87,6 +87,11 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	return ((FluidTank) fluids.values().toArray()[tank]).getFluid();
     }
 
+    public ComponentFluidHandler setFluidInTank(FluidStack stack, int tank) {
+	((FluidTank) fluids.values().toArray()[tank]).setFluid(stack);
+	return this;
+    }
+
     @Override
     public int getTankCapacity(int tank) {
 	return ((FluidTank) fluids.values().toArray()[tank]).getCapacity();
@@ -114,6 +119,9 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
+	if (side == null) {
+	    return false;
+	}
 	Direction relative = TileUtilities
 		.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
 	return (inputDirections.contains(side) || outputDirections.contains(side)
@@ -142,7 +150,12 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	ListNBT list = new ListNBT();
 	for (FluidTank stack : fluids.values()) {
 	    CompoundNBT tag = new CompoundNBT();
-	    stack.writeToNBT(tag);
+	    tag.putString("FluidName", stack.getFluid().getRawFluid().getRegistryName().toString());
+	    tag.putInt("Amount", stack.getFluid().getAmount());
+
+	    if (stack.getFluid().getTag() != null) {
+		tag.put("Tag", stack.getFluid().getTag());
+	    }
 	    list.add(tag);
 	}
 	nbt.put("list", list);
