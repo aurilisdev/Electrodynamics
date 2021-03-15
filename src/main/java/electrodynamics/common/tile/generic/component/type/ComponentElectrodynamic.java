@@ -69,14 +69,12 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     public void loadFromNBT(BlockState state, CompoundNBT nbt) {
 	maxJoules = nbt.getDouble("maxJoules");
-	voltage = nbt.getDouble("voltage");
 	joules = nbt.getDouble("joules");
     }
 
     @Override
     public void saveToNBT(CompoundNBT nbt) {
 	nbt.putDouble("maxJoules", maxJoules);
-	nbt.putDouble("voltage", voltage);
 	nbt.putDouble("joules", joules);
     }
 
