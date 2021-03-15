@@ -30,7 +30,7 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	addComponent(new ComponentTickable());
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
 		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0, 1)
+	addComponent(new ComponentInventory().setInventorySize(6).addSlotsOnFace(Direction.UP, 0, 1)
 		.addSlotsOnFace(Direction.DOWN, 2).addRelativeSlotsOnFace(Direction.EAST, 1)
 		.addRelativeSlotsOnFace(Direction.WEST, 2).setItemValidPredicate(
 			(slot, stack) -> slot == 0 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
@@ -50,17 +50,17 @@ public class TileOxidationFurnace extends GenericTileTicking {
 		    .get(SubtypeMachine.oxidationfurnace)) {
 		world.setBlockState(pos,
 			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)
-				.getDefaultState()
-				.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
-			3);
+				.getDefaultState().with(BlockGenericMachine.FACING,
+					getBlockState().get(BlockGenericMachine.FACING)),
+			2 | 16 | 32);
 	    }
 	    return true;
 	} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
 		.get(SubtypeMachine.oxidationfurnacerunning)) {
-	    world.setBlockState(pos,
-		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace).getDefaultState()
+	    world.setBlockState(
+		    pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace).getDefaultState()
 			    .with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
-		    3);
+		    2 | 16 | 32);
 	}
 	return false;
     }
