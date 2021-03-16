@@ -34,11 +34,9 @@ public class FluidUtilities {
 	return acceptor instanceof IPipe;
     }
 
-    public static Integer receiveFluid(TileEntity acceptor, Direction direction, FluidStack perReceiver,
-	    boolean debug) {
+    public static Integer receiveFluid(TileEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
 	if (isFluidReceiver(acceptor, direction)) {
-	    LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction);
+	    LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
 	    if (cap.isPresent()) {
 		IFluidHandler handler = cap.resolve().get();
 		boolean canPass = false;

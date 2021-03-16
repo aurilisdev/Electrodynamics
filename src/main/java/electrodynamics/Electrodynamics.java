@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
 import electrodynamics.api.configuration.ConfigurationHandler;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.packet.NetworkHandler;
@@ -69,8 +69,7 @@ public class Electrodynamics {
 	for (SubtypeOre ore : SubtypeOre.values()) {
 	    OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
 		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
-	    Registry.register(WorldGenRegistries.CONFIGURED_FEATURE,
-		    DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
+	    Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
 		    Feature.ORE.withConfiguration(feature).range(ore.maxY).func_242731_b(ore.veinsPerChunk).square());
 	}
 	setupGen();
@@ -80,20 +79,16 @@ public class Electrodynamics {
     public static void setupGen() {
 	for (SubtypeOre ore : SubtypeOre.values()) {
 	    for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.BIOME.getEntries()) {
-		if (!biome.getValue().getCategory().equals(Biome.Category.NETHER)
-			&& !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
+		if (!biome.getValue().getCategory().equals(Biome.Category.NETHER) && !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
 		    addFeatureToBiome(biome.getValue(), GenerationStage.Decoration.UNDERGROUND_ORES,
-			    WorldGenRegistries.CONFIGURED_FEATURE
-				    .getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
+			    WorldGenRegistries.CONFIGURED_FEATURE.getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
 		}
 	    }
 	}
     }
 
-    public static void addFeatureToBiome(Biome biome, GenerationStage.Decoration decoration,
-	    ConfiguredFeature<?, ?> configuredFeature) {
-	List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(
-		biome.getGenerationSettings().getFeatures());
+    public static void addFeatureToBiome(Biome biome, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> configuredFeature) {
+	List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(biome.getGenerationSettings().getFeatures());
 
 	while (biomeFeatures.size() <= decoration.ordinal()) {
 	    biomeFeatures.add(Lists.newArrayList());
@@ -103,7 +98,6 @@ public class Electrodynamics {
 	features.add(() -> configuredFeature);
 	biomeFeatures.set(decoration.ordinal(), features);
 
-	ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(),
-		biomeFeatures, "field_242484_f");
+	ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(), biomeFeatures, "field_242484_f");
     }
 }

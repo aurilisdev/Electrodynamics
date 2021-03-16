@@ -2,7 +2,7 @@ package electrodynamics.common.inventory.container;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.utilities.ContainerUtilities;
+import electrodynamics.api.utilities.UtilitiesContainers;
 import electrodynamics.common.inventory.container.slot.GenericSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,8 +29,7 @@ public abstract class GenericContainer<T extends TileEntity> extends Container {
 	return nextIndex++;
     }
 
-    protected GenericContainer(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory,
-	    IIntArray inventorydata) {
+    protected GenericContainer(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 	super(type, id);
 	assertInventorySize(inventory, inventory.getSizeInventory());
 	assertIntArraySize(inventorydata, inventorydata.size());
@@ -80,7 +79,7 @@ public abstract class GenericContainer<T extends TileEntity> extends Container {
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity player, int index) {
-	return ContainerUtilities.handleShiftClick(inventorySlots, player, index);
+	return UtilitiesContainers.handleShiftClick(inventorySlots, player, index);
     }
 
     @Override

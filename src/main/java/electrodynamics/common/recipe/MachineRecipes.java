@@ -3,13 +3,13 @@ package electrodynamics.common.recipe;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import electrodynamics.api.tile.GenericTile;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentProcessor;
+import electrodynamics.api.tile.components.type.ComponentProcessorType;
 import electrodynamics.api.tile.processing.DO2OProcessingRecipe;
 import electrodynamics.api.tile.processing.O2OProcessingRecipe;
-import electrodynamics.common.tile.generic.GenericTile;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
-import electrodynamics.common.tile.generic.component.type.ComponentProcessorType;
 import net.minecraft.tileentity.TileEntityType;
 
 public class MachineRecipes {
@@ -47,27 +47,24 @@ public class MachineRecipes {
 		    for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {
 			if (recipe.getInput().getItem() == processor.getInput().getItem()
 				&& recipe.getInput().getCount() <= processor.getInput().getCount()
-				&& (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe
-					.getOutput().getItem()
-					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
-						.getOutput().getMaxStackSize())) {
+				&& (processor.getOutput().isEmpty()
+					|| processor.getOutput().getItem() == recipe.getOutput().getItem() && processor.getOutput().getCount()
+						+ recipe.getOutput().getCount() <= processor.getOutput().getMaxStackSize())) {
 			    return true;
 			}
 		    }
 		}
 	    } else if (processor.getProcessorType() == ComponentProcessorType.DoubleObjectToObject) {
 		TileEntityType<?> type = tile.getType();
-		if (!processor.getInput().isEmpty() && !processor.getSecondInput().isEmpty()
-			&& do2orecipemap.containsKey(type)) {
+		if (!processor.getInput().isEmpty() && !processor.getSecondInput().isEmpty() && do2orecipemap.containsKey(type)) {
 		    for (DO2OProcessingRecipe recipe : do2orecipemap.get(type)) {
 			if (recipe.getInput1().getItem() == processor.getInput().getItem()
 				&& recipe.getInput1().getCount() <= processor.getInput().getCount()
 				&& recipe.getInput2().getItem() == processor.getSecondInput().getItem()
 				&& recipe.getInput2().getCount() <= processor.getSecondInput().getCount()
-				&& (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe
-					.getOutput().getItem()
-					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
-						.getOutput().getMaxStackSize())) {
+				&& (processor.getOutput().isEmpty()
+					|| processor.getOutput().getItem() == recipe.getOutput().getItem() && processor.getOutput().getCount()
+						+ recipe.getOutput().getCount() <= processor.getOutput().getMaxStackSize())) {
 			    return true;
 			}
 		    }
@@ -89,42 +86,34 @@ public class MachineRecipes {
 		    for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {
 			if (recipe.getInput().getItem() == processor.getInput().getItem()
 				&& recipe.getInput().getCount() <= processor.getInput().getCount()
-				&& (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe
-					.getOutput().getItem()
-					&& processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
-						.getOutput().getMaxStackSize())) {
+				&& (processor.getOutput().isEmpty()
+					|| processor.getOutput().getItem() == recipe.getOutput().getItem() && processor.getOutput().getCount()
+						+ recipe.getOutput().getCount() <= processor.getOutput().getMaxStackSize())) {
 			    if (processor.getOutput().isEmpty()) {
 				processor.setOutput(recipe.getOutput().copy());
 			    } else {
-				processor.getOutput()
-					.setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
+				processor.getOutput().setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
 			    }
-			    processor.getInput()
-				    .setCount(processor.getInput().getCount() - recipe.getInput().getCount());
+			    processor.getInput().setCount(processor.getInput().getCount() - recipe.getInput().getCount());
 			}
 		    }
 		}
-	    } else if (processor.getProcessorType() == ComponentProcessorType.DoubleObjectToObject
-		    && do2orecipemap.containsKey(type) && !processor.getInput().isEmpty()
-		    && !processor.getSecondInput().isEmpty()) {
+	    } else if (processor.getProcessorType() == ComponentProcessorType.DoubleObjectToObject && do2orecipemap.containsKey(type)
+		    && !processor.getInput().isEmpty() && !processor.getSecondInput().isEmpty()) {
 		for (DO2OProcessingRecipe recipe : do2orecipemap.get(type)) {
 		    if (recipe.getInput1().getItem() == processor.getInput().getItem()
 			    && recipe.getInput1().getCount() <= processor.getInput().getCount()
 			    && recipe.getInput2().getItem() == processor.getSecondInput().getItem()
 			    && recipe.getInput2().getCount() <= processor.getSecondInput().getCount()
-			    && (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe.getOutput()
-				    .getItem()
-				    && processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor
-					    .getOutput().getMaxStackSize())) {
+			    && (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe.getOutput().getItem()
+				    && processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor.getOutput().getMaxStackSize())) {
 			if (processor.getOutput().isEmpty()) {
 			    processor.setOutput(recipe.getOutput().copy());
 			} else {
-			    processor.getOutput()
-				    .setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
+			    processor.getOutput().setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
 			}
 			processor.getInput().setCount(processor.getInput().getCount() - recipe.getInput1().getCount());
-			processor.getSecondInput()
-				.setCount(processor.getSecondInput().getCount() - recipe.getInput2().getCount());
+			processor.getSecondInput().setCount(processor.getSecondInput().getCount() - recipe.getInput2().getCount());
 		    }
 		}
 	    }

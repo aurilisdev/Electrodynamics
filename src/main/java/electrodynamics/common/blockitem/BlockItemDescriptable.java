@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import electrodynamics.api.formatting.ElectricUnit;
-import electrodynamics.api.utilities.ElectricityChatFormatter;
+import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
@@ -22,8 +22,7 @@ public class BlockItemDescriptable extends BlockItem {
     private final Block block;
 
     public static void addDescription(Block block, String description) {
-	HashSet<String> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block)
-		: new HashSet<>();
+	HashSet<String> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block) : new HashSet<>();
 	if (!descriptionMappings.containsKey(block)) {
 	    descriptionMappings.put(block, gotten);
 	}
@@ -43,8 +42,7 @@ public class BlockItemDescriptable extends BlockItem {
 	    for (String s : gotten) {
 		boolean translate = s.contains("|translate|");
 		if (translate) {
-		    tooltip.add(
-			    new TranslationTextComponent(s.replace("|translate|", "")).mergeStyle(TextFormatting.GRAY));
+		    tooltip.add(new TranslationTextComponent(s.replace("|translate|", "")).mergeStyle(TextFormatting.GRAY));
 		} else {
 		    tooltip.add(new StringTextComponent(s).mergeStyle(TextFormatting.GRAY));
 		}
@@ -52,8 +50,7 @@ public class BlockItemDescriptable extends BlockItem {
 	}
 	double joules = stack.getOrCreateTag().getDouble("joules");
 	if (joules > 0) {
-	    tooltip.add(new StringTextComponent(
-		    "Stored: " + ElectricityChatFormatter.getDisplay(joules, ElectricUnit.JOULES, 2, false)));
+	    tooltip.add(new StringTextComponent("Stored: " + ElectricityChatFormatter.getDisplay(joules, ElectricUnit.JOULES, 2, false)));
 	}
     }
 

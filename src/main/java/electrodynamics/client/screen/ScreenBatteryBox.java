@@ -3,8 +3,8 @@ package electrodynamics.client.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.formatting.ElectricUnit;
-import electrodynamics.api.utilities.ElectricityChatFormatter;
+import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.tile.TileBatteryBox;
@@ -17,8 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<ContainerBatteryBox> {
-    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(
-	    References.ID + ":textures/gui/batterybox.png");
+    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/batterybox.png");
 
     public ScreenBatteryBox(ContainerBatteryBox container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
@@ -37,13 +36,14 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
 	if (box != null) {
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.current",
-			    ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK
-				    * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE)),
+			    ElectricityChatFormatter.getDisplayShort(
+				    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
+				    ElectricUnit.AMPERE)),
 		    playerInventoryTitleX, playerInventoryTitleY - 55f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.transfer",
-			    ElectricityChatFormatter.getDisplayShort(TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK
-				    * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
+			    ElectricityChatFormatter.getDisplayShort(
+				    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
 		    playerInventoryTitleX, playerInventoryTitleY - 42f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.voltage",
@@ -51,10 +51,8 @@ public class ScreenBatteryBox extends GenericContainerScreenUpgradeable<Containe
 		    playerInventoryTitleX, playerInventoryTitleY - 29f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.stored",
-			    ElectricityChatFormatter.getDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
-				    + ElectricityChatFormatter.getDisplayShort(
-					    TileBatteryBox.DEFAULT_MAX_JOULES * box.currentCapacityMultiplier,
-					    ElectricUnit.JOULES)),
+			    ElectricityChatFormatter.getDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ElectricityChatFormatter
+				    .getDisplayShort(TileBatteryBox.DEFAULT_MAX_JOULES * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
 		    playerInventoryTitleX, playerInventoryTitleY - 16f, 4210752);
 	}
     }

@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.networks.AbstractNetwork;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -79,8 +79,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			boolean shouldRemove = true;
 			for (Direction connection : acceptorInputMap.get(receiver)) {
 			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
-				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()),
-				    true);
+				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
 			    if (pack.getJoules() != 0) {
 				shouldRemove = false;
 				break;
@@ -91,14 +90,12 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			}
 		    }
 		}
-		TransferPack perReceiver = TransferPack.joulesVoltage(
-			maxTransfer.getJoules() / availableAcceptors.size() / networkResistance,
+		TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / availableAcceptors.size() / networkResistance,
 			maxTransfer.getVoltage());
 		for (TileEntity receiver : availableAcceptors) {
 		    if (acceptorInputMap.containsKey(receiver)) {
 			for (Direction connection : acceptorInputMap.get(receiver)) {
-			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver,
-				    false);
+			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
 			    joulesSent += pack.getJoules();
 			    transmittedThisTick += pack.getJoules();
 			}
@@ -183,8 +180,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     @Override
-    public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstanceConductor(
-	    Set<IConductor> conductors) {
+    public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstanceConductor(Set<IConductor> conductors) {
 	return new ElectricNetwork(conductors);
     }
 

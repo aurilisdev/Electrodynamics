@@ -1,0 +1,22 @@
+{
+	"parent": "electrodynamics:block/hydroelectricgenerator",
+	"display": {
+		"gui": {
+			"rotation": [
+				30,
+				225,
+				0
+			],
+			"translation": [
+				1.85,
+				1,
+				0
+			],
+			"scale": [
+				0.55,
+				0.55,
+				0.55
+			]
+		}
+	}
+}

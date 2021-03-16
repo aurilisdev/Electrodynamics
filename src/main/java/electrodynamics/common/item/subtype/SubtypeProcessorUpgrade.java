@@ -1,8 +1,8 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 
-public enum SubtypeProcessorUpgrade implements Subtype {
+public enum SubtypeProcessorUpgrade implements ISubtype {
     basiccapacity(1, 1.5), basicspeed(1.5, 1), advancedcapacity(1, 2.25), advancedspeed(2.25, 1);
 
     public final double speedMultiplier;

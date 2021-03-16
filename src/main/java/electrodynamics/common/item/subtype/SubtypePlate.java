@@ -1,8 +1,8 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 
-public enum SubtypePlate implements Subtype {
+public enum SubtypePlate implements ISubtype {
     iron, steel, lead, bronze;
 
     @Override

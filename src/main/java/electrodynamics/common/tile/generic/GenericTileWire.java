@@ -8,14 +8,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.networks.AbstractNetwork;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
-import electrodynamics.api.tile.electric.IElectrodynamic;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.tile.GenericTile;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.network.NetworkRegistry;
-import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -54,8 +55,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket)
-		.addCustomPacketWriter(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket).addCustomPacketWriter(this::writeCustomPacket));
     }
 
     private ArrayList<IElectrodynamic> handler = new ArrayList<>();

@@ -23,12 +23,10 @@ public class ItemProcessorUpgrade extends Item {
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 	super.addInformation(stack, worldIn, tooltip, flagIn);
 	if (subtype.capacityMultiplier != 1.0) {
-	    tooltip.add(new TranslationTextComponent("tooltip.info.capacityupgrade", subtype.capacityMultiplier)
-		    .mergeStyle(TextFormatting.GRAY));
+	    tooltip.add(new TranslationTextComponent("tooltip.info.capacityupgrade", subtype.capacityMultiplier).mergeStyle(TextFormatting.GRAY));
 	}
 	if (subtype.speedMultiplier != 1.0) {
-	    tooltip.add(new TranslationTextComponent("tooltip.info.speedupgrade", subtype.speedMultiplier)
-		    .mergeStyle(TextFormatting.GRAY));
+	    tooltip.add(new TranslationTextComponent("tooltip.info.speedupgrade", subtype.speedMultiplier).mergeStyle(TextFormatting.GRAY));
 	}
     }
 }

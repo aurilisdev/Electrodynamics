@@ -30,8 +30,7 @@ public interface IUpdateableTile {
 	BlockPos pos = source.getPos();
 	if (world instanceof ServerWorld) {
 	    ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(),
-			    NetworkDirection.PLAY_TO_CLIENT));
+		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
 
@@ -42,8 +41,7 @@ public interface IUpdateableTile {
 	BlockPos pos = source.getPos();
 	if (world instanceof ServerWorld) {
 	    ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(),
-			    NetworkDirection.PLAY_TO_CLIENT));
+		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
 }

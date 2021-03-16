@@ -1,20 +1,20 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
-import electrodynamics.api.utilities.CachedTileOutput;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.tile.GenericTileTicking;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentContainerProvider;
+import electrodynamics.api.tile.components.type.ComponentDirection;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentInventory;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.api.utilities.object.CachedTileOutput;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
-import electrodynamics.common.tile.generic.GenericTileTicking;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentContainerProvider;
-import electrodynamics.common.tile.generic.component.type.ComponentDirection;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentInventory;
-import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
-import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -37,15 +37,13 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	super(DeferredRegisters.TILE_BATTERYBOX.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket)
-		.addGuiPacketWriter(this::createPacket).addCustomPacketReader(this::readPacket)
-		.addGuiPacketReader(this::readPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket)
+		.addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
 	addComponent(new ComponentInventory().setInventorySize(3));
 	addComponent(new ComponentContainerProvider("container.batterybox")
-		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player,
-			getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentElectrodynamic(this).setMaxJoules(DEFAULT_MAX_JOULES)
-		.addRelativeInputDirection(Direction.SOUTH).addRelativeOutputDirection(Direction.NORTH));
+		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentElectrodynamic(this).setMaxJoules(DEFAULT_MAX_JOULES).addRelativeInputDirection(Direction.SOUTH)
+		.addRelativeOutputDirection(Direction.NORTH));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -56,18 +54,9 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	}
 	receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 	if (electro.getJoulesStored() > 0) {
-	    electro.setJoules(
-		    electro.getJoulesStored()
-			    - ElectricityUtilities
-				    .receivePower(output.get(), facing,
-					    TransferPack
-						    .joulesVoltage(
-							    Math.min(electro.getJoulesStored(),
-								    DEFAULT_OUTPUT_JOULES_PER_TICK
-									    * currentCapacityMultiplier),
-							    electro.getVoltage()),
-					    false)
-				    .getJoules());
+	    electro.setJoules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.get(), facing, TransferPack.joulesVoltage(
+		    Math.min(electro.getJoulesStored(), DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), electro.getVoltage()), false)
+		    .getJoules());
 	}
 	currentCapacityMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
@@ -86,12 +75,9 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
     }
 
     protected void createPacket(CompoundNBT nbt) {
-	nbt.putDouble("clientMaxJoulesStored",
-		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
-	nbt.putDouble("clientJoules",
-		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
-	nbt.putDouble("clientVoltage",
-		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+	nbt.putDouble("clientMaxJoulesStored", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
+	nbt.putDouble("clientJoules", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
+	nbt.putDouble("clientVoltage", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	nbt.putDouble("currentCapacityMultiplier", currentCapacityMultiplier);
     }
 
@@ -117,28 +103,26 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-	TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).receivePower(
-		TransferPack.joulesVoltage(maxReceive, CapabilityElectrodynamic.DEFAULT_VOLTAGE), simulate);
+	TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
+		.receivePower(TransferPack.joulesVoltage(maxReceive, CapabilityElectrodynamic.DEFAULT_VOLTAGE), simulate);
 	return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-	TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).extractPower(
-		TransferPack.joulesVoltage(maxExtract, CapabilityElectrodynamic.DEFAULT_VOLTAGE), simulate);
+	TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
+		.extractPower(TransferPack.joulesVoltage(maxExtract, CapabilityElectrodynamic.DEFAULT_VOLTAGE), simulate);
 	return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
     }
 
     @Override
     public int getEnergyStored() {
-	return (int) Math.min(Integer.MAX_VALUE,
-		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
+	return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
     }
 
     @Override
     public int getMaxEnergyStored() {
-	return (int) Math.min(Integer.MAX_VALUE,
-		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
+	return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
     }
 
     @Override

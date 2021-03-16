@@ -1,15 +1,15 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.utilities.CachedTileOutput;
+import electrodynamics.api.tile.GenericTileTicking;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentDirection;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentFluidHandler;
+import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.api.utilities.object.CachedTileOutput;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTicking;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentDirection;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentFluidHandler;
-import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
@@ -20,12 +20,10 @@ public class TileElectricPump extends GenericTileTicking {
 
     public TileElectricPump() {
 	super(DeferredRegisters.TILE_ELECTRICPUMP.get());
-	addComponent(new ComponentElectrodynamic(this).setMaxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20)
-		.addInputDirection(Direction.UP));
+	addComponent(new ComponentElectrodynamic(this).setMaxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).addInputDirection(Direction.UP));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(
-		new ComponentFluidHandler(this).addFluidTank(Fluids.WATER, 0).addRelativeInputDirection(Direction.EAST));
+	addComponent(new ComponentFluidHandler(this).addFluidTank(Fluids.WATER, 0).addRelativeInputDirection(Direction.EAST));
     }
 
     protected CachedTileOutput output;

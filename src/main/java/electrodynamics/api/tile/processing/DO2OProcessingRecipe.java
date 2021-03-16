@@ -1,7 +1,7 @@
 package electrodynamics.api.tile.processing;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,15 +13,16 @@ public class DO2OProcessingRecipe {
 
     public DO2OProcessingRecipe(Object... objects) {
 	int nextStack = 0;
-	if (objects[nextStack] instanceof Subtype) {
-	    Subtype type = (Subtype) objects[nextStack];
+	if (objects[nextStack] instanceof ISubtype) {
+	    ISubtype type = (ISubtype) objects[nextStack];
 	    if (objects[nextStack + 1] instanceof Integer) {
-		input1 = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type)
-			: DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type), (int) objects[nextStack + 1]);
+		input1 = new ItemStack(
+			type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type),
+			(int) objects[nextStack + 1]);
 		nextStack = 2;
 	    } else {
-		input1 = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type)
-			: DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
+		input1 = new ItemStack(
+			type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
 		nextStack = 1;
 	    }
 	} else if (objects[nextStack] instanceof ItemStack) {
@@ -34,16 +35,17 @@ public class DO2OProcessingRecipe {
 	    input1 = new ItemStack((Block) objects[nextStack]);
 	    nextStack = 1;
 	}
-	if (objects[nextStack] instanceof Subtype) {
-	    Subtype type = (Subtype) objects[nextStack];
+	if (objects[nextStack] instanceof ISubtype) {
+	    ISubtype type = (ISubtype) objects[nextStack];
 	    if (objects.length > nextStack + 1 && objects[nextStack + 1] instanceof Integer) {
 		nextStack += 2;
-		input2 = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type)
-			: DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type), (int) objects[nextStack + 1]);
+		input2 = new ItemStack(
+			type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type),
+			(int) objects[nextStack + 1]);
 	    } else {
 		nextStack += 1;
-		input2 = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type)
-			: DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
+		input2 = new ItemStack(
+			type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
 	    }
 	} else if (objects[nextStack] instanceof ItemStack) {
 	    input2 = (ItemStack) objects[nextStack];
@@ -55,14 +57,15 @@ public class DO2OProcessingRecipe {
 	    input2 = new ItemStack((Block) objects[nextStack]);
 	    nextStack += 1;
 	}
-	if (objects[nextStack] instanceof Subtype) {
-	    Subtype type = (Subtype) objects[nextStack];
+	if (objects[nextStack] instanceof ISubtype) {
+	    ISubtype type = (ISubtype) objects[nextStack];
 	    if (objects.length > nextStack + 1 && objects[nextStack + 1] instanceof Integer) {
-		output = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type)
-			: DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type), (int) objects[nextStack + 1]);
+		output = new ItemStack(
+			type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type),
+			(int) objects[nextStack + 1]);
 	    } else {
-		output = new ItemStack(type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type)
-			: DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
+		output = new ItemStack(
+			type.isItem() ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(type) : DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(type));
 	    }
 	} else if (objects[nextStack] instanceof ItemStack) {
 	    output = (ItemStack) objects[nextStack];

@@ -1,12 +1,13 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.common.tile.TileOxidationFurnace;
@@ -17,18 +18,15 @@ import electrodynamics.common.tile.TileWireMill;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
 
-public enum SubtypeMachine implements Subtype {
+public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
-    coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
-    wiremill(true, TileWireMill.class), mineralcrusher(true, TileMineralCrusher.class),
-    mineralgrinder(true, TileMineralGrinder.class),
-    /* TODO: Recipe with lead and acid? */ batterybox(true, TileBatteryBox.class),
+    coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class), wiremill(true, TileWireMill.class),
+    mineralcrusher(true, TileMineralCrusher.class), mineralgrinder(true, TileMineralGrinder.class), batterybox(true, TileBatteryBox.class),
     oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
-    downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class),
-    solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
-    electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class);
+    downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class),
+    advancedsolarpanel(true, TileAdvancedSolarPanel.class), electricpump(true, TileElectricPump.class),
+    thermoelectricgenerator(true, TileThermoelectricGenerator.class), hydroelectricgenerator(true, TileHydroelectricGenerator.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
@@ -44,21 +42,16 @@ public enum SubtypeMachine implements Subtype {
 	if (bb instanceof BlockMachine && ba instanceof BlockMachine) {
 	    SubtypeMachine mb = ((BlockMachine) bb).machine;
 	    SubtypeMachine ma = ((BlockMachine) ba).machine;
-	    if (mb == electricfurnace && ma == electricfurnacerunning
-		    || mb == electricfurnacerunning && ma == electricfurnace) {
-		return false;
-	    } else if (mb == coalgenerator && ma == coalgeneratorrunning
-		    || mb == coalgeneratorrunning && ma == coalgenerator) {
-		return false;
-	    } else if (mb == oxidationfurnace && ma == oxidationfurnacerunning
-		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
+	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
+		    || mb == coalgenerator && ma == coalgeneratorrunning || mb == coalgeneratorrunning && ma == coalgenerator
+		    || mb == oxidationfurnace && ma == oxidationfurnacerunning || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
 		return false;
 	    }
 	}
 	return true;
     }
 
-    public TileEntity createTileEntity(IBlockReader worldIn) {
+    public TileEntity createTileEntity() {
 	if (tileclass != null) {
 	    try {
 		return tileclass.newInstance();

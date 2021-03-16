@@ -1,7 +1,7 @@
 package electrodynamics.common.event;
 
+import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
-import electrodynamics.api.item.IWrench;
 import electrodynamics.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -24,13 +24,13 @@ public class WrenchHandler {
 	    Block block = state.getBlock();
 	    ItemStack stack = event.getItemStack();
 	    Item item = stack.getItem();
-	    if (block instanceof IWrenchable && item instanceof IWrench) {
+	    if (block instanceof IWrenchable && item instanceof IWrenchItem) {
 		if (player.isSneaking()) {
-		    if (((IWrench) item).onPickup(stack, event.getPos(), player)) {
+		    if (((IWrenchItem) item).onPickup(stack, event.getPos(), player)) {
 			((IWrenchable) block).onPickup(stack, event.getPos(), player);
 		    }
 		} else {
-		    if (((IWrench) item).onRotate(stack, event.getPos(), player)) {
+		    if (((IWrenchItem) item).onRotate(stack, event.getPos(), player)) {
 			((IWrenchable) block).onRotate(stack, event.getPos(), player);
 		    }
 		}

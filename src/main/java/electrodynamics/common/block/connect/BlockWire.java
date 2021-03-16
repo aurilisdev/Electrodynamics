@@ -15,8 +15,8 @@ import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.network.ElectricityUtilities;
-import electrodynamics.common.tile.wire.TileLogisticalWire;
-import electrodynamics.common.tile.wire.TileWire;
+import electrodynamics.common.tile.network.TileLogisticalWire;
+import electrodynamics.common.tile.network.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -45,52 +45,43 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockWire extends Block {
-
-    public static final EnumProperty<EnumConnectType> DOWN = EnumProperty.create("down", EnumConnectType.class);
-    public static final EnumProperty<EnumConnectType> UP = EnumProperty.create("up", EnumConnectType.class);
-    public static final EnumProperty<EnumConnectType> NORTH = EnumProperty.create("north", EnumConnectType.class);
-    public static final EnumProperty<EnumConnectType> SOUTH = EnumProperty.create("south", EnumConnectType.class);
-    public static final EnumProperty<EnumConnectType> WEST = EnumProperty.create("west", EnumConnectType.class);
-    public static final EnumProperty<EnumConnectType> EAST = EnumProperty.create("east", EnumConnectType.class);
-    public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util
-	    .make(Maps.newEnumMap(Direction.class), (p) -> {
-		p.put(Direction.NORTH, NORTH);
-		p.put(Direction.EAST, EAST);
-		p.put(Direction.SOUTH, SOUTH);
-		p.put(Direction.WEST, WEST);
-		p.put(Direction.UP, UP);
-		p.put(Direction.DOWN, DOWN);
-	    });
+    public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
+	p.put(Direction.NORTH, EnumConnectType.NORTH);
+	p.put(Direction.EAST, EnumConnectType.EAST);
+	p.put(Direction.SOUTH, EnumConnectType.SOUTH);
+	p.put(Direction.WEST, EnumConnectType.WEST);
+	p.put(Direction.UP, EnumConnectType.UP);
+	p.put(Direction.DOWN, EnumConnectType.DOWN);
+    });
 
     public static final HashSet<Block> WIRESET = new HashSet<>();
 
-    protected final VoxelShape AABB;
-    protected final VoxelShape AABB_UP;
-    protected final VoxelShape AABB_DOWN;
-    protected final VoxelShape AABB_NORTH;
-    protected final VoxelShape AABB_SOUTH;
-    protected final VoxelShape AABB_WEST;
-    protected final VoxelShape AABB_EAST;
+    protected final VoxelShape cube;
+    protected final VoxelShape cubeup;
+    protected final VoxelShape cubedown;
+    protected final VoxelShape cubenorth;
+    protected final VoxelShape cubesouth;
+    protected final VoxelShape cubewest;
+    protected final VoxelShape cubeeast;
 
-    protected HashMap<HashSet<Direction>, VoxelShape> AABBSTATES = new HashMap<>();
+    protected HashMap<HashSet<Direction>, VoxelShape> shapestates = new HashMap<>();
 
     public final SubtypeWire wire;
 
     public BlockWire(SubtypeWire wire) {
-	super(Properties.create(wire.insulated ? Material.WOOL : Material.IRON)
-		.sound(wire.insulated ? SoundType.CLOTH : SoundType.METAL).hardnessAndResistance(0.15f)
-		.variableOpacity());
+	super(Properties.create(wire.insulated ? Material.WOOL : Material.IRON).sound(wire.insulated ? SoundType.CLOTH : SoundType.METAL)
+		.hardnessAndResistance(0.15f).variableOpacity());
 	this.wire = wire;
 	double w = wire.insulated ? 2 : 1;
 	double sm = 8 - w;
 	double lg = 8 + w;
-	AABB = Block.makeCuboidShape(sm, sm, sm, lg, lg, lg);
-	AABB_UP = Block.makeCuboidShape(sm, sm, sm, lg, 16, lg);
-	AABB_DOWN = Block.makeCuboidShape(sm, 0, sm, lg, lg, lg);
-	AABB_NORTH = Block.makeCuboidShape(sm, sm, 0, lg, lg, lg);
-	AABB_SOUTH = Block.makeCuboidShape(sm, sm, sm, lg, lg, 16);
-	AABB_WEST = Block.makeCuboidShape(0, sm, sm, lg, lg, lg);
-	AABB_EAST = Block.makeCuboidShape(sm, sm, sm, 16, lg, lg);
+	cube = Block.makeCuboidShape(sm, sm, sm, lg, lg, lg);
+	cubeup = Block.makeCuboidShape(sm, sm, sm, lg, 16, lg);
+	cubedown = Block.makeCuboidShape(sm, 0, sm, lg, lg, lg);
+	cubenorth = Block.makeCuboidShape(sm, sm, 0, lg, lg, lg);
+	cubesouth = Block.makeCuboidShape(sm, sm, sm, lg, lg, 16);
+	cubewest = Block.makeCuboidShape(0, sm, sm, lg, lg, lg);
+	cubeeast = Block.makeCuboidShape(sm, sm, sm, 16, lg, lg);
 	WIRESET.add(this);
 	setDefaultState(stateContainer.getBaseState().with(BlockStateProperties.WATERLOGGED, false));
     }
@@ -99,18 +90,17 @@ public class BlockWire extends Block {
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
 	FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-	return super.getStateForPlacement(context).with(BlockStateProperties.WATERLOGGED,
-		Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
+	return super.getStateForPlacement(context).with(BlockStateProperties.WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
     }
 
     @Override
     @Deprecated
     public FluidState getFluidState(BlockState state) {
-	return state.get(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getStillFluidState(false)
-		: super.getFluidState(state);
+	return state.get(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
     @Override
+    @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(wire)));
     }
@@ -118,7 +108,8 @@ public class BlockWire extends Block {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 	super.fillStateContainer(builder);
-	builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
+	builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST, EnumConnectType.SOUTH,
+		EnumConnectType.WEST);
 	builder.add(BlockStateProperties.WATERLOGGED);
     }
 
@@ -128,59 +119,60 @@ public class BlockWire extends Block {
     }
 
     @Override
+    @Deprecated
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-	VoxelShape shape = AABB;
+	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
-	if (!state.get(UP).equals(EnumConnectType.NONE)) {
+	if (!state.get(EnumConnectType.UP).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.UP);
 	}
-	if (!state.get(DOWN).equals(EnumConnectType.NONE)) {
+	if (!state.get(EnumConnectType.DOWN).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.DOWN);
 	}
-	if (!state.get(WEST).equals(EnumConnectType.NONE)) {
+	if (!state.get(EnumConnectType.WEST).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.WEST);
 	}
-	if (!state.get(EAST).equals(EnumConnectType.NONE)) {
+	if (!state.get(EnumConnectType.EAST).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.EAST);
 	}
-	if (!state.get(NORTH).equals(EnumConnectType.NONE)) {
+	if (!state.get(EnumConnectType.NORTH).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.NORTH);
 	}
-	if (!state.get(SOUTH).equals(EnumConnectType.NONE)) {
+	if (!state.get(EnumConnectType.SOUTH).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.SOUTH);
 	}
-	HashMap<HashSet<Direction>, VoxelShape> copy = (HashMap<HashSet<Direction>, VoxelShape>) AABBSTATES.clone();
+	HashMap<HashSet<Direction>, VoxelShape> copy = (HashMap<HashSet<Direction>, VoxelShape>) shapestates.clone();
 	for (HashSet<Direction> set : new HashSet<>(copy.keySet())) {
 	    if (set.equals(checked)) {
-		return AABBSTATES.get(set);
+		return shapestates.get(set);
 	    }
 	}
 	for (Direction dir : checked) {
 	    switch (dir) {
 	    case DOWN:
-		shape = VoxelShapes.combineAndSimplify(shape, AABB_DOWN, IBooleanFunction.OR);
+		shape = VoxelShapes.combineAndSimplify(shape, cubedown, IBooleanFunction.OR);
 		break;
 	    case EAST:
-		shape = VoxelShapes.combineAndSimplify(shape, AABB_EAST, IBooleanFunction.OR);
+		shape = VoxelShapes.combineAndSimplify(shape, cubeeast, IBooleanFunction.OR);
 		break;
 	    case NORTH:
-		shape = VoxelShapes.combineAndSimplify(shape, AABB_NORTH, IBooleanFunction.OR);
+		shape = VoxelShapes.combineAndSimplify(shape, cubenorth, IBooleanFunction.OR);
 		break;
 	    case SOUTH:
-		shape = VoxelShapes.combineAndSimplify(shape, AABB_SOUTH, IBooleanFunction.OR);
+		shape = VoxelShapes.combineAndSimplify(shape, cubesouth, IBooleanFunction.OR);
 		break;
 	    case UP:
-		shape = VoxelShapes.combineAndSimplify(shape, AABB_UP, IBooleanFunction.OR);
+		shape = VoxelShapes.combineAndSimplify(shape, cubeup, IBooleanFunction.OR);
 		break;
 	    case WEST:
-		shape = VoxelShapes.combineAndSimplify(shape, AABB_WEST, IBooleanFunction.OR);
+		shape = VoxelShapes.combineAndSimplify(shape, cubewest, IBooleanFunction.OR);
 		break;
 	    default:
 		break;
 	    }
 	}
 	copy.put(checked, shape);
-	AABBSTATES = copy;
+	shapestates = copy;
 	if (shape == null) {
 	    return VoxelShapes.empty();
 	}
@@ -188,23 +180,18 @@ public class BlockWire extends Block {
     }
 
     @Override
+    @Deprecated
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 	if (!wire.insulated) {
 	    TileWire tile = (TileWire) worldIn.getTileEntity(pos);
-	    if (tile != null) {
-		if (tile.getNetwork() != null) {
-		    if (tile.getNetwork().getTransmittedLastTick() > 0) {
-			entityIn.attackEntityFrom(DamageSources.ELECTRICITY,
-				(float) (tile.getNetwork().getTransmittedLastTick() / 120.0f));
-		    }
-		}
+	    if (tile != null && tile.getNetwork() != null && tile.getNetwork().getTransmittedLastTick() > 0) {
+		entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) (tile.getNetwork().getTransmittedLastTick() / 120.0f));
 	    }
 	}
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer,
-	    ItemStack stack) {
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
 	BlockState acc = stateIn;
 	for (Direction d : Direction.values()) {
 	    TileEntity facingTile = worldIn.getTileEntity(pos.offset(d));
@@ -241,16 +228,19 @@ public class BlockWire extends Block {
     }
 
     @Override
+    @Deprecated
     public boolean canProvidePower(BlockState state) {
-	return ((BlockWire) state.getBlock()).wire.logistical ? true : false;
+	return ((BlockWire) state.getBlock()).wire.logistical;
     }
 
     @Override
+    @Deprecated
     public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 	return blockState.getWeakPower(blockAccess, pos, side);
     }
 
     @Override
+    @Deprecated
     public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 	TileEntity tile = blockAccess.getTileEntity(pos);
 	if (tile instanceof TileLogisticalWire) {
@@ -260,9 +250,10 @@ public class BlockWire extends Block {
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world,
-	    BlockPos currentPos, BlockPos facingPos) {
-	if (stateIn.get(BlockStateProperties.WATERLOGGED)) {
+    @Deprecated
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos,
+	    BlockPos facingPos) {
+	if (stateIn.get(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
 	    world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 	}
 	EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(facing);

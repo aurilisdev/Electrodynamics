@@ -1,9 +1,8 @@
 package electrodynamics.client.render.tile;
 
-import java.util.Random;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import electrodynamics.api.utilities.UtilitiesRendering;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.tile.TileBatteryBox;
@@ -23,8 +22,8 @@ public class RenderBatteryBox extends TileEntityRenderer<TileBatteryBox> {
 
     @Override
     @Deprecated
-    public void render(TileBatteryBox tileEntityIn, float partialTicks, MatrixStack matrixStackIn,
-	    IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileBatteryBox tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
+	    int combinedOverlayIn) {
 	IBakedModel ibakedmodel;
 	int stored = (int) (tileEntityIn.getEnergyStored() / tileEntityIn.clientMaxJoulesStored * 6);
 	switch (stored) {
@@ -67,10 +66,6 @@ public class RenderBatteryBox extends TileEntityRenderer<TileBatteryBox> {
 	default:
 	    break;
 	}
-	Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-		tileEntityIn.getWorld(), ibakedmodel, tileEntityIn.getBlockState(), tileEntityIn.getPos(),
-		matrixStackIn, bufferIn.getBuffer(RenderType.getSolid()), false, tileEntityIn.getWorld().rand,
-		new Random().nextLong(), 1);
+	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
-
 }

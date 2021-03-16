@@ -1,10 +1,10 @@
 package electrodynamics.common.inventory.container;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.tile.GenericTile;
 import electrodynamics.common.inventory.container.slot.GenericSlot;
 import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
-import electrodynamics.common.tile.generic.GenericTile;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -23,8 +23,7 @@ public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
 	super(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), id, playerinv, inventory, inventorydata);
     }
 
-    public ContainerO2OProcessor(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory,
-	    IIntArray inventorydata) {
+    public ContainerO2OProcessor(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 	super(type, id, playerinv, inventory, inventorydata);
     }
 
@@ -32,14 +31,11 @@ public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 34));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 35));
-	addSlot(new SlotRestricted(inv, nextIndex(), 186, 14,
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+	addSlot(new SlotRestricted(inv, nextIndex(), 186, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 186, 34,
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+	addSlot(new SlotRestricted(inv, nextIndex(), 186, 34, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 186, 54,
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+	addSlot(new SlotRestricted(inv, nextIndex(), 186, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
     }
 }

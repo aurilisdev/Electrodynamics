@@ -1,23 +1,23 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.TargetValue;
-import electrodynamics.api.utilities.CachedTileOutput;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.tile.GenericTileTicking;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentContainerProvider;
+import electrodynamics.api.tile.components.type.ComponentDirection;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentInventory;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.api.utilities.object.CachedTileOutput;
+import electrodynamics.api.utilities.object.TargetValue;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTicking;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentContainerProvider;
-import electrodynamics.common.tile.generic.component.type.ComponentDirection;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentInventory;
-import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
-import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -41,19 +41,15 @@ public class TileCoalGenerator extends GenericTileTicking {
     public TileCoalGenerator() {
 	super(DeferredRegisters.TILE_COALGENERATOR.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket)
-		.addGuiPacketWriter(this::createPacket).addCustomPacketReader(this::readPacket)
-		.addGuiPacketReader(this::readPacket));
-	addComponent(new ComponentTickable().addTickClient(this::tickClient).addTickCommon(this::tickCommon)
-		.addTickServer(this::tickServer));
+	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket)
+		.addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
+	addComponent(new ComponentTickable().addTickClient(this::tickClient).addTickCommon(this::tickCommon).addTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.NORTH));
-	addComponent(new ComponentInventory().setInventorySize(1).addSlotsOnFace(Direction.UP, 0)
-		.addSlotsOnFace(Direction.EAST, 0).addSlotsOnFace(Direction.WEST, 0).addSlotsOnFace(Direction.SOUTH, 0)
-		.addSlotsOnFace(Direction.NORTH, 0).setItemValidPredicate(
-			(index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL));
-	addComponent(new ComponentContainerProvider("container.coalgenerator")
-		.setCreateMenuFunction((id, player) -> new ContainerCoalGenerator(id, player,
-			getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentInventory().setInventorySize(1).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.EAST, 0)
+		.addSlotsOnFace(Direction.WEST, 0).addSlotsOnFace(Direction.SOUTH, 0).addSlotsOnFace(Direction.NORTH, 0)
+		.setItemValidPredicate((index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL));
+	addComponent(new ComponentContainerProvider("container.coalgenerator").setCreateMenuFunction(
+		(id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -80,10 +76,8 @@ public class TileCoalGenerator extends GenericTileTicking {
 	    }
 	    if (update) {
 		world.setBlockState(pos,
-			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
-				.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
-				.getDefaultState()
-				.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
+				.getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
 			3);
 	    }
 	}
@@ -91,8 +85,7 @@ public class TileCoalGenerator extends GenericTileTicking {
 	    ElectricityUtilities.receivePower(output.get(), direction.getDirection(), currentOutput, false);
 	}
 	heat.rangeParameterize(27, 3000, burnTime > 0 ? 3000 : 27, heat.get(), 600).flush();
-	currentOutput = TransferPack.ampsVoltage(
-		Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
+	currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
 		Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
     }
 
@@ -106,15 +99,14 @@ public class TileCoalGenerator extends GenericTileTicking {
 	if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
 	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    if (world.rand.nextInt(10) == 0) {
-		world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-			SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 0.5F + world.rand.nextFloat(),
-			world.rand.nextFloat() * 0.7F + 0.6F, false);
+		world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS,
+			0.5F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.6F, false);
 	    }
 
 	    if (world.rand.nextInt(10) == 0) {
 		for (int i = 0; i < world.rand.nextInt(1) + 1; ++i) {
-		    world.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-			    dir.getXOffset(), 0.0, dir.getZOffset());
+		    world.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, dir.getXOffset(), 0.0,
+			    dir.getZOffset());
 		}
 	    }
 	}

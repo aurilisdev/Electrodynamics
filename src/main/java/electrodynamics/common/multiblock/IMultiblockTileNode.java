@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.math.Location;
+import electrodynamics.api.utilities.object.Location;
 import electrodynamics.common.tile.TileMultiSubnode;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

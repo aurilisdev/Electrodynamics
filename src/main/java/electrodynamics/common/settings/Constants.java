@@ -4,7 +4,7 @@ import electrodynamics.api.configuration.Configuration;
 import electrodynamics.api.configuration.DoubleValue;
 import electrodynamics.api.configuration.FloatValue;
 import electrodynamics.api.configuration.IntValue;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.utilities.object.TransferPack;
 
 @Configuration(name = "Electrodynamics")
 public class Constants {
@@ -12,8 +12,10 @@ public class Constants {
     public static float TRANSFORMER_EFFICIENCY = 0.98f;
     @DoubleValue(def = 34)
     public static double COALGENERATOR_AMPERAGE = 34.0;
-    @DoubleValue(def = 4.166667)
-    public static double THERMOELECTRICGENERATOR_AMPERAGE = 4.166667;
+    @DoubleValue(def = 4.5)
+    public static double THERMOELECTRICGENERATOR_AMPERAGE = 4.5;
+    @DoubleValue(def = 6)
+    public static double HYDROELECTRICGENERATOR_AMPERAGE = 6;
     @DoubleValue(def = 10)
     public static double SOLARPANEL_AMPERAGE = 10;
     @DoubleValue(def = 50.0)

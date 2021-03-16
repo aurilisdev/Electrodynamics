@@ -81,6 +81,7 @@
 	"block.electrodynamics.upgradetransformer": "Upgrade Transformer",
 	"block.electrodynamics.electricpump": "Electric Pump",
 	"block.electrodynamics.thermoelectricgenerator": "Thermoelectric Generator",
+	"block.electrodynamics.hydroelectricgenerator": "Hydroelectric Generator",
 	"block.electrodynamics.wiretin": "Tin Wire",
 	"block.electrodynamics.wireiron": "Iron Wire",
 	"block.electrodynamics.wirecopper": "Copper Wire",

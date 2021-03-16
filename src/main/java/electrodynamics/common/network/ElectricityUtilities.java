@@ -1,9 +1,9 @@
 package electrodynamics.common.network;
 
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.electricity.IElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
-import electrodynamics.api.tile.electric.IElectrodynamic;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.utilities.object.TransferPack;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -42,8 +42,7 @@ public class ElectricityUtilities {
 	return acceptor instanceof IConductor;
     }
 
-    public static TransferPack receivePower(TileEntity tile, Direction direction, TransferPack transfer,
-	    boolean debug) {
+    public static TransferPack receivePower(TileEntity tile, Direction direction, TransferPack transfer, boolean debug) {
 	if (isElectricReceiver(tile, direction)) {
 	    LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
 	    if (cap.isPresent()) {
@@ -53,16 +52,14 @@ public class ElectricityUtilities {
 	    LazyOptional<IEnergyStorage> cap2 = tile.getCapability(CapabilityEnergy.ENERGY, direction);
 	    if (cap2.isPresent()) {
 		IEnergyStorage handler = cap2.resolve().get();
-		TransferPack returner = TransferPack.joulesVoltage(
-			handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug),
-			transfer.getVoltage());
+		TransferPack returner = TransferPack
+			.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
 		if (transfer.getVoltage() > CapabilityElectrodynamic.DEFAULT_VOLTAGE) {
 		    World world = tile.getWorld();
 		    BlockPos pos = tile.getPos();
 		    world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(),
-			    (float) Math.log10(10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE),
-			    Mode.DESTROY);
+			    (float) Math.log10(10 + transfer.getVoltage() / CapabilityElectrodynamic.DEFAULT_VOLTAGE), Mode.DESTROY);
 		}
 		return returner;
 	    }

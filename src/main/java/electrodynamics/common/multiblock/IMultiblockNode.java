@@ -9,8 +9,7 @@ import net.minecraft.world.IWorldReader;
 public interface IMultiblockNode {
     boolean hasMultiBlock();
 
-    default boolean isValidMultiblockPlacement(BlockState state, IWorldReader worldIn, BlockPos pos,
-	    Collection<Subnode> nodes) {
+    default boolean isValidMultiblockPlacement(BlockState state, IWorldReader worldIn, BlockPos pos, Collection<Subnode> nodes) {
 	for (Subnode sub : nodes) {
 	    BlockPos check = pos.add(sub.pos);
 	    if (!worldIn.getBlockState(check).getMaterial().isReplaceable()) {

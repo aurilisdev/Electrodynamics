@@ -1,13 +1,13 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.math.Location;
-import electrodynamics.api.scheduler.Scheduler;
+import electrodynamics.api.tile.GenericTile;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.utilities.Scheduler;
+import electrodynamics.api.utilities.object.Location;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
-import electrodynamics.common.tile.generic.GenericTile;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -21,8 +21,7 @@ public class TileMultiSubnode extends GenericTile {
 
     public TileMultiSubnode() {
 	super(DeferredRegisters.TILE_MULTI.get());
-	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket)
-		.addCustomPacketWriter(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket).addCustomPacketWriter(this::writeCustomPacket));
     }
 
     @Override
@@ -37,8 +36,7 @@ public class TileMultiSubnode extends GenericTile {
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);
 	nodePos = Location.readFromNBT(compound, "node");
-	Scheduler.schedule(20,
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler)::sendCustomPacket);
+	Scheduler.schedule(20, this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler)::sendCustomPacket);
     }
 
     protected void readCustomPacket(CompoundNBT tag) {

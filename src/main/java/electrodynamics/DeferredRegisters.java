@@ -5,8 +5,8 @@ import java.util.HashMap;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Sets;
 
+import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
-import electrodynamics.api.subtype.Subtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
@@ -39,6 +39,7 @@ import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.common.tile.TileMultiSubnode;
@@ -47,9 +48,9 @@ import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWireMill;
-import electrodynamics.common.tile.wire.TileLogisticalWire;
-import electrodynamics.common.tile.wire.TilePipe;
-import electrodynamics.common.tile.wire.TileWire;
+import electrodynamics.common.tile.network.TileLogisticalWire;
+import electrodynamics.common.tile.network.TilePipe;
+import electrodynamics.common.tile.network.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -62,47 +63,40 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class DeferredRegisters {
-    public static final HashMap<Subtype, Item> SUBTYPEITEM_MAPPINGS = new HashMap<>();
-    public static final HashMap<Subtype, Block> SUBTYPEBLOCK_MAPPINGS = new HashMap<>();
-    public static final HashMap<Subtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
+    public static final HashMap<ISubtype, Item> SUBTYPEITEM_MAPPINGS = new HashMap<>();
+    public static final HashMap<ISubtype, Block> SUBTYPEBLOCK_MAPPINGS = new HashMap<>();
+    public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
-    public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister
-	    .create(ForgeRegistries.TILE_ENTITIES, References.ID);
-    public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister
-	    .create(ForgeRegistries.CONTAINERS, References.ID);
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,
-	    References.ID);
+    public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, References.ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, References.ID);
     public static BlockMultiSubnode multi = new BlockMultiSubnode();
     static {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-		    BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
 	}
 	for (SubtypeMachine subtype : SubtypeMachine.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-		    BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
 	}
 	for (SubtypeWire subtype : SubtypeWire.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-		    BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
 	}
 	for (SubtypePipe subtype : SubtypePipe.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-		    BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
 	}
     }
 
-    private static void registerSubtypeItem(Subtype[] array) {
-	for (Subtype subtype : array) {
+    private static void registerSubtypeItem(ISubtype[] array) {
+	for (ISubtype subtype : array) {
 	    ITEMS.register(subtype.tag(), supplier(new Item(new Item.Properties().group(References.CORETAB)), subtype));
 	}
     }
 
-    private static void registerSubtypeBlockItem(Subtype[] array) {
-	for (Subtype subtype : array) {
-	    ITEMS.register(subtype.tag(), supplier(new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype),
-		    new Item.Properties().group(References.CORETAB)), subtype));
+    private static void registerSubtypeBlockItem(ISubtype[] array) {
+	for (ISubtype subtype : array) {
+	    ITEMS.register(subtype.tag(), supplier(
+		    new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
 	}
     }
 
@@ -110,12 +104,12 @@ public class DeferredRegisters {
 	registerSubtypeBlockItem(SubtypeOre.values());
 	registerSubtypeBlockItem(SubtypeMachine.values());
 	for (SubtypeWire subtype : SubtypeWire.values()) {
-	    ITEMS.register(subtype.tag(), supplier(new BlockItemWire((BlockWire) SUBTYPEBLOCK_MAPPINGS.get(subtype),
-		    new Item.Properties().group(References.CORETAB)), subtype));
+	    ITEMS.register(subtype.tag(), supplier(
+		    new BlockItemWire((BlockWire) SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
 	}
 	for (SubtypePipe subtype : SubtypePipe.values()) {
-	    ITEMS.register(subtype.tag(), supplier(new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype),
-		    new Item.Properties().group(References.CORETAB)), subtype));
+	    ITEMS.register(subtype.tag(), supplier(
+		    new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().group(References.CORETAB)), subtype));
 	}
 	registerSubtypeItem(SubtypeIngot.values());
 	registerSubtypeItem(SubtypeDust.values());
@@ -125,8 +119,7 @@ public class DeferredRegisters {
 	registerSubtypeItem(SubtypePlate.values());
 	registerSubtypeItem(SubtypeCircuit.values());
 	for (SubtypeProcessorUpgrade subtype : SubtypeProcessorUpgrade.values()) {
-	    ITEMS.register(subtype.tag(), supplier(
-		    new ItemProcessorUpgrade(new Item.Properties().group(References.CORETAB), subtype), subtype));
+	    ITEMS.register(subtype.tag(), supplier(new ItemProcessorUpgrade(new Item.Properties().group(References.CORETAB), subtype), subtype));
 	}
 
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
@@ -136,8 +129,7 @@ public class DeferredRegisters {
 
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
 		"|translate|tooltip.oxidationfurnace.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher),
-		"|translate|tooltip.mineralcrusher.voltage");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher), "|translate|tooltip.mineralcrusher.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning),
 		"|translate|tooltip.oxidationfurnacerunning.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
@@ -152,81 +144,67 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
-    public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter",
 	    supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(
-	    SubtypeMachine.coalgenerator.tag(),
-	    () -> new TileEntityType<>(TileCoalGenerator::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),
-			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)),
-		    null));
-    public static final RegistryObject<TileEntityType<TileSolarPanel>> TILE_SOLARPANEL = TILES
-	    .register(SubtypeMachine.solarpanel.tag(), () -> new TileEntityType<>(TileSolarPanel::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel)), null));
+    public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
+	    () -> new TileEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),
+		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
+    public static final RegistryObject<TileEntityType<TileSolarPanel>> TILE_SOLARPANEL = TILES.register(SubtypeMachine.solarpanel.tag(),
+	    () -> new TileEntityType<>(TileSolarPanel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel)), null));
     public static final RegistryObject<TileEntityType<TileAdvancedSolarPanel>> TILE_ADVANCEDSOLARPANEL = TILES
 	    .register(SubtypeMachine.advancedsolarpanel.tag(), () -> new TileEntityType<>(TileAdvancedSolarPanel::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel)), null));
     public static final RegistryObject<TileEntityType<TileElectricFurnace>> TILE_ELECTRICFURNACE = TILES.register(
 	    SubtypeMachine.electricfurnace.tag(),
-	    () -> new TileEntityType<>(TileElectricFurnace::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace),
-			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)),
-		    null));
-    public static final RegistryObject<TileEntityType<TileWireMill>> TILE_WIREMILL = TILES
-	    .register(SubtypeMachine.wiremill.tag(), () -> new TileEntityType<>(TileWireMill::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill)), null));
-    public static final RegistryObject<TileEntityType<TileMineralGrinder>> TILE_MINERALGRINDER = TILES
-	    .register(SubtypeMachine.mineralgrinder.tag(), () -> new TileEntityType<>(TileMineralGrinder::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder)), null));
-    public static final RegistryObject<TileEntityType<TileMineralCrusher>> TILE_MINERALCRUSHER = TILES
-	    .register(SubtypeMachine.mineralcrusher.tag(), () -> new TileEntityType<>(TileMineralCrusher::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher)), null));
-    public static final RegistryObject<TileEntityType<TileBatteryBox>> TILE_BATTERYBOX = TILES
-	    .register(SubtypeMachine.batterybox.tag(), () -> new TileEntityType<>(TileBatteryBox::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
+	    () -> new TileEntityType<>(TileElectricFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace),
+		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)), null));
+    public static final RegistryObject<TileEntityType<TileWireMill>> TILE_WIREMILL = TILES.register(SubtypeMachine.wiremill.tag(),
+	    () -> new TileEntityType<>(TileWireMill::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill)), null));
+    public static final RegistryObject<TileEntityType<TileMineralGrinder>> TILE_MINERALGRINDER = TILES.register(SubtypeMachine.mineralgrinder.tag(),
+	    () -> new TileEntityType<>(TileMineralGrinder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder)), null));
+    public static final RegistryObject<TileEntityType<TileMineralCrusher>> TILE_MINERALCRUSHER = TILES.register(SubtypeMachine.mineralcrusher.tag(),
+	    () -> new TileEntityType<>(TileMineralCrusher::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher)), null));
+    public static final RegistryObject<TileEntityType<TileBatteryBox>> TILE_BATTERYBOX = TILES.register(SubtypeMachine.batterybox.tag(),
+	    () -> new TileEntityType<>(TileBatteryBox::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
     public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
-	    () -> new TileEntityType<>(TileTransformer::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
-			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)),
-		    null));
+	    () -> new TileEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
+		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
-	    () -> new TileEntityType<>(TileOxidationFurnace::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
-			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)),
-		    null));
-    public static final RegistryObject<TileEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES
-	    .register(SubtypeMachine.electricpump.tag(), () -> new TileEntityType<>(TileElectricPump::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
+	    () -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
+		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
+    public static final RegistryObject<TileEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
+	    () -> new TileEntityType<>(TileElectricPump::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
     public static final RegistryObject<TileEntityType<TileThermoelectricGenerator>> TILE_THERMOELECTRICGENERATOR = TILES
-	    .register(SubtypeMachine.thermoelectricgenerator.tag(),
-		    () -> new TileEntityType<>(TileThermoelectricGenerator::new,
-			    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.thermoelectricgenerator)), null));
+	    .register(SubtypeMachine.thermoelectricgenerator.tag(), () -> new TileEntityType<>(TileThermoelectricGenerator::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.thermoelectricgenerator)), null));
+    public static final RegistryObject<TileEntityType<TileHydroelectricGenerator>> TILE_HYDROELECTRICGENERATOR = TILES
+	    .register(SubtypeMachine.hydroelectricgenerator.tag(), () -> new TileEntityType<>(TileHydroelectricGenerator::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.hydroelectricgenerator)), null));
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
 
     public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile",
 	    () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
-    public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register(
-	    "wirelogisticaltile", () -> new TileEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
+    public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile",
+	    () -> new TileEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
     public static final RegistryObject<TileEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile",
 	    () -> new TileEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
     public static final RegistryObject<ContainerType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS
 	    .register(SubtypeMachine.coalgenerator.tag(), () -> new ContainerType<>(ContainerCoalGenerator::new));
     public static final RegistryObject<ContainerType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS
 	    .register(SubtypeMachine.electricfurnace.tag(), () -> new ContainerType<>(ContainerElectricFurnace::new));
-    public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS
-	    .register("o2oprocessor", () -> new ContainerType<>(ContainerO2OProcessor::new));
-    public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS
-	    .register("do2oprocessor", () -> new ContainerType<>(ContainerDO2OProcessor::new));
-    public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS
-	    .register(SubtypeMachine.batterybox.tag(), () -> new ContainerType<>(ContainerBatteryBox::new));
+    public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor",
+	    () -> new ContainerType<>(ContainerO2OProcessor::new));
+    public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS.register("do2oprocessor",
+	    () -> new ContainerType<>(ContainerDO2OProcessor::new));
+    public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(),
+	    () -> new ContainerType<>(ContainerBatteryBox::new));
 
     public static final RegistryObject<SoundEvent> SOUND_BATTERYBOX = SOUNDS.register("batterybox",
 	    () -> new SoundEvent(new ResourceLocation(References.ID + ":batterybox")));
@@ -235,7 +213,7 @@ public class DeferredRegisters {
 	return () -> entry;
     }
 
-    private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry, Subtype en) {
+    private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry, ISubtype en) {
 	if (entry instanceof Block) {
 	    SUBTYPEBLOCK_MAPPINGS.put(en, (Block) entry);
 	} else if (entry instanceof Item) {

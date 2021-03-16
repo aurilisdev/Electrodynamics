@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.pipe.IPipe;
-import electrodynamics.api.networks.AbstractNetwork;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -51,8 +51,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 	    FluidStack joulesSent = new FluidStack(transfer.getFluid(), 0);
 	    availableAcceptors.removeAll(ignored);
 	    if (!availableAcceptors.isEmpty()) {
-		FluidStack perReceiver = new FluidStack(transfer.getFluid(),
-			transfer.getAmount() / availableAcceptors.size());
+		FluidStack perReceiver = new FluidStack(transfer.getFluid(), transfer.getAmount() / availableAcceptors.size());
 		for (TileEntity receiver : availableAcceptors) {
 		    if (acceptorInputMap.containsKey(receiver)) {
 			for (Direction connection : acceptorInputMap.get(receiver)) {

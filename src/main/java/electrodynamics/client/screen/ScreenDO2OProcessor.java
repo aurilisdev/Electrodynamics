@@ -3,14 +3,14 @@ package electrodynamics.client.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.formatting.ElectricUnit;
-import electrodynamics.api.utilities.ElectricityChatFormatter;
+import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
+import electrodynamics.api.tile.GenericTile;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentProcessor;
 import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
-import electrodynamics.common.tile.generic.GenericTile;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentProcessor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -20,11 +20,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenDO2OProcessor extends GenericContainerScreenUpgradeable<ContainerDO2OProcessor> {
-    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(
-	    References.ID + ":textures/gui/do2oprocessor.png");
+    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/do2oprocessor.png");
 
-    public ScreenDO2OProcessor(ContainerDO2OProcessor container, PlayerInventory playerInventory,
-	    ITextComponent title) {
+    public ScreenDO2OProcessor(ContainerDO2OProcessor container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
     }
 
@@ -42,8 +40,7 @@ public class ScreenDO2OProcessor extends GenericContainerScreenUpgradeable<Conta
 	    ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.do2oprocessor.usage",
-			    ElectricityChatFormatter.getDisplayShort(processor.getJoulesPerTick() * 20,
-				    ElectricUnit.WATT)),
+			    ElectricityChatFormatter.getDisplayShort(processor.getJoulesPerTick() * 20, ElectricUnit.WATT)),
 		    (float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.do2oprocessor.voltage",
@@ -60,8 +57,7 @@ public class ScreenDO2OProcessor extends GenericContainerScreenUpgradeable<Conta
 	if (tile != null) {
 	    ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
 
-	    blit(stack, guiLeft + 79, guiTop + 34, 212, 14,
-		    (int) (processor.operatingTicks * 24 / processor.requiredTicks + 1), 16);
+	    blit(stack, guiLeft + 79, guiTop + 34, 212, 14, (int) (processor.operatingTicks * 24 / processor.requiredTicks + 1), 16);
 	}
     }
 

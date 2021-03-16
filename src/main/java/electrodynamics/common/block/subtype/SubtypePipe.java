@@ -1,8 +1,8 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 
-public enum SubtypePipe implements Subtype {
+public enum SubtypePipe implements ISubtype {
     steel(10000);
 
     public final long maxTransfer;

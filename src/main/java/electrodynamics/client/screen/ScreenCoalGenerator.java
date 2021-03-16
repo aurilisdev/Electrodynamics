@@ -3,9 +3,9 @@ package electrodynamics.client.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.formatting.ElectricUnit;
-import electrodynamics.api.utilities.ElectricityChatFormatter;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.client.screen.generic.GenericContainerScreen;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
@@ -19,11 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenCoalGenerator extends GenericContainerScreen<ContainerCoalGenerator> {
-    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(
-	    References.ID + ":textures/gui/coalgenerator.png");
+    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/coalgenerator.png");
 
-    public ScreenCoalGenerator(ContainerCoalGenerator container, PlayerInventory playerInventory,
-	    ITextComponent title) {
+    public ScreenCoalGenerator(ContainerCoalGenerator container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
     }
 
@@ -38,11 +36,9 @@ public class ScreenCoalGenerator extends GenericContainerScreen<ContainerCoalGen
 	TileCoalGenerator box = container.getHostFromIntArray();
 	if (box != null) {
 	    TransferPack output = TransferPack.ampsVoltage(
-		    Constants.COALGENERATOR_MAX_OUTPUT.getAmps()
-			    * Math.min((box.clientHeat - 27.0) / (3000.0 - 27.0), 1),
+		    Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((box.clientHeat - 27.0) / (3000.0 - 27.0), 1),
 		    Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"),
+	    font.func_243248_b(matrixStack, new TranslationTextComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"),
 		    playerInventoryTitleX + 60f, playerInventoryTitleY - 53f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.coalgenerator.current",

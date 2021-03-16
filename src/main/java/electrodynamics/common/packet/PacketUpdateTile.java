@@ -2,10 +2,10 @@ package electrodynamics.common.packet;
 
 import java.util.function.Supplier;
 
+import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.IUpdateableTile;
-import electrodynamics.common.tile.generic.GenericTile;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.CompoundNBT;

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.multiblock.IMultiblockNode;
@@ -39,8 +39,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 		if (i == 0 && j == 0) {
 		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), VoxelShapes.fullCube()));
 		} else {
-		    advancedsolarpanelsubnodes
-			    .add(new Subnode(new BlockPos(i, 1, j), VoxelShapes.create(0, 13.0 / 16.0, 0, 1, 1, 1)));
+		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), VoxelShapes.create(0, 13.0 / 16.0, 0, 1, 1, 1)));
 		}
 	    }
 	}
@@ -68,8 +67,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Deprecated
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-	return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer
-		? transformershape
+	return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer ? transformershape
 		: machine == SubtypeMachine.solarpanel ? solargenshape : super.getShape(state, worldIn, pos, context);
     }
 
@@ -90,19 +88,17 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     @Deprecated
     public BlockRenderType getRenderType(BlockState state) {
-	return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.batterybox
-		? BlockRenderType.ENTITYBLOCK_ANIMATED
+	return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.batterybox ? BlockRenderType.ENTITYBLOCK_ANIMATED
 		: BlockRenderType.MODEL;
     }
 
     @Override
     @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	ItemStack addstack = new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS
-		.get(machine == SubtypeMachine.coalgeneratorrunning ? SubtypeMachine.coalgenerator
+	ItemStack addstack = new ItemStack(
+		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(machine == SubtypeMachine.coalgeneratorrunning ? SubtypeMachine.coalgenerator
 			: machine == SubtypeMachine.electricfurnacerunning ? SubtypeMachine.electricfurnace
-				: machine == SubtypeMachine.oxidationfurnacerunning ? SubtypeMachine.oxidationfurnace
-					: machine));
+				: machine == SubtypeMachine.oxidationfurnacerunning ? SubtypeMachine.oxidationfurnace : machine));
 	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
 	tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
 	    double joules = el.getJoulesStored();
@@ -117,8 +113,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 	return machine == SubtypeMachine.coalgeneratorrunning ? 12
 		: machine == SubtypeMachine.electricfurnacerunning ? 8
-			: machine == SubtypeMachine.oxidationfurnacerunning ? 6
-				: super.getLightValue(state, world, pos);
+			: machine == SubtypeMachine.oxidationfurnacerunning ? 6 : super.getLightValue(state, world, pos);
     }
 
     @Override
@@ -152,7 +147,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-	return machine.createTileEntity(world);
+	return machine.createTileEntity();
     }
 
     @Override

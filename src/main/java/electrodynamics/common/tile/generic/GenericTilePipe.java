@@ -8,11 +8,12 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
+import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.pipe.IPipe;
-import electrodynamics.api.networks.AbstractNetwork;
+import electrodynamics.api.tile.GenericTile;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.common.network.FluidNetwork;
 import electrodynamics.common.network.NetworkRegistry;
-import electrodynamics.common.tile.generic.component.type.ComponentPacketHandler;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
@@ -86,8 +87,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket)
-		.addCustomPacketWriter(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket).addCustomPacketWriter(this::writeCustomPacket));
     }
 
     private HashSet<IPipe> getConnectedConductors() {

@@ -3,11 +3,11 @@ package electrodynamics.common.block;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.api.item.IWrench;
+import electrodynamics.api.IWrenchItem;
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.IWrenchable;
-import electrodynamics.api.tile.electric.CapabilityElectrodynamic;
-import electrodynamics.common.tile.generic.GenericTile;
-import electrodynamics.common.tile.generic.component.ComponentType;
+import electrodynamics.api.tile.components.ComponentType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -39,8 +39,7 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
     public BlockGenericMachine() {
-	super(Properties.create(Material.IRON).hardnessAndResistance(3.5F).sound(SoundType.METAL)
-		.harvestTool(ToolType.PICKAXE).notSolid());
+	super(Properties.create(Material.IRON).hardnessAndResistance(3.5F).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).notSolid());
 	setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
     }
 
@@ -48,8 +47,7 @@ public class BlockGenericMachine extends Block implements IWrenchable {
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	TileEntity tile = worldIn.getTileEntity(pos);
-	if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING))
-		&& tile instanceof GenericTile) {
+	if (!(state.getBlock() == newState.getBlock() && state.get(FACING) != newState.get(FACING)) && tile instanceof GenericTile) {
 	    GenericTile generic = (GenericTile) tile;
 	    if (generic.hasComponent(ComponentType.Inventory)) {
 		InventoryHelper.dropInventoryItems(worldIn, pos, generic.getComponent(ComponentType.Inventory));
@@ -76,11 +74,11 @@ public class BlockGenericMachine extends Block implements IWrenchable {
 
     @Override
     @Deprecated
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-	    Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
+	    BlockRayTraceResult hit) {
 	if (worldIn.isRemote) {
 	    return ActionResultType.SUCCESS;
-	} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrench)) {
+	} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrenchItem)) {
 	    TileEntity tile = worldIn.getTileEntity(pos);
 	    if (tile instanceof GenericTile) {
 		GenericTile generic = (GenericTile) tile;

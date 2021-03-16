@@ -1,16 +1,14 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 
-public enum SubtypeWire implements Subtype {
-    tin(0.00645 / 2.0, 60, false, false), iron(0.0466 / 2.0, 100, false, false),
-    copper(0.00806 / 2.0, 360, false, false), silver(0.00763 / 2.0, 600, false, false),
-    gold(0.0117 / 2.0, 1000, false, false), superconductive(0.0, Long.MAX_VALUE, false, false),
-    insulatedtin(0.00645 / 2.0, 60, true, false), insulatediron(0.0466 / 2.0, 100, true, false),
-    insulatedcopper(0.00806 / 2.0, 360, true, false), insulatedsilver(0.00763 / 2.0, 600, true, false),
-    insulatedgold(0.0117 / 2.0, 1000, true, false), insulatedsuperconductive(0.0, Long.MAX_VALUE, true, false),
-    logisticstin(0.00645 / 2.0, 60, true, true), logisticsiron(0.0466 / 2.0, 100, true, true),
-    logisticscopper(0.00806 / 2.0, 360, true, true), logisticssilver(0.00763 / 2.0, 600, true, true),
+public enum SubtypeWire implements ISubtype {
+    tin(0.00645 / 2.0, 60, false, false), iron(0.0466 / 2.0, 100, false, false), copper(0.00806 / 2.0, 360, false, false),
+    silver(0.00763 / 2.0, 600, false, false), gold(0.0117 / 2.0, 1000, false, false), superconductive(0.0, Long.MAX_VALUE, false, false),
+    insulatedtin(0.00645 / 2.0, 60, true, false), insulatediron(0.0466 / 2.0, 100, true, false), insulatedcopper(0.00806 / 2.0, 360, true, false),
+    insulatedsilver(0.00763 / 2.0, 600, true, false), insulatedgold(0.0117 / 2.0, 1000, true, false),
+    insulatedsuperconductive(0.0, Long.MAX_VALUE, true, false), logisticstin(0.00645 / 2.0, 60, true, true),
+    logisticsiron(0.0466 / 2.0, 100, true, true), logisticscopper(0.00806 / 2.0, 360, true, true), logisticssilver(0.00763 / 2.0, 600, true, true),
     logisticsgold(0.0117 / 2.0, 1000, true, true), logisticssuperconductive(0.0, Long.MAX_VALUE, true, true);
 
     public final double resistance;

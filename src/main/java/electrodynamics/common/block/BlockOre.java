@@ -17,18 +17,15 @@ public class BlockOre extends OreBlock {
     private SubtypeOre ore;
 
     public BlockOre(SubtypeOre subtype) {
-	super(Properties.create(Material.ROCK).setRequiresTool()
-		.hardnessAndResistance(subtype.hardness, subtype.resistance).harvestLevel(subtype.harvestLevel)
-		.harvestTool(subtype.harvestTool));
+	super(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(subtype.hardness, subtype.resistance)
+		.harvestLevel(subtype.harvestLevel).harvestTool(subtype.harvestTool));
 	ore = subtype;
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	return Arrays.asList(new ItemStack(
-		ore == SubtypeOre.sulfur ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.sulfur)
-			: DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore),
-		ore == SubtypeOre.sulfur ? new Random().nextInt(2) + 1 : 1));
+	return Arrays.asList(new ItemStack(ore == SubtypeOre.sulfur ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.sulfur)
+		: DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore), ore == SubtypeOre.sulfur ? new Random().nextInt(2) + 1 : 1));
     }
 
 }

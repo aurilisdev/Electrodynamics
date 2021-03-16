@@ -1,14 +1,14 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.utilities.CachedTileOutput;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.tile.GenericTileTicking;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.api.utilities.object.CachedTileOutput;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTicking;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
@@ -27,15 +27,12 @@ public class TileSolarPanel extends GenericTileTicking {
 	    if (output == null) {
 		output = new CachedTileOutput(world, pos.offset(Direction.DOWN));
 	    }
-	    float mod = 1.0f - MathHelper.clamp(
-		    1.0F - (MathHelper.cos(world.func_242415_f(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f,
-		    1.0f);
+	    float mod = 1.0f - MathHelper.clamp(1.0F - (MathHelper.cos(world.func_242415_f(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
 	    mod *= 1.0f - world.getRainStrength(1f) * 5.0f / 16.0f;
 	    mod *= (1.0f - world.getThunderStrength(1f) * 5.0F / 16.0f) * 0.8f + 0.2f;
 	    Biome b = world.getBiomeManager().getBiome(getPos());
 	    TransferPack pack = TransferPack.ampsVoltage(
-		    Constants.SOLARPANEL_AMPERAGE * (b.getTemperature(getPos()) / 2.0) * mod
-			    * (world.isRaining() || world.isThundering() ? 0.7f : 1),
+		    Constants.SOLARPANEL_AMPERAGE * (b.getTemperature(getPos()) / 2.0) * mod * (world.isRaining() || world.isThundering() ? 0.7f : 1),
 		    this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	    ElectricityUtilities.receivePower(output.get(), Direction.UP, pack, false);
 	}

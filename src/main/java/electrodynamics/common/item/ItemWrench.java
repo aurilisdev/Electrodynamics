@@ -1,6 +1,6 @@
 package electrodynamics.common.item;
 
-import electrodynamics.api.item.IWrench;
+import electrodynamics.api.IWrenchItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemWrench extends Item implements IWrench {
+public class ItemWrench extends Item implements IWrenchItem {
 
     public ItemWrench(Properties properties) {
 	super(properties);

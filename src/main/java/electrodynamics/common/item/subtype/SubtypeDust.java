@@ -1,8 +1,8 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.subtype.Subtype;
+import electrodynamics.api.ISubtype;
 
-public enum SubtypeDust implements Subtype {
+public enum SubtypeDust implements ISubtype {
     iron, gold, copper, tin, silver, steel, lead, bronze, superconductive, endereye, vanadium, sulfur, obsidian;
 
     @Override

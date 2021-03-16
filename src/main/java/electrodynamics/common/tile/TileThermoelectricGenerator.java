@@ -1,15 +1,15 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.utilities.CachedTileOutput;
-import electrodynamics.api.utilities.TransferPack;
+import electrodynamics.api.tile.GenericTileTicking;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentDirection;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.api.utilities.object.CachedTileOutput;
+import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericTileTicking;
-import electrodynamics.common.tile.generic.component.ComponentType;
-import electrodynamics.common.tile.generic.component.type.ComponentDirection;
-import electrodynamics.common.tile.generic.component.type.ComponentElectrodynamic;
-import electrodynamics.common.tile.generic.component.type.ComponentTickable;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 
@@ -31,8 +31,7 @@ public class TileThermoelectricGenerator extends GenericTileTicking {
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (tickable.getTicks() % 20 == 0) {
-	    hasHeat = world.getBlockState(pos.offset(direction.getDirection().getOpposite())).getFluidState()
-		    .getFluid() == Fluids.LAVA;
+	    hasHeat = world.getBlockState(pos.offset(direction.getDirection().getOpposite())).getFluidState().getFluid() == Fluids.LAVA;
 	}
 	if (hasHeat) {
 	    ElectricityUtilities.receivePower(output.get(), Direction.UP,

@@ -25,8 +25,7 @@ public class ConfigurationHandler {
 	if (configclass.isAnnotationPresent(Configuration.class)) {
 	    configurationMappings.add(configclass);
 	} else {
-	    new Exception("The class: " + configclass.getName() + " is not annotated by Configuration.class")
-		    .printStackTrace();
+	    new Exception("The class: " + configclass.getName() + " is not annotated by Configuration.class").printStackTrace();
 	}
     }
 
@@ -38,8 +37,7 @@ public class ConfigurationHandler {
     public static void load() {
 	for (Class<?> clazz : configurationMappings) {
 	    Configuration config = clazz.getAnnotation(Configuration.class);
-	    File file = new File(FMLPaths.GAMEDIR.get().resolve(FMLConfig.defaultConfigPath()).toFile(),
-		    config.name().toLowerCase() + ".txt");
+	    File file = new File(FMLPaths.GAMEDIR.get().resolve(FMLConfig.defaultConfigPath()).toFile(), config.name().toLowerCase() + ".txt");
 	    Field[] declaredFields = clazz.getDeclaredFields();
 	    try {
 		if (!file.exists()) {
@@ -55,8 +53,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				int value = field.getInt(null);
-				writer.write("I:default=" + field.getAnnotation(IntValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("I:default=" + field.getAnnotation(IntValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(LongValue.class)) {
 				String comment = field.getAnnotation(LongValue.class).comment();
@@ -65,8 +62,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				long value = field.getLong(null);
-				writer.write("L:default=" + field.getAnnotation(LongValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("L:default=" + field.getAnnotation(LongValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(FloatValue.class)) {
 				String comment = field.getAnnotation(FloatValue.class).comment();
@@ -75,8 +71,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				float value = field.getFloat(null);
-				writer.write("F:default=" + field.getAnnotation(FloatValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("F:default=" + field.getAnnotation(FloatValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(DoubleValue.class)) {
 				String comment = field.getAnnotation(DoubleValue.class).comment();
@@ -85,8 +80,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				double value = field.getDouble(null);
-				writer.write("D:default=" + field.getAnnotation(DoubleValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("D:default=" + field.getAnnotation(DoubleValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(StringValue.class)) {
 				String comment = field.getAnnotation(StringValue.class).comment();
@@ -95,8 +89,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				String value = (String) field.get(null);
-				writer.write("S:default=" + field.getAnnotation(StringValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("S:default=" + field.getAnnotation(StringValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(BooleanValue.class)) {
 				String comment = field.getAnnotation(BooleanValue.class).comment();
@@ -105,8 +98,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				boolean value = field.getBoolean(null);
-				writer.write("T:default=" + field.getAnnotation(BooleanValue.class).def() + " -> "
-					+ name + "='" + value + "'");
+				writer.write("T:default=" + field.getAnnotation(BooleanValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(ByteValue.class)) {
 				String comment = field.getAnnotation(ByteValue.class).comment();
@@ -115,8 +107,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				byte value = field.getByte(null);
-				writer.write("B:default=" + field.getAnnotation(ByteValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("B:default=" + field.getAnnotation(ByteValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    writer.newLine();
 			}
@@ -132,8 +123,7 @@ public class ConfigurationHandler {
 			}
 		    }
 		    while (line != null) {
-			if (!line.startsWith("Comment: ") && !line.startsWith("//") && !line.isEmpty()
-				&& line.contains(" -> ")) {
+			if (!line.startsWith("Comment: ") && !line.startsWith("//") && !line.isEmpty() && line.contains(" -> ")) {
 			    line = line.substring(10);
 			    line = line.substring(line.indexOf(" -> "));
 			    line = line.replace("'", "");
@@ -187,8 +177,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				int value = field.getInt(null);
-				writer.write("I:default=" + field.getAnnotation(IntValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("I:default=" + field.getAnnotation(IntValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(LongValue.class)) {
 				String comment = field.getAnnotation(LongValue.class).comment();
@@ -197,8 +186,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				long value = field.getLong(null);
-				writer.write("L:default=" + field.getAnnotation(LongValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("L:default=" + field.getAnnotation(LongValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(FloatValue.class)) {
 				String comment = field.getAnnotation(FloatValue.class).comment();
@@ -207,8 +195,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				float value = field.getFloat(null);
-				writer.write("F:default=" + field.getAnnotation(FloatValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("F:default=" + field.getAnnotation(FloatValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(DoubleValue.class)) {
 				String comment = field.getAnnotation(DoubleValue.class).comment();
@@ -217,8 +204,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				double value = field.getDouble(null);
-				writer.write("D:default=" + field.getAnnotation(DoubleValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("D:default=" + field.getAnnotation(DoubleValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(StringValue.class)) {
 				String comment = field.getAnnotation(StringValue.class).comment();
@@ -227,8 +213,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				String value = (String) field.get(null);
-				writer.write("S:default=" + field.getAnnotation(StringValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("S:default=" + field.getAnnotation(StringValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(BooleanValue.class)) {
 				String comment = field.getAnnotation(BooleanValue.class).comment();
@@ -237,8 +222,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				boolean value = field.getBoolean(null);
-				writer.write("T:default=" + field.getAnnotation(BooleanValue.class).def() + " -> "
-					+ name + "='" + value + "'");
+				writer.write("T:default=" + field.getAnnotation(BooleanValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    if (field.isAnnotationPresent(ByteValue.class)) {
 				String comment = field.getAnnotation(ByteValue.class).comment();
@@ -247,8 +231,7 @@ public class ConfigurationHandler {
 				    writer.newLine();
 				}
 				byte value = field.getByte(null);
-				writer.write("B:default=" + field.getAnnotation(ByteValue.class).def() + " -> " + name
-					+ "='" + value + "'");
+				writer.write("B:default=" + field.getAnnotation(ByteValue.class).def() + " -> " + name + "='" + value + "'");
 			    }
 			    writer.newLine();
 			}
