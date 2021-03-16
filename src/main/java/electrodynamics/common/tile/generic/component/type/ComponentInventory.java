@@ -169,9 +169,9 @@ public class ComponentInventory implements Component, ISidedInventory {
     @Override
     public int[] getSlotsForFace(Direction side) {
 	if (getSlotsFunction != null) {
-	    getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
+	    return getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
 	}
-	if (holder.hasComponent(ComponentType.Inventory)) {
+	if (holder.hasComponent(ComponentType.Direction)) {
 	    Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
 	    Stream<Integer> stRel = relativeDirectionMappings.containsKey(TileUtilities.getRelativeSide(
 		    holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
