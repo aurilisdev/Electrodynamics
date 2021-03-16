@@ -8,12 +8,6 @@ import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 
 public interface IElectrodynamic {
-    /**
-     * Just please use the receivePower
-     * 
-     * @param joules
-     */
-    @Deprecated
     default void setJoulesStored(double joules) {
     }
 
