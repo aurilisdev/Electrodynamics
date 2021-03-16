@@ -33,7 +33,7 @@ public class GenericTile extends TileEntity implements INameable {
     public GenericTile addComponent(Component component) {
 	component.setHolder(this);
 	if (hasComponent(component.getType())) {
-	    new Exception("Component of type: " + component.getType().name() + " already registered!").printStackTrace();
+	    throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
 	}
 	componentMap.put(component.getType(), component);
 	return this;
