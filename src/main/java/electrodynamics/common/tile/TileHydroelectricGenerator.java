@@ -101,16 +101,13 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	if (isGenerating) {
+	if (isGenerating && world.rand.nextDouble() < 0.3) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    double d0 = pos.getX() + 0.0D;
-	    double d1 = pos.getY();
-	    double d2 = pos.getZ() + 0.0D;
 	    double d4 = world.rand.nextDouble();
 	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0.2D : 1.2D) : d4;
 	    double d6 = world.rand.nextDouble();
 	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0.2D : 1.2D) : d4;
-	    world.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+	    world.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
 	}
     }
 

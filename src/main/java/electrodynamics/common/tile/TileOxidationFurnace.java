@@ -18,6 +18,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 
 public class TileOxidationFurnace extends GenericTileTicking {
@@ -27,7 +28,7 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentTickable());
+	addComponent(new ComponentTickable().addTickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
 		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
 	addComponent(new ComponentInventory().setInventorySize(6).addSlotsOnFace(Direction.UP, 0, 1).addSlotsOnFace(Direction.DOWN, 2)
@@ -52,6 +53,17 @@ public class TileOxidationFurnace extends GenericTileTicking {
 		    .with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
 	}
 	return false;
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
+	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	    double d4 = world.rand.nextDouble();
+	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
+	    double d6 = world.rand.nextDouble();
+	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
+	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
+	}
     }
 
 }

@@ -15,6 +15,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 
 public class TileMineralGrinder extends GenericTileTicking {
@@ -22,7 +23,7 @@ public class TileMineralGrinder extends GenericTileTicking {
 	super(DeferredRegisters.TILE_MINERALGRINDER.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentTickable());
+	addComponent(new ComponentTickable().addTickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH));
 	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.DOWN, 1)
 		.addRelativeSlotsOnFace(Direction.EAST, 0).addRelativeSlotsOnFace(Direction.WEST, 1)
@@ -32,5 +33,12 @@ public class TileMineralGrinder extends GenericTileTicking {
 	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4).setCanProcess(component -> MachineRecipes.canProcess(this))
 		.setProcess(component -> MachineRecipes.process(this)).setRequiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS)
 		.setJoulesPerTick(Constants.MINERALGRINDER_USAGE_PER_TICK).setType(ComponentProcessorType.ObjectToObject));
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
+	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.2 + 0.8,
+		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	}
     }
 }
