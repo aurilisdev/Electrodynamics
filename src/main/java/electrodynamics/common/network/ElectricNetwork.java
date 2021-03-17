@@ -85,7 +85,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
 				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
 			    if (pack.getJoules() != 0) {
-				System.out.println("usage: " + receiver.getClass().getSimpleName() + ":" + pack.getJoules());
 				shouldRemove = false;
 				totalUsage += pack.getJoules();
 				localUsage += pack.getJoules();
@@ -103,7 +102,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 		for (TileEntity receiver : availableAcceptors) {
 		    TransferPack dedicated = TransferPack
 			    .joulesVoltage(totalCompensatedForResistance.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
-		    System.out.println(receiver.getClass().getSimpleName() + ":" + (usage.get(receiver) / totalUsage));
 		    if (acceptorInputMap.containsKey(receiver)) {
 			TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
 				maxTransfer.getVoltage());

@@ -31,5 +31,4 @@ public class RenderHydroelectricGenerator extends TileEntityRenderer<TileHydroel
 		0, 0, true));
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
-
 }
