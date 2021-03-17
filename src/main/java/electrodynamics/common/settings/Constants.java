@@ -16,6 +16,8 @@ public class Constants {
     public static double THERMOELECTRICGENERATOR_AMPERAGE = 4.5;
     @DoubleValue(def = 6)
     public static double HYDROELECTRICGENERATOR_AMPERAGE = 6;
+    @DoubleValue(def = 6)
+    public static double WINDMILL_MAX_AMPERAGE = 15;
     @DoubleValue(def = 10)
     public static double SOLARPANEL_AMPERAGE = 10;
     @DoubleValue(def = 50.0)

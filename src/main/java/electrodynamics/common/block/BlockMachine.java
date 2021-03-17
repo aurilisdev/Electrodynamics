@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 
 public class BlockMachine extends BlockGenericMachine implements IMultiblockNode {
     public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
+    public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
     static {
 	int radius = 1;
 	for (int i = -radius; i <= radius; i++) {
@@ -43,6 +44,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 		}
 	    }
 	}
+	windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), VoxelShapes.fullCube()));
     }
     private static final VoxelShape transformershape = VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1);
     private static final VoxelShape solargenshape = VoxelShapes.create(0, 0, 0, 1, 9.0 / 16.0, 1);
@@ -74,8 +76,8 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     @Deprecated
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-	return isValidMultiblockPlacement(state, worldIn, pos,
-		machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes : new HashSet<Subnode>());
+	return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
+		: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
     }
 
     @Override
@@ -151,6 +153,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     public boolean hasMultiBlock() {
-	return machine == SubtypeMachine.advancedsolarpanel;
+	return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.windmill;
     }
 }

@@ -1,0 +1,22 @@
+{
+	"parent": "electrodynamics:block/windmill",
+	"display": {
+		"gui": {
+			"rotation": [
+				30,
+				225,
+				0
+			],
+			"translation": [
+				1.2,
+				-2,
+				0
+			],
+			"scale": [
+				0.5,
+				0.5,
+				0.5
+			]
+		}
+	}
+}

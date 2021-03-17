@@ -112,12 +112,12 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
     }
 
     protected void writeNBT(CompoundNBT nbt) {
-	nbt.putBoolean("hasWater", isGenerating);
+	nbt.putBoolean("isGenerating", isGenerating);
 	nbt.putBoolean("directionFlag", directionFlag);
     }
 
     protected void readNBT(CompoundNBT nbt) {
-	isGenerating = nbt.getBoolean("hasWater");
+	isGenerating = nbt.getBoolean("isGenerating");
 	directionFlag = nbt.getBoolean("directionFlag");
     }
 }

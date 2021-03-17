@@ -14,6 +14,7 @@ import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
+import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -26,7 +27,8 @@ public enum SubtypeMachine implements ISubtype {
     oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
     downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class),
     advancedsolarpanel(true, TileAdvancedSolarPanel.class), electricpump(true, TileElectricPump.class),
-    thermoelectricgenerator(true, TileThermoelectricGenerator.class), hydroelectricgenerator(true, TileHydroelectricGenerator.class);
+    thermoelectricgenerator(true, TileThermoelectricGenerator.class), hydroelectricgenerator(true, TileHydroelectricGenerator.class),
+    windmill(true, TileWindmill.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
