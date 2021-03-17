@@ -15,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,7 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
     public TileHydroelectricGenerator() {
 	super(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer).addTickCommon(this::tickCommon));
+	addComponent(new ComponentTickable().addTickServer(this::tickServer).addTickCommon(this::tickCommon).addTickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().addGuiPacketReader(this::readNBT).addGuiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.NORTH));
     }
@@ -87,9 +88,7 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
 	    }
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
-	if (isGenerating)
-
-	{
+	if (isGenerating) {
 	    ElectricityUtilities.receivePower(output.get(), facing,
 		    TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE, electro.getVoltage()), false);
 	}
@@ -98,6 +97,20 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
     protected void tickCommon(ComponentTickable tickable) {
 	if (isGenerating) {
 	    savedTickRotation += directionFlag ? 1 : -1;
+	}
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (isGenerating) {
+	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	    double d0 = pos.getX() + 0.0D;
+	    double d1 = pos.getY();
+	    double d2 = pos.getZ() + 0.0D;
+	    double d4 = world.rand.nextDouble();
+	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0.2D : 1.2D) : d4;
+	    double d6 = world.rand.nextDouble();
+	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0.2D : 1.2D) : d4;
+	    world.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 	}
     }
 

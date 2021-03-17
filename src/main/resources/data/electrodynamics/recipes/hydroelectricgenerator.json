@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" m ",
+		"sps",
+		"npn"
+	],
+	"key": {
+		"s": {
+			"tag": "minecraft:planks"
+		},
+		"p": {
+			"tag": "forge:plates/steel"
+		},
+		"n": {
+			"item": "minecraft:piston"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:hydroelectricgenerator",
+		"count": 1
+	}
+}

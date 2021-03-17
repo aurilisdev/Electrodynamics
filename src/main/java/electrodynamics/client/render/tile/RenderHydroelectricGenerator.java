@@ -26,7 +26,7 @@ public class RenderHydroelectricGenerator extends TileEntityRenderer<TileHydroel
 	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_HYDROELECTRICGENERATORBLADES);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 	matrixStackIn.rotate(new Quaternion(
-		(float) ((tileEntityIn.savedTickRotation + partialTicks * (tileEntityIn.isGenerating ? (tileEntityIn.directionFlag ? 1 : -1) : 0))
+		(float) ((tileEntityIn.savedTickRotation + partialTicks * (tileEntityIn.isGenerating ? tileEntityIn.directionFlag ? 1 : -1 : 0))
 			* 5f),
 		0, 0, true));
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
