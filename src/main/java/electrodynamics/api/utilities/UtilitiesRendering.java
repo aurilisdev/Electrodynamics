@@ -7,15 +7,21 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.block.BlockGenericMachine;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Quaternion;
 
 public class UtilitiesRendering {
 
@@ -75,11 +81,25 @@ public class UtilitiesRendering {
 	GlStateManager.popMatrix();
     }
 
-    public static boolean renderModel(IBakedModel model, TileBatteryBox tile, RenderType type, MatrixStack stack, IRenderTypeBuffer buffer,
+    public static void renderModel(IBakedModel model, TileEntity tile, RenderType type, MatrixStack stack, IRenderTypeBuffer buffer,
 	    int combinedLightIn, int combinedOverlayIn) {
-	return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(tile.getWorld(), model, tile.getBlockState(),
-		tile.getPos(), stack, buffer.getBuffer(type), false, tile.getWorld().rand, tile.getWorld().rand.nextLong(), combinedOverlayIn,
-		EmptyModelData.INSTANCE);
+	Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn,
+		combinedOverlayIn, model);
+    }
+
+    public static void prepareRotationalTileModel(TileEntity tile, MatrixStack stack) {
+	BlockState state = tile.getBlockState();
+	stack.translate(0.5, 7.0 / 16.0, 0.5);
+	if (state.hasProperty(BlockGenericMachine.FACING)) {
+	    Direction facing = state.get(BlockGenericMachine.FACING);
+	    if (facing == Direction.NORTH) {
+		stack.rotate(new Quaternion(0, 90, 0, true));
+	    } else if (facing == Direction.SOUTH) {
+		stack.rotate(new Quaternion(0, 270, 0, true));
+	    } else if (facing == Direction.WEST) {
+		stack.rotate(new Quaternion(0, 180, 0, true));
+	    }
+	}
     }
 
 }

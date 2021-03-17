@@ -1,19 +1,19 @@
 {
 	"variants": {
 		"facing=east": {
-			"model": "electrodynamics:block/advancedsolarpanel",
+			"model": "electrodynamics:block/advancedsolarpanelbase",
 			"y": 0
 		},
 		"facing=north": {
-			"model": "electrodynamics:block/advancedsolarpanel",
+			"model": "electrodynamics:block/advancedsolarpanelbase",
 			"y": 270
 		},
 		"facing=south": {
-			"model": "electrodynamics:block/advancedsolarpanel",
+			"model": "electrodynamics:block/advancedsolarpanelbase",
 			"y": 90
 		},
 		"facing=west": {
-			"model": "electrodynamics:block/advancedsolarpanel",
+			"model": "electrodynamics:block/advancedsolarpanelbase",
 			"y": 180
 		}
 	}
