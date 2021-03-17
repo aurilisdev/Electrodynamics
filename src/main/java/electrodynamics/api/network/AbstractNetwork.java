@@ -192,7 +192,7 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	}
     }
 
-    public abstract P emit(P transfer, ArrayList<TileEntity> ignored);
+    public abstract P emit(P transfer, ArrayList<TileEntity> ignored, boolean debug);
 
     public abstract boolean isConductor(TileEntity tile);
 

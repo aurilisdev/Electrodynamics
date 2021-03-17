@@ -16,6 +16,7 @@ import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public class TileHydroelectricGenerator extends GenericTileTicking {
@@ -30,6 +31,13 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
 	addComponent(new ComponentTickable().addTickServer(this::tickServer).addTickCommon(this::tickCommon));
 	addComponent(new ComponentPacketHandler().addGuiPacketReader(this::readNBT).addGuiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.NORTH));
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+	ComponentDirection direction = getComponent(ComponentType.Direction);
+	Direction facing = direction.getDirection();
+	return super.getRenderBoundingBox().expand(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
     }
 
     protected void tickServer(ComponentTickable tickable) {

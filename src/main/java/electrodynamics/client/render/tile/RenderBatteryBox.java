@@ -50,6 +50,7 @@ public class RenderBatteryBox extends TileEntityRenderer<TileBatteryBox> {
 	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX7);
 	    break;
 	}
+
 	switch (tileEntityIn.getBlockState().get(BlockGenericMachine.FACING)) {
 	case NORTH:
 	    matrixStackIn.rotate(new Quaternion(0, 90, 0, true));
@@ -66,6 +67,7 @@ public class RenderBatteryBox extends TileEntityRenderer<TileBatteryBox> {
 	default:
 	    break;
 	}
+	matrixStackIn.translate(0.5, 0.5, 0.5);
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
 }

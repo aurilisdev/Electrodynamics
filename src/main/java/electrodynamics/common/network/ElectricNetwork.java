@@ -2,6 +2,7 @@ package electrodynamics.common.network;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     public double getNetworkResistance() {
-	return networkResistance;
+	return networkResistance > 1 ? networkResistance : 1;
     }
 
     public ElectricNetwork() {
@@ -62,7 +63,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     @Override
-    public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored) {
+    public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
 	if (networkVoltage == 0.0) {
 	    networkVoltage = maxTransfer.getVoltage();
 	}
@@ -73,33 +74,47 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	    availableAcceptors.removeAll(ignored);
 	    if (!availableAcceptors.isEmpty()) {
 		Iterator<TileEntity> it = availableAcceptors.iterator();
+		double totalUsage = 0;
+		HashMap<TileEntity, Double> usage = new HashMap<>();
 		while (it.hasNext()) {
 		    TileEntity receiver = it.next();
 		    if (acceptorInputMap.containsKey(receiver)) {
 			boolean shouldRemove = true;
+			double localUsage = 0;
 			for (Direction connection : acceptorInputMap.get(receiver)) {
 			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
 				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
 			    if (pack.getJoules() != 0) {
+				System.out.println("usage: " + receiver.getClass().getSimpleName() + ":" + pack.getJoules());
 				shouldRemove = false;
+				totalUsage += pack.getJoules();
+				localUsage += pack.getJoules();
 				break;
 			    }
 			}
+			usage.put(receiver, localUsage);
 			if (shouldRemove) {
 			    it.remove();
 			}
 		    }
 		}
-		TransferPack perReceiver = TransferPack.joulesVoltage(maxTransfer.getJoules() / availableAcceptors.size() / networkResistance,
+		TransferPack totalCompensatedForResistance = TransferPack.joulesVoltage(maxTransfer.getJoules() / networkResistance,
 			maxTransfer.getVoltage());
 		for (TileEntity receiver : availableAcceptors) {
+		    TransferPack dedicated = TransferPack
+			    .joulesVoltage(totalCompensatedForResistance.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
+		    System.out.println(receiver.getClass().getSimpleName() + ":" + (usage.get(receiver) / totalUsage));
 		    if (acceptorInputMap.containsKey(receiver)) {
+			TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
+				maxTransfer.getVoltage());
 			for (Direction connection : acceptorInputMap.get(receiver)) {
-			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perReceiver, false);
+			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perConnection, debug);
 			    joulesSent += pack.getJoules();
-			    transmittedThisTick += pack.getJoules();
+			    if (!debug) {
+				transmittedThisTick += pack.getJoules();
+			    }
 			}
-			checkForOverload(TransferPack.joulesVoltage(transmittedThisTick, perReceiver.getVoltage()));
+			checkForOverload(TransferPack.joulesVoltage(transmittedThisTick, dedicated.getVoltage()));
 		    }
 		}
 
@@ -107,6 +122,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	    if (joulesSent > 0.0) {
 		double lost = joulesSent - joulesSent / networkResistance;
 		joulesSent += lost;
+		if (!debug) {
+		    transmittedThisTick += lost;
+		}
 	    }
 	    return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
 	}

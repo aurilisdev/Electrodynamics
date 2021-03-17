@@ -45,7 +45,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
     }
 
     @Override
-    public FluidStack emit(FluidStack transfer, ArrayList<TileEntity> ignored) {
+    public FluidStack emit(FluidStack transfer, ArrayList<TileEntity> ignored, boolean debug) {
 	if (transfer.getAmount() > 0) {
 	    Set<TileEntity> availableAcceptors = getFluidAcceptors(transfer);
 	    FluidStack joulesSent = new FluidStack(transfer.getFluid(), 0);

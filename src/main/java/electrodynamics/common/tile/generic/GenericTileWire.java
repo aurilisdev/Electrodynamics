@@ -46,12 +46,9 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
 		@Override
 		public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		    if (debug) {
-			return TransferPack.EMPTY;
-		    }
 		    ArrayList<TileEntity> ignored = new ArrayList<>();
 		    ignored.add(world.getTileEntity(new BlockPos(pos).offset(dir)));
-		    return getNetwork().emit(transfer, ignored);
+		    return getNetwork().emit(transfer, ignored, debug);
 		}
 	    });
 	}
