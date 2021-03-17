@@ -15,7 +15,7 @@ public class Scheduler {
     private static ConcurrentHashMap<Runnable, Integer> scheduled = new ConcurrentHashMap<>();
 
     @SubscribeEvent
-    public static void onChunkLoad(ServerTickEvent event) {
+    public static void onTick(ServerTickEvent event) {
 	if (!scheduled.isEmpty()) {
 	    Iterator<Entry<Runnable, Integer>> it = scheduled.entrySet().iterator();
 	    while (it.hasNext()) {
