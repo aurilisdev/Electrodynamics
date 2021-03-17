@@ -25,6 +25,7 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     public boolean isGenerating = false;
     public boolean directionFlag = false;
     public double savedTickRotation;
+    public double generating;
 
     public TileWindmill() {
 	super(DeferredRegisters.TILE_WINDMILL.get());
@@ -43,15 +44,16 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	Direction facing = direction.getDirection();
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
+	    output = new CachedTileOutput(world, pos.offset(Direction.DOWN));
 	}
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (tickable.getTicks() % 20 == 0) {
+	    isGenerating = world.isAirBlock(pos.offset(facing).offset(Direction.UP));
+	    generating = Constants.WINDMILL_MAX_AMPERAGE * (0.6 + Math.sin((pos.getY() - 60) / 50.0) * 0.4);
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 	if (isGenerating) {
-	    ElectricityUtilities.receivePower(output.get(), facing, TransferPack.ampsVoltage(Constants.WINDMILL_MAX_AMPERAGE, electro.getVoltage()),
-		    false);
+	    ElectricityUtilities.receivePower(output.get(), Direction.UP, TransferPack.ampsVoltage(generating, electro.getVoltage()), false);
 	}
     }
 
@@ -63,18 +65,21 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
 
     protected void tickClient(ComponentTickable tickable) {
 	if (isGenerating && world.rand.nextDouble() < 0.3) {
-	//    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	    // Direction direction =
+	    // this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	}
     }
 
     protected void writeNBT(CompoundNBT nbt) {
 	nbt.putBoolean("isGenerating", isGenerating);
 	nbt.putBoolean("directionFlag", directionFlag);
+	nbt.putDouble("generating", generating);
     }
 
     protected void readNBT(CompoundNBT nbt) {
 	isGenerating = nbt.getBoolean("isGenerating");
 	directionFlag = nbt.getBoolean("directionFlag");
+	generating = nbt.getDouble("generating");
     }
 
     @Override

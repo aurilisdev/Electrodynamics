@@ -25,11 +25,11 @@ public class RenderWindmill extends TileEntityRenderer<TileWindmill> {
 	    int combinedOverlayIn) {
 	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_WINDMILLBLADES);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-	matrixStackIn.translate(0, 22.0/16.0, 0);
+	matrixStackIn.translate(0, 22.0 / 16.0, 0);
 	matrixStackIn.rotate(new Quaternion(
 		(float) ((tileEntityIn.savedTickRotation + partialTicks * (tileEntityIn.isGenerating ? tileEntityIn.directionFlag ? 1 : -1 : 0))
-			* 5f),
+			* tileEntityIn.generating * 1.5),
 		0, 0, true));
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-	    }
+    }
 }
