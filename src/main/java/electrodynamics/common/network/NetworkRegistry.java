@@ -1,5 +1,6 @@
 package electrodynamics.common.network;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,11 +37,15 @@ public class NetworkRegistry {
     @SubscribeEvent
     public static void update(ServerTickEvent event) {
 	if (event.phase == Phase.END) {
-	    Set<ITickableNetwork> iterNetworks = (Set<ITickableNetwork>) networks.clone();
-	    for (ITickableNetwork net : iterNetworks) {
-		if (networks.contains(net)) {
-		    net.tick();
+	    try {
+		Set<ITickableNetwork> iterNetworks = (Set<ITickableNetwork>) networks.clone();
+		for (ITickableNetwork net : iterNetworks) {
+		    if (networks.contains(net)) {
+			net.tick();
+		    }
 		}
+	    } catch (ConcurrentModificationException exception) {
+		exception.printStackTrace();
 	    }
 	}
     }
