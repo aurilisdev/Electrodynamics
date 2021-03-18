@@ -41,7 +41,7 @@ public class ComponentProcessor implements Component {
 	    holder.<ComponentTickable>getComponent(ComponentType.Tickable).addTickServer(this::tickServer);
 	} else {
 	    throw new UnsupportedOperationException("You need to implement a tickable component to use the processor component!");
-	}
+	}	
 	if (holder.hasComponent(ComponentType.PacketHandler)) {
 	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
 	    handler.addGuiPacketWriter(this::writeGuiPacket);
