@@ -52,6 +52,9 @@ public class ComponentProcessor implements Component {
     private void tickServer(ComponentTickable tickable) {
 	double calculatedOperatingSpeed = 1;
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+	if (holder.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks() % 20 == 0) {
+	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	}
 	for (int slot : upgradeSlots) {
 	    ItemStack stack = inv.getStackInSlot(slot);
 	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {

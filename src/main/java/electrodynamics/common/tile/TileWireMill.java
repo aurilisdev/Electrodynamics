@@ -15,8 +15,11 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 
 public class TileWireMill extends GenericTileTicking {
     public TileWireMill() {
@@ -36,9 +39,14 @@ public class TileWireMill extends GenericTileTicking {
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
+	ComponentProcessor processor = getComponent(ComponentType.Processor);
+	if (processor.operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
 	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.5 + 0.5,
 		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	}
+	if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
+	    Minecraft.getInstance().getSoundHandler().play(new SimpleSound(DeferredRegisters.SOUND_HUM.get(), SoundCategory.BLOCKS, 1, 1,
+		    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
 	}
     }
 }

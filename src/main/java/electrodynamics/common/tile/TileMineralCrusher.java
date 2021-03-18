@@ -16,8 +16,11 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 
 public class TileMineralCrusher extends GenericTileTicking {
     public TileMineralCrusher() {
@@ -38,13 +41,18 @@ public class TileMineralCrusher extends GenericTileTicking {
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
+	ComponentProcessor processor = getComponent(ComponentType.Processor);
+	if (processor.operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    double d4 = world.rand.nextDouble();
 	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
 	    double d6 = world.rand.nextDouble();
 	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
 	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
+	}
+	if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
+	    Minecraft.getInstance().getSoundHandler()
+		    .play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	}
     }
 }

@@ -1,9 +1,23 @@
 {
-	"batterybox": {
+	"hum": {
 		"category": "blocks",
-		"subtitle": "electrodynamic.batterybox",
+		"subtitle": "Machine Hum",
 		"sounds": [
-			"electrodynamics:batterybox"
+			"electrodynamics:hum"
+		]
+	},
+	"mineralcrusher": {
+		"category": "blocks",
+		"subtitle": "Machine Mineral Crusher",
+		"sounds": [
+			"electrodynamics:mineralcrusher"
+		]
+	},
+	"mineralgrinder": {
+		"category": "blocks",
+		"subtitle": "Machine Mineral Grinder",
+		"sounds": [
+			"electrodynamics:mineralgrinder"
 		]
 	}
 }

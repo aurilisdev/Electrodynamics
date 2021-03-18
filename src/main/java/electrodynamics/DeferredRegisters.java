@@ -209,8 +209,12 @@ public class DeferredRegisters {
     public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(),
 	    () -> new ContainerType<>(ContainerBatteryBox::new));
 
-    public static final RegistryObject<SoundEvent> SOUND_BATTERYBOX = SOUNDS.register("batterybox",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":batterybox")));
+    public static final RegistryObject<SoundEvent> SOUND_HUM = SOUNDS.register("hum",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":hum")));
+    public static final RegistryObject<SoundEvent> SOUND_MINERALCRUSHER = SOUNDS.register("mineralcrusher",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":mineralcrusher")));
+    public static final RegistryObject<SoundEvent> SOUND_MINERALGRINDER = SOUNDS.register("mineralgrinder",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":mineralgrinder")));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;
