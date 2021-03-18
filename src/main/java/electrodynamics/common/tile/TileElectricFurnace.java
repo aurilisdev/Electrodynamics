@@ -115,5 +115,4 @@ public class TileElectricFurnace extends GenericTileTicking {
 	    Minecraft.getInstance().getSoundHandler().play(new SimpleSound(DeferredRegisters.SOUND_HUM.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	}
     }
-
 }

@@ -19,5 +19,12 @@
 		"sounds": [
 			"electrodynamics:mineralgrinder"
 		]
+	},
+	"electricpump": {
+		"category": "blocks",
+		"subtitle": "Machine Electric Pump",
+		"sounds": [
+			"electrodynamics:electricpump"
+		]
 	}
 }
