@@ -35,12 +35,12 @@ public class RecipeManager {
 	}
 	for (SubtypeDust to : SubtypeDust.values()) {
 	    for (SubtypeOre from : SubtypeOre.values()) {
-		if (to.name().equals(from.name())) {
+		if (to.name().equals(from.name().replace("vanadinite", "vanadium"))) {
 		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to, 2));
 		}
 	    }
 	    for (SubtypeImpureDust from : SubtypeImpureDust.values()) {
-		if (to.name().equals(from.name())) {
+		if (to.name().equals(from.name().replace("vanadinite", "vanadium"))) {
 		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to, 1));
 		}
 	    }
