@@ -90,7 +90,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     @Deprecated
     public BlockRenderType getRenderType(BlockState state) {
-	return machine == SubtypeMachine.batterybox ? BlockRenderType.ENTITYBLOCK_ANIMATED : BlockRenderType.MODEL;
+	return machine.getRenderType();
     }
 
     @Override

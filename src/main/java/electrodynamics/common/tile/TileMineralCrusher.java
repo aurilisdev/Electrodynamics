@@ -23,6 +23,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 
 public class TileMineralCrusher extends GenericTileTicking {
+    public long clientRunningTicks = 0;
+
     public TileMineralCrusher() {
 	super(DeferredRegisters.TILE_MINERALCRUSHER.get());
 	addComponent(new ComponentDirection());
@@ -32,7 +34,8 @@ public class TileMineralCrusher extends GenericTileTicking {
 		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
 	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.DOWN, 1)
 		.addRelativeSlotsOnFace(Direction.EAST, 0).addRelativeSlotsOnFace(Direction.WEST, 1)
-		.setItemValidPredicate((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade));
+		.setItemValidPredicate((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade)
+		.shouldSendInfo(this));
 	addComponent(new ComponentContainerProvider("container.mineralcrusher").setCreateMenuFunction(
 		(id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4).setCanProcess(component -> MachineRecipes.canProcess(this))
@@ -42,17 +45,29 @@ public class TileMineralCrusher extends GenericTileTicking {
 
     protected void tickClient(ComponentTickable tickable) {
 	ComponentProcessor processor = getComponent(ComponentType.Processor);
-	if (processor.operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
+	if (processor.operatingTicks > 0) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    double d4 = world.rand.nextDouble();
-	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
-	    double d6 = world.rand.nextDouble();
-	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
-	}
-	if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
-	    Minecraft.getInstance().getSoundHandler()
-		    .play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+
+	    if (world.rand.nextDouble() < 0.15) {
+		double d4 = world.rand.nextDouble();
+		double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
+		double d6 = world.rand.nextDouble();
+		double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
+		world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
+	    }
+	    double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
+	    if (progress == 1) {
+		Minecraft.getInstance().getSoundHandler()
+			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	    } else if (progress == 0) {
+		for (int i = 0; i < 40; i++) {
+		    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+		    double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+		    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
+			    pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D);
+		}
+	    }
+	    clientRunningTicks++;
 	}
     }
 }

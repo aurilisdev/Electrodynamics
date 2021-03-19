@@ -29,7 +29,7 @@ public class RecipeManager {
 	    }
 	    for (SubtypeDust to : SubtypeDust.values()) {
 		if (from.name().equals(to.name())) {
-		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to));
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(from, to));
 		}
 	    }
 	}
@@ -58,8 +58,8 @@ public class RecipeManager {
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.GOLD_ORE, SubtypeDust.gold, 2));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeDust.iron, 2));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.ENDER_EYE, SubtypeDust.endereye));
-	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeDust.gold));
-	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeDust.iron));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeDust.gold));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeDust.iron));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.FLINT, Items.GUNPOWDER));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.GRAVEL, Items.FLINT));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.COBBLESTONE, Blocks.GRAVEL));

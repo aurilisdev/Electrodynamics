@@ -45,6 +45,17 @@ public class ComponentInventory implements Component, ISidedInventory {
     protected Direction lastDirection = null;
     protected int inventorySize;
     protected Function<Direction, Collection<Integer>> getSlotsFunction;
+    protected boolean shouldSendInfo;
+
+    public ComponentInventory shouldSendInfo(GenericTile holder) {
+	setHolder(holder);
+	if (!this.shouldSendInfo && holder.hasComponent(ComponentType.PacketHandler)) {
+	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).addGuiPacketReader(this::loadNBT)
+		    .addGuiPacketWriter(this::saveNBT);
+	}
+	this.shouldSendInfo = true;
+	return this;
+    }
 
     public ComponentInventory setGetSlotsFunction(Function<Direction, Collection<Integer>> getSlotsFunction) {
 	this.getSlotsFunction = getSlotsFunction;
@@ -90,6 +101,15 @@ public class ComponentInventory implements Component, ISidedInventory {
     @Override
     public void saveToNBT(CompoundNBT nbt) {
 	ItemStackHelper.saveAllItems(nbt, items);
+    }
+
+    protected void loadNBT(CompoundNBT nbt) {
+	items.clear();
+	loadFromNBT(holder.getBlockState(), nbt);
+    }
+
+    protected void saveNBT(CompoundNBT nbt) {
+	saveToNBT(nbt);
     }
 
     @Override
@@ -148,9 +168,14 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-	items.set(index, stack);
 	if (stack.getCount() > getInventoryStackLimit()) {
 	    stack.setCount(getInventoryStackLimit());
+	}
+	if (shouldSendInfo && stack.getCount() != items.get(index).getCount() || stack.getItem() != items.get(index).getItem()) {
+	    items.set(index, stack);
+	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	} else {
+	    items.set(index, stack);
 	}
     }
 

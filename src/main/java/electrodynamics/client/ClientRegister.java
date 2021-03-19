@@ -7,6 +7,8 @@ import electrodynamics.api.References;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
+import electrodynamics.client.render.tile.RenderMineralCrusher;
+import electrodynamics.client.render.tile.RenderMineralGrinder;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenCoalGenerator;
@@ -50,6 +52,10 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = new ResourceLocation(
 	    References.ID + ":block/hydroelectricgeneratorblades");
     public static final ResourceLocation MODEL_WINDMILLBLADES = new ResourceLocation(References.ID + ":block/windmillblades");
+    public static final ResourceLocation MODEL_MINERALCRUSHERBASE = new ResourceLocation(References.ID + ":block/mineralcrusherbase");
+    public static final ResourceLocation MODEL_MINERALCRUSHERHANDLE = new ResourceLocation(References.ID + ":block/mineralcrusherhandle");
+    public static final ResourceLocation MODEL_MINERALGRINDERBASE = new ResourceLocation(References.ID + ":block/mineralgrinderbase");
+    public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(References.ID + ":block/mineralgrinderwheel");
 
     public static void setup() {
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -63,11 +69,17 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
 	ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
 	ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
 
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_WINDMILL.get(), RenderWindmill::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
