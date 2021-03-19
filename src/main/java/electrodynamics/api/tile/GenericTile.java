@@ -99,4 +99,9 @@ public class GenericTile extends TileEntity implements INameable {
     public BlockPos getPos() {
 	return pos;
     }
+
+    @Override
+    public double getMaxRenderDistanceSquared() {
+	return 256;
+    }
 }
