@@ -62,9 +62,9 @@ public class TileMineralCrusher extends GenericTileTicking {
 	    double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
 	    if (progress == 1) {
 		Minecraft.getInstance().getSoundHandler()
-			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 1, 1, pos));
-	    } else if (progress == 0) {
-		for (int i = 0; i < 20; i++) {
+			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 5, .75f, pos));
+	    } else if (progress < 0.3) {
+		for (int i = 0; i < 5; i++) {
 		    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 		    double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 		    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
@@ -74,7 +74,7 @@ public class TileMineralCrusher extends GenericTileTicking {
 		if (stack.getItem() instanceof BlockItem) {
 		    BlockItem it = (BlockItem) stack.getItem();
 		    Block block = it.getBlock();
-		    for (int i = 0; i < 20; i++) {
+		    for (int i = 0; i < 5; i++) {
 			double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 			double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 			Minecraft.getInstance().particles

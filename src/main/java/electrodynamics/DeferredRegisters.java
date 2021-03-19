@@ -127,7 +127,6 @@ public class DeferredRegisters {
 		"|translate|tooltip.transformer.energyloss");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer),
 		"|translate|tooltip.transformer.energyloss");
-
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
 		"|translate|tooltip.oxidationfurnace.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher), "|translate|tooltip.mineralcrusher.voltage");

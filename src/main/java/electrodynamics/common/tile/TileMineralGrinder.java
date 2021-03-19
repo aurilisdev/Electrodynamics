@@ -55,7 +55,7 @@ public class TileMineralGrinder extends GenericTileTicking {
 	    }
 	    if (tickable.getTicks() % 200 == 0) {
 		Minecraft.getInstance().getSoundHandler()
-			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 0.5f, 1, pos));
 	    }
 	    ItemStack stack = processor.getInput();
 	    if (stack.getItem() instanceof BlockItem) {
