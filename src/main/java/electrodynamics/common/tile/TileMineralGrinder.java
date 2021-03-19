@@ -11,12 +11,17 @@ import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.tile.components.type.ComponentProcessor;
 import electrodynamics.api.tile.components.type.ComponentProcessorType;
 import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.client.particle.GrindedParticle;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -32,7 +37,8 @@ public class TileMineralGrinder extends GenericTileTicking {
 	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH));
 	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.DOWN, 1)
 		.addRelativeSlotsOnFace(Direction.EAST, 0).addRelativeSlotsOnFace(Direction.WEST, 1)
-		.setItemValidPredicate((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade));
+		.setItemValidPredicate((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade)
+		.shouldSendInfo(this));
 	addComponent(new ComponentContainerProvider("container.mineralgrinder").setCreateMenuFunction(
 		(id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4).setCanProcess(component -> MachineRecipes.canProcess(this))
@@ -50,6 +56,15 @@ public class TileMineralGrinder extends GenericTileTicking {
 	    if (tickable.getTicks() % 200 == 0) {
 		Minecraft.getInstance().getSoundHandler()
 			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	    }
+	    ItemStack stack = processor.getInput();
+	    if (stack.getItem() instanceof BlockItem) {
+		BlockItem it = (BlockItem) stack.getItem();
+		Block block = it.getBlock();
+		double d4 = world.rand.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
+		double d6 = world.rand.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
+		Minecraft.getInstance().particles.addEffect(new GrindedParticle((ClientWorld) world, pos.getX() + d4, pos.getY() + 0.8,
+			pos.getZ() + d6, 0.0D, 5D, 0.0D, block.getDefaultState()).setBlockPos(pos));
 	    }
 	    clientRunningTicks++;
 	}

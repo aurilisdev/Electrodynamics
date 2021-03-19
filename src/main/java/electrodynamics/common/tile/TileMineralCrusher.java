@@ -12,12 +12,17 @@ import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.tile.components.type.ComponentProcessor;
 import electrodynamics.api.tile.components.type.ComponentProcessorType;
 import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.client.particle.GrindedParticle;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -47,7 +52,6 @@ public class TileMineralCrusher extends GenericTileTicking {
 	ComponentProcessor processor = getComponent(ComponentType.Processor);
 	if (processor.operatingTicks > 0) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-
 	    if (world.rand.nextDouble() < 0.15) {
 		double d4 = world.rand.nextDouble();
 		double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
@@ -60,11 +64,23 @@ public class TileMineralCrusher extends GenericTileTicking {
 		Minecraft.getInstance().getSoundHandler()
 			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	    } else if (progress == 0) {
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < 20; i++) {
 		    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 		    double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 		    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
 			    pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D);
+		}
+		ItemStack stack = processor.getInput();
+		if (stack.getItem() instanceof BlockItem) {
+		    BlockItem it = (BlockItem) stack.getItem();
+		    Block block = it.getBlock();
+		    for (int i = 0; i < 20; i++) {
+			double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+			double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+			Minecraft.getInstance().particles
+				.addEffect(new GrindedParticle((ClientWorld) world, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
+					pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D, block.getDefaultState()).setBlockPos(pos));
+		    }
 		}
 	    }
 	    clientRunningTicks++;
