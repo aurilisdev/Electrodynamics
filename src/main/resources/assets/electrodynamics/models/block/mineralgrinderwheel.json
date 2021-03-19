@@ -1,0 +1,43 @@
+{
+	"credit": "aurilisdev",
+	"parent": "block/cube_all",
+	"texture_size": [128, 128],
+	"textures": {
+		"0": "electrodynamics:model/mineralgrinder",
+		"particle": "electrodynamics:model/mineralgrinder"
+	},
+	"elements": [
+		{
+			"from": [2, 5.89313, 5.9896],
+			"to": [14, 9.89313, 9.9896],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 8.01813, 7.9896]},
+			"faces": {
+				"north": {"uv": [1.5, 4.625, 0, 4.125], "texture": "#0"},
+				"east": {"uv": [7, 2.75, 6.5, 2.25], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [5.5, 1.875, 7, 2.375], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [7, 2.75, 6.5, 2.25], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [5.5, 1.875, 7, 2.375], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [1.5, 4.625, 0, 4.125], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [2, 5.89313, 5.9896],
+			"to": [14, 9.89313, 9.9896],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 8.01813, 7.9896]},
+			"faces": {
+				"north": {"uv": [5.5, 1.875, 7, 2.375], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [7, 2.75, 6.5, 2.25], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [5.5, 1.875, 7, 2.375], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [7, 2.75, 6.5, 2.25], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [5.5, 1.875, 7, 2.375], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [1.5, 4.625, 0, 4.125], "rotation": 180, "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "hexadecagon",
+			"origin": [8, 8, 8],
+			"children": []
+		}, 0, 1]
+}

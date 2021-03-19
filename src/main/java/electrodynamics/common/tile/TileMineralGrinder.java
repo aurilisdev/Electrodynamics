@@ -22,6 +22,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 
 public class TileMineralGrinder extends GenericTileTicking {
+    public long clientRunningTicks = 0;
+
     public TileMineralGrinder() {
 	super(DeferredRegisters.TILE_MINERALGRINDER.get());
 	addComponent(new ComponentDirection());
@@ -40,13 +42,16 @@ public class TileMineralGrinder extends GenericTileTicking {
 
     protected void tickClient(ComponentTickable tickable) {
 	ComponentProcessor processor = getComponent(ComponentType.Processor);
-	if (processor.operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.2 + 0.8,
-		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-	}
-	if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
-	    Minecraft.getInstance().getSoundHandler()
-		    .play(new SimpleSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	if (processor.operatingTicks > 0) {
+	    if (world.rand.nextDouble() < 0.15) {
+		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.2 + 0.8,
+			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    }
+	    if (tickable.getTicks() % 200 == 0) {
+		Minecraft.getInstance().getSoundHandler()
+			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	    }
+	    clientRunningTicks++;
 	}
     }
 }
