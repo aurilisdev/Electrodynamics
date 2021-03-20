@@ -48,7 +48,7 @@ public class Electrodynamics {
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.SOUNDS.register(bus);
-
+	DeferredRegisters.FLUIDS.register(bus);
     }
 
     @SubscribeEvent

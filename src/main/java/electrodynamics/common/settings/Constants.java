@@ -40,10 +40,16 @@ public class Constants {
     public static double MINERALCRUSHER_USAGE_PER_TICK = 110.0;
     @IntValue(def = 200)
     public static int MINERALCRUSHER_REQUIRED_TICKS = 200;
-    @DoubleValue(def = 90.0)
-    public static double OXIDATIONFURNACE_USAGE_PER_TICK = 90.0;
+    @DoubleValue(def = 180.0)
+    public static double OXIDATIONFURNACE_USAGE_PER_TICK = 180.0;
     @IntValue(def = 200)
-    public static int OXIDATIONFURNACE_REQUIRED_TICKS = 250;
+    public static int OXIDATIONFURNACE_REQUIRED_TICKS = 200;
+    @DoubleValue(def = 20000.0)
+    public static double BIOGENERATRWHATEVERSHEIT_JOULES_PER_ETHANOLMB = 20000.0;
+    @DoubleValue(def = 10.0)
+    public static double FERMENTATIONPLANT_USAGE_PER_TICK = 10.0;
+    @IntValue(def = 2000)
+    public static int FERMENTATIONPLANT_REQUIRED_TICKS = 2000;
 
     public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

@@ -46,8 +46,8 @@ public class TileCoalGenerator extends GenericTileTicking {
 	addComponent(new ComponentTickable().addTickClient(this::tickClient).addTickCommon(this::tickCommon).addTickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.NORTH));
 	addComponent(new ComponentInventory().setInventorySize(1).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.EAST, 0)
-		.addSlotsOnFace(Direction.WEST, 0).addSlotsOnFace(Direction.SOUTH, 0).addSlotsOnFace(Direction.NORTH, 0)
-		.setItemValidPredicate((index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL));
+		.addSlotsOnFace(Direction.WEST, 0).addSlotsOnFace(Direction.SOUTH, 0).addSlotsOnFace(Direction.NORTH, 0).setItemValidPredicate(
+			(index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL || stack.getItem() == Items.COAL_BLOCK));
 	addComponent(new ComponentContainerProvider("container.coalgenerator").setCreateMenuFunction(
 		(id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
@@ -59,7 +59,7 @@ public class TileCoalGenerator extends GenericTileTicking {
 	}
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	if (burnTime <= 0 && !inv.getStackInSlot(0).isEmpty()) {
-	    burnTime = COAL_BURN_TIME;
+	    burnTime = inv.getStackInSlot(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
 	    inv.decrStackSize(0, 1);
 	}
 	BlockMachine machine = (BlockMachine) getBlockState().getBlock();

@@ -7,6 +7,7 @@ import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralGrinder;
@@ -24,12 +25,13 @@ import net.minecraft.tileentity.TileEntity;
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
     coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class), wiremill(true, TileWireMill.class),
-    mineralcrusher(true, TileMineralCrusher.class, true), mineralgrinder(true, TileMineralGrinder.class, true), batterybox(true, TileBatteryBox.class, true),
-    oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
-    downgradetransformer(true, TileTransformer.class), upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class),
-    advancedsolarpanel(true, TileAdvancedSolarPanel.class), electricpump(true, TileElectricPump.class),
-    thermoelectricgenerator(true, TileThermoelectricGenerator.class), hydroelectricgenerator(true, TileHydroelectricGenerator.class),
-    windmill(true, TileWindmill.class);
+    mineralcrusher(true, TileMineralCrusher.class, true), mineralgrinder(true, TileMineralGrinder.class, true),
+    batterybox(true, TileBatteryBox.class, true), oxidationfurnace(true, TileOxidationFurnace.class),
+    oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class),
+    upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
+    electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class),
+    hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class),
+    fermentationplant(true, TileFermentationPlant.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

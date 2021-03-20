@@ -63,7 +63,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
 		@Override
 		public boolean isFluidValid(int tank, FluidStack stack) {
-		    return stack != null && stack.getFluid() == Fluids.WATER;
+		    return stack != null;
 		}
 
 		@Override
