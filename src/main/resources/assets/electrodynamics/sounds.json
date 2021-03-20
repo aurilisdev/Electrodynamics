@@ -26,5 +26,26 @@
 		"sounds": [
 			"electrodynamics:electricpump"
 		]
+	},
+	"hydroelectricgenerator": {
+		"category": "blocks",
+		"subtitle": "Machine Hydroelectric Generator",
+		"sounds": [
+			"electrodynamics:hydroelectricgenerator"
+		]
+	},
+	"windmill": {
+		"category": "blocks",
+		"subtitle": "Machine Windmill",
+		"sounds": [
+			"electrodynamics:windmill"
+		]
+	},
+	"combustionchamber": {
+		"category": "blocks",
+		"subtitle": "Machine Combustion Chamber",
+		"sounds": [
+			"electrodynamics:combustionchamber"
+		]
 	}
 }

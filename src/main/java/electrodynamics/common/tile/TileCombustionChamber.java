@@ -12,9 +12,12 @@ import electrodynamics.api.utilities.object.CachedTileOutput;
 import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileCombustionChamber extends GenericTileTicking {
@@ -69,6 +72,10 @@ public class TileCombustionChamber extends GenericTileTicking {
 	if (running && world.rand.nextDouble() < 0.15) {
 	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble(),
 		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	}
+	if (running && tickable.getTicks() % 100 == 0) {
+	    Minecraft.getInstance().getSoundHandler()
+		    .play(new SimpleSound(DeferredRegisters.SOUND_COMBUSTIONCHAMBER.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	}
     }
 

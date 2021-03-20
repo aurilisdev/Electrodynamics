@@ -234,6 +234,12 @@ public class DeferredRegisters {
 	    () -> new SoundEvent(new ResourceLocation(References.ID + ":mineralgrinder")));
     public static final RegistryObject<SoundEvent> SOUND_ELECTRICPUMP = SOUNDS.register("electricpump",
 	    () -> new SoundEvent(new ResourceLocation(References.ID + ":electricpump")));
+    public static final RegistryObject<SoundEvent> SOUND_COMBUSTIONCHAMBER = SOUNDS.register("combustionchamber",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":combustionchamber")));
+    public static final RegistryObject<SoundEvent> SOUND_HYDROELECTRICGENERATOR = SOUNDS.register("hydroelectricgenerator",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":hydroelectricgenerator")));
+    public static final RegistryObject<SoundEvent> SOUND_WINDMILL = SOUNDS.register("windmill",
+	    () -> new SoundEvent(new ResourceLocation(References.ID + ":windmill")));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;

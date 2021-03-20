@@ -13,10 +13,13 @@ import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -108,6 +111,10 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
 	    double d6 = world.rand.nextDouble();
 	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0.2D : 1.2D) : d4;
 	    world.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
+	}
+	if (isGenerating && tickable.getTicks() % 100 == 0) {
+	    Minecraft.getInstance().getSoundHandler()
+		    .play(new SimpleSound(DeferredRegisters.SOUND_HYDROELECTRICGENERATOR.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	}
     }
 

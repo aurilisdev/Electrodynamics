@@ -16,8 +16,11 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileWindmill extends GenericTileTicking implements IMultiblockTileNode {
@@ -30,7 +33,7 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     public TileWindmill() {
 	super(DeferredRegisters.TILE_WINDMILL.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
+	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN));
     }
@@ -60,6 +63,12 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     protected void tickCommon(ComponentTickable tickable) {
 	if (isGenerating) {
 	    savedTickRotation += directionFlag ? 1 : -1;
+	}
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (isGenerating && tickable.getTicks() % 100 == 0) {
+	    Minecraft.getInstance().getSoundHandler().play(new SimpleSound(DeferredRegisters.SOUND_WINDMILL.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	}
     }
 
