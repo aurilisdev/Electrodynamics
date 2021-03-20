@@ -22,8 +22,8 @@ public class TileTransformer extends GenericTile {
     public TileTransformer() {
 	super(DeferredRegisters.TILE_TRANSFORMER.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentElectrodynamic(this).setFunctionReceivePower(this::receivePower).addRelativeOutputDirection(Direction.SOUTH)
-		.addRelativeInputDirection(Direction.NORTH));
+	addComponent(
+		new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
     }
 
     protected TransferPack receivePower(TransferPack transfer, boolean debug) {

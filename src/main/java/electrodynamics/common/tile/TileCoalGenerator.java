@@ -41,15 +41,14 @@ public class TileCoalGenerator extends GenericTileTicking {
     public TileCoalGenerator() {
 	super(DeferredRegisters.TILE_COALGENERATOR.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket)
-		.addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
-	addComponent(new ComponentTickable().addTickClient(this::tickClient).addTickCommon(this::tickCommon).addTickServer(this::tickServer));
-	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.NORTH));
-	addComponent(new ComponentInventory().setInventorySize(1).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.EAST, 0)
-		.addSlotsOnFace(Direction.WEST, 0).addSlotsOnFace(Direction.SOUTH, 0).addSlotsOnFace(Direction.NORTH, 0).setItemValidPredicate(
-			(index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL || stack.getItem() == Items.COAL_BLOCK));
-	addComponent(new ComponentContainerProvider("container.coalgenerator").setCreateMenuFunction(
-		(id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
+		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+	addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
+	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
+	addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH)
+		.valid((index, stack) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL || stack.getItem() == Items.COAL_BLOCK));
+	addComponent(new ComponentContainerProvider("container.coalgenerator")
+		.createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     protected void tickServer(ComponentTickable tickable) {

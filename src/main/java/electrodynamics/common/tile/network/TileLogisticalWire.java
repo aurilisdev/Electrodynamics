@@ -8,7 +8,7 @@ public class TileLogisticalWire extends TileWire {
 
     public TileLogisticalWire() {
 	super(DeferredRegisters.TILE_LOGISTICALWIRE.get());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer));
+	addComponent(new ComponentTickable().tickServer(this::tickServer));
     }
 
     protected void tickServer(ComponentTickable component) {

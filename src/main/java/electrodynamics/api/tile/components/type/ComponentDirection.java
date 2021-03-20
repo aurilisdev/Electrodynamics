@@ -10,7 +10,7 @@ public class ComponentDirection implements Component {
     private GenericTile holder;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 

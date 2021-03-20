@@ -18,7 +18,7 @@ public class ComponentPacketHandler implements Component {
     private GenericTile holder;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -27,7 +27,7 @@ public class ComponentPacketHandler implements Component {
     protected Consumer<CompoundNBT> customPacketReader;
     protected Consumer<CompoundNBT> guiPacketReader;
 
-    public ComponentPacketHandler addCustomPacketWriter(Consumer<CompoundNBT> consumer) {
+    public ComponentPacketHandler customPacketWriter(Consumer<CompoundNBT> consumer) {
 	Consumer<CompoundNBT> safe = consumer;
 	if (customPacketWriter != null) {
 	    safe = safe.andThen(customPacketWriter);
@@ -36,7 +36,7 @@ public class ComponentPacketHandler implements Component {
 	return this;
     }
 
-    public ComponentPacketHandler addGuiPacketWriter(Consumer<CompoundNBT> consumer) {
+    public ComponentPacketHandler guiPacketWriter(Consumer<CompoundNBT> consumer) {
 	Consumer<CompoundNBT> safe = consumer;
 	if (guiPacketWriter != null) {
 	    safe = safe.andThen(guiPacketWriter);
@@ -45,7 +45,7 @@ public class ComponentPacketHandler implements Component {
 	return this;
     }
 
-    public ComponentPacketHandler addCustomPacketReader(Consumer<CompoundNBT> consumer) {
+    public ComponentPacketHandler customPacketReader(Consumer<CompoundNBT> consumer) {
 	Consumer<CompoundNBT> safe = consumer;
 	if (customPacketReader != null) {
 	    safe = safe.andThen(customPacketReader);
@@ -54,7 +54,7 @@ public class ComponentPacketHandler implements Component {
 	return this;
     }
 
-    public ComponentPacketHandler addGuiPacketReader(Consumer<CompoundNBT> consumer) {
+    public ComponentPacketHandler guiPacketReader(Consumer<CompoundNBT> consumer) {
 	Consumer<CompoundNBT> safe = consumer;
 	if (guiPacketReader != null) {
 	    safe = safe.andThen(guiPacketReader);

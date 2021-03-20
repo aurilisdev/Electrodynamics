@@ -27,7 +27,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     private GenericTile holder;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -46,11 +46,11 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     private Direction lastReturnedSide = Direction.UP;
 
     public ComponentElectrodynamic(GenericTile source) {
-	setHolder(source);
+	holder(source);
 	if (holder.hasComponent(ComponentType.PacketHandler)) {
 	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-	    handler.addGuiPacketWriter(this::writeGuiPacket);
-	    handler.addGuiPacketReader(this::readGuiPacket);
+	    handler.guiPacketWriter(this::writeGuiPacket);
+	    handler.guiPacketReader(this::readGuiPacket);
 	}
     }
 
@@ -86,7 +86,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     @Deprecated
     public void setJoulesStored(double joules) {
-	setJoules(joules);
+	joules(joules);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return TransferPack.EMPTY;
     }
 
-    public ComponentElectrodynamic setJoules(double joules) {
+    public ComponentElectrodynamic joules(double joules) {
 	if (setJoules != null) {
 	    setJoules.accept(joules);
 	} else {
@@ -133,59 +133,59 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return this;
     }
 
-    public ComponentElectrodynamic setMaxJoules(double maxJoules) {
+    public ComponentElectrodynamic maxJoules(double maxJoules) {
 	this.maxJoules = maxJoules;
 	return this;
     }
 
     public ComponentElectrodynamic enableUniversalInput() {
 	for (Direction dir : Direction.values()) {
-	    addInputDirection(dir);
+	    input(dir);
 	}
 	return this;
     }
 
-    public ComponentElectrodynamic addInputDirection(Direction dir) {
+    public ComponentElectrodynamic input(Direction dir) {
 	inputDirections.add(dir);
 	return this;
     }
 
-    public ComponentElectrodynamic addOutputDirection(Direction dir) {
+    public ComponentElectrodynamic output(Direction dir) {
 	outputDirections.add(dir);
 	return this;
     }
 
-    public ComponentElectrodynamic addRelativeInputDirection(Direction dir) {
+    public ComponentElectrodynamic relativeInput(Direction dir) {
 	relativeInputDirections.add(dir);
 	return this;
     }
 
-    public ComponentElectrodynamic addRelativeOutputDirection(Direction dir) {
+    public ComponentElectrodynamic relativeOutput(Direction dir) {
 	relativeOutputDirections.add(dir);
 	return this;
     }
 
-    public ComponentElectrodynamic setFunctionReceivePower(BiFunction<TransferPack, Boolean, TransferPack> receivePower) {
+    public ComponentElectrodynamic receivePower(BiFunction<TransferPack, Boolean, TransferPack> receivePower) {
 	functionReceivePower = receivePower;
 	return this;
     }
 
-    public ComponentElectrodynamic setFunctionExtractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
+    public ComponentElectrodynamic extractPower(BiFunction<TransferPack, Boolean, TransferPack> extractPower) {
 	functionExtractPower = extractPower;
 	return this;
     }
 
-    public ComponentElectrodynamic setFunctionSetJoules(Consumer<Double> setJoules) {
+    public ComponentElectrodynamic setJoules(Consumer<Double> setJoules) {
 	this.setJoules = setJoules;
 	return this;
     }
 
-    public ComponentElectrodynamic setFunctionGetJoules(DoubleSupplier getJoules) {
+    public ComponentElectrodynamic getJoules(DoubleSupplier getJoules) {
 	this.getJoules = getJoules;
 	return this;
     }
 
-    public ComponentElectrodynamic setVoltage(double voltage) {
+    public ComponentElectrodynamic voltage(double voltage) {
 	this.voltage = voltage;
 	return this;
     }

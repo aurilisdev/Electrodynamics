@@ -26,11 +26,11 @@ public class TileElectricPump extends GenericTileTicking {
 
     public TileElectricPump() {
 	super(DeferredRegisters.TILE_ELECTRICPUMP.get());
-	addComponent(new ComponentElectrodynamic(this).setMaxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).addInputDirection(Direction.UP));
+	addComponent(new ComponentElectrodynamic(this).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).input(Direction.UP));
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer).addTickClient(this::tickClient));
-	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::writeNBT).addCustomPacketReader(this::readNBT));
-	addComponent(new ComponentFluidHandler(this).addFluidTank(Fluids.WATER, 0).addRelativeInputDirection(Direction.EAST));
+	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
+	addComponent(new ComponentPacketHandler().customPacketWriter(this::writeNBT).customPacketReader(this::readNBT));
+	addComponent(new ComponentFluidHandler(this).fluidTank(Fluids.WATER, 0).relativeInput(Direction.EAST));
     }
 
     protected CachedTileOutput output;
@@ -51,7 +51,7 @@ public class TileElectricPump extends GenericTileTicking {
 	    }
 	}
 	if (isGenerating) {
-	    electro.setJoules(electro.getJoulesStored() - Constants.ELECTRICPUMP_USAGE_PER_TICK);
+	    electro.joules(electro.getJoulesStored() - Constants.ELECTRICPUMP_USAGE_PER_TICK);
 	    FluidUtilities.receiveFluid(output.get(), direction.getOpposite(), new FluidStack(Fluids.WATER, 50), false);
 	}
     }

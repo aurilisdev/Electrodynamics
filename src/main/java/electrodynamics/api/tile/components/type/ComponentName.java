@@ -14,7 +14,7 @@ public class ComponentName implements Component {
 	this.name = name;
     }
 
-    public ComponentName setTranslation(boolean value) {
+    public ComponentName translation(boolean value) {
 	translation = value;
 	return this;
     }

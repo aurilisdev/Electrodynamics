@@ -30,9 +30,9 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     public TileWindmill() {
 	super(DeferredRegisters.TILE_WINDMILL.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer).addTickCommon(this::tickCommon).addTickClient(this::tickClient));
-	addComponent(new ComponentPacketHandler().addGuiPacketReader(this::readNBT).addGuiPacketWriter(this::writeNBT));
-	addComponent(new ComponentElectrodynamic(this).addOutputDirection(Direction.DOWN));
+	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
+	addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));
+	addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN));
     }
 
     @Override

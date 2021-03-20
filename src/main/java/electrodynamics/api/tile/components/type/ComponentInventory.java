@@ -32,7 +32,7 @@ public class ComponentInventory implements Component, ISidedInventory {
     protected GenericTile holder = null;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -47,28 +47,30 @@ public class ComponentInventory implements Component, ISidedInventory {
     protected Function<Direction, Collection<Integer>> getSlotsFunction;
     protected boolean shouldSendInfo;
 
-    public ComponentInventory shouldSendInfo(GenericTile holder) {
-	setHolder(holder);
-	if (!this.shouldSendInfo && holder.hasComponent(ComponentType.PacketHandler)) {
-	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).addGuiPacketReader(this::loadNBT)
-		    .addGuiPacketWriter(this::saveNBT);
+    public ComponentInventory(GenericTile holder) {
+	holder(holder);
+    }
+
+    public ComponentInventory shouldSendInfo() {
+	if (!shouldSendInfo && holder.hasComponent(ComponentType.PacketHandler)) {
+	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).guiPacketReader(this::loadNBT).guiPacketWriter(this::saveNBT);
 	}
-	this.shouldSendInfo = true;
+	shouldSendInfo = true;
 	return this;
     }
 
-    public ComponentInventory setGetSlotsFunction(Function<Direction, Collection<Integer>> getSlotsFunction) {
+    public ComponentInventory getSlots(Function<Direction, Collection<Integer>> getSlotsFunction) {
 	this.getSlotsFunction = getSlotsFunction;
 	return this;
     }
 
-    public ComponentInventory setInventorySize(int inventorySize) {
+    public ComponentInventory size(int inventorySize) {
 	this.inventorySize = inventorySize;
 	items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 	return this;
     }
 
-    public ComponentInventory addSlotsOnFace(Direction face, Integer... slot) {
+    public ComponentInventory faceSlots(Direction face, Integer... slot) {
 	if (!directionMappings.containsKey(face)) {
 	    directionMappings.put(face, new ArrayList<>());
 	}
@@ -78,7 +80,7 @@ public class ComponentInventory implements Component, ISidedInventory {
 	return this;
     }
 
-    public ComponentInventory addRelativeSlotsOnFace(Direction face, Integer... slot) {
+    public ComponentInventory relativeFaceSlots(Direction face, Integer... slot) {
 	if (!relativeDirectionMappings.containsKey(face)) {
 	    relativeDirectionMappings.put(face, new ArrayList<>());
 	}
@@ -88,7 +90,21 @@ public class ComponentInventory implements Component, ISidedInventory {
 	return this;
     }
 
-    public ComponentInventory setItemValidPredicate(BiPredicate<Integer, ItemStack> itemValidPredicate) {
+    public ComponentInventory slotFaces(Integer slot, Direction... faces) {
+	for (Direction face : faces) {
+	    faceSlots(face, slot);
+	}
+	return this;
+    }
+
+    public ComponentInventory relativeSlotFaces(Integer slot, Direction... faces) {
+	for (Direction face : faces) {
+	    relativeFaceSlots(face, slot);
+	}
+	return this;
+    }
+
+    public ComponentInventory valid(BiPredicate<Integer, ItemStack> itemValidPredicate) {
 	this.itemValidPredicate = itemValidPredicate;
 	return this;
     }

@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.LazyOptional;
 public interface Component {
     ComponentType getType();
 
-    default void setHolder(GenericTile holder) {
+    default void holder(GenericTile holder) {
     }
 
     default void loadFromNBT(BlockState state, CompoundNBT nbt) {

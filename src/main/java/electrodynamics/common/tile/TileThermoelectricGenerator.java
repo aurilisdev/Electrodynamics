@@ -20,8 +20,8 @@ public class TileThermoelectricGenerator extends GenericTileTicking {
     public TileThermoelectricGenerator() {
 	super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(new ComponentElectrodynamic(this).addRelativeOutputDirection(Direction.UP));
+	addComponent(new ComponentTickable().tickServer(this::tickServer));
+	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.UP));
     }
 
     protected void tickServer(ComponentTickable tickable) {

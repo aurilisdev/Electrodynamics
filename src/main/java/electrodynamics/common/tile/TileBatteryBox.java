@@ -36,14 +36,13 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
     public TileBatteryBox() {
 	super(DeferredRegisters.TILE_BATTERYBOX.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket)
-		.addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
-	addComponent(new ComponentInventory().setInventorySize(3));
+	addComponent(new ComponentTickable().tickServer(this::tickServer));
+	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
+		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+	addComponent(new ComponentInventory(this).size(3));
 	addComponent(new ComponentContainerProvider("container.batterybox")
-		.setCreateMenuFunction((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentElectrodynamic(this).setMaxJoules(DEFAULT_MAX_JOULES).addRelativeInputDirection(Direction.SOUTH)
-		.addRelativeOutputDirection(Direction.NORTH));
+		.createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentElectrodynamic(this).maxJoules(DEFAULT_MAX_JOULES).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -54,7 +53,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	}
 	receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
 	if (electro.getJoulesStored() > 0) {
-	    electro.setJoules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.get(), facing, TransferPack.joulesVoltage(
+	    electro.joules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.get(), facing, TransferPack.joulesVoltage(
 		    Math.min(electro.getJoulesStored(), DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), electro.getVoltage()), false)
 		    .getJoules());
 	}
@@ -65,9 +64,9 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
 	    }
 	}
-	electro.setMaxJoules(DEFAULT_MAX_JOULES * currentCapacityMultiplier);
+	electro.maxJoules(DEFAULT_MAX_JOULES * currentCapacityMultiplier);
 	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
-	    electro.setJoules(electro.getMaxJoulesStored());
+	    electro.joules(electro.getMaxJoulesStored());
 	}
 	if (tickable.getTicks() % 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();

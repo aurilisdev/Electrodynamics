@@ -24,7 +24,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     private GenericTile holder;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -33,14 +33,15 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     protected HashSet<Direction> relativeInputDirections = new HashSet<>();
     protected HashSet<Direction> outputDirections = new HashSet<>();
     protected HashSet<Direction> inputDirections = new HashSet<>();
+    protected Direction lastDirection = null;
 
     public ComponentFluidHandler(GenericTile source) {
-	setHolder(source);
+	holder(source);
 	if (holder.hasComponent(ComponentType.PacketHandler)) {
-	    setHolder(source);
+	    holder(source);
 	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-	    handler.addGuiPacketWriter(this::writeGuiPacket);
-	    handler.addGuiPacketReader(this::readGuiPacket);
+	    handler.guiPacketWriter(this::writeGuiPacket);
+	    handler.guiPacketReader(this::readGuiPacket);
 	}
     }
 
@@ -52,34 +53,34 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	loadFromNBT(null, nbt);
     }
 
-    public ComponentFluidHandler enableUniversalInput() {
+    public ComponentFluidHandler universalInput() {
 	for (Direction dir : Direction.values()) {
-	    addInputDirection(dir);
+	    input(dir);
 	}
 	return this;
     }
 
-    public ComponentFluidHandler addInputDirection(Direction dir) {
+    public ComponentFluidHandler input(Direction dir) {
 	inputDirections.add(dir);
 	return this;
     }
 
-    public ComponentFluidHandler addOutputDirection(Direction dir) {
+    public ComponentFluidHandler output(Direction dir) {
 	outputDirections.add(dir);
 	return this;
     }
 
-    public ComponentFluidHandler addRelativeInputDirection(Direction dir) {
+    public ComponentFluidHandler relativeInput(Direction dir) {
 	relativeInputDirections.add(dir);
 	return this;
     }
 
-    public ComponentFluidHandler addRelativeOutputDirection(Direction dir) {
+    public ComponentFluidHandler relativeOutput(Direction dir) {
 	relativeOutputDirections.add(dir);
 	return this;
     }
 
-    public ComponentFluidHandler addFluidTank(Fluid fluid, int capacity) {
+    public ComponentFluidHandler fluidTank(Fluid fluid, int capacity) {
 	fluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
 	fluids.get(fluid).setFluid(new FluidStack(fluid, 0));
 	return this;
@@ -116,12 +117,20 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-	return fluids.get(resource.getFluid()).fill(resource, action);
+	Direction relative = UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+		lastDirection);
+	boolean canFill = inputDirections.contains(lastDirection)
+		|| holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
+	return canFill ? fluids.get(resource.getFluid()).fill(resource, action) : 0;
     }
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-	return fluids.get(resource.getFluid()).drain(resource, action);
+	Direction relative = UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+		lastDirection);
+	boolean canDrain = outputDirections.contains(lastDirection)
+		|| holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
+	return canDrain ? fluids.get(resource.getFluid()).drain(resource, action) : FluidStack.EMPTY;
     }
 
     @Override
@@ -134,6 +143,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	if (side == null) {
 	    return false;
 	}
+	lastDirection = side;
 	Direction relative = UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
 	return (inputDirections.contains(side) || outputDirections.contains(side)
 		|| holder.hasComponent(ComponentType.Direction)

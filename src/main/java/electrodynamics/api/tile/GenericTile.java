@@ -31,7 +31,7 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     public GenericTile addComponent(Component component) {
-	component.setHolder(this);
+	component.holder(this);
 	if (hasComponent(component.getType())) {
 	    throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
 	}
@@ -43,7 +43,7 @@ public class GenericTile extends TileEntity implements INameable {
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);
 	for (Component component : componentMap.values()) {
-	    component.setHolder(this);
+	    component.holder(this);
 	    component.loadFromNBT(state, compound);
 	}
     }
@@ -51,7 +51,7 @@ public class GenericTile extends TileEntity implements INameable {
     @Override
     public CompoundNBT write(CompoundNBT compound) {
 	for (Component component : componentMap.values()) {
-	    component.setHolder(this);
+	    component.holder(this);
 	    component.saveToNBT(compound);
 	}
 	return super.write(compound);
@@ -70,7 +70,7 @@ public class GenericTile extends TileEntity implements INameable {
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 	for (Component component : componentMap.values()) {
-	    component.setHolder(this);
+	    component.holder(this);
 	    if (component.hasCapability(cap, side)) {
 		return component.getCapability(cap, side);
 	    }
@@ -82,7 +82,7 @@ public class GenericTile extends TileEntity implements INameable {
     public void remove() {
 	super.remove();
 	for (Component component : componentMap.values()) {
-	    component.setHolder(this);
+	    component.holder(this);
 	    component.remove();
 	}
     }

@@ -87,7 +87,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 		}
 	    });
 	}
-	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket).addCustomPacketWriter(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
     }
 
     private HashSet<IPipe> getConnectedConductors() {

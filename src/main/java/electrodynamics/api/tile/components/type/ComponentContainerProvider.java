@@ -16,7 +16,7 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
     protected GenericTile holder = null;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -27,7 +27,7 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
 	this.name = name;
     }
 
-    public ComponentContainerProvider setCreateMenuFunction(BiFunction<Integer, PlayerInventory, Container> createMenuFunction) {
+    public ComponentContainerProvider createMenu(BiFunction<Integer, PlayerInventory, Container> createMenuFunction) {
 	this.createMenuFunction = createMenuFunction;
 	return this;
     }

@@ -40,7 +40,7 @@ public class ScreenO2OProcessor extends GenericContainerScreenUpgradeable<Contai
 	    ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.o2oprocessor.usage",
-			    ElectricityChatFormatter.getDisplayShort(processor.getJoulesPerTick() * 20, ElectricUnit.WATT)),
+			    ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT)),
 		    (float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.o2oprocessor.voltage",

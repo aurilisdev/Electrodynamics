@@ -34,16 +34,16 @@ public class TileElectricFurnace extends GenericTileTicking {
 	super(DeferredRegisters.TILE_ELECTRICFURNACE.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentTickable().addTickClient(this::tickClient));
-	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH));
-	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.DOWN, 1)
-		.setItemValidPredicate((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade)
-		.addRelativeSlotsOnFace(Direction.EAST, 0).addRelativeSlotsOnFace(Direction.WEST, 1));
-	addComponent(new ComponentContainerProvider("container.electricfurnace").setCreateMenuFunction(
-		(id, player) -> new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4).setCanProcess(this::canProcess).setFailed(component -> cachedRecipe = null)
-		.setProcess(this::process).setRequiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS)
-		.setJoulesPerTick(Constants.ELECTRICFURNACE_USAGE_PER_TICK).setType(ComponentProcessorType.ObjectToObject));
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH));
+	addComponent(
+		new ComponentInventory(this).size(5).valid((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade)
+			.relativeSlotFaces(0, Direction.UP, Direction.EAST).relativeSlotFaces(1, Direction.WEST, Direction.DOWN));
+	addComponent(new ComponentContainerProvider("container.electricfurnace")
+		.createMenu((id, player) -> new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(this::canProcess).failed(component -> cachedRecipe = null)
+		.process(this::process).requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICFURNACE_USAGE_PER_TICK)
+		.type(ComponentProcessorType.ObjectToObject));
     }
 
     protected void process(ComponentProcessor component) {
@@ -53,7 +53,7 @@ public class TileElectricFurnace extends GenericTileTicking {
 	if (!output.isEmpty()) {
 	    output.setCount(output.getCount() + result.getCount());
 	} else {
-	    component.setOutput(result.copy());
+	    component.output(result.copy());
 	}
 	ItemStack input = component.getInput();
 	input.shrink(1);
@@ -64,7 +64,7 @@ public class TileElectricFurnace extends GenericTileTicking {
 
     protected boolean canProcess(ComponentProcessor component) {
 	timeSinceChange++;
-	if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getJoulesPerTick()
+	if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage()
 		* component.operatingSpeed) {
 	    if (timeSinceChange > 40 && getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
 		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState()

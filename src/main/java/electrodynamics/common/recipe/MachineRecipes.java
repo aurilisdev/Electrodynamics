@@ -40,7 +40,7 @@ public class MachineRecipes {
     public static boolean canProcess(GenericTile tile) {
 	ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
 	ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
-	if (electro.getJoulesStored() > processor.getJoulesPerTick()) {
+	if (electro.getJoulesStored() > processor.getUsage()) {
 	    if (processor.getProcessorType() == ComponentProcessorType.ObjectToObject) {
 		TileEntityType<?> type = tile.getType();
 		if (!processor.getInput().isEmpty() && o2orecipemap.containsKey(type)) {
@@ -79,7 +79,7 @@ public class MachineRecipes {
     public static void process(GenericTile tile) {
 	ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
 	ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
-	if (electro.getJoulesStored() > processor.getJoulesPerTick()) {
+	if (electro.getJoulesStored() > processor.getUsage()) {
 	    TileEntityType<?> type = tile.getType();
 	    if (processor.getProcessorType() == ComponentProcessorType.ObjectToObject) {
 		if (o2orecipemap.containsKey(type) && !processor.getInput().isEmpty()) {
@@ -90,7 +90,7 @@ public class MachineRecipes {
 					|| processor.getOutput().getItem() == recipe.getOutput().getItem() && processor.getOutput().getCount()
 						+ recipe.getOutput().getCount() <= processor.getOutput().getMaxStackSize())) {
 			    if (processor.getOutput().isEmpty()) {
-				processor.setOutput(recipe.getOutput().copy());
+				processor.output(recipe.getOutput().copy());
 			    } else {
 				processor.getOutput().setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
 			    }
@@ -108,7 +108,7 @@ public class MachineRecipes {
 			    && (processor.getOutput().isEmpty() || processor.getOutput().getItem() == recipe.getOutput().getItem()
 				    && processor.getOutput().getCount() + recipe.getOutput().getCount() <= processor.getOutput().getMaxStackSize())) {
 			if (processor.getOutput().isEmpty()) {
-			    processor.setOutput(recipe.getOutput().copy());
+			    processor.output(recipe.getOutput().copy());
 			} else {
 			    processor.getOutput().setCount(processor.getOutput().getCount() + recipe.getOutput().getCount());
 			}

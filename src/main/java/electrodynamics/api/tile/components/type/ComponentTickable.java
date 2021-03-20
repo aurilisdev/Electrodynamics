@@ -10,7 +10,7 @@ public class ComponentTickable implements Component {
     private GenericTile holder;
 
     @Override
-    public void setHolder(GenericTile holder) {
+    public void holder(GenericTile holder) {
 	this.holder = holder;
     }
 
@@ -19,7 +19,7 @@ public class ComponentTickable implements Component {
     protected Consumer<ComponentTickable> tickServer;
     private long ticks = 0;
 
-    public ComponentTickable addTickCommon(Consumer<ComponentTickable> consumer) {
+    public ComponentTickable tickCommon(Consumer<ComponentTickable> consumer) {
 	Consumer<ComponentTickable> safe = consumer;
 	if (tickCommon != null) {
 	    safe = safe.andThen(tickCommon);
@@ -28,7 +28,7 @@ public class ComponentTickable implements Component {
 	return this;
     }
 
-    public ComponentTickable addTickClient(Consumer<ComponentTickable> consumer) {
+    public ComponentTickable tickClient(Consumer<ComponentTickable> consumer) {
 	Consumer<ComponentTickable> safe = consumer;
 	if (tickClient != null) {
 	    safe = safe.andThen(tickClient);
@@ -37,7 +37,7 @@ public class ComponentTickable implements Component {
 	return this;
     }
 
-    public ComponentTickable addTickServer(Consumer<ComponentTickable> consumer) {
+    public ComponentTickable tickServer(Consumer<ComponentTickable> consumer) {
 	Consumer<ComponentTickable> safe = consumer;
 	if (tickServer != null) {
 	    safe = safe.andThen(tickServer);

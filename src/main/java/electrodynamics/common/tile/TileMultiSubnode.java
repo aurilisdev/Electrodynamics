@@ -21,7 +21,7 @@ public class TileMultiSubnode extends GenericTile {
 
     public TileMultiSubnode() {
 	super(DeferredRegisters.TILE_MULTI.get());
-	addComponent(new ComponentPacketHandler().addCustomPacketReader(this::readCustomPacket).addCustomPacketWriter(this::writeCustomPacket));
+	addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
     }
 
     @Override

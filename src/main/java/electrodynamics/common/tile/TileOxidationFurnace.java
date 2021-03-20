@@ -31,17 +31,16 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentTickable().addTickClient(this::tickClient));
-	addComponent(new ComponentElectrodynamic(this).addRelativeInputDirection(Direction.NORTH)
-		.setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-	addComponent(new ComponentInventory().setInventorySize(6).addSlotsOnFace(Direction.UP, 0, 1).addSlotsOnFace(Direction.DOWN, 2)
-		.addRelativeSlotsOnFace(Direction.EAST, 1).addRelativeSlotsOnFace(Direction.WEST, 2)
-		.setItemValidPredicate((slot, stack) -> slot == 0 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
-	addComponent(new ComponentContainerProvider("container.mineralcrusher").setCreateMenuFunction(
-		(id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentProcessor(this).addUpgradeSlots(3, 4, 5).setCanProcess(this::canProcess)
-		.setProcess(component -> MachineRecipes.process(this)).setRequiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
-		.setJoulesPerTick(Constants.OXIDATIONFURNACE_USAGE_PER_TICK).setType(ComponentProcessorType.ObjectToObject));
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
+		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST)
+		.valid((slot, stack) -> slot == 0 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
+	addComponent(new ComponentContainerProvider("container.mineralcrusher")
+		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(this::canProcess)
+		.process(component -> MachineRecipes.process(this)).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
+		.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject));
     }
 
     protected boolean canProcess(ComponentProcessor component) {

@@ -29,8 +29,8 @@ public class TileAdvancedSolarPanel extends GenericTileTicking implements IMulti
 
     public TileAdvancedSolarPanel() {
 	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
-	addComponent(new ComponentTickable().addTickServer(this::tickServer));
-	addComponent(new ComponentElectrodynamic(this).addOutputDirection(Direction.DOWN).setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentTickable().tickServer(this::tickServer));
+	addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
     }
 
     protected void tickServer(ComponentTickable tickable) {

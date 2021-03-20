@@ -49,7 +49,7 @@ public class RenderMineralCrusher extends TileEntityRenderer<TileMineralCrusher>
 	    Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    matrixStackIn.push();
 	    double scale = stack.getItem() instanceof BlockItem ? 5.3 : 8.0;
-	    matrixStackIn.translate(0.5 + dir.getXOffset() / scale, (stack.getItem() instanceof BlockItem ? 0.48 : 0.39),
+	    matrixStackIn.translate(0.5 + dir.getXOffset() / scale, stack.getItem() instanceof BlockItem ? 0.48 : 0.39,
 		    0.5 + dir.getZOffset() / scale);
 	    matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 	    if (!(stack.getItem() instanceof BlockItem)) {

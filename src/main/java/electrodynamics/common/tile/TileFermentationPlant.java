@@ -55,21 +55,20 @@ public class TileFermentationPlant extends GenericTileTicking {
 
     public TileFermentationPlant() {
 	super(DeferredRegisters.TILE_FERMENTATIONPLANT.get());
-	addComponent(new ComponentTickable().addTickClient(this::tickClient));
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentElectrodynamic(this).addInputDirection(Direction.DOWN).setVoltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
-		.setMaxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
-	addComponent(new ComponentFluidHandler(this).addRelativeInputDirection(Direction.EAST).addFluidTank(Fluids.WATER, TANKCAPACITY_WATER)
-		.addFluidTank(DeferredRegisters.fluidEthanol, TANKCAPACITY_ETHANOL).addRelativeOutputDirection(Direction.WEST));
-	addComponent(new ComponentInventory().setInventorySize(5).addSlotsOnFace(Direction.UP, 0).addSlotsOnFace(Direction.DOWN, 1)
-		.addRelativeSlotsOnFace(Direction.EAST, 0)
-		.setItemValidPredicate((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade));
-	addComponent(new ComponentProcessor(this).addUpgradeSlots(2, 3, 4).setJoulesPerTick(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
-		.setType(ComponentProcessorType.ObjectToObject).setCanProcess(this::canProcess).setProcess(this::process)
-		.setRequiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
-	addComponent(new ComponentContainerProvider("container.fermentationplant").setCreateMenuFunction(
-		(id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
+		.maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.EAST).fluidTank(Fluids.WATER, TANKCAPACITY_WATER)
+		.fluidTank(DeferredRegisters.fluidEthanol, TANKCAPACITY_ETHANOL).relativeOutput(Direction.WEST));
+	addComponent(new ComponentInventory(this).size(5).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
+		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade));
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
+		.type(ComponentProcessorType.ObjectToObject).canProcess(this::canProcess).process(this::process)
+		.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
+	addComponent(new ComponentContainerProvider("container.fermentationplant")
+		.createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     @Override
@@ -81,6 +80,9 @@ public class TileFermentationPlant extends GenericTileTicking {
 	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
 	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
 		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	    world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.getX() + 0.5 + dir.getZOffset(), pos.getY() + 0.6,
+		    pos.getZ() + 0.5 + dir.getXOffset() * 0.22, 0.0D, 0.0D, 0.0D);
 	}
     }
 
@@ -113,7 +115,7 @@ public class TileFermentationPlant extends GenericTileTicking {
 		+ RECIPE_MAPPINGS.getOrDefault(processor.getInput().getItem(), Integer.MAX_VALUE)) {
 	    return false;
 	}
-	return electro.getJoulesStored() >= processor.getJoulesPerTick() && !processor.getInput().isEmpty() && processor.getInput().getCount() > 0
+	return electro.getJoulesStored() >= processor.getUsage() && !processor.getInput().isEmpty() && processor.getInput().getCount() > 0
 		&& tank.getStackFromFluid(Fluids.WATER).getAmount() >= 2000;
     }
 
