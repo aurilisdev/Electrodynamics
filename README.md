@@ -12,3 +12,6 @@ https://minecraft.curseforge.com/projects/physica
 https://minecraft.curseforge.com/projects/physica-nuclear-physics
 ## Modular Forcefield System Curseforge page
 https://minecraft.curseforge.com/projects/physica-modular-forcefield-system
+
+### Note for Devs of 1.7.10 version:
+When the MCP dialogue opens after running the runClient Gradle Task, select {YourUserHomeDirectory}\.gradle\caches\minecraft\net\minecraftforge\forge\1.7.10-10.13.4.1614-1.7.10\unpacked\conf
