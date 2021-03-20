@@ -125,9 +125,9 @@ public class TileFermentationPlant extends GenericTileTicking {
     public void process(ComponentProcessor processor) {
 	ComponentFluidHandler handler = getComponent(ComponentType.FluidHandler);
 	ItemStack stack = processor.getInput();
-	stack.setCount(stack.getCount() - 1);
 	handler.getStackFromFluid(Fluids.WATER).shrink(REQUIRED_WATER_CAP);
 	handler.getStackFromFluid(DeferredRegisters.fluidEthanol).grow(RECIPE_MAPPINGS.get(stack.getItem()));
+	stack.setCount(stack.getCount() - 1);
 	this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
     }
 }

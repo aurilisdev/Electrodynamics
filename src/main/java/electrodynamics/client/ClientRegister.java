@@ -6,6 +6,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
+import electrodynamics.client.render.tile.RenderCombustionChamber;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderMineralCrusher;
@@ -89,6 +90,7 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), RenderFermentationPlant::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

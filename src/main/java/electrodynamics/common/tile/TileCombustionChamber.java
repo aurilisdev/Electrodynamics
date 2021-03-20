@@ -13,6 +13,7 @@ import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,7 +31,7 @@ public class TileCombustionChamber extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-	addComponent(new ComponentFluidHandler(this).fluidTank(DeferredRegisters.fluidEthanol, 100).relativeInput(Direction.WEST));
+	addComponent(new ComponentFluidHandler(this).fluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY).relativeInput(Direction.WEST));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -53,7 +54,6 @@ public class TileCombustionChamber extends GenericTileTicking {
 	    }
 	    if (shouldSend) {
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-
 	    }
 	} else {
 	    running = true;
@@ -66,6 +66,10 @@ public class TileCombustionChamber extends GenericTileTicking {
     }
 
     protected void tickClient(ComponentTickable tickable) {
+	if (running && world.rand.nextDouble() < 0.15) {
+	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble(),
+		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	}
     }
 
     protected void writeNBT(CompoundNBT nbt) {
