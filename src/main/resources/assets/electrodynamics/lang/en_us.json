@@ -84,6 +84,7 @@
 	"block.electrodynamics.hydroelectricgenerator": "Hydroelectric Generator",
 	"block.electrodynamics.windmill": "Windmill",
 	"block.electrodynamics.fermentationplant": "Fermentation Plant",
+	"block.electrodynamics.combustionchamber": "Combustion Chamber",
 	"block.electrodynamics.wiretin": "Tin Wire",
 	"block.electrodynamics.wireiron": "Iron Wire",
 	"block.electrodynamics.wirecopper": "Copper Wire",

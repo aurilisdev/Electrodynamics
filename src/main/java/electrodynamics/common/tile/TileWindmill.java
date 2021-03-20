@@ -30,7 +30,7 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     public TileWindmill() {
 	super(DeferredRegisters.TILE_WINDMILL.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
+	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
 	addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN));
     }
@@ -60,11 +60,6 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     protected void tickCommon(ComponentTickable tickable) {
 	if (isGenerating) {
 	    savedTickRotation += directionFlag ? 1 : -1;
-	}
-    }
-
-    protected void tickClient(ComponentTickable tickable) {
-	if (isGenerating && world.rand.nextDouble() < 0.3) {
 	}
     }
 

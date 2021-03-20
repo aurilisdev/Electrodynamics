@@ -60,6 +60,7 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(References.ID + ":block/mineralgrinderwheel");
     public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(References.ID + ":block/fermentationplantwater");
     public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(References.ID + ":block/fermentationplantethanol");
+    public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(References.ID + ":block/combustionchamberethanol");
 
     public static void setup() {
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -79,6 +80,7 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
 	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
 	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
+	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
 
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
@@ -98,6 +100,8 @@ public class ClientRegister {
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),
+		ClientRegister::shouldMultilayerRender);
+	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber),
 		ClientRegister::shouldMultilayerRender);
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
 	ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"), new IItemPropertyGetter() {

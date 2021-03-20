@@ -1,0 +1,22 @@
+{
+	"credit": "aurilisdev",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "electrodynamics:model/ethanol",
+		"particle": "electrodynamics:model/ethanol"
+	},
+	"elements": [
+		{
+			"from": [6, 11, 5],
+			"to": [10, 13, 11],
+			"faces": {
+				"north": {"uv": [6, 4, 7, 5], "texture": "#0"},
+				"east": {"uv": [6, 0, 8, 1], "texture": "#0"},
+				"south": {"uv": [6, 5, 7, 6], "texture": "#0"},
+				"west": {"uv": [6, 1, 8, 2], "texture": "#0"},
+				"up": {"uv": [3.5, 7, 2.5, 5], "texture": "#0"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#0"}
+			}
+		}
+	]
+}

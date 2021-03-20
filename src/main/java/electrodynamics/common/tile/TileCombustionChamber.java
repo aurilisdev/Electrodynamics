@@ -1,0 +1,78 @@
+package electrodynamics.common.tile;
+
+import electrodynamics.DeferredRegisters;
+import electrodynamics.api.tile.GenericTileTicking;
+import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.api.tile.components.type.ComponentDirection;
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentFluidHandler;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.api.utilities.object.CachedTileOutput;
+import electrodynamics.api.utilities.object.TransferPack;
+import electrodynamics.common.network.ElectricityUtilities;
+import electrodynamics.common.settings.Constants;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraftforge.fluids.FluidStack;
+
+public class TileCombustionChamber extends GenericTileTicking {
+    public static final int TICKS_PER_MILLIBUCKET = 200;
+    public static final int TANK_CAPACITY = 100;
+    public boolean running = false;
+    private int burnTime;
+    private CachedTileOutput output;
+
+    public TileCombustionChamber() {
+	super(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get());
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
+	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
+		.guiPacketWriter(this::writeNBT));
+	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
+	addComponent(new ComponentFluidHandler(this).fluidTank(DeferredRegisters.fluidEthanol, 100).relativeInput(Direction.WEST));
+    }
+
+    protected void tickServer(ComponentTickable tickable) {
+	ComponentDirection direction = getComponent(ComponentType.Direction);
+	Direction facing = direction.getDirection();
+	if (output == null) {
+	    output = new CachedTileOutput(world, pos.offset(facing.rotateY()));
+	}
+	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+	if (burnTime <= 0) {
+	    boolean shouldSend = !running;
+	    running = false;
+	    FluidStack stack = tank.getStackFromFluid(DeferredRegisters.fluidEthanol);
+	    if (stack.getAmount() > 0) {
+		stack.setAmount(stack.getAmount() - 1);
+		running = true;
+		burnTime = TICKS_PER_MILLIBUCKET;
+		shouldSend = true;
+	    }
+	    if (shouldSend) {
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+
+	    }
+	} else {
+	    running = true;
+	    burnTime--;
+	}
+	if (running && burnTime > 0) {
+	    ElectricityUtilities.receivePower(output.get(), facing.rotateY().getOpposite(),
+		    TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK, electro.getVoltage()), false);
+	}
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+    }
+
+    protected void writeNBT(CompoundNBT nbt) {
+	nbt.putBoolean("running", running);
+    }
+
+    protected void readNBT(CompoundNBT nbt) {
+	running = nbt.getBoolean("running");
+    }
+}
