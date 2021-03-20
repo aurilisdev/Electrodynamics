@@ -65,8 +65,6 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
 
     protected void tickClient(ComponentTickable tickable) {
 	if (isGenerating && world.rand.nextDouble() < 0.3) {
-	    // Direction direction =
-	    // this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	}
     }
 

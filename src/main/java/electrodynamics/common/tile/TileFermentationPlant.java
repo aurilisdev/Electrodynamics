@@ -33,7 +33,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileFermentationPlant extends GenericTileTicking {
-    public static HashMap<Item, Integer> RECIPE_MAPPINGS = new HashMap<>();
+    public static final HashMap<Item, Integer> RECIPE_MAPPINGS = new HashMap<>();
     static {
 	RECIPE_MAPPINGS.put(Items.WHEAT_SEEDS, 9);
 	RECIPE_MAPPINGS.put(Items.PUMPKIN_SEEDS, 9);
@@ -77,12 +77,15 @@ public class TileFermentationPlant extends GenericTileTicking {
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
-		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.getX() + 0.5 + dir.getZOffset(), pos.getY() + 0.6,
-		    pos.getZ() + 0.5 + dir.getXOffset() * 0.22, 0.0D, 0.0D, 0.0D);
+	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0) {
+	    if (world.rand.nextDouble() < 0.15) {
+		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
+			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    }
+	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().rotateY();
+	    double x = pos.getX() + 0.55 + dir.getXOffset() * 0.2;
+	    double z = pos.getZ() + 0.55 + dir.getZOffset() * 0.2;
+	    world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, pos.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
 	}
     }
 
