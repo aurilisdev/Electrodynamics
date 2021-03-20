@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pmp",
+		"bcb",
+		"pfp"
+	],
+	"key": {
+		"p": {
+			"tag": "forge:plates/iron"
+		},
+		"f": {
+			"item": "minecraft:furnace"
+		},
+		"b": {
+			"tag": "forge:circuits/basic"
+		},
+		"c": {
+			"item": "minecraft:cauldron"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:fermentationplant",
+		"count": 1
+	}
+}
