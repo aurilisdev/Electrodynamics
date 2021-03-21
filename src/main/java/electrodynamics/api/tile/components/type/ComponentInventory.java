@@ -189,7 +189,9 @@ public class ComponentInventory implements Component, ISidedInventory {
 	}
 	if (shouldSendInfo && stack.getCount() != items.get(index).getCount() || stack.getItem() != items.get(index).getItem()) {
 	    items.set(index, stack);
-	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	    if (holder.hasComponent(ComponentType.PacketHandler)) {
+		holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	    }
 	} else {
 	    items.set(index, stack);
 	}

@@ -66,6 +66,8 @@ public class RecipeManager {
 		new O2OProcessingRecipe(Blocks.NETHER_GOLD_ORE, SubtypeDust.gold, 2));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Blocks.IRON_ORE, SubtypeDust.iron, 2));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.ENDER_EYE, SubtypeDust.endereye));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.IRON_INGOT, SubtypeDust.iron));
+	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.GOLD_INGOT, SubtypeDust.gold));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Items.IRON_INGOT, SubtypePlate.iron));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(Items.FLINT, Items.GUNPOWDER));
 	MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(Blocks.GRAVEL, Items.FLINT));
