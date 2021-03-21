@@ -37,11 +37,37 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
+@EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class ClientRegister {
+    @SubscribeEvent
+    public static void onModelEvent(ModelRegistryEvent event) {
+	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
+	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
+	ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
+	ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
+	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
+	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
+	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
+    }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
     public static final ResourceLocation MODEL_ADVSOLARBASE = new ResourceLocation(References.ID + ":block/advancedsolarpanelbase");
@@ -64,25 +90,6 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(References.ID + ":block/combustionchamberethanol");
 
     public static void setup() {
-	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
-	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
-	ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
-	ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
-	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
-	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
-	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
-	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
-
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
