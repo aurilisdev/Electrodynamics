@@ -45,7 +45,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
+@EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class ClientRegister {
     @SubscribeEvent
     public static void onModelEvent(ModelRegistryEvent event) {

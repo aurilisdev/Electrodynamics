@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.sound.DistanceSound;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentContainerProvider;
@@ -19,7 +20,6 @@ import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -60,7 +60,7 @@ public class TileMineralCrusher extends GenericTileTicking {
 	    double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
 	    if (progress == 1) {
 		Minecraft.getInstance().getSoundHandler()
-			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 5, .75f, pos));
+			.play(new DistanceSound(DeferredRegisters.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 5, .75f, pos));
 	    } else if (progress < 0.3) {
 		for (int i = 0; i < 5; i++) {
 		    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;

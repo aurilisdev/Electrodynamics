@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.sound.DistanceSound;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentContainerProvider;
@@ -18,7 +19,6 @@ import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -54,7 +54,7 @@ public class TileMineralGrinder extends GenericTileTicking {
 	    }
 	    if (tickable.getTicks() % 200 == 0) {
 		Minecraft.getInstance().getSoundHandler()
-			.play(new SimpleSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 0.5f, 1, pos));
+			.play(new DistanceSound(DeferredRegisters.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 0.5f, 1, pos));
 	    }
 	    ItemStack stack = processor.getInput();
 	    if (stack.getItem() instanceof BlockItem) {

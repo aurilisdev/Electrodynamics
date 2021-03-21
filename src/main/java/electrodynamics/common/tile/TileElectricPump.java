@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.sound.DistanceSound;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentDirection;
@@ -12,7 +13,6 @@ import electrodynamics.api.utilities.object.CachedTileOutput;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
@@ -75,7 +75,7 @@ public class TileElectricPump extends GenericTileTicking {
 		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 	    if (tickable.getTicks() % 200 == 0) {
 		Minecraft.getInstance().getSoundHandler()
-			.play(new SimpleSound(DeferredRegisters.SOUND_ELECTRICPUMP.get(), SoundCategory.BLOCKS, 1, 1, pos));
+			.play(new DistanceSound(DeferredRegisters.SOUND_ELECTRICPUMP.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	    }
 	}
     }
