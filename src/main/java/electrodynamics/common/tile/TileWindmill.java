@@ -67,7 +67,7 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	if (isGenerating && tickable.getTicks() % 100 == 0) {
+	if (isGenerating && tickable.getTicks() % 180 == 0) {
 	    Minecraft.getInstance().getSoundHandler().play(new SimpleSound(DeferredRegisters.SOUND_WINDMILL.get(), SoundCategory.BLOCKS, 1, 1, pos));
 	}
     }
