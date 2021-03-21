@@ -43,7 +43,6 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	protected int				currentSessionTicks				= 0;
 	protected double			velocity						= 0;
 	protected int				antimatterAmount				= 0;
-	private int                 inputMass;
 	private Item                lastInput;
 
 	private int idleTicks;
@@ -71,11 +70,9 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 
 		if (stackMatter != null) {
 			if (stackMatter.getItem() != lastInput) {
-				inputMass = getMass(stackMatter);
 				lastInput = stackMatter.getItem();
 			}
 		} else {
-			inputMass = 0;
 			lastInput = null;
 		}
 
@@ -94,14 +91,14 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 				{
 					if (stackEmptyCell.getItem() == NuclearItemRegister.itemEmptyElectromagneticCell)
 					{
-						if (antimatterAmount >= 125_000)
+						if (antimatterAmount >= 125)
 						{
 							if (stackOutputSlot != null)
 							{
 								if(stackOutputSlot.getItem() == NuclearItemRegister.itemAntimatterCell125Milligram)
 								{
 									decrStackSize(SLOT_INPUTCELLS, 1);
-									antimatterAmount -= 125_000;
+									antimatterAmount -= 125;
 									stackOutputSlot.stackSize++;
 								}
 							} else
@@ -128,11 +125,10 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 							{
 								if (World().rand.nextFloat() > 0.666f)
 								{
-									int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
-									antimatterAmount = (int) Math.min(1_000_000, antimatterAmount + (particle.getMass() + randomAmount) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
+									antimatterAmount = (int) Math.min(1000, antimatterAmount + (7 + World().rand.nextInt(5)) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
 									particle.setDead();
 								}
-								else if (antimatterAmount > 100)
+								if (antimatterAmount > 100)
 								{
 									if (stackOutputSlot != null)
 									{
@@ -156,8 +152,7 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 					velocity = 0;
 				} else if (velocity >= ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)
 				{
-					int randomAmount = World().rand.nextInt(Math.max(1, particle.getMass() / 20));
-					antimatterAmount = Math.min(1_000_000, antimatterAmount + particle.getMass() + randomAmount);
+					antimatterAmount = (int) Math.min(1000, antimatterAmount + (7 + World().rand.nextInt(5)) * (getParticleVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED));
 					particle.setDead();
 					particle = null;
 					velocity = 0;
@@ -181,28 +176,12 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 			{
 				currentSessionUse = extractEnergy();
 
-				particle = new EntityParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY,
-					loc.zCoord + opposite.offsetZ, opposite, Math.min(10_000, Math.max(1, getMass(stackMatter))));
+				particle = new EntityParticle(World(), loc.xCoord + opposite.offsetX, loc.yCoord + opposite.offsetY, loc.zCoord + opposite.offsetZ, opposite);
 				World().spawnEntityInWorld(particle);
 
 				decrStackSize(SLOT_INPUTMATTER, 1);
 			}
 		}
-	}
-
-	private static int getMass(ItemStack itemStack){
-		int mass = 1;
-		if (itemStack.getItem() instanceof ItemBlock)
-		{
-			Block block = ((ItemBlock) itemStack.getItem()).field_150939_a;
-			try
-			{
-				mass = (int) Math.max(1, block.getExplosionResistance(null));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return mass;
 	}
 
 	public static void main(String args[])
@@ -324,7 +303,6 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		dataList.add(currentSessionTicks);
 		dataList.add(antimatterAmount);
 		dataList.add(velocity);
-		dataList.add(inputMass);
 	}
 
 	@Override
@@ -335,7 +313,6 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		currentSessionTicks = buf.readInt();
 		antimatterAmount = buf.readInt();
 		velocity = buf.readDouble();
-		inputMass = buf.readInt();
 	}
 
 	@Override
@@ -436,11 +413,6 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 	public void setParticle(EntityParticle particle)
 	{
 		this.particle = particle;
-	}
-
-	public int getInputMass()
-	{
-		return inputMass;
 	}
 
 }
