@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
+import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
@@ -13,14 +14,11 @@ import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.tile.components.type.ComponentProcessor;
 import electrodynamics.api.tile.components.type.ComponentProcessorType;
 import electrodynamics.api.tile.components.type.ComponentTickable;
-import electrodynamics.client.particle.GrindedParticle;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -62,8 +60,8 @@ public class TileMineralGrinder extends GenericTileTicking {
 		Block block = it.getBlock();
 		double d4 = world.rand.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
 		double d6 = world.rand.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
-		Minecraft.getInstance().particles.addEffect(new GrindedParticle((ClientWorld) world, pos.getX() + d4, pos.getY() + 0.8,
-			pos.getZ() + d6, 0.0D, 5D, 0.0D, block.getDefaultState()).setBlockPos(pos));
+		ParticleAPI.addGrindedParticle(world, pos.getX() + d4, pos.getY() + 0.8, pos.getZ() + d6, 0.0D, 5D, 0.0D, block.getDefaultState(),
+			pos);
 	    }
 	    clientRunningTicks++;
 	}
