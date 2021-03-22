@@ -3,7 +3,8 @@ package electrodynamics.common.tile;
 import java.util.HashSet;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.sound.DistanceSound;
+import electrodynamics.SoundRegister;
+import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentDirection;
@@ -17,7 +18,6 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -68,8 +68,7 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
 
     protected void tickClient(ComponentTickable tickable) {
 	if (isGenerating && tickable.getTicks() % 180 == 0) {
-	    Minecraft.getInstance().getSoundHandler()
-		    .play(new DistanceSound(DeferredRegisters.SOUND_WINDMILL.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	    SoundAPI.playSound(SoundRegister.SOUND_WINDMILL.get(), SoundCategory.BLOCKS, 1, 1, pos);
 	}
     }
 

@@ -61,10 +61,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -78,7 +74,6 @@ public class DeferredRegisters {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, References.ID);
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, References.ID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
     public static BlockMultiSubnode multi = new BlockMultiSubnode();
     public static FluidEthanol fluidEthanol;
@@ -227,27 +222,6 @@ public class DeferredRegisters {
 	    () -> new ContainerType<>(ContainerBatteryBox::new));
     public static final RegistryObject<ContainerType<ContainerFermentationPlant>> CONTAINER_FERMENTATIONPLANT = CONTAINERS
 	    .register(SubtypeMachine.fermentationplant.tag(), () -> new ContainerType<>(ContainerFermentationPlant::new));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_HUM = SOUNDS.register("hum",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":hum")));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_MINERALCRUSHER = SOUNDS.register("mineralcrusher",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":mineralcrusher")));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_MINERALGRINDER = SOUNDS.register("mineralgrinder",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":mineralgrinder")));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_ELECTRICPUMP = SOUNDS.register("electricpump",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":electricpump")));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_COMBUSTIONCHAMBER = SOUNDS.register("combustionchamber",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":combustionchamber")));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_HYDROELECTRICGENERATOR = SOUNDS.register("hydroelectricgenerator",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":hydroelectricgenerator")));
-    @OnlyIn(value = Dist.CLIENT)
-    public static final RegistryObject<SoundEvent> SOUND_WINDMILL = SOUNDS.register("windmill",
-	    () -> new SoundEvent(new ResourceLocation(References.ID + ":windmill")));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;

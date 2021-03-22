@@ -1,7 +1,8 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.sound.DistanceSound;
+import electrodynamics.SoundRegister;
+import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentDirection;
@@ -13,7 +14,6 @@ import electrodynamics.api.utilities.object.CachedTileOutput;
 import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
@@ -74,8 +74,7 @@ public class TileCombustionChamber extends GenericTileTicking {
 		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 	}
 	if (running && tickable.getTicks() % 100 == 0) {
-	    Minecraft.getInstance().getSoundHandler()
-		    .play(new DistanceSound(DeferredRegisters.SOUND_COMBUSTIONCHAMBER.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	    SoundAPI.playSound(SoundRegister.SOUND_COMBUSTIONCHAMBER.get(), SoundCategory.BLOCKS, 1, 1, pos);
 	}
     }
 

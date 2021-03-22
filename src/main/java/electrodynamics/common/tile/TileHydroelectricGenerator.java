@@ -1,7 +1,8 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.sound.DistanceSound;
+import electrodynamics.SoundRegister;
+import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentDirection;
@@ -14,7 +15,6 @@ import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.client.Minecraft;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
@@ -113,8 +113,7 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
 	    world.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
 	}
 	if (isGenerating && tickable.getTicks() % 100 == 0) {
-	    Minecraft.getInstance().getSoundHandler()
-		    .play(new DistanceSound(DeferredRegisters.SOUND_HYDROELECTRICGENERATOR.get(), SoundCategory.BLOCKS, 1, 1, pos));
+	    SoundAPI.playSound(SoundRegister.SOUND_HYDROELECTRICGENERATOR.get(), SoundCategory.BLOCKS, 1, 1, pos);
 	}
     }
 
