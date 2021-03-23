@@ -12,20 +12,20 @@ public class DistanceSound extends TickableSound {
 
     public DistanceSound(SoundEvent soundIn, SoundCategory categoryIn, float volumeIn, float pitchIn, BlockPos pos) {
 	super(soundIn, categoryIn);
-	this.volume = volumeIn;
-	this.pitch = pitchIn;
-	this.x = pos.getX();
-	this.y = pos.getY();
-	this.z = pos.getZ();
-	this.block = Minecraft.getInstance().world.getBlockState(pos).getBlock();
-	this.attenuationType = AttenuationType.LINEAR;
+	volume = volumeIn;
+	pitch = pitchIn;
+	x = pos.getX();
+	y = pos.getY();
+	z = pos.getZ();
+	block = Minecraft.getInstance().world.getBlockState(pos).getBlock();
+	attenuationType = AttenuationType.LINEAR;
     }
 
     @Override
     public float getVolume() {
 	if (block == null || Minecraft.getInstance().player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5) > 16 * 16
 		|| Minecraft.getInstance().world.getBlockState(new BlockPos(x, y, z)).getBlock() != block) {
-	    this.block = null;
+	    block = null;
 	    return 0;
 	}
 	return super.getVolume() / (float) (1.0f / (1 + Minecraft.getInstance().player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5)));
