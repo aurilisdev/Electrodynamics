@@ -1,22 +1,22 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"b b",
-		"cac",
-		"scs"
+		"iii",
+		"c w",
+		"sss"
 	],
 	"key": {
-		"b": {
-			"tag": "forge:plates/bronze"
+		"i": {
+			"item": "minecraft:iron_ingot"
 		},
 		"s": {
-			"tag": "forge:plates/steel"
+			"tag": "forge:ingots/steel"
 		},
 		"c": {
 			"item": "electrodynamics:coil"
 		},
-		"a": {
-			"tag": "forge:circuits/advanced"
+		"w": {
+			"item": "electrodynamics:wirecopper"
 		}
 	},
 	"result": {

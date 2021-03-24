@@ -139,7 +139,7 @@
 	"tooltip.itemwire.info.logistical": "Emits redstone when powered",
 	"tooltip.info.capacityupgrade": "Multiplies Energy Capacity and Transfer by %sx",
 	"tooltip.info.speedupgrade": "Multiplies Speed by %sx",
-	"tooltip.transformer.energyloss": "Efficiency: 98%",
+	"tooltip.transformer.energyloss": "Efficiency: 99.25%",
 	"tooltip.oxidationfurnace.voltage": "Voltage: 240 Volts",
 	"tooltip.oxidationfurnacerunning.voltage": "Voltage: 240 Volts",
 	"tooltip.advancedsolarpanel.voltage": "Voltage: 240 Volts",

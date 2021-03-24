@@ -24,12 +24,13 @@ public class ItemMultimeter extends Item {
 		TileWire wire = (TileWire) tile;
 		ElectricNetwork net = wire.getNetwork();
 		String finalString = ElectricityChatFormatter
-			.getDisplay(net.getTransmittedLastTick() / net.getNetworkSavedVoltage() * 20, ElectricUnit.AMPERE).replace(" Amps", " Amp")
-			.replace(" Amp", "") + " / " + ElectricityChatFormatter.getDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
-		finalString += ElectricityChatFormatter.getDisplay(net.getNetworkSavedVoltage(), ElectricUnit.VOLTAGE) + ", ";
-		finalString += ElectricityChatFormatter.getDisplay(net.getTransmittedLastTick() * 20.0, ElectricUnit.WATT) + ", ";
-		finalString += ElectricityChatFormatter.getDisplay(net.getNetworkResistance() - 1, ElectricUnit.RESISTANCE) + " ( -"
-			+ (int) Math.round(100.0 - 100.0 / net.getNetworkResistance()) + "% )";
+			.getDisplay(net.getCurrentTransmission() / net.getLastVoltage() * 20, ElectricUnit.AMPERE).replace(" Amps", "") + " / "
+			+ ElectricityChatFormatter.getDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
+		finalString += ElectricityChatFormatter.getDisplay(net.getLastVoltage(), ElectricUnit.VOLTAGE) + ", ";
+		finalString += ElectricityChatFormatter.getDisplay(net.getCurrentTransmission() * 20, ElectricUnit.WATT) + ", ";
+		finalString += ElectricityChatFormatter.getDisplay(net.getResistance(), ElectricUnit.RESISTANCE) + " ( -"
+			+ Math.round(net.getLastEnergyLoss() / net.getCurrentTransmission() * 100) + "% "
+			+ ElectricityChatFormatter.getDisplay(net.getLastEnergyLoss() * 20, ElectricUnit.WATT) + " )";
 		context.getPlayer().sendStatusMessage(new StringTextComponent(finalString), true);
 	    }
 	}

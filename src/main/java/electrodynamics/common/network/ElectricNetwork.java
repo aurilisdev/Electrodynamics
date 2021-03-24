@@ -15,20 +15,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> {
-    private double networkResistance;
-    private double networkVoltage = 0.0;
-    private double networkSavedVoltage = 0.0;
+    private double resistance;
+    private double energyLoss;
+    private double lastEnergyLoss;
+    private double voltage = 0.0;
+    private double lastVoltage = 0.0;
 
-    public double getNetworkVoltage() {
-	return networkVoltage;
+    public double getLastEnergyLoss() {
+	return lastEnergyLoss;
     }
 
-    public double getNetworkSavedVoltage() {
-	return networkSavedVoltage;
+    public double getLastVoltage() {
+	return lastVoltage;
     }
 
-    public double getNetworkResistance() {
-	return networkResistance > 1 ? networkResistance : 1;
+    public double getResistance() {
+	return resistance;
     }
 
     public ElectricNetwork() {
@@ -64,8 +66,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
     @Override
     public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
-	if (networkVoltage == 0.0) {
-	    networkVoltage = maxTransfer.getVoltage();
+	if (voltage == 0.0) {
+	    voltage = maxTransfer.getVoltage();
 	}
 	if (maxTransfer.getJoules() > 0) {
 	    Set<TileEntity> availableAcceptors = new HashSet<>();
@@ -97,11 +99,12 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			}
 		    }
 		}
-		TransferPack totalCompensatedForResistance = TransferPack.joulesVoltage(maxTransfer.getJoules() / networkResistance,
+		double totalYieldLoss = maxTransfer.getJoules() * maxTransfer.getJoules() * resistance / Math.pow(maxTransfer.getVoltage(), 2);
+		TransferPack useableEnergy = TransferPack.joulesVoltage(Math.max(maxTransfer.getJoules() - totalYieldLoss, 0),
 			maxTransfer.getVoltage());
 		for (TileEntity receiver : availableAcceptors) {
-		    TransferPack dedicated = TransferPack
-			    .joulesVoltage(totalCompensatedForResistance.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
+		    TransferPack dedicated = TransferPack.joulesVoltage(useableEnergy.getJoules() * (usage.get(receiver) / totalUsage),
+			    maxTransfer.getVoltage());
 		    if (acceptorInputMap.containsKey(receiver)) {
 			TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
 				maxTransfer.getVoltage());
@@ -115,13 +118,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			checkForOverload(TransferPack.joulesVoltage(transmittedThisTick, dedicated.getVoltage()));
 		    }
 		}
-
-	    }
-	    if (joulesSent > 0.0) {
-		double lost = joulesSent - joulesSent / networkResistance;
-		joulesSent += lost;
-		if (!debug) {
-		    transmittedThisTick += lost;
+		if (joulesSent > 0.0) {
+		    double lost = totalYieldLoss;
+		    joulesSent += lost;
+		    energyLoss += lost;
+		    if (!debug) {
+			transmittedThisTick += lost;
+		    }
 		}
 	    }
 	    return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
@@ -164,20 +167,22 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     @Override
     public void updateStatistics(IConductor cable) {
 	super.updateStatistics(cable);
-	networkResistance += cable.getWireType().resistance;
+	resistance += cable.getWireType().resistance;
     }
 
     @Override
     public void updateStatistics() {
-	networkResistance = 1;
+	resistance = 0;
 	super.updateStatistics();
     }
 
     @Override
     public void tick() {
 	super.tick();
-	networkSavedVoltage = networkVoltage;
-	networkVoltage = 0;
+	lastVoltage = voltage;
+	voltage = 0;
+	lastEnergyLoss = energyLoss;
+	energyLoss = 0;
     }
 
     @Override

@@ -13,7 +13,7 @@ public class TileLogisticalWire extends TileWire {
 
     protected void tickServer(ComponentTickable component) {
 	if (component.getTicks() % 10 == 0) {
-	    boolean shouldPower = getNetwork().getTransmittedLastTick() > 0;
+	    boolean shouldPower = getNetwork().getCurrentTransmission() > 0;
 	    if (shouldPower != isPowered) {
 		isPowered = shouldPower;
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());

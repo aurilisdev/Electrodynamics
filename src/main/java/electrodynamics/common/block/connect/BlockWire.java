@@ -184,8 +184,8 @@ public class BlockWire extends Block {
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 	if (!wire.insulated) {
 	    TileWire tile = (TileWire) worldIn.getTileEntity(pos);
-	    if (tile != null && tile.getNetwork() != null && tile.getNetwork().getTransmittedLastTick() > 0) {
-		entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) (tile.getNetwork().getTransmittedLastTick() / 120.0f));
+	    if (tile != null && tile.getNetwork() != null && tile.getNetwork().getCurrentTransmission() > 0) {
+		entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) (tile.getNetwork().getCurrentTransmission() / 120.0f));
 	    }
 	}
     }
