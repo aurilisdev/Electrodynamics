@@ -4,11 +4,11 @@ import electrodynamics.api.ISubtype;
 
 // Calculated using https://www.omnicalculator.com/physics/wire-resistance
 // Length defined as if all sides are connected. This number was found to be 2.875 m
-// Cross-area is defined as 100 mm^2 to be more realistic wires
-// To make resistance relevant we make it reduce power amount by 1000 times it normal values
+// Cross-area defined as 0.015625 m^2
+// To make resistance relevant we use the calculated values * 1000
 public enum SubtypeWire implements ISubtype {
-    tin(3.036, 60, false, false), iron(2.6799, 100, false, false), copper(0.47196, 360, false, false), silver(0.43884, 600, false, false),
-    gold(0.6735, 1000, false, false), superconductive(0.0, Long.MAX_VALUE, false, false), insulatedtin(SubtypeWire.tin.resistance, 60, true, false),
+    tin(0.02024, 60, false, false), iron(0.017866, 100, false, false), copper(0.0031464, 360, false, false), silver(0.0029256, 600, false, false),
+    gold(0.00449, 1000, false, false), superconductive(0.0, Long.MAX_VALUE, false, false), insulatedtin(SubtypeWire.tin.resistance, 60, true, false),
     insulatediron(SubtypeWire.iron.resistance, 100, true, false), insulatedcopper(SubtypeWire.copper.resistance, 360, true, false),
     insulatedsilver(SubtypeWire.silver.resistance, 600, true, false), insulatedgold(SubtypeWire.gold.resistance, 1000, true, false),
     insulatedsuperconductive(0.0, Long.MAX_VALUE, true, false), logisticstin(SubtypeWire.tin.resistance, 60, true, true),

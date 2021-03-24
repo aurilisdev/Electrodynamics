@@ -121,8 +121,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 		if (joulesSent > 0.0) {
 		    double lost = totalYieldLoss;
 		    joulesSent += lost;
-		    energyLoss += lost;
 		    if (!debug) {
+			energyLoss += lost;
 			transmittedThisTick += lost;
 		    }
 		}
@@ -167,7 +167,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     @Override
     public void updateStatistics(IConductor cable) {
 	super.updateStatistics(cable);
-	resistance += cable.getWireType().resistance;
+	resistance += cable.getWireType().resistance * 5.0;
     }
 
     @Override
