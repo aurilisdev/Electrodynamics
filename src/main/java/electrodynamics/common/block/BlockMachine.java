@@ -11,6 +11,7 @@ import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
+import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -148,6 +149,11 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	if (machine == SubtypeMachine.advancedsolarpanel) {
+	    TileAdvancedSolarPanel solar = (TileAdvancedSolarPanel) machine.createTileEntity();
+	    solar.currentRotation.set(((World) world).getDayTime() / 24000.0 * Math.PI * 2 - Math.PI / 2.0);
+	    return solar;
+	}
 	return machine.createTileEntity();
     }
 
