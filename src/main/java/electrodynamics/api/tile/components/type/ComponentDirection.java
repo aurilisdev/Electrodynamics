@@ -15,7 +15,10 @@ public class ComponentDirection implements Component {
     }
 
     public Direction getDirection() {
-	return holder.getBlockState().get(BlockGenericMachine.FACING);
+	if (holder.getBlockState().hasProperty(BlockGenericMachine.FACING)) {
+	    return holder.getBlockState().get(BlockGenericMachine.FACING);
+	}
+	return Direction.UP;
     }
 
     @Override
