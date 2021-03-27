@@ -6,6 +6,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
+import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
@@ -72,6 +73,7 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
@@ -107,6 +109,7 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), RenderFermentationPlant::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

@@ -15,6 +15,7 @@ import electrodynamics.api.tile.components.type.ComponentProcessorType;
 import electrodynamics.api.tile.components.type.ComponentTickable;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ public class TileChemicalMixer extends GenericTileTicking {
     public static final int TANKCAPACITY = 5000;
     public static final int REQUIRED_WATER_CAP = 1000;
     public static final int CREATED_ACID = 1000;
+    public long clientTicks = 0;
 
     public TileChemicalMixer() {
 	super(DeferredRegisters.TILE_CHEMICALMIXER.get());
@@ -60,11 +62,12 @@ public class TileChemicalMixer extends GenericTileTicking {
 
     protected void tickClient(ComponentTickable tickable) {
 	boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
-	if (running && world.rand.nextDouble() < 0.15) {
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
-		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-	}
-	if (running && tickable.getTicks() % 100 == 0) {
+	if (running) {
+	    if (world.rand.nextDouble() < 0.15) {
+		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
+			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    }
+	    clientTicks++;
 	}
     }
 
@@ -92,7 +95,8 @@ public class TileChemicalMixer extends GenericTileTicking {
 	    inv.setInventorySlotContents(1, new ItemStack(Items.BUCKET));
 	    tank.getStackFromFluid(Fluids.WATER).setAmount(Math.min(tank.getStackFromFluid(Fluids.WATER).getAmount() + 1000, TANKCAPACITY));
 	}
-	if (TANKCAPACITY < tank.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount() + CREATED_ACID) {
+	if (processor.getInput().getItem() == DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeOxide.trisulfur)
+		&& TANKCAPACITY < tank.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount() + CREATED_ACID) {
 	    return false;
 	}
 	return electro.getJoulesStored() >= processor.getUsage() && !processor.getInput().isEmpty() && processor.getInput().getCount() > 0

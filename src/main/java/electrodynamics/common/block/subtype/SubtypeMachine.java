@@ -35,7 +35,7 @@ public enum SubtypeMachine implements ISubtype {
     electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class),
     fermentationplant(true, TileFermentationPlant.class), combustionchamber(true, TileCombustionChamber.class),
     hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class), mineralwasher(true, TileMineralWasher.class),
-    chemicalmixer(true, TileChemicalMixer.class);
+    chemicalmixer(true, TileChemicalMixer.class, true);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

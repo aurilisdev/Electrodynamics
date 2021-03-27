@@ -6,6 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentFluidHandler;
+import electrodynamics.api.utilities.UtilitiesRendering;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.tile.TileChemicalMixer;
@@ -30,8 +31,20 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
     public void render(TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 	matrixStackIn.push();
-	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
+	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
 	Direction face = tileEntityIn.getBlockState().get(BlockGenericMachine.FACING);
+	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	matrixStackIn.pop();
+	matrixStackIn.push();
+	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
+	matrixStackIn.translate(0.5, 0.4, 0.5);
+	matrixStackIn.rotate(new Quaternion(0, tileEntityIn.clientTicks + partialTicks, 0, true));
+	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	matrixStackIn.pop();
+	matrixStackIn.push();
+	matrixStackIn.translate(0.5, 0.4, 0.5);
+	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
 	matrixStackIn.translate(0.5, 8.5 / 16.0, 0.5);
 	if (face == Direction.NORTH) {
 	    matrixStackIn.translate(2.0 / 8.0, 0, 0);
