@@ -147,7 +147,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     private boolean checkForOverload(TransferPack attemptSend) {
-	if (attemptSend.getAmps() >= networkMaxTransfer) {
+	if (attemptSend.getAmps() > networkMaxTransfer
+		&& TransferPack.joulesVoltage(transmittedLastTick, lastVoltage).getAmps() > networkMaxTransfer) {
 	    HashSet<SubtypeWire> checkList = new HashSet<>();
 	    for (SubtypeWire type : SubtypeWire.values()) {
 		if (type.maxAmps <= attemptSend.getAmps()) {
