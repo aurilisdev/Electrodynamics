@@ -1,0 +1,7 @@
+{
+	"parent": "electrodynamics:parent/insulatedwire_side",
+	"textures": {
+		"particle": "electrodynamics:block/wire/insulatedwiresilver",
+		"texture": "electrodynamics:block/wire/insulatedwiresilver"
+	}
+}

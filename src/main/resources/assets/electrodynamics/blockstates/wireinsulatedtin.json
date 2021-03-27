@@ -5,9 +5,8 @@
 				"down": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_none",
-				"x": 90,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_none",
+				"x": 90
 			}
 		},
 		{
@@ -22,9 +21,8 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_side",
-				"x": 90,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_side",
+				"x": 90
 			}
 		},
 		{
@@ -32,9 +30,8 @@
 				"up": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_none",
-				"x": 270,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_none",
+				"x": 270
 			}
 		},
 		{
@@ -49,9 +46,8 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_side",
-				"x": 270,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_side",
+				"x": 270
 			}
 		},
 		{
@@ -59,7 +55,7 @@
 				"north": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_none"
+				"model": "electrodynamics:wire/insulatedwiretin_none"
 			}
 		},
 		{
@@ -74,7 +70,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_side"
+				"model": "electrodynamics:wire/insulatedwiretin_side"
 			}
 		},
 		{
@@ -82,9 +78,8 @@
 				"south": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_none",
-				"y": 180,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_none",
+				"y": 180
 			}
 		},
 		{
@@ -99,9 +94,8 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_side",
-				"y": 180,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_side",
+				"y": 180
 			}
 		},
 		{
@@ -109,9 +103,8 @@
 				"west": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_none",
-				"y": 270,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_none",
+				"y": 270
 			}
 		},
 		{
@@ -126,9 +119,8 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_side",
-				"y": 270,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_side",
+				"y": 270
 			}
 		},
 		{
@@ -136,9 +128,8 @@
 				"east": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_none",
-				"y": 90,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_none",
+				"y": 90
 			}
 		},
 		{
@@ -153,9 +144,8 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:wire/insulatedwire_side",
-				"y": 90,
-				"uvlock": true
+				"model": "electrodynamics:wire/insulatedwiretin_side",
+				"y": 90
 			}
 		}
 	]
