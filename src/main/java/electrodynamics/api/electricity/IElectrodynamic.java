@@ -19,6 +19,14 @@ public interface IElectrodynamic {
 	return CapabilityElectrodynamic.DEFAULT_VOLTAGE;
     }
 
+    default TransferPack getProducing() {
+	return TransferPack.EMPTY;
+    }
+
+    default TransferPack getRequesting() {
+	return TransferPack.EMPTY;
+    }
+
     default TransferPack extractPower(TransferPack transfer, boolean debug) {
 	double taken = Math.min(transfer.getJoules(), getJoulesStored());
 	if (!debug && taken > 0) {

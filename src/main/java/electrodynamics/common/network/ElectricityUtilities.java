@@ -72,4 +72,13 @@ public class ElectricityUtilities {
 	return isElectricReceiver(tile, direction);
     }
 
+    public static TransferPack getProducing(TileEntity tile, Direction direction) {
+	LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
+	if (cap.isPresent()) {
+	    IElectrodynamic handler = cap.resolve().get();
+	    return handler.getProducing();
+	}
+	return TransferPack.EMPTY;
+    }
+
 }

@@ -33,7 +33,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 public class TileChemicalMixer extends GenericTileTicking {
     public static final int TANKCAPACITY = 5000;
     public static final int REQUIRED_WATER_CAP = 1000;
-    public static final int CREATED_ACID = 1000;
+    public static final int CREATED_ACID = 2500;
     public long clientTicks = 0;
 
     public TileChemicalMixer() {

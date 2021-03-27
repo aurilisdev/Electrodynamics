@@ -1,4 +1,4 @@
-	package electrodynamics.common.tile;
+package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;

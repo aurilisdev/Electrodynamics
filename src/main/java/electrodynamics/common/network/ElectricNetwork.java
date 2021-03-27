@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.electricity.IElectrodynamic;
 import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.utilities.object.TransferPack;
@@ -14,12 +16,14 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 
-public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> {
+public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> implements IElectrodynamic {
     private double resistance;
     private double energyLoss;
     private double lastEnergyLoss;
     private double voltage = 0.0;
     private double lastVoltage = 0.0;
+    private ArrayList<TileEntity> currentProducers = new ArrayList<>();
+    private double transferBuffer = 0;
 
     public double getLastEnergyLoss() {
 	return lastEnergyLoss;
@@ -64,11 +68,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	NetworkRegistry.register(this);
     }
 
-    @Override
-    public TransferPack emit(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
-	if (voltage == 0.0) {
-	    voltage = maxTransfer.getVoltage();
-	}
+    private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
 	if (maxTransfer.getJoules() > 0) {
 	    Set<TileEntity> availableAcceptors = new HashSet<>();
 	    availableAcceptors.addAll(getEnergyAcceptors());
@@ -167,7 +167,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     @Override
     public void updateStatistics(IConductor cable) {
 	super.updateStatistics(cable);
-	resistance += cable.getWireType().resistance * 5.0;
+	resistance += cable.getWireType().resistance;
     }
 
     @Override
@@ -176,13 +176,22 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	super.updateStatistics();
     }
 
+    public void addProducer(TileEntity tile, IElectrodynamic electrodynamic) {
+	currentProducers.add(tile);
+	if (voltage < electrodynamic.getVoltage()) {
+	    voltage = electrodynamic.getVoltage();
+	}
+    }
+
     @Override
     public void tick() {
 	super.tick();
+	transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
 	lastVoltage = voltage;
 	voltage = 0;
 	lastEnergyLoss = energyLoss;
 	energyLoss = 0;
+	currentProducers.clear();
     }
 
     @Override
@@ -220,5 +229,33 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     @Override
     public boolean canConnect(TileEntity acceptor, Direction orientation) {
 	return ElectricityUtilities.canInputPower(acceptor, orientation.getOpposite());
+    }
+
+    @Override
+    public double getJoulesStored() {
+	return transferBuffer;
+    }
+
+    @Override
+    public void setJoulesStored(double joules) {
+	transferBuffer = joules;
+    }
+
+    @Override
+    public double getMaxJoulesStored() {
+	double totalUsage = 0;
+	for (TileEntity receiver : getEnergyAcceptors()) {
+	    if (acceptorInputMap.containsKey(receiver)) {
+		for (Direction connection : acceptorInputMap.get(receiver)) {
+		    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
+			    TransferPack.joulesVoltage(Double.MAX_VALUE, CapabilityElectrodynamic.DEFAULT_VOLTAGE), true);
+		    if (pack.getJoules() != 0) {
+			totalUsage += pack.getJoules();
+			break;
+		    }
+		}
+	    }
+	}
+	return totalUsage;
     }
 }

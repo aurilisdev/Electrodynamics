@@ -28,7 +28,7 @@ public class DistanceSound extends TickableSound {
 	    block = null;
 	    return 0;
 	}
-	return super.getVolume() * (float) Math.min(1.0, 1.0f / (Minecraft.getInstance().player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5)));
+	return super.getVolume() * (float) Math.min(1.0, 1.0f / Minecraft.getInstance().player.getDistanceSq(x + 0.5, y + 0.5, z + 0.5));
     }
 
     @Override
