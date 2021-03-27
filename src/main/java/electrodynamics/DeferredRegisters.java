@@ -22,6 +22,7 @@ import electrodynamics.common.fluid.FluidEthanol;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.fluid.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
+import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
@@ -42,6 +43,7 @@ import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileElectricFurnace;
@@ -215,6 +217,8 @@ public class DeferredRegisters {
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber)), null));
     public static final RegistryObject<TileEntityType<TileMineralWasher>> TILE_MINERALWASHER = TILES.register(SubtypeMachine.mineralwasher.tag(),
 	    () -> new TileEntityType<>(TileMineralWasher::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)), null));
+    public static final RegistryObject<TileEntityType<TileChemicalMixer>> TILE_CHEMICALMIXER = TILES.register(SubtypeMachine.chemicalmixer.tag(),
+	    () -> new TileEntityType<>(TileChemicalMixer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)), null));
 
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
@@ -239,6 +243,8 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.fermentationplant.tag(), () -> new ContainerType<>(ContainerFermentationPlant::new));
     public static final RegistryObject<ContainerType<ContainerMineralWasher>> CONTAINER_MINERALWASHER = CONTAINERS
 	    .register(SubtypeMachine.mineralwasher.tag(), () -> new ContainerType<>(ContainerMineralWasher::new));
+    public static final RegistryObject<ContainerType<ContainerChemicalMixer>> CONTAINER_CHEMICALMIXER = CONTAINERS
+	    .register(SubtypeMachine.chemicalmixer.tag(), () -> new ContainerType<>(ContainerChemicalMixer::new));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;

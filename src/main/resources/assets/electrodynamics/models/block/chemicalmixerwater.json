@@ -1,0 +1,47 @@
+{
+	"credit": "aurilisdev",
+	"parent": "block/cube_all",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "electrodynamics:model/water",
+		"particle": "electrodynamics:model/water"
+	},
+	"elements": [
+		{
+			"from": [1.25, 5, 1.25],
+			"to": [14.75, 10, 14.75],
+			"faces": {
+				"north": {"uv": [3, 0, 13, 2], "texture": "#0"},
+				"east": {"uv": [3, 0, 13, 2], "texture": "#0"},
+				"south": {"uv": [3, 0, 13, 2], "texture": "#0"},
+				"west": {"uv": [3, 0, 13, 2], "texture": "#0"},
+				"up": {"uv": [15, 15, 0, 0], "texture": "#0"},
+				"down": {"uv": [15, 15, 0, 0], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "spinning",
+			"origin": [8, 8, 8],
+			"children": []
+		},
+		{
+			"name": "chemicalmixerbase",
+			"origin": [8, 8, 8],
+			"children": [
+				{
+					"name": "main",
+					"origin": [0, 0, 0],
+					"children": [
+						{
+							"name": "mixbase",
+							"origin": [0, 0, 0],
+							"children": [0]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -14,6 +14,7 @@ import electrodynamics.client.render.tile.RenderMineralGrinder;
 import electrodynamics.client.render.tile.RenderMineralWasher;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.ScreenBatteryBox;
+import electrodynamics.client.screen.ScreenChemicalMixer;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
 import electrodynamics.client.screen.ScreenElectricFurnace;
@@ -69,6 +70,8 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
 	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
 	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
@@ -90,6 +93,9 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(References.ID + ":block/fermentationplantwater");
     public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(References.ID + ":block/fermentationplantethanol");
     public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(References.ID + ":block/combustionchamberethanol");
+    public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(References.ID + ":block/chemicalmixerbase");
+    public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(References.ID + ":block/chemicalmixerblades");
+    public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(References.ID + ":block/chemicalmixerwater");
 
     public static void setup() {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
@@ -109,6 +115,7 @@ public class ClientRegister {
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
 
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());

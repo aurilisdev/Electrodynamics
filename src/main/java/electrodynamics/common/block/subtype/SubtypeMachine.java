@@ -4,6 +4,7 @@ import electrodynamics.api.ISubtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileElectricFurnace;
@@ -33,7 +34,8 @@ public enum SubtypeMachine implements ISubtype {
     upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
     electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class),
     fermentationplant(true, TileFermentationPlant.class), combustionchamber(true, TileCombustionChamber.class),
-    hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class), mineralwasher(true, TileMineralWasher.class);
+    hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class), mineralwasher(true, TileMineralWasher.class),
+    chemicalmixer(true, TileChemicalMixer.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

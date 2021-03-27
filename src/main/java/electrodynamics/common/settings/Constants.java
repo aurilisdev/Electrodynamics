@@ -44,6 +44,10 @@ public class Constants {
     public static double MINERALWASHER_USAGE_PER_TICK = 500.0;
     @IntValue(def = 200)
     public static int MINERALWASHER_REQUIRED_TICKS = 200;
+    @DoubleValue(def = 500.0)
+    public static double CHEMICALMIXER_USAGE_PER_TICK = 500.0;
+    @IntValue(def = 200)
+    public static int CHEMICALMIXER_REQUIRED_TICKS = 200;
     @DoubleValue(def = 180.0)
     public static double OXIDATIONFURNACE_USAGE_PER_TICK = 180.0;
     @IntValue(def = 200)
