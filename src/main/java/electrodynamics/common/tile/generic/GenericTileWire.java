@@ -49,9 +49,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		    ArrayList<TileEntity> ignored = new ArrayList<>();
 		    ignored.add(world.getTileEntity(new BlockPos(pos).offset(dir)));
 		    if (!debug) {
-			ignored.get(0).getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, dir.getOpposite()).ifPresent(electro -> {
-			    getNetwork().addProducer(ignored.get(0), electro);
-			});
+			getNetwork().addProducer(ignored.get(0), transfer.getVoltage());
 		    }
 		    return getNetwork().receivePower(transfer, debug);
 		}

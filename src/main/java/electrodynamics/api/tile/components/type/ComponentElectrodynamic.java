@@ -31,6 +31,10 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	this.holder = holder;
     }
 
+    public GenericTile getHolder() {
+	return holder;
+    }
+
     protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = IElectrodynamic.super::receivePower;
     protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = IElectrodynamic.super::extractPower;
     protected Consumer<Double> setJoules = null;

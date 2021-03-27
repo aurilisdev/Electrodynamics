@@ -1,5 +1,6 @@
 package electrodynamics.api.electricity;
 
+import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.api.utilities.object.TransferPack;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -44,10 +45,10 @@ public interface IElectrodynamic {
     default TransferPack receivePower(TransferPack transfer, boolean debug) {
 	double received = Math.min(transfer.getJoules(), getMaxJoulesStored() - getJoulesStored());
 	if (!debug && received > 0) {
-	    if (transfer.getVoltage() == getVoltage()) {
+	    if (transfer.getVoltage() == getVoltage() || getVoltage() == -1) {
 		setJoulesStored(getJoulesStored() + received);
 	    }
-	    if (transfer.getVoltage() > getVoltage()) {
+	    if (transfer.getVoltage() > getVoltage() && getVoltage() != -1) {
 		overVoltage(transfer);
 		return TransferPack.EMPTY;
 	    }
@@ -63,6 +64,16 @@ public interface IElectrodynamic {
 	    world.setBlockState(pos, Blocks.AIR.getDefaultState());
 	    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
 		    Mode.DESTROY);
+	} else if (this instanceof ComponentElectrodynamic) {
+	    ComponentElectrodynamic electro = (ComponentElectrodynamic) this;
+	    TileEntity tile = electro.getHolder();
+	    if (tile != null) {
+		World world = tile.getWorld();
+		BlockPos pos = tile.getPos();
+		world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
+			Mode.DESTROY);
+	    }
 	}
     }
 }

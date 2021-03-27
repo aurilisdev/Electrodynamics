@@ -155,6 +155,7 @@ public class DeferredRegisters {
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
 		"|translate|tooltip.advancedsolarpanel.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher), "|translate|tooltip.mineralwasher.voltage");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer), "|translate|tooltip.chemicalmixer.voltage");
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }

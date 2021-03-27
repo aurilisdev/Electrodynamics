@@ -29,6 +29,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	return lastEnergyLoss;
     }
 
+    @Override
+    public double getVoltage() {
+	return -1;
+    }
+
     public double getLastVoltage() {
 	return lastVoltage;
     }
@@ -99,11 +104,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 		    }
 		    usage.put(receiver, localUsage);
 		}
-		double totalYieldLoss = maxTransfer.getJoules() * maxTransfer.getJoules() * resistance / Math.pow(maxTransfer.getVoltage(), 2);
-		TransferPack useableEnergy = TransferPack.joulesVoltage(Math.max(maxTransfer.getJoules() - totalYieldLoss, 0),
-			maxTransfer.getVoltage());
 		for (TileEntity receiver : availableAcceptors) {
-		    TransferPack dedicated = TransferPack.joulesVoltage(useableEnergy.getJoules() * (usage.get(receiver) / totalUsage),
+		    TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage),
 			    maxTransfer.getVoltage());
 		    if (acceptorInputMap.containsKey(receiver)) {
 			TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
@@ -116,14 +118,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 			    }
 			}
 			checkForOverload(TransferPack.joulesVoltage(transmittedThisTick, dedicated.getVoltage()));
-		    }
-		}
-		if (joulesSent > 0.0) {
-		    double lost = totalYieldLoss;
-		    joulesSent += lost;
-		    if (!debug) {
-			energyLoss += lost;
-			transmittedThisTick += lost;
 		    }
 		}
 	    }
@@ -177,22 +171,27 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	super.updateStatistics();
     }
 
-    public void addProducer(TileEntity tile, IElectrodynamic electrodynamic) {
+    public void addProducer(TileEntity tile, double d) {
 	currentProducers.add(tile);
-	if (voltage < electrodynamic.getVoltage()) {
-	    voltage = electrodynamic.getVoltage();
-	}
+	voltage = Math.max(voltage, d);
     }
 
     @Override
     public void tick() {
 	super.tick();
-	transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+	if (voltage > 0) {
+	    double loss = transferBuffer * transferBuffer * resistance / (voltage * voltage);
+	    transferBuffer -= loss;
+	    energyLoss += loss;
+	    transmittedThisTick += loss;
+	    transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+	}
 	lastVoltage = voltage;
-	voltage = 0;
+	voltage = CapabilityElectrodynamic.DEFAULT_VOLTAGE;
 	lastEnergyLoss = energyLoss;
 	energyLoss = 0;
 	currentProducers.clear();
+
     }
 
     @Override
@@ -244,19 +243,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
     @Override
     public double getMaxJoulesStored() {
-	double totalUsage = 0;
-	for (TileEntity receiver : getEnergyAcceptors()) {
-	    if (acceptorInputMap.containsKey(receiver)) {
-		for (Direction connection : acceptorInputMap.get(receiver)) {
-		    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
-			    TransferPack.joulesVoltage(Double.MAX_VALUE, CapabilityElectrodynamic.DEFAULT_VOLTAGE), true);
-		    if (pack.getJoules() != 0) {
-			totalUsage += pack.getJoules();
-			break;
-		    }
-		}
-	    }
-	}
-	return totalUsage;
+	return networkMaxTransfer * voltage / 20.0;
     }
 }
