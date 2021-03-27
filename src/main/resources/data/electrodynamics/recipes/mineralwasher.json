@@ -3,7 +3,7 @@
 	"pattern": [
 		"sgs",
 		"cec",
-		"pgp"
+		"pbp"
 	],
 	"key": {
 		"s": {
@@ -21,7 +21,7 @@
 		"p": {
 			"item": "electrodynamics:pipesteel"
 		},
-		"g": {
+		"b": {
 			"item": "minecraft:gold_block"
 		}
 	},
