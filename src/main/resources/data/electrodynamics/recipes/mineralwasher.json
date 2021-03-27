@@ -1,29 +1,32 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sas",
-		"gpg",
-		"scs"
+		"sgs",
+		"cec",
+		"pgp"
 	],
 	"key": {
 		"s": {
-			"tag": "forge:ingots/steel"
-		},
-		"a": {
-			"tag": "forge:circuits/advanced"
-		},
-		"g": {
-			"tag": "forge:gears/bronze"
-		},
-		"p": {
-			"tag": "forge:plates/bronze"
+			"tag": "forge:plates/steel"
 		},
 		"c": {
-			"item": "electrodynamics:wirecopper"
+			"tag": "forge:circuits/elite"
+		},
+		"g": {
+			"tag": "forge:gears/steel"
+		},
+		"e": {
+			"item": "electrodynamics:electricpump"
+		},
+		"p": {
+			"item": "electrodynamics:pipesteel"
+		},
+		"g": {
+			"item": "minecraft:gold_block"
 		}
 	},
 	"result": {
-		"item": "electrodynamics:mineralcrusher",
+		"item": "electrodynamics:mineralwasher",
 		"count": 1
 	}
 }
