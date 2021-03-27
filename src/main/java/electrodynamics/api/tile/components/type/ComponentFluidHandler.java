@@ -1,5 +1,6 @@
 package electrodynamics.api.tile.components.type;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -70,13 +71,13 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	return this;
     }
 
-    public ComponentFluidHandler relativeInput(Direction dir) {
-	relativeInputDirections.add(dir);
+    public ComponentFluidHandler relativeInput(Direction... dir) {
+	relativeInputDirections.addAll(Arrays.asList(dir));
 	return this;
     }
 
-    public ComponentFluidHandler relativeOutput(Direction dir) {
-	relativeOutputDirections.add(dir);
+    public ComponentFluidHandler relativeOutput(Direction... dir) {
+	relativeOutputDirections.addAll(Arrays.asList(dir));
 	return this;
     }
 

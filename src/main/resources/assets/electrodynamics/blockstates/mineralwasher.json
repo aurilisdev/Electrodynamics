@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/mineralwasher",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/mineralwasher",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/mineralwasher",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/mineralwasher",
+			"y": 180
+		}
+	}
+}

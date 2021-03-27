@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
 
 public class BlockOre extends OreBlock {
-    private SubtypeOre ore;
+    public SubtypeOre ore;
 
     public BlockOre(SubtypeOre subtype) {
 	super(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(subtype.hardness, subtype.resistance)

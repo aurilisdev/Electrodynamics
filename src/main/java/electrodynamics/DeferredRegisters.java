@@ -19,11 +19,14 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.fluid.FluidEthanol;
+import electrodynamics.common.fluid.FluidMineral;
+import electrodynamics.common.fluid.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
@@ -33,6 +36,7 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
+import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
@@ -46,6 +50,7 @@ import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
@@ -70,6 +75,7 @@ public class DeferredRegisters {
     public static final HashMap<ISubtype, Item> SUBTYPEITEM_MAPPINGS = new HashMap<>();
     public static final HashMap<ISubtype, Block> SUBTYPEBLOCK_MAPPINGS = new HashMap<>();
     public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
+    public static HashMap<ISubtype, FluidMineral> mineralFluidMap = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
@@ -77,6 +83,7 @@ public class DeferredRegisters {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
     public static BlockMultiSubnode multi = new BlockMultiSubnode();
     public static FluidEthanol fluidEthanol;
+    public static FluidSulfuricAcid fluidSulfuricAcid;
     static {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
 	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
@@ -91,7 +98,12 @@ public class DeferredRegisters {
 	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
 	}
 	FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
-
+	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
+	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
+	    FluidMineral fluid = new FluidMineral(mineral);
+	    mineralFluidMap.put(mineral, fluid);
+	    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
+	}
     }
 
     private static void registerSubtypeItem(ISubtype[] array) {
@@ -140,6 +152,7 @@ public class DeferredRegisters {
 		"|translate|tooltip.oxidationfurnacerunning.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
 		"|translate|tooltip.advancedsolarpanel.voltage");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher), "|translate|tooltip.mineralwasher.voltage");
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
@@ -200,6 +213,8 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileCombustionChamber>> TILE_COMBUSTIONCHAMBER = TILES
 	    .register(SubtypeMachine.combustionchamber.tag(), () -> new TileEntityType<>(TileCombustionChamber::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber)), null));
+    public static final RegistryObject<TileEntityType<TileMineralWasher>> TILE_MINERALWASHER = TILES.register(SubtypeMachine.mineralwasher.tag(),
+	    () -> new TileEntityType<>(TileMineralWasher::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)), null));
 
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
@@ -222,6 +237,8 @@ public class DeferredRegisters {
 	    () -> new ContainerType<>(ContainerBatteryBox::new));
     public static final RegistryObject<ContainerType<ContainerFermentationPlant>> CONTAINER_FERMENTATIONPLANT = CONTAINERS
 	    .register(SubtypeMachine.fermentationplant.tag(), () -> new ContainerType<>(ContainerFermentationPlant::new));
+    public static final RegistryObject<ContainerType<ContainerMineralWasher>> CONTAINER_MINERALWASHER = CONTAINERS
+	    .register(SubtypeMachine.mineralwasher.tag(), () -> new ContainerType<>(ContainerMineralWasher::new));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;

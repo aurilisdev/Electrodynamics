@@ -12,6 +12,7 @@ import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
@@ -32,7 +33,7 @@ public enum SubtypeMachine implements ISubtype {
     upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
     electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class),
     fermentationplant(true, TileFermentationPlant.class), combustionchamber(true, TileCombustionChamber.class),
-    hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class);
+    hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class), mineralwasher(true, TileMineralWasher.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
