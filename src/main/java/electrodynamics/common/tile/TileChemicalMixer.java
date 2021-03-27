@@ -41,7 +41,7 @@ public class TileChemicalMixer extends GenericTileTicking {
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
 		.maxJoules(Constants.CHEMICALMIXER_USAGE_PER_TICK * 10));
 	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.EAST).fluidTank(Fluids.WATER, TANKCAPACITY)
 		.fluidTank(DeferredRegisters.fluidSulfuricAcid, TANKCAPACITY));
@@ -76,7 +76,7 @@ public class TileChemicalMixer extends GenericTileTicking {
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-	BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
+	BlockPos face = getPos().offset(direction.getDirection().rotateY());
 	TileEntity faceTile = world.getTileEntity(face);
 	if (faceTile != null) {
 	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,

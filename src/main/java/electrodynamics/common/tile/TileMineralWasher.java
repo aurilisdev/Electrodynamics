@@ -44,9 +44,9 @@ public class TileMineralWasher extends GenericTileTicking {
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentElectrodynamic(this).input(Direction.SOUTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
-		.maxJoules(Constants.MINERALWASHER_REQUIRED_TICKS * 10));
-	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.EAST)
-		.fluidTank(DeferredRegisters.fluidSulfuricAcid, TANKCAPACITY_SULFURICACID).relativeOutput(Direction.WEST));
+		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values()).fluidTank(DeferredRegisters.fluidSulfuricAcid,
+		TANKCAPACITY_SULFURICACID));
 	ComponentFluidHandler fluids = getComponent(ComponentType.FluidHandler);
 	for (FluidMineral fluid : DeferredRegisters.mineralFluidMap.values()) {
 	    fluids.fluidTank(fluid, TANKCAPACITY_MINERAL);

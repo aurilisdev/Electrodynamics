@@ -80,9 +80,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 		HashMap<TileEntity, Double> usage = new HashMap<>();
 		while (it.hasNext()) {
 		    TileEntity receiver = it.next();
+		    double localUsage = 0;
 		    if (acceptorInputMap.containsKey(receiver)) {
 			boolean shouldRemove = true;
-			double localUsage = 0;
 			for (Direction connection : acceptorInputMap.get(receiver)) {
 			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
 				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
@@ -93,11 +93,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 				break;
 			    }
 			}
-			usage.put(receiver, localUsage);
 			if (shouldRemove) {
 			    it.remove();
 			}
 		    }
+		    usage.put(receiver, localUsage);
 		}
 		double totalYieldLoss = maxTransfer.getJoules() * maxTransfer.getJoules() * resistance / Math.pow(maxTransfer.getVoltage(), 2);
 		TransferPack useableEnergy = TransferPack.joulesVoltage(Math.max(maxTransfer.getJoules() - totalYieldLoss, 0),
