@@ -30,11 +30,12 @@ public class TileThermoelectricGenerator extends GenericTileTicking {
 	}
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-	if (tickable.getTicks() % 20 == 0) {
-	    hasHeat = world.getBlockState(pos.offset(direction.getDirection().getOpposite())).getFluidState().getFluid() == Fluids.LAVA;
+	if (tickable.getTicks() % 60 == 0) {
+	    hasHeat = world.getFluidState(pos.offset(direction.getDirection().getOpposite())).getFluid() == Fluids.LAVA;
+	    output.update();
 	}
-	if (hasHeat) {
-	    ElectricityUtilities.receivePower(output.get(), Direction.UP,
+	if (hasHeat && output.valid()) {
+	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP,
 		    TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE, electro.getVoltage()), false);
 	}
     }

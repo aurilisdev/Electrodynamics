@@ -26,6 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TileAdvancedSolarPanel extends GenericTileTicking implements IMultiblockTileNode {
     public TargetValue currentRotation = new TargetValue(0);
     protected CachedTileOutput output;
+    private boolean generating = false;
 
     public TileAdvancedSolarPanel() {
 	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
@@ -34,10 +35,14 @@ public class TileAdvancedSolarPanel extends GenericTileTicking implements IMulti
     }
 
     protected void tickServer(ComponentTickable tickable) {
-	if (world.isDaytime() && world.canSeeSky(pos.add(0, 1, 0))) {
-	    if (output == null) {
-		output = new CachedTileOutput(world, pos.offset(Direction.DOWN));
-	    }
+	if (output == null) {
+	    output = new CachedTileOutput(world, pos.offset(Direction.DOWN));
+	}
+	if (tickable.getTicks() % 40 == 0) {
+	    output.update();
+	    generating = world.canSeeSky(pos.add(0, 1, 0));
+	}
+	if (world.isDaytime() && generating && output.valid()) {
 	    float mod = 1.0f - MathHelper.clamp(1.0F - (MathHelper.cos(world.func_242415_f(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
 	    mod *= 1.0f - world.getRainStrength(1f) * 5.0f / 16.0f;
 	    mod *= (1.0f - world.getThunderStrength(1f) * 5.0F / 16.0f) * 0.8f + 0.2f;
@@ -46,7 +51,7 @@ public class TileAdvancedSolarPanel extends GenericTileTicking implements IMulti
 		    Constants.ADVANCEDSOLARPANEL_AMPERAGE * (b.getTemperature(getPos()) / 2.0) * mod
 			    * (world.isRaining() || world.isThundering() ? 0.7f : 1),
 		    this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
-	    ElectricityUtilities.receivePower(output.get(), Direction.UP, pack, false);
+	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP, pack, false);
 	}
     }
 

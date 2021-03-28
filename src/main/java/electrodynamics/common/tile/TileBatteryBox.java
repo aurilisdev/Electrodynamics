@@ -51,9 +51,12 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (output == null) {
 	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
 	}
+	if (tickable.getTicks() % 40 == 0) {
+	    output.update();
+	}
 	receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
-	if (electro.getJoulesStored() > 0) {
-	    electro.joules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.get(), facing, TransferPack.joulesVoltage(
+	if (electro.getJoulesStored() > 0 && output.valid()) {
+	    electro.joules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(
 		    Math.min(electro.getJoulesStored(), DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), electro.getVoltage()), false)
 		    .getJoules());
 	}
@@ -71,6 +74,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (tickable.getTicks() % 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
+
     }
 
     protected void createPacket(CompoundNBT nbt) {

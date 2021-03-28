@@ -50,13 +50,14 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
 	    output = new CachedTileOutput(world, pos.offset(Direction.DOWN));
 	}
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-	if (tickable.getTicks() % 20 == 0) {
+	if (tickable.getTicks() % 40 == 0) {
+	    output.update();
 	    isGenerating = world.isAirBlock(pos.offset(facing).offset(Direction.UP));
 	    generating = Constants.WINDMILL_MAX_AMPERAGE * (0.6 + Math.sin((pos.getY() - 60) / 50.0) * 0.4);
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
-	if (isGenerating) {
-	    ElectricityUtilities.receivePower(output.get(), Direction.UP, TransferPack.ampsVoltage(generating, electro.getVoltage()), false);
+	if (isGenerating && output.valid()) {
+	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP, TransferPack.ampsVoltage(generating, electro.getVoltage()), false);
 	}
     }
 

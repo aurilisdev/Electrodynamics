@@ -56,6 +56,9 @@ public class TileCoalGenerator extends GenericTileTicking {
 	if (output == null) {
 	    output = new CachedTileOutput(world, new BlockPos(pos).offset(direction.getDirection().getOpposite()));
 	}
+	if (tickable.getTicks() % 20 == 0) {
+	    output.update();
+	}
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	if (burnTime <= 0 && !inv.getStackInSlot(0).isEmpty()) {
 	    burnTime = inv.getStackInSlot(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
@@ -80,8 +83,8 @@ public class TileCoalGenerator extends GenericTileTicking {
 			3);
 	    }
 	}
-	if (heat.get() > 27) {
-	    ElectricityUtilities.receivePower(output.get(), direction.getDirection(), currentOutput, false);
+	if (heat.get() > 27 && output.valid()) {
+	    ElectricityUtilities.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
 	}
 	heat.rangeParameterize(27, 3000, burnTime > 0 ? 3000 : 27, heat.get(), 600).flush();
 	currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),

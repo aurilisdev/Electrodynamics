@@ -90,9 +90,10 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
 		}
 	    }
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	    output.update();
 	}
-	if (isGenerating) {
-	    ElectricityUtilities.receivePower(output.get(), facing,
+	if (isGenerating && output.valid()) {
+	    ElectricityUtilities.receivePower(output.getSafe(), facing,
 		    TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE, electro.getVoltage()), false);
 	}
     }

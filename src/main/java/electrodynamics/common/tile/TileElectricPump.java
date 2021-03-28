@@ -43,16 +43,17 @@ public class TileElectricPump extends GenericTileTicking {
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 
 	if (tickable.getTicks() % 20 == 0) {
-	    FluidState state = world.getBlockState(pos.offset(Direction.DOWN)).getFluidState();
+	    output.update();
+	    FluidState state = world.getFluidState(pos.offset(Direction.DOWN));
 	    if (isGenerating != (state.isSource() && state.getFluid() == Fluids.WATER)) {
 		isGenerating = electro.getJoulesStored() > Constants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource()
 			&& state.getFluid() == Fluids.WATER;
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	    }
 	}
-	if (isGenerating) {
+	if (isGenerating && output.valid()) {
 	    electro.joules(electro.getJoulesStored() - Constants.ELECTRICPUMP_USAGE_PER_TICK);
-	    FluidUtilities.receiveFluid(output.get(), direction.getOpposite(), new FluidStack(Fluids.WATER, 50), false);
+	    FluidUtilities.receiveFluid(output.getSafe(), direction.getOpposite(), new FluidStack(Fluids.WATER, 50), false);
 	}
     }
 

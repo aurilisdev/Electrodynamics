@@ -15,7 +15,7 @@ public class CachedTileOutput {
 
     }
 
-    public <T> T get() {
+    public <T> T getSafe() {
 	if (cache == null) {
 	    cache = world.getTileEntity(pos);
 	}
@@ -23,6 +23,14 @@ public class CachedTileOutput {
 	    cache = null;
 	}
 	return (T) cache;
+    }
+
+    public boolean valid() {
+	return cache != null;
+    }
+
+    public void update() {
+	getSafe();
     }
 
     public BlockPos getPos() {

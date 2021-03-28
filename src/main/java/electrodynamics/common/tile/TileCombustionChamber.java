@@ -43,6 +43,9 @@ public class TileCombustionChamber extends GenericTileTicking {
 	if (output == null) {
 	    output = new CachedTileOutput(world, pos.offset(facing.rotateY()));
 	}
+	if (tickable.getTicks() % 40 == 0) {
+	    output.update();
+	}
 	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (burnTime <= 0) {
@@ -62,8 +65,8 @@ public class TileCombustionChamber extends GenericTileTicking {
 	    running = true;
 	    burnTime--;
 	}
-	if (running && burnTime > 0) {
-	    ElectricityUtilities.receivePower(output.get(), facing.rotateY().getOpposite(),
+	if (running && burnTime > 0 && output.valid()) {
+	    ElectricityUtilities.receivePower(output.getSafe(), facing.rotateY().getOpposite(),
 		    TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK, electro.getVoltage()), false);
 	}
     }
