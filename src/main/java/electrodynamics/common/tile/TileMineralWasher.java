@@ -148,6 +148,7 @@ public class TileMineralWasher extends GenericTileTicking {
     }
 
     public static Item getItemFromMineral(FluidMineral mineral) {
-	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(DeferredRegisters.MINERALFLUIDSUBTYPE_MAPPINGS.get(mineral));
+	return DeferredRegisters.SUBTYPEITEM_MAPPINGS
+		.get(SubtypeCrystal.valueOf(((SubtypeMineralFluid) DeferredRegisters.MINERALFLUIDSUBTYPE_MAPPINGS.get(mineral)).name()));
     }
 }

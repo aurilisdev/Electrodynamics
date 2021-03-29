@@ -60,7 +60,7 @@ public class ScreenMineralWasher extends GenericContainerScreenUpgradeable<Conta
 	    ComponentProcessor processor = plant.getComponent(ComponentType.Processor);
 	    ComponentFluidHandler handler = plant.getComponent(ComponentType.FluidHandler);
 	    int burnLeftScaled = (int) (processor.operatingTicks * 34.0 / processor.requiredTicks);
-	    blit(stack, guiLeft + 40, guiTop + 34, 210, 14, burnLeftScaled, 16);
+	    blit(stack, guiLeft + 41, guiTop + 34, 210, 14, burnLeftScaled, 16);
 	    blit(stack, guiLeft + 21,
 		    guiTop + 68
 			    - (int) (handler.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount()

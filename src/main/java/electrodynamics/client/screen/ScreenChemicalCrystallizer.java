@@ -57,7 +57,7 @@ public class ScreenChemicalCrystallizer extends GenericContainerScreenUpgradeabl
 	if (plant != null) {
 	    ComponentProcessor processor = plant.getComponent(ComponentType.Processor);
 	    int burnLeftScaled = (int) (processor.operatingTicks * 34.0 / processor.requiredTicks);
-	    blit(stack, guiLeft + 40, guiTop + 34, 210, 14, burnLeftScaled, 16);
+	    blit(stack, guiLeft + 41, guiTop + 34, 210, 14, burnLeftScaled, 16);
 	    blit(stack, guiLeft + 21, guiTop + 68 - (plant.hasFluid ? 50 : 0), 214, 31, 16, plant.hasFluid ? 50 : 0);
 	}
     }
