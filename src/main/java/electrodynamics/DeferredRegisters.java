@@ -22,6 +22,7 @@ import electrodynamics.common.fluid.FluidEthanol;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.fluid.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
+import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
@@ -33,6 +34,7 @@ import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemWrench;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
+import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
@@ -43,6 +45,7 @@ import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
@@ -75,9 +78,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class DeferredRegisters {
     public static final HashMap<ISubtype, Item> SUBTYPEITEM_MAPPINGS = new HashMap<>();
+    public static final HashMap<Item, ISubtype> ITEMSUBTYPE_MAPPINGS = new HashMap<>();
     public static final HashMap<ISubtype, Block> SUBTYPEBLOCK_MAPPINGS = new HashMap<>();
     public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
-    public static HashMap<ISubtype, FluidMineral> mineralFluidMap = new HashMap<>();
+    public static HashMap<ISubtype, FluidMineral> SUBTYPEMINERALFLUID_MAPPINGS = new HashMap<>();
+    public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
@@ -103,7 +108,8 @@ public class DeferredRegisters {
 	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
 	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
 	    FluidMineral fluid = new FluidMineral(mineral);
-	    mineralFluidMap.put(mineral, fluid);
+	    SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
+	    MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
 	    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
 	}
     }
@@ -135,6 +141,7 @@ public class DeferredRegisters {
 	registerSubtypeItem(SubtypeIngot.values());
 	registerSubtypeItem(SubtypeDust.values());
 	registerSubtypeItem(SubtypeImpureDust.values());
+	registerSubtypeItem(SubtypeCrystal.values());
 	registerSubtypeItem(SubtypeOxide.values());
 	registerSubtypeItem(SubtypeGear.values());
 	registerSubtypeItem(SubtypePlate.values());
@@ -156,6 +163,8 @@ public class DeferredRegisters {
 		"|translate|tooltip.advancedsolarpanel.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher), "|translate|tooltip.mineralwasher.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer), "|translate|tooltip.chemicalmixer.voltage");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
+		"|translate|tooltip.chemicalcrystallizer.voltage");
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
@@ -220,6 +229,9 @@ public class DeferredRegisters {
 	    () -> new TileEntityType<>(TileMineralWasher::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)), null));
     public static final RegistryObject<TileEntityType<TileChemicalMixer>> TILE_CHEMICALMIXER = TILES.register(SubtypeMachine.chemicalmixer.tag(),
 	    () -> new TileEntityType<>(TileChemicalMixer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)), null));
+    public static final RegistryObject<TileEntityType<TileChemicalCrystallizer>> TILE_CHEMICALCRYSTALLIZER = TILES
+	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new TileEntityType<>(TileChemicalCrystallizer::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)), null));
 
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
@@ -246,6 +258,8 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.mineralwasher.tag(), () -> new ContainerType<>(ContainerMineralWasher::new));
     public static final RegistryObject<ContainerType<ContainerChemicalMixer>> CONTAINER_CHEMICALMIXER = CONTAINERS
 	    .register(SubtypeMachine.chemicalmixer.tag(), () -> new ContainerType<>(ContainerChemicalMixer::new));
+    public static final RegistryObject<ContainerType<ContainerChemicalCrystallizer>> CONTAINER_CHEMICALCRYSTALLIZER = CONTAINERS
+	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;
@@ -256,6 +270,7 @@ public class DeferredRegisters {
 	    SUBTYPEBLOCK_MAPPINGS.put(en, (Block) entry);
 	} else if (entry instanceof Item) {
 	    SUBTYPEITEM_MAPPINGS.put(en, (Item) entry);
+	    ITEMSUBTYPE_MAPPINGS.put((Item) entry, en);
 	}
 	return supplier(entry);
     }

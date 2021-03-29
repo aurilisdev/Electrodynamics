@@ -87,6 +87,7 @@
 	"block.electrodynamics.combustionchamber": "Combustion Chamber",
 	"block.electrodynamics.mineralwasher": "Mineral Washer",
 	"block.electrodynamics.chemicalmixer": "Chemical Mixer",
+	"block.electrodynamics.chemicalcrystallizer": "Chemical Crystallizer",
 	"block.electrodynamics.wiretin": "Tin Wire",
 	"block.electrodynamics.wireiron": "Iron Wire",
 	"block.electrodynamics.wirecopper": "Copper Wire",
@@ -117,6 +118,7 @@
 	"container.fermentationplant": "Fermentation Plant",
 	"container.mineralwasher": "Mineral Washer",
 	"container.chemicalmixer": "Chemical Mixer",
+	"container.chemicalcrystallizer": "Chemical Crystallizer",
 	"gui.coalgenerator.timeleft": "Time Left: %s",
 	"gui.coalgenerator.output": "Output: %s",
 	"gui.coalgenerator.current": "Current: %s",
@@ -139,6 +141,8 @@
 	"gui.mineralwasher.usage": "Usage: %s",
 	"gui.chemicalmixer.voltage": "Voltage: %s",
 	"gui.chemicalmixer.usage": "Usage: %s",
+	"gui.chemicalcrystallizer.voltage": "Voltage: %s",
+	"gui.chemicalcrystallizer.usage": "Usage: %s",
 	"itemGroup.itemgroupelectrodynamics": "Electrodynamics",
 	"tooltip.itemwire.resistance": "Resistance: %s",
 	"tooltip.itemwire.maxamps": "Max Amps: %s",
@@ -154,5 +158,6 @@
 	"tooltip.mineralcrusher.voltage": "Voltage: 240 Volts",
 	"tooltip.mineralwasher.voltage": "Voltage: 480 Volts",
 	"tooltip.chemicalmixer.voltage": "Voltage: 240 Volts",
+	"tooltip.chemicalcrystallizer.voltage": "Voltage: 240 Volts",
 	"death.attack.electricity": "%s was electrocuted"
 }

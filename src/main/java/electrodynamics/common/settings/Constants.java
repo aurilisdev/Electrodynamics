@@ -58,6 +58,9 @@ public class Constants {
     public static int FERMENTATIONPLANT_REQUIRED_TICKS = 2000;
     @DoubleValue(def = 350.0)
     public static double COMBUSTIONCHAMBER_JOULES_PER_TICK = 350.0;
-
+    @DoubleValue(def = 500.0)
+    public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 750.0;
+    @IntValue(def = 200)
+    public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
     public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

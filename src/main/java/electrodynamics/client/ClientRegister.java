@@ -15,6 +15,7 @@ import electrodynamics.client.render.tile.RenderMineralGrinder;
 import electrodynamics.client.render.tile.RenderMineralWasher;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.ScreenBatteryBox;
+import electrodynamics.client.screen.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.ScreenChemicalMixer;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
@@ -119,6 +120,7 @@ public class ClientRegister {
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
 
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
@@ -127,6 +129,8 @@ public class ClientRegister {
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber),
 		ClientRegister::shouldMultilayerRender);
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher),
+		ClientRegister::shouldMultilayerRender);
+	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
 		ClientRegister::shouldMultilayerRender);
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
 	ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"), new IItemPropertyGetter() {

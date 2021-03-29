@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.ISubtype;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.tile.GenericTileTicking;
 import electrodynamics.api.tile.components.ComponentType;
@@ -18,8 +19,10 @@ import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.settings.Constants;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
@@ -48,7 +51,7 @@ public class TileMineralWasher extends GenericTileTicking {
 	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values()).fluidTank(DeferredRegisters.fluidSulfuricAcid,
 		TANKCAPACITY_SULFURICACID));
 	ComponentFluidHandler fluids = getComponent(ComponentType.FluidHandler);
-	for (FluidMineral fluid : DeferredRegisters.mineralFluidMap.values()) {
+	for (FluidMineral fluid : DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values()) {
 	    fluids.fluidTank(fluid, TANKCAPACITY_MINERAL);
 	}
 	addComponent(new ComponentInventory(this).size(4).relativeSlotFaces(0, Direction.values())
@@ -117,7 +120,7 @@ public class TileMineralWasher extends GenericTileTicking {
 	this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
     }
 
-    private static FluidMineral getFluidFromInput(ComponentProcessor processor) {
+    public static FluidMineral getFluidFromInput(ComponentProcessor processor) {
 	ItemStack stack = processor.getInput();
 	String name = "";
 	if (stack.getItem() instanceof BlockItemDescriptable) {
@@ -130,12 +133,21 @@ public class TileMineralWasher extends GenericTileTicking {
 	    name = "gold";
 	} else if (stack.getItem() == Items.IRON_ORE) {
 	    name = "iron";
+	} else if (DeferredRegisters.SUBTYPEITEM_MAPPINGS.values().contains(stack.getItem())) {
+	    ISubtype sub = DeferredRegisters.ITEMSUBTYPE_MAPPINGS.get(stack.getItem());
+	    if (sub instanceof SubtypeCrystal) {
+		name = ((SubtypeCrystal) sub).name();
+	    }
 	}
 	for (SubtypeMineralFluid fluid : SubtypeMineralFluid.values()) {
 	    if (fluid.name().equalsIgnoreCase(name)) {
-		return DeferredRegisters.mineralFluidMap.get(fluid);
+		return DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(fluid);
 	    }
 	}
 	return null;
+    }
+
+    public static Item getItemFromMineral(FluidMineral mineral) {
+	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(DeferredRegisters.MINERALFLUIDSUBTYPE_MAPPINGS.get(mineral));
     }
 }
