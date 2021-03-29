@@ -98,6 +98,9 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     }
 
     public FluidStack getStackFromFluid(Fluid fluid) {
+	if (fluids.get(fluid).getFluid() == null) {
+	    fluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+	}
 	return fluids.get(fluid).getFluid();
     }
 

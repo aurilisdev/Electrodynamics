@@ -42,8 +42,8 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
 		.createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentProcessor(this).upgradeSlots(1, 2, 3).canProcess(this::canProcess).process(this::process)
 		.requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK)
-		.type(ComponentProcessorType.ObjectToObject));
-	ComponentFluidHandler fluids = new ComponentFluidHandler(this);
+		.type(ComponentProcessorType.ObjectToObject).outputSlot(0));
+	ComponentFluidHandler fluids = new ComponentFluidHandler(this).relativeInput(Direction.values());
 	for (FluidMineral fluid : DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values()) {
 	    fluids.fluidTank(fluid, TANKCAPACITY_MINERAL);
 	}
@@ -63,17 +63,11 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
     }
 
     protected void process(ComponentProcessor component) {
-	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	ItemStack output = component.getOutput();
 	if (!output.isEmpty()) {
 	    output.setCount(output.getCount() + 5);
 	} else {
 	    component.output(new ItemStack(TileMineralWasher.getItemFromMineral(firstFluid), 5));
-	}
-	ItemStack input = component.getInput();
-	input.shrink(1);
-	if (input.getCount() == 0) {
-	    inv.setInventorySlotContents(0, ItemStack.EMPTY);
 	}
     }
 

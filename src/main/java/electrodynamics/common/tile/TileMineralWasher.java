@@ -104,11 +104,11 @@ public class TileMineralWasher extends GenericTileTicking {
 		}
 	    }
 	}
-	if (processor.getInput().isEmpty() || REQUIRED_SULFURICACID <= 0 || TANKCAPACITY_MINERAL < tank.getStackFromFluid(fluid).getAmount() + 1000) {
+	if (processor.getInput().isEmpty() || TANKCAPACITY_MINERAL < tank.getStackFromFluid(fluid).getAmount() + 1000) {
 	    return false;
 	}
 	return electro.getJoulesStored() >= processor.getUsage() && !processor.getInput().isEmpty() && processor.getInput().getCount() > 0
-		&& tank.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount() >= -1;
+		&& tank.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount() >= REQUIRED_SULFURICACID;
     }
 
     public void process(ComponentProcessor processor) {

@@ -114,7 +114,7 @@ public class TileFermentationPlant extends GenericTileTicking {
 	    tank.getStackFromFluid(Fluids.WATER).setAmount(Math.min(tank.getStackFromFluid(Fluids.WATER).getAmount() + 1000, TANKCAPACITY_WATER));
 	}
 
-	if (REQUIRED_WATER_CAP <= 0 || TANKCAPACITY_ETHANOL < tank.getStackFromFluid(DeferredRegisters.fluidEthanol).getAmount()
+	if (TANKCAPACITY_ETHANOL < tank.getStackFromFluid(DeferredRegisters.fluidEthanol).getAmount()
 		+ RECIPE_MAPPINGS.getOrDefault(processor.getInput().getItem(), Integer.MAX_VALUE)) {
 	    return false;
 	}
@@ -126,7 +126,7 @@ public class TileFermentationPlant extends GenericTileTicking {
 	ComponentFluidHandler handler = getComponent(ComponentType.FluidHandler);
 	ItemStack stack = processor.getInput();
 	handler.getStackFromFluid(Fluids.WATER).shrink(REQUIRED_WATER_CAP);
-	handler.getStackFromFluid(DeferredRegisters.fluidEthanol).grow(RECIPE_MAPPINGS.get(stack.getItem()));
+	handler.getStackFromFluid(DeferredRegisters.fluidEthanol).grow(RECIPE_MAPPINGS.getOrDefault(stack.getItem(), 0));
 	stack.setCount(stack.getCount() - 1);
 	this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
     }
