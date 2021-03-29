@@ -65,7 +65,7 @@ public class ScreenMineralWasher extends GenericContainerScreenUpgradeable<Conta
 		    guiTop + 68
 			    - (int) (handler.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount()
 				    / (float) TileMineralWasher.TANKCAPACITY_SULFURICACID * 50),
-		    214 + 18, 31, 16, (int) (handler.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount()
+		    214, 31, 16, (int) (handler.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount()
 			    / (float) TileMineralWasher.TANKCAPACITY_SULFURICACID * 50));
 	}
     }

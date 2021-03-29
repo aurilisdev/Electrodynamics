@@ -43,8 +43,8 @@ public class TileChemicalMixer extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
 		.maxJoules(Constants.CHEMICALMIXER_USAGE_PER_TICK * 10));
-	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.EAST).fluidTank(Fluids.WATER, TANKCAPACITY)
-		.fluidTank(DeferredRegisters.fluidSulfuricAcid, TANKCAPACITY));
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST)
+		.fluidTank(Fluids.WATER, TANKCAPACITY).fluidTank(DeferredRegisters.fluidSulfuricAcid, TANKCAPACITY));
 	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.EAST, Direction.UP).relativeSlotFaces(1, Direction.DOWN)
 		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade));
 	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.CHEMICALMIXER_USAGE_PER_TICK)
@@ -76,11 +76,11 @@ public class TileChemicalMixer extends GenericTileTicking {
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-	BlockPos face = getPos().offset(direction.getDirection().rotateY());
+	BlockPos face = getPos().offset(direction.getDirection().rotateY().getOpposite());
 	TileEntity faceTile = world.getTileEntity(face);
 	if (faceTile != null) {
 	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().getOpposite().rotateY().getOpposite());
+		    direction.getDirection().rotateY().getOpposite().getOpposite());
 	    if (cap.isPresent()) {
 		IFluidHandler handler = cap.resolve().get();
 		if (handler.isFluidValid(0, tank.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid))) {

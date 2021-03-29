@@ -43,7 +43,7 @@ public class TileMineralWasher extends GenericTileTicking {
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentElectrodynamic(this).input(Direction.SOUTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
 		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
 	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values()).fluidTank(DeferredRegisters.fluidSulfuricAcid,
 		TANKCAPACITY_SULFURICACID));
@@ -101,7 +101,7 @@ public class TileMineralWasher extends GenericTileTicking {
 		}
 	    }
 	}
-	if (REQUIRED_SULFURICACID <= 0 || TANKCAPACITY_MINERAL < tank.getStackFromFluid(fluid).getAmount() + 1000) {
+	if (processor.getInput().isEmpty() || REQUIRED_SULFURICACID <= 0 || TANKCAPACITY_MINERAL < tank.getStackFromFluid(fluid).getAmount() + 1000) {
 	    return false;
 	}
 	return electro.getJoulesStored() >= processor.getUsage() && !processor.getInput().isEmpty() && processor.getInput().getCount() > 0
