@@ -1,23 +1,12 @@
 {
 	"credit": "aurilisdev",
 	"parent": "block/cube_all",
-	"ambientocclusion": "false",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "electrodynamics:model/oxidationfurnace",
 		"particle": "electrodynamics:model/oxidationfurnace"
 	},
 	"elements": [
-		{
-			"from": [1, 5, 1],
-			"to": [15, 14, 15],
-			"faces": {
-				"north": {"uv": [0, 8, 3.5, 10.25], "texture": "#0"},
-				"east": {"uv": [8, 0, 11.5, 2.25], "texture": "#0"},
-				"south": {"uv": [7, 8, 10.5, 10.25], "texture": "#0"},
-				"west": {"uv": [3.5, 8, 7, 10.25], "texture": "#0"}
-			}
-		},
 		{
 			"from": [1, 5, 1],
 			"to": [15, 14, 15],
@@ -38,16 +27,6 @@
 				"west": {"uv": [8, 2.25, 12, 3.5], "texture": "#0"},
 				"up": {"uv": [8, 4, 4, 0], "texture": "#0"},
 				"down": {"uv": [4, 0, 0, 4], "texture": "#0"}
-			}
-		},
-		{
-			"from": [0, 5, 4],
-			"to": [1, 12, 12],
-			"faces": {
-				"north": {"uv": [10, 10.75, 10.25, 12.25], "texture": "#0"},
-				"south": {"uv": [9.75, 10.75, 10, 12.25], "texture": "#0"},
-				"west": {"uv": [0, 10.25, 2, 12], "texture": "#0"},
-				"up": {"uv": [9.75, 12.75, 9.5, 10.75], "texture": "#0"}
 			}
 		},
 		{
