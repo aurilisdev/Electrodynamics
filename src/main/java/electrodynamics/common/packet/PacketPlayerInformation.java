@@ -40,6 +40,6 @@ public class PacketPlayerInformation {
     }
 
     public static PacketPlayerInformation decode(PacketBuffer buf) {
-	return new PacketPlayerInformation(buf.readString());
+	return new PacketPlayerInformation(buf.readString(999999));
     }
 }
