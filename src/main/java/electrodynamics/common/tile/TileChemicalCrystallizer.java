@@ -65,16 +65,18 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
     protected void process(ComponentProcessor component) {
 	ItemStack output = component.getOutput();
 	if (!output.isEmpty()) {
-	    output.setCount(output.getCount() + 5);
+	    output.setCount(output.getCount() + 1);
 	} else {
-	    component.output(new ItemStack(TileMineralWasher.getItemFromMineral(firstFluid), 5));
+	    component.output(new ItemStack(TileMineralWasher.getItemFromMineral(firstFluid)));
 	}
+	ComponentFluidHandler fluids = getComponent(ComponentType.FluidHandler);
+	fluids.getStackFromFluid(firstFluid).shrink(200);
     }
 
     protected boolean canProcess(ComponentProcessor component) {
 	FluidMineral in = TileMineralWasher.getFluidFromInput(component);
 	ComponentFluidHandler fluids = getComponent(ComponentType.FluidHandler);
-	return in != null && fluids.getStackFromFluid(in).getAmount() > 200 && component.getInput().getCount() < 59 || hasFluid;
+	return in != null && fluids.getStackFromFluid(in).getAmount() > 200 && component.getInput().getCount() < 64 || hasFluid;
     }
 
     protected void tickClient(ComponentTickable tickable) {

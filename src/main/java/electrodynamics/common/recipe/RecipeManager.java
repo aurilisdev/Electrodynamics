@@ -6,6 +6,7 @@ import electrodynamics.api.tile.processing.DO2OProcessingRecipe;
 import electrodynamics.api.tile.processing.O2OProcessingRecipe;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
@@ -48,6 +49,13 @@ public class RecipeManager {
 	    for (SubtypeImpureDust from : SubtypeImpureDust.values()) {
 		if (to.name().equals(from.name().replace("vanadinite", "vanadium"))) {
 		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALGRINDER.get(), new O2OProcessingRecipe(from, to, 1));
+		}
+	    }
+	}
+	for (SubtypeCrystal from : SubtypeCrystal.values()) {
+	    for (SubtypeImpureDust to : SubtypeImpureDust.values()) {
+		if (to.name().equals(from.name().replace("vanadinite", "vanadium"))) {
+		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(from, to, 1));
 		}
 	    }
 	}
