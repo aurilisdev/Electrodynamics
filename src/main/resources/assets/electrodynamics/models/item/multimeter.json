@@ -1,15 +1,15 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "electrodynamics:item/multimeter"
-    }
-},
-	"display": {
-		"gui": {
-			"scale": [
-				0.9,
-				0.9,
-				0.9
-			]
-		}
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "electrodynamics:item/multimeter"
 	}
+},
+"display": {
+	"gui": {
+		"scale": [
+			0.9,
+			0.9,
+			0.9
+		]
+	}
+}

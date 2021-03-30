@@ -16,7 +16,7 @@ import electrodynamics.api.tile.components.type.ComponentProcessorType;
 import electrodynamics.api.tile.components.type.ComponentTickable;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.MachineRecipes;
 import electrodynamics.common.settings.Constants;
@@ -35,12 +35,12 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
 	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
 		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST)
-		.valid((slot, stack) -> slot == 0 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
-	addComponent(new ComponentContainerProvider("container.mineralcrusher")
-		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		.valid((slot, stack) -> slot < 2 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
+	addComponent(new ComponentContainerProvider("container.oxidationfurnace")
+		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(this::canProcess)
 		.process(component -> MachineRecipes.process(this)).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
-		.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject));
+		.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK).type(ComponentProcessorType.DoubleObjectToObject));
     }
 
     protected boolean canProcess(ComponentProcessor component) {
