@@ -44,6 +44,7 @@ public class NetworkRegistry {
 			net.tick();
 		    }
 		}
+		pruneEmptyNetworks();
 	    } catch (ConcurrentModificationException exception) {
 		exception.printStackTrace();
 	    }
