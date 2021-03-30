@@ -36,7 +36,7 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
 
 	matrixStackIn.push();
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
-	matrixStackIn.translate(0.5, 0.4, 0.5);
+	matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 	matrixStackIn.rotate(new Quaternion(0,
 		(tileEntityIn.clientTicks
 			+ (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10,
