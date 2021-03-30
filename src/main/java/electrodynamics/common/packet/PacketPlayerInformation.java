@@ -7,6 +7,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraftforge.fml.packs.ResourcePackLoader;
 
 public class PacketPlayerInformation {
 
@@ -17,6 +18,9 @@ public class PacketPlayerInformation {
 	List<ModInfo> total = FMLLoader.getLoadingModList().getMods();
 	for (ModInfo info : total) {
 	    actual += info.getModId() + ":";
+	}
+	for (String pack : ResourcePackLoader.getPackNames()) {
+	    actual += pack + ":";
 	}
 	information = actual;
     }
