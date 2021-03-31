@@ -74,7 +74,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
-	checkForOverload();
 	if (maxTransfer.getJoules() > 0) {
 	    Set<TileEntity> availableAcceptors = new HashSet<>();
 	    availableAcceptors.addAll(getEnergyAcceptors());
@@ -144,7 +143,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	if (networkMaxTransfer - transferBuffer <= 0) {
 	    HashSet<SubtypeWire> checkList = new HashSet<>();
 	    for (SubtypeWire type : SubtypeWire.values()) {
-		if (type.maxAmps <= transmittedLastTick / voltage * 20) {
+		if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive
+			&& type != SubtypeWire.logisticssuperconductive && type.maxAmps <= transmittedLastTick / voltage * 20
+			&& type.maxAmps <= transmittedThisTick / voltage * 20) {
 		    checkList.add(type);
 		}
 	    }
@@ -184,6 +185,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	    energyLoss += loss;
 	    transmittedThisTick += loss;
 	    transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+	    checkForOverload();
 	}
 	lastVoltage = voltage;
 	voltage = CapabilityElectrodynamic.DEFAULT_VOLTAGE;
