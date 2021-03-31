@@ -61,7 +61,7 @@ public class RecipeManager {
 	}
 	for (SubtypeImpureDust to : SubtypeImpureDust.values()) {
 	    for (SubtypeOre from : SubtypeOre.values()) {
-		if (to.name().equals(from.name())) {
+		if (to.name().equals(from.name().replace("vanadinite", "vanadium"))) {
 		    MachineRecipes.registerRecipe(DeferredRegisters.TILE_MINERALCRUSHER.get(), new O2OProcessingRecipe(from, to, 3));
 		}
 	    }
