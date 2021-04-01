@@ -35,7 +35,7 @@ public class TileTransformer extends GenericTile {
 	    output = new CachedTileOutput(world, pos.offset(facing));
 	}
 	boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
-	double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 3.725, 7680.0);
+	double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 7680.0);
 	locked = true;
 	TransferPack returner = ElectricityUtilities.receivePower(output.getSafe(), facing.getOpposite(),
 		TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);

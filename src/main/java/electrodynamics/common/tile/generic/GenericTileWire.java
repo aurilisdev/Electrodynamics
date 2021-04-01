@@ -14,9 +14,9 @@ import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.utilities.Scheduler;
 import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricNetwork;
-import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -148,11 +148,6 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     @Override
-    public void fixNetwork() {
-	getNetwork().fixMessedUpNetwork(this);
-    }
-
-    @Override
     public void destroyViolently() {
 	world.setBlockState(pos, Blocks.FIRE.getDefaultState());
     }
@@ -167,8 +162,15 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     @Override
     public void onChunkUnloaded() {
-	remove();
-	NetworkRegistry.pruneEmptyNetworks();
+	if (!world.isRemote && electricNetwork != null) {
+	    getNetwork().split(this);
+	}
+    }
+
+    @Override
+    public void onLoad() {
+	super.onLoad();
+	Scheduler.schedule(1, this::refreshNetwork);
     }
 
     protected abstract void writeCustomPacket(CompoundNBT nbt);

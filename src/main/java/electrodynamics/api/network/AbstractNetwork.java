@@ -26,20 +26,18 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
     public boolean fixed;
 
     public void refresh() {
-	Set<C> iterCables = (Set<C>) conductorSet.clone();
-	Iterator<C> it = iterCables.iterator();
+	Iterator<C> it = conductorSet.iterator();
 	acceptorSet.clear();
 	acceptorInputMap.clear();
 	while (it.hasNext()) {
 	    C conductor = it.next();
 	    if (conductor == null || ((TileEntity) conductor).isRemoved()) {
 		it.remove();
-		conductorSet.remove(conductor);
 	    } else {
 		conductor.setNetwork(this);
 	    }
 	}
-	for (C conductor : iterCables) {
+	for (C conductor : conductorSet) {
 	    TileEntity tileEntity = (TileEntity) conductor;
 	    for (Direction direction : Direction.values()) {
 		TileEntity acceptor = tileEntity.getWorld()
@@ -131,27 +129,6 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	}
     }
 
-    public void fixMessedUpNetwork(C cable) {
-	if (cable instanceof TileEntity) {
-	    AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) cable).getWorld(), new BlockPos(((TileEntity) cable).getPos()),
-		    this);
-	    List<BlockPos> partNetwork = finder.exploreNetwork();
-	    Set<C> newConductors = new HashSet<>();
-	    for (BlockPos nodePosition : partNetwork) {
-		TileEntity nodeTile = ((TileEntity) cable).getWorld().getTileEntity(nodePosition);
-		if (isConductor(nodeTile)) {
-		    C nodeConductor = (C) nodeTile;
-		    nodeConductor.removeFromNetwork();
-		    newConductors.add(nodeConductor);
-		}
-	    }
-	    AbstractNetwork<C, T, A, P> newNetwork = createInstanceConductor(newConductors);
-	    newNetwork.refresh();
-	    newNetwork.fixed = true;
-	    deregister();
-	}
-    }
-
     public void removeFromNetwork(C conductor) {
 	conductorSet.remove(conductor);
 	if (conductorSet.isEmpty()) {
@@ -173,23 +150,6 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
     public void tick() {
 	transmittedLastTick = transmittedThisTick;
 	transmittedThisTick = 0;
-	if (!fixed) {
-	    ticksSinceLastFix += 1;
-	    if (ticksSinceLastFix > 1200) {
-		ticksSinceLastFix = 0;
-		if (!conductorSet.isEmpty()) {
-		    fixMessedUpNetwork((C) conductorSet.toArray()[0]);
-		} else {
-		    deregister();
-		}
-	    }
-
-	}
-	ticksSinceNetworkRefresh++;
-	if (ticksSinceNetworkRefresh > 1600) {
-	    ticksSinceNetworkRefresh = 0;
-	    refresh();
-	}
     }
 
     public P emit(P transfer, ArrayList<TileEntity> ignored, boolean debug) {

@@ -12,8 +12,8 @@ import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.utilities.Scheduler;
 import electrodynamics.common.network.FluidNetwork;
-import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
@@ -169,11 +169,6 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     }
 
     @Override
-    public void fixNetwork() {
-	getNetwork().fixMessedUpNetwork(this);
-    }
-
-    @Override
     public void destroyViolently() {
 	world.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
@@ -188,8 +183,15 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     @Override
     public void onChunkUnloaded() {
-	remove();
-	NetworkRegistry.pruneEmptyNetworks();
+	if (!world.isRemote && fluidNetwork != null) {
+	    getNetwork().split(this);
+	}
+    }
+
+    @Override
+    public void onLoad() {
+	super.onLoad();
+	Scheduler.schedule(1, this::refreshNetwork);
     }
 
     protected abstract void writeCustomPacket(CompoundNBT nbt);

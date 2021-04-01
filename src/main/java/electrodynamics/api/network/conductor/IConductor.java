@@ -15,8 +15,6 @@ public interface IConductor extends IAbstractConductor {
     @Override
     void removeFromNetwork();
 
-    void fixNetwork();
-
     void destroyViolently();
 
     SubtypeWire getWireType();

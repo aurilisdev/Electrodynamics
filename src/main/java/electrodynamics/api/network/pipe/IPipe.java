@@ -15,8 +15,6 @@ public interface IPipe extends IAbstractConductor {
     @Override
     void removeFromNetwork();
 
-    void fixNetwork();
-
     void destroyViolently();
 
     SubtypePipe getPipeType();

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.IElectrodynamic;
 import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
@@ -188,7 +187,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	    checkForOverload();
 	}
 	lastVoltage = voltage;
-	voltage = CapabilityElectrodynamic.DEFAULT_VOLTAGE;
+	voltage = 0;
 	lastEnergyLoss = energyLoss;
 	energyLoss = 0;
 	currentProducers.clear();
