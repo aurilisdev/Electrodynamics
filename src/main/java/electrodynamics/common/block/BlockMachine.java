@@ -61,8 +61,8 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 	    TileTransformer tile = (TileTransformer) worldIn.getTileEntity(pos);
-	    if (tile != null) {
-		entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) (tile.lastTransfer / 120.0f));
+	    if (tile != null && tile.lastTransfer > 0) {
+		entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) Math.min(9999, Math.max(0, tile.lastTransfer / 120.0f)));
 	    }
 	}
     }
