@@ -223,7 +223,7 @@ public class BlockWire extends Block {
 	if (!world.isRemote()) {
 	    TileEntity tile = world.getTileEntity(pos);
 	    if (tile instanceof IConductor) {
-		((IConductor) tile).refreshNetwork();
+		((IConductor) tile).refreshNetworkIfChange();
 	    }
 	}
     }

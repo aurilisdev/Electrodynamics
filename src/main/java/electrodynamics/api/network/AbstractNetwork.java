@@ -21,8 +21,6 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
     public double networkMaxTransfer;
     public double transmittedLastTick;
     public double transmittedThisTick;
-    public long ticksSinceNetworkRefresh;
-    public long ticksSinceLastFix = 1180;
     public boolean fixed;
 
     public void refresh() {

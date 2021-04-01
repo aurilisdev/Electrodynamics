@@ -12,6 +12,8 @@ public interface IPipe extends IAbstractConductor {
 
     void refreshNetwork();
 
+    void refreshNetworkIfChange();
+
     @Override
     void removeFromNetwork();
 

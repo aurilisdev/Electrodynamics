@@ -8,7 +8,7 @@ import net.minecraft.util.Direction;
 
 public class ComponentDirection implements Component {
     private GenericTile holder;
-    private Direction cachedDirection = Direction.UP;
+    private Direction cachedDirection = null;
     private long last = 0;
 
     @Override
@@ -17,11 +17,14 @@ public class ComponentDirection implements Component {
     }
 
     public Direction getDirection() {
-	if (System.currentTimeMillis() - last > 1000) {
+	if (System.currentTimeMillis() - last > 10000 || cachedDirection == null) {
 	    if (holder.getBlockState().hasProperty(BlockGenericMachine.FACING)) {
 		cachedDirection = holder.getBlockState().get(BlockGenericMachine.FACING);
 	    }
 	    last = System.currentTimeMillis();
+	}
+	if (cachedDirection == null) {
+	    return Direction.UP;
 	}
 	return cachedDirection;
     }

@@ -208,7 +208,7 @@ public class BlockPipe extends Block {
 	if (!world.isRemote()) {
 	    TileEntity tile = world.getTileEntity(pos);
 	    if (tile instanceof IPipe) {
-		((IPipe) tile).refreshNetwork();
+		((IPipe) tile).refreshNetworkIfChange();
 	    }
 	}
     }

@@ -17,6 +17,7 @@ import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.utilities.Scheduler;
 import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricNetwork;
+import electrodynamics.common.network.ElectricityUtilities;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -140,6 +141,28 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	}
     }
 
+    private boolean[] connections = new boolean[6];
+
+    public boolean updateAdjacent() {
+	boolean flag = false;
+	for (Direction dir : Direction.values()) {
+	    TileEntity tile = world.getTileEntity(pos.offset(dir));
+	    boolean is = ElectricityUtilities.isElectricReceiver(tile, dir.getOpposite());
+	    if (connections[dir.ordinal()] != is) {
+		connections[dir.ordinal()] = is;
+		flag = true;
+	    }
+	}
+	return flag;
+    }
+
+    @Override
+    public void refreshNetworkIfChange() {
+	if (updateAdjacent()) {
+	    refreshNetwork();
+	}
+    }
+
     @Override
     public void removeFromNetwork() {
 	if (electricNetwork != null) {
@@ -158,13 +181,6 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	    getNetwork().split(this);
 	}
 	super.remove();
-    }
-
-    @Override
-    public void onChunkUnloaded() {
-	if (!world.isRemote && electricNetwork != null) {
-	    getNetwork().split(this);
-	}
     }
 
     @Override
