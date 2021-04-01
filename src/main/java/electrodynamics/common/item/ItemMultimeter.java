@@ -24,8 +24,8 @@ public class ItemMultimeter extends Item {
 		TileWire wire = (TileWire) tile;
 		ElectricNetwork net = wire.getNetwork();
 		String finalString = ElectricityChatFormatter
-			.getDisplay(net.getCurrentTransmission() / net.getLastVoltage() * 20, ElectricUnit.AMPERE).replace(" Amps", "") + " / "
-			+ ElectricityChatFormatter.getDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
+			.getDisplay(net.getLastVoltage() == 0 ? 0 : net.getCurrentTransmission() / net.getLastVoltage() * 20, ElectricUnit.AMPERE)
+			.replace(" Amps", "") + " / " + ElectricityChatFormatter.getDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
 		finalString += ElectricityChatFormatter.getDisplay(net.getLastVoltage(), ElectricUnit.VOLTAGE) + ", ";
 		finalString += ElectricityChatFormatter.getDisplay(net.getCurrentTransmission() * 20, ElectricUnit.WATT) + ", ";
 		finalString += ElectricityChatFormatter.getDisplay(net.getResistance(), ElectricUnit.RESISTANCE) + " ( -"

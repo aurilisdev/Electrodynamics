@@ -139,7 +139,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     private boolean checkForOverload() {
-	if (networkMaxTransfer - transferBuffer <= 0) {
+	if (networkMaxTransfer - transmittedThisTick <= 0) {
 	    HashSet<SubtypeWire> checkList = new HashSet<>();
 	    for (SubtypeWire type : SubtypeWire.values()) {
 		if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive
