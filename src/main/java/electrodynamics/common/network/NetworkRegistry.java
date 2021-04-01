@@ -46,9 +46,9 @@ public class NetworkRegistry {
 		    ITickableNetwork net = it.next();
 		    if (net instanceof AbstractNetwork<?, ?, ?, ?>) {
 			AbstractNetwork<?, ?, ?, ?> abs = (AbstractNetwork<?, ?, ?, ?>) net;
-			Iterator<IAbstractConductor> it2 = (Iterator<IAbstractConductor>) abs.conductorSet.iterator();
-			while (it.hasNext()) {
-			    IAbstractConductor conductor = it2.next();
+			Iterator<?> it2 = abs.conductorSet.iterator();
+			while (it2.hasNext()) {
+			    IAbstractConductor conductor = (IAbstractConductor) it2.next();
 			    if (conductor.getAbstractNetwork() != net) {
 				it2.remove();
 			    }
