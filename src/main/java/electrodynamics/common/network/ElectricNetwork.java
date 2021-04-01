@@ -23,6 +23,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     private double lastVoltage = 0.0;
     private ArrayList<TileEntity> currentProducers = new ArrayList<>();
     private double transferBuffer = 0;
+    private double maxTransferBuffer;
 
     public double getLastEnergyLoss() {
 	return lastEnergyLoss;
@@ -191,7 +192,22 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	lastEnergyLoss = energyLoss;
 	energyLoss = 0;
 	currentProducers.clear();
-
+	Set<TileEntity> availableAcceptors = getEnergyAcceptors();
+	Iterator<TileEntity> it = availableAcceptors.iterator();
+	maxTransferBuffer = 0;
+	while (it.hasNext()) {
+	    TileEntity receiver = it.next();
+	    if (acceptorInputMap.containsKey(receiver)) {
+		for (Direction connection : acceptorInputMap.get(receiver)) {
+		    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
+			    true);
+		    if (pack.getJoules() != 0) {
+			maxTransferBuffer += pack.getJoules();
+			break;
+		    }
+		}
+	    }
+	}
     }
 
     @Override
@@ -243,22 +259,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
     @Override
     public double getMaxJoulesStored() {
-	Set<TileEntity> availableAcceptors = getEnergyAcceptors();
-	Iterator<TileEntity> it = availableAcceptors.iterator();
-	double totalUsage = 0;
-	while (it.hasNext()) {
-	    TileEntity receiver = it.next();
-	    if (acceptorInputMap.containsKey(receiver)) {
-		for (Direction connection : acceptorInputMap.get(receiver)) {
-		    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
-			    true);
-		    if (pack.getJoules() != 0) {
-			totalUsage += pack.getJoules();
-			break;
-		    }
-		}
-	    }
-	}
-	return totalUsage;
+	return maxTransferBuffer;
     }
 }

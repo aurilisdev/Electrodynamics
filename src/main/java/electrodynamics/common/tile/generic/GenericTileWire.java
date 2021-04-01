@@ -171,6 +171,11 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     @Override
+    public AbstractNetwork<?, ?, ?, ?> getAbstractNetwork() {
+	return electricNetwork;
+    }
+
+    @Override
     public void destroyViolently() {
 	world.setBlockState(pos, Blocks.FIRE.getDefaultState());
     }

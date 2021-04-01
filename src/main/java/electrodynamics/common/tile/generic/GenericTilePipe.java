@@ -43,6 +43,11 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	return super.getCapability(capability, facing);
     }
 
+    @Override
+    public AbstractNetwork<?, ?, ?, ?> getAbstractNetwork() {
+	return fluidNetwork;
+    }
+
     protected GenericTilePipe(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
 	for (Direction dir : Direction.values()) {

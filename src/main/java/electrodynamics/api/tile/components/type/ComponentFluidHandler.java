@@ -121,7 +121,9 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-	Direction relative = UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+	Direction relative = UtilitiesTiles.getRelativeSide(
+		holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+			: Direction.UP,
 		lastDirection);
 	boolean canFill = inputDirections.contains(lastDirection)
 		|| holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
@@ -130,7 +132,9 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-	Direction relative = UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
+	Direction relative = UtilitiesTiles.getRelativeSide(
+		holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+			: Direction.UP,
 		lastDirection);
 	boolean canDrain = outputDirections.contains(lastDirection)
 		|| holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
