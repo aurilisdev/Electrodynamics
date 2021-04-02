@@ -1,7 +1,5 @@
 package electrodynamics.api.tile;
 
-import java.util.EnumMap;
-
 import electrodynamics.api.References;
 import electrodynamics.api.tile.components.Component;
 import electrodynamics.api.tile.components.ComponentType;
@@ -20,14 +18,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class GenericTile extends TileEntity implements INameable {
-    private EnumMap<ComponentType, Component> componentMap = new EnumMap<>(ComponentType.class);
+    private Component[] components = new Component[ComponentType.values().length];
 
     public boolean hasComponent(ComponentType type) {
-	return componentMap.containsKey(type);
+	return components[type.ordinal()] != null;
     }
 
     public <T extends Component> T getComponent(ComponentType type) {
-	return !hasComponent(type) ? null : (T) componentMap.get(type);
+	return !hasComponent(type) ? null : (T) components[type.ordinal()];
     }
 
     public GenericTile addComponent(Component component) {
@@ -35,24 +33,28 @@ public class GenericTile extends TileEntity implements INameable {
 	if (hasComponent(component.getType())) {
 	    throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
 	}
-	componentMap.put(component.getType(), component);
+	components[component.getType().ordinal()] = component;
 	return this;
     }
 
     @Override
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);
-	for (Component component : componentMap.values()) {
-	    component.holder(this);
-	    component.loadFromNBT(state, compound);
+	for (Component component : components) {
+	    if (component != null) {
+		component.holder(this);
+		component.loadFromNBT(state, compound);
+	    }
 	}
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-	for (Component component : componentMap.values()) {
-	    component.holder(this);
-	    component.saveToNBT(compound);
+	for (Component component : components) {
+	    if (component != null) {
+		component.holder(this);
+		component.saveToNBT(compound);
+	    }
 	}
 	return super.write(compound);
     }
@@ -69,21 +71,25 @@ public class GenericTile extends TileEntity implements INameable {
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	for (Component component : componentMap.values()) {
-	    component.holder(this);
-	    if (component.hasCapability(cap, side)) {
-		return component.getCapability(cap, side);
+	for (Component component : components) {
+	    if (component != null) {
+		component.holder(this);
+		if (component.hasCapability(cap, side)) {
+		    return component.getCapability(cap, side);
+		}
 	    }
 	}
-	return super.getCapability(cap, side);
+	return LazyOptional.empty();
     }
 
     @Override
     public void remove() {
 	super.remove();
-	for (Component component : componentMap.values()) {
-	    component.holder(this);
-	    component.remove();
+	for (Component component : components) {
+	    if (component != null) {
+		component.holder(this);
+		component.remove();
+	    }
 	}
     }
 

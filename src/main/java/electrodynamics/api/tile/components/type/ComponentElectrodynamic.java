@@ -96,12 +96,19 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
 	lastReturnedSide = side;
+	if (capability != CapabilityElectrodynamic.ELECTRODYNAMIC || !hasCapability.getAsBoolean()) {
+	    return false;
+	}
+	if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {
+	    return true;
+	}
 	Direction dir = holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
 		: null;
-	return (side == null || inputDirections.contains(side) || outputDirections.contains(side)
-		|| holder.hasComponent(ComponentType.Direction) && (relativeInputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side))
-			|| relativeOutputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side))))
-		&& capability == CapabilityElectrodynamic.ELECTRODYNAMIC && hasCapability.getAsBoolean();
+	if (dir != null) {
+	    return relativeInputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side))
+		    || relativeOutputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side));
+	}
+	return false;
     }
 
     @Override
