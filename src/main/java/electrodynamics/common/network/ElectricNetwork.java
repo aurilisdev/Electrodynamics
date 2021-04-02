@@ -193,13 +193,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	energyLoss = 0;
 	currentProducers.clear();
 	Set<TileEntity> availableAcceptors = getEnergyAcceptors();
-	Iterator<TileEntity> it = availableAcceptors.iterator();
 	maxTransferBuffer = 0;
-	while (it.hasNext()) {
-	    TileEntity receiver = it.next();
-	    if (acceptorInputMap.containsKey(receiver)) {
-		for (Direction connection : acceptorInputMap.get(receiver)) {
-		    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
+	for (TileEntity tile : availableAcceptors) {
+	    if (acceptorInputMap.containsKey(tile)) {
+		for (Direction connection : acceptorInputMap.get(tile)) {
+		    TransferPack pack = ElectricityUtilities.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
 			    true);
 		    if (pack.getJoules() != 0) {
 			maxTransferBuffer += pack.getJoules();

@@ -9,6 +9,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.IAbstractConductor;
 import electrodynamics.api.network.ITickableNetwork;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,6 +52,11 @@ public class NetworkRegistry {
 			    IAbstractConductor conductor = (IAbstractConductor) it2.next();
 			    if (conductor.getAbstractNetwork() != net) {
 				it2.remove();
+			    } else if (conductor instanceof TileEntity) {
+				TileEntity obj = (TileEntity) conductor;
+				if (obj.isRemoved()) {
+				    it2.remove();
+				}
 			    }
 			}
 		    }
