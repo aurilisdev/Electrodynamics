@@ -148,15 +148,20 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public boolean hasCapability(Capability<?> capability, Direction side) {
-	if (side == null) {
+	lastDirection = side;
+	if (capability != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 	    return false;
 	}
-	lastDirection = side;
-	Direction relative = UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
-	return (inputDirections.contains(side) || outputDirections.contains(side)
-		|| holder.hasComponent(ComponentType.Direction)
-			&& (relativeInputDirections.contains(relative) || relativeOutputDirections.contains(relative)))
-		&& capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {
+	    return true;
+	}
+	Direction dir = holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+		: null;
+	if (dir != null) {
+	    return relativeInputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side))
+		    || relativeOutputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side));
+	}
+	return false;
     }
 
     @Override
