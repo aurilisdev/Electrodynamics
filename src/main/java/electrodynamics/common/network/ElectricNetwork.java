@@ -179,7 +179,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     @Override
     public void tick() {
 	super.tick();
-	if (voltage > 0) {
+	if ((int) voltage > 0 && (int) transferBuffer > 0) {
 	    double loss = transferBuffer * transferBuffer * resistance / (voltage * voltage);
 	    transferBuffer -= loss;
 	    energyLoss += loss;

@@ -189,10 +189,18 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     public void destroyViolently() {
 	world.setBlockState(pos, Blocks.FIRE.getDefaultState());
     }
+//
+//    @Override
+//    protected void invalidateCaps() {
+//	super.invalidateCaps();
+//	if (!world.isRemote && electricNetwork != null) {
+//	    getNetwork().split(this);
+//	}
+//    }
 
     @Override
-    protected void invalidateCaps() {
-	super.invalidateCaps();
+    public void remove() {
+	super.remove();
 	if (!world.isRemote && electricNetwork != null) {
 	    getNetwork().split(this);
 	}
