@@ -70,7 +70,7 @@ public class FluidEthanol extends Fluid {
     @Override
     protected FluidAttributes createAttributes() {
 
-	return FluidAttributes.builder(null, null).translationKey("block.minecraft.air").color(0).density(0).temperature(0).luminosity(0).viscosity(0)
+	return FluidAttributes.builder(null, null).translationKey("fluid.electrodynamics.ethanol").color(0).density(0).temperature(0).luminosity(0).viscosity(0)
 		.build(this);
     }
 

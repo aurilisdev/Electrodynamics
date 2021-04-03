@@ -168,5 +168,8 @@
 	"tooltip.mineralwasher.voltage": "Voltage: 480 Volts",
 	"tooltip.chemicalmixer.voltage": "Voltage: 240 Volts",
 	"tooltip.chemicalcrystallizer.voltage": "Voltage: 240 Volts",
-	"death.attack.electricity": "%s was electrocuted"
+	"death.attack.electricity": "%s was electrocuted",
+	"fluid.electrodynamics.sulfuricacid": "Sulfuric Acid",
+	"fluid.electrodynamics.mineral": "Mineral Fluid",
+	"fluid.electrodynamics.ethanol": "Ethanol"
 }
