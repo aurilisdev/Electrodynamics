@@ -1,8 +1,11 @@
 package electrodynamics.common.event;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.tile.IWrenchable;
+import electrodynamics.common.block.connect.BlockWire;
+import electrodynamics.common.block.subtype.SubtypeWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,6 +36,12 @@ public class WrenchHandler {
 		    if (((IWrenchItem) item).onRotate(stack, event.getPos(), player)) {
 			((IWrenchable) block).onRotate(stack, event.getPos(), player);
 		    }
+		}
+	    } else if (block instanceof BlockWire && item == DeferredRegisters.ITEM_INSULATION.get()) {
+		SubtypeWire wire = ((BlockWire) block).wire;
+		if (!wire.insulated && !wire.logistical) {
+		    player.world.setBlockState(event.getPos(),
+			    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf(wire.name().replace("insulated", ""))).getDefaultState());
 		}
 	    }
 	}
