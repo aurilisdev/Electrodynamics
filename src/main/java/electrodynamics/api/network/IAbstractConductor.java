@@ -1,5 +1,7 @@
 package electrodynamics.api.network;
 
+import net.minecraft.tileentity.TileEntity;
+
 public interface IAbstractConductor {
 
     void removeFromNetwork();
@@ -7,6 +9,8 @@ public interface IAbstractConductor {
     AbstractNetwork<?, ?, ?, ?> getAbstractNetwork();
 
     void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
+    
+    TileEntity[] getAdjacentConnections();
 
     Object getConductorType();
 

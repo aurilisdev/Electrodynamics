@@ -74,7 +74,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
-	if (maxTransfer.getJoules() > 0) {
+	if (maxTransfer.getJoules() > 0 && maxTransfer.getVoltage() > 0) {
 	    Set<TileEntity> availableAcceptors = new HashSet<>();
 	    availableAcceptors.addAll(getEnergyAcceptors());
 	    double joulesSent = 0;

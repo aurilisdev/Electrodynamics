@@ -7,6 +7,9 @@ public class UtilitiesTiles {
 	    { 0, 1, 5, 4, 3, 2 }, { 0, 1, 4, 5, 2, 3 } };
 
     public static Direction getRelativeSide(Direction main, Direction relative) {
+	if (main == null || relative == null) {
+	    return Direction.UP;
+	}
 	return Direction.byIndex(RELATIVE_MATRIX[main.ordinal()][relative.ordinal()]);
     }
 

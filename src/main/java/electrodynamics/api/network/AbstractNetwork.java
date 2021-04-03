@@ -86,7 +86,7 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	    boolean[] dealtWith = { false, false, false, false, false, false };
 	    for (Direction direction : Direction.values()) {
 		TileEntity sideTile = ((TileEntity) splitPoint).getWorld().getTileEntity(
-			new BlockPos(((TileEntity) splitPoint).getPos()).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
+			((TileEntity) splitPoint).getPos().add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
 		if (sideTile != null) {
 		    connectedTiles[Arrays.asList(Direction.values()).indexOf(direction)] = sideTile;
 		}
@@ -94,20 +94,20 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	    for (int countOne = 0; countOne < connectedTiles.length; countOne++) {
 		TileEntity connectedBlockA = connectedTiles[countOne];
 		if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
-		    AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(),
-			    new BlockPos(connectedBlockA.getPos()), this, new BlockPos(((TileEntity) splitPoint).getPos()));
-		    List<BlockPos> partNetwork = finder.exploreNetwork();
+		    AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(), connectedBlockA.getPos(), this,
+			    ((TileEntity) splitPoint).getPos());
+		    List<TileEntity> partNetwork = finder.exploreNetwork();
 		    for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
 			TileEntity connectedBlockB = connectedTiles[countTwo];
-			if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(new BlockPos(connectedBlockB.getPos()))) {
+			if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
 			    dealtWith[countTwo] = true;
 			}
 		    }
 		    AbstractNetwork<C, T, A, P> newNetwork = createInstance();
-		    for (BlockPos node : finder.iterated) {
-			TileEntity nodeTile = ((TileEntity) splitPoint).getWorld().getTileEntity(node);
-			if (isConductor(nodeTile) && nodeTile != splitPoint) {
-			    newNetwork.conductorSet.add((C) nodeTile);
+
+		    for (TileEntity tile : finder.iteratedTiles) {
+			if (tile != splitPoint) {
+			    newNetwork.conductorSet.add((C) tile);
 			}
 		    }
 		    newNetwork.refresh();

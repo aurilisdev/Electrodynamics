@@ -13,8 +13,8 @@ import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.utilities.Scheduler;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.network.FluidNetwork;
+import electrodynamics.common.network.FluidUtilities;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,7 +32,6 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     public FluidNetwork fluidNetwork;
     private ArrayList<IFluidHandler> handler = new ArrayList<>();
-    private boolean[] connections = new boolean[6];
 
     @Override
     @Nonnull
@@ -175,17 +174,27 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	}
     }
 
+    private boolean[] connections = new boolean[6];
+    private TileEntity[] tileConnections = new TileEntity[6];
+
     public boolean updateAdjacent() {
 	boolean flag = false;
 	for (Direction dir : Direction.values()) {
 	    TileEntity tile = world.getTileEntity(pos.offset(dir));
-	    boolean is = ElectricityUtilities.isElectricReceiver(tile, dir.getOpposite());
+	    boolean is = FluidUtilities.isFluidReceiver(tile, dir.getOpposite());
 	    if (connections[dir.ordinal()] != is) {
 		connections[dir.ordinal()] = is;
+		tileConnections[dir.ordinal()] = tile;
 		flag = true;
 	    }
+
 	}
 	return flag;
+    }
+
+    @Override
+    public TileEntity[] getAdjacentConnections() {
+	return tileConnections;
     }
 
     @Override

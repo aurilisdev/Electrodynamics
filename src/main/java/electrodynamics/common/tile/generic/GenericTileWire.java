@@ -77,6 +77,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     private HashSet<IConductor> getConnectedConductors() {
 	HashSet<IConductor> set = new HashSet<>();
+
 	for (Direction dir : Direction.values()) {
 	    TileEntity facing = world.getTileEntity(pos.offset(dir));
 	    if (facing instanceof IConductor) {
@@ -120,6 +121,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     @Override
     public void refreshNetwork() {
 	if (!world.isRemote) {
+	    updateAdjacent();
 	    ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
 		TileEntity facing = world.getTileEntity(pos.offset(dir));
@@ -142,6 +144,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     private boolean[] connections = new boolean[6];
+    private TileEntity[] tileConnections = new TileEntity[6];
 
     public boolean updateAdjacent() {
 	boolean flag = false;
@@ -150,10 +153,17 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	    boolean is = ElectricityUtilities.isElectricReceiver(tile, dir.getOpposite());
 	    if (connections[dir.ordinal()] != is) {
 		connections[dir.ordinal()] = is;
+		tileConnections[dir.ordinal()] = tile;
 		flag = true;
 	    }
+
 	}
 	return flag;
+    }
+
+    @Override
+    public TileEntity[] getAdjacentConnections() {
+	return tileConnections;
     }
 
     @Override
@@ -181,8 +191,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     @Override
-    public void onChunkUnloaded() {
-	super.onChunkUnloaded();
+    protected void invalidateCaps() {
+	super.invalidateCaps();
 	if (!world.isRemote && electricNetwork != null) {
 	    getNetwork().split(this);
 	}

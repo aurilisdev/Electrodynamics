@@ -17,7 +17,6 @@ import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TileWire;
-import improvedapi.prefab.block.BlockConductor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -42,9 +41,10 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class BlockWire extends BlockConductor {
+public class BlockWire extends Block {
     public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
 	p.put(Direction.NORTH, EnumConnectType.NORTH);
 	p.put(Direction.EAST, EnumConnectType.EAST);
@@ -242,6 +242,29 @@ public class BlockWire extends BlockConductor {
 	    return stateIn.with(property, EnumConnectType.INVENTORY);
 	} else {
 	    return stateIn.with(property, EnumConnectType.NONE);
+	}
+    }
+
+    @Deprecated
+    @Override
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	super.onBlockAdded(state, worldIn, pos, oldState, isMoving);
+	if (!worldIn.isRemote) {
+	    TileEntity tile = worldIn.getTileEntity(pos);
+	    if (tile instanceof IConductor) {
+		((IConductor) tile).refreshNetwork();
+	    }
+	}
+    }
+
+    @Override
+    public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
+	super.onNeighborChange(state, world, pos, neighbor);
+	if (!world.isRemote()) {
+	    TileEntity tile = world.getTileEntity(pos);
+	    if (tile instanceof IConductor) {
+		((IConductor) tile).refreshNetworkIfChange();
+	    }
 	}
     }
 

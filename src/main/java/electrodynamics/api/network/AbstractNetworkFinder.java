@@ -13,7 +13,7 @@ public class AbstractNetworkFinder {
     public World worldObj;
     public BlockPos start;
     public AbstractNetwork<?, ?, ?, ?> net;
-    public List<BlockPos> iterated = new ArrayList<>();
+    public List<TileEntity> iteratedTiles = new ArrayList<>();
     public List<BlockPos> toIgnore = new ArrayList<>();
 
     public AbstractNetworkFinder(World world, BlockPos location, AbstractNetwork<?, ?, ?, ?> net, BlockPos... ignore) {
@@ -26,22 +26,38 @@ public class AbstractNetworkFinder {
     }
 
     public void loopAll(BlockPos location) {
-	if (net.isConductor(worldObj.getTileEntity(location))) {
-	    iterated.add(location);
+	TileEntity curr = worldObj.getTileEntity(location);
+	if (net.isConductor(curr)) {
+	    iteratedTiles.add(curr);
 	}
 	for (Direction direction : Direction.values()) {
 	    BlockPos obj = new BlockPos(location).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
-	    if (!iterated.contains(obj) && !toIgnore.contains(obj)) {
+	    if (!(toIgnore.size() == 1 ? toIgnore.get(0) == obj : toIgnore.contains(obj))) {
 		TileEntity tileEntity = worldObj.getTileEntity(obj);
-		if (net.isConductor(tileEntity)) {
-		    loopAll(obj);
+		if (!iteratedTiles.contains(tileEntity) && net.isConductor(tileEntity)) {
+		    loopAll((IAbstractConductor) tileEntity);
+		}
+	    }
+	}
+
+    }
+
+    public void loopAll(IAbstractConductor conductor) {
+	iteratedTiles.add((TileEntity) conductor);
+	for (TileEntity connections : conductor.getAdjacentConnections()) {
+	    if (connections != null) {
+		BlockPos pos = connections.getPos();
+		if (!iteratedTiles.contains(connections) && !(toIgnore.size() == 1 ? toIgnore.get(0) == pos : toIgnore.contains(pos))) {
+		    if (net.isConductor(connections)) {
+			loopAll((IAbstractConductor) connections);
+		    }
 		}
 	    }
 	}
     }
 
-    public List<BlockPos> exploreNetwork() {
+    public List<TileEntity> exploreNetwork() {
 	loopAll(start);
-	return iterated;
+	return iteratedTiles;
     }
 }
