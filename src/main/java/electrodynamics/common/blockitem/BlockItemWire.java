@@ -28,7 +28,7 @@ public class BlockItemWire extends BlockItem {
 	tooltip.add(new TranslationTextComponent("tooltip.itemwire.resistance",
 		ElectricityChatFormatter.getDisplay(wire.wire.resistance, ElectricUnit.RESISTANCE)).mergeStyle(TextFormatting.GRAY));
 	tooltip.add(
-		new TranslationTextComponent("tooltip.itemwire.maxamps", ElectricityChatFormatter.getDisplay(wire.wire.maxAmps, ElectricUnit.AMPERE))
+		new TranslationTextComponent("tooltip.itemwire.maxamps", ElectricityChatFormatter.getDisplay(wire.wire.capacity, ElectricUnit.AMPERE))
 			.mergeStyle(TextFormatting.GRAY));
 	if (wire.wire.logistical) {
 	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.logistical"));

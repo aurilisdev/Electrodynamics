@@ -181,11 +181,11 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     @Override
-    public void remove() {
+    public void onChunkUnloaded() {
+	super.onChunkUnloaded();
 	if (!world.isRemote && electricNetwork != null) {
 	    getNetwork().split(this);
 	}
-	super.remove();
     }
 
     @Override

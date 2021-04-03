@@ -15,8 +15,8 @@ public class TileWire extends GenericTileWire {
 	super(DeferredRegisters.TILE_WIRE.get());
     }
 
-    public TileWire(TileEntityType<?> tile) {
-	super(tile);
+    public TileWire(TileEntityType<TileLogisticalWire> tileEntityType) {
+	super(tileEntityType);
     }
 
     public SubtypeWire wire = null;

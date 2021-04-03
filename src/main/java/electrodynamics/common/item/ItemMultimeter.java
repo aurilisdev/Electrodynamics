@@ -4,6 +4,8 @@ import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.tile.network.TileWire;
+import improvedapi.core.capability.CapabilityNetworkProvider;
+import improvedapi.core.electricity.ElectricityNetwork;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
@@ -32,6 +34,13 @@ public class ItemMultimeter extends Item {
 			+ Math.round(net.getLastEnergyLoss() / net.getCurrentTransmission() * 100) + "% "
 			+ ElectricityChatFormatter.getDisplay(net.getLastEnergyLoss() * 20, ElectricUnit.WATT) + " )";
 		context.getPlayer().sendStatusMessage(new StringTextComponent(finalString), true);
+	    } else {
+		tile.getCapability(CapabilityNetworkProvider.INSTANCE).ifPresent(consumer -> {
+		    if (consumer.getNetwork() instanceof ElectricityNetwork) {
+			ElectricityNetwork net = (ElectricityNetwork) consumer.getNetwork();
+			context.getPlayer().sendStatusMessage(new StringTextComponent("resistance:" + net.getTotalResistance()), true);
+		    }
+		});
 	    }
 	}
 	return super.onItemUse(context);

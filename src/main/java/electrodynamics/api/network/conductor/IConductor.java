@@ -31,7 +31,7 @@ public interface IConductor extends IAbstractConductor {
 
     @Override
     default double getMaxTransfer() {
-	return getWireType().maxAmps;
+	return getWireType().capacity;
     }
 
 }

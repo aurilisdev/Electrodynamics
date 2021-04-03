@@ -17,13 +17,13 @@ public enum SubtypeWire implements ISubtype {
     logisticsgold(SubtypeWire.gold.resistance, 1000, true, true), logisticssuperconductive(0.0, Long.MAX_VALUE, true, true);
 
     public final double resistance;
-    public final long maxAmps;
+    public final long capacity;
     public final boolean insulated;
     public final boolean logistical;
 
     private SubtypeWire(double resistance, long maxAmps, boolean insulated, boolean emitsredstone) {
 	this.resistance = resistance;
-	this.maxAmps = maxAmps;
+	this.capacity = maxAmps;
 	this.insulated = insulated;
 	logistical = emitsredstone;
     }

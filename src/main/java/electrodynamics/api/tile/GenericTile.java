@@ -1,6 +1,7 @@
 package electrodynamics.api.tile;
 
 import electrodynamics.api.References;
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.tile.components.Component;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentName;
@@ -16,6 +17,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GenericTile extends TileEntity implements INameable {
     private Component[] components = new Component[ComponentType.values().length];
@@ -71,15 +74,22 @@ public class GenericTile extends TileEntity implements INameable {
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	for (Component component : components) {
-	    if (component != null) {
-		component.holder(this);
-		if (component.hasCapability(cap, side)) {
-		    return component.getCapability(cap, side);
-		}
+	if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC) {
+	    if (components[ComponentType.Electrodynamic.ordinal()] != null) {
+		return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
 	    }
 	}
-	return LazyOptional.empty();
+	if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	    if (components[ComponentType.FluidHandler.ordinal()] != null) {
+		return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
+	    }
+	}
+	if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+	    if (components[ComponentType.Inventory.ordinal()] != null) {
+		return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
+	    }
+	}
+	return super.getCapability(cap, side);
     }
 
     @Override

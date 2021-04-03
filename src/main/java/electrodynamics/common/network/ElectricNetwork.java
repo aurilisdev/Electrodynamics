@@ -144,8 +144,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	    HashSet<SubtypeWire> checkList = new HashSet<>();
 	    for (SubtypeWire type : SubtypeWire.values()) {
 		if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive
-			&& type != SubtypeWire.logisticssuperconductive && type.maxAmps <= transmittedLastTick / voltage * 20
-			&& type.maxAmps <= transmittedThisTick / voltage * 20) {
+			&& type != SubtypeWire.logisticssuperconductive && type.capacity <= transmittedLastTick / voltage * 20
+			&& type.capacity <= transmittedThisTick / voltage * 20) {
 		    checkList.add(type);
 		}
 	    }

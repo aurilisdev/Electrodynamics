@@ -6,17 +6,12 @@ import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.tile.generic.GenericTilePipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
 
 public class TilePipe extends GenericTilePipe {
     public double transmit = 0;
 
     public TilePipe() {
 	super(DeferredRegisters.TILE_PIPE.get());
-    }
-
-    public TilePipe(TileEntityType<?> tile) {
-	super(tile);
     }
 
     public SubtypePipe pipe = null;
