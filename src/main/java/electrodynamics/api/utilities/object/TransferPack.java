@@ -34,4 +34,8 @@ public class TransferPack {
 	return joules * 20.0;
     }
 
+    public boolean valid() {
+	return (int) voltage != 0;
+    }
+
 }

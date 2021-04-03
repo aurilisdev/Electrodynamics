@@ -3,7 +3,6 @@ package electrodynamics.common.network;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import electrodynamics.api.References;
 import electrodynamics.api.network.AbstractNetwork;
@@ -27,14 +26,6 @@ public class NetworkRegistry {
     public static void deregister(ITickableNetwork network) {
 	if (networks.contains(network)) {
 	    networks.remove(network);
-	}
-    }
-
-    public static void pruneEmptyNetworks() {
-	for (ITickableNetwork e : new HashSet<>(networks)) {
-	    if (e.getSize() == 0) {
-		deregister(e);
-	    }
 	}
     }
 
@@ -62,15 +53,10 @@ public class NetworkRegistry {
 		    }
 		    if (net.getSize() == 0) {
 			it.remove();
-		    }
-		}
-		Set<ITickableNetwork> iterNetworks = (Set<ITickableNetwork>) networks.clone();
-		for (ITickableNetwork net : iterNetworks) {
-		    if (networks.contains(net)) {
+		    } else {
 			net.tick();
 		    }
 		}
-		pruneEmptyNetworks();
 	    } catch (ConcurrentModificationException exception) {
 		exception.printStackTrace();
 	    }

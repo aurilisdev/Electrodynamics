@@ -23,7 +23,7 @@ public enum SubtypeWire implements ISubtype {
 
     private SubtypeWire(double resistance, long maxAmps, boolean insulated, boolean emitsredstone) {
 	this.resistance = resistance;
-	this.capacity = maxAmps;
+	capacity = maxAmps;
 	this.insulated = insulated;
 	logistical = emitsredstone;
     }

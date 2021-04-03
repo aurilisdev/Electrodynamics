@@ -186,7 +186,7 @@ public class BlockWire extends Block {
 	    TileWire tile = (TileWire) worldIn.getTileEntity(pos);
 	    if (tile != null && tile.getNetwork() != null && tile.getNetwork().getCurrentTransmission() > 0) {
 		entityIn.attackEntityFrom(DamageSources.ELECTRICITY,
-			(float) Math.min(9999, Math.max(0, (tile.getNetwork().getCurrentTransmission() / 120.0f))));
+			(float) Math.min(9999, Math.max(0, tile.getNetwork().getCurrentTransmission() / 120.0f)));
 	    }
 	}
     }

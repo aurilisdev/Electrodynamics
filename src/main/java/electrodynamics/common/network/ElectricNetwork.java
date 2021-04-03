@@ -75,8 +75,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
     private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
 	if (maxTransfer.getJoules() > 0 && maxTransfer.getVoltage() > 0) {
-	    Set<TileEntity> availableAcceptors = new HashSet<>();
-	    availableAcceptors.addAll(getEnergyAcceptors());
+	    Set<TileEntity> availableAcceptors = getEnergyAcceptors();
 	    double joulesSent = 0;
 	    availableAcceptors.removeAll(ignored);
 	    if (!availableAcceptors.isEmpty()) {
@@ -127,15 +126,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
     public Set<TileEntity> getEnergyAcceptors() {
 	Set<TileEntity> toReturn = new HashSet<>();
-	for (TileEntity acceptor : acceptorSet) {
-	    if (ElectricityUtilities.isElectricReceiver(acceptor)) {
-		for (Direction connection : acceptorInputMap.get(acceptor)) {
-		    if (ElectricityUtilities.canInputPower(acceptor, connection)) {
-			toReturn.add(acceptor);
-		    }
-		}
-	    }
-	}
+	toReturn.addAll(acceptorSet);
 	return toReturn;
     }
 
@@ -179,12 +170,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     @Override
     public void tick() {
 	super.tick();
-	if ((int) voltage > 0 && (int) transferBuffer > 0) {
+	TransferPack send = TransferPack.joulesVoltage(transferBuffer, voltage);
+	if (send.valid() && send.getAmps() > 0) {
 	    double loss = transferBuffer * transferBuffer * resistance / (voltage * voltage);
 	    transferBuffer -= loss;
 	    energyLoss += loss;
 	    transmittedThisTick += loss;
-	    transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+	    transferBuffer -= sendToReceivers(send, currentProducers, false).getJoules();
 	    checkForOverload();
 	}
 	lastVoltage = voltage;
@@ -192,9 +184,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	lastEnergyLoss = energyLoss;
 	energyLoss = 0;
 	currentProducers.clear();
-	Set<TileEntity> availableAcceptors = getEnergyAcceptors();
 	maxTransferBuffer = 0;
-	for (TileEntity tile : availableAcceptors) {
+	for (TileEntity tile : acceptorSet) {
 	    if (acceptorInputMap.containsKey(tile)) {
 		for (Direction connection : acceptorInputMap.get(tile)) {
 		    TransferPack pack = ElectricityUtilities.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
