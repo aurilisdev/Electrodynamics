@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
@@ -141,11 +140,9 @@ public class BlockPipe extends Block {
 	    checked.add(Direction.SOUTH);
 	}
 	locked = true;
-	for (Entry<HashSet<Direction>, VoxelShape> set : shapestates.entrySet()) {
-	    if (set.getKey().equals(checked)) {
-		locked = false;
-		return set.getValue();
-	    }
+	if (shapestates.containsKey(checked)) {
+	    locked = false;
+	    return shapestates.get(checked);
 	}
 	locked = false;
 	for (Direction dir : checked) {
