@@ -22,6 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 
 public class TileWindmill extends GenericTileTicking implements IMultiblockTileNode {
     protected CachedTileOutput output;
@@ -29,6 +30,7 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     public boolean directionFlag = false;
     public double savedTickRotation;
     public double generating;
+    public double rotationSpeed;
 
     public TileWindmill() {
 	super(DeferredRegisters.TILE_WINDMILL.get());
@@ -62,9 +64,8 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     }
 
     protected void tickCommon(ComponentTickable tickable) {
-	if (isGenerating) {
-	    savedTickRotation += directionFlag ? 1 : -1;
-	}
+	savedTickRotation += (directionFlag ? 1 : -1) * rotationSpeed;
+	rotationSpeed = MathHelper.clamp(rotationSpeed + 0.05 * (isGenerating ? 1 : -1), 0.0, 1.0);
     }
 
     protected void tickClient(ComponentTickable tickable) {

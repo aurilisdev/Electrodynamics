@@ -22,6 +22,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 
 public class TileWireMill extends GenericTileTicking {
+
     public TileWireMill() {
 	super(DeferredRegisters.TILE_WIREMILL.get());
 	addComponent(new ComponentDirection());
@@ -40,12 +41,15 @@ public class TileWireMill extends GenericTileTicking {
 
     protected void tickClient(ComponentTickable tickable) {
 	ComponentProcessor processor = getComponent(ComponentType.Processor);
-	if (processor.operatingTicks > 0 && world.rand.nextDouble() < 0.15) {
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.5 + 0.5,
-		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-	}
-	if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
-	    SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundCategory.BLOCKS, 1, 1, pos);
+	if (processor.operatingTicks > 0) {
+	    if (world.rand.nextDouble() < 0.15) {
+		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.5 + 0.5,
+			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    }
+	    if (tickable.getTicks() % 200 == 0) {
+		SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundCategory.BLOCKS, 1, 1, pos);
+	    }
 	}
     }
+
 }

@@ -22,12 +22,14 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public class TileHydroelectricGenerator extends GenericTileTicking {
     protected CachedTileOutput output;
     public boolean isGenerating = false;
     public boolean directionFlag = false;
     public double savedTickRotation;
+    public double rotationSpeed;
 
     public TileHydroelectricGenerator() {
 	super(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get());
@@ -99,9 +101,8 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
     }
 
     protected void tickCommon(ComponentTickable tickable) {
-	if (isGenerating) {
-	    savedTickRotation += directionFlag ? 1 : -1;
-	}
+	savedTickRotation += (directionFlag ? 1 : -1) * rotationSpeed;
+	rotationSpeed = MathHelper.clamp(rotationSpeed + 0.05 * (isGenerating ? 1 : -1), 0.0, 1.0);
     }
 
     protected void tickClient(ComponentTickable tickable) {

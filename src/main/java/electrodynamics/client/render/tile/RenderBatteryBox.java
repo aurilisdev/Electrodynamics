@@ -25,7 +25,7 @@ public class RenderBatteryBox extends TileEntityRenderer<TileBatteryBox> {
     public void render(TileBatteryBox tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 	IBakedModel ibakedmodel;
-	int stored = (int) (tileEntityIn.getEnergyStored() / tileEntityIn.clientMaxJoulesStored * 6);
+	int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
 	switch (stored) {
 	default:
 	case 0:

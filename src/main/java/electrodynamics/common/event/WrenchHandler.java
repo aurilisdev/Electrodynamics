@@ -46,6 +46,7 @@ public class WrenchHandler {
 			    Block.getValidBlockForPosition(
 				    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("insulated" + wire.name())).getDefaultState(),
 				    player.world, event.getPos()));
+		    stack.shrink(1);
 		}
 	    }
 	}
