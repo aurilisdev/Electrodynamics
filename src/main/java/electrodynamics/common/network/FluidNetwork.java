@@ -70,15 +70,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 
     public Set<TileEntity> getFluidAcceptors(FluidStack compare) {
 	Set<TileEntity> toReturn = new HashSet<>();
-	for (TileEntity acceptor : acceptorSet) {
-	    if (FluidUtilities.isFluidReceiver(acceptor)) {
-		for (Direction connection : acceptorInputMap.get(acceptor)) {
-		    if (FluidUtilities.canInputFluid(acceptor, connection, compare)) {
-			toReturn.add(acceptor);
-		    }
-		}
-	    }
-	}
+	toReturn.addAll(acceptorSet);
 	return toReturn;
     }
 

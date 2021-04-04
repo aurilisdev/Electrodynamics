@@ -175,8 +175,9 @@ public class BlockWire extends Block {
 		break;
 	    }
 	}
-	while (locked)
-	    ;
+	while (locked) {
+	    System.out.println("Wire bounding boxes locked. This should never happen!");
+	}
 	shapestates.put(checked, shape);
 	if (shape == null) {
 	    return VoxelShapes.empty();

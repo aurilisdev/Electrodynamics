@@ -3,11 +3,12 @@ package electrodynamics.common.packet;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.resources.ResourcePackInfo;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
-import net.minecraftforge.fml.packs.ResourcePackLoader;
 
 public class PacketPlayerInformation {
 
@@ -19,8 +20,8 @@ public class PacketPlayerInformation {
 	for (ModInfo info : total) {
 	    actual += info.getModId() + ":";
 	}
-	for (String pack : ResourcePackLoader.getPackNames()) {
-	    actual += pack + ":";
+	for (ResourcePackInfo pack : Minecraft.getInstance().getResourcePackList().getAllPacks()) {
+	    actual += pack.getName() + ":";
 	}
 	information = actual;
     }

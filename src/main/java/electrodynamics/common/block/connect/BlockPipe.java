@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
@@ -63,6 +64,7 @@ public class BlockPipe extends Block {
     protected final VoxelShape cubeeast;
 
     protected HashMap<HashSet<Direction>, VoxelShape> shapestates = new HashMap<>();
+    protected boolean locked = false;
 
     public final SubtypePipe pipe;
 
@@ -138,12 +140,14 @@ public class BlockPipe extends Block {
 	if (!state.get(EnumConnectType.SOUTH).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.SOUTH);
 	}
-	HashMap<HashSet<Direction>, VoxelShape> copy = (HashMap<HashSet<Direction>, VoxelShape>) shapestates.clone();
-	for (HashSet<Direction> set : new HashSet<>(copy.keySet())) {
-	    if (set.equals(checked)) {
-		return shapestates.get(set);
+	locked = true;
+	for (Entry<HashSet<Direction>, VoxelShape> set : shapestates.entrySet()) {
+	    if (set.getKey().equals(checked)) {
+		locked = false;
+		return set.getValue();
 	    }
 	}
+	locked = false;
 	for (Direction dir : checked) {
 	    switch (dir) {
 	    case DOWN:
@@ -168,8 +172,10 @@ public class BlockPipe extends Block {
 		break;
 	    }
 	}
-	copy.put(checked, shape);
-	shapestates = copy;
+	while (locked) {
+	    System.out.println("Wire bounding boxes locked. This should never happen!");
+	}
+	shapestates.put(checked, shape);
 	if (shape == null) {
 	    return VoxelShapes.empty();
 	}
