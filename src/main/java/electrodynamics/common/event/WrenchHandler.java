@@ -8,7 +8,9 @@ import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
@@ -40,8 +42,11 @@ public class WrenchHandler {
 	    } else if (block instanceof BlockWire && item == DeferredRegisters.ITEM_INSULATION.get()) {
 		SubtypeWire wire = ((BlockWire) block).wire;
 		if (!wire.insulated && !wire.logistical) {
+		    player.world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
 		    player.world.setBlockState(event.getPos(),
-			    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf(wire.name().replace("insulated", ""))).getDefaultState());
+			    Block.getValidBlockForPosition(
+				    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("insulated" + wire.name())).getDefaultState(),
+				    player.world, event.getPos()));
 		}
 	    }
 	}
