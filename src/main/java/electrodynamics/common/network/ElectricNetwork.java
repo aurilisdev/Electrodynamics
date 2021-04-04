@@ -10,6 +10,7 @@ import java.util.Set;
 import electrodynamics.api.electricity.IElectrodynamic;
 import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.utilities.Scheduler;
 import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import net.minecraft.tileentity.TileEntity;
@@ -142,7 +143,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 	    }
 	    for (SubtypeWire index : checkList) {
 		for (IConductor conductor : conductorTypeMap.get(index)) {
-		    conductor.destroyViolently();
+		    Scheduler.schedule(1, conductor::destroyViolently);
 		}
 	    }
 	    return true;
