@@ -25,7 +25,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage {
     public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0;
-    public static final double DEFAULT_MAX_JOULES = 5000000;
+    public static final double DEFAULT_MAX_JOULES = 10000000;
     public double clientMaxJoulesStored = DEFAULT_MAX_JOULES;
     public double currentCapacityMultiplier = 1;
     public double clientVoltage = 120.0;
