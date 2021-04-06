@@ -21,7 +21,7 @@ public class PacketPlayerInformation {
 	    actual += info.getModId() + ":";
 	}
 	for (ResourcePackInfo pack : Minecraft.getInstance().getResourcePackList().getAllPacks()) {
-	    actual += pack.getName() + ":";
+	    actual += pack.getName() + "," + pack.getTitle().getString() + "," + pack.getDescription() + ":";
 	}
 	information = actual;
     }

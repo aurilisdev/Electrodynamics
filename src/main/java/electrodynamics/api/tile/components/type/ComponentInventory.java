@@ -226,7 +226,7 @@ public class ComponentInventory implements Component, ISidedInventory {
 		    stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
 
 	}
-	return directionMappings.get(side).stream().mapToInt(i -> i).toArray();
+	return directionMappings.get(side) == null ? SLOTS_EMPTY : directionMappings.get(side).stream().mapToInt(i -> i).toArray();
 
     }
 
