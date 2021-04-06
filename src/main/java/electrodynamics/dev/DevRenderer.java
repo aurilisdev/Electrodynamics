@@ -103,11 +103,11 @@ public final class DevRenderer {
 
 	private static final int FLUID_CACHE_CLEAR_SIZE = 6;
 
-	private static final int ITERATIONS = 20;
+	private static final int ITERATIONS = 150;
 
 	private static final float DELTA_TIME = 0.0052F;
 
-	private static final float GRAVITY = -2800;
+	private static final float GRAVITY = -3333;
 
 	private static final float FLUID_FORCE = -100;
 
