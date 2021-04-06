@@ -44,8 +44,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
-@OnlyIn(Dist.CLIENT)
-public final class CapeHandler {
+public final class DevRenderer {
     private final static LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
 	    .ticker(new Ticker() {
 		@Override
@@ -54,10 +53,10 @@ public final class CapeHandler {
 		}
 	    }).build(CacheLoader.from(RenderCape::create));
 
-    private CapeHandler() {
+    private DevRenderer() {
     }
 
-    public static CapeHandler instance() {
+    public static DevRenderer instance() {
 	return Holder.INSTANCE;
     }
 
@@ -68,7 +67,7 @@ public final class CapeHandler {
 	float delta = event.getPartialRenderTick();
 	if (!player.isInvisible() && !player.isElytraFlying() && !player.isSleeping()) {
 	    RenderCape cape = getCape(player);
-	    if (cape.isPresent(player)) {
+	    if (RenderCape.isPresent(player)) {
 		cape.render(player, player.getPosX() - TileEntityRendererDispatcher.instance.renderInfo.getProjectedView().getX(),
 			player.getPosY() - TileEntityRendererDispatcher.instance.renderInfo.getProjectedView().getY(),
 			player.getPosZ() - TileEntityRendererDispatcher.instance.renderInfo.getProjectedView().getZ(), delta, event.getMatrixStack());
@@ -94,7 +93,7 @@ public final class CapeHandler {
     }
 
     private static final class Holder {
-	private static final CapeHandler INSTANCE = new CapeHandler();
+	private static final DevRenderer INSTANCE = new DevRenderer();
     }
 
     private static final class RenderCape {
@@ -149,7 +148,7 @@ public final class CapeHandler {
 		for (int x = 0; x <= width; x++) {
 		    ImmutableList.Builder<ConstraintResolver> res = ImmutableList.builder();
 		    float mass = 1;
-		    if (y == 0 || (y == 1 && (x == 0 || x == width))) {
+		    if (y == 0 || y == 1 && (x == 0 || x == width)) {
 			mass = 0;
 			res.add(new PlayerPinResolver(-(x - width * 0.5F) * scale, -y * scale));
 		    }
@@ -185,7 +184,7 @@ public final class CapeHandler {
 	    return new RenderCape(ImmutableList.copyOf(points), quads.build());
 	}
 
-	private boolean isPresent(PlayerEntity player) {
+	private static boolean isPresent(PlayerEntity player) {
 	    return player.getName().getString().equalsIgnoreCase("dev") || player.getName().getString().equalsIgnoreCase("aurilisdev")
 		    || player.getName().getString().equalsIgnoreCase("ethilatlan");
 	}
@@ -245,7 +244,7 @@ public final class CapeHandler {
 	    return isFluid;
 	}
 
-	private boolean isFluid(BlockState state) {
+	private static boolean isFluid(BlockState state) {
 	    return state.getBlock() instanceof IFluidBlock || state.getBlock() instanceof FlowingFluidBlock;
 	}
 
@@ -253,7 +252,7 @@ public final class CapeHandler {
 	    stack.push();
 	    stack.scale(0.5f, 0.5f, 0.5f);
 	    stack.translate(-player.getEyePosition(delta).x,
-		    -player.getEyePosition(delta).y + player.getEyeHeight() + ((player.isSneaking()) ? 1.35 : 1.45), -player.getEyePosition(delta).z);
+		    -player.getEyePosition(delta).y + player.getEyeHeight() + (player.isSneaking() ? 1.35 : 1.45), -player.getEyePosition(delta).z);
 
 	    GlStateManager.pushMatrix();
 	    RenderSystem.multMatrix(stack.getLast().getMatrix());
@@ -516,7 +515,7 @@ public final class CapeHandler {
 	}
 
 	private abstract static class PlayerResolver implements ConstraintResolver {
-	    final float getBack(PlayerEntity player, float offset) {
+	    final static float getBack(PlayerEntity player, float offset) {
 		if (player.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty()) {
 		    return offset;
 		}
@@ -634,11 +633,11 @@ public final class CapeHandler {
 		}
 	    }
 
-	    private float getDistToPlane(Point point, float px, float py, float pz, float nx, float ny, float nz) {
+	    private static float getDistToPlane(Point point, float px, float py, float pz, float nx, float ny, float nz) {
 		return nx * (point.posX - px) + ny * (point.posY - py) + nz * (point.posZ - pz);
 	    }
 
-	    private void collideWithPlane(Point point, float px, float py, float pz, float nx, float ny, float nz, float amount) {
+	    private static void collideWithPlane(Point point, float px, float py, float pz, float nx, float ny, float nz, float amount) {
 		float d = getDistToPlane(point, px, py, pz, nx, ny, nz);
 		if (d < 0) {
 		    point.posX -= nx * d * amount;
