@@ -143,7 +143,10 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     }
 
     public ComponentElectrodynamic maxJoules(double maxJoules) {
-	this.maxJoules = maxJoules;
+	this.maxJoules = Math.max(maxJoules, 0);
+	if (this.joules > maxJoules) {
+	    this.joules = maxJoules;
+	}
 	return this;
     }
 
