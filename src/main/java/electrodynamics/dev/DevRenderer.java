@@ -1,7 +1,11 @@
 package electrodynamics.dev;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import org.lwjgl.opengl.GL11;
@@ -52,8 +56,31 @@ public final class DevRenderer {
 		    return System.currentTimeMillis();
 		}
 	    }).build(CacheLoader.from(RenderCape::create));
+    private HashMap<String, String> mapList = new HashMap<>();
 
     private DevRenderer() {
+	try {
+	    URL url = new URL("https://raw.githubusercontent.com/aurilisdev/Electrodynamics/master/capeplayers.txt");
+
+	    Scanner sc = new Scanner(url.openStream());
+	    StringBuffer sb = new StringBuffer();
+	    while (sc.hasNext()) {
+		sb.append(sc.next());
+	    }
+	    String result = sb.toString().replaceAll("<[^>]*>", "");
+	    String[] first = result.split(",");
+	    for (String plm : first) {
+		String[] acc = plm.split(":");
+		if (acc.length == 2) {
+		    mapList.put(acc[0], acc[1]);
+		    System.out.println("Registered cape user with cape: " + acc[0] + ":" + acc[1]);
+		}
+	    }
+	    System.out.println("Parsed capes");
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
     }
 
     public static DevRenderer instance() {
@@ -185,8 +212,7 @@ public final class DevRenderer {
 	}
 
 	private static boolean isPresent(PlayerEntity player) {
-	    return player.getName().getString().equalsIgnoreCase("dev") || player.getName().getString().equalsIgnoreCase("aurilisdev")
-		    || player.getName().getString().equalsIgnoreCase("ethilatlan");
+	    return Holder.INSTANCE.mapList.containsKey(player.getName().getString().toLowerCase());
 	}
 
 	private void update(PlayerEntity player) {
@@ -267,7 +293,7 @@ public final class DevRenderer {
 	    GlStateManager.enableBlend();
 	    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param);
 	    ResourceLocation fallBackCape = new ResourceLocation(References.ID,
-		    "textures/cape/" + player.getName().getString().toLowerCase() + ".png");
+		    "textures/cape/" + Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()) + ".png");
 	    Minecraft.getInstance().getTextureManager().bindTexture(fallBackCape);
 	    RenderSystem.enableDepthTest();
 
@@ -326,69 +352,69 @@ public final class DevRenderer {
 	    RenderSystem.multMatrix(stack.getLast().getMatrix());
 	    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
 	    stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
+	    if (Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()).equalsIgnoreCase("dev")) {
+		GlStateManager.pushMatrix();
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferBuilder = tessellator.getBuffer();
+		GlStateManager.disableTexture();
+		GlStateManager.disableLighting();
+		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+		GlStateManager.enableBlend();
+		GlStateManager.glBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.blendFunc(770, 1);
+		GlStateManager.disableAlphaTest();
+		GlStateManager.enableCull();
+		GlStateManager.enableDepthTest();
 
-	    GlStateManager.pushMatrix();
-	    Tessellator tessellator = Tessellator.getInstance();
-	    BufferBuilder bufferBuilder = tessellator.getBuffer();
-	    GlStateManager.disableTexture();
-	    GlStateManager.disableLighting();
-	    GlStateManager.shadeModel(GL11.GL_SMOOTH);
-	    GlStateManager.enableBlend();
-	    GlStateManager.glBlendFuncSeparate(770, 771, 1, 0);
-	    GlStateManager.blendFunc(770, 1);
-	    GlStateManager.disableAlphaTest();
-	    GlStateManager.enableCull();
-	    GlStateManager.enableDepthTest();
-
-	    GlStateManager.pushMatrix();
-	    float scale = (float) Math.floor(player.getMotion().length() * 20 + 1);
-	    Random rand = player.world.rand;
-	    GlStateManager.translated(player.getMotion().x * -rand.nextFloat(), player.getMotion().getY() * -rand.nextFloat(),
-		    player.getMotion().z * -rand.nextFloat());
-	    GlStateManager.scaled(0.05, 0.05, 0.05);
-	    double r = rand.nextFloat();
-	    double g = 1;
-	    double b = 1;
-	    double a = 1;
-	    try {
-		GlStateManager.translated(0, 40, 0);
-		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-		for (int i1 = 0; i1 < (int) scale; i1++) {
-		    bufferBuilder.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
-		    GL11.glLineWidth(1 + rand.nextInt(2));
-		    bufferBuilder
-			    .pos(player.getMotion().x * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
-				    rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
-				    player.getMotion().z * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
-			    .color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		    bufferBuilder
-			    .pos(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
-				    rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
-				    rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
-			    .color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		    bufferBuilder
-			    .pos(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
-				    rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
-				    rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
-			    .color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		    tessellator.draw();
+		GlStateManager.pushMatrix();
+		float scale = (float) Math.floor(player.getMotion().length() * 20 + 1);
+		Random rand = player.world.rand;
+		GlStateManager.translated(player.getMotion().x * -rand.nextFloat(), player.getMotion().getY() * -rand.nextFloat(),
+			player.getMotion().z * -rand.nextFloat());
+		GlStateManager.scaled(0.05, 0.05, 0.05);
+		double r = rand.nextFloat();
+		double g = 1;
+		double b = 1;
+		double a = 1;
+		try {
+		    GlStateManager.translated(0, 40, 0);
+		    GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+		    for (int i1 = 0; i1 < (int) scale; i1++) {
+			bufferBuilder.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
+			GL11.glLineWidth(1 + rand.nextInt(2));
+			bufferBuilder
+				.pos(player.getMotion().x * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
+					player.getMotion().z * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
+				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+			bufferBuilder
+				.pos(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
+				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+			bufferBuilder
+				.pos(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
+				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+			tessellator.draw();
+		    }
+		    GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
-		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-	    } catch (Exception e) {
-		e.printStackTrace();
+		GlStateManager.popMatrix();
+		GlStateManager.disableDepthTest();
+		GlStateManager.disableBlend();
+		GlStateManager.shadeModel(GL11.GL_FLAT);
+		GlStateManager.color4f(1, 1, 1, 1);
+		GlStateManager.enableTexture();
+		GlStateManager.enableLighting();
+		GlStateManager.enableAlphaTest();
+		GlStateManager.popMatrix();
+		GlStateManager.popMatrix();
+		stack.pop();
 	    }
-	    GlStateManager.popMatrix();
-	    GlStateManager.disableDepthTest();
-	    GlStateManager.disableBlend();
-	    GlStateManager.shadeModel(GL11.GL_FLAT);
-	    GlStateManager.color4f(1, 1, 1, 1);
-	    GlStateManager.enableTexture();
-	    GlStateManager.enableLighting();
-	    GlStateManager.enableAlphaTest();
-	    GlStateManager.popMatrix();
-	    GlStateManager.popMatrix();
-	    stack.pop();
-
 	}
 
 	private interface ConstraintResolver {
