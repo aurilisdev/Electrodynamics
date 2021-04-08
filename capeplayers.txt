@@ -1,4 +1,4 @@
 aurilisdev:dev,
 dev:donator,
 ethilatlan:dev,
-evilenigma12
+evilenigma12:donator
