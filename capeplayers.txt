@@ -1,4 +1,5 @@
 aurilisdev:dev,
-dev:donator,
 ethilatlan:dev,
-evilenigma12:dev
+evilenigma12:donator,
+dev:donator,
+end of shit
