@@ -4,5 +4,6 @@ evilenigma12:donator,
 dev:donator,
 skip999:dev,
 gunmetalblack:dev,
-pyro206:dev
+pyro206:dev,
+squaredoffcircle:donator
 end of shit
