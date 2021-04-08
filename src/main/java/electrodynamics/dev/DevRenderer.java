@@ -344,15 +344,15 @@ public final class DevRenderer {
 
 	    GlStateManager.popMatrix();
 	    stack.pop();
-
-	    stack.push();
-	    stack.scale(0.5f, 0.5f, 0.5f);
-
-	    GlStateManager.pushMatrix();
-	    RenderSystem.multMatrix(stack.getLast().getMatrix());
-	    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
-	    stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
 	    if (Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()).equalsIgnoreCase("dev")) {
+		stack.push();
+		stack.scale(0.5f, 0.5f, 0.5f);
+
+		GlStateManager.pushMatrix();
+		RenderSystem.multMatrix(stack.getLast().getMatrix());
+		stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+		stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
+
 		GlStateManager.pushMatrix();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
