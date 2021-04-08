@@ -85,32 +85,36 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	    TileEntity[] connectedTiles = new TileEntity[6];
 	    boolean[] dealtWith = { false, false, false, false, false, false };
 	    for (Direction direction : Direction.values()) {
-		TileEntity sideTile = ((TileEntity) splitPoint).getWorld().getTileEntity(
-			((TileEntity) splitPoint).getPos().add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
-		if (sideTile != null) {
-		    connectedTiles[Arrays.asList(Direction.values()).indexOf(direction)] = sideTile;
+		BlockPos ex = ((TileEntity) splitPoint).getPos().add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
+		if (((TileEntity) splitPoint).getWorld().isBlockLoaded(ex)) {
+		    TileEntity sideTile = ((TileEntity) splitPoint).getWorld().getTileEntity(ex);
+		    if (sideTile != null) {
+			connectedTiles[Arrays.asList(Direction.values()).indexOf(direction)] = sideTile;
+		    }
 		}
 	    }
 	    for (int countOne = 0; countOne < connectedTiles.length; countOne++) {
 		TileEntity connectedBlockA = connectedTiles[countOne];
-		if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
-		    AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(), connectedBlockA.getPos(), this,
-			    ((TileEntity) splitPoint).getPos());
-		    List<TileEntity> partNetwork = finder.exploreNetwork();
-		    for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
-			TileEntity connectedBlockB = connectedTiles[countTwo];
-			if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
-			    dealtWith[countTwo] = true;
+		if (connectedBlockA != null) {
+		    if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
+			AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(), connectedBlockA.getPos(), this,
+				((TileEntity) splitPoint).getPos());
+			List<TileEntity> partNetwork = finder.exploreNetwork();
+			for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
+			    TileEntity connectedBlockB = connectedTiles[countTwo];
+			    if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
+				dealtWith[countTwo] = true;
+			    }
 			}
-		    }
-		    AbstractNetwork<C, T, A, P> newNetwork = createInstance();
+			AbstractNetwork<C, T, A, P> newNetwork = createInstance();
 
-		    for (TileEntity tile : finder.iteratedTiles) {
-			if (tile != splitPoint) {
-			    newNetwork.conductorSet.add((C) tile);
+			for (TileEntity tile : finder.iteratedTiles) {
+			    if (tile != splitPoint) {
+				newNetwork.conductorSet.add((C) tile);
+			    }
 			}
+			newNetwork.refresh();
 		    }
-		    newNetwork.refresh();
 		}
 	    }
 	    deregister();

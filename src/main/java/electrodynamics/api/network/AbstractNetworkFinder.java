@@ -33,9 +33,11 @@ public class AbstractNetworkFinder {
 	for (Direction direction : Direction.values()) {
 	    BlockPos obj = new BlockPos(location).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
 	    if (!(toIgnore.size() == 1 ? toIgnore.get(0) == obj : toIgnore.contains(obj))) {
-		TileEntity tileEntity = worldObj.getTileEntity(obj);
-		if (!iteratedTiles.contains(tileEntity) && net.isConductor(tileEntity)) {
-		    loopAll((IAbstractConductor) tileEntity);
+		if (worldObj.isBlockLoaded(obj)) {
+		    TileEntity tileEntity = worldObj.getTileEntity(obj);
+		    if (!iteratedTiles.contains(tileEntity) && net.isConductor(tileEntity)) {
+			loopAll((IAbstractConductor) tileEntity);
+		    }
 		}
 	    }
 	}
