@@ -5,6 +5,8 @@ import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.tile.components.Component;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentName;
+import electrodynamics.api.tile.components.type.ComponentPacketHandler;
+import electrodynamics.api.utilities.Scheduler;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -64,6 +66,18 @@ public class GenericTile extends TileEntity implements INameable {
 
     protected GenericTile(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
+    }
+
+    @Override
+    public void onLoad() {
+	super.onLoad();
+	if (hasComponent(ComponentType.PacketHandler)) {
+	    Scheduler.schedule(1, () -> {
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	    });
+
+	}
     }
 
     @Override
