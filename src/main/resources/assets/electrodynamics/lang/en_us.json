@@ -132,6 +132,8 @@
 	"gui.coalgenerator.output": "Output: %s",
 	"gui.coalgenerator.current": "Current: %s",
 	"gui.coalgenerator.voltage": "Voltage: %s",
+	"gui.coalgenerator.temperature": "Temperature: %s",
+	"gui.coalgenerator.heat": "Heat: %s",
 	"gui.electricfurnace.usage": "Usage: %s",
 	"gui.electricfurnace.voltage": "Voltage: %s",
 	"gui.o2oprocessor.usage": "Usage: %s",
