@@ -28,9 +28,13 @@ public class PacketUpdateTile {
     public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI, CompoundNBT base) {
 	this(pos, base, isGUI);
 	if (isGUI) {
-	    component.getGuiPacketSupplier().accept(base);
+	    if (component.getGuiPacketSupplier() != null) {
+		component.getGuiPacketSupplier().accept(base);
+	    }
 	} else {
-	    component.getCustomPacketSupplier().accept(base);
+	    if (component.getCustomPacketSupplier() != null) {
+		component.getCustomPacketSupplier().accept(base);
+	    }
 	}
 	this.isGUI = isGUI;
     }
@@ -59,9 +63,13 @@ public class PacketUpdateTile {
 		    if (generic.hasComponent(ComponentType.PacketHandler)) {
 			ComponentPacketHandler handler = generic.getComponent(ComponentType.PacketHandler);
 			if (message.isGUI) {
-			    handler.getGuiPacketConsumer().accept(message.updateTag);
+			    if (handler.getGuiPacketConsumer() != null) {
+				handler.getGuiPacketConsumer().accept(message.updateTag);
+			    }
 			} else {
-			    handler.getCustomPacketConsumer().accept(message.updateTag);
+			    if (handler.getCustomPacketConsumer() != null) {
+				handler.getCustomPacketConsumer().accept(message.updateTag);
+			    }
 			}
 		    }
 		}
