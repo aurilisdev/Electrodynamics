@@ -140,7 +140,6 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
 
     @Override
     public void drawTexturedRectFromIcon(MatrixStack stack, int x, int y, TextureAtlasSprite icon, int w, int h) {
-	UtilitiesRendering.bindTexture(icon.getName());
 	blit(stack, x, y, (int) (icon.getMinU() * icon.getWidth()), (int) (icon.getMinV() * icon.getHeight()), w, h);
     }
 

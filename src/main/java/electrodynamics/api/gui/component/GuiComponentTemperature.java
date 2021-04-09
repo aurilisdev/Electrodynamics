@@ -10,8 +10,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiTemperatureInfo extends GuiComponentInfo {
-    public GuiTemperatureInfo(final TextPropertySupplier infoHandler, final IGuiWrapper gui, final int x, final int y) {
+public class GuiComponentTemperature extends GuiComponentInfo {
+    public GuiComponentTemperature(final TextPropertySupplier infoHandler, final IGuiWrapper gui, final int x, final int y) {
 	super(infoHandler, new ResourceLocation(References.ID + ":textures/gui/component/temperature.png"), gui, x, y);
     }
 

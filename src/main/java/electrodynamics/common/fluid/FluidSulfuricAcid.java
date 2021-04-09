@@ -1,5 +1,6 @@
 package electrodynamics.common.fluid;
 
+import electrodynamics.api.References;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
@@ -7,6 +8,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -70,8 +72,10 @@ public class FluidSulfuricAcid extends Fluid {
     @Override
     protected FluidAttributes createAttributes() {
 
-	return FluidAttributes.builder(null, null).translationKey("fluid.electrodynamics.sulfuricacid").color(0).density(0).temperature(0)
-		.luminosity(0).viscosity(0).build(this);
+	return FluidAttributes
+		.builder(new ResourceLocation(References.ID + ":textures/fluid/sulfuricacid.png"),
+			new ResourceLocation(References.ID + ":textures/fluid/sulfuricacid.png"))
+		.translationKey("fluid.electrodynamics.sulfuricacid").color(0).density(0).temperature(0).luminosity(0).viscosity(0).build(this);
     }
 
     @Override

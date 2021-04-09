@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import electrodynamics.common.block.BlockGenericMachine;
 import net.minecraft.block.BlockState;
@@ -107,4 +108,23 @@ public class UtilitiesRendering {
 	Minecraft.getInstance().textureManager.bindTexture(resource);
     }
 
+    public static float getRed(int color) {
+	return (color >> 16 & 0xFF) / 255.0F;
+    }
+
+    public static float getGreen(int color) {
+	return (color >> 8 & 0xFF) / 255.0F;
+    }
+
+    public static float getBlue(int color) {
+	return (color & 0xFF) / 255.0F;
+    }
+
+    public static float getAlpha(int color) {
+	return (color >> 24 & 0xFF) / 255.0F;
+    }
+
+    public static void color(int color) {
+	RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+    }
 }

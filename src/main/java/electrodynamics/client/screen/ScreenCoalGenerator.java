@@ -11,7 +11,7 @@ import electrodynamics.api.gui.GenericScreen;
 import electrodynamics.api.gui.component.GuiComponentElectricInfo;
 import electrodynamics.api.gui.component.GuiComponentInfo;
 import electrodynamics.api.gui.component.GuiComponentProgress;
-import electrodynamics.api.gui.component.GuiTemperatureInfo;
+import electrodynamics.api.gui.component.GuiComponentTemperature;
 import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
@@ -36,7 +36,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 	    }
 	    return 0;
 	}, this, 25, 25).flame());
-	components.add(new GuiTemperatureInfo(this::getTemperatureInformation, this, -GuiComponentInfo.SIZE + 1, 2 + GuiComponentInfo.SIZE));
+	components.add(new GuiComponentTemperature(this::getTemperatureInformation, this, -GuiComponentInfo.SIZE + 1, 2 + GuiComponentInfo.SIZE));
 	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
     }
 
