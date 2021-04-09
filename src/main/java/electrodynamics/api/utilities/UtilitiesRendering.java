@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 
 public class UtilitiesRendering {
@@ -100,6 +101,10 @@ public class UtilitiesRendering {
 		stack.rotate(new Quaternion(0, 180, 0, true));
 	    }
 	}
+    }
+
+    public static void bindTexture(ResourceLocation resource) {
+	Minecraft.getInstance().textureManager.bindTexture(resource);
     }
 
 }

@@ -149,7 +149,7 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-	return (LazyOptional<T>) LazyOptional.of(() -> new SidedInvWrapper(this, side));
+	return hasCapability(capability, side) ? (LazyOptional<T>) LazyOptional.of(() -> new SidedInvWrapper(this, side)) : LazyOptional.empty();
     }
 
     @Override

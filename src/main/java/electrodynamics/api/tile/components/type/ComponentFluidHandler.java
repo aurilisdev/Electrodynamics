@@ -167,7 +167,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
 	lastDirection = facing;
-	return (LazyOptional<T>) LazyOptional.of(() -> this);
+	return hasCapability(capability, facing) ? (LazyOptional<T>) LazyOptional.of(() -> this) : LazyOptional.empty();
     }
 
     @Override

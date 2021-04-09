@@ -112,7 +112,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
 	lastReturnedSide = side;
-	return (LazyOptional<T>) LazyOptional.of(() -> this);
+	return hasCapability(capability, side) ? (LazyOptional<T>) LazyOptional.of(() -> this) : LazyOptional.empty();
     }
 
     @Override
@@ -144,8 +144,8 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     public ComponentElectrodynamic maxJoules(double maxJoules) {
 	this.maxJoules = Math.max(maxJoules, 0);
-	if (this.joules > maxJoules) {
-	    this.joules = maxJoules;
+	if (joules > maxJoules) {
+	    joules = maxJoules;
 	}
 	return this;
     }
