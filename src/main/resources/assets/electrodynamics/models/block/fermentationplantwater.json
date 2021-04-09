@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/water",
-		"particle": "electrodynamics:model/water"
+		"0": "electrodynamics:fluid/water",
+		"particle": "electrodynamics:fluid/water"
 	},
 	"elements": [
 		{

@@ -2,8 +2,8 @@
 	"credit": "aurilisdev",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/ethanol",
-		"particle": "electrodynamics:model/ethanol"
+		"0": "electrodynamics:fluid/ethanol",
+		"particle": "electrodynamics:fluid/ethanol"
 	},
 	"elements": [
 		{
