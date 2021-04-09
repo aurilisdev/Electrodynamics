@@ -61,7 +61,7 @@ public class GuiComponentSlot extends GuiComponent {
     }
 
     public enum EnumSlotType {
-	NORMAL(18, 18, 0, 0), BATTERY(18, 18, 18, 0), LIQUID(18, 18, 36, 0), GAS(18, 18, 54, 0);
+	NORMAL(18, 18, 0, 0), BATTERY(18, 18, 18, 0), LIQUID(18, 18, 36, 0), GAS(18, 18, 54, 0), SPEED(18, 18, 72, 0);
 
 	private final int width;
 	private final int height;

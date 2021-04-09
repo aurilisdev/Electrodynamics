@@ -32,11 +32,11 @@ public class ContainerDO2OProcessor extends GenericContainer<GenericTile> {
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 19));
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 49));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 35));
-	addSlot(new SlotRestricted(inv, nextIndex(), 186, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 186, 34, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+	addSlot(new SlotRestricted(inv, nextIndex(), 153, 34, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 186, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
     }
 }

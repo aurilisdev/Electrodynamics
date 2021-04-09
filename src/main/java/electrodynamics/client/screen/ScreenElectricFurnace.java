@@ -1,66 +1,79 @@
 package electrodynamics.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import java.util.ArrayList;
+import java.util.List;
 
-import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
+import electrodynamics.api.gui.GenericScreen;
+import electrodynamics.api.gui.component.GuiComponentElectricInfo;
+import electrodynamics.api.gui.component.GuiComponentInfo;
+import electrodynamics.api.gui.component.GuiComponentProgress;
+import electrodynamics.api.gui.component.GuiComponentSlot;
+import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.api.tile.components.type.ComponentProcessor;
-import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
+import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.tile.TileElectricFurnace;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenElectricFurnace extends GenericContainerScreenUpgradeable<ContainerElectricFurnace> {
-    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/electricfurnace.png");
+public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnace> {
 
     public ScreenElectricFurnace(ContainerElectricFurnace container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-    }
-
-    @Override
-    public ResourceLocation getScreenBackground() {
-	return SCREEN_BACKGROUND;
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-	super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-	TileElectricFurnace furnace = container.getHostFromIntArray();
-	if (furnace != null) {
-	    ComponentElectrodynamic electro = furnace.getComponent(ComponentType.Electrodynamic);
-	    ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.o2oprocessor.usage",
-			    ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT)),
-		    (float) playerInventoryTitleX + 77, (float) playerInventoryTitleY - 11, 4210752);
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.o2oprocessor.voltage",
-			    ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE)),
-		    (float) playerInventoryTitleX + 77, playerInventoryTitleY, 4210752);
-	}
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
-	super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
-	TileElectricFurnace furnace = container.getHostFromIntArray();
-	if (furnace != null) {
-	    ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-	    if (processor.operatingTicks > 0) {
-		int progress = 12;
-		blit(stack, guiLeft + 39, guiTop + 36 + 12 - progress, 212, 12 - progress, 14, progress + 1);
+	components.add(new GuiComponentProgress(() -> {
+	    TileElectricFurnace furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > 0) {
+		    return processor.operatingTicks / processor.requiredTicks;
+		}
 	    }
+	    return 0;
+	}, this, 84, 34));
+	components.add(new GuiComponentProgress(() -> {
+	    TileElectricFurnace furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > 0) {
+		    return 1;
+		}
+	    }
+	    return 0;
+	}, this, 39, 36).flame());
+	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
+    }
 
-	    blit(stack, guiLeft + 79, guiTop + 34, 212, 14, (int) (processor.operatingTicks * 24 / processor.requiredTicks + 1), 16);
+    @Override
+    protected GuiComponentSlot createGuiSlot(Slot slot) {
+	return new GuiComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.xPos - 1, slot.yPos - 1);
+    }
+
+    private List<? extends ITextProperties> getEnergyInformation() {
+	ArrayList<ITextProperties> list = new ArrayList<>();
+	TileElectricFurnace box = container.getHostFromIntArray();
+	if (box != null) {
+	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
+
+	    list.add(new TranslationTextComponent("gui.o2oprocessor.usage",
+		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+	    list.add(new TranslationTextComponent("gui.o2oprocessor.voltage",
+		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
+	return list;
     }
 }
