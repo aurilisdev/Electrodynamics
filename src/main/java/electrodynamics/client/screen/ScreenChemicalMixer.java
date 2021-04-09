@@ -63,7 +63,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 	return new GuiComponentSlot(slot instanceof SlotRestricted && ((SlotRestricted) slot)
 		.isItemValid(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
 			? EnumSlotType.SPEED
-			: EnumSlotType.NORMAL,
+			: slot instanceof SlotRestricted ? EnumSlotType.LIQUID : EnumSlotType.NORMAL,
 		this, slot.xPos - 1, slot.yPos - 1);
     }
 
