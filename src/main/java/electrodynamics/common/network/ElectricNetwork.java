@@ -19,8 +19,8 @@ import net.minecraft.util.Direction;
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> implements IElectrodynamic {
     private double resistance;
     private double energyLoss;
-    private double lastEnergyLoss;
     private double voltage = 0.0;
+    private double lastEnergyLoss;
     private double lastVoltage = 0.0;
     private ArrayList<TileEntity> currentProducers = new ArrayList<>();
     private double transferBuffer = 0;
@@ -170,16 +170,17 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 
     @Override
     public void tick() {
-	super.tick();
-	TransferPack send = TransferPack.joulesVoltage(transferBuffer, voltage);
-	if (send.valid() && send.getAmps() > 0) {
-	    double loss = transferBuffer * transferBuffer * resistance / (voltage * voltage);
+	if ((int) voltage != 0 && transferBuffer / voltage > 0) {
+	    double watts = transferBuffer * 20;
+	    double loss = watts * watts * resistance / (voltage * voltage) / 20.0;
 	    transferBuffer -= loss;
 	    energyLoss += loss;
 	    transmittedThisTick += loss;
+	    TransferPack send = TransferPack.joulesVoltage(transferBuffer, voltage);
 	    transferBuffer -= sendToReceivers(send, currentProducers, false).getJoules();
 	    checkForOverload();
 	}
+	super.tick();
 	lastVoltage = voltage;
 	voltage = 0;
 	lastEnergyLoss = energyLoss;
