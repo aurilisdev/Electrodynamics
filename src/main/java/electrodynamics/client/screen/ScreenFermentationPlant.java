@@ -46,11 +46,11 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	    if (furnace != null) {
 		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
 		if (processor.operatingTicks > 0) {
-		    return processor.operatingTicks / processor.requiredTicks;
+		    return processor.operatingTicks / processor.requiredTicks * GuiComponentProgress.WIDTHARROW;
 		}
 	    }
 	    return 0;
-	}, this, 46, 30));
+	}, this, 46, 30).left());
 	components.add(new GuiComponentFluid(() -> {
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
@@ -77,11 +77,10 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	if (box != null) {
 	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
 	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
-
-	    list.add(new TranslationTextComponent("gui.chemicalmixer.usage",
+	    list.add(new TranslationTextComponent("gui.fermentationplant.usage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
-	    list.add(new TranslationTextComponent("gui.chemicalmixer.voltage",
+	    list.add(new TranslationTextComponent("gui.fermentationplant.voltage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
