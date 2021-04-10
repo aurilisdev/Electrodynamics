@@ -3,6 +3,7 @@ package electrodynamics.client.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
@@ -46,11 +47,22 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	    if (furnace != null) {
 		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
 		if (processor.operatingTicks > 0) {
-		    return processor.operatingTicks / processor.requiredTicks * GuiComponentProgress.WIDTHARROW;
+		    return Math.min(1.0, processor.operatingTicks / (processor.requiredTicks / 2.0));
 		}
 	    }
 	    return 0;
-	}, this, 46, 30).left());
+	}, this, 42, 30));
+	components.add(new GuiComponentProgress(() -> {
+	    GenericTile furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > 17) {
+		    return Math.min(1.0, (processor.operatingTicks - processor.requiredTicks / 2.0) / (processor.requiredTicks / 2.0));
+		}
+	    }
+	    return 0;
+	}, this, 98, 30));
+	components.add(new GuiComponentProgress(() -> 0, this, 42, 50).left());
 	components.add(new GuiComponentFluid(() -> {
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
@@ -59,6 +71,15 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	    }
 	    return null;
 	}, this, 21, 18));
+	components.add(new GuiComponentFluid(() -> {
+	    TileFermentationPlant boiler = container.getHostFromIntArray();
+	    if (boiler != null) {
+		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		return handler.getTankFromFluid(DeferredRegisters.fluidEthanol);
+	    }
+	    return null;
+	}, this, 127, 18));
+
 	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
     }
 

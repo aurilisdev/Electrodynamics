@@ -39,6 +39,7 @@ public class GuiComponentProgress extends GuiComponent {
 
     public GuiComponentProgress left() {
 	left = true;
+	// TODO: Finish left side render
 	return this;
     }
 
@@ -51,7 +52,7 @@ public class GuiComponentProgress extends GuiComponent {
     public void renderBackground(MatrixStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
 	UtilitiesRendering.bindTexture(resource);
 	if (left) {
-	    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW * 2, POSYARROW, WIDTHARROW, HEIGHTARROW);
+	    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW * 3, POSYARROW, WIDTHARROW, HEIGHTARROW);
 	} else {
 	    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, isFlame ? POSXFLAME : POSXARROW,
 		    isFlame ? POSYFLAME + HEIGHTFLAME : POSYARROW, isFlame ? WIDTHFLAME : WIDTHARROW, isFlame ? HEIGHTFLAME : HEIGHTARROW);
