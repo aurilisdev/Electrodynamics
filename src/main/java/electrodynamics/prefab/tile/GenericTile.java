@@ -1,12 +1,12 @@
-package electrodynamics.api.tile;
+package electrodynamics.prefab.tile;
 
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.api.tile.components.Component;
-import electrodynamics.api.tile.components.ComponentType;
-import electrodynamics.api.tile.components.type.ComponentName;
-import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.utilities.Scheduler;
+import electrodynamics.prefab.tile.components.Component;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentName;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;

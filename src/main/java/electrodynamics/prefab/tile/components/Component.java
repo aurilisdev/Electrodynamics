@@ -1,6 +1,6 @@
-package electrodynamics.api.tile.components;
+package electrodynamics.prefab.tile.components;
 
-import electrodynamics.api.tile.GenericTile;
+import electrodynamics.prefab.tile.GenericTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;

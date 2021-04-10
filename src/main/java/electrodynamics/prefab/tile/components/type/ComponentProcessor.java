@@ -1,13 +1,13 @@
-package electrodynamics.api.tile.components.type;
+package electrodynamics.prefab.tile.components.type;
 
 import java.util.HashSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.Component;
-import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.Component;
+import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 

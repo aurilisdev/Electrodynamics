@@ -3,6 +3,7 @@ package electrodynamics.common.inventory.container;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.prefab.inventory.container.GenericContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;

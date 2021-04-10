@@ -1,4 +1,4 @@
-package electrodynamics.api.tile;
+package electrodynamics.prefab.tile;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

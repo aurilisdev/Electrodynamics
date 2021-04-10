@@ -1,4 +1,4 @@
-package electrodynamics.api.tile.components.type;
+package electrodynamics.prefab.tile.components.type;
 
 import java.util.HashSet;
 import java.util.function.BiFunction;
@@ -8,11 +8,11 @@ import java.util.function.DoubleSupplier;
 
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.IElectrodynamic;
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.Component;
-import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.utilities.UtilitiesTiles;
 import electrodynamics.api.utilities.object.TransferPack;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.Component;
+import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;

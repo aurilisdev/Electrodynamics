@@ -1,4 +1,4 @@
-package electrodynamics.common.inventory.container;
+package electrodynamics.prefab.inventory.container;
 
 import javax.annotation.Nullable;
 

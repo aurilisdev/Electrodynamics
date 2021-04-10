@@ -10,11 +10,11 @@ import com.google.common.collect.Sets;
 
 import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.pipe.IPipe;
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.utilities.Scheduler;
 import electrodynamics.common.network.FluidNetwork;
 import electrodynamics.common.network.FluidUtilities;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;

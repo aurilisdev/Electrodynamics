@@ -1,10 +1,10 @@
-package electrodynamics.api.tile.components.type;
+package electrodynamics.prefab.tile.components.type;
 
 import java.util.function.Consumer;
 
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.Component;
-import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.Component;
+import electrodynamics.prefab.tile.components.ComponentType;
 
 public class ComponentTickable implements Component {
     private GenericTile holder;

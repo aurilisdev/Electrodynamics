@@ -1,13 +1,13 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.ComponentType;
-import electrodynamics.api.tile.components.type.ComponentPacketHandler;
 import electrodynamics.api.utilities.Scheduler;
 import electrodynamics.api.utilities.object.Location;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;

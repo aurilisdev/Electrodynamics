@@ -1,10 +1,10 @@
-package electrodynamics.api.tile.components.type;
+package electrodynamics.prefab.tile.components.type;
 
 import java.util.function.BiFunction;
 
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.Component;
-import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.Component;
+import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

@@ -3,13 +3,13 @@ package electrodynamics.common.recipe;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.ComponentType;
-import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.api.tile.components.type.ComponentProcessor;
-import electrodynamics.api.tile.components.type.ComponentProcessorType;
-import electrodynamics.api.tile.processing.DO2OProcessingRecipe;
-import electrodynamics.api.tile.processing.O2OProcessingRecipe;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
+import electrodynamics.prefab.tile.processing.DO2OProcessingRecipe;
+import electrodynamics.prefab.tile.processing.O2OProcessingRecipe;
 import net.minecraft.tileentity.TileEntityType;
 
 public class MachineRecipes {

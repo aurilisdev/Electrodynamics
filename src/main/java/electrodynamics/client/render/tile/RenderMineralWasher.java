@@ -2,10 +2,10 @@ package electrodynamics.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.tile.components.ComponentType;
-import electrodynamics.api.tile.components.type.ComponentDirection;
-import electrodynamics.api.tile.components.type.ComponentProcessor;
 import electrodynamics.common.tile.TileMineralWasher;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;

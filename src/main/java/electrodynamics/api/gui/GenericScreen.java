@@ -10,7 +10,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.gui.component.GuiComponentSlot;
 import electrodynamics.api.gui.component.IGuiComponent;
 import electrodynamics.api.utilities.UtilitiesRendering;
-import electrodynamics.common.inventory.container.GenericContainer;
+import electrodynamics.prefab.inventory.container.GenericContainer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

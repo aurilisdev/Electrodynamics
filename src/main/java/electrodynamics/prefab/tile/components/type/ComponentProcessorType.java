@@ -1,4 +1,4 @@
-package electrodynamics.api.tile.components.type;
+package electrodynamics.prefab.tile.components.type;
 
 public enum ComponentProcessorType {
     ObjectToObject, DoubleObjectToObject

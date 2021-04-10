@@ -1,4 +1,4 @@
-package electrodynamics.api.tile.components.type;
+package electrodynamics.prefab.tile.components.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.components.Component;
-import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.utilities.UtilitiesTiles;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.Component;
+import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;

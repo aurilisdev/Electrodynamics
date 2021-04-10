@@ -1,7 +1,7 @@
 package electrodynamics.api.electricity;
 
-import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.api.utilities.object.TransferPack;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

@@ -1,4 +1,4 @@
-package electrodynamics.api.tile;
+package electrodynamics.prefab.tile;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.PacketUpdateTile;

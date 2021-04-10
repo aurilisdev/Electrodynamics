@@ -1,8 +1,8 @@
 package electrodynamics.common.tile.network;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.tile.components.ComponentType;
-import electrodynamics.api.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.tileentity.ITickableTileEntity;
 
 public class TileLogisticalWire extends TileWire implements ITickableTileEntity {

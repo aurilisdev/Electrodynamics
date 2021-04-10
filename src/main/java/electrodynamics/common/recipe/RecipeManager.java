@@ -2,8 +2,6 @@ package electrodynamics.common.recipe;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
-import electrodynamics.api.tile.processing.DO2OProcessingRecipe;
-import electrodynamics.api.tile.processing.O2OProcessingRecipe;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -12,6 +10,8 @@ import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
+import electrodynamics.prefab.tile.processing.DO2OProcessingRecipe;
+import electrodynamics.prefab.tile.processing.O2OProcessingRecipe;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

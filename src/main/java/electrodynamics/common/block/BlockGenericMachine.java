@@ -5,9 +5,9 @@ import java.util.List;
 
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.api.tile.GenericTile;
-import electrodynamics.api.tile.IWrenchable;
-import electrodynamics.api.tile.components.ComponentType;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.IWrenchable;
+import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
