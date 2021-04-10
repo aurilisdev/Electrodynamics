@@ -71,10 +71,8 @@ public class FluidEthanol extends Fluid {
 
     @Override
     protected FluidAttributes createAttributes() {
-	return FluidAttributes
-		.builder(new ResourceLocation(References.ID + ":textures/fluid/ethanol.png"),
-			new ResourceLocation(References.ID + ":textures/fluid/ethanol.png"))
-		.translationKey("fluid.electrodynamics.ethanol").color(0).density(0).temperature(0).luminosity(0).viscosity(0).build(this);
+	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/ethanol"), new ResourceLocation(References.ID + ":fluid/ethanol"))
+		.translationKey("fluid.electrodynamics.ethanol").color(-428574419).build(this);
     }
 
     @Override

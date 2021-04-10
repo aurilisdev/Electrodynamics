@@ -49,7 +49,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public final class DevRenderer {
-    private final static LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
+    private static final LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
 	    .ticker(new Ticker() {
 		@Override
 		public long read() {
@@ -63,7 +63,7 @@ public final class DevRenderer {
 	    URL url = new URL("https://raw.githubusercontent.com/aurilisdev/Electrodynamics/master/capeplayers.txt");
 
 	    Scanner sc = new Scanner(url.openStream());
-	    StringBuffer sb = new StringBuffer();
+	    StringBuilder sb = new StringBuilder();
 	    while (sc.hasNext()) {
 		sb.append(sc.next());
 	    }
@@ -141,14 +141,11 @@ public final class DevRenderer {
 	private static final int HEIGHT = 20;
 
 	private static final int WIDTH = 10;
+	private static final Long2BooleanMap fluidCache = new Long2BooleanOpenHashMap(10);
 
 	private final ImmutableList<Point> points;
 
 	private final ImmutableList<Quad> quads;
-
-	private final Long2BooleanMap fluidCache = new Long2BooleanOpenHashMap(10);
-
-	private BlockPos scratchPos = new BlockPos(0, 0, 0);
 
 	private double posX;
 
@@ -194,10 +191,14 @@ public final class DevRenderer {
 		    res.add(collision);
 		    points.add(new Point(-(x - width * 0.5F) * scale, -y * scale, 0, mass, res.build()));
 		    if (x > 0 && y > 0) {
-			int p00x = x - 1, p00y = y - 1;
-			int p01x = x - 1, p01y = y;
-			int p11x = x, p10y = y;
-			int p10x = x, p11y = y - 1;
+			int p00x = x - 1;
+			int p00y = y - 1;
+			int p01x = x - 1;
+			int p01y = y;
+			int p11x = x;
+			int p10y = y;
+			int p10x = x;
+			int p11y = y - 1;
 			Quad.Vertex v00 = Quad.vert(points.get(p00x + p00y * columns), p00x, p00y, width, height);
 			Quad.Vertex v01 = Quad.vert(points.get(p01x + p01y * columns), p01x, p01y, width, height);
 			Quad.Vertex v11 = Quad.vert(points.get(p11x + p10y * columns), p11x, p10y, width, height);
@@ -245,7 +246,7 @@ public final class DevRenderer {
 
 	private void updatePoints(PlayerEntity player) {
 	    for (Point point : points) {
-		point.update(player.world, this, DELTA_TIME);
+		point.update(player.world, DELTA_TIME);
 	    }
 	    for (int i = 0; i < ITERATIONS; i++) {
 		for (int j = points.size(); j-- > 0;) {
@@ -254,18 +255,19 @@ public final class DevRenderer {
 	    }
 	}
 
-	private void updateFluidCache(PlayerEntity player) {
+	private static void updateFluidCache(PlayerEntity player) {
 	    if (player.ticksExisted % FLUID_CACHE_CLEAR_RATE == 0 && fluidCache.size() > FLUID_CACHE_CLEAR_SIZE) {
 		fluidCache.clear();
 	    }
 	}
 
-	private boolean isFluid(World world, float x, float y, float z) {
-	    long key = (scratchPos = new BlockPos(x, y, z)).toLong();
+	private static boolean isFluid(World world, float x, float y, float z) {
+	    BlockPos scratchPos = new BlockPos(x, y, z);
+	    long key = scratchPos.toLong();
 	    if (fluidCache.containsKey(key)) {
 		return fluidCache.get(key);
 	    }
-	    boolean isFluid = isFluid(world.getBlockState(scratchPos));
+	    boolean isFluid = RenderCape.isFluid(world.getBlockState(scratchPos));
 	    fluidCache.put(key, isFluid);
 	    return isFluid;
 	}
@@ -519,8 +521,8 @@ public final class DevRenderer {
 		motionZ += z;
 	    }
 
-	    private void update(World world, RenderCape cape, float delta) {
-		applyForce(0, cape.isFluid(world, posX, posY, posZ) ? FLUID_FORCE : GRAVITY, 0);
+	    private void update(World world, float delta) {
+		applyForce(0, isFluid(world, posX, posY, posZ) ? FLUID_FORCE : GRAVITY, 0);
 		float x = posX + (posX - prevPosX) * delta + motionX * 0.5F * (delta * delta);
 		float y = posY + (posY - prevPosY) * delta + motionY * 0.5F * (delta * delta);
 		float z = posZ + (posZ - prevPosZ) * delta + motionZ * 0.5F * (delta * delta);
@@ -540,8 +542,8 @@ public final class DevRenderer {
 	    }
 	}
 
-	private abstract static class PlayerResolver implements ConstraintResolver {
-	    final static float getBack(PlayerEntity player, float offset) {
+	interface PlayerResolver extends ConstraintResolver {
+	    default float getBack(PlayerEntity player, float offset) {
 		if (player.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty()) {
 		    return offset;
 		}
@@ -549,7 +551,7 @@ public final class DevRenderer {
 	    }
 	}
 
-	private static final class PlayerPinResolver extends PlayerResolver {
+	private static final class PlayerPinResolver implements PlayerResolver {
 	    private final float x;
 
 	    private final float y;
@@ -629,7 +631,7 @@ public final class DevRenderer {
 	    }
 	}
 
-	private static final class PlayerCollisionResolver extends PlayerResolver {
+	private static final class PlayerCollisionResolver implements PlayerResolver {
 	    @Override
 	    public void resolve(PlayerEntity player, Point point) {
 		float yaw = (float) (Math.toRadians(player.renderYawOffset) - Math.PI / 2);

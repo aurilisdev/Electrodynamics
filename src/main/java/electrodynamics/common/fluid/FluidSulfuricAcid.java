@@ -71,11 +71,9 @@ public class FluidSulfuricAcid extends Fluid {
 
     @Override
     protected FluidAttributes createAttributes() {
-
 	return FluidAttributes
-		.builder(new ResourceLocation(References.ID + ":textures/fluid/sulfuricacid.png"),
-			new ResourceLocation(References.ID + ":textures/fluid/sulfuricacid.png"))
-		.translationKey("fluid.electrodynamics.sulfuricacid").color(0).density(0).temperature(0).luminosity(0).viscosity(0).build(this);
+		.builder(new ResourceLocation(References.ID + ":fluid/sulfuricacid"), new ResourceLocation(References.ID + ":fluid/sulfuricacid"))
+		.translationKey("fluid.electrodynamics.sulfuricacid").color(-375879936).build(this);
     }
 
     @Override

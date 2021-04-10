@@ -77,11 +77,8 @@ public class FluidMineral extends Fluid {
 
     @Override
     protected FluidAttributes createAttributes() {
-
-	return FluidAttributes
-		.builder(new ResourceLocation(References.ID + ":textures/fluid/mineral.png"),
-			new ResourceLocation(References.ID + ":textures/fluid/mineral.png"))
-		.translationKey("fluid.electrodynamics.mineral").color(0).density(0).temperature(0).luminosity(0).viscosity(0).build(this);
+	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/mineral"), new ResourceLocation(References.ID + ":fluid/mineral"))
+		.translationKey("fluid.electrodynamics.mineral").color(-1383766208).build(this);
     }
 
     @Override

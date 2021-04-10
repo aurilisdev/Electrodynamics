@@ -1,65 +1,98 @@
 package electrodynamics.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 
-import electrodynamics.api.References;
+import electrodynamics.DeferredRegisters;
+import electrodynamics.api.ISubtype;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
+import electrodynamics.api.gui.GenericScreen;
+import electrodynamics.api.gui.component.GuiComponentElectricInfo;
+import electrodynamics.api.gui.component.GuiComponentFluid;
+import electrodynamics.api.gui.component.GuiComponentInfo;
+import electrodynamics.api.gui.component.GuiComponentProgress;
+import electrodynamics.api.gui.component.GuiComponentSlot;
+import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
+import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.api.tile.components.type.ComponentFluidHandler;
 import electrodynamics.api.tile.components.type.ComponentProcessor;
-import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
+import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
+import electrodynamics.common.inventory.container.slot.SlotRestricted;
+import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenChemicalCrystallizer extends GenericContainerScreenUpgradeable<ContainerChemicalCrystallizer> {
-    public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/chemicalcrystallizer.png");
+public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalCrystallizer> {
 
     public ScreenChemicalCrystallizer(ContainerChemicalCrystallizer container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-	xSize = 176;
+	components.add(new GuiComponentProgress(() -> {
+	    GenericTile furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > 0) {
+		    return processor.operatingTicks / processor.requiredTicks;
+		}
+	    }
+	    return 0;
+	}, this, 41, 34));
+	components.add(new GuiComponentFluid(() -> {
+	    TileChemicalCrystallizer boiler = container.getHostFromIntArray();
+	    if (boiler != null) {
+		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		for (Entry<FluidMineral, ISubtype> mineral : DeferredRegisters.MINERALFLUIDSUBTYPE_MAPPINGS.entrySet()) {
+		    FluidTank tank = handler.getTankFromFluid(mineral.getKey());
+		    if (tank != null && !tank.getFluid().isEmpty()) {
+			return tank;
+		    }
+		}
+		return handler.getTankFromFluid(Fluids.WATER);
+	    }
+	    return null;
+	}, this, 21, 18));
+	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
     }
 
     @Override
-    public ResourceLocation getScreenBackground() {
-	return SCREEN_BACKGROUND;
+    protected GuiComponentSlot createGuiSlot(Slot slot) {
+	return new GuiComponentSlot(slot instanceof SlotRestricted && ((SlotRestricted) slot)
+		.isItemValid(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
+			? EnumSlotType.SPEED
+			: EnumSlotType.NORMAL,
+		this, slot.xPos - 1, slot.yPos - 1);
     }
 
-    @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-	font.func_243248_b(matrixStack, title, titleX, titleY, 4210752);
-	TileChemicalCrystallizer plant = container.getHostFromIntArray();
-	if (plant != null) {
-	    ComponentElectrodynamic electro = plant.getComponent(ComponentType.Electrodynamic);
-	    ComponentProcessor processor = plant.getComponent(ComponentType.Processor);
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.chemicalcrystallizer.usage",
-			    ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT)),
-		    playerInventoryTitleX, playerInventoryTitleY, 4210752);
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.chemicalcrystallizer.voltage",
-			    ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE)),
-		    (float) playerInventoryTitleX + 85, playerInventoryTitleY, 4210752);
+    private List<? extends ITextProperties> getEnergyInformation() {
+	ArrayList<ITextProperties> list = new ArrayList<>();
+	GenericTile box = container.getHostFromIntArray();
+	if (box != null) {
+	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
+
+	    list.add(new TranslationTextComponent("gui.chemicalcrystallizer.usage",
+		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+	    list.add(new TranslationTextComponent("gui.chemicalcrystallizer.voltage",
+		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
+	return list;
     }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
-	super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
-	TileChemicalCrystallizer plant = container.getHostFromIntArray();
-	if (plant != null) {
-	    ComponentProcessor processor = plant.getComponent(ComponentType.Processor);
-	    int burnLeftScaled = (int) (processor.operatingTicks * 34.0 / processor.requiredTicks);
-	    blit(stack, guiLeft + 41, guiTop + 34, 210, 14, burnLeftScaled, 16);
-	    blit(stack, guiLeft + 21, guiTop + 68 - (plant.hasFluid ? 50 : 0), 214, 31, 16, plant.hasFluid ? 50 : 0);
-	}
-    }
-
 }

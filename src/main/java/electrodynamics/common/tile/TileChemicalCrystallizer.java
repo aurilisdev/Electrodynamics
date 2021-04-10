@@ -35,7 +35,8 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon));
-	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
+		.maxJoules(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK * 10));
 	addComponent(new ComponentInventory(this).size(4).relativeSlotFaces(0, Direction.values())
 		.valid((slot, stack) -> slot < 1 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.chemicalcrystallizer")
