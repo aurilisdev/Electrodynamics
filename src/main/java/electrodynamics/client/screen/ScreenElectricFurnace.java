@@ -3,8 +3,8 @@ package electrodynamics.client.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import electrodynamics.api.gui.GenericScreen;
 import electrodynamics.api.gui.component.GuiComponentElectricInfo;
 import electrodynamics.api.gui.component.GuiComponentInfo;
@@ -68,10 +68,10 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
 
 	    list.add(new TranslationTextComponent("gui.o2oprocessor.usage",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.o2oprocessor.voltage",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;

@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import electrodynamics.api.gui.GenericScreen;
 import electrodynamics.api.gui.component.GuiComponentElectricInfo;
 import electrodynamics.api.gui.component.GuiComponentInfo;
@@ -47,10 +47,10 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 	    list.add(new TranslationTextComponent("gui.coalgenerator.timeleft",
 		    new StringTextComponent(box.clientBurnTime / 20 + "s").mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.coalgenerator.temperature",
-		    new StringTextComponent(ElectricityChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C")
-			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+		    new StringTextComponent(ChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C").mergeStyle(TextFormatting.GRAY))
+			    .mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.coalgenerator.heat",
-		    new StringTextComponent(ElectricityChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%")
+		    new StringTextComponent(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%")
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;
@@ -64,13 +64,13 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		    Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((box.clientHeat - 27.0) / (3000.0 - 27.0), 1),
 		    Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	    list.add(new TranslationTextComponent("gui.coalgenerator.current",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(output.getAmps(), ElectricUnit.AMPERE))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.coalgenerator.output",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(output.getWatts(), ElectricUnit.WATT))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.coalgenerator.voltage",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;
@@ -88,15 +88,15 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		    playerInventoryTitleX + 60f, playerInventoryTitleY - 53f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.coalgenerator.current",
-			    ElectricityChatFormatter.getDisplayShort(output.getAmps(), ElectricUnit.AMPERE)),
+			    ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)),
 		    playerInventoryTitleX + 60f, playerInventoryTitleY - 40f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.coalgenerator.output",
-			    ElectricityChatFormatter.getDisplayShort(output.getWatts(), ElectricUnit.WATT)),
+			    ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)),
 		    playerInventoryTitleX + 60f, playerInventoryTitleY - 27f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.coalgenerator.voltage",
-			    ElectricityChatFormatter.getDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE)),
+			    ChatFormatter.getElectricDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE)),
 		    playerInventoryTitleX + 60f, playerInventoryTitleY - 14f, 4210752);
 	}
     }

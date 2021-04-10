@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.ISubtype;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import electrodynamics.api.gui.GenericScreen;
 import electrodynamics.api.gui.component.GuiComponentElectricInfo;
 import electrodynamics.api.gui.component.GuiComponentFluid;
@@ -87,10 +87,10 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
 
 	    list.add(new TranslationTextComponent("gui.chemicalcrystallizer.usage",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.chemicalcrystallizer.voltage",
-		    new StringTextComponent(ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;

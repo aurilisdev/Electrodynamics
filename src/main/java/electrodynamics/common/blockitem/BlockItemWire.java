@@ -2,8 +2,8 @@ package electrodynamics.common.blockitem;
 
 import java.util.List;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
 import electrodynamics.common.block.connect.BlockWire;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;
@@ -26,9 +26,9 @@ public class BlockItemWire extends BlockItem {
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 	super.addInformation(stack, worldIn, tooltip, flagIn);
 	tooltip.add(new TranslationTextComponent("tooltip.itemwire.resistance",
-		ElectricityChatFormatter.getDisplay(wire.wire.resistance, ElectricUnit.RESISTANCE)).mergeStyle(TextFormatting.GRAY));
+		ChatFormatter.getElectricDisplay(wire.wire.resistance, ElectricUnit.RESISTANCE)).mergeStyle(TextFormatting.GRAY));
 	tooltip.add(
-		new TranslationTextComponent("tooltip.itemwire.maxamps", ElectricityChatFormatter.getDisplay(wire.wire.capacity, ElectricUnit.AMPERE))
+		new TranslationTextComponent("tooltip.itemwire.maxamps", ChatFormatter.getElectricDisplay(wire.wire.capacity, ElectricUnit.AMPERE))
 			.mergeStyle(TextFormatting.GRAY));
 	if (wire.wire.logistical) {
 	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.logistical"));

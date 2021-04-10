@@ -5,10 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import electrodynamics.api.References;
-import electrodynamics.api.network.AbstractNetwork;
-import electrodynamics.api.network.IAbstractConductor;
 import electrodynamics.api.network.ITickableNetwork;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,21 +33,6 @@ public class NetworkRegistry {
 		Iterator<ITickableNetwork> it = networks.iterator();
 		while (it.hasNext()) {
 		    ITickableNetwork net = it.next();
-		    if (net instanceof AbstractNetwork<?, ?, ?, ?>) {
-			AbstractNetwork<?, ?, ?, ?> abs = (AbstractNetwork<?, ?, ?, ?>) net;
-			Iterator<?> it2 = abs.conductorSet.iterator();
-			while (it2.hasNext()) {
-			    IAbstractConductor conductor = (IAbstractConductor) it2.next();
-			    if (conductor.getAbstractNetwork() != net) {
-				it2.remove();
-			    } else if (conductor instanceof TileEntity) {
-				TileEntity obj = (TileEntity) conductor;
-				if (obj.isRemoved()) {
-				    it2.remove();
-				}
-			    }
-			}
-		    }
 		    if (net.getSize() == 0) {
 			it.remove();
 		    } else {

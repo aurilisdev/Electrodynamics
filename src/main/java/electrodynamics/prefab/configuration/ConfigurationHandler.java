@@ -1,4 +1,4 @@
-package electrodynamics.api.configuration;
+package electrodynamics.prefab.configuration;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,6 +10,14 @@ import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
 import electrodynamics.api.References;
+import electrodynamics.api.configuration.BooleanValue;
+import electrodynamics.api.configuration.ByteValue;
+import electrodynamics.api.configuration.Configuration;
+import electrodynamics.api.configuration.DoubleValue;
+import electrodynamics.api.configuration.FloatValue;
+import electrodynamics.api.configuration.IntValue;
+import electrodynamics.api.configuration.LongValue;
+import electrodynamics.api.configuration.StringValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;

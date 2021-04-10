@@ -1,80 +1,90 @@
 package electrodynamics.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import java.util.ArrayList;
+import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.electricity.formatting.ElectricityChatFormatter;
+import electrodynamics.api.gui.GenericScreen;
+import electrodynamics.api.gui.component.GuiComponentElectricInfo;
+import electrodynamics.api.gui.component.GuiComponentFluid;
+import electrodynamics.api.gui.component.GuiComponentInfo;
+import electrodynamics.api.gui.component.GuiComponentProgress;
+import electrodynamics.api.gui.component.GuiComponentSlot;
+import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
+import electrodynamics.api.tile.GenericTile;
 import electrodynamics.api.tile.components.ComponentType;
 import electrodynamics.api.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.api.tile.components.type.ComponentFluidHandler;
 import electrodynamics.api.tile.components.type.ComponentProcessor;
-import electrodynamics.client.screen.generic.GenericContainerScreenUpgradeable;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.slot.SlotRestricted;
+import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileFermentationPlant;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenFermentationPlant extends GenericContainerScreenUpgradeable<ContainerFermentationPlant> {
+public class ScreenFermentationPlant extends GenericScreen<ContainerFermentationPlant> {
     public static final ResourceLocation SCREEN_BACKGROUND = new ResourceLocation(References.ID + ":textures/gui/fermentationplant.png");
 
     public ScreenFermentationPlant(ContainerFermentationPlant container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-    }
-
-    @Override
-    public ResourceLocation getScreenBackground() {
-	return SCREEN_BACKGROUND;
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-	font.func_243248_b(matrixStack, title, titleX, titleY, 4210752);
-	TileFermentationPlant plant = container.getHostFromIntArray();
-	if (plant != null) {
-	    ComponentElectrodynamic electro = plant.getComponent(ComponentType.Electrodynamic);
-	    ComponentProcessor processor = plant.getComponent(ComponentType.Processor);
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.fermentationplant.usage",
-			    ElectricityChatFormatter.getDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT)),
-		    playerInventoryTitleX, playerInventoryTitleY, 4210752);
-	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.fermentationplant.voltage",
-			    ElectricityChatFormatter.getDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE)),
-		    (float) playerInventoryTitleX + 85, playerInventoryTitleY, 4210752);
-	}
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
-	super.drawGuiContainerBackgroundLayer(stack, partialTicks, mouseX, mouseY);
-	TileFermentationPlant plant = container.getHostFromIntArray();
-	if (plant != null) {
-	    ComponentProcessor processor = plant.getComponent(ComponentType.Processor);
-	    ComponentFluidHandler handler = plant.getComponent(ComponentType.FluidHandler);
-	    int burnLeftScaled = (int) (processor.operatingTicks * 34.0 / processor.requiredTicks);
-	    blit(stack, guiLeft + 44, guiTop + 30, 212, 14, Math.min(burnLeftScaled * 2 + 1, 34), 16);
-	    if (burnLeftScaled > 17) {
-		blit(stack, guiLeft + 44 + 60, guiTop + 30, 212, 14, Math.min(burnLeftScaled * 2 - 34 + 1, 34), 16);
+	components.add(new GuiComponentProgress(() -> {
+	    GenericTile furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > 0) {
+		    return processor.operatingTicks / processor.requiredTicks;
+		}
 	    }
-	    blit(stack, guiLeft + 21,
-		    guiTop + 68 - (int) (handler.getStackFromFluid(Fluids.WATER).getAmount() / (float) TileFermentationPlant.TANKCAPACITY_WATER * 50),
-		    214 + 18, 31, 16,
-		    (int) (handler.getStackFromFluid(Fluids.WATER).getAmount() / (float) TileFermentationPlant.TANKCAPACITY_WATER * 50));
-	    blit(stack, guiLeft + 139,
-		    guiTop + 68
-			    - (int) (handler.getStackFromFluid(DeferredRegisters.fluidEthanol).getAmount()
-				    / (float) TileFermentationPlant.TANKCAPACITY_ETHANOL * 50.0),
-		    214, 31, 16, (int) (handler.getStackFromFluid(DeferredRegisters.fluidEthanol).getAmount()
-			    / (float) TileFermentationPlant.TANKCAPACITY_ETHANOL * 50.0));
-	}
+	    return 0;
+	}, this, 46, 30));
+	components.add(new GuiComponentFluid(() -> {
+	    TileFermentationPlant boiler = container.getHostFromIntArray();
+	    if (boiler != null) {
+		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		return handler.getTankFromFluid(Fluids.WATER);
+	    }
+	    return null;
+	}, this, 21, 18));
+	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
     }
 
+    @Override
+    protected GuiComponentSlot createGuiSlot(Slot slot) {
+	return new GuiComponentSlot(slot instanceof SlotRestricted && ((SlotRestricted) slot)
+		.isItemValid(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
+			? EnumSlotType.SPEED
+			: slot instanceof SlotRestricted ? EnumSlotType.LIQUID : EnumSlotType.NORMAL,
+		this, slot.xPos - 1, slot.yPos - 1);
+    }
+
+    private List<? extends ITextProperties> getEnergyInformation() {
+	ArrayList<ITextProperties> list = new ArrayList<>();
+	GenericTile box = container.getHostFromIntArray();
+	if (box != null) {
+	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
+
+	    list.add(new TranslationTextComponent("gui.chemicalmixer.usage",
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+	    list.add(new TranslationTextComponent("gui.chemicalmixer.voltage",
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+	}
+	return list;
+    }
 }

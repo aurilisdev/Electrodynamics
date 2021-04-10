@@ -8,12 +8,12 @@ import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
-import electrodynamics.api.configuration.ConfigurationHandler;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
