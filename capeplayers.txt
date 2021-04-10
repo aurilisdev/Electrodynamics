@@ -5,6 +5,6 @@ dev:donator,
 skip999:dev,
 gunmetalblack:dev,
 pyro206:dev,
-squaredoffcircle:donator
+squaredoffcircle:donator,
 father_fin:donator
 end of shit
