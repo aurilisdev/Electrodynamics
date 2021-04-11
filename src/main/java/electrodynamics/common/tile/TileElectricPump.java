@@ -53,7 +53,7 @@ public class TileElectricPump extends GenericTileTicking {
 	}
 	if (isGenerating && output.valid()) {
 	    electro.joules(electro.getJoulesStored() - Constants.ELECTRICPUMP_USAGE_PER_TICK);
-	    FluidUtilities.receiveFluid(output.getSafe(), direction.getOpposite(), new FluidStack(Fluids.WATER, 50), false);
+	    FluidUtilities.receiveFluid(output.getSafe(), direction.getOpposite(), new FluidStack(Fluids.WATER, 200), false);
 	}
     }
 

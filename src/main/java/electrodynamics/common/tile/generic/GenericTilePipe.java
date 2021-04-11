@@ -37,7 +37,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     @Nonnull
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	    return LazyOptional.of(() -> handler.get(facing.ordinal())).cast();
+	    return LazyOptional.of(() -> handler.get((facing == null ? Direction.UP : facing).ordinal())).cast();
 	}
 	return super.getCapability(capability, facing);
     }
