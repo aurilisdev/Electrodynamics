@@ -1,4 +1,4 @@
-package electrodynamics.api.utilities;
+package electrodynamics.prefab.utilities;
 
 import java.util.Iterator;
 import java.util.Map.Entry;

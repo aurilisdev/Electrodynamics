@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.utilities.object.Location;
 import electrodynamics.common.tile.TileMultiSubnode;
+import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

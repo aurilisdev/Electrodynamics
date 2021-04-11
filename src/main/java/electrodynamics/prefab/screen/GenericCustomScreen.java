@@ -9,8 +9,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public abstract class GenericContainerScreen<T extends Container> extends ContainerScreen<T> {
-    protected GenericContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+public abstract class GenericCustomScreen<T extends Container> extends ContainerScreen<T> {
+    protected GenericCustomScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 	super(screenContainer, inv, titleIn);
     }
 

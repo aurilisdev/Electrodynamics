@@ -1,4 +1,4 @@
-package electrodynamics.api.network;
+package electrodynamics.prefab.network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import electrodynamics.api.network.AbstractNetworkFinder;
+import electrodynamics.api.network.IAbstractConductor;
+import electrodynamics.api.network.ITickableNetwork;
 import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;

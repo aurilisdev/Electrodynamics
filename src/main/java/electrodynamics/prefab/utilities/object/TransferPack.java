@@ -1,4 +1,4 @@
-package electrodynamics.api.utilities.object;
+package electrodynamics.prefab.utilities.object;
 
 public class TransferPack {
     public static final TransferPack EMPTY = new TransferPack(0, 0);

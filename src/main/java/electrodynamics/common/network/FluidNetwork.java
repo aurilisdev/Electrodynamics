@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;

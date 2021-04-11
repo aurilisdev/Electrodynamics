@@ -2,8 +2,8 @@ package electrodynamics.prefab.inventory.container;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.utilities.UtilitiesContainers;
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
+import electrodynamics.prefab.utilities.UtilitiesContainers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;

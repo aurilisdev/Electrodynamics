@@ -1,4 +1,4 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 import java.util.function.DoubleSupplier;
@@ -6,14 +6,14 @@ import java.util.function.DoubleSupplier;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.gui.IGuiWrapper;
-import electrodynamics.api.utilities.UtilitiesRendering;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiComponentProgress extends GuiComponent {
+public class ScreenComponentProgress extends ScreenComponent {
     public static final int WIDTHARROW = 22;
     private static final int HEIGHTARROW = 16;
     private static final int POSXARROW = 0;
@@ -27,17 +27,17 @@ public class GuiComponentProgress extends GuiComponent {
 
     private final DoubleSupplier progressInfoHandler;
 
-    public GuiComponentProgress(final DoubleSupplier progressInfoHandler, final IGuiWrapper gui, final int x, final int y) {
+    public ScreenComponentProgress(final DoubleSupplier progressInfoHandler, final IGuiWrapper gui, final int x, final int y) {
 	super(new ResourceLocation(References.ID + ":textures/gui/component/progress.png"), gui, x, y);
 	this.progressInfoHandler = progressInfoHandler;
     }
 
-    public GuiComponentProgress flame() {
+    public ScreenComponentProgress flame() {
 	isFlame = true;
 	return this;
     }
 
-    public GuiComponentProgress left() {
+    public ScreenComponentProgress left() {
 	left = true;
 	// TODO: Finish left side render
 	return this;

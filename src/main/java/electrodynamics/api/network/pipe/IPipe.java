@@ -1,9 +1,9 @@
 package electrodynamics.api.network.pipe;
 
-import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.IAbstractConductor;
 import electrodynamics.api.network.INetwork;
 import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.prefab.network.AbstractNetwork;
 
 public interface IPipe extends IAbstractConductor {
     INetwork getNetwork();

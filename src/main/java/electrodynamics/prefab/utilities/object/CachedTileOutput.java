@@ -1,4 +1,4 @@
-package electrodynamics.api.utilities.object;
+package electrodynamics.prefab.utilities.object;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

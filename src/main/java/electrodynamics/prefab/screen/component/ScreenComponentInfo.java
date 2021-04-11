@@ -1,23 +1,24 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.gui.IGuiWrapper;
-import electrodynamics.api.utilities.UtilitiesRendering;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.component.TextPropertySupplier;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class GuiComponentInfo extends GuiComponent {
+public abstract class ScreenComponentInfo extends ScreenComponent {
     public static final int SIZE = 26;
     private TextPropertySupplier infoHandler;
 
-    protected GuiComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IGuiWrapper gui, int x, int y) {
+    protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IGuiWrapper gui, int x, int y) {
 	super(resource, gui, x, y);
 
 	this.infoHandler = infoHandler;

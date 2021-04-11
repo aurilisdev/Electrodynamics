@@ -1,4 +1,4 @@
-package electrodynamics.api.utilities;
+package electrodynamics.prefab.utilities;
 
 import net.minecraft.util.Direction;
 

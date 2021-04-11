@@ -1,4 +1,4 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.api.screen.component;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

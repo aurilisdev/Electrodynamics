@@ -1,12 +1,13 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.gui.IGuiWrapper;
-import electrodynamics.api.utilities.UtilitiesRendering;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.component.TextSupplier;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
@@ -14,28 +15,28 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiComponentSlot extends GuiComponent {
+public class ScreenComponentSlot extends ScreenComponent {
     private final EnumSlotType type;
     private TextSupplier tooltip;
 
-    public GuiComponentSlot(final EnumSlotType type, final IGuiWrapper gui, final int x, final int y) {
+    public ScreenComponentSlot(final EnumSlotType type, final IGuiWrapper gui, final int x, final int y) {
 	super(new ResourceLocation(References.ID + ":textures/gui/component/slot.png"), gui, x, y);
 	this.type = type;
     }
 
-    public GuiComponentSlot(final IGuiWrapper gui, final int x, final int y) {
+    public ScreenComponentSlot(final IGuiWrapper gui, final int x, final int y) {
 	this(EnumSlotType.NORMAL, gui, x, y);
     }
 
-    public GuiComponentSlot(final IGuiWrapper gui, final int x, final int y, Slot slot) {
+    public ScreenComponentSlot(final IGuiWrapper gui, final int x, final int y, Slot slot) {
 	this(EnumSlotType.NORMAL, gui, x, y, () -> slot.getStack().isEmpty() ? new StringTextComponent("") : slot.getStack().getDisplayName());
     }
 
-    public GuiComponentSlot(final EnumSlotType type, final IGuiWrapper gui, final int x, final int y, Slot slot) {
+    public ScreenComponentSlot(final EnumSlotType type, final IGuiWrapper gui, final int x, final int y, Slot slot) {
 	this(type, gui, x, y, () -> slot.getStack().getDisplayName());
     }
 
-    public GuiComponentSlot(final EnumSlotType type, final IGuiWrapper gui, final int x, final int y, final TextSupplier tooltip) {
+    public ScreenComponentSlot(final EnumSlotType type, final IGuiWrapper gui, final int x, final int y, final TextSupplier tooltip) {
 	this(type, gui, x, y);
 	this.tooltip = tooltip;
     }

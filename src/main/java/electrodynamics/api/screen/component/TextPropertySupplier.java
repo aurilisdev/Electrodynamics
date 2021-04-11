@@ -1,4 +1,4 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.api.screen.component;
 
 import java.util.List;
 

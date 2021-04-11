@@ -1,4 +1,4 @@
-package electrodynamics.api.gui;
+package electrodynamics.prefab.screen;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,10 +7,11 @@ import java.util.Set;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.gui.component.GuiComponentSlot;
-import electrodynamics.api.gui.component.IGuiComponent;
-import electrodynamics.api.utilities.UtilitiesRendering;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.prefab.inventory.container.GenericContainer;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -40,8 +41,8 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
 	}
     }
 
-    protected GuiComponentSlot createGuiSlot(Slot slot) {
-	return new GuiComponentSlot(this, slot.xPos - 1, slot.yPos - 1);
+    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+	return new ScreenComponentSlot(this, slot.xPos - 1, slot.yPos - 1);
     }
 
     @Override

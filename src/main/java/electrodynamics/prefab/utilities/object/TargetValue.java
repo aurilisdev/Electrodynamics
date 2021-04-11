@@ -1,4 +1,4 @@
-package electrodynamics.api.utilities.object;
+package electrodynamics.prefab.utilities.object;
 
 import com.electronwill.nightconfig.core.conversion.InvalidValueException;
 

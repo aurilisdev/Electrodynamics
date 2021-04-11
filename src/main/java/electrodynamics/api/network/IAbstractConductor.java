@@ -1,5 +1,6 @@
 package electrodynamics.api.network;
 
+import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.tileentity.TileEntity;
 
 public interface IAbstractConductor {

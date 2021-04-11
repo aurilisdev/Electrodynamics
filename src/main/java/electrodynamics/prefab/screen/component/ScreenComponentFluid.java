@@ -1,7 +1,8 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.prefab.screen.component;
 
-import electrodynamics.api.gui.IGuiWrapper;
-import electrodynamics.api.utilities.UtilitiesRendering;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.component.FluidTankSupplier;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -12,10 +13,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiComponentFluid extends GuiComponentGauge {
+public class ScreenComponentFluid extends ScreenComponentGauge {
     private FluidTankSupplier fluidInfoHandler;
 
-    public GuiComponentFluid(FluidTankSupplier fluidInfoHandler, IGuiWrapper gui, int x, int y) {
+    public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IGuiWrapper gui, int x, int y) {
 	super(gui, x, y);
 	this.fluidInfoHandler = fluidInfoHandler;
     }

@@ -1,9 +1,6 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.utilities.object.CachedTileOutput;
-import electrodynamics.api.utilities.object.TargetValue;
-import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -18,6 +15,9 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.object.CachedTileOutput;
+import electrodynamics.prefab.utilities.object.TargetValue;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;

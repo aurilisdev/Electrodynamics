@@ -2,10 +2,10 @@ package electrodynamics.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.utilities.UtilitiesRendering;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;

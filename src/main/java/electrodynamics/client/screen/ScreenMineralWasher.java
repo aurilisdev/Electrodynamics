@@ -6,17 +6,17 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.gui.GenericScreen;
-import electrodynamics.api.gui.component.GuiComponentElectricInfo;
-import electrodynamics.api.gui.component.GuiComponentFluid;
-import electrodynamics.api.gui.component.GuiComponentInfo;
-import electrodynamics.api.gui.component.GuiComponentProgress;
-import electrodynamics.api.gui.component.GuiComponentSlot;
-import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentFluid;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -37,7 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
     public ScreenMineralWasher(ContainerMineralWasher container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-	components.add(new GuiComponentProgress(() -> {
+	components.add(new ScreenComponentProgress(() -> {
 	    GenericTile furnace = container.getHostFromIntArray();
 	    if (furnace != null) {
 		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -47,7 +47,7 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 	    }
 	    return 0;
 	}, this, 46, 30));
-	components.add(new GuiComponentFluid(() -> {
+	components.add(new ScreenComponentFluid(() -> {
 	    TileMineralWasher boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
 		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
@@ -55,12 +55,12 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 	    }
 	    return null;
 	}, this, 21, 18));
-	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
+	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
     @Override
-    protected GuiComponentSlot createGuiSlot(Slot slot) {
-	return new GuiComponentSlot(slot instanceof SlotRestricted && ((SlotRestricted) slot)
+    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+	return new ScreenComponentSlot(slot instanceof SlotRestricted && ((SlotRestricted) slot)
 		.isItemValid(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
 			? EnumSlotType.SPEED
 			: slot instanceof SlotRestricted ? EnumSlotType.LIQUID : EnumSlotType.NORMAL,

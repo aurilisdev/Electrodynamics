@@ -1,8 +1,6 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.utilities.object.CachedTileOutput;
-import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.network.ElectricityUtilities;
@@ -11,6 +9,8 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.object.CachedTileOutput;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 

@@ -7,15 +7,15 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.gui.GenericScreen;
-import electrodynamics.api.gui.component.GuiComponentElectricInfo;
-import electrodynamics.api.gui.component.GuiComponentInfo;
-import electrodynamics.api.gui.component.GuiComponentProgress;
-import electrodynamics.api.gui.component.GuiComponentTemperature;
-import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentTemperature;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
@@ -29,15 +29,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
     public ScreenCoalGenerator(ContainerCoalGenerator container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-	components.add(new GuiComponentProgress(() -> {
+	components.add(new ScreenComponentProgress(() -> {
 	    TileCoalGenerator box = container.getHostFromIntArray();
 	    if (box != null) {
 		return box.clientBurnTime / (TileCoalGenerator.COAL_BURN_TIME * 1.0);
 	    }
 	    return 0;
 	}, this, 25, 25).flame());
-	components.add(new GuiComponentTemperature(this::getTemperatureInformation, this, -GuiComponentInfo.SIZE + 1, 2 + GuiComponentInfo.SIZE));
-	components.add(new GuiComponentElectricInfo(this::getEnergyInformation, this, -GuiComponentInfo.SIZE + 1, 2));
+	components.add(
+		new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
+	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
     private List<? extends ITextProperties> getTemperatureInformation() {

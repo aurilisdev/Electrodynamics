@@ -1,4 +1,4 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
@@ -8,8 +8,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import electrodynamics.api.References;
-import electrodynamics.api.gui.IGuiWrapper;
-import electrodynamics.api.utilities.UtilitiesRendering;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -22,11 +22,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class GuiComponentGauge extends GuiComponent {
+public abstract class ScreenComponentGauge extends ScreenComponent {
     private static int WIDTH = 14;
     protected static int HEIGHT = 49;
 
-    protected GuiComponentGauge(IGuiWrapper gui, int x, int y) {
+    protected ScreenComponentGauge(IGuiWrapper gui, int x, int y) {
 	super(new ResourceLocation(References.ID + ":textures/gui/component/fluid.png"), gui, x, y);
     }
 

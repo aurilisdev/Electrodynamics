@@ -10,14 +10,14 @@ import com.google.common.collect.Sets;
 
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.IElectrodynamic;
-import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.utilities.Scheduler;
-import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.network.ElectricityUtilities;
+import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.utilities.Scheduler;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;

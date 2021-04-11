@@ -3,7 +3,7 @@ package electrodynamics.common.network;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.IElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.utilities.object.TransferPack;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;

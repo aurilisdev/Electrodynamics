@@ -1,10 +1,11 @@
-package electrodynamics.api.gui.component;
+package electrodynamics.prefab.screen.component;
 
 import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.gui.IGuiWrapper;
+import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.component.IGuiComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
@@ -12,13 +13,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class GuiComponent implements IGuiComponent {
+public abstract class ScreenComponent implements IGuiComponent {
     protected ResourceLocation resource;
     protected IGuiWrapper gui;
     protected int xLocation;
     protected int yLocation;
 
-    protected GuiComponent(ResourceLocation resource, IGuiWrapper gui, int x, int y) {
+    protected ScreenComponent(ResourceLocation resource, IGuiWrapper gui, int x, int y) {
 	this.resource = resource;
 	this.gui = gui;
 

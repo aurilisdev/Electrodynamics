@@ -8,11 +8,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 import electrodynamics.api.electricity.IElectrodynamic;
-import electrodynamics.api.network.AbstractNetwork;
 import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.api.utilities.Scheduler;
-import electrodynamics.api.utilities.object.TransferPack;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.utilities.Scheduler;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 

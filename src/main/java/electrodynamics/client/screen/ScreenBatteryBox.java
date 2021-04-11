@@ -7,14 +7,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.gui.GenericScreen;
-import electrodynamics.api.gui.component.GuiComponentElectricInfo;
-import electrodynamics.api.gui.component.GuiComponentInfo;
-import electrodynamics.api.gui.component.GuiComponentSlot;
-import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
@@ -29,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
     public ScreenBatteryBox(ContainerBatteryBox container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-	components.add(new GuiComponentElectricInfo(this::getElectricInformation, this, -GuiComponentInfo.SIZE + 1, 2));
+	components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
     private List<? extends ITextProperties> getElectricInformation() {
@@ -56,8 +56,9 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
     }
 
     @Override
-    protected GuiComponentSlot createGuiSlot(Slot slot) {
-	return new GuiComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.BATTERY : EnumSlotType.NORMAL, this, slot.xPos - 1, slot.yPos - 1);
+    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.BATTERY : EnumSlotType.NORMAL, this, slot.xPos - 1,
+		slot.yPos - 1);
     }
 
     @Override

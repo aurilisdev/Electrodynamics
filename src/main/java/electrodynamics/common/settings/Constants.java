@@ -4,7 +4,7 @@ import electrodynamics.api.configuration.Configuration;
 import electrodynamics.api.configuration.DoubleValue;
 import electrodynamics.api.configuration.FloatValue;
 import electrodynamics.api.configuration.IntValue;
-import electrodynamics.api.utilities.object.TransferPack;
+import electrodynamics.prefab.utilities.object.TransferPack;
 
 @Configuration(name = "Electrodynamics")
 public class Constants {
