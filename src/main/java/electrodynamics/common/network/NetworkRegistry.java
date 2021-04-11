@@ -14,8 +14,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class NetworkRegistry {
-    private static HashSet<ITickableNetwork> networks = new HashSet<>();
-    private static HashSet<ITickableNetwork> remove = new HashSet<>();
+    private static final HashSet<ITickableNetwork> networks = new HashSet<>();
+    private static final HashSet<ITickableNetwork> remove = new HashSet<>();
 
     public static void register(ITickableNetwork network) {
 	networks.add(network);
@@ -37,7 +37,7 @@ public class NetworkRegistry {
 		while (it.hasNext()) {
 		    ITickableNetwork net = it.next();
 		    if (net.getSize() == 0) {
-			deregister(net);
+			it.remove();
 		    } else {
 			net.tick();
 		    }

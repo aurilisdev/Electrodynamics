@@ -12,7 +12,7 @@ import electrodynamics.api.gui.component.GuiComponentProgress;
 import electrodynamics.api.gui.component.GuiComponentSlot;
 import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
-import electrodynamics.common.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;

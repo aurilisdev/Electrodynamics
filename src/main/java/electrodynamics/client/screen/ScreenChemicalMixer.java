@@ -13,9 +13,9 @@ import electrodynamics.api.gui.component.GuiComponentProgress;
 import electrodynamics.api.gui.component.GuiComponentSlot;
 import electrodynamics.api.gui.component.GuiComponentSlot.EnumSlotType;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
-import electrodynamics.common.inventory.container.slot.SlotRestricted;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileChemicalMixer;
+import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -47,6 +47,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 	    }
 	    return 0;
 	}, this, 46, 30));
+	components.add(new GuiComponentProgress(() -> 0, this, 46, 50).left());
 	components.add(new GuiComponentFluid(() -> {
 	    TileChemicalMixer boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
