@@ -7,7 +7,7 @@ import java.util.Set;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
@@ -25,9 +25,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GenericScreen<T extends GenericContainer<? extends TileEntity>> extends ContainerScreen<T> implements IGuiWrapper {
+public class GenericScreen<T extends GenericContainer<? extends TileEntity>> extends ContainerScreen<T> implements IScreenWrapper {
 
-    protected ResourceLocation defaultResource = new ResourceLocation(References.ID + ":textures/gui/component/base.png");
+    protected ResourceLocation defaultResource = new ResourceLocation(References.ID + ":textures/screen/component/base.png");
     protected Set<IGuiComponent> components = new HashSet<>();
 
     public GenericScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
@@ -37,11 +37,11 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
 
     protected void initializeComponents() {
 	for (Slot slot : container.inventorySlots) {
-	    components.add(createGuiSlot(slot));
+	    components.add(createScreenSlot(slot));
 	}
     }
 
-    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+    protected ScreenComponentSlot createScreenSlot(Slot slot) {
 	return new ScreenComponentSlot(this, slot.xPos - 1, slot.yPos - 1);
     }
 

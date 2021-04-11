@@ -80,7 +80,7 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
     }
 
     @Override
-    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+    protected ScreenComponentSlot createScreenSlot(Slot slot) {
 	return new ScreenComponentSlot(slot instanceof SlotRestricted && ((SlotRestricted) slot)
 		.isItemValid(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
 			? EnumSlotType.SPEED

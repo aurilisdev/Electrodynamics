@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.IGuiComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -15,11 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class ScreenComponent implements IGuiComponent {
     protected ResourceLocation resource;
-    protected IGuiWrapper gui;
+    protected IScreenWrapper gui;
     protected int xLocation;
     protected int yLocation;
 
-    protected ScreenComponent(ResourceLocation resource, IGuiWrapper gui, int x, int y) {
+    protected ScreenComponent(ResourceLocation resource, IScreenWrapper gui, int x, int y) {
 	this.resource = resource;
 	this.gui = gui;
 

@@ -1,6 +1,6 @@
 package electrodynamics.prefab.screen.component;
 
-import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.IFluidTank;
 public class ScreenComponentFluid extends ScreenComponentGauge {
     private FluidTankSupplier fluidInfoHandler;
 
-    public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IGuiWrapper gui, int x, int y) {
+    public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IScreenWrapper gui, int x, int y) {
 	super(gui, x, y);
 	this.fluidInfoHandler = fluidInfoHandler;
     }

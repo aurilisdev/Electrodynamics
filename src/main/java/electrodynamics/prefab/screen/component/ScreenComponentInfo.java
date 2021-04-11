@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ public abstract class ScreenComponentInfo extends ScreenComponent {
     public static final int SIZE = 26;
     private TextPropertySupplier infoHandler;
 
-    protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IGuiWrapper gui, int x, int y) {
+    protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IScreenWrapper gui, int x, int y) {
 	super(resource, gui, x, y);
 
 	this.infoHandler = infoHandler;

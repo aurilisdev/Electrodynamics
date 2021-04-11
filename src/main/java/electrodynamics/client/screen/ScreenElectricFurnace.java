@@ -56,7 +56,7 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
     }
 
     @Override
-    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+    protected ScreenComponentSlot createScreenSlot(Slot slot) {
 	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.xPos - 1, slot.yPos - 1);
     }
 

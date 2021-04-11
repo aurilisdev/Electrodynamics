@@ -56,7 +56,7 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
     }
 
     @Override
-    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+    protected ScreenComponentSlot createScreenSlot(Slot slot) {
 	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.BATTERY : EnumSlotType.NORMAL, this, slot.xPos - 1,
 		slot.yPos - 1);
     }

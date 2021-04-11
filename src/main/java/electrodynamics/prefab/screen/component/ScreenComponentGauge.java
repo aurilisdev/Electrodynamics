@@ -8,7 +8,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -26,8 +26,8 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
     private static int WIDTH = 14;
     protected static int HEIGHT = 49;
 
-    protected ScreenComponentGauge(IGuiWrapper gui, int x, int y) {
-	super(new ResourceLocation(References.ID + ":textures/gui/component/fluid.png"), gui, x, y);
+    protected ScreenComponentGauge(IScreenWrapper gui, int x, int y) {
+	super(new ResourceLocation(References.ID + ":textures/screen/component/fluid.png"), gui, x, y);
     }
 
     @Override

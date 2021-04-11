@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public interface IGuiWrapper {
+public interface IScreenWrapper {
     void drawTexturedRect(MatrixStack stack, int x, int y, int u, int v, int w, int h);
 
     void drawTexturedRectFromIcon(MatrixStack stack, int x, int y, TextureAtlasSprite icon, int w, int h);

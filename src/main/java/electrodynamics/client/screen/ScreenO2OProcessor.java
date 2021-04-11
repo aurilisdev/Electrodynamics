@@ -45,7 +45,7 @@ public class ScreenO2OProcessor extends GenericScreen<ContainerO2OProcessor> {
     }
 
     @Override
-    protected ScreenComponentSlot createGuiSlot(Slot slot) {
+    protected ScreenComponentSlot createScreenSlot(Slot slot) {
 	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.xPos - 1, slot.yPos - 1);
     }
 

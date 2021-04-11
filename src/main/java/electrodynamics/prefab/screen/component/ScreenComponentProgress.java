@@ -6,7 +6,7 @@ import java.util.function.DoubleSupplier;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IGuiWrapper;
+import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,8 +27,8 @@ public class ScreenComponentProgress extends ScreenComponent {
 
     private final DoubleSupplier progressInfoHandler;
 
-    public ScreenComponentProgress(final DoubleSupplier progressInfoHandler, final IGuiWrapper gui, final int x, final int y) {
-	super(new ResourceLocation(References.ID + ":textures/gui/component/progress.png"), gui, x, y);
+    public ScreenComponentProgress(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
+	super(new ResourceLocation(References.ID + ":textures/screen/component/progress.png"), gui, x, y);
 	this.progressInfoHandler = progressInfoHandler;
     }
 
