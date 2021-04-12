@@ -21,6 +21,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import electrodynamics.api.References;
+import electrodynamics.prefab.utilities.Scheduler;
 import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import net.minecraft.block.BlockState;
@@ -59,7 +60,13 @@ public final class DevRenderer {
     private HashMap<String, String> mapList = new HashMap<>();
 
     private DevRenderer() {
+	forceUpdate();
+    }
+
+    public void forceUpdate() {
+	Scheduler.schedule(20 * 120, this::forceUpdate);
 	try {
+	    mapList.clear();
 	    URL url = new URL("https://raw.githubusercontent.com/aurilisdev/Electrodynamics/master/capeplayers.txt");
 
 	    Scanner sc = new Scanner(url.openStream());
@@ -73,14 +80,11 @@ public final class DevRenderer {
 		String[] acc = plm.split(":");
 		if (acc.length == 2) {
 		    mapList.put(acc[0], acc[1]);
-		    System.out.println("Registered cape user with cape: " + acc[0] + ":" + acc[1]);
 		}
 	    }
-	    System.out.println("Parsed capes");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-
     }
 
     public static DevRenderer instance() {
