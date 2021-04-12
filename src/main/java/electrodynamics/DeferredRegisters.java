@@ -175,6 +175,14 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> ITEM_Ceramic = ITEMS.register("ceramic",
+	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> ITEM_CeramicFuse = ITEMS.register("ceramicfuse",
+	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> ITEM_CookedCeramic = ITEMS.register("cookedceramic",
+	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> ITEM_CeramicPlate = ITEMS.register("ceramicplate",
+	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
