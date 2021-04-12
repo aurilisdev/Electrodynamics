@@ -350,7 +350,7 @@ public final class DevRenderer {
 
 	    GlStateManager.popMatrix();
 	    stack.pop();
-	    if (Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()).equalsIgnoreCase("dev")) {
+	    if (Holder.INSTANCE.mapList.getOrDefault(player.getName().getString().toLowerCase(), "").equalsIgnoreCase("dev")) {
 		stack.push();
 		stack.scale(0.5f, 0.5f, 0.5f);
 
