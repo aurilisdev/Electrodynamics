@@ -172,7 +172,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     public void tick() {
 	if ((int) voltage != 0 && voltage > 0) {
 	    double watts = transferBuffer * 20;
-	    double loss = watts * watts * resistance / (voltage * voltage) / 20.0;
+	    double loss = Math.min(transferBuffer, watts * watts * resistance / (voltage * voltage) / 20.0);
 	    transferBuffer -= loss;
 	    energyLoss += loss;
 	    transmittedThisTick += loss;
