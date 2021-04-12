@@ -6,6 +6,7 @@ import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.common.tile.TileChemicalMixer;
+import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileElectricFurnace;
@@ -25,22 +26,56 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
-    coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class), wiremill(true, TileWireMill.class),
-    mineralcrusher(true, TileMineralCrusher.class, true), mineralgrinder(true, TileMineralGrinder.class, true),
-    batterybox(true, TileBatteryBox.class, true), oxidationfurnace(true, TileOxidationFurnace.class),
-    oxidationfurnacerunning(false, TileOxidationFurnace.class), downgradetransformer(true, TileTransformer.class),
-    upgradetransformer(true, TileTransformer.class), solarpanel(true, TileSolarPanel.class), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
-    electricpump(true, TileElectricPump.class), thermoelectricgenerator(true, TileThermoelectricGenerator.class),
-    fermentationplant(true, TileFermentationPlant.class), combustionchamber(true, TileCombustionChamber.class),
-    hydroelectricgenerator(true, TileHydroelectricGenerator.class), windmill(true, TileWindmill.class), mineralwasher(true, TileMineralWasher.class),
-    chemicalmixer(true, TileChemicalMixer.class, true), chemicalcrystallizer(true, TileChemicalCrystallizer.class);
+    // split
+    coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
+    // split
+    wiremill(true, TileWireMill.class),
+    // split
+    mineralcrusher(true, TileMineralCrusher.class, true),
+    // split
+    mineralgrinder(true, TileMineralGrinder.class, true),
+    // split
+    batterybox(true, TileBatteryBox.class, true),
+    // split
+    oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
+    // split
+    downgradetransformer(true, TileTransformer.class, false, VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1)),
+    // split
+    upgradetransformer(true, TileTransformer.class, false, VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1)),
+    // split
+    solarpanel(true, TileSolarPanel.class, false, VoxelShapes.create(0, 0, 0, 1, 9.0 / 16.0, 1)),
+    // split
+    advancedsolarpanel(true, TileAdvancedSolarPanel.class),
+    // split
+    electricpump(true, TileElectricPump.class),
+    // split
+    thermoelectricgenerator(true, TileThermoelectricGenerator.class),
+    // split
+    fermentationplant(true, TileFermentationPlant.class),
+    // split
+    combustionchamber(true, TileCombustionChamber.class),
+    // split
+    hydroelectricgenerator(true, TileHydroelectricGenerator.class),
+    // split
+    windmill(true, TileWindmill.class),
+    // split
+    mineralwasher(true, TileMineralWasher.class),
+    // split
+    chemicalmixer(true, TileChemicalMixer.class, true),
+    // split
+    chemicalcrystallizer(true, TileChemicalCrystallizer.class),
+    // split
+    circuitbreaker(true, TileCircuitBreaker.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
     private BlockRenderType type = BlockRenderType.MODEL;
+    private VoxelShape customShape = null;
 
     private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass) {
 	this.showInItemGroup = showInItemGroup;
@@ -48,11 +83,15 @@ public enum SubtypeMachine implements ISubtype {
     }
 
     private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel) {
-	this.showInItemGroup = showInItemGroup;
-	this.tileclass = tileclass;
+	this(showInItemGroup, tileclass);
 	if (customModel) {
 	    type = BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
+    }
+
+    private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel, VoxelShape shape) {
+	this(showInItemGroup, tileclass, customModel);
+	customShape = shape;
     }
 
     public BlockRenderType getRenderType() {
@@ -98,5 +137,9 @@ public enum SubtypeMachine implements ISubtype {
     @Override
     public boolean isItem() {
 	return false;
+    }
+
+    public VoxelShape getCustomShape() {
+	return customShape;
     }
 }

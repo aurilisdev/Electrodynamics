@@ -47,8 +47,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	}
 	windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), VoxelShapes.fullCube()));
     }
-    private static final VoxelShape transformershape = VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1);
-    private static final VoxelShape solargenshape = VoxelShapes.create(0, 0, 0, 1, 9.0 / 16.0, 1);
 
     public final SubtypeMachine machine;
 
@@ -70,8 +68,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Deprecated
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-	return machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer ? transformershape
-		: machine == SubtypeMachine.solarpanel ? solargenshape : super.getShape(state, worldIn, pos, context);
+	return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
     }
 
     @Override

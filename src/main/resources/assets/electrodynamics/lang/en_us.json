@@ -97,6 +97,7 @@
 	"block.electrodynamics.mineralwasher": "Mineral Washer",
 	"block.electrodynamics.chemicalmixer": "Chemical Mixer",
 	"block.electrodynamics.chemicalcrystallizer": "Chemical Crystallizer",
+	"block.electrodynamics.circuitbreaker": "Circuit Breaker",
 	"block.electrodynamics.wiretin": "Tin Wire",
 	"block.electrodynamics.wireiron": "Iron Wire",
 	"block.electrodynamics.wirecopper": "Copper Wire",
