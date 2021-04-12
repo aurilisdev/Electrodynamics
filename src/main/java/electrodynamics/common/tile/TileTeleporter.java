@@ -25,7 +25,7 @@ public class TileTeleporter extends GenericTileTicking {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-	return super.getRenderBoundingBox().expand(0, 2, 0);
+	return super.getRenderBoundingBox().grow(3);
     }
 
     protected void tickServer(ComponentTickable tickable) {
