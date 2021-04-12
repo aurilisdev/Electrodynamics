@@ -3,8 +3,8 @@
 	"texture_size": [64, 64],
 	"parent": "block/cube_all",
 	"textures": {
-		"0": "electrodynamics:model/teleporter",
-		"particle": "electrodynamics:model/teleporter"
+		"0": "electrodynamics:model/teleporteron",
+		"particle": "electrodynamics:model/teleporteron"
 	},
 	"elements": [
 		{
