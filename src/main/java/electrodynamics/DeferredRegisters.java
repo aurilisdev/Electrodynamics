@@ -60,6 +60,7 @@ import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
+import electrodynamics.common.tile.TileTeleporter;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
@@ -235,6 +236,8 @@ public class DeferredRegisters {
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)), null));
     public static final RegistryObject<TileEntityType<TileCircuitBreaker>> TILE_CIRCUITBREAKER = TILES.register(SubtypeMachine.circuitbreaker.tag(),
 	    () -> new TileEntityType<>(TileCircuitBreaker::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker)), null));
+    public static final RegistryObject<TileEntityType<TileTeleporter>> TILE_TELEPORTER = TILES.register(SubtypeMachine.teleporter.tag(),
+	    () -> new TileEntityType<>(TileTeleporter::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.teleporter)), null));
 
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));

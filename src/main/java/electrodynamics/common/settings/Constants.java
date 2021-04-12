@@ -64,5 +64,6 @@ public class Constants {
     public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 750.0;
     @IntValue(def = 200)
     public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
+
     public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

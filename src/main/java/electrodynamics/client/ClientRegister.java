@@ -75,6 +75,8 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
+	ModelLoader.addSpecialModel(MODEL_TELEPORTERON);
+	ModelLoader.addSpecialModel(MODEL_TELEPORTER);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
@@ -99,6 +101,8 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(References.ID + ":block/chemicalmixerbase");
     public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(References.ID + ":block/chemicalmixerblades");
     public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(References.ID + ":block/chemicalmixerwater");
+    public static final ResourceLocation MODEL_TELEPORTERON = new ResourceLocation(References.ID + ":block/teleporteron");
+    public static final ResourceLocation MODEL_TELEPORTER = new ResourceLocation(References.ID + ":block/teleporter");
 
     public static void setup() {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
