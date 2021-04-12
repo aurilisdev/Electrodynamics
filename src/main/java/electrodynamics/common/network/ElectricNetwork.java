@@ -199,7 +199,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
 		}
 	    }
 	}
-	transferBuffer = Math.max(0, Math.min(maxTransferBuffer, transferBuffer));
+	transferBuffer = Math.max(0, Math.min(maxTransferBuffer, transferBuffer) * 0.75);
     }
 
     @Override
