@@ -2,8 +2,8 @@
 	"credit": "aurilisdev",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/teleporteron",
-		"particle": "electrodynamics:model/teleporteron"
+		"0": "electrodynamics:model/teleporter",
+		"particle": "electrodynamics:model/teleporter"
 	},
 	"elements": [
 		{
