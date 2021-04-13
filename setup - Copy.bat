@@ -1,2 +1,0 @@
-gradlew eclipse
-pause
