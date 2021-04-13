@@ -1,4 +1,4 @@
-package electrodynamics.dev;
+package electrodynamics.client.render.cape;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,7 +49,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
-public final class DevRenderer {
+public final class CapeRenderer {
     private static final LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
 	    .ticker(new Ticker() {
 		@Override
@@ -59,7 +59,7 @@ public final class DevRenderer {
 	    }).build(CacheLoader.from(RenderCape::create));
     private HashMap<String, String> mapList = new HashMap<>();
 
-    private DevRenderer() {
+    private CapeRenderer() {
 	forceUpdate();
     }
 
@@ -87,7 +87,7 @@ public final class DevRenderer {
 	}
     }
 
-    public static DevRenderer instance() {
+    public static CapeRenderer instance() {
 	return Holder.INSTANCE;
     }
 
@@ -124,7 +124,7 @@ public final class DevRenderer {
     }
 
     private static final class Holder {
-	private static final DevRenderer INSTANCE = new DevRenderer();
+	private static final CapeRenderer INSTANCE = new CapeRenderer();
     }
 
     private static final class RenderCape {
