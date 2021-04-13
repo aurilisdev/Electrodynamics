@@ -1,6 +1,7 @@
 package electrodynamics.common.item;
 
 import java.util.List;
+import java.util.UUID;
 
 import electrodynamics.common.tile.TileTeleporter;
 import net.minecraft.client.util.ITooltipFlag;
@@ -23,13 +24,23 @@ public class ItemFrequencyCard extends Item {
 
     @Override
     public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-	CompoundNBT nbt = stack.getOrCreateTag();
 	TileEntity ent = context.getWorld().getTileEntity(context.getPos());
 	if (ent instanceof TileTeleporter && !ent.getWorld().isRemote) {
-	    nbt.putInt("xCoord", ent.getPos().getX());
-	    nbt.putInt("yCoord", ent.getPos().getY());
-	    nbt.putInt("zCoord", ent.getPos().getZ());
-	    nbt.putString("world", ent.getWorld().getDimensionKey().getLocation().getPath());
+	    CompoundNBT nbt = stack.getOrCreateTag();
+	    if (nbt.contains("world")) {
+		TileTeleporter tel = (TileTeleporter) ent;
+		tel.xCoord = nbt.getInt("xCoord");
+		tel.yCoord = nbt.getInt("yCoord");
+		tel.zCoord = nbt.getInt("zCoord");
+		tel.world = nbt.getString("world");
+		context.getPlayer().sendMessage(new TranslationTextComponent("tooltip.frequencycard.linked",
+			tel.world + ", " + tel.xCoord + ", " + tel.yCoord + ", " + tel.zCoord), UUID.randomUUID());
+	    } else {
+		nbt.putInt("xCoord", ent.getPos().getX());
+		nbt.putInt("yCoord", ent.getPos().getY());
+		nbt.putInt("zCoord", ent.getPos().getZ());
+		nbt.putString("world", ent.getWorld().getDimensionKey().getLocation().getPath());
+	    }
 	}
 	return super.onItemUseFirst(stack, context);
     }
