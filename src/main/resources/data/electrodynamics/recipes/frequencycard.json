@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "MTM",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "tag": "forge,plate/iorn"
+        },
+        "M": {
+            "item": "electrodynamics:wire_copper"
+        },
+        "T": {
+            "tag": "forge,circuit/basic"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:frequencycard",
+        "count": 1
+    }
+}
