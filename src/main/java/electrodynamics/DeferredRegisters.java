@@ -33,6 +33,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemWrench;
+import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
@@ -151,6 +152,7 @@ public class DeferredRegisters {
 	for (SubtypeProcessorUpgrade subtype : SubtypeProcessorUpgrade.values()) {
 	    ITEMS.register(subtype.tag(), supplier(new ItemProcessorUpgrade(new Item.Properties().group(References.CORETAB), subtype), subtype));
 	}
+	registerSubtypeItem(SubtypeCeramic.values());
 
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 		"|translate|tooltip.transformer.energyloss");
@@ -174,14 +176,6 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    public static final RegistryObject<Item> ITEM_Ceramic = ITEMS.register("ceramic",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    public static final RegistryObject<Item> ITEM_CeramicFuse = ITEMS.register("ceramicfuse",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    public static final RegistryObject<Item> ITEM_CookedCeramic = ITEMS.register("cookedceramic",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    public static final RegistryObject<Item> ITEM_CeramicPlate = ITEMS.register("ceramicplate",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
