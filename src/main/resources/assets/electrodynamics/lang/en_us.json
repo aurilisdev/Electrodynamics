@@ -173,5 +173,101 @@
 	"death.attack.electricity": "%s was electrocuted",
 	"fluid.electrodynamics.sulfuricacid": "Sulfuric Acid",
 	"fluid.electrodynamics.mineral": "Mineral Fluid",
-	"fluid.electrodynamics.ethanol": "Ethanol"
+	"fluid.electrodynamics.ethanol": "Ethanol",
+	
+	"gui.jei.category.wiremill":"Wire Mill",
+	"gui.jei.category.wiremill.info.power":"2.5 kW 120V",
+	
+	"gui.jei.category.electric_furnace":"Electric Furnace",
+	"gui.jei.category.electric_furnace.info.power":"3.5 kW 120V",
+	
+	"gui.jei.category.mineral_crusher":"Mineral Crusher",
+	"gui.jei.category.mineral_crusher.info.power":"2.2 kW 240V",
+
+	"gui.jei.category.mineral_grinder":"Mineral Grinder",
+	"gui.jei.category.mineral_grinder.info.power":"3.5 kW 120V",
+	
+	"gui.jei.category.oxidation_furnace":"Oxidation Furnace",
+	"gui.jei.category.oxidation_furnace.info.power":"3.6 kW 240V",
+	
+	"gui.jei.category.x5_ore_processing":"5X Ore Processing",
+	"gui.jei.category.x5_ore_processing.info.mineral_washer":"480V 10kW",
+	"gui.jei.category.x5_ore_processing.info.chemical_crystalizer":"240V 15kW",
+	
+	"gui.jei.category.chemical_mixer":"Chemical Mixer",
+	"gui.jei.category.chemical_mixer.info.power":"240V 10kW",
+	
+	"gui.jei.category.fermenting":"Fermentation Plant",
+	"gui.jei.category.fermenting.info.power":"120V 400W",
+	
+								  //this is a test to see how long I
+	"info.jei.block.mineralwasher":"This machine takes 1000mb of Sulfuric Acid and any ore and produces 1000mb of Ore Fluid. There is no way to physically interact with this fluid. Place it adjacent to a Chemical Crystallizer to have it automatically inserted or do so maually with a pipe.",
+	"info.jei.block.chemicalcrystallizer":"This machine takes 1000mb of Ore Fluid and produces 5 Ore Crystals of the same type.",
+	"info.jei.block.coalgenerator":"Output:\n    Maximum Voltage: 240V\n    Maximum Power: 4.08 kW\n    Maximum Current: 34.0 A",
+	"info.jei.block.chemicalmixer":"There is no way to interact with Sulfuric Acid. It can either be extracted using a pipe or by placing the Mixer adjacent to the machine needing it.",
+	"info.jei.block.upgradetransformer":"Charcteristics:\n    99.25% Efficiancy\n    Output: 2x Input\n    No input limit",
+	"info.jei.block.downgradetransformer":"Charcteristics:\n    99.25% Efficiancy\n    Output: 0.5x Input\n    No input limit",
+	"info.jei.block.solarpanel":"Output:\n    Maximum Voltage: 120V\n    Maximum Power: 1.2 kW\n    Maximum Current: 10.0 A",
+	"info.jei.block.advancedsolarpanel":"Output:\n    Maximum Voltage: 240V\n    Maximum Power: 4.08 kW\n    Maximum Current: 20.0 A",
+	"info.jei.block.thermoelectricgenerator":"Output:\n    Maximum Voltage: 120V\n    Maximum Power: 500 W\n    Maximum Current: 4.12 A\n\nHeat Source: Lava",
+	"info.jei.block.combustionchamber":"Output:\n    Maximum Voltage: 120V\n    Maximum Power: 350 W\n    Maximum Current: 2.2 A\n\nFuel Source: Ethanol",
+	"info.jei.block.hydroelectricgenerator":"Output:\n    Maximum Voltage: 120V\n    Maximum Power: 720 W\n    Maximum Current: 6 A",
+	"info.jei.block.windmill":"Output:\n    Maximum Voltage: 120V\n    Maximum Power: 1.2 kW\n    Maximum Current: 10.0 A\n\nIdeal Height: Y = 135",
+	"info.jei.block.fermentationplant":"There is no way to interact with Ethanol. You can place the Plant adjacent to a Combustion Chamber to have it automatically inserted. Alternatively, you can extract the fluid manually with a pipe.",
+	
+	
+	"gui.jei.category.blast_compressor":"Blast Compressor",
+	"gui.jei.category.blast_compressor.info.power":"2 kW 240V",
+	
+	
+	"gui.jei.category.nuclear_boiler":"Nuclear Boiler",
+	"gui.jei.category.nuclear_boiler.info.power":"240V 15kW",
+	
+	"gui.jei.category.chemical_extractor":"Chemical Extractor",
+	"gui.jei.category.chemical_extractor.info.power":"240V 15kW",
+	
+	"gui.jei.category.gas_centrifuge":"Gas Centrifuge",
+	"gui.jei.category.gas_centrifuge.info.power_usage":"240V 30kW",
+	"gui.jei.category.gas_centrifuge.info.indiv_u235":"2.5b",
+	"gui.jei.category.gas_centrifuge.info.indiv_u238":"2.5b",
+	"gui.jei.category.gas_centrifuge.info.percent_u235":"17.5%",
+	"gui.jei.category.gas_centrifuge.info.percent_u238":"82.5%",
+	
+	"gui.jei.category.fission_reactor":"Fissile Irradiation",
+	"gui.jei.category.fission_reactor.info.power":"Range: 0 C to 4400 C",
+	
+	"gui.jei.category.partical_accelerator_antimatter":"Particle Acceleration",
+	"gui.jei.category.partical_accelerator_antimatter.info.power":"Charge:100% Speed<100%",
+	
+	"gui.jei.category.partical_accelerator_darkmatter":"Particle Collision",
+	"gui.jei.category.partical_accelerator_darkmatter.info.power":"Charge:100% Speed:100%",
+	
+							    //this is a test to see how long I
+	"info.jei.block.reactorcore":"Operation Specs:\n    Max U235 Output: 500 kW\n    V/Turbine: 240 V\n\n    Max U238 Output: 250 kW\n    V/Turbine: 120 V\n\n    Max Safe Temp: 4400 C\n\nHarneses the power of nuclear decay, converting it into heat. Surround with water to harness this heat by generating steam. Placing Turbines on top of the water will generate electricity. See the wiki for design details!",
+	"info.jei.block.fusionreactorcore":"Operation Specs:\n    Max Output: 5 MW\n    V/Turbine: 480 V\nFuses Deuterium and Tritium into Plasma. This plasma, if contained in electromagnets, can be used to heat water into steam for power generation.",
+	"info.jei.block.chemicalboiler":"This machine can convert Uranium 238 and Yellowcake into Uranium Hexafluoride gas(UF6). This gas cannot be interacted with. If placed next to a Gas Centrifuge, the gas will automatically be inserted into it. Otherwise, it can be manually extracted using a pipe.",
+	"info.jei.block.chemicalextractor":"This machine is used to extract radioactive elements from materials.",
+	"info.jei.block.electromagnet":"This block is designed to contain the raw power of nature. It can be used to either contain Plasma from a Fusion Reactor, or contain particles produced by the Particle Injector.",
+	"info.jei.block.electromagneticbooster":"This specialized electromagnet is used to increase the starting speed of Particle to a maximum of 40 m/s.",
+	"info.jei.block.electromagneticswitch":"This specialized switch is capable of reversing the direction of a particle injected into an accelerator ring. I wonder what happens when two particles collide?",
+	"info.jei.block.gascentrifuge":"This machine continuously converts Uranium Hexafluoride into U238 and U235 gas. However, the split is not equal. There is a 82.5% U238 to 17.5% U235 split in UF6. This means to make one pellet of U235 it will take roughly 14000mb of UF6, or 6 Uranium Ore. However not all hope is lost. The U238 pellets produced can be recycled into UF6 in the Nuclear Boiler!",
+	"info.jei.block.particleinjector":"This machine accelerates particles to near-light speed, giving them strange properties. It can convert any item in the game to a particle. By default, it will accelerate particles into Anti-Matter. However, if two particles collide at full speed, a strange substance is formed. I wonder what happens when you poke it?",
+	"info.jei.block.quantumcapacitor":"Specs:\n    Capacity: Infinite\n    Max I/O Voltage: 1.92 kV\n    Max I/O Power: 20 MW\n    Max I/O Current: 10.41 kA",
+	"info.jei.block.radioisotopegenerator":"Specs U235 @ 1 Stack:\n    Maximum Voltage: 120V\n    Maximum Power: 12.8 kW\n    Maximum Current: 106.66A\n\nSpecs: U238 @ 1 Stack\n    Maximum Voltage: 120V\n    Maximum Power: 6.4 kW\n    Maximum Current: 53.33A\nTired of all that U238 lying around? Why not convert it directly into power instead of dealing with that dangerous Fission Reactor. The more pellets you add, the more power it generates!",
+	"info.jei.block.turbine":"Converts steam into electricity. The turbine will produce a different amount of power depending on the steam sounce. You can see these outputs on the machine's info tab. Place a 3x3 grid and whack with a wrench to form a big turbine!",
+	
+	
+	
+	
+	
+	"gui.jei.category.warhead_template":"Launch Silo Layout",
+	"gui.jei.category.warhead_template.info.missile":"Any Missile",
+	"gui.jei.category.warhead_template.info.explosive":"Any Explosive",
+	
+	"info.jei.item.missilesilo":"Can launch any missile loaded with any warhead. Enter the coordiantes by hand or using a radar gun, and launch using a redstone signal!",
+	"info.jei.item.missilecloserange":"Specs:\n    Range: 3,000 Blocks",
+	"info.jei.item.missilemediumrange":"Specs:\n    Range: 10,000 Blocks",
+	"info.jei.item.missilelongrange":"Specs:\n    Range: Unlimited",
+	"info.jei.item.rocketlauncher":"Hold the Rocket Launcher in your hand. You will also need a Close-Range Missile and any type of Ballistix explosive in your inventory (or on your hotbar). Then, fire away!"
+	
 }

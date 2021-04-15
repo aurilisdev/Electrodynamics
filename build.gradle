@@ -92,7 +92,13 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.1'
-    compile fileTree("libs")
+    compile fileTree("E:/Games/Minecraft/Mod Code/Github Repostitories/Electrodynamics/Surrounding Mods")
+    /*
+	Compiles against source code as well as JAR at runtime. Recommend to keep it
+	*/
+  	compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.3.81:api")
+  	runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.3.81")
+  	
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -138,6 +144,21 @@ publishing {
     }
 }
 
+/*
+This needs to stay. It's the Maven repository for JEI along with a fallback!
+*/
+repositories{
+		mavenCentral()
+	  	maven {
+	   	    name = "Progwml6 maven"
+	   	    url = "https://dvs1.progwml6.com/files/maven/"
+	  	}
+	    maven {
+	       name = "ModMaven"
+	       url = "https://modmaven.k-4u.nl"
+	    }
+}
+
 ext.gittagnew = 'v'+project.version
 
 task createTag(type: GitTag) {
@@ -152,6 +173,7 @@ task pushTag(type: GitPush, dependsOn: createTag) {
 tasks.curseforge.dependsOn jar
 tasks.curseforge.dependsOn pushTag
 
+/* I had to comment this out to get things set up. Feel free to uncomment it!
 curseforge {
   apiKey = System.getenv("CURSEFORGE_KEY")
   project {
@@ -165,3 +187,4 @@ curseforge {
     }
   }
 }
+*/

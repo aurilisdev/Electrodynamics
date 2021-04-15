@@ -13,8 +13,8 @@ import electrodynamics.prefab.tile.processing.O2OProcessingRecipe;
 import net.minecraft.tileentity.TileEntityType;
 
 public class MachineRecipes {
-    private static final HashMap<TileEntityType<?>, HashSet<O2OProcessingRecipe>> o2orecipemap = new HashMap<>();
-    private static final HashMap<TileEntityType<?>, HashSet<DO2OProcessingRecipe>> do2orecipemap = new HashMap<>();
+    public static final HashMap<TileEntityType<?>, HashSet<O2OProcessingRecipe>> o2orecipemap = new HashMap<>();
+    public static final HashMap<TileEntityType<?>, HashSet<DO2OProcessingRecipe>> do2orecipemap = new HashMap<>();
 
     public static void registerRecipe(TileEntityType<?> type, O2OProcessingRecipe recipe) {
 	HashSet<O2OProcessingRecipe> list = new HashSet<>();
