@@ -30,7 +30,6 @@ import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
-import electrodynamics.common.item.ItemFrequencyCard;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemWrench;
@@ -62,7 +61,6 @@ import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
-import electrodynamics.common.tile.TileTeleporter;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
@@ -187,8 +185,6 @@ public class DeferredRegisters {
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    public static final RegistryObject<Item> ITEM_FREQUENCYCARD = ITEMS.register("frequencycard",
-	    supplier(new ItemFrequencyCard(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
 	    () -> new TileEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
@@ -241,8 +237,6 @@ public class DeferredRegisters {
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)), null));
     public static final RegistryObject<TileEntityType<TileCircuitBreaker>> TILE_CIRCUITBREAKER = TILES.register(SubtypeMachine.circuitbreaker.tag(),
 	    () -> new TileEntityType<>(TileCircuitBreaker::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker)), null));
-    public static final RegistryObject<TileEntityType<TileTeleporter>> TILE_TELEPORTER = TILES.register(SubtypeMachine.teleporter.tag(),
-	    () -> new TileEntityType<>(TileTeleporter::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.teleporter)), null));
 
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));

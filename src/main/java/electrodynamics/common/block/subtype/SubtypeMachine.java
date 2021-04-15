@@ -18,7 +18,6 @@ import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
-import electrodynamics.common.tile.TileTeleporter;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
@@ -71,9 +70,7 @@ public enum SubtypeMachine implements ISubtype {
     // split
     chemicalcrystallizer(true, TileChemicalCrystallizer.class),
     // split
-    circuitbreaker(true, TileCircuitBreaker.class),
-    // split
-    teleporter(true, TileTeleporter.class, true);
+    circuitbreaker(true, TileCircuitBreaker.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
