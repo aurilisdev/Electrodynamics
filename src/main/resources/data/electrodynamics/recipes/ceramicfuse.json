@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D#",
+        " S ",
+        "#D#"
+    ],
+    "key": {
+        "#": {
+            "item": "electrodynamics:ceramiccooked"
+        },
+        "D": {
+            "item": "electrodynamics:ceramicplate"
+        },
+        "S": {
+            "item": "electrodynamics:wirecopper"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:ceramicfuse",
+        "count": 1
+    }
+}

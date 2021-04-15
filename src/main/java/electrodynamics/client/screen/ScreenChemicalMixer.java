@@ -3,6 +3,7 @@ package electrodynamics.client.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
@@ -56,6 +57,14 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 	    }
 	    return null;
 	}, this, 21, 18));
+	components.add(new ScreenComponentFluid(() -> {
+	    TileChemicalMixer boiler = container.getHostFromIntArray();
+	    if (boiler != null) {
+		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		return handler.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid);
+	    }
+	    return null;
+	}, this, 127, 18));
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 

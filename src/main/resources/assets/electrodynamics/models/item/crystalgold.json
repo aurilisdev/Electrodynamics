@@ -3,13 +3,4 @@
 	"textures": {
 		"layer0": "electrodynamics:item/crystal/crystalgold"
 	}
-},
-"display": {
-	"gui": {
-		"scale": [
-			0.8,
-			0.8,
-			0.8
-		]
-	}
 }

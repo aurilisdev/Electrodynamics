@@ -157,6 +157,10 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	transmittedThisTick = 0;
     }
 
+    public double getNetworkMaxTransfer() {
+	return networkMaxTransfer;
+    }
+
     public P emit(P transfer, ArrayList<TileEntity> ignored, boolean debug) {
 	return null;
     }

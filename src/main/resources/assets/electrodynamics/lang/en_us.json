@@ -65,6 +65,11 @@
 	"item.electrodynamics.multimeter": "Multimeter",
 	"item.electrodynamics.solarpanelplate": "Solar Panel Plate",
 	"item.electrodynamics.wrench": "Wrench",
+	"item.electrodynamics.frequencycard": "Frequency Card",
+	"item.electrodynamics.ceramicwet": "Wet Ceramic",
+	"item.electrodynamics.ceramiccooked": "Ceramic",
+	"item.electrodynamics.ceramicplate": "Ceramic Plate",
+	"item.electrodynamics.ceramicfuse": "Ceramic Fuse",
 	"block.electrodynamics.orecopper": "Copper Ore",
 	"block.electrodynamics.orelead": "Lead Ore",
 	"block.electrodynamics.oremonazite": "Monazite Ore",
@@ -97,6 +102,8 @@
 	"block.electrodynamics.mineralwasher": "Mineral Washer",
 	"block.electrodynamics.chemicalmixer": "Chemical Mixer",
 	"block.electrodynamics.chemicalcrystallizer": "Chemical Crystallizer",
+	"block.electrodynamics.circuitbreaker": "Circuit Breaker",
+	"block.electrodynamics.teleporter": "Teleporter",
 	"block.electrodynamics.wiretin": "Tin Wire",
 	"block.electrodynamics.wireiron": "Iron Wire",
 	"block.electrodynamics.wirecopper": "Copper Wire",
@@ -170,9 +177,12 @@
 	"tooltip.mineralwasher.voltage": "Voltage: 480 Volts",
 	"tooltip.chemicalmixer.voltage": "Voltage: 240 Volts",
 	"tooltip.chemicalcrystallizer.voltage": "Voltage: 240 Volts",
+	"tooltip.frequencycard.linked": "Linked to %s",
+	"tooltip.frequencycard.notag": "No link",
 	"death.attack.electricity": "%s was electrocuted",
 	"fluid.electrodynamics.sulfuricacid": "Sulfuric Acid",
 	"fluid.electrodynamics.mineral": "Mineral Fluid",
+
 	"fluid.electrodynamics.ethanol": "Ethanol",
 	
 	"gui.jei.category.wiremill":"Wire Mill",
@@ -271,3 +281,4 @@
 	"info.jei.item.rocketlauncher":"Hold the Rocket Launcher in your hand. You will also need a Close-Range Missile and any type of Ballistix explosive in your inventory (or on your hotbar). Then, fire away!"
 	
 }
+

@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"wcw",
+		"pap",
+		"wcw"
+	],
+	"key": {
+		"p": {
+			"tag": "forge:plates/steel"
+		},
+		"a": {
+			"item": "electrodynamics:ceramiccooked"
+		},
+		"c": {
+			"item": "electrodynamics:coil"
+		},
+		"w": {
+			"item": "electrodynamics:wirecopper"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:advancedsolarpanel",
+		"count": 1
+	}
+}
