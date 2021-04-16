@@ -1,4 +1,4 @@
-package electrodynamics.dev;
+package electrodynamics.client.render.cape;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +21,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import electrodynamics.api.References;
+import electrodynamics.prefab.utilities.Scheduler;
 import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import net.minecraft.block.BlockState;
@@ -48,7 +49,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
-public final class DevRenderer {
+public final class CapeRenderer {
     private static final LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
 	    .ticker(new Ticker() {
 		@Override
@@ -58,8 +59,14 @@ public final class DevRenderer {
 	    }).build(CacheLoader.from(RenderCape::create));
     private HashMap<String, String> mapList = new HashMap<>();
 
-    private DevRenderer() {
+    private CapeRenderer() {
+	forceUpdate();
+    }
+
+    public void forceUpdate() {
+	Scheduler.schedule(20 * 120, this::forceUpdate);
 	try {
+	    mapList.clear();
 	    URL url = new URL("https://raw.githubusercontent.com/aurilisdev/Electrodynamics/master/capeplayers.txt");
 
 	    Scanner sc = new Scanner(url.openStream());
@@ -73,17 +80,14 @@ public final class DevRenderer {
 		String[] acc = plm.split(":");
 		if (acc.length == 2) {
 		    mapList.put(acc[0], acc[1]);
-		    System.out.println("Registered cape user with cape: " + acc[0] + ":" + acc[1]);
 		}
 	    }
-	    System.out.println("Parsed capes");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-
     }
 
-    public static DevRenderer instance() {
+    public static CapeRenderer instance() {
 	return Holder.INSTANCE;
     }
 
@@ -120,7 +124,7 @@ public final class DevRenderer {
     }
 
     private static final class Holder {
-	private static final DevRenderer INSTANCE = new DevRenderer();
+	private static final CapeRenderer INSTANCE = new CapeRenderer();
     }
 
     private static final class RenderCape {
@@ -346,7 +350,7 @@ public final class DevRenderer {
 
 	    GlStateManager.popMatrix();
 	    stack.pop();
-	    if (Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()).equalsIgnoreCase("dev")) {
+	    if (Holder.INSTANCE.mapList.getOrDefault(player.getName().getString().toLowerCase(), "").equalsIgnoreCase("dev")) {
 		stack.push();
 		stack.scale(0.5f, 0.5f, 0.5f);
 
