@@ -75,8 +75,9 @@ public class FluidMineral extends Fluid {
 	return 0;
     }
 
-    //TODO: Consider naming each variant of mineral fluid for the ore e.g. "Copper Mineral Fluid".
-    //Just a thought tho
+    // TODO: Consider naming each variant of mineral fluid for the ore e.g. "Copper
+    // Mineral Fluid".
+    // Just a thought tho
     @Override
     protected FluidAttributes createAttributes() {
 	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/mineral"), new ResourceLocation(References.ID + ":fluid/mineral"))
