@@ -13,7 +13,6 @@ import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.utilities.UtilitiesElectricity;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -60,8 +59,8 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 	    TileTransformer tile = (TileTransformer) worldIn.getTileEntity(pos);
-	    if (tile != null && tile.lastTransfer > 0) {
-		UtilitiesElectricity.electrecuteEntity(entityIn, TransferPack.joulesVoltage(tile.lastTransfer, 120));
+	    if (tile != null && tile.lastTransfer.getJoules() > 0) {
+		UtilitiesElectricity.electrecuteEntity(entityIn, tile.lastTransfer);
 	    }
 	}
     }
