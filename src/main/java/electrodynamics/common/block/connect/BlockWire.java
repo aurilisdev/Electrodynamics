@@ -13,10 +13,11 @@ import com.google.common.collect.Maps;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TileWire;
+import electrodynamics.prefab.utilities.UtilitiesElectricity;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -185,11 +186,11 @@ public class BlockWire extends Block {
     @Override
     @Deprecated
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-	if (!wire.insulated) {
-	    TileWire tile = (TileWire) worldIn.getTileEntity(pos);
-	    if (tile != null && tile.getNetwork() != null && tile.getNetwork().getCurrentTransmission() > 0) {
-		entityIn.attackEntityFrom(DamageSources.ELECTRICITY,
-			(float) Math.min(9999, Math.max(0, tile.getNetwork().getCurrentTransmission() / 120.0f)));
+	TileWire tile = (TileWire) worldIn.getTileEntity(pos);
+	if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
+	    if (tile.getNetwork().getActiveVoltage() < 480.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 960.0) {
+		UtilitiesElectricity.electrecuteEntity(entityIn,
+			TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
 	    }
 	}
     }

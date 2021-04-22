@@ -31,7 +31,7 @@ public class TileLogisticalWire extends TileWire implements ITickableTileEntity 
 
     protected void tickServer(ComponentTickable component) {
 	if (component.getTicks() % 10 == 0) {
-	    boolean shouldPower = getNetwork().getCurrentTransmission() > 0;
+	    boolean shouldPower = getNetwork().getActiveTransmitted() > 0;
 	    if (shouldPower != isPowered) {
 		isPowered = shouldPower;
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());

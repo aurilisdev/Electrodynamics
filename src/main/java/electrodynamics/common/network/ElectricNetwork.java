@@ -31,11 +31,12 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Ti
     }
 
     @Override
+    @Deprecated
     public double getVoltage() {
 	return -1;
     }
 
-    public double getLastVoltage() {
+    public double getActiveVoltage() {
 	return lastVoltage;
     }
 
