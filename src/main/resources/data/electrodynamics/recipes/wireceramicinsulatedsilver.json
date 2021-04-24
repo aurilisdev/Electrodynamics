@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "electrodynamics:wireinsulationsilver"
+			"item": "electrodynamics:wireinsulatedsilver"
 		},
 		{
 			"item": "electrodynamics:insulationceramic"

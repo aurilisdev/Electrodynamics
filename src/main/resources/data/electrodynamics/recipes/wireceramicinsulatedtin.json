@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "electrodynamics:wireinsulatedqtin"
+			"item": "electrodynamics:wireinsulatedtin"
 		},
 		{
 			"item": "electrodynamics:insulationceramic"
