@@ -1,0 +1,7 @@
+{
+	"parent": "electrodynamics:parent/ceramicinsulatedwire_none",
+	"textures": {
+		"particle": "electrodynamics:block/wire/ceramicinsulatedwiresuperconductive",
+		"texture": "electrodynamics:block/wire/ceramicinsulatedwiresuperconductive"
+	}
+}
