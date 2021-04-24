@@ -1,16 +1,13 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "#D#",
+        "# #",
         "#I#",
         "# #"
     ],
     "key": {
         "#": {
             "item": "electrodynamics:ceramicplate"
-        },
-        "D": {
-            "tag": "forge:circuits/basic"
         },
         "I": {
             "item": "minecraft:iron_bars"

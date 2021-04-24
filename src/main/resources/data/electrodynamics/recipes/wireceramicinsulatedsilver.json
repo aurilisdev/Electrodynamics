@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "electrodynamics:wireinsulationsilver"
+		},
+		{
+			"item": "electrodynamics:insulationceramic"
+		}
+	],
+	"result": {
+		"item": "electrodynamics:wireceramicinsulatedsilver",
+		"count": 1
+	}
+}
