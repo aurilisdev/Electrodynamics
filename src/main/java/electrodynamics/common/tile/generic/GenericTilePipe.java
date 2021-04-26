@@ -206,7 +206,6 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     @Override
     public void destroyViolently() {
-	world.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
