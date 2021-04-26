@@ -27,7 +27,6 @@ import net.minecraft.util.SoundCategory;
 
 public class TileMineralGrinder extends GenericTileTicking {
     public long clientRunningTicks = 0;
-
     public TileMineralGrinder() {
 	super(DeferredRegisters.TILE_MINERALGRINDER.get());
 	addComponent(new ComponentDirection());

@@ -32,6 +32,7 @@ import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.ItemRubberArmor;
 import electrodynamics.common.item.ItemWrench;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
@@ -70,6 +71,7 @@ import electrodynamics.common.tile.network.TilePipe;
 import electrodynamics.common.tile.network.TileWire;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -176,6 +178,8 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots", supplier(
+	    new ItemRubberArmor(EquipmentSlotType.FEET, new Item.Properties().group(References.CORETAB).maxStackSize(1).defaultMaxDamage(100000))));
     public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",

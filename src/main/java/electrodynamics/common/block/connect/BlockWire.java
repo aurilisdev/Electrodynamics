@@ -174,7 +174,7 @@ public class BlockWire extends Block {
 	    }
 	}
 	while (locked) {
-	    System.out.println("Wire bounding boxes locked. This should never happen!");
+	    System.out.println("Wire bounding boxes locked. This should never happen but still does for some reason!");
 	}
 	shapestates.put(checked, shape);
 	if (shape == null) {
@@ -188,7 +188,7 @@ public class BlockWire extends Block {
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 	TileWire tile = (TileWire) worldIn.getTileEntity(pos);
 	if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
-	    if (tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0) {
+	    if (!(tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0)) {
 		UtilitiesElectricity.electrecuteEntity(entityIn,
 			TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
 	    }
