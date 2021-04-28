@@ -8,7 +8,7 @@ public enum SubtypeOre implements ISubtype {
     silver(ToolType.PICKAXE, 2, 4, 9, 0, 48, 4f, 5.5f), lead(ToolType.PICKAXE, 2, 6, 7, 0, 64, 4f, 8f),
     uraninite(ToolType.PICKAXE, 3, 4, 8, 0, 32, 10f, 6.5f), thorianite(ToolType.PICKAXE, 3, 4, 8, 0, 32, 10f, 6.5f),
     monazite(ToolType.PICKAXE, 2, 9, 8, 0, 32, 6f, 4.5f), vanadinite(ToolType.PICKAXE, 2, 9, 8, 0, 32, 6f, 4.5f),
-    sulfur(ToolType.PICKAXE, 1, 8, 13, 0, 28, 6f, 4.5f);
+    sulfur(ToolType.PICKAXE, 1, 10, 13, 0, 28, 6f, 4.5f), niter(ToolType.PICKAXE, 1, 10, 13, 0, 28, 6f, 4.5f);
 
     public final ToolType harvestTool;
     public final int harvestLevel;
