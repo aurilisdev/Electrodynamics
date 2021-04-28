@@ -30,7 +30,7 @@ public class TileElectricFurnace extends GenericTileTicking {
     protected IRecipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;
 
-    public TileElectricFurnace() {
+    public TileElectricFurnace(int extra) {
 	super(DeferredRegisters.TILE_ELECTRICFURNACE.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -41,9 +41,26 @@ public class TileElectricFurnace extends GenericTileTicking {
 			.relativeSlotFaces(0, Direction.UP, Direction.EAST).relativeSlotFaces(1, Direction.WEST, Direction.DOWN));
 	addComponent(new ComponentContainerProvider("container.electricfurnace")
 		.createMenu((id, player) -> new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(this::canProcess).failed(component -> cachedRecipe = null)
-		.process(this::process).requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICFURNACE_USAGE_PER_TICK)
-		.type(ComponentProcessorType.ObjectToObject));
+	if (extra == 0) {
+	    ComponentProcessor pr = new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(this::canProcess)
+		    .failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS)
+		    .usage(Constants.ELECTRICFURNACE_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject);
+	    addProcessor(pr);
+	} else {
+	    for (int i = 0; i < extra; i++) {
+		ComponentProcessor pr = new ComponentProcessor(this).upgradeSlots(extra * 2 + 2, extra * 2 + 3, extra * 2 + 4)
+			.canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process)
+			.requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICFURNACE_USAGE_PER_TICK)
+			.type(ComponentProcessorType.ObjectToObject);
+		addProcessor(pr);
+		pr.inputSlot(i * 2);
+		pr.outputSlot(i * 2 + 1);
+	    }
+	}
+    }
+
+    public TileElectricFurnace() {
+	this(0);
     }
 
     protected void process(ComponentProcessor component) {
