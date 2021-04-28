@@ -42,7 +42,7 @@ public class RenderMineralCrusher extends TileEntityRenderer<TileMineralCrusher>
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALCRUSHERHANDLE);
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	matrixStackIn.pop();
-	ItemStack stack = tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).getInput();
+	ItemStack stack = tileEntityIn.getProcessor(0).getInput();
 	if (!stack.isEmpty()) {
 	    Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    matrixStackIn.push();

@@ -4,8 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileMineralGrinder;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -26,7 +24,7 @@ public class RenderMineralGrinder extends TileEntityRenderer<TileMineralGrinder>
     public void render(TileMineralGrinder tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
 	double progress = (tileEntityIn.clientRunningTicks
-		+ (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10;
+		+ (tileEntityIn.getProcessor(0).operatingTicks > 0 ? partialTicks : 0)) * 10;
 	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALGRINDERWHEEL);
 	matrixStackIn.push();
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
