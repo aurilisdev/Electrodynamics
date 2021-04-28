@@ -21,6 +21,7 @@ import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
 import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
+import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.ScreenFermentationPlant;
 import electrodynamics.client.screen.ScreenMineralWasher;
 import electrodynamics.client.screen.ScreenO2OProcessor;
@@ -116,6 +117,7 @@ public class ClientRegister {
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACETRIPLE.get(), ScreenElectricFurnaceTriple::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);

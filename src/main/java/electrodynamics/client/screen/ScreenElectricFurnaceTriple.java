@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
+import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -28,9 +28,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenElectricFurnaceDouble extends GenericScreen<ContainerElectricFurnaceDouble> {
+public class ScreenElectricFurnaceTriple extends GenericScreen<ContainerElectricFurnaceTriple> {
 
-    public ScreenElectricFurnaceDouble(ContainerElectricFurnaceDouble container, PlayerInventory playerInventory, ITextComponent title) {
+    public ScreenElectricFurnaceTriple(ContainerElectricFurnaceTriple container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
 	components.add(new ScreenComponentProgress(() -> {
 	    TileElectricFurnace furnace = container.getHostFromIntArray();
@@ -72,6 +72,28 @@ public class ScreenElectricFurnaceDouble extends GenericScreen<ContainerElectric
 	    }
 	    return 0;
 	}, this, 39, 46).flame());
+	components.add(new ScreenComponentProgress(() -> {
+	    TileElectricFurnace furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getProcessor(2);
+		if (processor.operatingTicks > 0) {
+		    return processor.operatingTicks / processor.requiredTicks;
+		}
+	    }
+	    return 0;
+	}, this, 84, 64));
+	components.add(new ScreenComponentProgress(() -> {
+	    TileElectricFurnace furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getProcessor(2);
+		if (processor.operatingTicks > 0) {
+		    return 1;
+		}
+	    }
+	    return 0;
+	}, this, 39, 66).flame());
+	this.ySize += 20;
+	this.playerInventoryTitleY += 20;
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
@@ -87,9 +109,9 @@ public class ScreenElectricFurnaceDouble extends GenericScreen<ContainerElectric
 	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
 
 	    list.add(new TranslationTextComponent("gui.o2oprocessor.usage",
-		    new StringTextComponent(ChatFormatter
-			    .getElectricDisplayShort(box.getProcessor(0).getUsage() * 20 + box.getProcessor(1).getUsage() * 20, ElectricUnit.WATT))
-				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
+			    box.getProcessor(0).getUsage() * 20 + box.getProcessor(1).getUsage() * 20 + box.getProcessor(2).getUsage() * 20,
+			    ElectricUnit.WATT)).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.o2oprocessor.voltage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));

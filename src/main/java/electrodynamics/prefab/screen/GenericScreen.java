@@ -29,6 +29,7 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
 
     protected ResourceLocation defaultResource = new ResourceLocation(References.ID + ":textures/screen/component/base.png");
     protected Set<IGuiComponent> components = new HashSet<>();
+    protected int playerInvOffset = 0;
 
     public GenericScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 	super(screenContainer, inv, titleIn);

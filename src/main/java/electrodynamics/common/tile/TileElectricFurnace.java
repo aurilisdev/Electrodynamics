@@ -7,6 +7,7 @@ import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
+import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTileTicking;
@@ -32,20 +33,23 @@ public class TileElectricFurnace extends GenericTileTicking {
     protected long timeSinceChange = 0;
 
     public TileElectricFurnace(int extra) {
-	super(extra == 1 ? DeferredRegisters.TILE_ELECTRICFURNACEDOUBLE.get() : DeferredRegisters.TILE_ELECTRICFURNACE.get());
+	super(extra == 1 ? DeferredRegisters.TILE_ELECTRICFURNACEDOUBLE.get()
+		: extra == 2 ? DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICFURNACE.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH));
 	addComponent(new ComponentInventory(this).size(5 + extra * 2)
-		.valid((slot, stack) -> (slot == 0 || slot == extra * 2 || slot == extra * 4)
-			|| (slot != extra && slot != extra * 2 - 1 && slot != extra * 3) && stack.getItem() instanceof ItemProcessorUpgrade)
+		.valid((slot, stack) -> (slot == 0 || slot == extra * 2 || extra == 2 && slot == 2)
+			|| (slot != extra && slot != extra * 3 && slot != extra * 5) && stack.getItem() instanceof ItemProcessorUpgrade)
 		.relativeFaceSlots(Direction.EAST, 0, extra * 2, extra * 4).relativeFaceSlots(Direction.UP, 0, extra * 2, extra * 4)
 		.relativeFaceSlots(Direction.WEST, extra, extra * 2 - 1, extra * 3)
 		.relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3));
-	addComponent(new ComponentContainerProvider("container.electricfurnace").createMenu((id, player) -> (extra == 0
-		? new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-		: extra == 1 ? new ContainerElectricFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+	addComponent(new ComponentContainerProvider("container.electricfurnace" + extra).createMenu((id,
+		player) -> (extra == 0 ? new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
+			: extra == 1 ? new ContainerElectricFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
+				: extra == 2 ? new ContainerElectricFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
+					: null)));
 	if (extra == 0) {
 	    ComponentProcessor pr = new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(this::canProcess)
 		    .failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS)
@@ -126,7 +130,9 @@ public class TileElectricFurnace extends GenericTileTicking {
     protected void tickClient(ComponentTickable tickable) {
 	boolean has = getType() == DeferredRegisters.TILE_ELECTRICFURNACEDOUBLE.get()
 		? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0
-		: getProcessor(0).operatingTicks > 0;
+		: getType() == DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get()
+			? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
+			: getProcessor(0).operatingTicks > 0;
 	if (has && world.rand.nextDouble() < 0.15) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    double d4 = world.rand.nextDouble();
