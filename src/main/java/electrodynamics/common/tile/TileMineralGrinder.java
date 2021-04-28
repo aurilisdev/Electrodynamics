@@ -43,9 +43,6 @@ public class TileMineralGrinder extends GenericTileTicking {
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
 		.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra)));
-	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.EAST, Direction.UP)
-		.relativeSlotFaces(1, Direction.WEST, Direction.DOWN)
-		.valid((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentInventory(this).size(5 + extra * 2)
 		.valid((slot, stack) -> slot == 0 || slot == extra * 2 || extra == 2 && slot == 2
 			|| slot != extra && slot != extra * 3 && slot != extra * 5 && stack.getItem() instanceof ItemProcessorUpgrade)
