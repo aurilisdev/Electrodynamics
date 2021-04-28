@@ -89,15 +89,17 @@ public class ComponentProcessor implements Component {
     }
 
     private void writeGuiPacket(CompoundNBT nbt) {
-	nbt.putDouble("operatingTicks", operatingTicks);
-	nbt.putDouble("joulesPerTick", usage * operatingSpeed);
-	nbt.putLong("requiredTicks", requiredTicks);
+	int offset = holder.getProcessor(0) == this ? 0 : holder.getProcessor(1) == this ? 1 : holder.getProcessor(2) == this ? 2 : 0;
+	nbt.putDouble("operatingTicks" + offset, operatingTicks);
+	nbt.putDouble("joulesPerTick" + offset, usage * operatingSpeed);
+	nbt.putLong("requiredTicks" + offset, requiredTicks);
     }
 
     private void readGuiPacket(CompoundNBT nbt) {
-	operatingTicks = nbt.getDouble("operatingTicks");
-	usage = nbt.getDouble("joulesPerTick");
-	requiredTicks = nbt.getLong("requiredTicks");
+	int offset = holder.getProcessor(0) == this ? 0 : holder.getProcessor(1) == this ? 1 : holder.getProcessor(2) == this ? 2 : 0;
+	operatingTicks = nbt.getDouble("operatingTicks" + offset);
+	usage = nbt.getDouble("joulesPerTick" + offset);
+	requiredTicks = nbt.getLong("requiredTicks" + offset);
     }
 
     public ComponentProcessorType getProcessorType() {

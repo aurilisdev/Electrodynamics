@@ -27,6 +27,7 @@ import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
+import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
@@ -53,6 +54,7 @@ import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileElectricFurnace;
+import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
@@ -203,6 +205,9 @@ public class DeferredRegisters {
 	    SubtypeMachine.electricfurnace.tag(),
 	    () -> new TileEntityType<>(TileElectricFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)), null));
+    public static final RegistryObject<TileEntityType<TileElectricFurnaceDouble>> TILE_ELECTRICFURNACEDOUBLE = TILES
+	    .register(SubtypeMachine.electricfurnacedouble.tag(), () -> new TileEntityType<>(TileElectricFurnaceDouble::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)), null));
     public static final RegistryObject<TileEntityType<TileWireMill>> TILE_WIREMILL = TILES.register(SubtypeMachine.wiremill.tag(),
 	    () -> new TileEntityType<>(TileWireMill::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill)), null));
     public static final RegistryObject<TileEntityType<TileMineralGrinder>> TILE_MINERALGRINDER = TILES.register(SubtypeMachine.mineralgrinder.tag(),
@@ -257,6 +262,8 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.coalgenerator.tag(), () -> new ContainerType<>(ContainerCoalGenerator::new));
     public static final RegistryObject<ContainerType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS
 	    .register(SubtypeMachine.electricfurnace.tag(), () -> new ContainerType<>(ContainerElectricFurnace::new));
+    public static final RegistryObject<ContainerType<ContainerElectricFurnaceDouble>> CONTAINER_ELECTRICFURNACEDOUBLE = CONTAINERS
+	    .register(SubtypeMachine.electricfurnace.tag() + "double", () -> new ContainerType<>(ContainerElectricFurnaceDouble::new));
     public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor",
 	    () -> new ContainerType<>(ContainerO2OProcessor::new));
     public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS.register("do2oprocessor",

@@ -40,9 +40,12 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     public GenericTile addProcessor(ComponentProcessor processor) {
-	processor.holder(this);
 	for (int i = 0; i < processors.length; i++) {
-	    processors[i] = processor;
+	    if (processors[i] == null) {
+		processors[i] = processor;
+		processor.holder(this);
+		break;
+	    }
 	}
 	return this;
     }
