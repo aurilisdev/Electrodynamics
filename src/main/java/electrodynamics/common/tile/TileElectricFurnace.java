@@ -32,6 +32,10 @@ public class TileElectricFurnace extends GenericTileTicking {
     protected IRecipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;
 
+    public TileElectricFurnace() {
+	this(0);
+    }
+
     public TileElectricFurnace(int extra) {
 	super(extra == 1 ? DeferredRegisters.TILE_ELECTRICFURNACEDOUBLE.get()
 		: extra == 2 ? DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICFURNACE.get());
@@ -66,10 +70,6 @@ public class TileElectricFurnace extends GenericTileTicking {
 		pr.outputSlot(i * 2 + 1);
 	    }
 	}
-    }
-
-    public TileElectricFurnace() {
-	this(0);
     }
 
     protected void process(ComponentProcessor component) {

@@ -37,12 +37,10 @@ public class MachineRecipes {
 	list.add(new DO2OProcessingRecipe(recipe.getInput2(), recipe.getInput1(), recipe.getOutput()));
     }
 
-    public static boolean canProcess(GenericTile tile) {
+    public static boolean canProcess(GenericTile tile, ComponentProcessor processor, TileEntityType<?> type) {
 	ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
-	ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
 	if (electro.getJoulesStored() > processor.getUsage()) {
 	    if (processor.getProcessorType() == ComponentProcessorType.ObjectToObject) {
-		TileEntityType<?> type = tile.getType();
 		if (!processor.getInput().isEmpty() && o2orecipemap.containsKey(type)) {
 		    for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {
 			if (recipe.getInput().getItem() == processor.getInput().getItem()
@@ -55,7 +53,6 @@ public class MachineRecipes {
 		    }
 		}
 	    } else if (processor.getProcessorType() == ComponentProcessorType.DoubleObjectToObject) {
-		TileEntityType<?> type = tile.getType();
 		if (!processor.getInput().isEmpty() && !processor.getSecondInput().isEmpty() && do2orecipemap.containsKey(type)) {
 		    for (DO2OProcessingRecipe recipe : do2orecipemap.get(type)) {
 			if (recipe.getInput1().getItem() == processor.getInput().getItem()
@@ -76,11 +73,9 @@ public class MachineRecipes {
 	return false;
     }
 
-    public static void process(GenericTile tile) {
+    public static void process(GenericTile tile, ComponentProcessor processor, TileEntityType<?> type) {
 	ComponentElectrodynamic electro = tile.getComponent(ComponentType.Electrodynamic);
-	ComponentProcessor processor = tile.getComponent(ComponentType.Processor);
 	if (electro.getJoulesStored() > processor.getUsage()) {
-	    TileEntityType<?> type = tile.getType();
 	    if (processor.getProcessorType() == ComponentProcessorType.ObjectToObject) {
 		if (o2orecipemap.containsKey(type) && !processor.getInput().isEmpty()) {
 		    for (O2OProcessingRecipe recipe : o2orecipemap.get(type)) {

@@ -25,6 +25,8 @@ import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.ScreenFermentationPlant;
 import electrodynamics.client.screen.ScreenMineralWasher;
 import electrodynamics.client.screen.ScreenO2OProcessor;
+import electrodynamics.client.screen.ScreenO2OProcessorDouble;
+import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tile.network.TileWire;
 import net.minecraft.client.Minecraft;
@@ -119,6 +121,8 @@ public class ClientRegister {
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACETRIPLE.get(), ScreenElectricFurnaceTriple::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSORDOUBLE.get(), ScreenO2OProcessorDouble::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSORTRIPLE.get(), ScreenO2OProcessorTriple::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);

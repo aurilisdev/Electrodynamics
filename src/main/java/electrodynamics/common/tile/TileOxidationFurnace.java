@@ -39,12 +39,12 @@ public class TileOxidationFurnace extends GenericTileTicking {
 	addComponent(new ComponentContainerProvider("container.oxidationfurnace")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(this::canProcess)
-		.process(component -> MachineRecipes.process(this)).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
+		.process(component -> MachineRecipes.process(this, component, getType())).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
 		.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK).type(ComponentProcessorType.DoubleObjectToObject));
     }
 
     protected boolean canProcess(ComponentProcessor component) {
-	if (MachineRecipes.canProcess(this)) {
+	if (MachineRecipes.canProcess(this, component, getType())) {
 	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace)) {
 		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning).getDefaultState()
 			.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);

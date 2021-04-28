@@ -24,6 +24,8 @@ import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
+import electrodynamics.common.tile.TileWireMillDouble;
+import electrodynamics.common.tile.TileWireMillTriple;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -34,9 +36,17 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
     // split
+    electricfurnacedouble(true, TileElectricFurnaceDouble.class),
+    // split
+    electricfurnacetriple(true, TileElectricFurnaceTriple.class),
+    // split
     coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
     // split
     wiremill(true, TileWireMill.class),
+    // split
+    wiremilldouble(true, TileWireMillDouble.class),
+    // split
+    wiremilltriple(true, TileWireMillTriple.class),
     // split
     mineralcrusher(true, TileMineralCrusher.class, true),
     // split
@@ -72,11 +82,7 @@ public enum SubtypeMachine implements ISubtype {
     // split
     chemicalcrystallizer(true, TileChemicalCrystallizer.class),
     // split
-    circuitbreaker(true, TileCircuitBreaker.class),
-    // split
-    electricfurnacedouble(true, TileElectricFurnaceDouble.class),
-    // split
-    electricfurnacetriple(true, TileElectricFurnaceTriple.class);
+    circuitbreaker(true, TileCircuitBreaker.class),;
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

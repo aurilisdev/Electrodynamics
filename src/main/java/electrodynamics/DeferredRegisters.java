@@ -32,6 +32,8 @@ import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
+import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemRubberArmor;
@@ -70,6 +72,8 @@ import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
+import electrodynamics.common.tile.TileWireMillDouble;
+import electrodynamics.common.tile.TileWireMillTriple;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TilePipe;
 import electrodynamics.common.tile.network.TileWire;
@@ -195,6 +199,9 @@ public class DeferredRegisters {
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+
+    // Split from items to tiles
+
     public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
 	    () -> new TileEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
@@ -203,6 +210,9 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileAdvancedSolarPanel>> TILE_ADVANCEDSOLARPANEL = TILES
 	    .register(SubtypeMachine.advancedsolarpanel.tag(), () -> new TileEntityType<>(TileAdvancedSolarPanel::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel)), null));
+
+    // Split to electric furnaces
+
     public static final RegistryObject<TileEntityType<TileElectricFurnace>> TILE_ELECTRICFURNACE = TILES.register(
 	    SubtypeMachine.electricfurnace.tag(),
 	    () -> new TileEntityType<>(TileElectricFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace),
@@ -213,12 +223,28 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileElectricFurnaceTriple>> TILE_ELECTRICFURNACETRIPLE = TILES
 	    .register(SubtypeMachine.electricfurnacetriple.tag(), () -> new TileEntityType<>(TileElectricFurnaceTriple::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)), null));
+
+    // Split to wire mills
+
     public static final RegistryObject<TileEntityType<TileWireMill>> TILE_WIREMILL = TILES.register(SubtypeMachine.wiremill.tag(),
 	    () -> new TileEntityType<>(TileWireMill::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill)), null));
+    public static final RegistryObject<TileEntityType<TileWireMillDouble>> TILE_WIREMILLDOUBLE = TILES.register(SubtypeMachine.wiremilldouble.tag(),
+	    () -> new TileEntityType<>(TileWireMillDouble::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilldouble)), null));
+    public static final RegistryObject<TileEntityType<TileWireMillTriple>> TILE_WIREMILLTRIPLE = TILES.register(SubtypeMachine.wiremilltriple.tag(),
+	    () -> new TileEntityType<>(TileWireMillTriple::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilltriple)), null));
+
+    // Split to mineral grinders
+
     public static final RegistryObject<TileEntityType<TileMineralGrinder>> TILE_MINERALGRINDER = TILES.register(SubtypeMachine.mineralgrinder.tag(),
 	    () -> new TileEntityType<>(TileMineralGrinder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder)), null));
+
+    // Split to mineral crushers
+
     public static final RegistryObject<TileEntityType<TileMineralCrusher>> TILE_MINERALCRUSHER = TILES.register(SubtypeMachine.mineralcrusher.tag(),
 	    () -> new TileEntityType<>(TileMineralCrusher::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher)), null));
+
+    // Split to rest of tiles
+
     public static final RegistryObject<TileEntityType<TileBatteryBox>> TILE_BATTERYBOX = TILES.register(SubtypeMachine.batterybox.tag(),
 	    () -> new TileEntityType<>(TileBatteryBox::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
     public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
@@ -271,10 +297,16 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.electricfurnacedouble.tag(), () -> new ContainerType<>(ContainerElectricFurnaceDouble::new));
     public static final RegistryObject<ContainerType<ContainerElectricFurnaceTriple>> CONTAINER_ELECTRICFURNACETRIPLE = CONTAINERS
 	    .register(SubtypeMachine.electricfurnacetriple.tag(), () -> new ContainerType<>(ContainerElectricFurnaceTriple::new));
+
     public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor",
 	    () -> new ContainerType<>(ContainerO2OProcessor::new));
+    public static final RegistryObject<ContainerType<ContainerO2OProcessorDouble>> CONTAINER_O2OPROCESSORDOUBLE = CONTAINERS
+	    .register("o2oprocessordouble", () -> new ContainerType<>(ContainerO2OProcessorDouble::new));
+    public static final RegistryObject<ContainerType<ContainerO2OProcessorTriple>> CONTAINER_O2OPROCESSORTRIPLE = CONTAINERS
+	    .register("o2oprocessortriple", () -> new ContainerType<>(ContainerO2OProcessorTriple::new));
     public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS.register("do2oprocessor",
 	    () -> new ContainerType<>(ContainerDO2OProcessor::new));
+
     public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(),
 	    () -> new ContainerType<>(ContainerBatteryBox::new));
     public static final RegistryObject<ContainerType<ContainerFermentationPlant>> CONTAINER_FERMENTATIONPLANT = CONTAINERS

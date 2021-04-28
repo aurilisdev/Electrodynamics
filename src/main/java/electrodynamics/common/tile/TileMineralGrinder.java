@@ -27,6 +27,7 @@ import net.minecraft.util.SoundCategory;
 
 public class TileMineralGrinder extends GenericTileTicking {
     public long clientRunningTicks = 0;
+
     public TileMineralGrinder() {
 	super(DeferredRegisters.TILE_MINERALGRINDER.get());
 	addComponent(new ComponentDirection());
@@ -38,8 +39,8 @@ public class TileMineralGrinder extends GenericTileTicking {
 		.valid((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.mineralgrinder")
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(component -> MachineRecipes.canProcess(this))
-		.process(component -> MachineRecipes.process(this)).requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS)
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(component -> MachineRecipes.canProcess(this, component, getType()))
+		.process(component -> MachineRecipes.process(this, component, getType())).requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS)
 		.usage(Constants.MINERALGRINDER_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject));
     }
 

@@ -40,9 +40,10 @@ public class TileMineralCrusher extends GenericTileTicking {
 		.valid((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.mineralcrusher")
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(component -> MachineRecipes.canProcess(this))
-		.process(component -> MachineRecipes.process(this)).requiredTicks(Constants.MINERALCRUSHER_REQUIRED_TICKS)
-		.usage(Constants.MINERALCRUSHER_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject));
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(component -> MachineRecipes.canProcess(this, component, getType()))
+		.process(component -> MachineRecipes.process(this, component, getType()))
+		.requiredTicks(Constants.MINERALCRUSHER_REQUIRED_TICKS).usage(Constants.MINERALCRUSHER_USAGE_PER_TICK)
+		.type(ComponentProcessorType.ObjectToObject));
     }
 
     protected void tickClient(ComponentTickable tickable) {
