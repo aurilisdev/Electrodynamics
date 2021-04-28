@@ -10,7 +10,7 @@
 			"tag": "forge:plates/steel"
 		},
 		"a": {
-			"item": "electrodynamics:ceramiccooked"
+			"item": "electrodynamics:ceramicfuse"
 		},
 		"c": {
 			"item": "electrodynamics:coil"
