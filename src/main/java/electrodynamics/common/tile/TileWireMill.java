@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
+import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
@@ -34,7 +35,8 @@ public class TileWireMill extends GenericTileTicking {
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
-	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH));
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
+		.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra)));
 	addComponent(new ComponentInventory(this).size(5 + extra * 2)
 		.valid((slot, stack) -> (slot == 0 || slot == extra * 2 || extra == 2 && slot == 2)
 			|| (slot != extra && slot != extra * 3 && slot != extra * 5) && stack.getItem() instanceof ItemProcessorUpgrade)
