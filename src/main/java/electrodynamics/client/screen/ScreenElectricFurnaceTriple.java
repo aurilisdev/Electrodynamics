@@ -92,8 +92,8 @@ public class ScreenElectricFurnaceTriple extends GenericScreen<ContainerElectric
 	    }
 	    return 0;
 	}, this, 39, 66).flame());
-	this.ySize += 20;
-	this.playerInventoryTitleY += 20;
+	ySize += 20;
+	playerInventoryTitleY += 20;
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 

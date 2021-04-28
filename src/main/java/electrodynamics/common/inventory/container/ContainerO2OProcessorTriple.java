@@ -30,7 +30,7 @@ public class ContainerO2OProcessorTriple extends GenericContainer<GenericTile> {
 
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-	this.playerInvOffset = 20;
+	playerInvOffset = 20;
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 24));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 24));
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 44));

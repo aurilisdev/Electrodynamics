@@ -47,8 +47,8 @@ public class TileMineralCrusher extends GenericTileTicking {
 		.relativeSlotFaces(1, Direction.WEST, Direction.DOWN)
 		.valid((slot, stack) -> slot == 0 || slot != 1 && stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentInventory(this).size(5 + extra * 2)
-		.valid((slot, stack) -> (slot == 0 || slot == extra * 2 || extra == 2 && slot == 2)
-			|| (slot != extra && slot != extra * 3 && slot != extra * 5) && stack.getItem() instanceof ItemProcessorUpgrade)
+		.valid((slot, stack) -> slot == 0 || slot == extra * 2 || extra == 2 && slot == 2
+			|| slot != extra && slot != extra * 3 && slot != extra * 5 && stack.getItem() instanceof ItemProcessorUpgrade)
 		.relativeFaceSlots(Direction.EAST, 0, extra * 2, extra * 4).relativeFaceSlots(Direction.UP, 0, extra * 2, extra * 4)
 		.relativeFaceSlots(Direction.WEST, extra, extra * 2 - 1, extra * 3)
 		.relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3));

@@ -61,8 +61,8 @@ public class ScreenO2OProcessorTriple extends GenericScreen<ContainerO2OProcesso
 	    }
 	    return 0;
 	}, this, 84, 66));
-	this.ySize += 20;
-	this.playerInventoryTitleY += 20;
+	ySize += 20;
+	playerInventoryTitleY += 20;
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
