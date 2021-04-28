@@ -63,7 +63,11 @@ import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
+import electrodynamics.common.tile.TileMineralCrusherDouble;
+import electrodynamics.common.tile.TileMineralCrusherTriple;
 import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.TileMineralGrinderDouble;
+import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileOxidationFurnace;
@@ -237,11 +241,23 @@ public class DeferredRegisters {
 
     public static final RegistryObject<TileEntityType<TileMineralGrinder>> TILE_MINERALGRINDER = TILES.register(SubtypeMachine.mineralgrinder.tag(),
 	    () -> new TileEntityType<>(TileMineralGrinder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder)), null));
+    public static final RegistryObject<TileEntityType<TileMineralGrinderDouble>> TILE_MINERALGRINDERDOUBLE = TILES
+	    .register(SubtypeMachine.mineralgrinderdouble.tag(), () -> new TileEntityType<>(TileMineralGrinderDouble::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)), null));
+    public static final RegistryObject<TileEntityType<TileMineralGrinderTriple>> TILE_MINERALGRINDERTRIPLE = TILES
+	    .register(SubtypeMachine.mineralgrindertriple.tag(), () -> new TileEntityType<>(TileMineralGrinderTriple::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)), null));
 
     // Split to mineral crushers
 
     public static final RegistryObject<TileEntityType<TileMineralCrusher>> TILE_MINERALCRUSHER = TILES.register(SubtypeMachine.mineralcrusher.tag(),
 	    () -> new TileEntityType<>(TileMineralCrusher::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher)), null));
+    public static final RegistryObject<TileEntityType<TileMineralCrusherDouble>> TILE_MINERALCRUSHERDOUBLE = TILES
+	    .register(SubtypeMachine.mineralcrusherdouble.tag(), () -> new TileEntityType<>(TileMineralCrusherDouble::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)), null));
+    public static final RegistryObject<TileEntityType<TileMineralCrusherTriple>> TILE_MINERALCRUSHERTRIPLE = TILES
+	    .register(SubtypeMachine.mineralcrushertriple.tag(), () -> new TileEntityType<>(TileMineralCrusherTriple::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)), null));
 
     // Split to rest of tiles
 

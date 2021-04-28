@@ -16,7 +16,11 @@ import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
+import electrodynamics.common.tile.TileMineralCrusherDouble;
+import electrodynamics.common.tile.TileMineralCrusherTriple;
 import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.TileMineralGrinderDouble;
+import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
@@ -50,7 +54,15 @@ public enum SubtypeMachine implements ISubtype {
     // split
     mineralcrusher(true, TileMineralCrusher.class, true),
     // split
+    mineralcrusherdouble(true, TileMineralCrusherDouble.class, true),
+    // split
+    mineralcrushertriple(true, TileMineralCrusherTriple.class, true),
+    // split
     mineralgrinder(true, TileMineralGrinder.class, true),
+    // split
+    mineralgrinderdouble(true, TileMineralGrinderDouble.class, true),
+    // split
+    mineralgrindertriple(true, TileMineralGrinderTriple.class, true),
     // split
     batterybox(true, TileBatteryBox.class, true),
     // split
