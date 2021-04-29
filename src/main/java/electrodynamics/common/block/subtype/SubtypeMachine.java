@@ -40,7 +40,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
     // split
-    electricfurnacedouble(true, TileElectricFurnaceDouble.class),
+    electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(true, TileElectricFurnaceDouble.class),
     // split
     electricfurnacetriple(true, TileElectricFurnaceTriple.class),
     // split
@@ -129,8 +129,10 @@ public enum SubtypeMachine implements ISubtype {
 	    SubtypeMachine mb = ((BlockMachine) bb).machine;
 	    SubtypeMachine ma = ((BlockMachine) ba).machine;
 	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
-		    || mb == coalgenerator && ma == coalgeneratorrunning || mb == coalgeneratorrunning && ma == coalgenerator
-		    || mb == oxidationfurnace && ma == oxidationfurnacerunning || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
+		    || mb == electricfurnacedouble && ma == electricfurnacedoublerunning
+		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble || mb == coalgenerator && ma == coalgeneratorrunning
+		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
+		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
 		return false;
 	    }
 	}

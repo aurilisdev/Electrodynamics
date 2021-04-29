@@ -88,6 +88,7 @@
 	"block.electrodynamics.advancedsolarpanel": "Advanced Solar Panel",
 	"block.electrodynamics.electricfurnace": "Electric Furnace",
 	"block.electrodynamics.electricfurnacedouble": "Smelting Factory",
+	"block.electrodynamics.electricfurnacedoublerunning": "Smelting Factory Running",
 	"block.electrodynamics.electricfurnacetriple": "Advanced Smelting Factory",
 	"block.electrodynamics.electricfurnacerunning": "Electric Furnace Running",
 	"block.electrodynamics.wiremill": "Wire Mill",

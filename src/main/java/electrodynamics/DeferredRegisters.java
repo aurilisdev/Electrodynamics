@@ -221,9 +221,12 @@ public class DeferredRegisters {
 	    SubtypeMachine.electricfurnace.tag(),
 	    () -> new TileEntityType<>(TileElectricFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)), null));
-    public static final RegistryObject<TileEntityType<TileElectricFurnaceDouble>> TILE_ELECTRICFURNACEDOUBLE = TILES
-	    .register(SubtypeMachine.electricfurnacedouble.tag(), () -> new TileEntityType<>(TileElectricFurnaceDouble::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)), null));
+    public static final RegistryObject<TileEntityType<TileElectricFurnaceDouble>> TILE_ELECTRICFURNACEDOUBLE = TILES.register(
+	    SubtypeMachine.electricfurnacedouble.tag(),
+	    () -> new TileEntityType<>(TileElectricFurnaceDouble::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble),
+			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)),
+		    null));
     public static final RegistryObject<TileEntityType<TileElectricFurnaceTriple>> TILE_ELECTRICFURNACETRIPLE = TILES
 	    .register(SubtypeMachine.electricfurnacetriple.tag(), () -> new TileEntityType<>(TileElectricFurnaceTriple::new,
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)), null));

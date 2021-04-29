@@ -2,8 +2,10 @@
 	"credit": "aurilisdev",
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
+	"ambientocclusion": "false",
 	"textures": {
-		"0": "electrodynamics:model/wiremilldouble"
+		"0": "electrodynamics:model/wiremilldouble",
+		"particle": "electrodynamics:model/wiremilldouble"
 	},
 	"elements": [
 		{
