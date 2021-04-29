@@ -12,6 +12,8 @@ import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderMineralCrusher;
 import electrodynamics.client.render.tile.RenderMineralGrinder;
+import electrodynamics.client.render.tile.RenderMineralGrinderDouble;
+import electrodynamics.client.render.tile.RenderMineralGrinderTriple;
 import electrodynamics.client.render.tile.RenderMineralWasher;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.ScreenBatteryBox;
@@ -73,6 +75,8 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
 	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
 	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERDOUBLEBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERTRIPLEBASE);
 	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
 	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
 	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
@@ -96,6 +100,8 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_MINERALCRUSHERBASE = new ResourceLocation(References.ID + ":block/mineralcrusherbase");
     public static final ResourceLocation MODEL_MINERALCRUSHERHANDLE = new ResourceLocation(References.ID + ":block/mineralcrusherhandle");
     public static final ResourceLocation MODEL_MINERALGRINDERBASE = new ResourceLocation(References.ID + ":block/mineralgrinderbase");
+    public static final ResourceLocation MODEL_MINERALGRINDERDOUBLEBASE = new ResourceLocation(References.ID + ":block/mineralgrinderdoublebase");
+    public static final ResourceLocation MODEL_MINERALGRINDERTRIPLEBASE = new ResourceLocation(References.ID + ":block/mineralgrindertriplebase");
     public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(References.ID + ":block/mineralgrinderwheel");
     public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(References.ID + ":block/fermentationplantwater");
     public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(References.ID + ":block/fermentationplantethanol");
@@ -111,6 +117,8 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_WINDMILL.get(), RenderWindmill::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get(), RenderMineralGrinderDouble::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get(), RenderMineralGrinderTriple::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), RenderFermentationPlant::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
