@@ -35,7 +35,7 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 	components.add(new ScreenComponentProgress(() -> {
 	    TileElectricFurnace furnace = container.getHostFromIntArray();
 	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		ComponentProcessor processor = furnace.getProcessor(0);
 		if (processor.operatingTicks > 0) {
 		    return processor.operatingTicks / processor.requiredTicks;
 		}
@@ -45,7 +45,7 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 	components.add(new ScreenComponentProgress(() -> {
 	    TileElectricFurnace furnace = container.getHostFromIntArray();
 	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		ComponentProcessor processor = furnace.getProcessor(0);
 		if (processor.operatingTicks > 0) {
 		    return 1;
 		}
@@ -65,7 +65,7 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 	TileElectricFurnace box = container.getHostFromIntArray();
 	if (box != null) {
 	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
+	    ComponentProcessor processor = box.getProcessor(0);
 
 	    list.add(new TranslationTextComponent("gui.o2oprocessor.usage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
