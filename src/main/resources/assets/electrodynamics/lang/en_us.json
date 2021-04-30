@@ -90,6 +90,7 @@
 	"block.electrodynamics.electricfurnacedouble": "Smelting Factory",
 	"block.electrodynamics.electricfurnacedoublerunning": "Smelting Factory Running",
 	"block.electrodynamics.electricfurnacetriple": "Advanced Smelting Factory",
+	"block.electrodynamics.electricfurnacetriplerunning": "Advanced Smelting Factory Running",
 	"block.electrodynamics.electricfurnacerunning": "Electric Furnace Running",
 	"block.electrodynamics.wiremill": "Wire Mill",
 	"block.electrodynamics.wiremilldouble": "Mill Factory",

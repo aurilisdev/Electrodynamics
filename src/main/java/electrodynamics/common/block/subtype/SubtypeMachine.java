@@ -42,7 +42,7 @@ public enum SubtypeMachine implements ISubtype {
     // split
     electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(true, TileElectricFurnaceDouble.class),
     // split
-    electricfurnacetriple(true, TileElectricFurnaceTriple.class),
+    electricfurnacetriple(true, TileElectricFurnaceTriple.class),  electricfurnacetriplerunning(true, TileElectricFurnaceTriple.class),
     // split
     coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
     // split
