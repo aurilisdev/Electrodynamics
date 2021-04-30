@@ -23,8 +23,7 @@ public class RenderMineralGrinderTriple extends TileEntityRenderer<TileMineralGr
     @Deprecated
     public void render(TileMineralGrinder tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
-	double progress = (tileEntityIn.clientRunningTicks
-		+ (tileEntityIn.getProcessor(0).operatingTicks > 0 ? partialTicks : 0)) * 10;
+	double progress = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks > 0 ? partialTicks : 0)) * 10;
 	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALGRINDERWHEEL);
 	matrixStackIn.push();
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);

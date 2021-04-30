@@ -227,9 +227,12 @@ public class DeferredRegisters {
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble),
 			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)),
 		    null));
-    public static final RegistryObject<TileEntityType<TileElectricFurnaceTriple>> TILE_ELECTRICFURNACETRIPLE = TILES
-	    .register(SubtypeMachine.electricfurnacetriple.tag(), () -> new TileEntityType<>(TileElectricFurnaceTriple::new,
-		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)), null));
+    public static final RegistryObject<TileEntityType<TileElectricFurnaceTriple>> TILE_ELECTRICFURNACETRIPLE = TILES.register(
+	    SubtypeMachine.electricfurnacetriple.tag(),
+	    () -> new TileEntityType<>(TileElectricFurnaceTriple::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple),
+			    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)),
+		    null));
 
     // Split to wire mills
 
