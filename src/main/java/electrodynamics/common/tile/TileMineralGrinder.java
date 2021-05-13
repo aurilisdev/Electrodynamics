@@ -48,7 +48,7 @@ public class TileMineralGrinder extends GenericTileTicking {
 			|| slot != extra && slot != extra * 3 && slot != extra * 5 && stack.getItem() instanceof ItemProcessorUpgrade)
 		.relativeFaceSlots(Direction.EAST, 0, extra * 2, extra * 4).relativeFaceSlots(Direction.UP, 0, extra * 2, extra * 4)
 		.relativeFaceSlots(Direction.WEST, extra, extra * 2 - 1, extra * 3)
-		.relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3));
+		.relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
@@ -89,7 +89,7 @@ public class TileMineralGrinder extends GenericTileTicking {
 		SoundAPI.playSound(SoundRegister.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 0.5f, 1, pos);
 	    }
 	    int amount = getType() == DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get() ? 2
-		    : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 0;
+		    : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 1;
 	    for (int i = 0; i < amount; i++) {
 		ItemStack stack = getProcessor(i).getInput();
 		if (stack.getItem() instanceof BlockItem) {
