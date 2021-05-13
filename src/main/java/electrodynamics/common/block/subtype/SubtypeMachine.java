@@ -40,9 +40,9 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
     // split
-    electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(true, TileElectricFurnaceDouble.class),
+    electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
     // split
-    electricfurnacetriple(true, TileElectricFurnaceTriple.class), electricfurnacetriplerunning(true, TileElectricFurnaceTriple.class),
+    electricfurnacetriple(true, TileElectricFurnaceTriple.class), electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
     // split
     coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
     // split
