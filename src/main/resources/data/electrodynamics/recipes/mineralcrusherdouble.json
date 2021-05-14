@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D#",
+        "iRi",
+        "#D#"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:circuits/elite"
+        },
+        "i": {
+           "item": "electrodynamics:motor"
+        },
+        "D": {
+            "item": "minecraft:diamond"
+        },
+        "R": {
+            "item": "electrodynamics:mineralcrusher"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:mineralcrusherdouble",
+        "count": 1
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#i#",
+        "DRD",
+        "#i#"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:circuits/elite"
+        },
+        "i": {
+            "tag": "forge:gears/bronze"
+        },
+        "D": {
+            "item": "electrodynamics:wireceramicinsulatedsilver"
+        },
+        "R": {
+            "item": "electrodynamics:wiremilldouble"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:wiremilltriple",
+        "count": 1
+    }
+}
