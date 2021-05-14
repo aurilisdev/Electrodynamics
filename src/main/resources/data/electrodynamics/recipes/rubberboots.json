@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"w w",
+		"w w"
+	],
+	"key": {
+		"w": {
+			"item": "electrodynamics:insulation"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:rubberboots",
+		"count": 1
+	}
+}

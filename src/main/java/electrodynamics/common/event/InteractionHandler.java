@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
-public class WrenchHandler {
+public class InteractionHandler {
 
     @SubscribeEvent
     public static void onPlayerInteract(RightClickBlock event) {
@@ -38,13 +38,22 @@ public class WrenchHandler {
 			((IWrenchable) block).onRotate(stack, event.getPos(), player);
 		    }
 		}
-	    } else if (block instanceof BlockWire && item == DeferredRegisters.ITEM_INSULATION.get()) {
+	    } else if (block instanceof BlockWire) {
 		SubtypeWire wire = ((BlockWire) block).wire;
-		if (!wire.insulated && !wire.logistical) {
+		if (item == DeferredRegisters.ITEM_INSULATION.get()) {
+		    if (!wire.insulated && !wire.logistical) {
+			player.world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
+			player.world.setBlockState(event.getPos(),
+				Block.getValidBlockForPosition(
+					DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("insulated" + wire.name())).getDefaultState(),
+					player.world, event.getPos()));
+			stack.shrink(1);
+		    }
+		} else if (item == DeferredRegisters.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical) {
 		    player.world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
 		    player.world.setBlockState(event.getPos(),
 			    Block.getValidBlockForPosition(
-				    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("insulated" + wire.name())).getDefaultState(),
+				    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("ceramic" + wire.name())).getDefaultState(),
 				    player.world, event.getPos()));
 		    stack.shrink(1);
 		}

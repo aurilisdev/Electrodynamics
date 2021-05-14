@@ -24,8 +24,11 @@ public class BlockOre extends OreBlock {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	return Arrays.asList(new ItemStack(ore == SubtypeOre.sulfur ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.sulfur)
-		: DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore), ore == SubtypeOre.sulfur ? new Random().nextInt(2) + 1 : 1));
+	return Arrays.asList(new ItemStack(
+		ore == SubtypeOre.sulfur ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.sulfur)
+			: ore == SubtypeOre.niter ? DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.niter)
+				: DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore),
+		ore == SubtypeOre.sulfur || ore == SubtypeOre.niter ? new Random().nextInt(2) + 1 : 1));
     }
 
 }

@@ -1,0 +1,7 @@
+{
+	"parent": "electrodynamics:parent/ceramicinsulatedwire_none",
+	"textures": {
+		"particle": "electrodynamics:block/wire/ceramicinsulatedwirecopper",
+		"texture": "electrodynamics:block/wire/ceramicinsulatedwirecopper"
+	}
+}

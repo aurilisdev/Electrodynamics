@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D#",
+        "iRi",
+        "#D#"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:circuits/ultimate"
+        },
+        "i": {
+           "item": "electrodynamics:motor"
+        },
+        "D": {
+            "item": "electrodynamics:crystalvanadium"
+        },
+        "R": {
+            "item": "electrodynamics:mineralcrusherdouble"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:mineralcrushertriple",
+        "count": 1
+    }
+}

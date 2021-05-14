@@ -1,0 +1,47 @@
+{
+    "__comment": "pyro206",
+    "display": {
+        "title": {
+            "text": "Toasty",
+            "color": "gray",
+            "bold": true,
+            "italic": true,
+            "underlined": false,
+            "strikethrough": false,
+            "obfuscated": false
+        },
+        "description": {
+            "text": "Make a coal generator",
+            "color": "gray"
+        },
+        "icon": {
+            "item": "electrodynamics:coalgenerator"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false,
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "invchange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "electrodynamics:coalgenerator",
+                        "count": {
+                            "min": 1,
+                            "max": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "invchange"
+        ]
+    ]
+}

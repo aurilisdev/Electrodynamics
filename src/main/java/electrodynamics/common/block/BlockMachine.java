@@ -7,12 +7,12 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
+import electrodynamics.prefab.utilities.UtilitiesElectricity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -59,8 +59,8 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 	    TileTransformer tile = (TileTransformer) worldIn.getTileEntity(pos);
-	    if (tile != null && tile.lastTransfer > 0) {
-		entityIn.attackEntityFrom(DamageSources.ELECTRICITY, (float) Math.min(9999, Math.max(0, tile.lastTransfer / 120.0f)));
+	    if (tile != null && tile.lastTransfer.getJoules() > 0) {
+		UtilitiesElectricity.electrecuteEntity(entityIn, tile.lastTransfer);
 	    }
 	}
     }

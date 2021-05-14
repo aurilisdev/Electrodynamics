@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class TileTransformer extends GenericTile {
     public CachedTileOutput output;
-    public double lastTransfer = 0;
+    public TransferPack lastTransfer = TransferPack.EMPTY;
     public boolean locked = false;
 
     public TileTransformer() {
@@ -44,7 +44,7 @@ public class TileTransformer extends GenericTile {
 	    returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.TRANSFORMER_EFFICIENCY),
 		    resultVoltage);
 	}
-	lastTransfer = returner.getJoules();
+	lastTransfer = returner;
 	return returner;
     }
 }

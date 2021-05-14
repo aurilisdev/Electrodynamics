@@ -8,6 +8,6 @@ package electrodynamics.common.recipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public abstract class ElectrodynamicsRecipe implements IRecipe<RecipeWrapper>{
+public abstract class ElectrodynamicsRecipe implements IRecipe<RecipeWrapper> {
 
 }

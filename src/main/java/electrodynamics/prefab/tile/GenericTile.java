@@ -6,6 +6,7 @@ import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -24,6 +25,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GenericTile extends TileEntity implements INameable {
     private Component[] components = new Component[ComponentType.values().length];
+    private ComponentProcessor[] processors = new ComponentProcessor[5];
 
     public boolean hasComponent(ComponentType type) {
 	return components[type.ordinal()] != null;
@@ -31,6 +33,21 @@ public class GenericTile extends TileEntity implements INameable {
 
     public <T extends Component> T getComponent(ComponentType type) {
 	return !hasComponent(type) ? null : (T) components[type.ordinal()];
+    }
+
+    public ComponentProcessor getProcessor(int id) {
+	return processors[id];
+    }
+
+    public GenericTile addProcessor(ComponentProcessor processor) {
+	for (int i = 0; i < processors.length; i++) {
+	    if (processors[i] == null) {
+		processors[i] = processor;
+		processor.holder(this);
+		break;
+	    }
+	}
+	return this;
     }
 
     public GenericTile addComponent(Component component) {
@@ -51,6 +68,12 @@ public class GenericTile extends TileEntity implements INameable {
 		component.loadFromNBT(state, compound);
 	    }
 	}
+	for (ComponentProcessor pr : processors) {
+	    if (pr != null) {
+		pr.holder(this);
+		pr.loadFromNBT(state, compound);
+	    }
+	}
     }
 
     @Override
@@ -59,6 +82,12 @@ public class GenericTile extends TileEntity implements INameable {
 	    if (component != null) {
 		component.holder(this);
 		component.saveToNBT(compound);
+	    }
+	}
+	for (ComponentProcessor pr : processors) {
+	    if (pr != null) {
+		pr.holder(this);
+		pr.saveToNBT(compound);
 	    }
 	}
 	return super.write(compound);
@@ -113,6 +142,12 @@ public class GenericTile extends TileEntity implements INameable {
 	    if (component != null) {
 		component.holder(this);
 		component.remove();
+	    }
+	}
+	for (ComponentProcessor pr : processors) {
+	    if (pr != null) {
+		pr.holder(this);
+		pr.remove();
 	    }
 	}
     }

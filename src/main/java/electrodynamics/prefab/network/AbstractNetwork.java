@@ -58,7 +58,7 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	updateStatistics();
     }
 
-    public double getCurrentTransmission() {
+    public double getActiveTransmitted() {
 	return transmittedLastTick;
     }
 

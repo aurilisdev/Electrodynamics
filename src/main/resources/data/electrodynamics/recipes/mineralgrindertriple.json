@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#D#",
+        "iRi",
+        "#D#"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:circuits/elite"
+        },
+        "i": {
+           "tag": "forge:gears/bronze"
+        },
+        "D": {
+            "tag": "forge:dusts/superconductive"
+        },
+        "R": {
+            "item": "electrodynamics:mineralgrinderdouble"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:mineralgrindertriple",
+        "count": 1
+    }
+}

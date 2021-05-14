@@ -23,6 +23,7 @@ public abstract class GenericContainer<T extends TileEntity> extends Container {
     protected final World world;
     protected final int slotCount;
     protected final TileEntity tile;
+    protected int playerInvOffset = 0;
     private int nextIndex = 0;
 
     public int nextIndex() {
@@ -40,12 +41,12 @@ public abstract class GenericContainer<T extends TileEntity> extends Container {
 	slotCount = inventorySlots.size();
 	for (int i = 0; i < 3; ++i) {
 	    for (int j = 0; j < 9; ++j) {
-		addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+		addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
 	    }
 	}
 
 	for (int k = 0; k < 9; ++k) {
-	    addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142));
+	    addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
 	}
 
 	if (inventory instanceof TileEntity) {

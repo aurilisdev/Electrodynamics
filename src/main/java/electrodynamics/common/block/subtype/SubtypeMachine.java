@@ -10,11 +10,17 @@ import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileElectricFurnace;
+import electrodynamics.common.tile.TileElectricFurnaceDouble;
+import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
+import electrodynamics.common.tile.TileMineralCrusherDouble;
+import electrodynamics.common.tile.TileMineralCrusherTriple;
 import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.TileMineralGrinderDouble;
+import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
@@ -22,6 +28,8 @@ import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
+import electrodynamics.common.tile.TileWireMillDouble;
+import electrodynamics.common.tile.TileWireMillTriple;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -32,13 +40,29 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
     // split
+    electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
+    // split
+    electricfurnacetriple(true, TileElectricFurnaceTriple.class), electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
+    // split
     coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
     // split
     wiremill(true, TileWireMill.class),
     // split
+    wiremilldouble(true, TileWireMillDouble.class),
+    // split
+    wiremilltriple(true, TileWireMillTriple.class),
+    // split
     mineralcrusher(true, TileMineralCrusher.class, true),
     // split
+    mineralcrusherdouble(true, TileMineralCrusherDouble.class, true),
+    // split
+    mineralcrushertriple(true, TileMineralCrusherTriple.class, true),
+    // split
     mineralgrinder(true, TileMineralGrinder.class, true),
+    // split
+    mineralgrinderdouble(true, TileMineralGrinderDouble.class, true),
+    // split
+    mineralgrindertriple(true, TileMineralGrinderTriple.class, true),
     // split
     batterybox(true, TileBatteryBox.class, true),
     // split
@@ -70,7 +94,7 @@ public enum SubtypeMachine implements ISubtype {
     // split
     chemicalcrystallizer(true, TileChemicalCrystallizer.class),
     // split
-    circuitbreaker(true, TileCircuitBreaker.class);
+    circuitbreaker(true, TileCircuitBreaker.class),;
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
@@ -105,8 +129,10 @@ public enum SubtypeMachine implements ISubtype {
 	    SubtypeMachine mb = ((BlockMachine) bb).machine;
 	    SubtypeMachine ma = ((BlockMachine) ba).machine;
 	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
-		    || mb == coalgenerator && ma == coalgeneratorrunning || mb == coalgeneratorrunning && ma == coalgenerator
-		    || mb == oxidationfurnace && ma == oxidationfurnacerunning || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
+		    || mb == electricfurnacedouble && ma == electricfurnacedoublerunning
+		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble || mb == coalgenerator && ma == coalgeneratorrunning
+		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
+		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
 		return false;
 	    }
 	}

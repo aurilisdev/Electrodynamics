@@ -32,6 +32,8 @@ public class BlockItemWire extends BlockItem {
 			.mergeStyle(TextFormatting.GRAY));
 	if (wire.wire.logistical) {
 	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.logistical"));
+	} else if (wire.wire.ceramic) {
+	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.ceramic"));
 	} else if (wire.wire.insulated) {
 	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.insulated"));
 	} else {

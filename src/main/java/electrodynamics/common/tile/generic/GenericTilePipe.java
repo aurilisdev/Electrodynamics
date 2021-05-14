@@ -15,7 +15,6 @@ import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
-import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -206,7 +205,6 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     @Override
     public void destroyViolently() {
-	world.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
