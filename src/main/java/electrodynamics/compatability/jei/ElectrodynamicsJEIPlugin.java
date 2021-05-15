@@ -60,8 +60,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 
-	/* Electric Furnace*/
-    
+  /* Electric Furnace*/
     //1X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)),
 		ElectricFurnaceRecipeCategory.UID);
@@ -129,7 +128,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		ChemicalMixerRecipeCategory.UID);
 
 	/* Fermentation Chamber*/
-	
+
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant)),
 		FermentationPlantRecipeCategory.UID);
 
@@ -225,9 +224,11 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 	int[] o2oarrowLoc = { 80 + 5, 35, 22, 15 };
 
+
 	// Each click area needs to be tied to a unique machine Screen class. Otherwise
 	// you will get multiple machines
 	// popping up as with the O2O recipes for example
+
 
 	/* Wire Mill, Mineral Grinder, Mineral Crusher, Blast Compressor*/
 	
@@ -267,7 +268,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 45, 35, o2oarrowLoc[2], o2oarrowLoc[3], X5OreProcessingRecipeCategory.UID);
     }
 
-    
     public static ResourceLocation[] getO2OGuiScreens() {
 
 	ArrayList<ResourceLocation> locations = new ArrayList<>();
@@ -285,8 +285,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	return totalLocations;
 
     }
-    
-    
+
     private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
 
 	/*
