@@ -60,74 +60,79 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 
-  /* Electric Furnace*/
-    //1X
+	/* Electric Furnace */
+	// 1X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)),
 		ElectricFurnaceRecipeCategory.UID);
-	//2X
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)),
-			ElectricFurnaceRecipeCategory.UID);
-	//3X
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)),
-			ElectricFurnaceRecipeCategory.UID);
+	// 2X
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)),
+		ElectricFurnaceRecipeCategory.UID);
+	// 3X
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)),
+		ElectricFurnaceRecipeCategory.UID);
 
-	/* Wire Mill*/
-	
-	//1X
+	/* Wire Mill */
+
+	// 1X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill)),
 		WireMillRecipeCategory.UID);
-	//2X
+	// 2X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilldouble)),
-			WireMillRecipeCategory.UID);
-	//3X
+		WireMillRecipeCategory.UID);
+	// 3X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilltriple)),
-			WireMillRecipeCategory.UID);
+		WireMillRecipeCategory.UID);
 
-	/* Mineral Crusher*/
-	
-	//1X
+	/* Mineral Crusher */
+
+	// 1X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher)),
 		MineralCrusherRecipeCategory.UID);
-	//2X
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)),
+	// 2X
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)),
 		MineralCrusherRecipeCategory.UID);
-	//3X
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)),
+	// 3X
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)),
 		MineralCrusherRecipeCategory.UID);
 
-	/* Mineral Grinder*/
-	
-	//1X
+	/* Mineral Grinder */
+
+	// 1X
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder)),
 		MineralGrinderRecipeCategory.UID);
-	//2X
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)),
+	// 2X
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)),
 		MineralGrinderRecipeCategory.UID);
-	//3X
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
+	// 3X
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
 		MineralGrinderRecipeCategory.UID);
-	
-	/* Oxidation Furnace*/
-	
+
+	/* Oxidation Furnace */
+
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace)),
 		OxidationFurnaceRecipeCategory.UID);
 
-	/* 5x Ore Processing*/
-	
+	/* 5x Ore Processing */
+
 	registration.addRecipeCatalyst(
 		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)),
 		X5OreProcessingRecipeCategory.UID);
-	
-	registration.addRecipeCatalyst(
-			new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)),
-			X5OreProcessingRecipeCategory.UID);
 
-	/* Chemical Mixer*/
-	
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)),
+		X5OreProcessingRecipeCategory.UID);
+
+	/* Chemical Mixer */
+
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)),
 		ChemicalMixerRecipeCategory.UID);
 
-	/* Fermentation Chamber*/
+	/* Fermentation Chamber */
 
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant)),
 		FermentationPlantRecipeCategory.UID);
@@ -224,47 +229,47 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 	int[] o2oarrowLoc = { 80 + 5, 35, 22, 15 };
 
-
 	// Each click area needs to be tied to a unique machine Screen class. Otherwise
 	// you will get multiple machines
 	// popping up as with the O2O recipes for example
 
+	/* Wire Mill, Mineral Grinder, Mineral Crusher, Blast Compressor */
 
-	/* Wire Mill, Mineral Grinder, Mineral Crusher, Blast Compressor*/
-	
-	//1X
+	// 1X
 	registry.addRecipeClickArea(ScreenO2OProcessor.class, o2oarrowLoc[0], o2oarrowLoc[1], o2oarrowLoc[2], o2oarrowLoc[3], getO2OGuiScreens());
-	//2X 
-	registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, o2oarrowLoc[0], o2oarrowLoc[1]-10, o2oarrowLoc[2], (o2oarrowLoc[3]*2 + 5), getO2OGuiScreens());
-	//3X 
-	registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, o2oarrowLoc[0], o2oarrowLoc[1]-10, o2oarrowLoc[2], (o2oarrowLoc[3]*3 + 10), getO2OGuiScreens());
-	
-	/* Oxidation Furnace*/
+	// 2X
+	registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, o2oarrowLoc[0], o2oarrowLoc[1] - 10, o2oarrowLoc[2], o2oarrowLoc[3] * 2 + 5,
+		getO2OGuiScreens());
+	// 3X
+	registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, o2oarrowLoc[0], o2oarrowLoc[1] - 10, o2oarrowLoc[2], o2oarrowLoc[3] * 3 + 10,
+		getO2OGuiScreens());
+
+	/* Oxidation Furnace */
 	registry.addRecipeClickArea(ScreenDO2OProcessor.class, o2oarrowLoc[0], o2oarrowLoc[1], o2oarrowLoc[2], o2oarrowLoc[3],
 		OxidationFurnaceRecipeCategory.UID);
 
-	/* Electric Furnace Click Area*/
-	
-	//1X
+	/* Electric Furnace Click Area */
+
+	// 1X
 	registry.addRecipeClickArea(ScreenElectricFurnace.class, o2oarrowLoc[0], o2oarrowLoc[1], o2oarrowLoc[2], o2oarrowLoc[3],
 		ElectricFurnaceRecipeCategory.UID);
-	//2X
-	registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, o2oarrowLoc[0], o2oarrowLoc[1]-10, o2oarrowLoc[2], (o2oarrowLoc[3]*2 + 5),
-			ElectricFurnaceRecipeCategory.UID);
-	//3X 
-	registry.addRecipeClickArea(ScreenElectricFurnaceTriple.class, o2oarrowLoc[0], o2oarrowLoc[1]-10, o2oarrowLoc[2], (o2oarrowLoc[3]*2 + 10),
-			ElectricFurnaceRecipeCategory.UID);
-	
-	/* Chemical Mixer*/
+	// 2X
+	registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, o2oarrowLoc[0], o2oarrowLoc[1] - 10, o2oarrowLoc[2], o2oarrowLoc[3] * 2 + 5,
+		ElectricFurnaceRecipeCategory.UID);
+	// 3X
+	registry.addRecipeClickArea(ScreenElectricFurnaceTriple.class, o2oarrowLoc[0], o2oarrowLoc[1] - 10, o2oarrowLoc[2], o2oarrowLoc[3] * 2 + 10,
+		ElectricFurnaceRecipeCategory.UID);
+
+	/* Chemical Mixer */
 	registry.addRecipeClickArea(ScreenChemicalMixer.class, 97, 31, o2oarrowLoc[2], o2oarrowLoc[3], ChemicalMixerRecipeCategory.UID);
 
-	/* Fermentation Plant*/
+	/* Fermentation Plant */
 	registry.addRecipeClickArea(ScreenFermentationPlant.class, 97, 31, o2oarrowLoc[2], o2oarrowLoc[3], FermentationPlantRecipeCategory.UID);
 
-	/* Mineral Washer*/
+	/* Mineral Washer */
 	registry.addRecipeClickArea(ScreenMineralWasher.class, 45, 35, o2oarrowLoc[2], o2oarrowLoc[3], X5OreProcessingRecipeCategory.UID);
 
-	/* Chemical Crystalizer*/
+	/* Chemical Crystalizer */
 	registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 45, 35, o2oarrowLoc[2], o2oarrowLoc[3], X5OreProcessingRecipeCategory.UID);
     }
 

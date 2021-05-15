@@ -47,8 +47,8 @@ public class TileMineralGrinder extends GenericTileTicking {
 		.valid((slot, stack) -> slot == 0 || slot == extra * 2 || extra == 2 && slot == 2
 			|| slot != extra && slot != extra * 3 && slot != extra * 5 && stack.getItem() instanceof ItemProcessorUpgrade)
 		.relativeFaceSlots(Direction.EAST, 0, extra * 2, extra * 4).relativeFaceSlots(Direction.UP, 0, extra * 2, extra * 4)
-		.relativeFaceSlots(Direction.WEST, extra, extra * 2 - 1, extra * 3)
-		.relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3).shouldSendInfo());
+		.relativeFaceSlots(Direction.WEST, extra, extra * 2 - 1, extra * 3).relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3)
+		.shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
