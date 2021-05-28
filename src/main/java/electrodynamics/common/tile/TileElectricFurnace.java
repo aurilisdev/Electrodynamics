@@ -45,13 +45,12 @@ public class TileElectricFurnace extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
-		.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra)));
+		.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra))
+		.maxJoules(Constants.ELECTRICFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
 	addComponent(new ComponentInventory(this).size(5 + extra * 2)
 		.valid((slot, stack) -> slot == 0 || slot == extra * 2 || extra == 2 && slot == 2
 			|| slot != extra && slot != extra * 3 && slot != extra * 5 && stack.getItem() instanceof ItemProcessorUpgrade)
-		.relativeFaceSlots(Direction.EAST, 0, extra * 2, extra * 4).relativeFaceSlots(Direction.UP, 0, extra * 2, extra * 4)
-		.relativeFaceSlots(Direction.WEST, extra, extra * 2 - 1, extra * 3)
-		.relativeFaceSlots(Direction.DOWN, extra, extra * 2 - 1, extra * 3));
+		.setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.electricfurnace" + extra).createMenu((id,
 		player) -> (extra == 0 ? new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 			: extra == 1 ? new ContainerElectricFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())

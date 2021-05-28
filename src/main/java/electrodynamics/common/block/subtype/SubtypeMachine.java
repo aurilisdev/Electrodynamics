@@ -130,7 +130,9 @@ public enum SubtypeMachine implements ISubtype {
 	    SubtypeMachine ma = ((BlockMachine) ba).machine;
 	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
 		    || mb == electricfurnacedouble && ma == electricfurnacedoublerunning
-		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble || mb == coalgenerator && ma == coalgeneratorrunning
+		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble
+		    || mb == electricfurnacetriple && ma == electricfurnacetriplerunning
+		    || mb == electricfurnacetriplerunning && ma == electricfurnacetriple || mb == coalgenerator && ma == coalgeneratorrunning
 		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
 		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
 		return false;
