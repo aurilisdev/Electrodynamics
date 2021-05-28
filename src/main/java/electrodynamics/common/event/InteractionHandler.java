@@ -53,7 +53,7 @@ public class InteractionHandler {
 			    player.world.addEntity(
 				    new ItemEntity(player.world, (int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ(), insu));
 			}
-		    } else if (wire.insulated) {
+		    } else if (wire.insulated && !wire.highlyinsulated) {
 			player.world.setBlockState(event.getPos(),
 				Block.getValidBlockForPosition(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
 					.get(SubtypeWire.valueOf(wire.name().replace(wire.logistical ? "logistics" : "insulated", "")))
@@ -75,7 +75,8 @@ public class InteractionHandler {
 						    event.getPos()));
 			    stack.shrink(1);
 			}
-		    } else if (item == DeferredRegisters.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical) {
+		    } else if (item == DeferredRegisters.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical
+			    && !wire.highlyinsulated) {
 			player.world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
 			player.world.setBlockState(event.getPos(),
 				Block.getValidBlockForPosition(
