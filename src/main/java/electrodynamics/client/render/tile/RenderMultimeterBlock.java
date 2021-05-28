@@ -47,13 +47,13 @@ public class RenderMultimeterBlock extends TileEntityRenderer<TileMultimeterBloc
 		    break;
 		}
 		StringTextComponent displayNameIn = new StringTextComponent(
-			"Joules: " + ChatFormatter.getDisplayShort(tilemultimeter.joules, ElectricUnit.JOULES, 2));
+			"Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, ElectricUnit.WATT, 2));
 		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0225f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
+		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
 		matrixStackIn.scale(-scale, -scale, -scale);
 		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
 		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0, false, matrix4f, bufferIn, false, 0, combinedLightIn);
+		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
 		matrixStackIn.pop();
 	    }
 	}
@@ -80,11 +80,11 @@ public class RenderMultimeterBlock extends TileEntityRenderer<TileMultimeterBloc
 		StringTextComponent displayNameIn = new StringTextComponent(
 			"Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, ElectricUnit.VOLTAGE, 2));
 		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0225f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
+		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
 		matrixStackIn.scale(-scale, -scale, -scale);
 		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
 		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0, false, matrix4f, bufferIn, false, 0, combinedLightIn);
+		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
 		matrixStackIn.pop();
 	    }
 	}
@@ -111,11 +111,11 @@ public class RenderMultimeterBlock extends TileEntityRenderer<TileMultimeterBloc
 		StringTextComponent displayNameIn = new StringTextComponent(
 			"Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, ElectricUnit.RESISTANCE, 2));
 		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0225f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
+		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
 		matrixStackIn.scale(-scale, -scale, -scale);
 		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
 		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0, false, matrix4f, bufferIn, false, 0, combinedLightIn);
+		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
 		matrixStackIn.pop();
 	    }
 	}
@@ -140,13 +140,13 @@ public class RenderMultimeterBlock extends TileEntityRenderer<TileMultimeterBloc
 		    break;
 		}
 		StringTextComponent displayNameIn = new StringTextComponent(
-			"Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss, ElectricUnit.JOULES, 2));
+			"Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, ElectricUnit.WATT, 2));
 		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0225f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
+		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
 		matrixStackIn.scale(-scale, -scale, -scale);
 		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
 		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0, false, matrix4f, bufferIn, false, 0, combinedLightIn);
+		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
 		matrixStackIn.pop();
 	    }
 	}

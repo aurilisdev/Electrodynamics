@@ -24,13 +24,29 @@ public class TileMultimeterBlock extends GenericTileTicking {
     public TileMultimeterBlock() {
 	super(DeferredRegisters.TILE_MULTIMETERBLOCK.get());
 	addComponent(new ComponentDirection());
-	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickServer));
+	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).customPacketReader(this::readPacket));
 	addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeInput(Direction.SOUTH));
     }
 
     protected void tickServer(ComponentTickable tickable) {
-	if (tickable.getTicks() % 10 == 0) {
+	if (tickable.getTicks() % (joules == 0 ? 20 : 2) == 0) {
+	    Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	    if (input == null) {
+		input = new CachedTileOutput(world, pos.offset(facing));
+	    }
+	    if (input.getSafe() instanceof IConductor) {
+		IConductor cond = input.getSafe();
+		if (cond.getAbstractNetwork() instanceof ElectricNetwork) {
+		    ElectricNetwork net = (ElectricNetwork) cond.getAbstractNetwork();
+		    joules = net.getActiveTransmitted();
+		    voltage = net.getActiveVoltage();
+		    resistance = net.getResistance();
+		    loss = net.getLastEnergyLoss();
+		}
+	    } else {
+		joules = voltage = resistance = loss = 0;
+	    }
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
     }
@@ -50,20 +66,6 @@ public class TileMultimeterBlock extends GenericTileTicking {
     }
 
     protected TransferPack receivePower(TransferPack transfer, boolean debug) {
-	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	if (input == null) {
-	    input = new CachedTileOutput(world, pos.offset(facing));
-	}
-	if (input.getSafe() instanceof IConductor) {
-	    IConductor cond = input.getSafe();
-	    if (cond.getAbstractNetwork() instanceof ElectricNetwork) {
-		ElectricNetwork net = (ElectricNetwork) cond.getAbstractNetwork();
-		joules = net.getActiveTransmitted();
-		voltage = net.getActiveVoltage();
-		resistance = net.getResistance();
-		loss = net.getLastEnergyLoss();
-	    }
-	}
 	return TransferPack.EMPTY;
     }
 }
