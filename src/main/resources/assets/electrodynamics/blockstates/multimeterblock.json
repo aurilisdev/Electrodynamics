@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/multimeterblock",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/multimeterblock",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/multimeterblock",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/multimeterblock",
+			"y": 180
+		}
+	}
+}

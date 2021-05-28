@@ -17,6 +17,7 @@ import electrodynamics.client.render.tile.RenderMineralGrinder;
 import electrodynamics.client.render.tile.RenderMineralGrinderDouble;
 import electrodynamics.client.render.tile.RenderMineralGrinderTriple;
 import electrodynamics.client.render.tile.RenderMineralWasher;
+import electrodynamics.client.render.tile.RenderMultimeterBlock;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenChemicalCrystallizer;
@@ -135,6 +136,7 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
