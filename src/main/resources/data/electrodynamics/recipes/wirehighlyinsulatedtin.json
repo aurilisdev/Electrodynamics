@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "electrodynamics:wireinsulatedtin"
+		},
+		{
+			"item": "electrodynamics:wireinsulatedtin"
+		},
+		{
+			"item": "electrodynamics:wireinsulatedtin"
+		},
+		{
+			"item": "electrodynamics:insulation"
+		},
+		{
+			"item": "electrodynamics:insulation"
+		},
+		{
+			"item": "electrodynamics:insulation"
+		}
+	],
+	"result": {
+		"item": "electrodynamics:wirehighlyinsulatedtin",
+		"count": 1
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "electrodynamics:wireinsulatedsilver"
+		},
+		{
+			"item": "electrodynamics:wireinsulatedsilver"
+		},
+		{
+			"item": "electrodynamics:wireinsulatedsilver"
+		},
+		{
+			"item": "electrodynamics:insulation"
+		},
+		{
+			"item": "electrodynamics:insulation"
+		},
+		{
+			"item": "electrodynamics:insulation"
+		}
+	],
+	"result": {
+		"item": "electrodynamics:wirehighlyinsulatedsilver",
+		"count": 1
+	}
+}
