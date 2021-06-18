@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:wire_mill_recipe",
+
+    "input":{
+        "tag":"forge:ingots/silver",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:wiresilver",
+        "count":1
+    }
+}

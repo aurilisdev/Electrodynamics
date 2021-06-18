@@ -1,122 +1,82 @@
-/*
- * This is here to prep the plugin for switching to JSONs. For now it's just kinda here vibing.
- * 
- */
 package electrodynamics.compatability.jei.recipecategories;
 
-import java.util.List;
-
-import com.mojang.blaze3d.matrix.MatrixStack;
-
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
-import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public abstract class ElectrodynamicsRecipeCategory implements IRecipeCategory<ElectrodynamicsRecipe> {
+public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRecipe> implements IRecipeCategory<T> {
 
-    public String RECIPE_GROUP;
-    public ResourceLocation GUI_TEXTURE;
+    private String RECIPE_GROUP;
+    private ResourceLocation GUI_TEXTURE;
 
-    public IDrawable background;
-    private IDrawable icon;
+    private IDrawable BACKGROUND;
+    private IDrawable ICON;
 
-    public int[] GUI_TEXTURE_SPECS;
+    private int[] GUI_TEXTURE_SPECS;
 
     private ItemStack INPUT_MACHINE = null;
+    
+    private Class<T> RECIPE_CATEGORY_CLASS;
+    
+    private int Y_HEIGHT;
+    private int ARROW_SMELT_TIME;
 
     public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
-	    int[] guiTextureSize) {
+	    int[] guiTextureSize, Class<T> recipeCategoryClass, int yHeight, int arrowSmeltTime) {
 
-	RECIPE_GROUP = recipeGroup;
-	GUI_TEXTURE = new ResourceLocation(modID, guiTexture);
-	GUI_TEXTURE_SPECS = guiTextureSize;
+		RECIPE_GROUP = recipeGroup;
+		GUI_TEXTURE = new ResourceLocation(modID, guiTexture);
+		GUI_TEXTURE_SPECS = guiTextureSize;
+	
+		INPUT_MACHINE = inputMachine;
+		
+		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
+	
+		ICON = guiHelper.createDrawableIngredient(INPUT_MACHINE);
+		BACKGROUND = guiHelper.createDrawable(GUI_TEXTURE, GUI_TEXTURE_SPECS[0], GUI_TEXTURE_SPECS[1], GUI_TEXTURE_SPECS[2], GUI_TEXTURE_SPECS[3]);
 
-	INPUT_MACHINE = inputMachine;
-
-	icon = guiHelper.createDrawableIngredient(INPUT_MACHINE);
-	background = guiHelper.createDrawable(GUI_TEXTURE, GUI_TEXTURE_SPECS[0], GUI_TEXTURE_SPECS[1], GUI_TEXTURE_SPECS[2], GUI_TEXTURE_SPECS[3]);
-
+		Y_HEIGHT = yHeight;
+		ARROW_SMELT_TIME = arrowSmeltTime;
     }
 
     @Override
-    public Class<? extends ElectrodynamicsRecipe> getRecipeClass() {
-	return ElectrodynamicsRecipe.class;
+    public Class<T> getRecipeClass() {
+    	return RECIPE_CATEGORY_CLASS;
     }
 
     @Override
     public String getTitle() {
-	return new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP).getString();
+    	return new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP).getString();
     }
 
     @Override
     public IDrawable getBackground() {
-	return background;
+    	return BACKGROUND;
     }
 
     @Override
     public IDrawable getIcon() {
-	return icon;
+    	return ICON;
     }
-
-    @Override
-    public void setIngredients(ElectrodynamicsRecipe recipe, IIngredients ingredients) {
+    
+    public ResourceLocation getGuiTexture() {
+    	return GUI_TEXTURE;
     }
-
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, ElectrodynamicsRecipe recipe, IIngredients ingredients) {
+    
+    public String getRecipeGroup() {
+    	return RECIPE_GROUP;
     }
-
-    @Override
-    public void draw(ElectrodynamicsRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+    
+    public int getYHeight() {
+    	return Y_HEIGHT;
     }
-
-    /**
-     * Returns a list of Ingredients representing the inputs for the recipe
-     * 
-     * @param recipe the recipe being initialized
-     * @return a List of Ingredients
-     */
-    public List<Ingredient> getIngredients(ElectrodynamicsRecipe recipe) {
-	return null;
-    }
-
-    /**
-     * Returns a List of Lists of Ingredients Allows for cycling of items in some
-     * specialized recipes
-     * 
-     * @param recipe the recipe being initialized
-     * @return a List of List Ingredient
-     */
-    public List<List<Ingredient>> getIngredientLists(ElectrodynamicsRecipe recipe) {
-	return null;
-    }
-
-    /**
-     * Returns a List of ItemStack representing the outputs for the recipe
-     * 
-     * @param recipe the recipe being initialized
-     * @return a List of ItemStack
-     */
-    public List<ItemStack> getOutputs(ElectrodynamicsRecipe recipe) {
-	return null;
-    }
-
-    /**
-     * Returns a List of List ItemStack representing the outputs for the recipe
-     * Allows cycling of output items in some specialized recipes
-     * 
-     * @param recipe the recipe being initialized
-     * @return a List of ItemStack
-     */
-    public List<List<ItemStack>> getOutputLists(ElectrodynamicsRecipe recipe) {
-	return null;
+    
+    public int getArrowSmeltTime() {
+    	return ARROW_SMELT_TIME;
     }
 
 }

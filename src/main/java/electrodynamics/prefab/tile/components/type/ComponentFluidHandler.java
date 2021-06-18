@@ -1,8 +1,11 @@
 package electrodynamics.prefab.tile.components.type;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
@@ -29,12 +32,18 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	this.holder = holder;
     }
 
+    @Deprecated
+    //we need to rework this to split it into input tanks and output tanks
     protected HashMap<Fluid, FluidTank> fluids = new HashMap<>();
+    
     protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
     protected HashSet<Direction> relativeInputDirections = new HashSet<>();
     protected HashSet<Direction> outputDirections = new HashSet<>();
     protected HashSet<Direction> inputDirections = new HashSet<>();
     protected Direction lastDirection = null;
+    
+    private ArrayList<Fluid> INPUT_FLUIDS = new ArrayList<>();
+    private ArrayList<Fluid> OUTPUT_FLUIDS = new ArrayList<>();
 
     public ComponentFluidHandler(GenericTile source) {
 	holder(source);
@@ -200,9 +209,50 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	}
 	nbt.put("list", list);
     }
+    
+    public GenericTile getHolder() {
+    	return holder;
+    }
 
     @Override
     public ComponentType getType() {
 	return ComponentType.FluidHandler;
     }
+    
+    public Collection<FluidTank> getFluidTanks(){
+    	return this.fluids.values();
+    }
+    
+    public Set<Fluid> getFluids() {
+    	return this.fluids.keySet();
+    }
+     
+    public ArrayList<Fluid> getInputFluids(){
+    	return this.INPUT_FLUIDS;
+    }
+    
+    public ArrayList<Fluid> getOutputFluids(){
+    	return this.OUTPUT_FLUIDS;
+    }
+    
+    public void setInputFluid(Fluid fluid) {
+    	this.INPUT_FLUIDS.add(fluid);
+    }
+    
+    public void setOutputFluid(Fluid fluid) {
+    	this.OUTPUT_FLUIDS.add(fluid);
+    }
+    
+    public ComponentFluidHandler addMultipleFluidTanks(Fluid[] fluids, int capacity,boolean input) {
+    	for(Fluid fluid: fluids) {
+    		if(input) {
+    			this.setInputFluid(fluid);
+    		}else {
+    			this.setOutputFluid(fluid);
+    		}
+    		this.fluidTank(fluid, capacity);
+    	}
+    	return this;
+    }
+    
 }

@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:mineral_crusher_recipe",
+
+    "input":{
+        "item":"electrodynamics:crystallead",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:impuredustlead",
+        "count":1
+    }
+}
