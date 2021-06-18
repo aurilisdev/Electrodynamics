@@ -22,6 +22,7 @@ import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.common.tile.TileMineralGrinderDouble;
 import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
+import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
@@ -94,7 +95,9 @@ public enum SubtypeMachine implements ISubtype {
     // split
     chemicalcrystallizer(true, TileChemicalCrystallizer.class),
     // split
-    circuitbreaker(true, TileCircuitBreaker.class),;
+    circuitbreaker(true, TileCircuitBreaker.class),
+    // split
+    multimeterblock(true, TileMultimeterBlock.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
@@ -130,7 +133,9 @@ public enum SubtypeMachine implements ISubtype {
 	    SubtypeMachine ma = ((BlockMachine) ba).machine;
 	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
 		    || mb == electricfurnacedouble && ma == electricfurnacedoublerunning
-		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble || mb == coalgenerator && ma == coalgeneratorrunning
+		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble
+		    || mb == electricfurnacetriple && ma == electricfurnacetriplerunning
+		    || mb == electricfurnacetriplerunning && ma == electricfurnacetriple || mb == coalgenerator && ma == coalgeneratorrunning
 		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
 		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
 		return false;

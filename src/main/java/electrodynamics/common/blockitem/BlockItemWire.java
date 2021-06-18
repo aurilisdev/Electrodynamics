@@ -35,7 +35,7 @@ public class BlockItemWire extends BlockItem {
 	} else if (wire.wire.ceramic) {
 	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.ceramic"));
 	} else if (wire.wire.insulated) {
-	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.insulated"));
+	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info." + (wire.wire.highlyinsulated ? "higlyinsulated" : "insulated")));
 	} else {
 	    tooltip.add(new TranslationTextComponent("tooltip.itemwire.info.uninsulated"));
 	}

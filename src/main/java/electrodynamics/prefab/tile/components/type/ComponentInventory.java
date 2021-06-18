@@ -104,6 +104,13 @@ public class ComponentInventory implements Component, ISidedInventory {
 	return this;
     }
 
+    public ComponentInventory setMachineSlots(int extra) {
+	return relativeFaceSlots(Direction.EAST, 0, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
+		.relativeFaceSlots(Direction.UP, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
+		.relativeFaceSlots(Direction.WEST, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1)
+		.relativeFaceSlots(Direction.DOWN, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1);
+    }
+
     public ComponentInventory valid(BiPredicate<Integer, ItemStack> itemValidPredicate) {
 	this.itemValidPredicate = itemValidPredicate;
 	return this;

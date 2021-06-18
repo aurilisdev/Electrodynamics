@@ -70,6 +70,7 @@ import electrodynamics.common.tile.TileMineralGrinderDouble;
 import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultiSubnode;
+import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
@@ -301,6 +302,9 @@ public class DeferredRegisters {
 		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)), null));
     public static final RegistryObject<TileEntityType<TileCircuitBreaker>> TILE_CIRCUITBREAKER = TILES.register(SubtypeMachine.circuitbreaker.tag(),
 	    () -> new TileEntityType<>(TileCircuitBreaker::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker)), null));
+    public static final RegistryObject<TileEntityType<TileMultimeterBlock>> TILE_MULTIMETERBLOCK = TILES.register(
+	    SubtypeMachine.multimeterblock.tag(),
+	    () -> new TileEntityType<>(TileMultimeterBlock::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.multimeterblock)), null));
 
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
