@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:wire_mill_recipe",
+
+    "input":{
+        "tag":"forge:ingots/iron",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:wireiron",
+        "count":1
+    }
+}

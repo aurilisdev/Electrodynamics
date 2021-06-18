@@ -6,14 +6,14 @@ import java.util.Arrays;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.compatability.jei.recipecategories.DO2OProcessingRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.DO2ORecipeCategory;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
 import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class OxidationFurnaceRecipeCategory extends DO2OProcessingRecipeCategory {
+public class OxidationFurnaceRecipeCategory extends DO2ORecipeCategory {
 
     // JEI Window Parameters
     private static int[] GUIBackground = { 0, 0, 132, 58 };

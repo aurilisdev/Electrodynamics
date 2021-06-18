@@ -19,10 +19,12 @@ import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.recipe.MachineRecipes;
+import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
+import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
 import electrodynamics.compatability.jei.recipecategories.psuedorecipes.Psuedo5XRecipe;
 import electrodynamics.compatability.jei.recipecategories.psuedorecipes.PsuedoRecipes;
-import electrodynamics.compatability.jei.recipecategories.psuedorecipes.PsuedoSolAndLiqToLiquidRecipe;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalMixerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ElectricFurnaceRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.FermentationPlantRecipeCategory;
@@ -31,8 +33,6 @@ import electrodynamics.compatability.jei.recipecategories.specificmachines.elect
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.OxidationFurnaceRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.WireMillRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.X5OreProcessingRecipeCategory;
-import electrodynamics.prefab.tile.processing.DO2OProcessingRecipe;
-import electrodynamics.prefab.tile.processing.O2OProcessingRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
@@ -158,24 +158,19 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
 
 	// Wire Mill
-	Set<O2OProcessingRecipe> wireMillRecipes = MachineRecipes.o2orecipemap.get(electrodynamics.DeferredRegisters.TILE_WIREMILL.get());
-
+	Set<O2ORecipe> wireMillRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE));
 	registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
 
 	// Mineral Crusher
-	Set<O2OProcessingRecipe> mineralCrusherRecipes = MachineRecipes.o2orecipemap.get(electrodynamics.DeferredRegisters.TILE_MINERALCRUSHER.get());
-
+	Set<O2ORecipe> mineralCrusherRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
 	registration.addRecipes(mineralCrusherRecipes, MineralCrusherRecipeCategory.UID);
 
 	// Mineral Grinder
-	Set<O2OProcessingRecipe> mineralGrinderRecipes = MachineRecipes.o2orecipemap.get(electrodynamics.DeferredRegisters.TILE_MINERALGRINDER.get());
-
+	Set<O2ORecipe> mineralGrinderRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
 	registration.addRecipes(mineralGrinderRecipes, MineralGrinderRecipeCategory.UID);
 
 	// Oxidation Furnace
-	Set<DO2OProcessingRecipe> oxidationFurnaceRecipes = MachineRecipes.do2orecipemap
-		.get(electrodynamics.DeferredRegisters.TILE_OXIDATIONFURNACE.get());
-
+	Set<DO2ORecipe> oxidationFurnaceRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
 	registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
 
 	// 5x Ore Processing
@@ -184,16 +179,16 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registration.addRecipes(x5Recipes, X5OreProcessingRecipeCategory.UID);
 
 	// Chemical Mixer
-	Set<PsuedoSolAndLiqToLiquidRecipe> chemicalMixerRecipes = new HashSet<>(PsuedoRecipes.CHEMICAL_MIXER_RECIPES);
+	Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
 
 	registration.addRecipes(chemicalMixerRecipes, ChemicalMixerRecipeCategory.UID);
 
 	// Fermentation Chamber
-	Set<PsuedoSolAndLiqToLiquidRecipe> fermenterRecipes = new HashSet<>(PsuedoRecipes.FERMENTATION_CHAMBER_RECIPES);
+	Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE));
 
 	registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
 
-	electrodynamicsInfoTabs(registration);
+	//electrodynamicsInfoTabs(registration);
 
     }
 

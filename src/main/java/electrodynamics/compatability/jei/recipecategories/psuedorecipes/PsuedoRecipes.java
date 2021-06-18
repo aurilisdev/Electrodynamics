@@ -7,7 +7,6 @@ import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
-import electrodynamics.common.tile.TileFermentationPlant;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -25,8 +24,6 @@ public class PsuedoRecipes {
     public static ArrayList<ItemStack> ELECTRODYNAMICS_MACHINES = new ArrayList<>();
 
     public static ArrayList<Psuedo5XRecipe> X5_ORE_RECIPES = new ArrayList<>();
-    public static ArrayList<PsuedoSolAndLiqToLiquidRecipe> CHEMICAL_MIXER_RECIPES = new ArrayList<>();
-    public static ArrayList<PsuedoSolAndLiqToLiquidRecipe> FERMENTATION_CHAMBER_RECIPES = new ArrayList<>();
 
     // private static final Logger logger =
     // LogManager.getLogger(ElectrodynamicsPatches.MOD_ID);
@@ -66,27 +63,6 @@ public class PsuedoRecipes {
 	X5_ORE_RECIPES.add(new Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(6), ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1),
 		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(8), 1000),
 		ELECTRODYNAMICS_ITEMS.get(2).get(6)));
-
-	/* Chemical Mixing Recipes */
-
-	CHEMICAL_MIXER_RECIPES.add(new PsuedoSolAndLiqToLiquidRecipe(ELECTRODYNAMICS_ITEMS.get(3).get(0), ELECTRODYNAMICS_ITEMS.get(3).get(1),
-		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(0), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 2500),
-		PsuedoSolAndLiqToLiquidRecipe.SULFURIC_ACID));
-
-	/* Fermenting Recipes */
-
-	ArrayList<Item> fermentItems = new ArrayList<>(TileFermentationPlant.RECIPE_MAPPINGS.keySet());
-	ArrayList<Integer> fermentItemCount = new ArrayList<>(TileFermentationPlant.RECIPE_MAPPINGS.values());
-	ArrayList<ItemStack> fermentItemStacks = new ArrayList<>();
-	for (int i = 0; i < fermentItems.size(); i++) {
-	    fermentItemStacks.add(new ItemStack(fermentItems.get(i), fermentItemCount.get(i).intValue()));
-	}
-
-	for (ItemStack itemStack : fermentItemStacks) {
-	    FERMENTATION_CHAMBER_RECIPES.add(new PsuedoSolAndLiqToLiquidRecipe(itemStack, ELECTRODYNAMICS_ITEMS.get(3).get(1),
-		    new FluidStack(ELECTRODYNAMICS_FLUIDS.get(0), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(9), 100),
-		    PsuedoSolAndLiqToLiquidRecipe.ETHANOL));
-	}
 
     }
 

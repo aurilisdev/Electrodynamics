@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:mineral_crusher_recipe",
+
+    "input":{
+        "item":"electrodynamics:crystalsilver",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:impuredustsilver",
+        "count":1
+    }
+}

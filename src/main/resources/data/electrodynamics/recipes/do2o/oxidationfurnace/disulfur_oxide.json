@@ -1,0 +1,16 @@
+{
+    "type":"electrodynamics:oxidation_furnace_recipe",
+
+    "input1":{
+        "tag":"forge:dusts/sulfur",
+        "count":1
+    },
+    "input2":{
+        "tag":"minecraft:coals",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:oxidedisulfur",
+        "count":1
+    }
+}

@@ -92,12 +92,13 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.42'
-    compile fileTree("C:/AmpzLibz")
     /*
 	Compiles against source code as well as JAR at runtime. Recommend to keep it
 	*/
-  	compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.3.81:api")
-  	runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.6.3.81")
+  	compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.0.101:api")
+  	runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.0.101")
+  	
+  	implementation 'com.github.cliftonlabs:json-simple:3.1.0'
 }
 
 
@@ -173,6 +174,7 @@ task pushTag(type: GitPush, dependsOn: createTag) {
 tasks.curseforge.dependsOn jar
 tasks.curseforge.dependsOn pushTag
 
+/*
 curseforge {
   apiKey = System.getenv("CURSEFORGE_KEY")
   project {
@@ -186,3 +188,4 @@ curseforge {
     }
   }
 }
+*/
