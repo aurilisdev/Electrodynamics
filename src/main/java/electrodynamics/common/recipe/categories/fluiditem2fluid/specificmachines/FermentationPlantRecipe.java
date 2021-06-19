@@ -10,25 +10,24 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FermentationPlantRecipe extends FluidItem2FluidRecipe{
+public class FermentationPlantRecipe extends FluidItem2FluidRecipe {
 
-	public static final String RECIPE_GROUP = "fermentation_plant_recipe";
-	public static final String MOD_ID = electrodynamics.api.References.ID;
-	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID,RECIPE_GROUP);
-	
-	public FermentationPlantRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid,
-			FluidStack outputFluid) {
-		super(recipeID, inputItem, inputFluid, outputFluid);
-	}
+    public static final String RECIPE_GROUP = "fermentation_plant_recipe";
+    public static final String MOD_ID = electrodynamics.api.References.ID;
+    public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipeInit.FERMENTATION_PLANT_SERIALIZER.get();
-	}
+    public FermentationPlantRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid, FluidStack outputFluid) {
+	super(recipeID, inputItem, inputFluid, outputFluid);
+    }
 
-	@Override
-	public IRecipeType<?> getType() {
-		return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
-	}
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+	return ElectrodynamicsRecipeInit.FERMENTATION_PLANT_SERIALIZER.get();
+    }
+
+    @Override
+    public IRecipeType<?> getType() {
+	return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
+    }
 
 }

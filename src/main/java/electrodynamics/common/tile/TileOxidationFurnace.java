@@ -29,26 +29,21 @@ public class TileOxidationFurnace extends GenericTileTicking {
     public static final int[] SLOTS_OUTPUT = new int[] { 2 };
 
     public TileOxidationFurnace() {
-		super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
-			.relativeSlotFaces(2, Direction.DOWN, Direction.WEST)
-			.valid((slot, stack) -> slot < 2 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
-		addComponent(new ComponentContainerProvider("container.oxidationfurnace")
-			.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-		
-		
-		addComponent(
-			new ComponentProcessor(this).upgradeSlots(3, 4, 5)
-				.canProcess(component -> canProcessOxideFurn(component))
-				.process(component -> component.processDO2ORecipe(component,OxidationFurnaceRecipe.class))
-				.requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
-				.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK)
-				.type(ComponentProcessorType.DoubleObjectToObject)
-		);
+	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentPacketHandler());
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
+		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST)
+		.valid((slot, stack) -> slot < 2 || slot > 2 && stack.getItem() instanceof ItemProcessorUpgrade));
+	addComponent(new ComponentContainerProvider("container.oxidationfurnace")
+		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+
+	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(component -> canProcessOxideFurn(component))
+		.process(component -> component.processDO2ORecipe(component, OxidationFurnaceRecipe.class))
+		.requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS).usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK)
+		.type(ComponentProcessorType.DoubleObjectToObject));
     }
 
     protected boolean canProcessOxideFurn(ComponentProcessor component) {

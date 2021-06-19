@@ -19,64 +19,64 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
     private int[] GUI_TEXTURE_SPECS;
 
     private ItemStack INPUT_MACHINE = null;
-    
+
     private Class<T> RECIPE_CATEGORY_CLASS;
-    
+
     private int Y_HEIGHT;
     private int ARROW_SMELT_TIME;
 
     public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    int[] guiTextureSize, Class<T> recipeCategoryClass, int yHeight, int arrowSmeltTime) {
 
-		RECIPE_GROUP = recipeGroup;
-		GUI_TEXTURE = new ResourceLocation(modID, guiTexture);
-		GUI_TEXTURE_SPECS = guiTextureSize;
-	
-		INPUT_MACHINE = inputMachine;
-		
-		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
-	
-		ICON = guiHelper.createDrawableIngredient(INPUT_MACHINE);
-		BACKGROUND = guiHelper.createDrawable(GUI_TEXTURE, GUI_TEXTURE_SPECS[0], GUI_TEXTURE_SPECS[1], GUI_TEXTURE_SPECS[2], GUI_TEXTURE_SPECS[3]);
+	RECIPE_GROUP = recipeGroup;
+	GUI_TEXTURE = new ResourceLocation(modID, guiTexture);
+	GUI_TEXTURE_SPECS = guiTextureSize;
 
-		Y_HEIGHT = yHeight;
-		ARROW_SMELT_TIME = arrowSmeltTime;
+	INPUT_MACHINE = inputMachine;
+
+	RECIPE_CATEGORY_CLASS = recipeCategoryClass;
+
+	ICON = guiHelper.createDrawableIngredient(INPUT_MACHINE);
+	BACKGROUND = guiHelper.createDrawable(GUI_TEXTURE, GUI_TEXTURE_SPECS[0], GUI_TEXTURE_SPECS[1], GUI_TEXTURE_SPECS[2], GUI_TEXTURE_SPECS[3]);
+
+	Y_HEIGHT = yHeight;
+	ARROW_SMELT_TIME = arrowSmeltTime;
     }
 
     @Override
     public Class<T> getRecipeClass() {
-    	return RECIPE_CATEGORY_CLASS;
+	return RECIPE_CATEGORY_CLASS;
     }
 
     @Override
     public String getTitle() {
-    	return new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP).getString();
+	return new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP).getString();
     }
 
     @Override
     public IDrawable getBackground() {
-    	return BACKGROUND;
+	return BACKGROUND;
     }
 
     @Override
     public IDrawable getIcon() {
-    	return ICON;
+	return ICON;
     }
-    
+
     public ResourceLocation getGuiTexture() {
-    	return GUI_TEXTURE;
+	return GUI_TEXTURE;
     }
-    
+
     public String getRecipeGroup() {
-    	return RECIPE_GROUP;
+	return RECIPE_GROUP;
     }
-    
+
     public int getYHeight() {
-    	return Y_HEIGHT;
+	return Y_HEIGHT;
     }
-    
+
     public int getArrowSmeltTime() {
-    	return ARROW_SMELT_TIME;
+	return ARROW_SMELT_TIME;
     }
 
 }

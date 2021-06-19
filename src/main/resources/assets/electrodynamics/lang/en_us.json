@@ -198,6 +198,7 @@
 	"tooltip.itemwire.resistance": "Resistance: %s",
 	"tooltip.itemwire.maxamps": "Max Amps: %s",
 	"tooltip.itemwire.info.insulated": "Insulated wire, does not shock you you up to and equals 240.0V",
+	"tooltip.itemwire.info.highlyinsulated": "Insulated wire, does not shock you you up to and equals 960",
 	"tooltip.itemwire.info.ceramic": "Ceramic & insulated wire, does not shock you up to and equals 480.0V",
 	"tooltip.itemwire.info.uninsulated": "Will shock you when touched!",
 	"tooltip.itemwire.info.logistical": "Emits redstone when powered",

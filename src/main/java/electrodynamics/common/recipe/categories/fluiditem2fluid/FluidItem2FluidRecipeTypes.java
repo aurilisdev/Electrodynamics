@@ -5,9 +5,10 @@ import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines
 import net.minecraft.item.crafting.IRecipeSerializer;
 
 public class FluidItem2FluidRecipeTypes {
-	
-	public static final IRecipeSerializer<ChemicalMixerRecipe> CHEMICAL_MIXER_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<ChemicalMixerRecipe>(ChemicalMixerRecipe.class);
-	public static final IRecipeSerializer<FermentationPlantRecipe> FERMENTATION_PLANT_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<FermentationPlantRecipe>(FermentationPlantRecipe.class);
-	
-	
+
+    public static final IRecipeSerializer<ChemicalMixerRecipe> CHEMICAL_MIXER_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(
+	    ChemicalMixerRecipe.class);
+    public static final IRecipeSerializer<FermentationPlantRecipe> FERMENTATION_PLANT_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(
+	    FermentationPlantRecipe.class);
+
 }

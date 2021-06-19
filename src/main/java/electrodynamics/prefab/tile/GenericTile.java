@@ -184,97 +184,97 @@ public class GenericTile extends TileEntity implements INameable {
     public double getMaxRenderDistanceSquared() {
 	return 256;
     }
-    
+
     /**
-     * Returns an O2O type Recipe based upon the input inventory of the TileEntity in question
-     * @param <T> an O2O RecipeType subclass
-     * @param pr the component processor of the machine
+     * Returns an O2O type Recipe based upon the input inventory of the TileEntity
+     * in question
+     * 
+     * @param <T>         an O2O RecipeType subclass
+     * @param pr          the component processor of the machine
      * @param recipeClass the Class of the RecipeType
-     * @param typeIn the RecipeType of the Recipe
+     * @param typeIn      the RecipeType of the Recipe
      * @return a recipe. CAN BE NULL!
      */
     @Nullable
-	public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-		ItemStack stack = pr.getInput();
-		if(stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-			return null;
-		}
-		Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-		for(IRecipe<?> iRecipe: recipes) {
-			T recipe = recipeClass.cast(iRecipe);
-			if(recipe.matchesRecipe(pr)) {
-				return recipe;
-			}
-		}
-		return null;
+    public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+	ItemStack stack = pr.getInput();
+	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
+	    return null;
 	}
-    
-	public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-		ItemStack[] stack = new ItemStack[] {pr.getInput(),pr.getSecondInput()};
-		if(stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true)) {
-			return null;
-		}
-		if(stack[1] == null || stack[1].equals(new ItemStack(Items.AIR), true)) {
-			return null;
-		}
-		Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-		for(IRecipe<?> iRecipe: recipes) {
-			T recipe = recipeClass.cast(iRecipe);
-			if(recipe.matchesRecipe(pr)) {
-				return recipe;
-			}
-		}
-		return null;
+	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
+	for (IRecipe<?> iRecipe : recipes) {
+	    T recipe = recipeClass.cast(iRecipe);
+	    if (recipe.matchesRecipe(pr)) {
+		return recipe;
+	    }
 	}
-	
-	public <T extends FluidItem2FluidRecipe> T getFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-		ItemStack stack = pr.getInput();
-		if(stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-			return null;
-		}
-		
-		ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-		for(FluidTank fluidTank : fluidHandler.getFluidTanks()) {
-			if(fluidTank.getCapacity() > 0) {
-				break;
-			}else {
-				return null;
-			}
-		}
-	
-		Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-		for(IRecipe<?> iRecipe: recipes) {
-			T recipe = recipeClass.cast(iRecipe);
-			if(recipe.matchesRecipe(pr)) {
-				return recipe;
-			}
-		}
-		return null;
+	return null;
+    }
+
+    public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+	ItemStack[] stack = new ItemStack[] { pr.getInput(), pr.getSecondInput() };
+	if (stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true)) {
+	    return null;
 	}
-	
-	public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-		ItemStack stack = pr.getInput();
-		if(stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-			return null;
-		}
-		
-		ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-		for(FluidTank fluidTank : fluidHandler.getFluidTanks()) {
-			if(fluidTank.getCapacity() > 0) {
-				break;
-			}else {
-				return null;
-			}
-		}
-		
-		Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-		for(IRecipe<?> iRecipe: recipes) {
-			T recipe = recipeClass.cast(iRecipe);
-			if(recipe.matchesRecipe(pr)) {
-				return recipe;
-			}
-		}
-		return null;
+	if (stack[1] == null || stack[1].equals(new ItemStack(Items.AIR), true)) {
+	    return null;
 	}
-   
+	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
+	for (IRecipe<?> iRecipe : recipes) {
+	    T recipe = recipeClass.cast(iRecipe);
+	    if (recipe.matchesRecipe(pr)) {
+		return recipe;
+	    }
+	}
+	return null;
+    }
+
+    public <T extends FluidItem2FluidRecipe> T getFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+	ItemStack stack = pr.getInput();
+	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
+	    return null;
+	}
+
+	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	    if (fluidTank.getCapacity() > 0) {
+		break;
+	    }
+	    return null;
+	}
+
+	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
+	for (IRecipe<?> iRecipe : recipes) {
+	    T recipe = recipeClass.cast(iRecipe);
+	    if (recipe.matchesRecipe(pr)) {
+		return recipe;
+	    }
+	}
+	return null;
+    }
+
+    public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+	ItemStack stack = pr.getInput();
+	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
+	    return null;
+	}
+
+	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	    if (fluidTank.getCapacity() > 0) {
+		break;
+	    }
+	    return null;
+	}
+
+	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
+	for (IRecipe<?> iRecipe : recipes) {
+	    T recipe = recipeClass.cast(iRecipe);
+	    if (recipe.matchesRecipe(pr)) {
+		return recipe;
+	    }
+	}
+	return null;
+    }
+
 }

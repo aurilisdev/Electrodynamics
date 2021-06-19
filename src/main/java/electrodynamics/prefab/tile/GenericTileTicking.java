@@ -17,11 +17,11 @@ public class GenericTileTicking extends GenericTile implements ITickableTileEnti
 	    ComponentTickable tickable = getComponent(ComponentType.Tickable);
 	    tickable.tickCommon();
 	    if (!world.isRemote) {
-	    	tickable.tickServer();
+		tickable.tickServer();
 	    } else {
-	    	tickable.tickClient();
+		tickable.tickClient();
 	    }
 	}
     }
-  
+
 }

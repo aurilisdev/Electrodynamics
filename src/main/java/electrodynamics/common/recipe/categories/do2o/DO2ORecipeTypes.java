@@ -5,5 +5,6 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 
 public class DO2ORecipeTypes {
 
-	public static final IRecipeSerializer<OxidationFurnaceRecipe> OXIDATION_FURNACE_JSON_SERIALIZER = new DO2ORecipeSerializer<OxidationFurnaceRecipe>(OxidationFurnaceRecipe.class);
+    public static final IRecipeSerializer<OxidationFurnaceRecipe> OXIDATION_FURNACE_JSON_SERIALIZER = new DO2ORecipeSerializer<>(
+	    OxidationFurnaceRecipe.class);
 }

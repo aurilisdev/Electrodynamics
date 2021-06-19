@@ -36,7 +36,6 @@ import electrodynamics.compatability.jei.recipecategories.specificmachines.elect
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -162,15 +161,18 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
 
 	// Mineral Crusher
-	Set<O2ORecipe> mineralCrusherRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
+	Set<O2ORecipe> mineralCrusherRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
 	registration.addRecipes(mineralCrusherRecipes, MineralCrusherRecipeCategory.UID);
 
 	// Mineral Grinder
-	Set<O2ORecipe> mineralGrinderRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
+	Set<O2ORecipe> mineralGrinderRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
 	registration.addRecipes(mineralGrinderRecipes, MineralGrinderRecipeCategory.UID);
 
 	// Oxidation Furnace
-	Set<DO2ORecipe> oxidationFurnaceRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
+	Set<DO2ORecipe> oxidationFurnaceRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
 	registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
 
 	// 5x Ore Processing
@@ -179,16 +181,18 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registration.addRecipes(x5Recipes, X5OreProcessingRecipeCategory.UID);
 
 	// Chemical Mixer
-	Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
+	Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
 
 	registration.addRecipes(chemicalMixerRecipes, ChemicalMixerRecipeCategory.UID);
 
 	// Fermentation Chamber
-	Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE));
+	Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE));
 
 	registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
 
-	//electrodynamicsInfoTabs(registration);
+	// electrodynamicsInfoTabs(registration);
 
     }
 
@@ -283,26 +287,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	}
 
 	return totalLocations;
-
-    }
-
-    private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
-
-	/*
-	 * Machines currently with tabs:
-	 * 
-	 * Coal Generator Upgrade Transformer Downgrade Transformer Solar Panel Advanced
-	 * Solar Panel Thermoelectric Generator Combustion Chamber Hydroelectric
-	 * Generator Wind Generator Mineral Washer Chemical Mixer Chemical Crystalizer
-	 * 
-	 */
-	ArrayList<ItemStack> edMachines = PsuedoRecipes.ELECTRODYNAMICS_MACHINES;
-	String temp;
-
-	for (ItemStack itemStack : edMachines) {
-	    temp = itemStack.getItem().toString();
-	    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, "info.jei.block." + temp);
-	}
 
     }
 
