@@ -40,7 +40,6 @@ public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
 		: Collections.emptySet();
     }
 
-    @SuppressWarnings("resource")
     @OnlyIn(Dist.CLIENT)
     public static Set<IRecipe<?>> findRecipesbyType(IRecipeType<?> typeIn) {
 	ClientWorld world = Minecraft.getInstance().world;
@@ -66,7 +65,6 @@ public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
 		for (ItemStack stack : ingredient.getMatchingStacks()) {
 		    inputs.add(stack);
 		}
-
 	    });
 	}
 	return inputs;
