@@ -203,6 +203,7 @@
 	"tooltip.itemwire.info.uninsulated": "Will shock you when touched!",
 	"tooltip.itemwire.info.logistical": "Emits redstone when powered",
 	"tooltip.info.capacityupgrade": "Multiplies Energy Capacity and Transfer by %sx",
+	"tooltip.info.capacityupgradevoltage": "Will also multiply voltage by %sx",
 	"tooltip.info.speedupgrade": "Multiplies Speed by %sx",
 	"tooltip.transformer.energyloss": "Efficiency: 99.25%",
 	"tooltip.oxidationfurnace.voltage": "Voltage: 240 Volts",
