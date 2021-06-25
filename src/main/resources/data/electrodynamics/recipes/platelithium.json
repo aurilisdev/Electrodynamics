@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ii",
+        "ii"
+    ],
+    "key": {
+        "i": {
+            "tag": "forge:ingots/lithium"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:platelithium",
+        "count": 1
+    }
+}
