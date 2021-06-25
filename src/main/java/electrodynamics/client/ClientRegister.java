@@ -1,7 +1,5 @@
 package electrodynamics.client;
 
-import javax.annotation.Nullable;
-
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
@@ -33,22 +31,10 @@ import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.tile.network.TileWire;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -165,33 +151,6 @@ public class ClientRegister {
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker),
 		ClientRegister::shouldMultilayerRender);
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
-	ItemModelsProperties.registerProperty(DeferredRegisters.ITEM_MULTIMETER.get(), new ResourceLocation("number"), new IItemPropertyGetter() {
-	    private double num = 0.1;
-	    private long lastCheck = 0;
-
-	    @Override
-	    public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
-		boolean goesUp = false;
-		if (entity instanceof PlayerEntity) {
-		    RayTraceResult res = Minecraft.getInstance().objectMouseOver;
-		    if (res.getType() == Type.BLOCK) {
-			BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult) res;
-			TileEntity tile = entity.world.getTileEntity(blockraytraceresult.getPos());
-			if (tile instanceof TileWire) {
-			    TileWire wire = (TileWire) tile;
-			    if (wire.transmit > 0) {
-				goesUp = true;
-			    }
-			}
-		    }
-		}
-		if (world != null && lastCheck != world.getGameTime()) {
-		    lastCheck = world.getGameTime();
-		    num = (float) Math.min(0.9, Math.max(0.1, num + (goesUp ? 0.1 : -0.1)));
-		}
-		return (float) num;
-	    }
-	});
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {

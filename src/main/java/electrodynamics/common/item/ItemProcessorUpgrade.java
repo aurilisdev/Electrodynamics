@@ -24,6 +24,8 @@ public class ItemProcessorUpgrade extends Item {
 	super.addInformation(stack, worldIn, tooltip, flagIn);
 	if (subtype.capacityMultiplier != 1.0) {
 	    tooltip.add(new TranslationTextComponent("tooltip.info.capacityupgrade", subtype.capacityMultiplier).mergeStyle(TextFormatting.GRAY));
+	    tooltip.add(new TranslationTextComponent("tooltip.info.capacityupgradevoltage",
+		    (int) (2 * Math.log(subtype.capacityMultiplier) / Math.log(1.5))).mergeStyle(TextFormatting.RED));
 	}
 	if (subtype.speedMultiplier != 1.0) {
 	    tooltip.add(new TranslationTextComponent("tooltip.info.speedupgrade", subtype.speedMultiplier).mergeStyle(TextFormatting.GRAY));

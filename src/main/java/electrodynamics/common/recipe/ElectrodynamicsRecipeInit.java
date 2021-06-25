@@ -35,7 +35,7 @@ public class ElectrodynamicsRecipeInit {
     // DO2O
     public static final IRecipeType<OxidationFurnaceRecipe> OXIDATION_FURNACE_TYPE = registerType(OxidationFurnaceRecipe.RECIPE_ID);
     public static final IRecipeType<EnergizedAlloyerRecipe> ENERGIZED_ALLOYER_TYPE = registerType(EnergizedAlloyerRecipe.RECIPE_ID);
-    
+
     // FluidItem2Fluid
     public static final IRecipeType<ChemicalMixerRecipe> CHEMICAL_MIXER_TYPE = registerType(ChemicalMixerRecipe.RECIPE_ID);
     public static final IRecipeType<FermentationPlantRecipe> FERMENTATION_PLANT_TYPE = registerType(FermentationPlantRecipe.RECIPE_ID);
@@ -55,7 +55,7 @@ public class ElectrodynamicsRecipeInit {
 	    .register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.OXIDATION_FURNACE_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> ENERGIZED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER
     	.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
-    
+
     // FluidItem2Fluid
     public static final RegistryObject<IRecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalMixerRecipe.RECIPE_GROUP,
 	    () -> FluidItem2FluidRecipeTypes.CHEMICAL_MIXER_JSON_SERIALIZER);

@@ -1,16 +1,15 @@
 {
-    "type":"electrodynamics:fermentation_plant_recipe",
-
-    "item_input":{
-        "tag":"forge:seeds",
-        "count":9
-    },
-    "fluid_input":{
-        "fluid":"minecraft:water",
-        "amount":1000
-    },
-    "fluid_output":{
-        "fluid":"electrodynamics:fluidethanol",
-        "amount":100
-    }
+	"type": "electrodynamics:fermentation_plant_recipe",
+	"item_input": {
+		"tag": "forge:seeds",
+		"count": 9
+	},
+	"fluid_input": {
+		"fluid": "minecraft:water",
+		"amount": 1000
+	},
+	"fluid_output": {
+		"fluid": "electrodynamics:fluidethanol",
+		"amount": 100
+	}
 }

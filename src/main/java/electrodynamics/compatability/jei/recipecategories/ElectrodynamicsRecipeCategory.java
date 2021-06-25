@@ -25,6 +25,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
     private Class<T> RECIPE_CATEGORY_CLASS;
     
+    private ItemStack INPUT_MACHINE = null;
+
+    private Class<T> RECIPE_CATEGORY_CLASS;
+
+    private int Y_HEIGHT;
+    private int ARROW_SMELT_TIME;
+
     public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    int[] guiTextureSize, Class<T> recipeCategoryClass, int yHeight, int arrowSmeltTime) {
 
