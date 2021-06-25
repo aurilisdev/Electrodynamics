@@ -61,13 +61,16 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 		    .getJoules());
 	}
 	currentCapacityMultiplier = 1;
+	int currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
 		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
 		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
+		currentVoltageMultiplier *= (upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
 	    }
 	}
 	electro.maxJoules(DEFAULT_MAX_JOULES * currentCapacityMultiplier);
+	electro.voltage(120 * currentVoltageMultiplier);
 	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 	    electro.joules(electro.getMaxJoulesStored());
 	}

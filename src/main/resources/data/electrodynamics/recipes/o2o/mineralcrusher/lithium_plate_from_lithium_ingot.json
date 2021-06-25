@@ -1,11 +1,11 @@
 {
 	"type": "electrodynamics:mineral_crusher_recipe",
 	"input": {
-		"tag": "forge:ores/copper",
+		"tag": "forge:ingots/lithium",
 		"count": 1
 	},
 	"output": {
-		"item": "electrodynamics:impuredustcopper",
-		"count": 3
+		"item": "electrodynamics:platelithium",
+		"count": 1
 	}
 }

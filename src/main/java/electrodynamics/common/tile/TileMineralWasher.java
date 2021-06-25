@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
@@ -133,6 +134,8 @@ public class TileMineralWasher extends GenericTileTicking {
 	    name = "gold";
 	} else if (stack.getItem() == Items.IRON_ORE) {
 	    name = "iron";
+	} else if (stack.getItem() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.lepidolite).asItem()) {
+	    name = "lithium";
 	} else if (DeferredRegisters.SUBTYPEITEM_MAPPINGS.values().contains(stack.getItem())) {
 	    ISubtype sub = DeferredRegisters.ITEMSUBTYPE_MAPPINGS.get(stack.getItem());
 	    if (sub instanceof SubtypeCrystal) {

@@ -66,7 +66,6 @@ public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
 		for (ItemStack stack : ingredient.getMatchingStacks()) {
 		    inputs.add(stack);
 		}
-
 	    });
 	}
 	return inputs;

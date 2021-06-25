@@ -21,6 +21,7 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
 
     private FluidIngredient INPUT_FLUID;
     private CountableIngredient INPUT_ITEM;
+
     private FluidStack OUTPUT_FLUID;
 
     public FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid, FluidStack outputFluid) {
