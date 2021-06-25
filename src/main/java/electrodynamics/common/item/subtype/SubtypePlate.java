@@ -3,7 +3,7 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypePlate implements ISubtype {
-    iron, steel, lead, bronze;
+    iron, steel, lead, bronze, lithium;
 
     @Override
     public String tag() {
