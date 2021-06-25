@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"tag": "minecraft:coals"
+	},
+	"result": "electrodynamics:coalcoke",
+	"experience": 0.0,
+	"cookingtime": 200
+}

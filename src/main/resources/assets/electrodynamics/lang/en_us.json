@@ -1,4 +1,46 @@
 {
+
+	"item.electrodynamics.ingotaluminum": "Aluminum Ingot",
+	"item.electrodynamics.ingotchromium": "Chromium Ingot",
+	"item.electrodynamics.ingotstainlesssteel": "Stainless Steel Ingot",
+	"item.electrodynamics.ingotvanadiumsteel": "Vanadium Steel Ingot",
+	"item.electrodynamics.ingothslasteel": "HSLA Steel Ingot",
+	"item.electrodynamics.ingottitanium": "Titanium Ingot",
+	
+	
+	"item.electrodynamics.oxidecalciumcarbonate": "Calcium Carbonate",
+	"item.electrodynamics.oxidesodiumcarbonate": "Sodium Carbonate",
+	"item.electrodynamics.oxidetitanium": "Titanium Oxide",
+	"item.electrodynamics.oxidechromite": "Chromium Oxide",
+	
+	
+	"item.electrodynamics.dustsalt": "Salt",
+	"item.electrodynamics.dustsilica":"Silica Dust",
+	
+	"item.electrodynamics.platestainlesssteel":" Stainless Steel Plate",
+	"item.electrodynamics.platevanadiumsteel":"Vanadium Steel Plate",
+	"item.electrodynamics.platetitanium":"Titanium Plate",
+	"item.electrodynamics.platealuminum":" Aluminum Plate",
+	
+	
+	"item.electrodynamics.crystalhalite": "Halite Crystal",
+	
+	
+	"item.electrodynamics.titaniumheatcoil":"Titanium Heating Element",
+	"item.electrodynamics.coalcoke":"Coal Coke",
+	
+	
+	"block.electrodynamics.orealuminum": "Bauxite Ore",
+	"block.electrodynamics.orechromite": "Chromite Ore",
+	"block.electrodynamics.orerutile": "Rutile Ore",
+	"block.electrodynamics.orehalite": "Halite Ore",
+	
+	
+	"block.electrodynamics.glassaluminum": "ALON",
+	"block.electrodynamics.energizedalloyer": "Energized Alloyer",
+	"container.energizedalloyer": "Energized Alloyer",
+	
+	
 	"item.electrodynamics.ingotbronze": "Bronze Ingot",
 	"item.electrodynamics.ingotcopper": "Copper Ingot",
 	"item.electrodynamics.ingotlead": "Lead Ingot",
@@ -72,14 +114,14 @@
 	"item.electrodynamics.ceramicplate": "Ceramic Plate",
 	"item.electrodynamics.ceramicfuse": "Ceramic Fuse",
 	"item.electrodynamics.rubberboots": "Rubber Boots",
-	"block.electrodynamics.orecopper": "Copper Ore",
-	"block.electrodynamics.orelead": "Lead Ore",
+	"block.electrodynamics.orecopper": "Cuprite Ore",
+	"block.electrodynamics.orelead": "Galena Ore",
 	"block.electrodynamics.oremonazite": "Monazite Ore",
-	"block.electrodynamics.oresilver": "Silver Ore",
-	"block.electrodynamics.oresulfur": "Sulfur Ore",
+	"block.electrodynamics.oresilver": "Argentite Ore",
+	"block.electrodynamics.oresulfur": "Sulfide Ore",
 	"block.electrodynamics.oreniter": "Niter Ore",
 	"block.electrodynamics.orethorianite": "Thorianite Ore",
-	"block.electrodynamics.oretin": "Tin Ore",
+	"block.electrodynamics.oretin": "Cassiterite Ore",
 	"block.electrodynamics.oreuraninite": "Uraninite Ore",
 	"block.electrodynamics.orevanadinite": "Vanadinite Ore",
 	"block.electrodynamics.coalgenerator": "Coal Generator",
@@ -198,6 +240,7 @@
 	"tooltip.itemwire.resistance": "Resistance: %s",
 	"tooltip.itemwire.maxamps": "Max Amps: %s",
 	"tooltip.itemwire.info.insulated": "Insulated wire, does not shock you you up to and equals 240.0V",
+	"tooltip.itemwire.info.highlyinsulated": "Insulated wire, does not shock you you up to and equals 960",
 	"tooltip.itemwire.info.ceramic": "Ceramic & insulated wire, does not shock you up to and equals 480.0V",
 	"tooltip.itemwire.info.uninsulated": "Will shock you when touched!",
 	"tooltip.itemwire.info.logistical": "Emits redstone when powered",
@@ -232,6 +275,8 @@
 	"gui.jei.category.chemical_mixer.info.power": "240V 8.0kW",
 	"gui.jei.category.fermenting": "Fermentation Plant",
 	"gui.jei.category.fermenting.info.power": "120V 400W",
+	"gui.jei.category.energized_alloyer":"Energized Alloyer",
+	"gui.jei.category.energized_alloyer.info.power":"480V 80kW",
 	"info.jei.block.mineralwasher": "This machine takes 1000mb of Sulfuric Acid and any ore and produces 1000mb of Ore Fluid. There is no way to physically interact with this fluid. Place it adjacent to a Chemical Crystallizer to have it automatically inserted or do so maually with a pipe.",
 	"info.jei.block.chemicalcrystallizer": "This machine takes 1000mb of Ore Fluid and produces 5 Ore Crystals of the same type.",
 	"info.jei.block.coalgenerator": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 4.08 kW\n    Maximum Current: 34.0 A",

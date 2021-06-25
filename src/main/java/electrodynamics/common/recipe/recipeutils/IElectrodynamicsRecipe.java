@@ -8,21 +8,21 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public interface IElectrodynamicsRecipe extends IRecipe<RecipeWrapper>{
-	
-	/**
-	 * NEVER USE THIS METHOD!
-	 */
-	@Override
-	default boolean matches(RecipeWrapper inv, World world) {
-		return false;
-	}
-	
-	@Override
-	default boolean canFit(int width, int height) {
-		return false;
-	}
-	
-	public boolean matchesRecipe(ComponentProcessor pr);
+public interface IElectrodynamicsRecipe extends IRecipe<RecipeWrapper> {
+
+    /**
+     * NEVER USE THIS METHOD!
+     */
+    @Override
+    default boolean matches(RecipeWrapper inv, World world) {
+	return false;
+    }
+
+    @Override
+    default boolean canFit(int width, int height) {
+	return false;
+    }
+
+    boolean matchesRecipe(ComponentProcessor pr);
 
 }

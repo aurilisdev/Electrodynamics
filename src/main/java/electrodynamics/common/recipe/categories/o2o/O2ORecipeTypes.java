@@ -7,8 +7,10 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 
 public class O2ORecipeTypes {
 
-	public static final IRecipeSerializer<WireMillRecipe> WIRE_MILL_JSON_SERIALIZER = new O2ORecipeSerializer<WireMillRecipe>(WireMillRecipe.class);
-	public static final IRecipeSerializer<MineralGrinderRecipe> MINERAL_CRUSHER_JSON_SERIALIZER = new O2ORecipeSerializer<MineralGrinderRecipe>(MineralGrinderRecipe.class);
-	public static final IRecipeSerializer<MineralCrusherRecipe> MINERAL_GRINDER_JSON_SERIALIZER = new O2ORecipeSerializer<MineralCrusherRecipe>(MineralCrusherRecipe.class);
-	
+    public static final IRecipeSerializer<WireMillRecipe> WIRE_MILL_JSON_SERIALIZER = new O2ORecipeSerializer<>(WireMillRecipe.class);
+    public static final IRecipeSerializer<MineralGrinderRecipe> MINERAL_CRUSHER_JSON_SERIALIZER = new O2ORecipeSerializer<>(
+	    MineralGrinderRecipe.class);
+    public static final IRecipeSerializer<MineralCrusherRecipe> MINERAL_GRINDER_JSON_SERIALIZER = new O2ORecipeSerializer<>(
+	    MineralCrusherRecipe.class);
+
 }

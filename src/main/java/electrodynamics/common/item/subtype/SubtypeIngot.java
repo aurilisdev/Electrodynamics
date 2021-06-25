@@ -3,7 +3,8 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeIngot implements ISubtype {
-    copper, tin, silver, steel, lead, superconductive, bronze, vanadium;
+    copper, tin, silver, steel, lead, superconductive, bronze, vanadium, aluminum, chromium, stainlesssteel,
+    vanadiumsteel, hslasteel, titanium;
 
     @Override
     public String tag() {

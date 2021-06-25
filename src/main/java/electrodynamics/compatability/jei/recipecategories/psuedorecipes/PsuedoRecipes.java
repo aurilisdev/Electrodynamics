@@ -25,9 +25,6 @@ public class PsuedoRecipes {
 
     public static ArrayList<Psuedo5XRecipe> X5_ORE_RECIPES = new ArrayList<>();
 
-    // private static final Logger logger =
-    // LogManager.getLogger(ElectrodynamicsPatches.MOD_ID);
-
     public static void addElectrodynamicsRecipes() {
 	addElectrodynamicsMachines();
 	addElectrodynamicsFluids();
@@ -95,7 +92,8 @@ public class PsuedoRecipes {
 	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.windmill)));
 	// Fermentation Chamber
 	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant)));
-
+	// Energized Alloyer
+	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)));
     }
 
     public static void addElectrodynamicsFluids() {

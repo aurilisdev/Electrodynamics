@@ -6,25 +6,25 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 
-public class PsuedoO2ORecipe extends O2ORecipe{
-	
-	public Ingredient INPUT;
-	public ItemStack OUTPUT;
-	
-	public PsuedoO2ORecipe(ItemStack input, ItemStack output) {
-		super(null,null,null);
-		INPUT = Ingredient.fromStacks(input);
-		OUTPUT = output;
-	}
+public class PsuedoO2ORecipe extends O2ORecipe {
 
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
-		return null;
-	}
+    public Ingredient INPUT;
+    public ItemStack OUTPUT;
 
-	@Override
-	public IRecipeType<?> getType() {
-		return null;
-	}
+    public PsuedoO2ORecipe(ItemStack input, ItemStack output) {
+	super(null, null, null);
+	INPUT = Ingredient.fromStacks(input);
+	OUTPUT = output;
+    }
+
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+	return null;
+    }
+
+    @Override
+    public IRecipeType<?> getType() {
+	return null;
+    }
 
 }

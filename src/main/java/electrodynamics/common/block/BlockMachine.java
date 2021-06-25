@@ -94,25 +94,50 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	ItemStack addstack = new ItemStack(
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(machine == SubtypeMachine.coalgeneratorrunning ? SubtypeMachine.coalgenerator
-			: machine == SubtypeMachine.electricfurnacerunning ? SubtypeMachine.electricfurnace
-				: machine == SubtypeMachine.oxidationfurnacerunning ? SubtypeMachine.oxidationfurnace : machine));
-	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
-	tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
-	    double joules = el.getJoulesStored();
-	    if (joules > 0) {
-		addstack.getOrCreateTag().putDouble("joules", joules);
-	    }
-	});
-	return Arrays.asList(addstack);
+    	ItemStack addstack;
+    	switch(machine) {
+    		case coalgeneratorrunning:
+    			addstack = getMachine(SubtypeMachine.coalgenerator);
+    			break;
+    		case electricfurnacerunning:
+    			addstack = getMachine(SubtypeMachine.electricfurnace);
+    			break;
+    		case oxidationfurnacerunning:
+    			addstack = getMachine(SubtypeMachine.oxidationfurnace);
+    			break;
+    		case energizedalloyerrunning:
+    			addstack = getMachine(SubtypeMachine.energizedalloyer);
+    			break;
+    		default:
+    			addstack = getMachine(machine);
+    	}
+    	
+		TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
+		tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
+		    double joules = el.getJoulesStored();
+		    if (joules > 0) {
+			addstack.getOrCreateTag().putDouble("joules", joules);
+		    }
+		});
+		return Arrays.asList(addstack);
     }
 
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-	return machine == SubtypeMachine.coalgeneratorrunning ? 12
-		: machine == SubtypeMachine.electricfurnacerunning ? 8
-			: machine == SubtypeMachine.oxidationfurnacerunning ? 6 : super.getLightValue(state, world, pos);
+    	
+    	switch(machine) {
+    		case coalgeneratorrunning:
+    			return 12;
+    		case electricfurnacerunning:
+    			return 8;
+    		case oxidationfurnacerunning:
+    			return 6;
+    		case energizedalloyerrunning:
+    			return 10;
+    		default:
+    			return super.getLightValue(state, world, pos);
+    	}
+    	
     }
 
     @Override
@@ -157,5 +182,10 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     public boolean hasMultiBlock() {
 	return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.windmill;
+    }
+    
+    
+    private ItemStack getMachine(SubtypeMachine inputMachine) {
+    	return new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(inputMachine));
     }
 }

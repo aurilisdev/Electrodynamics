@@ -74,7 +74,7 @@ public class BlockWire extends Block {
 	super(Properties.create(wire.insulated ? Material.WOOL : Material.IRON).sound(wire.insulated ? SoundType.CLOTH : SoundType.METAL)
 		.hardnessAndResistance(0.15f).variableOpacity());
 	this.wire = wire;
-	double w = wire.insulated ? wire.highlyinsulated ? 3 : 2: 1;
+	double w = wire.insulated ? wire.highlyinsulated ? 3 : 2 : 1;
 	double sm = 8 - w;
 	double lg = 8 + w;
 	cube = Block.makeCuboidShape(sm, sm, sm, lg, lg, lg);
@@ -189,7 +189,7 @@ public class BlockWire extends Block {
 	TileWire tile = (TileWire) worldIn.getTileEntity(pos);
 	if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
 	    if (!(tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0
-		    || (tile.getNetwork().getActiveVoltage() <= 960.0 && wire.insulated && wire.highlyinsulated))) {
+		    || tile.getNetwork().getActiveVoltage() <= 960.0 && wire.insulated && wire.highlyinsulated)) {
 		UtilitiesElectricity.electrecuteEntity(entityIn,
 			TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
 	    }

@@ -26,34 +26,30 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<FurnaceRecipe> {
-    public static final int INPUT_SLOT = 0;
-    public static final int OUTPUT_SLOT = 2;
+    
+	private static final int INPUT_SLOT = 0;
+	private static final int OUTPUT_SLOT = 1;
 
+    private int[] GUI_BACKGROUND_COORDS;
+    private int[] PROCESSING_ARROW_COORDS;
+    private int[] INPUT_ITEM_OFFSET;
+    private int[] OUTPUT_ITEM_OFFSET;
+    private int[] PROCESSING_ARROW_OFFSET;
+    
+    private int SMELT_TIME;
+    private int TEXT_Y_HEIGHT;
+    
     private String MOD_ID = "";
     private String RECIPE_GROUP = "";
-
-    private int[] GUIBackgroundCoords;
-    private int[] ProcessingArrowCoords;
-    private int[] InputOffset;
-    private int[] OutputOffset;
-    private int[] ProcessingArrowOffset;
-
-    private int ARROW_SMELT_TIME;
-
-    private IDrawable background;
-    private IDrawable icon;
-
-    private LoadingCache<Integer, IDrawableAnimated> cachedArrows;
-    private StartDirection startDirection;
-
-    private int Y_HEIGHT;
-
-    private ItemStack INPUT_MACHINE = null;
-
     private ResourceLocation GUI_TEXTURE;
 
-    // private static final Logger logger =
-    // LogManager.getLogger(ElectrodynamicsPatches.MOD_ID);
+    private IDrawable BACKGROUND;
+    private IDrawable ICON;
+
+    private LoadingCache<Integer, IDrawableAnimated> CACHED_ARROWS;
+    private StartDirection START_DIRECTION;
+
+    private ItemStack INPUT_MACHINE;
 
     public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    ArrayList<int[]> inputCoordinates, int smeltTime, StartDirection arrowStartDirection, int textYHeight) {
@@ -84,26 +80,26 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
 	GUI_TEXTURE = new ResourceLocation(MOD_ID, guiTexture);
 	INPUT_MACHINE = inputMachine;
 
-	ARROW_SMELT_TIME = smeltTime;
+	SMELT_TIME = smeltTime;
 
-	GUIBackgroundCoords = inputCoordinates.get(0);
-	ProcessingArrowCoords = inputCoordinates.get(1);
-	InputOffset = inputCoordinates.get(2);
-	OutputOffset = inputCoordinates.get(3);
-	ProcessingArrowOffset = inputCoordinates.get(4);
+	GUI_BACKGROUND_COORDS = inputCoordinates.get(0);
+	PROCESSING_ARROW_COORDS = inputCoordinates.get(1);
+	INPUT_ITEM_OFFSET = inputCoordinates.get(2);
+	OUTPUT_ITEM_OFFSET = inputCoordinates.get(3);
+	PROCESSING_ARROW_OFFSET = inputCoordinates.get(4);
 
-	startDirection = arrowStartDirection;
-	Y_HEIGHT = textYHeight;
+	START_DIRECTION = arrowStartDirection;
+	TEXT_Y_HEIGHT = textYHeight;
 
-	icon = guiHelper.createDrawableIngredient(INPUT_MACHINE);
-	background = guiHelper.createDrawable(GUI_TEXTURE, GUIBackgroundCoords[0], GUIBackgroundCoords[1], GUIBackgroundCoords[2],
-		GUIBackgroundCoords[3]);
+	ICON = guiHelper.createDrawableIngredient(INPUT_MACHINE);
+	BACKGROUND = guiHelper.createDrawable(GUI_TEXTURE, GUI_BACKGROUND_COORDS[0], GUI_BACKGROUND_COORDS[1], GUI_BACKGROUND_COORDS[2],
+		GUI_BACKGROUND_COORDS[3]);
 
-	cachedArrows = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
+	CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
 	    @Override
 	    public IDrawableAnimated load(Integer cookTime) {
-		return guiHelper.drawableBuilder(GUI_TEXTURE, ProcessingArrowCoords[0], ProcessingArrowCoords[1], ProcessingArrowCoords[2],
-			ProcessingArrowCoords[3]).buildAnimated(cookTime, startDirection, false);
+		return guiHelper.drawableBuilder(GUI_TEXTURE, PROCESSING_ARROW_COORDS[0], PROCESSING_ARROW_COORDS[1], PROCESSING_ARROW_COORDS[2],
+			PROCESSING_ARROW_COORDS[3]).buildAnimated(cookTime, START_DIRECTION, false);
 	    }
 	});
 
@@ -121,12 +117,12 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
 
     @Override
     public IDrawable getBackground() {
-	return background;
+	return BACKGROUND;
     }
 
     @Override
     public IDrawable getIcon() {
-	return icon;
+	return ICON;
     }
 
     @Override
@@ -143,8 +139,8 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
 
 	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-	guiItemStacks.init(INPUT_SLOT, true, InputOffset[0], InputOffset[1]);
-	guiItemStacks.init(OUTPUT_SLOT, false, OutputOffset[0], OutputOffset[1]);
+	guiItemStacks.init(INPUT_SLOT, true, INPUT_ITEM_OFFSET[0], INPUT_ITEM_OFFSET[1]);
+	guiItemStacks.init(OUTPUT_SLOT, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
 
 	guiItemStacks.set(ingredients);
 
@@ -153,23 +149,23 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
     @Override
     public void draw(FurnaceRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
 	IDrawableAnimated arrow = getArrow(recipe);
-	arrow.draw(matrixStack, ProcessingArrowOffset[0], ProcessingArrowOffset[1]);
+	arrow.draw(matrixStack, PROCESSING_ARROW_OFFSET[0], PROCESSING_ARROW_OFFSET[1]);
 
-	drawSmeltTime(recipe, matrixStack, Y_HEIGHT);
+	drawSmeltTime(recipe, matrixStack, TEXT_Y_HEIGHT);
     }
 
     protected IDrawableAnimated getArrow(FurnaceRecipe recipe) {
-	return cachedArrows.getUnchecked(ARROW_SMELT_TIME);
+	return CACHED_ARROWS.getUnchecked(SMELT_TIME);
     }
 
     protected void drawSmeltTime(FurnaceRecipe recipe, MatrixStack matrixStack, int y) {
 
-	int smeltTimeSeconds = ARROW_SMELT_TIME / 20;
+	int smeltTimeSeconds = SMELT_TIME / 20;
 	TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP + ".info.power", smeltTimeSeconds);
 	Minecraft minecraft = Minecraft.getInstance();
 	FontRenderer fontRenderer = minecraft.fontRenderer;
 	int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-	fontRenderer.func_243248_b(matrixStack, timeString, background.getWidth() - stringWidth, y, 0xFF808080);
+	fontRenderer.func_243248_b(matrixStack, timeString, BACKGROUND.getWidth() - stringWidth, y, 0xFF808080);
 
     }
 

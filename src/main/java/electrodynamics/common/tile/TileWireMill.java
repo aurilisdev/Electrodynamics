@@ -48,15 +48,16 @@ public class TileWireMill extends GenericTileTicking {
 			: extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 	if (extra == 0) {
 	    ComponentProcessor pr = new ComponentProcessor(this).upgradeSlots(2, 3, 4)
-	    	.canProcess(component -> component.canProcessO2ORecipe(component, WireMillRecipe.class, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE))
-			.process(component -> component.processO2ORecipe(component, WireMillRecipe.class))
+		    .canProcess(component -> component.canProcessO2ORecipe(component, WireMillRecipe.class, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE))
+		    .process(component -> component.processO2ORecipe(component, WireMillRecipe.class))
 		    .requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK)
 		    .type(ComponentProcessorType.ObjectToObject);
 	    addProcessor(pr);
 	} else {
 	    for (int i = 0; i <= extra; i++) {
 		ComponentProcessor pr = new ComponentProcessor(this).upgradeSlots(extra * 2 + 2, extra * 2 + 3, extra * 2 + 4)
-			.canProcess(component -> component.canProcessO2ORecipe(component, WireMillRecipe.class, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE))
+			.canProcess(
+				component -> component.canProcessO2ORecipe(component, WireMillRecipe.class, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE))
 			.process(component -> component.processO2ORecipe(component, WireMillRecipe.class))
 			.requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK)
 			.type(ComponentProcessorType.ObjectToObject);

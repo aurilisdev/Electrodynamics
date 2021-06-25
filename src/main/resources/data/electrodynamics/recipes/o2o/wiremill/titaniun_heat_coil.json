@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:wire_mill_recipe",
+
+    "input":{
+        "tag":"forge:ingots/titanium",
+        "count":9
+    },
+    "output":{
+        "item":"electrodynamics:titaniumheatcoil",
+        "count":1
+    }
+}

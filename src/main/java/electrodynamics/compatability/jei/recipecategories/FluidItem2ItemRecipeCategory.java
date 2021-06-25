@@ -30,12 +30,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<FluidItem2ItemRecipe> {
 
-    public static final int ITEM_INPUT_SLOT = 0;
-    public static final int INPUT_FLUID_SLOT = 1;
-    public static final int INPUT_FLUID_STACK_SLOT = 2;
-    public static final int OUTPUT_ITEM_SLOT = 3;
+	private static final int ITEM_INPUT_SLOT = 0;
+	private static final int INPUT_FLUID_SLOT = 1;
+	private static final int INPUT_FLUID_STACK_SLOT = 2;
+	private static final int OUTPUT_ITEM_SLOT = 3;
 
-    private int[] MAJOR_PROCESSING_ARROW_COORDS;
+	private int[] MAJOR_PROCESSING_ARROW_COORDS;
     private int[] MINOR_PROCESSING_ARROW_COORDS;
 
     private int[] INPUT_ITEM_OFFSET;
@@ -50,159 +50,164 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     private StartDirection MINOR_ARROW_START_DIRECTION;
 
     private LoadingCache<Integer, ArrayList<IDrawableAnimated>> CACHED_ARROWS;
-    
+
     private boolean NULL_BUCKET = false;
 
     public FluidItem2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    ArrayList<int[]> inputCoordinates, int smeltTime, StartDirection majorArrowDirection, StartDirection minorArrowDirection,
 	    int textYHeight) {
 
-		/*
-		 * INPUT COORDIANTES Layout
-		 * 
-		 * first array is gui background
-		 * 
-		 * second array is first processing arrow
-		 * 
-		 * third array is second processing arrow
-		 * 
-		 * array has following structure [startX,startY,xOffsec,yOffset]
-		 * 
-		 * 
-		 * 
-		 * 
-		 * fourth array is offset of input item
-		 * 
-		 * fifth array is offset of input fluid bucket
-		 * 
-		 * sixth array is offset of input fluid tank [startx,endy,width,height,
-		 * maxcapacity]
-		 * 
-		 * seventh array is offset of output item
-		 * 
-		 * 
-		 *
-		 *
-		 * eighth array is offset of Major Processing arrow ninth array is offset of
-		 * Minor Processing arrow
-		 * 
-		 * 
-		 * 
-		 */
-    	
-    	super(guiHelper, modID, recipeGroup, guiTexture, inputMachine,inputCoordinates.get(0), FluidItem2ItemRecipe.class, textYHeight, smeltTime);
-	
-		MAJOR_PROCESSING_ARROW_COORDS = inputCoordinates.get(1);
-		MINOR_PROCESSING_ARROW_COORDS = inputCoordinates.get(2);
-	
-		INPUT_ITEM_OFFSET = inputCoordinates.get(3);
-		FLUID_BUCKET_OFFSET = inputCoordinates.get(4);
-		INPUT_FLUID_TANK = inputCoordinates.get(5);
-		OUTPUT_ITEM_OFFSET = inputCoordinates.get(6);
-	
-		MAJOR_PROCESSING_ARROW_OFFSET = inputCoordinates.get(7);
-		MINOR_PROCESSING_ARROW_OFFSET = inputCoordinates.get(8);
-	
-		MAJOR_ARROW_START_DIRECTION = majorArrowDirection;
-		MINOR_ARROW_START_DIRECTION = minorArrowDirection;
-	
-		CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, ArrayList<IDrawableAnimated>>() {
-	
-		    @Override
-		    public ArrayList<IDrawableAnimated> load(Integer cookTime) {
-	
-			IDrawableAnimated largeArrow = guiHelper.drawableBuilder(getGuiTexture(), MAJOR_PROCESSING_ARROW_COORDS[0], MAJOR_PROCESSING_ARROW_COORDS[1],
-				MAJOR_PROCESSING_ARROW_COORDS[2], MAJOR_PROCESSING_ARROW_COORDS[3]).buildAnimated(cookTime, MAJOR_ARROW_START_DIRECTION, false);
-	
-			IDrawableAnimated smallArrow = guiHelper.drawableBuilder(getGuiTexture(), MINOR_PROCESSING_ARROW_COORDS[0], MINOR_PROCESSING_ARROW_COORDS[1],
-				MINOR_PROCESSING_ARROW_COORDS[2], MINOR_PROCESSING_ARROW_COORDS[3]).buildAnimated(cookTime, MINOR_ARROW_START_DIRECTION, false);
-	
-			IDrawableAnimated[] arrows = { largeArrow, smallArrow };
-			return new ArrayList<>(Arrays.asList(arrows));
-		    }
-		});
+	/*
+	 * INPUT COORDIANTES Layout
+	 * 
+	 * first array is gui background
+	 * 
+	 * second array is first processing arrow
+	 * 
+	 * third array is second processing arrow
+	 * 
+	 * array has following structure [startX,startY,xOffsec,yOffset]
+	 * 
+	 * 
+	 * 
+	 * 
+	 * fourth array is offset of input item
+	 * 
+	 * fifth array is offset of input fluid bucket
+	 * 
+	 * sixth array is offset of input fluid tank [startx,endy,width,height,
+	 * maxcapacity]
+	 * 
+	 * seventh array is offset of output item
+	 * 
+	 * 
+	 *
+	 *
+	 * eighth array is offset of Major Processing arrow ninth array is offset of
+	 * Minor Processing arrow
+	 * 
+	 * 
+	 * 
+	 */
+
+	super(guiHelper, modID, recipeGroup, guiTexture, inputMachine, inputCoordinates.get(0), FluidItem2ItemRecipe.class, textYHeight, smeltTime);
+
+	MAJOR_PROCESSING_ARROW_COORDS = inputCoordinates.get(1);
+	MINOR_PROCESSING_ARROW_COORDS = inputCoordinates.get(2);
+
+	INPUT_ITEM_OFFSET = inputCoordinates.get(3);
+	FLUID_BUCKET_OFFSET = inputCoordinates.get(4);
+	INPUT_FLUID_TANK = inputCoordinates.get(5);
+	OUTPUT_ITEM_OFFSET = inputCoordinates.get(6);
+
+	MAJOR_PROCESSING_ARROW_OFFSET = inputCoordinates.get(7);
+	MINOR_PROCESSING_ARROW_OFFSET = inputCoordinates.get(8);
+
+	MAJOR_ARROW_START_DIRECTION = majorArrowDirection;
+	MINOR_ARROW_START_DIRECTION = minorArrowDirection;
+
+	CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, ArrayList<IDrawableAnimated>>() {
+
+	    @Override
+	    public ArrayList<IDrawableAnimated> load(Integer cookTime) {
+
+		IDrawableAnimated largeArrow = guiHelper
+			.drawableBuilder(getGuiTexture(), MAJOR_PROCESSING_ARROW_COORDS[0], MAJOR_PROCESSING_ARROW_COORDS[1],
+				MAJOR_PROCESSING_ARROW_COORDS[2], MAJOR_PROCESSING_ARROW_COORDS[3])
+			.buildAnimated(cookTime, MAJOR_ARROW_START_DIRECTION, false);
+
+		IDrawableAnimated smallArrow = guiHelper
+			.drawableBuilder(getGuiTexture(), MINOR_PROCESSING_ARROW_COORDS[0], MINOR_PROCESSING_ARROW_COORDS[1],
+				MINOR_PROCESSING_ARROW_COORDS[2], MINOR_PROCESSING_ARROW_COORDS[3])
+			.buildAnimated(cookTime, MINOR_ARROW_START_DIRECTION, false);
+
+		IDrawableAnimated[] arrows = { largeArrow, smallArrow };
+		return new ArrayList<>(Arrays.asList(arrows));
+	    }
+	});
 
     }
 
     @Override
     public void setIngredients(FluidItem2ItemRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputLists(VanillaTypes.ITEM,getIngredients(recipe));
-		ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+	ingredients.setInputLists(VanillaTypes.ITEM, getIngredients(recipe));
+	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
+	ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
     }
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, FluidItem2ItemRecipe recipe, IIngredients ingredients) {
 
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-	
-		guiItemStacks.init(ITEM_INPUT_SLOT, true, INPUT_ITEM_OFFSET[0], INPUT_ITEM_OFFSET[1]);
-		if(!NULL_BUCKET) {
-			guiItemStacks.init(INPUT_FLUID_SLOT, true, FLUID_BUCKET_OFFSET[0], FLUID_BUCKET_OFFSET[1]);
-		}
-		
-		int nullBucket = 0;
-		if(NULL_BUCKET) {
-			nullBucket = 1;
-		}
-		
-		guiItemStacks.init(OUTPUT_ITEM_SLOT - nullBucket, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
-	
-		int fluidInputAmount = ((FluidIngredient)recipe.getIngredients().get(1)).getFluidStack().getAmount();
-	
-		int leftHeightOffset = (int) Math.ceil(fluidInputAmount / (float) INPUT_FLUID_TANK[4] * INPUT_FLUID_TANK[3]);
-		int leftStartY = INPUT_FLUID_TANK[1] - leftHeightOffset + 1;
-	
-		guiFluidStacks.init(INPUT_FLUID_STACK_SLOT - nullBucket, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset, fluidInputAmount, true,
-			null);
-	
-		guiItemStacks.set(ingredients);
-		guiFluidStacks.set(ingredients);
+	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+
+	guiItemStacks.init(ITEM_INPUT_SLOT, true, INPUT_ITEM_OFFSET[0], INPUT_ITEM_OFFSET[1]);
+	if (!NULL_BUCKET) {
+	    guiItemStacks.init(INPUT_FLUID_SLOT, true, FLUID_BUCKET_OFFSET[0], FLUID_BUCKET_OFFSET[1]);
+	}
+
+	int nullBucket = 0;
+	if (NULL_BUCKET) {
+	    nullBucket = 1;
+	}
+
+	guiItemStacks.init(OUTPUT_ITEM_SLOT - nullBucket, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
+
+	int fluidInputAmount = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack().getAmount();
+
+	int leftHeightOffset = (int) Math.ceil(fluidInputAmount / (float) INPUT_FLUID_TANK[4] * INPUT_FLUID_TANK[3]);
+	int leftStartY = INPUT_FLUID_TANK[1] - leftHeightOffset + 1;
+
+	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT - nullBucket, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
+		fluidInputAmount, true, null);
+
+	guiItemStacks.set(ingredients);
+	guiFluidStacks.set(ingredients);
 
     }
 
     @Override
     public void draw(FluidItem2ItemRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-		ArrayList<IDrawableAnimated> arrows = getArrows(recipe);
-	
-		arrows.get(0).draw(matrixStack, MAJOR_PROCESSING_ARROW_OFFSET[0], MAJOR_PROCESSING_ARROW_OFFSET[1]);
-		arrows.get(1).draw(matrixStack, MINOR_PROCESSING_ARROW_OFFSET[0], MINOR_PROCESSING_ARROW_OFFSET[1]);
-	
-		drawSmeltTime(recipe, matrixStack, getYHeight());
+	ArrayList<IDrawableAnimated> arrows = getArrows(recipe);
+
+	arrows.get(0).draw(matrixStack, MAJOR_PROCESSING_ARROW_OFFSET[0], MAJOR_PROCESSING_ARROW_OFFSET[1]);
+	arrows.get(1).draw(matrixStack, MINOR_PROCESSING_ARROW_OFFSET[0], MINOR_PROCESSING_ARROW_OFFSET[1]);
+
+	drawSmeltTime(recipe, matrixStack, getYHeight());
     }
 
     protected ArrayList<IDrawableAnimated> getArrows(FluidItem2ItemRecipe recipe) {
-    	return CACHED_ARROWS.getUnchecked(getArrowSmeltTime());
+	return CACHED_ARROWS.getUnchecked(getArrowSmeltTime());
     }
 
     protected void drawSmeltTime(FluidItem2ItemRecipe recipe, MatrixStack matrixStack, int y) {
-		int smeltTimeSeconds = getArrowSmeltTime() / 20;
-		TranslationTextComponent outputString = new TranslationTextComponent("gui.jei.category." + getRecipeGroup() + ".info.power", smeltTimeSeconds);
-		Minecraft minecraft = Minecraft.getInstance();
-		FontRenderer fontRenderer = minecraft.fontRenderer;
-		int outputWidth = fontRenderer.getStringPropertyWidth(outputString);
-		fontRenderer.func_243248_b(matrixStack, outputString, getBackground().getWidth() - outputWidth, y + 8, 0xFF808080);
+	int smeltTimeSeconds = getArrowSmeltTime() / 20;
+	TranslationTextComponent outputString = new TranslationTextComponent("gui.jei.category." + getRecipeGroup() + ".info.power",
+		smeltTimeSeconds);
+	Minecraft minecraft = Minecraft.getInstance();
+	FontRenderer fontRenderer = minecraft.fontRenderer;
+	int outputWidth = fontRenderer.getStringPropertyWidth(outputString);
+	fontRenderer.func_243248_b(matrixStack, outputString, getBackground().getWidth() - outputWidth, y + 8, 0xFF808080);
     }
 
     public NonNullList<FluidStack> getFluids(FluidItem2ItemRecipe recipe) {
-		NonNullList<FluidStack> fluids = NonNullList.create();
-		fluids.add(((FluidIngredient)recipe.getIngredients().get(1)).getFluidStack());
-		return fluids;
+	NonNullList<FluidStack> fluids = NonNullList.create();
+	fluids.add(((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack());
+	return fluids;
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2ItemRecipe recipe) {
-		List<List<ItemStack>> ingredients = new ArrayList<>();
-		ingredients.add((((CountableIngredient)recipe.getIngredients().get(0))).fetchCountedStacks());
-		
-		Item fluidBucket = ((FluidIngredient)recipe.getIngredients().get(1)).getFluidStack().getFluid().getFilledBucket();
-		if(fluidBucket != null) {
-			List<ItemStack> temp = new ArrayList<>();
-			temp.add(new ItemStack(fluidBucket,1));
-			ingredients.add(temp);
-		}
-		
-		return ingredients;
+	List<List<ItemStack>> ingredients = new ArrayList<>();
+	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
+
+	Item fluidBucket = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack().getFluid().getFilledBucket();
+	if (fluidBucket != null) {
+	    List<ItemStack> temp = new ArrayList<>();
+	    temp.add(new ItemStack(fluidBucket, 1));
+	    ingredients.add(temp);
+	}
+
+	return ingredients;
     }
 
 }

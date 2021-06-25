@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"tag": "minecraft:coals"
+	},
+	"result": "electrodynamics:coalcoke",
+	"experience": 0.7,
+	"cookingtime": 100
+}

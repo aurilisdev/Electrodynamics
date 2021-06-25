@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ACA",
+        "CTC",
+        "AEA"
+    ],
+    "key": {
+        "A": {
+            "tag": "forge:plates/aluminum"
+        },
+        "C": {
+            "item": "electrodynamics:ceramicplate"
+        },
+        "T": {
+            "item": "electrodynamics:titaniumheatcoil"
+        },
+        "E": {
+            "tag": "forge:circuits/elite"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:energizedalloyer",
+        "count": 1
+    }
+}

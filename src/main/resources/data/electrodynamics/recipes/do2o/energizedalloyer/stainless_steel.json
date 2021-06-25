@@ -1,0 +1,16 @@
+{
+    "type":"electrodynamics:energized_alloyer_recipe",
+
+    "input1":{
+        "tag":"forge:ingots/chromium",
+        "count":1
+    },
+    "input2":{
+        "tag":"forge:ingots/steel",
+        "count":3
+    },
+    "output":{
+        "item":"electrodynamics:ingotstainlesssteel",
+        "count":4
+    }
+}

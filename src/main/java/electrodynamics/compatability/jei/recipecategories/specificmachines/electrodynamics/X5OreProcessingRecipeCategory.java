@@ -8,16 +8,15 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.compatability.jei.recipecategories.ElectrodynamicsRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.psuedorecipes.Psuedo5XRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -27,70 +26,47 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
-public class X5OreProcessingRecipeCategory implements IRecipeCategory<Psuedo5XRecipe> {
-    public static int INPUT_SLOT = 0;
-    public static int MACHINE_1 = 1;
-    public static int MACHINE_2 = 2;
-    public static int INPUT_FLUID = 3;
-    public static int ORE_FLUID_SUBPART = 4;
-    public static int OUTPUT_SLOT = 5;
+public class X5OreProcessingRecipeCategory extends ElectrodynamicsRecipeCategory<Psuedo5XRecipe> {
+    
+	private static final int INPUT_SLOT = 0;
+	private static final int MACHINE_1 = 1;
+	private static final int MACHINE_2 = 2;
+	private static final int INPUT_FLUID = 3;
+	private static final int ORE_FLUID_SUBPART = 4;
+	private static final int OUTPUT_SLOT = 5;
+	
+	private static int[] GUI_BACKGROUND = {2, 0, 132, 58};
+    
+    private static int SMELT_TIME = 100;
+    private static int TEXT_Y_HEIGHT = 48;
 
     private static String MOD_ID = References.ID;
     private static String RECIPE_GROUP = "x5_ore_processing";
-
+    private static String GUI_TEXTURE = "textures/gui/jei/5x_ore_processing_gui.png";
+    
+    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer));
+    
+    private LoadingCache<Integer, IDrawableAnimated> CACHED_ARROWS;
+    
     public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    private static int ARROW_SMELT_TIME = 100;
-
-    private static IDrawable background;
-    private static IDrawable icon;
-
-    private LoadingCache<Integer, IDrawableAnimated> cachedArrows;
-
-    private static String GUI_TEXTURE_STRING = "textures/gui/jei/5x_ore_processing_gui.png";
-
-    private static ResourceLocation GUI_TEXTURE = new ResourceLocation(MOD_ID, GUI_TEXTURE_STRING);
-
-    // private static Logger logger =
-    // LogManager.getLogger(ElectrodynamicsPatches.MOD_ID);
-
     public X5OreProcessingRecipeCategory(IGuiHelper guiHelper) {
+    	
+    	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, GUI_BACKGROUND,
+    			Psuedo5XRecipe.class, TEXT_Y_HEIGHT, SMELT_TIME);
 
-	icon = guiHelper.createDrawableIngredient(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)));
-	background = guiHelper.createDrawable(GUI_TEXTURE, 2, 0, 132, 58);
-
-	cachedArrows = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
-	    @Override
-	    public IDrawableAnimated load(Integer cookTime) {
-		return guiHelper.drawableBuilder(GUI_TEXTURE, 0, 58, 88, 16).buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT, false);
-	    }
-	});
+			CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
+			    @Override
+			    public IDrawableAnimated load(Integer cookTime) {
+				return guiHelper.drawableBuilder(getGuiTexture(), 0, 58, 88, 16).buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT, false);
+			    }
+			});
 
     }
-
+    
     @Override
     public ResourceLocation getUid() {
 	return UID;
-    }
-
-    @Override
-    public Class<? extends Psuedo5XRecipe> getRecipeClass() {
-	return Psuedo5XRecipe.class;
-    }
-
-    @Override
-    public String getTitle() {
-	return new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP).getString();
-    }
-
-    @Override
-    public IDrawable getBackground() {
-	return background;
-    }
-
-    @Override
-    public IDrawable getIcon() {
-	return icon;
     }
 
     @Override
@@ -126,17 +102,17 @@ public class X5OreProcessingRecipeCategory implements IRecipeCategory<Psuedo5XRe
 	IDrawableAnimated arrow = getArrow(recipe);
 	arrow.draw(matrixStack, 22, 27);
 
-	drawSmeltTime(recipe, matrixStack, 48);
+	drawSmeltTime(recipe, matrixStack, getYHeight());
     }
 
     protected IDrawableAnimated getArrow(Psuedo5XRecipe recipe) {
-	return cachedArrows.getUnchecked(ARROW_SMELT_TIME);
+	return CACHED_ARROWS.getUnchecked(getArrowSmeltTime());
     }
 
     protected void drawSmeltTime(Psuedo5XRecipe recipe, MatrixStack matrixStack, int y) {
 
-	int smeltTimeSeconds = ARROW_SMELT_TIME / 20;
-	TranslationTextComponent mineralWasherString = new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP + ".info.mineral_washer",
+	int smeltTimeSeconds = getArrowSmeltTime() / 20;
+	TranslationTextComponent mineralWasherString = new TranslationTextComponent("gui.jei.category." + getRecipeGroup() + ".info.mineral_washer",
 		smeltTimeSeconds);
 	TranslationTextComponent chemicalCrystalizerString = new TranslationTextComponent(
 		"gui.jei.category." + RECIPE_GROUP + ".info.chemical_crystalizer", smeltTimeSeconds);
@@ -144,7 +120,7 @@ public class X5OreProcessingRecipeCategory implements IRecipeCategory<Psuedo5XRe
 	FontRenderer fontRenderer = minecraft.fontRenderer;
 	int chemCrystWidth = fontRenderer.getStringPropertyWidth(chemicalCrystalizerString);
 	fontRenderer.func_243248_b(matrixStack, mineralWasherString, 0, y, 0xFF808080);
-	fontRenderer.func_243248_b(matrixStack, chemicalCrystalizerString, background.getWidth() - chemCrystWidth, y, 0xFF808080);
+	fontRenderer.func_243248_b(matrixStack, chemicalCrystalizerString, getBackground().getWidth() - chemCrystWidth, y, 0xFF808080);
     }
 
     public NonNullList<FluidStack> getFluids(Psuedo5XRecipe recipe) {

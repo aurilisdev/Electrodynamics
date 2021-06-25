@@ -1,0 +1,16 @@
+{
+    "type":"electrodynamics:oxidation_furnace_recipe",
+
+    "input1":{
+        "tag":"forge:oxide/titanium",
+        "count":1
+    },
+    "input2":{
+        "tag":"forge:dusts/salt",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:ingottitanium",
+        "count":2
+    }
+}
