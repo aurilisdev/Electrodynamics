@@ -49,6 +49,7 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
+import electrodynamics.common.item.subtype.SubtypeLeadCanister;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
@@ -181,6 +182,9 @@ public class DeferredRegisters {
 	}
 	registerSubtypeItem(SubtypeCeramic.values());
 	for(SubtypeCanister subtype : SubtypeCanister.values()) {
+		SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype))));
+	}
+	for(SubtypeLeadCanister subtype : SubtypeLeadCanister.values()) {
 		ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype)));
 	}
 

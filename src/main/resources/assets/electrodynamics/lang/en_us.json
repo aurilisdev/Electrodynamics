@@ -29,6 +29,11 @@
 	"item.electrodynamics.titaniumheatcoil":"Titanium Heating Element",
 	"item.electrodynamics.coalcoke":"Coal Coke",
 	
+	"item.electrodynamics.canisterempty":"Empty Canister",
+	"item.electrodynamics.canistersulfuric":"Sulfuirc Acid Canister",
+	"item.electrodynamics.canisterethanol":"Ethanol Canister",
+	
+	"item.electrodynamics.leadcanisterempty":"Empty Lined Canister",
 	
 	"block.electrodynamics.orealuminum": "Bauxite Ore",
 	"block.electrodynamics.orechromite": "Chromite Ore",
@@ -39,7 +44,6 @@
 	"block.electrodynamics.glassaluminum": "ALON",
 	"block.electrodynamics.energizedalloyer": "Energized Alloyer",
 	"container.energizedalloyer": "Energized Alloyer",
-	
 	
 	"item.electrodynamics.ingotbronze": "Bronze Ingot",
 	"item.electrodynamics.ingotcopper": "Copper Ingot",

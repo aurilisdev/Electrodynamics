@@ -24,10 +24,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
     private ItemStack INPUT_MACHINE;
 
     private Class<T> RECIPE_CATEGORY_CLASS;
-    
-    private ItemStack INPUT_MACHINE = null;
-
-    private Class<T> RECIPE_CATEGORY_CLASS;
 
     private int Y_HEIGHT;
     private int ARROW_SMELT_TIME;

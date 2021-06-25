@@ -42,7 +42,8 @@ public class TileChemicalMixer extends GenericTileTicking {
      */
     public static Fluid[] SUPPORTED_INPUT_FLUIDS = new Fluid[] {
 
-	    Fluids.WATER
+	    Fluids.WATER,
+	    DeferredRegisters.fluidEthanol
 
     };
     public static Fluid[] SUPPORTED_OUTPUT_FLUIDS = new Fluid[] {

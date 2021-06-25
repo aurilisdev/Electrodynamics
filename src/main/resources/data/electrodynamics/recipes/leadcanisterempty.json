@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "VLV",
+        "LCL",
+        "VLV"
+    ],
+    "key": {
+        "V": {
+            "tag": "forge:plates/vanadiumsteel"
+        },
+        "C": {
+            "item": "electrodynamics:canisterempty"
+        },
+        "L": {
+            "tag": "forge:plates/lead"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:leadcanisterempty",
+        "count": 1
+    }
+}

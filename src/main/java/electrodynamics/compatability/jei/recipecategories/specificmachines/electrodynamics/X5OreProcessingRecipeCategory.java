@@ -1,5 +1,9 @@
 package electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -20,8 +24,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
@@ -71,10 +73,8 @@ public class X5OreProcessingRecipeCategory extends ElectrodynamicsRecipeCategory
 
     @Override
     public void setIngredients(Psuedo5XRecipe recipe, IIngredients ingredients) {
-	NonNullList<Ingredient> inputs = NonNullList.create();
-	inputs.addAll(getIngredients(recipe));
 
-	ingredients.setInputIngredients(inputs);
+	ingredients.setInputLists(VanillaTypes.ITEM, getIngredients(recipe));
 	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
 	ingredients.setOutput(VanillaTypes.ITEM, recipe.OUTPUT_CRYSTALS);
     }
@@ -123,18 +123,18 @@ public class X5OreProcessingRecipeCategory extends ElectrodynamicsRecipeCategory
 	fontRenderer.func_243248_b(matrixStack, chemicalCrystalizerString, getBackground().getWidth() - chemCrystWidth, y, 0xFF808080);
     }
 
-    public NonNullList<FluidStack> getFluids(Psuedo5XRecipe recipe) {
-	NonNullList<FluidStack> fluids = NonNullList.create();
+    public List<FluidStack> getFluids(Psuedo5XRecipe recipe) {
+	List<FluidStack> fluids = new ArrayList<>();
 	fluids.add(recipe.INPUT_FLUID);
 	fluids.add(recipe.ORE_FLUID_SUBPART);
 	return fluids;
     }
 
-    public NonNullList<Ingredient> getIngredients(Psuedo5XRecipe recipe) {
-	NonNullList<Ingredient> ingredients = NonNullList.create();
-	ingredients.add(recipe.INPUT_ORE);
-	ingredients.add(recipe.MACHINE_1);
-	ingredients.add(recipe.MACHINE_2);
+    public List<List<ItemStack>> getIngredients(Psuedo5XRecipe recipe) {
+	List<List<ItemStack>> ingredients = new ArrayList<>();
+	ingredients.add(Arrays.asList(recipe.INPUT_ORE.getMatchingStacks()));
+	ingredients.add(Arrays.asList(recipe.MACHINE_1.getMatchingStacks()));
+	ingredients.add(Arrays.asList(recipe.MACHINE_2.getMatchingStacks()));
 	return ingredients;
     }
 
