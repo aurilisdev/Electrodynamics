@@ -63,6 +63,10 @@ public class PsuedoRecipes {
 	X5_ORE_RECIPES.add(new Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(6), ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1),
 		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(8), 1000),
 		ELECTRODYNAMICS_ITEMS.get(2).get(6)));
+	// Lithiumho
+	X5_ORE_RECIPES.add(new Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(10), ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1),
+		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(9), 1000),
+		ELECTRODYNAMICS_ITEMS.get(2).get(7)));
 
     }
 
@@ -108,6 +112,7 @@ public class PsuedoRecipes {
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(SubtypeMineralFluid.lead));
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(SubtypeMineralFluid.silver));
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(SubtypeMineralFluid.vanadium));
+	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(SubtypeMineralFluid.lithium));
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.fluidEthanol);
 
     }
@@ -122,7 +127,8 @@ public class PsuedoRecipes {
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.vanadinite).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.uraninite).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.sulfur).asItem(),
-		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.thorianite).asItem()
+		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.thorianite).asItem(),
+		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.lepidolite).asItem()
 
 	};
 
@@ -135,7 +141,8 @@ public class PsuedoRecipes {
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.tin),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.lead),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.silver),
-		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.vanadium)
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.vanadium),
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.lithium)
 
 	};
 
