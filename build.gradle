@@ -98,7 +98,7 @@ dependencies {
   	compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.0.101:api")
   	runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.0.101")
   	
-  	implementation 'com.github.cliftonlabs:json-simple:3.1.0'
+
 }
 
 

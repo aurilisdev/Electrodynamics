@@ -4,7 +4,10 @@ import java.util.HashSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import electrodynamics.DeferredRegisters;
+import electrodynamics.common.item.ItemCanister;
 import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeCanister;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
@@ -225,25 +228,34 @@ public class ComponentProcessor implements Component {
 	ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
 	ItemStack bucketStack = inv.getStackInSlot(slot);
 	Fluid matchingFluid = null;
+	boolean isCanister = false;
 
 	if (!bucketStack.isEmpty() && bucketStack.getCount() > 0) {
 	    boolean validBucket = false;
 	    for (Fluid fluid : fluids) {
-		Item bucket = fluid.getFilledBucket();
-		if (bucket != null) {
-		    ItemStack inputBucket = new ItemStack(bucket, 1);
-		    if (inputBucket.equals(bucketStack, true)) {
-			matchingFluid = fluid;
-			validBucket = true;
-			break;
-		    }
+			Item bucket = fluid.getFilledBucket();
+			if(bucket instanceof ItemCanister) {
+				isCanister = true;
+			}
+			if (bucket != null) {
+			    ItemStack inputBucket = new ItemStack(bucket, 1);
+			    if (inputBucket.equals(bucketStack, true)) {
+				matchingFluid = fluid;
+				validBucket = true;
+				break;
+			    }
 		}
 
 	    }
 	    if (validBucket && tank.getStackFromFluid(matchingFluid).getAmount() <= maxCapacity - 1000) {
-		inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET));
-
-		tank.getStackFromFluid(matchingFluid).setAmount(Math.min(tank.getStackFromFluid(matchingFluid).getAmount() + 1000, maxCapacity));
+			
+	    	if(isCanister) {
+	    		inv.setInventorySlotContents(slot, new ItemStack((Item)DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCanister.empty).get()));
+	    	}else {
+	    		inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET));
+	    	}
+	
+			tank.getStackFromFluid(matchingFluid).setAmount(Math.min(tank.getStackFromFluid(matchingFluid).getAmount() + 1000, maxCapacity));
 	    }
 	}
 	return this;

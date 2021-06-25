@@ -31,6 +31,7 @@ import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
 import electrodynamics.common.tile.TileWireMillDouble;
 import electrodynamics.common.tile.TileWireMillTriple;
+import electrodynamics.common.tile.TileEnergizedAlloyer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -97,7 +98,10 @@ public enum SubtypeMachine implements ISubtype {
     // split
     circuitbreaker(true, TileCircuitBreaker.class),
     // split
-    multimeterblock(true, TileMultimeterBlock.class);
+    multimeterblock(true, TileMultimeterBlock.class),
+	
+	
+	energizedalloyer(true, TileEnergizedAlloyer.class), energizedalloyerrunning(false, TileEnergizedAlloyer.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
@@ -137,7 +141,9 @@ public enum SubtypeMachine implements ISubtype {
 		    || mb == electricfurnacetriple && ma == electricfurnacetriplerunning
 		    || mb == electricfurnacetriplerunning && ma == electricfurnacetriple || mb == coalgenerator && ma == coalgeneratorrunning
 		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
-		    || mb == oxidationfurnacerunning && ma == oxidationfurnace) {
+		    || mb == oxidationfurnacerunning && ma == oxidationfurnace
+		    || mb == energizedalloyer && ma == energizedalloyerrunning 
+		    || ma == energizedalloyer && mb == energizedalloyerrunning) {
 		return false;
 	    }
 	}

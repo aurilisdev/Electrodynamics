@@ -24,9 +24,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class DO2ORecipeCategory extends ElectrodynamicsRecipeCategory<DO2ORecipe> {
 
-    public static final int INPUT_1_SLOT = 0;
-    public static final int INPUT_2_SLOT = 1;
-    public static final int OUTPUT_SLOT = 2;
+    private static final int INPUT_1_SLOT = 0;
+    private static final int INPUT_2_SLOT = 1;
+    private static final int OUTPUT_SLOT = 2;
 
     private int[] PROCESSING_ARROW_COORDS;
     private int[] INPUT_1_OFFSET;

@@ -27,6 +27,7 @@ import electrodynamics.compatability.jei.recipecategories.psuedorecipes.Psuedo5X
 import electrodynamics.compatability.jei.recipecategories.psuedorecipes.PsuedoRecipes;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalMixerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ElectricFurnaceRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.EnergizedAlloyerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.FermentationPlantRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralCrusherRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralGrinderRecipeCategory;
@@ -36,6 +37,7 @@ import electrodynamics.compatability.jei.recipecategories.specificmachines.elect
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -116,6 +118,11 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace)),
 		OxidationFurnaceRecipeCategory.UID);
+	
+	/* Energized Alloyer*/
+	
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)), 
+		EnergizedAlloyerRecipeCategory.UID);
 
 	/* 5x Ore Processing */
 
@@ -175,6 +182,11 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
 	registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
 
+	//Energized Alloyer
+	Set<DO2ORecipe> energizedAlloyerRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE));
+	registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
+	
 	// 5x Ore Processing
 	Set<Psuedo5XRecipe> x5Recipes = new HashSet<>(PsuedoRecipes.X5_ORE_RECIPES);
 
@@ -192,7 +204,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
 
-	// electrodynamicsInfoTabs(registration);
+	electrodynamicsInfoTabs(registration);
 
     }
 
@@ -213,6 +225,9 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	// Oxidation Furnace
 	registration.addRecipeCategories(new OxidationFurnaceRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
+	//Energized Alloyer
+	registration.addRecipeCategories(new EnergizedAlloyerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+	
 	// 5x Ore Processing
 	registration.addRecipeCategories(new X5OreProcessingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
@@ -245,7 +260,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	/* Oxidation Furnace */
 	registry.addRecipeClickArea(ScreenDO2OProcessor.class, o2oarrowLoc[0], o2oarrowLoc[1], o2oarrowLoc[2], o2oarrowLoc[3],
-		OxidationFurnaceRecipeCategory.UID);
+		OxidationFurnaceRecipeCategory.UID, EnergizedAlloyerRecipeCategory.UID);
 
 	/* Electric Furnace Click Area */
 
@@ -287,6 +302,27 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	}
 
 	return totalLocations;
+
+    }
+    
+    @Deprecated
+    private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
+
+    	/*
+    	 * Machines currently with tabs:
+    	 * 
+    	 * Coal Generator Upgrade Transformer Downgrade Transformer Solar Panel Advanced
+    	 * Solar Panel Thermoelectric Generator Combustion Chamber Hydroelectric
+    	 * Generator Wind Generator Mineral Washer Chemical Mixer Chemical Crystalizer
+    	 * 
+    	 */
+    	ArrayList<ItemStack> edMachines = PsuedoRecipes.ELECTRODYNAMICS_MACHINES;
+    	String temp;
+
+    	for (ItemStack itemStack : edMachines) {
+    	    temp = itemStack.getItem().toString();
+    	    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, "info.jei.block." + temp);
+    	}
 
     }
 

@@ -3,7 +3,7 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeOxide implements ISubtype {
-    vanadium, disulfur, trisulfur;
+    vanadium, disulfur, trisulfur, calciumcarbonate, chromite, titanium, sodiumcarbonate;
 
     @Override
     public String tag() {

@@ -3,7 +3,7 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeCrystal implements ISubtype {
-    iron, gold, copper, tin, silver, lead, vanadium, lithium;
+    iron, gold, copper, tin, silver, lead, vanadium, lithium, halite;
 
     @Override
     public String tag() {

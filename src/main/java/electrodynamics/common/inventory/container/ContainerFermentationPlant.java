@@ -31,7 +31,7 @@ public class ContainerFermentationPlant extends GenericContainer<TileFermentatio
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 74, 31));
-	addSlot(new SlotRestricted(inv, nextIndex(), 74, 51, Items.WATER_BUCKET));
+	addSlot(new SlotRestricted(inv, nextIndex(), 74, 51, TileFermentationPlant.SUPPORTED_INPUT_FLUIDS));
 	addSlot(new SlotRestricted(inv, nextIndex(), 150, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));

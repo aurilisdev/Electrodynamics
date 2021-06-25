@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:mineral_crusher_recipe",
+
+    "input":{
+        "tag":"forge:ores/chromium",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:oxidechromite",
+        "count":3
+    }
+}

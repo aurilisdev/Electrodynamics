@@ -20,12 +20,13 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implements IFluidRecipe {
 
     private FluidIngredient INPUT_FLUID;
-    private CountableIngredient ITEM_INPUT;
+    private CountableIngredient INPUT_ITEM;
+
     private FluidStack OUTPUT_FLUID;
 
     public FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid, FluidStack outputFluid) {
 	super(recipeID);
-	ITEM_INPUT = inputItem;
+	INPUT_ITEM = inputItem;
 	INPUT_FLUID = inputFluid;
 	OUTPUT_FLUID = outputFluid;
     }
@@ -38,7 +39,7 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
      */
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
-	if (ITEM_INPUT.testStack(pr.getInput())) {
+	if (INPUT_ITEM.testStack(pr.getInput())) {
 	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    ArrayList<Fluid> inputFluids = fluid.getInputFluids();
 	    for (int i = 0; i < inputFluids.size(); i++) {
@@ -65,7 +66,7 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, ITEM_INPUT, INPUT_FLUID);
+	return NonNullList.from(null, INPUT_ITEM, INPUT_FLUID);
     }
 
 }

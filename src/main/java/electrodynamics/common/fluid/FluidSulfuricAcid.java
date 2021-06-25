@@ -1,12 +1,13 @@
 package electrodynamics.common.fluid;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
+import electrodynamics.common.item.subtype.SubtypeCanister;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +22,7 @@ public class FluidSulfuricAcid extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-	return Items.AIR;
+    	return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCanister.sulfuric).get();
     }
 
     @Override
