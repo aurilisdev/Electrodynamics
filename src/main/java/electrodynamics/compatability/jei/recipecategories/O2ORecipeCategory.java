@@ -24,8 +24,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class O2ORecipeCategory extends ElectrodynamicsRecipeCategory<O2ORecipe> {
 
-	private static final int INPUT_SLOT = 0;
-	private static final int OUTPUT_SLOT = 1;
+    private static final int INPUT_SLOT = 0;
+    private static final int OUTPUT_SLOT = 1;
 
     private int[] PROCESSING_ARROW_COORDS;
     private int[] INPUT_OFFSET;

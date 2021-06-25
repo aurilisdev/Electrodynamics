@@ -19,51 +19,51 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
-public class BlockCustomGlass extends Block{
+public class BlockCustomGlass extends Block {
 
-	public BlockCustomGlass(float hardness, float resistance) {
-		super(Properties.create(Material.GLASS).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(hardness, resistance)
-				.setOpaque(BlockCustomGlass::isntSolid).notSolid());
-	}
-	
-	public BlockCustomGlass(SubtypeGlass glass) {
-		super(Properties.create(Material.GLASS).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(glass.hardness, glass.resistance)
-				.setOpaque(BlockCustomGlass::isntSolid).notSolid());
-	}
-	
-	private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
-		return false;
-	}
-	
-	@Override
+    public BlockCustomGlass(float hardness, float resistance) {
+	super(Properties.create(Material.GLASS).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(hardness, resistance)
+		.setOpaque(BlockCustomGlass::isntSolid).notSolid());
+    }
+
+    public BlockCustomGlass(SubtypeGlass glass) {
+	super(Properties.create(Material.GLASS).setRequiresTool().harvestTool(ToolType.PICKAXE)
+		.hardnessAndResistance(glass.hardness, glass.resistance).setOpaque(BlockCustomGlass::isntSolid).notSolid());
+    }
+
+    private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
+	return false;
+    }
+
+    @Override
     @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		return Arrays.asList(new ItemStack(this));
+	return Arrays.asList(new ItemStack(this));
     }
 
     @Override
     @Deprecated
     public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-    	return VoxelShapes.empty();
+	return VoxelShapes.empty();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     @Deprecated
     public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-    	return adjacentBlockState.isIn(this) || super.isSideInvisible(state, adjacentBlockState, side);
+	return adjacentBlockState.isIn(this) || super.isSideInvisible(state, adjacentBlockState, side);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     @Deprecated
     public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-    	return 1.0F;
+	return 1.0F;
     }
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-    	return true;
+	return true;
     }
 
 }

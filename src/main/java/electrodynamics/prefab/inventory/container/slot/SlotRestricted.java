@@ -16,16 +16,15 @@ public class SlotRestricted extends GenericSlot {
 	super(inventory, index, x, y);
 	whitelist = Arrays.asList(items);
     }
-    
-    public SlotRestricted(IInventory inventory, int index, int x, int y, Fluid[] inputFluids) {
-    	super(inventory, index, x, y);
-    	List<Item> fluidBuckets = new ArrayList<>();
-    	for(Fluid fluid : inputFluids) {
-    		fluidBuckets.add(fluid.getFilledBucket());
-    	}
-    	whitelist = fluidBuckets;
-    }
 
+    public SlotRestricted(IInventory inventory, int index, int x, int y, Fluid[] inputFluids) {
+	super(inventory, index, x, y);
+	List<Item> fluidBuckets = new ArrayList<>();
+	for (Fluid fluid : inputFluids) {
+	    fluidBuckets.add(fluid.getFilledBucket());
+	}
+	whitelist = fluidBuckets;
+    }
 
     @Override
     public boolean isItemValid(ItemStack stack) {

@@ -54,7 +54,7 @@ public class ElectrodynamicsRecipeInit {
     public static final RegistryObject<IRecipeSerializer<?>> OXIDATION_FURNACE_SERIALIZER = RECIPE_SERIALIZER
 	    .register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.OXIDATION_FURNACE_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> ENERGIZED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER
-    	.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
+	    .register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
 
     // FluidItem2Fluid
     public static final RegistryObject<IRecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalMixerRecipe.RECIPE_GROUP,

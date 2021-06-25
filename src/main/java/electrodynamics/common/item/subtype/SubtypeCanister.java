@@ -1,38 +1,36 @@
 package electrodynamics.common.item.subtype;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.ISubtype;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import electrodynamics.DeferredRegisters;
 
-public enum SubtypeCanister implements ISubtype{
-	empty(Fluids.EMPTY),
-	sulfuric(DeferredRegisters.fluidSulfuricAcid),
-	ethanol(DeferredRegisters.fluidEthanol);
+public enum SubtypeCanister implements ISubtype {
+    empty(Fluids.EMPTY), sulfuric(DeferredRegisters.fluidSulfuricAcid), ethanol(DeferredRegisters.fluidEthanol);
 
-	private Fluid fluid;
-	
-	private SubtypeCanister(Fluid assocFluid) {
-		this.fluid = assocFluid;
-	}
-	
-	public Fluid getFluid() {
-		return fluid;
-	}
-	
-	@Override
-	public String tag() {
-		return "canister" + name();
-	}
+    private Fluid fluid;
 
-	@Override
-	public String forgeTag() {
-		return "buckets/" + name();
-	}
+    private SubtypeCanister(Fluid assocFluid) {
+	fluid = assocFluid;
+    }
 
-	@Override
-	public boolean isItem() {
-		return true;
-	}
+    public Fluid getFluid() {
+	return fluid;
+    }
+
+    @Override
+    public String tag() {
+	return "canister" + name();
+    }
+
+    @Override
+    public String forgeTag() {
+	return "buckets/" + name();
+    }
+
+    @Override
+    public boolean isItem() {
+	return true;
+    }
 
 }

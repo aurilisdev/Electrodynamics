@@ -233,29 +233,30 @@ public class ComponentProcessor implements Component {
 	if (!bucketStack.isEmpty() && bucketStack.getCount() > 0) {
 	    boolean validBucket = false;
 	    for (Fluid fluid : fluids) {
-			Item bucket = fluid.getFilledBucket();
-			if(bucket instanceof ItemCanister) {
-				isCanister = true;
-			}
-			if (bucket != null) {
-			    ItemStack inputBucket = new ItemStack(bucket, 1);
-			    if (inputBucket.equals(bucketStack, true)) {
-				matchingFluid = fluid;
-				validBucket = true;
-				break;
-			    }
+		Item bucket = fluid.getFilledBucket();
+		if (bucket instanceof ItemCanister) {
+		    isCanister = true;
+		}
+		if (bucket != null) {
+		    ItemStack inputBucket = new ItemStack(bucket, 1);
+		    if (inputBucket.equals(bucketStack, true)) {
+			matchingFluid = fluid;
+			validBucket = true;
+			break;
+		    }
 		}
 
 	    }
 	    if (validBucket && tank.getStackFromFluid(matchingFluid).getAmount() <= maxCapacity - 1000) {
-			
-	    	if(isCanister) {
-	    		inv.setInventorySlotContents(slot, new ItemStack((Item)DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCanister.empty).get()));
-	    	}else {
-	    		inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET));
-	    	}
-	
-			tank.getStackFromFluid(matchingFluid).setAmount(Math.min(tank.getStackFromFluid(matchingFluid).getAmount() + 1000, maxCapacity));
+
+		if (isCanister) {
+		    inv.setInventorySlotContents(slot,
+			    new ItemStack(DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCanister.empty).get()));
+		} else {
+		    inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET));
+		}
+
+		tank.getStackFromFluid(matchingFluid).setAmount(Math.min(tank.getStackFromFluid(matchingFluid).getAmount() + 1000, maxCapacity));
 	    }
 	}
 	return this;

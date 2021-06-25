@@ -26,19 +26,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<FurnaceRecipe> {
-    
-	private static final int INPUT_SLOT = 0;
-	private static final int OUTPUT_SLOT = 1;
+
+    private static final int INPUT_SLOT = 0;
+    private static final int OUTPUT_SLOT = 1;
 
     private int[] GUI_BACKGROUND_COORDS;
     private int[] PROCESSING_ARROW_COORDS;
     private int[] INPUT_ITEM_OFFSET;
     private int[] OUTPUT_ITEM_OFFSET;
     private int[] PROCESSING_ARROW_OFFSET;
-    
+
     private int SMELT_TIME;
     private int TEXT_Y_HEIGHT;
-    
+
     private String MOD_ID = "";
     private String RECIPE_GROUP = "";
     private ResourceLocation GUI_TEXTURE;

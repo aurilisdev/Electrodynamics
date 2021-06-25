@@ -13,6 +13,7 @@ import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileMineralCrusher;
@@ -31,7 +32,6 @@ import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
 import electrodynamics.common.tile.TileWireMillDouble;
 import electrodynamics.common.tile.TileWireMillTriple;
-import electrodynamics.common.tile.TileEnergizedAlloyer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -99,9 +99,8 @@ public enum SubtypeMachine implements ISubtype {
     circuitbreaker(true, TileCircuitBreaker.class),
     // split
     multimeterblock(true, TileMultimeterBlock.class),
-	
-	
-	energizedalloyer(true, TileEnergizedAlloyer.class), energizedalloyerrunning(false, TileEnergizedAlloyer.class);
+
+    energizedalloyer(true, TileEnergizedAlloyer.class), energizedalloyerrunning(false, TileEnergizedAlloyer.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
@@ -141,8 +140,7 @@ public enum SubtypeMachine implements ISubtype {
 		    || mb == electricfurnacetriple && ma == electricfurnacetriplerunning
 		    || mb == electricfurnacetriplerunning && ma == electricfurnacetriple || mb == coalgenerator && ma == coalgeneratorrunning
 		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
-		    || mb == oxidationfurnacerunning && ma == oxidationfurnace
-		    || mb == energizedalloyer && ma == energizedalloyerrunning 
+		    || mb == oxidationfurnacerunning && ma == oxidationfurnace || mb == energizedalloyer && ma == energizedalloyerrunning
 		    || ma == energizedalloyer && mb == energizedalloyerrunning) {
 		return false;
 	    }

@@ -31,10 +31,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecipeCategory<FluidItem2FluidRecipe> {
 
-	private static final int ITEM_INPUT_SLOT = 0;
-	private static final int INPUT_FLUID_SLOT = 1;
-	private static final int INPUT_FLUID_STACK_SLOT = 2;
-	private static final int OUTPUT_FLUID_SLOT = 3;
+    private static final int ITEM_INPUT_SLOT = 0;
+    private static final int INPUT_FLUID_SLOT = 1;
+    private static final int INPUT_FLUID_STACK_SLOT = 2;
+    private static final int OUTPUT_FLUID_SLOT = 3;
 
     private int[] MAJOR_PROCESSING_ARROW_COORDS;
     private int[] MINOR_PROCESSING_ARROW_COORDS;

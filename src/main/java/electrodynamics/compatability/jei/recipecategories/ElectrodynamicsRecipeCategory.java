@@ -10,11 +10,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRecipe> implements IRecipeCategory<T> {
 
-	private int[] GUI_TEXTURE_SPECS;
-	
-	private int TEXT_Y_HEIGHT;
+    private int[] GUI_TEXTURE_SPECS;
+
+    private int TEXT_Y_HEIGHT;
     private int SMELT_TIME;
-	
+
     private String RECIPE_GROUP;
     private ResourceLocation GUI_TEXTURE;
 
@@ -24,9 +24,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
     private ItemStack INPUT_MACHINE;
 
     private Class<T> RECIPE_CATEGORY_CLASS;
-
-    private int Y_HEIGHT;
-    private int ARROW_SMELT_TIME;
 
     public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    int[] guiTextureSize, Class<T> recipeCategoryClass, int yHeight, int arrowSmeltTime) {
@@ -41,7 +38,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	ICON = guiHelper.createDrawableIngredient(INPUT_MACHINE);
 	BACKGROUND = guiHelper.createDrawable(GUI_TEXTURE, GUI_TEXTURE_SPECS[0], GUI_TEXTURE_SPECS[1], GUI_TEXTURE_SPECS[2], GUI_TEXTURE_SPECS[3]);
-	
+
 	TEXT_Y_HEIGHT = yHeight;
 	SMELT_TIME = arrowSmeltTime;
     }
