@@ -1,16 +1,15 @@
 {
-    "type":"electrodynamics:energized_alloyer_recipe",
-
-    "input1":{
-        "tag":"forge:ingots/tin",
-        "count":1
-    },
-    "input2":{
-        "tag":"forge:ingots/copper",
-        "count":2
-    },
-    "output":{
-        "item":"electrodynamics:ingotbronze",
-        "count":4
-    }
+	"type": "electrodynamics:energized_alloyer_recipe",
+	"input1": {
+		"tag": "forge:ingots/tin",
+		"count": 1
+	},
+	"input2": {
+		"tag": "forge:ingots/copper",
+		"count": 4
+	},
+	"output": {
+		"item": "electrodynamics:ingotbronze",
+		"count": 5
+	}
 }
