@@ -17,21 +17,15 @@
 	
 	"item.electrodynamics.dustsalt": "Salt",
 	"item.electrodynamics.dustsilica":"Silica Dust",
-	
 	"item.electrodynamics.platestainlesssteel":" Stainless Steel Plate",
 	"item.electrodynamics.platevanadiumsteel":"Vanadium Steel Plate",
 	"item.electrodynamics.platetitanium":"Titanium Plate",
 	"item.electrodynamics.platealuminum":" Aluminum Plate",
-	
-	
 	"item.electrodynamics.crystalhalite": "Halite Crystal",
-	
-	
 	"item.electrodynamics.titaniumheatcoil":"Titanium Heating Element",
 	"item.electrodynamics.coalcoke":"Coal Coke",
-	
 	"item.electrodynamics.canisterempty":"Empty Canister",
-	"item.electrodynamics.canistersulfuric":"Sulfuirc Acid Canister",
+	"item.electrodynamics.canistersulfuric":"Sulfuric Acid Canister",
 	"item.electrodynamics.canisterethanol":"Ethanol Canister",
 	"item.electrodynamics.canisterpolyethylene":"Polyethylene Canister",
 	
@@ -142,6 +136,10 @@
 	"item.electrodynamics.oxidevanadium": "Vanadium Oxide",
 	"item.electrodynamics.oxidedisulfur": "Crystallized Sulfur Dioxide",
 	"item.electrodynamics.oxidetrisulfur": "Sulfur Trioxide",
+	"item.electrodynamics.oxidecalciumcarbonate": "Calcium Carbonate",
+	"item.electrodynamics.oxidesodiumcarbonate": "Sodium Carbonate",
+	"item.electrodynamics.oxidedititanium": "Titanium Dioxide",
+	"item.electrodynamics.oxidechromite": "Chromium Oxide",
 	"item.electrodynamics.insulation": "Insulation",
 	"item.electrodynamics.insulationceramic": "Ceramic Insulation",
 	"item.electrodynamics.motor": "Motor",
@@ -166,6 +164,10 @@
 	"block.electrodynamics.oreuraninite": "Uraninite Ore",
 	"block.electrodynamics.orevanadinite": "Vanadinite Ore",
 	"block.electrodynamics.orelepidolite": "Lepidolite Ore",
+	"block.electrodynamics.orealuminum": "Bauxite Ore",
+	"block.electrodynamics.orechromite": "Chromite Ore",
+	"block.electrodynamics.orerutile": "Rutile Ore",
+	"block.electrodynamics.orehalite": "Halite Ore",
 	"block.electrodynamics.coalgenerator": "Coal Generator",
 	"block.electrodynamics.coalgeneratorrunning": "Coal Generator Running",
 	"block.electrodynamics.solarpanel": "Solar Panel",
@@ -233,6 +235,8 @@
 	"block.electrodynamics.wirelogisticssuperconductive": "Logistical Superconductive Wire",
 	"block.electrodynamics.pipesteel": "Steel Pipe",
 	"block.electrodynamics.multisubnode": "Multiblock Subnode",
+	"block.electrodynamics.glassaluminum": "ALON",
+	"block.electrodynamics.energizedalloyer": "Energized Alloyer",
 	"container.coalgenerator": "Coal Generator",
 	"container.electricfurnace0": "Electric Furnace",
 	"container.electricfurnace1": "Smelting Factory",
@@ -252,6 +256,7 @@
 	"container.mineralwasher": "Mineral Washer",
 	"container.chemicalmixer": "Chemical Mixer",
 	"container.chemicalcrystallizer": "Chemical Crystallizer",
+	"container.energizedalloyer": "Energized Alloyer",
 	"gui.coalgenerator.timeleft": "Time Left: %s",
 	"gui.coalgenerator.output": "Output: %s",
 	"gui.coalgenerator.current": "Current: %s",

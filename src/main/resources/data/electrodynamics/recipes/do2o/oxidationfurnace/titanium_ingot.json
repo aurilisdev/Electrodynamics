@@ -2,7 +2,7 @@
     "type":"electrodynamics:oxidation_furnace_recipe",
 
     "input1":{
-        "tag":"forge:oxide/titanium",
+        "tag":"forge:oxide/dititanium",
         "count":1
     },
     "input2":{

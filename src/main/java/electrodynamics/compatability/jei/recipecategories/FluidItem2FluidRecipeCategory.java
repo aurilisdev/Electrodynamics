@@ -37,6 +37,7 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
     private static final int OUTPUT_FLUID_SLOT = 3;
     private static final int OUTPUT_FLUID_STACK_SLOT = 4;
 
+
     private int[] MAJOR_PROCESSING_ARROW_COORDS;
     private int[] MINOR_PROCESSING_ARROW_COORDS;
 
