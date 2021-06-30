@@ -22,7 +22,7 @@ public class FluidEthanol extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-    	return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCanister.ethanol).get();
+	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.ethanol);
     }
 
     @Override

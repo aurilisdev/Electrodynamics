@@ -10,14 +10,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.Items;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
 public class ContainerChemicalMixer extends GenericContainer<TileChemicalMixer> {
 
     public ContainerChemicalMixer(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(5), new IntArray(3));
+	this(id, playerinv, new Inventory(6), new IntArray(3));
     }
 
     public ContainerChemicalMixer(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -32,6 +31,7 @@ public class ContainerChemicalMixer extends GenericContainer<TileChemicalMixer> 
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 83, 31));
 	addSlot(new SlotRestricted(inv, nextIndex(), 83, 51, TileChemicalMixer.SUPPORTED_INPUT_FLUIDS));
+	addSlot(new SlotRestricted(inv,nextIndex(), 108, 51, SlotRestricted.VALID_EMPTY_BUCKETS[1]));
 	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));

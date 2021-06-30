@@ -13,9 +13,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class EnergizedAlloyerRecipeCategory extends DO2ORecipeCategory{
+public class EnergizedAlloyerRecipeCategory extends DO2ORecipeCategory {
 
-	// JEI Window Parameters
+    // JEI Window Parameters
     private static int[] GUI_BACKGROUND = { 0, 0, 132, 58 };
     private static int[] PROCESSING_ARROW_LOCATION = { 132, 0, 24, 17 };
 
@@ -23,31 +23,30 @@ public class EnergizedAlloyerRecipeCategory extends DO2ORecipeCategory{
     private static int[] INPUT_2_ITEM_OFFSET = { 22, 36 };
     private static int[] OUTPUT_ITEM_OFFSET = { 82, 22 };
     private static int[] PROCESSING_ARROW_OFFSET = { 46, 23 };
-    
+
     private static int SMELT_TIME = 50;
     private static int TEXT_Y_HEIGHT = 48;
 
     private static String MOD_ID = References.ID;
     private static String RECIPE_GROUP = "energized_alloyer";
     private static String GUI_TEXTURE = "textures/gui/jei/do2o_recipe_gui.png";
-    
+
     private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer));
-    
+
     private static StartDirection ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
 
     public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
-    
-    private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(
-	    Arrays.asList(GUI_BACKGROUND, PROCESSING_ARROW_LOCATION, INPUT_1_ITEM_OFFSET, INPUT_2_ITEM_OFFSET, OUTPUT_ITEM_OFFSET, PROCESSING_ARROW_OFFSET));
-    
-    public EnergizedAlloyerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME,
-				ARROW_START_DIRECTION,TEXT_Y_HEIGHT);
-	}
 
-	@Override
-	public ResourceLocation getUid() {
-		return UID;
-	}
+    private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(Arrays.asList(GUI_BACKGROUND, PROCESSING_ARROW_LOCATION, INPUT_1_ITEM_OFFSET,
+	    INPUT_2_ITEM_OFFSET, OUTPUT_ITEM_OFFSET, PROCESSING_ARROW_OFFSET));
+
+    public EnergizedAlloyerRecipeCategory(IGuiHelper guiHelper) {
+	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, ARROW_START_DIRECTION, TEXT_Y_HEIGHT);
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+	return UID;
+    }
 
 }

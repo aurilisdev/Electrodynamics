@@ -66,7 +66,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
 		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
 		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-		currentVoltageMultiplier *= (upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
+		currentVoltageMultiplier *= upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2;
 	    }
 	}
 	electro.maxJoules(DEFAULT_MAX_JOULES * currentCapacityMultiplier);

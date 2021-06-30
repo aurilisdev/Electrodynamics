@@ -13,7 +13,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraftforge.fluids.FluidStack;
 
 public class PsuedoRecipes {
 
@@ -23,7 +22,7 @@ public class PsuedoRecipes {
     public static ArrayList<Fluid> ELECTRODYNAMICS_FLUIDS = new ArrayList<>();
     public static ArrayList<ItemStack> ELECTRODYNAMICS_MACHINES = new ArrayList<>();
 
-    public static ArrayList<Psuedo5XRecipe> X5_ORE_RECIPES = new ArrayList<>();
+    //public static ArrayList<Psuedo5XRecipe> X5_ORE_RECIPES = new ArrayList<>();
 
     public static void addElectrodynamicsRecipes() {
 	addElectrodynamicsMachines();
@@ -31,7 +30,7 @@ public class PsuedoRecipes {
 	addElectrodynamicsItems();
 
 	/* 5x Ore Processing */
-
+	/*
 	// Iron
 	X5_ORE_RECIPES.add(new Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(0), ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1),
 		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(2), 1000),
@@ -60,12 +59,12 @@ public class PsuedoRecipes {
 	X5_ORE_RECIPES.add(new Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(6), ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1),
 		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(8), 1000),
 		ELECTRODYNAMICS_ITEMS.get(2).get(6)));
-	
+
 	// Lithiumho
 	X5_ORE_RECIPES.add(new Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(10), ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1),
 		new FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new FluidStack(ELECTRODYNAMICS_FLUIDS.get(9), 1000),
 		ELECTRODYNAMICS_ITEMS.get(2).get(7)));
-	
+	*/
     }
 
     public static void addElectrodynamicsMachines() {

@@ -1,0 +1,16 @@
+{
+    "type":"electrodynamics:oxidation_furnace_recipe",
+
+    "input1":{
+        "tag":"forge:oxide/chromium",
+        "count":1
+    },
+    "input2":{
+        "tag":"forge:dusts/silica",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:oxidechromiumdisilicide",
+        "count":1
+    }
+}

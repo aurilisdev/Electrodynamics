@@ -68,12 +68,12 @@ public class Electrodynamics {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
-    	for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
-    	    if (block.get() instanceof BlockCustomGlass) {
-    	    	RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
-    	    }
-    	}
-    	ClientRegister.setup();
+	for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
+	    if (block.get() instanceof BlockCustomGlass) {
+		RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
+	    }
+	}
+	ClientRegister.setup();
     }
 
     @SubscribeEvent

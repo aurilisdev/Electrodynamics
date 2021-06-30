@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"iii",
+		"iii",
+		"iii"
+	],
+	"key": {
+		"i": {
+			"tag": "forge:ingots/titanium"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:resourceblocktitanium",
+		"count": 1
+	}
+}

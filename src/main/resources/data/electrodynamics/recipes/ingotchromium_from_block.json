@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"tag": "forge:storage_blocks/chromium"
+		}
+	],
+	"result": {
+		"item": "electrodynamics:ingotchromium",
+		"count": 9
+	}
+}

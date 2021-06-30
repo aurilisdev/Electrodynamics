@@ -1,0 +1,15 @@
+{
+	"type": "electrodynamics:mineral_washer_recipe",
+	"item_input": {
+		"tag": "forge:ores/copper",
+		"count": 1
+	},
+	"fluid_input": {
+		"fluid": "electrodynamics:fluidsulfuricacid",
+		"amount": 1000
+	},
+	"fluid_output": {
+		"fluid": "electrodynamics:fluidmineralcopper",
+		"amount": 1000
+	}
+}

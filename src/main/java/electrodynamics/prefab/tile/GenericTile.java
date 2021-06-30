@@ -8,6 +8,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
+import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRecipe;
 import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
@@ -254,27 +255,45 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-
-	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
-	}
-
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
+		ItemStack stack = pr.getInput();
+		if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
+		    return null;
+		}
+	
+		ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+		for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+		    if (fluidTank.getCapacity() > 0) {
+		    	break;
+		    }
+		    return null;
+		}
+	
+		Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
+		for (IRecipe<?> iRecipe : recipes) {
+		    T recipe = recipeClass.cast(iRecipe);
+		    if (recipe.matchesRecipe(pr)) {
+			return recipe;
+		    }
+		}
+		return null;
     }
+    
+	public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+		ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+		for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+		    if (fluidTank.getCapacity() > 0) {
+		    	break;
+		    }
+		    return null;
+		}
+		Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
+		for (IRecipe<?> iRecipe : recipes) {
+		    T recipe = recipeClass.cast(iRecipe);
+		    if (recipe.matchesRecipe(pr)) {
+		    	return recipe;
+		    }
+		}
+		return null;
+	}
 
 }

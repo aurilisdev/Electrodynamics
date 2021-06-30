@@ -30,12 +30,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<FluidItem2ItemRecipe> {
 
-	private static final int ITEM_INPUT_SLOT = 0;
-	private static final int INPUT_FLUID_SLOT = 1;
-	private static final int INPUT_FLUID_STACK_SLOT = 2;
-	private static final int OUTPUT_ITEM_SLOT = 3;
+    private static final int ITEM_INPUT_SLOT = 0;
+    private static final int INPUT_FLUID_SLOT = 1;
+    private static final int INPUT_FLUID_STACK_SLOT = 2;
+    private static final int OUTPUT_ITEM_SLOT = 3;
 
-	private int[] MAJOR_PROCESSING_ARROW_COORDS;
+    private int[] MAJOR_PROCESSING_ARROW_COORDS;
     private int[] MINOR_PROCESSING_ARROW_COORDS;
 
     private int[] INPUT_ITEM_OFFSET;
@@ -205,8 +205,10 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	    List<ItemStack> temp = new ArrayList<>();
 	    temp.add(new ItemStack(fluidBucket, 1));
 	    ingredients.add(temp);
+	    NULL_BUCKET = false;
+	    return ingredients;
 	}
-
+	NULL_BUCKET = true;
 	return ingredients;
     }
 

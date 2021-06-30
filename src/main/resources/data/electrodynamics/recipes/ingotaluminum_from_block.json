@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"tag": "forge:storage_blocks/aluminum"
+		}
+	],
+	"result": {
+		"item": "electrodynamics:ingotaluminum",
+		"count": 9
+	}
+}

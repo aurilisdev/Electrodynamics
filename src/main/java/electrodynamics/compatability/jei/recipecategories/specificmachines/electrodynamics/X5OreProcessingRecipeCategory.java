@@ -29,43 +29,43 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 public class X5OreProcessingRecipeCategory extends ElectrodynamicsRecipeCategory<Psuedo5XRecipe> {
-    
-	private static final int INPUT_SLOT = 0;
-	private static final int MACHINE_1 = 1;
-	private static final int MACHINE_2 = 2;
-	private static final int INPUT_FLUID = 3;
-	private static final int ORE_FLUID_SUBPART = 4;
-	private static final int OUTPUT_SLOT = 5;
-	
-	private static int[] GUI_BACKGROUND = {2, 0, 132, 58};
-    
+
+    private static final int INPUT_SLOT = 0;
+    private static final int MACHINE_1 = 1;
+    private static final int MACHINE_2 = 2;
+    private static final int INPUT_FLUID = 3;
+    private static final int ORE_FLUID_SUBPART = 4;
+    private static final int OUTPUT_SLOT = 5;
+
+    private static int[] GUI_BACKGROUND = { 2, 0, 132, 58 };
+
     private static int SMELT_TIME = 100;
     private static int TEXT_Y_HEIGHT = 48;
 
     private static String MOD_ID = References.ID;
     private static String RECIPE_GROUP = "x5_ore_processing";
     private static String GUI_TEXTURE = "textures/gui/jei/5x_ore_processing_gui.png";
-    
+
     private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer));
-    
+
     private LoadingCache<Integer, IDrawableAnimated> CACHED_ARROWS;
-    
+
     public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
     public X5OreProcessingRecipeCategory(IGuiHelper guiHelper) {
-    	
-    	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, GUI_BACKGROUND,
-    			Psuedo5XRecipe.class, TEXT_Y_HEIGHT, SMELT_TIME);
 
-			CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
-			    @Override
-			    public IDrawableAnimated load(Integer cookTime) {
-				return guiHelper.drawableBuilder(getGuiTexture(), 0, 58, 88, 16).buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT, false);
-			    }
-			});
+	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, GUI_BACKGROUND, Psuedo5XRecipe.class, TEXT_Y_HEIGHT, SMELT_TIME);
+
+	CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
+	    @Override
+	    public IDrawableAnimated load(Integer cookTime) {
+		return guiHelper.drawableBuilder(getGuiTexture(), 0, 58, 88, 16).buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT,
+			false);
+	    }
+	});
 
     }
-    
+
     @Override
     public ResourceLocation getUid() {
 	return UID;

@@ -10,14 +10,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.Items;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
 public class ContainerFermentationPlant extends GenericContainer<TileFermentationPlant> {
 
     public ContainerFermentationPlant(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(5), new IntArray(3));
+	this(id, playerinv, new Inventory(6), new IntArray(3));
     }
 
     public ContainerFermentationPlant(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -32,6 +31,7 @@ public class ContainerFermentationPlant extends GenericContainer<TileFermentatio
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 74, 31));
 	addSlot(new SlotRestricted(inv, nextIndex(), 74, 51, TileFermentationPlant.SUPPORTED_INPUT_FLUIDS));
+	addSlot(new SlotRestricted(inv, nextIndex(), 108, 51, SlotRestricted.VALID_EMPTY_BUCKETS[1]));
 	addSlot(new SlotRestricted(inv, nextIndex(), 150, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
