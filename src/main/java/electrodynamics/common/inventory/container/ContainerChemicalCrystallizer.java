@@ -30,7 +30,7 @@ public class ContainerChemicalCrystallizer extends GenericContainer<TileChemical
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 82, 31));
-	addSlot(new SlotRestricted(inv, nextIndex(), 82, 51,TileChemicalCrystallizer.SUPPORTED_INPUT_FLUIDS));
+	addSlot(new SlotRestricted(inv, nextIndex(), 82, 51, TileChemicalCrystallizer.SUPPORTED_INPUT_FLUIDS));
 	addSlot(new SlotRestricted(inv, nextIndex(), 150, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));

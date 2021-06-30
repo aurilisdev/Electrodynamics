@@ -17,17 +17,17 @@ public class ChemicalMixerRecipe extends FluidItem2FluidRecipe {
     public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
     public ChemicalMixerRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid, FluidStack outputFluid) {
-    	super(recipeID, inputItem, inputFluid, outputFluid);
+	super(recipeID, inputItem, inputFluid, outputFluid);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-    	return ElectrodynamicsRecipeInit.CHEMICAL_MIXER_SERIALIZER.get();
+	return ElectrodynamicsRecipeInit.CHEMICAL_MIXER_SERIALIZER.get();
     }
 
     @Override
     public IRecipeType<?> getType() {
-    	return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
+	return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
     }
 
 }

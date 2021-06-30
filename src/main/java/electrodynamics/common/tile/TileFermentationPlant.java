@@ -84,25 +84,25 @@ public class TileFermentationPlant extends GenericTileTicking {
     }
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-		BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
-		TileEntity faceTile = world.getTileEntity(face);
-		if (faceTile != null) {
-		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-			    direction.getDirection().getOpposite().rotateY().getOpposite());
-		    if (cap.isPresent()) {
-			IFluidHandler handler = cap.resolve().get();
-			for(Fluid fluid: SUPPORTED_OUTPUT_FLUIDS) {
-				if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-					tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
-					break;
-				}
-			}
+	ComponentDirection direction = getComponent(ComponentType.Direction);
+	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+	BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
+	TileEntity faceTile = world.getTileEntity(face);
+	if (faceTile != null) {
+	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+		    direction.getDirection().getOpposite().rotateY().getOpposite());
+	    if (cap.isPresent()) {
+		IFluidHandler handler = cap.resolve().get();
+		for (Fluid fluid : SUPPORTED_OUTPUT_FLUIDS) {
+		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+			tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+			break;
 		    }
 		}
-		processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
-		return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
+	    }
+	}
+	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
+	return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 
 }

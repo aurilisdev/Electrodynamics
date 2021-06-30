@@ -42,7 +42,7 @@ public class TileChemicalMixer extends GenericTileTicking {
      */
     public static Fluid[] SUPPORTED_INPUT_FLUIDS = new Fluid[] {
 
-    	    Fluids.WATER, DeferredRegisters.fluidEthanol
+	    Fluids.WATER, DeferredRegisters.fluidEthanol
 
     };
     public static Fluid[] SUPPORTED_OUTPUT_FLUIDS = new Fluid[] {
@@ -53,8 +53,7 @@ public class TileChemicalMixer extends GenericTileTicking {
 
     public TileChemicalMixer() {
 	super(DeferredRegisters.TILE_CHEMICALMIXER.get());
-	
-	
+
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -92,26 +91,26 @@ public class TileChemicalMixer extends GenericTileTicking {
 
     protected boolean canProcessChemMix(ComponentProcessor processor) {
 
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-		BlockPos face = getPos().offset(direction.getDirection().rotateY().getOpposite());
-		TileEntity faceTile = world.getTileEntity(face);
-		if (faceTile != null) {
-		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-			    direction.getDirection().rotateY().getOpposite().getOpposite());
-		    if (cap.isPresent()) {
-				IFluidHandler handler = cap.resolve().get();
-				for(Fluid fluid: SUPPORTED_OUTPUT_FLUIDS) {
-					if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-						tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
-						break;
-					}
-				}
+	ComponentDirection direction = getComponent(ComponentType.Direction);
+	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+	BlockPos face = getPos().offset(direction.getDirection().rotateY().getOpposite());
+	TileEntity faceTile = world.getTileEntity(face);
+	if (faceTile != null) {
+	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+		    direction.getDirection().rotateY().getOpposite().getOpposite());
+	    if (cap.isPresent()) {
+		IFluidHandler handler = cap.resolve().get();
+		for (Fluid fluid : SUPPORTED_OUTPUT_FLUIDS) {
+		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+			tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+			break;
 		    }
 		}
-	
-		processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
-		return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE);
+	    }
+	}
+
+	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
+	return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE);
     }
 
 }

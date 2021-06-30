@@ -34,16 +34,16 @@ public abstract class Fluid2ItemRecipe extends ElectrodynamicsRecipe implements 
      */
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
-    	ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	    ArrayList<Fluid> inputFluids = fluid.getInputFluids();
-	    for (int i = 0; i < inputFluids.size(); i++) {
-			FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i));
-			if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())
-				&& tank.getFluidAmount() >= INPUT_FLUID.getFluidStack().getAmount()) {
-			    return true;
-			}
+	ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	ArrayList<Fluid> inputFluids = fluid.getInputFluids();
+	for (int i = 0; i < inputFluids.size(); i++) {
+	    FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i));
+	    if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())
+		    && tank.getFluidAmount() >= INPUT_FLUID.getFluidStack().getAmount()) {
+		return true;
 	    }
-	    return false;
+	}
+	return false;
     }
 
     @Override

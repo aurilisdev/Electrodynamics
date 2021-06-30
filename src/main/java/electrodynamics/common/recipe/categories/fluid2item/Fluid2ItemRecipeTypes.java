@@ -4,8 +4,8 @@ import electrodynamics.common.recipe.categories.fluid2item.specificmachines.Chem
 import net.minecraft.item.crafting.IRecipeSerializer;
 
 public class Fluid2ItemRecipeTypes {
-	
-	public static final IRecipeSerializer<ChemicalCrystalizerRecipe> CHEMICAL_CRYSTALIZER_JSON_SERIALIZER = new Fluid2ItemRecipeSerializer<>(
-		ChemicalCrystalizerRecipe.class);
+
+    public static final IRecipeSerializer<ChemicalCrystalizerRecipe> CHEMICAL_CRYSTALIZER_JSON_SERIALIZER = new Fluid2ItemRecipeSerializer<>(
+	    ChemicalCrystalizerRecipe.class);
 
 }

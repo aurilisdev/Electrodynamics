@@ -126,23 +126,25 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	/* 5x Ore Processing */
 	/*
-	registration.addRecipeCatalyst(
-		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)),
-		X5OreProcessingRecipeCategory.UID);
+	 * registration.addRecipeCatalyst( new
+	 * ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(
+	 * SubtypeMachine.chemicalcrystallizer)), X5OreProcessingRecipeCategory.UID);
+	 * 
+	 * registration.addRecipeCatalyst(new
+	 * ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(
+	 * SubtypeMachine.mineralwasher)), X5OreProcessingRecipeCategory.UID);
+	 */
+	/* Mineral Washer */
 
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)),
-		X5OreProcessingRecipeCategory.UID);
-	*/
-	/* Mineral Washer */
-	
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)), 
 		MineralWasherRecipeCategory.UID);
-	
+
 	/* Chemical Crystallizer */
-	
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)), 
+
+	registration.addRecipeCatalyst(
+		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)),
 		ChemicalCrystallizerRecipeCategory.UID);
-	
+
 	/* Chemical Mixer */
 
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)),
@@ -199,20 +201,20 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// 5x Ore Processing
 	/*
-	Set<Psuedo5XRecipe> x5Recipes = new HashSet<>(PsuedoRecipes.X5_ORE_RECIPES);
-
-	registration.addRecipes(x5Recipes, X5OreProcessingRecipeCategory.UID);
-	*/
+	 * Set<Psuedo5XRecipe> x5Recipes = new HashSet<>(PsuedoRecipes.X5_ORE_RECIPES);
+	 * 
+	 * registration.addRecipes(x5Recipes, X5OreProcessingRecipeCategory.UID);
+	 */
 	// Mineral Washer
 	Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet
 		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE));
-	registration.addRecipes(mineralWasherRecipes,MineralWasherRecipeCategory.UID);
-	
-	//Chemical Crystallizer
+	registration.addRecipes(mineralWasherRecipes, MineralWasherRecipeCategory.UID);
+
+	// Chemical Crystallizer
 	Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet
 		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE));
 	registration.addRecipes(chemicalCrystallizerRecipes, ChemicalCrystallizerRecipeCategory.UID);
-		
+
 	// Chemical Mixer
 	Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet
 		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
@@ -248,17 +250,17 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Energized Alloyer
 	registration.addRecipeCategories(new EnergizedAlloyerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-	
+
 	/*
-	// 5x Ore Processing
-	registration.addRecipeCategories(new X5OreProcessingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-	*/
+	 * // 5x Ore Processing registration.addRecipeCategories(new
+	 * X5OreProcessingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+	 */
 	// Mineral Washer
 	registration.addRecipeCategories(new MineralWasherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-	
+
 	// Chemical Crystallizer
 	registration.addRecipeCategories(new ChemicalCrystallizerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-	
+
 	// Chemical Mixer
 	registration.addRecipeCategories(new ChemicalMixerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 

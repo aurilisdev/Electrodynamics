@@ -36,7 +36,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenFermentationPlant extends GenericScreen<ContainerFermentationPlant> {
-	public ScreenFermentationPlant(ContainerFermentationPlant container, PlayerInventory playerInventory, ITextComponent title) {
+    public ScreenFermentationPlant(ContainerFermentationPlant container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
 	components.add(new ScreenComponentProgress(() -> {
 	    GenericTile furnace = container.getHostFromIntArray();
@@ -62,26 +62,26 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	components.add(new ScreenComponentFluid(() -> {
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-	    	ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
-			for(Fluid fluid : handler.getInputFluids()) {
-				FluidTank tank = handler.getTankFromFluid(fluid);
-				if(tank.getFluidAmount() > 0) {
-					return handler.getTankFromFluid(tank.getFluid().getFluid());
-				}
-			}
+		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		for (Fluid fluid : handler.getInputFluids()) {
+		    FluidTank tank = handler.getTankFromFluid(fluid);
+		    if (tank.getFluidAmount() > 0) {
+			return handler.getTankFromFluid(tank.getFluid().getFluid());
+		    }
+		}
 	    }
 	    return null;
 	}, this, 21, 18));
 	components.add(new ScreenComponentFluid(() -> {
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-	    	ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
-			for(Fluid fluid : handler.getOutputFluids()) {
-				FluidTank tank = handler.getTankFromFluid(fluid);
-				if(tank.getFluidAmount() > 0) {
-					return handler.getTankFromFluid(tank.getFluid().getFluid());
-				}
-			}
+		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		for (Fluid fluid : handler.getOutputFluids()) {
+		    FluidTank tank = handler.getTankFromFluid(fluid);
+		    if (tank.getFluidAmount() > 0) {
+			return handler.getTankFromFluid(tank.getFluid().getFluid());
+		    }
+		}
 	    }
 	    return null;
 	}, this, 127, 18));

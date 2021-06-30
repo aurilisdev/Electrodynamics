@@ -18,8 +18,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class GenericContainer<T extends TileEntity> extends Container {
-    
-	protected final IInventory inventory;
+
+    protected final IInventory inventory;
     protected final IIntArray inventorydata;
     protected final World world;
     protected final int slotCount;

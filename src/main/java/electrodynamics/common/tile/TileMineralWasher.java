@@ -36,7 +36,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileMineralWasher extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
-    
+
     public static Fluid[] SUPPORTED_INPUT_FLUIDS = new Fluid[] {
 
 	    DeferredRegisters.fluidSulfuricAcid
@@ -44,12 +44,13 @@ public class TileMineralWasher extends GenericTileTicking {
     };
     public static Fluid[] SUPPORTED_OUTPUT_FLUIDS;
     static {
-    	List<FluidMineral> mineralFluids = new ArrayList<>(DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values());
-    	SUPPORTED_OUTPUT_FLUIDS = new Fluid[mineralFluids.size()];
-    	for(int i = 0; i < mineralFluids.size();i++) {
-    		SUPPORTED_OUTPUT_FLUIDS[i] = mineralFluids.get(i);
-    	}
+	List<FluidMineral> mineralFluids = new ArrayList<>(DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values());
+	SUPPORTED_OUTPUT_FLUIDS = new Fluid[mineralFluids.size()];
+	for (int i = 0; i < mineralFluids.size(); i++) {
+	    SUPPORTED_OUTPUT_FLUIDS[i] = mineralFluids.get(i);
+	}
     }
+
     public TileMineralWasher() {
 	super(DeferredRegisters.TILE_MINERALWASHER.get());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
@@ -58,8 +59,8 @@ public class TileMineralWasher extends GenericTileTicking {
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
 		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
 	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values())
-			.addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
-			.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false));
+		.addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
+		.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false));
 	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
 		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
@@ -92,25 +93,25 @@ public class TileMineralWasher extends GenericTileTicking {
     }
 
     protected boolean canProcessMinWash(ComponentProcessor processor) {
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-		BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
-		TileEntity faceTile = world.getTileEntity(face);
-		if (faceTile != null) {
-		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-			    direction.getDirection().getOpposite().rotateY().getOpposite());
-		    if (cap.isPresent()) {
-				IFluidHandler handler = cap.resolve().get();
-				for(Fluid fluid: SUPPORTED_OUTPUT_FLUIDS) {
-					if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-						tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
-						break;
-					}
-				}
+	ComponentDirection direction = getComponent(ComponentType.Direction);
+	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+	BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
+	TileEntity faceTile = world.getTileEntity(face);
+	if (faceTile != null) {
+	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+		    direction.getDirection().getOpposite().rotateY().getOpposite());
+	    if (cap.isPresent()) {
+		IFluidHandler handler = cap.resolve().get();
+		for (Fluid fluid : SUPPORTED_OUTPUT_FLUIDS) {
+		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+			tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+			break;
 		    }
 		}
-		processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1);
-		return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE);
+	    }
+	}
+	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1);
+	return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE);
     }
 
 }

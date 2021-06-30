@@ -30,7 +30,7 @@ public class ContainerMineralWasher extends GenericContainer<TileMineralWasher> 
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 82, 31));
-	addSlot(new SlotRestricted(inv,nextIndex(),82,51,TileMineralWasher.SUPPORTED_INPUT_FLUIDS));
+	addSlot(new SlotRestricted(inv, nextIndex(), 82, 51, TileMineralWasher.SUPPORTED_INPUT_FLUIDS));
 	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
