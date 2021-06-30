@@ -9,11 +9,11 @@ import net.minecraft.item.Item;
 public class ItemCanister extends BucketItem {
 
     public ItemCanister(SubtypeCanister canister) {
-	super(() -> canister.getFluid(), new Item.Properties().group(References.CORETAB));
+	super(() -> canister.getFluid(), new Item.Properties().maxStackSize(4).group(References.CORETAB));
     }
 
     public ItemCanister(SubtypeLeadCanister canister) {
-	super(() -> canister.getFluid(), new Item.Properties().group(References.CORETAB));
+	super(() -> canister.getFluid(), new Item.Properties().maxStackSize(2).group(References.CORETAB));
     }
 
 }

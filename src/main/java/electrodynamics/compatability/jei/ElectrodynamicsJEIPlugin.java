@@ -1,7 +1,6 @@
 package electrodynamics.compatability.jei;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,19 +20,20 @@ import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
+import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
-import electrodynamics.compatability.jei.recipecategories.psuedorecipes.Psuedo5XRecipe;
 import electrodynamics.compatability.jei.recipecategories.psuedorecipes.PsuedoRecipes;
+import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalCrystallizerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalMixerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ElectricFurnaceRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.EnergizedAlloyerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.FermentationPlantRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralCrusherRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralGrinderRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralWasherRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.OxidationFurnaceRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.WireMillRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.X5OreProcessingRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
@@ -125,14 +125,24 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		EnergizedAlloyerRecipeCategory.UID);
 
 	/* 5x Ore Processing */
-
+	/*
 	registration.addRecipeCatalyst(
 		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)),
 		X5OreProcessingRecipeCategory.UID);
 
-	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)),
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)),
 		X5OreProcessingRecipeCategory.UID);
-
+	*/
+	/* Mineral Washer */
+	
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)), 
+		MineralWasherRecipeCategory.UID);
+	
+	/* Chemical Crystallizer */
+	
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)), 
+		ChemicalCrystallizerRecipeCategory.UID);
+	
 	/* Chemical Mixer */
 
 	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)),
@@ -188,10 +198,21 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
 
 	// 5x Ore Processing
+	/*
 	Set<Psuedo5XRecipe> x5Recipes = new HashSet<>(PsuedoRecipes.X5_ORE_RECIPES);
 
 	registration.addRecipes(x5Recipes, X5OreProcessingRecipeCategory.UID);
-
+	*/
+	// Mineral Washer
+	Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE));
+	registration.addRecipes(mineralWasherRecipes,MineralWasherRecipeCategory.UID);
+	
+	//Chemical Crystallizer
+	Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet
+		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE));
+	registration.addRecipes(chemicalCrystallizerRecipes, ChemicalCrystallizerRecipeCategory.UID);
+		
 	// Chemical Mixer
 	Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet
 		.copyOf(world.getRecipeManager().getRecipesForType(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
@@ -227,10 +248,17 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Energized Alloyer
 	registration.addRecipeCategories(new EnergizedAlloyerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
+	
+	/*
 	// 5x Ore Processing
 	registration.addRecipeCategories(new X5OreProcessingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
+	*/
+	// Mineral Washer
+	registration.addRecipeCategories(new MineralWasherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+	
+	// Chemical Crystallizer
+	registration.addRecipeCategories(new ChemicalCrystallizerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+	
 	// Chemical Mixer
 	registration.addRecipeCategories(new ChemicalMixerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
@@ -281,10 +309,10 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registry.addRecipeClickArea(ScreenFermentationPlant.class, 97, 31, o2oarrowLoc[2], o2oarrowLoc[3], FermentationPlantRecipeCategory.UID);
 
 	/* Mineral Washer */
-	registry.addRecipeClickArea(ScreenMineralWasher.class, 45, 35, o2oarrowLoc[2], o2oarrowLoc[3], X5OreProcessingRecipeCategory.UID);
+	registry.addRecipeClickArea(ScreenMineralWasher.class, 45, 31, o2oarrowLoc[2], o2oarrowLoc[3], MineralWasherRecipeCategory.UID);
 
 	/* Chemical Crystalizer */
-	registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 45, 35, o2oarrowLoc[2], o2oarrowLoc[3], X5OreProcessingRecipeCategory.UID);
+	registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 45, 35, o2oarrowLoc[2], o2oarrowLoc[3], ChemicalCrystallizerRecipeCategory.UID);
     }
 
     public static ResourceLocation[] getO2OGuiScreens() {

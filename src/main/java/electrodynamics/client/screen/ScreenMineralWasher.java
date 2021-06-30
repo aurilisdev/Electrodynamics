@@ -3,7 +3,6 @@ package electrodynamics.client.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
@@ -23,6 +22,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
@@ -32,6 +32,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
@@ -46,12 +47,18 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 		}
 	    }
 	    return 0;
-	}, this, 46, 34));
+	}, this, 46, 31));
+	components.add(new ScreenComponentProgress(() -> 0, this, 46, 51).left());
 	components.add(new ScreenComponentFluid(() -> {
 	    TileMineralWasher boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
-		return handler.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid);
+	    	ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+			for(Fluid fluid : handler.getInputFluids()) {
+				FluidTank tank = handler.getTankFromFluid(fluid);
+				if(tank.getFluidAmount() > 0) {
+					return handler.getTankFromFluid(tank.getFluid().getFluid());
+				}
+			}
 	    }
 	    return null;
 	}, this, 21, 18));

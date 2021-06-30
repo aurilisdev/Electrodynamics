@@ -1,15 +1,22 @@
 package electrodynamics.common.recipe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipeTypes;
 import electrodynamics.common.recipe.categories.do2o.specificmachines.EnergizedAlloyerRecipe;
 import electrodynamics.common.recipe.categories.do2o.specificmachines.OxidationFurnaceRecipe;
+import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipeTypes;
+import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipeTypes;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
 import electrodynamics.common.recipe.categories.o2o.O2ORecipeTypes;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralGrinderRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -25,6 +32,12 @@ public class ElectrodynamicsRecipeInit {
     public static DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,
 	    electrodynamics.api.References.ID);
 
+    
+    public static HashMap<IRecipeType<?>,ArrayList<ArrayList<Fluid>>> RECIPE_FLUIDS = new HashMap<>();
+    
+    
+    
+    
     /* RECIPE TYPES */
 
     // O2O
@@ -39,12 +52,17 @@ public class ElectrodynamicsRecipeInit {
     // FluidItem2Fluid
     public static final IRecipeType<ChemicalMixerRecipe> CHEMICAL_MIXER_TYPE = registerType(ChemicalMixerRecipe.RECIPE_ID);
     public static final IRecipeType<FermentationPlantRecipe> FERMENTATION_PLANT_TYPE = registerType(FermentationPlantRecipe.RECIPE_ID);
-
+    public static final IRecipeType<MineralWasherRecipe> MINERAL_WASHER_TYPE = registerType(MineralWasherRecipe.RECIPE_ID);
+    
+    // Fluid2Item
+    public static final IRecipeType<ChemicalCrystalizerRecipe> CHEMICAL_CRYSTALIZER_TYPE = registerType(ChemicalCrystalizerRecipe.RECIPE_ID);
+    
+    
     /* SERIALIZERS */
 
     // O2O
-    public static final RegistryObject<IRecipeSerializer<?>> WIRE_MILL_SERIALIZER = RECIPE_SERIALIZER.register(WireMillRecipe.RECIPE_GROUP,
-	    () -> O2ORecipeTypes.WIRE_MILL_JSON_SERIALIZER);
+    public static final RegistryObject<IRecipeSerializer<?>> WIRE_MILL_SERIALIZER = RECIPE_SERIALIZER
+    	.register(WireMillRecipe.RECIPE_GROUP,() -> O2ORecipeTypes.WIRE_MILL_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> MINERAL_GRINDER_SERIALIZER = RECIPE_SERIALIZER
 	    .register(MineralGrinderRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.MINERAL_CRUSHER_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> MINERAL_CRUSHER_SERIALIZER = RECIPE_SERIALIZER
@@ -57,23 +75,30 @@ public class ElectrodynamicsRecipeInit {
 	    .register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
 
     // FluidItem2Fluid
-    public static final RegistryObject<IRecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalMixerRecipe.RECIPE_GROUP,
-	    () -> FluidItem2FluidRecipeTypes.CHEMICAL_MIXER_JSON_SERIALIZER);
+    public static final RegistryObject<IRecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER
+    	.register(ChemicalMixerRecipe.RECIPE_GROUP,() -> FluidItem2FluidRecipeTypes.CHEMICAL_MIXER_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> FERMENTATION_PLANT_SERIALIZER = RECIPE_SERIALIZER
 	    .register(FermentationPlantRecipe.RECIPE_GROUP, () -> FluidItem2FluidRecipeTypes.FERMENTATION_PLANT_JSON_SERIALIZER);
-
+    public static final RegistryObject<IRecipeSerializer<?>> MINERAL_WASHER_SERIALIZER = RECIPE_SERIALIZER
+    	.register(MineralWasherRecipe.RECIPE_GROUP, () -> FluidItem2FluidRecipeTypes.MINERAL_WASHER_JSON_SERIALIZER);
+    
+    // Fluid2Item
+    public static final RegistryObject<IRecipeSerializer<?>> CHEMICAL_CRYSTALIZER_SERIALIZER = RECIPE_SERIALIZER
+    	.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> Fluid2ItemRecipeTypes.CHEMICAL_CRYSTALIZER_JSON_SERIALIZER);
+    
+    
     /* Functional Methods */
 
     @SuppressWarnings("unchecked")
     public static <T extends IRecipeType<?>> T registerType(ResourceLocation recipeTypeId) {
-	return (T) Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new RecipeType<>());
+    	return (T) Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new RecipeType<>());
     }
 
     private static class RecipeType<T extends IRecipe<?>> implements IRecipeType<T> {
-	@Override
-	public String toString() {
-	    return Registry.RECIPE_TYPE.getKey(this).toString();
-	}
+		@Override
+		public String toString() {
+		    return Registry.RECIPE_TYPE.getKey(this).toString();
+		}
     }
 
 }

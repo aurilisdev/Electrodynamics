@@ -1,16 +1,15 @@
 package electrodynamics.common.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.ISubtype;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.common.block.BlockOre;
-import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.item.ItemProcessorUpgrade;
-import electrodynamics.common.item.subtype.SubtypeCrystal;
-import electrodynamics.common.item.subtype.SubtypeMineralFluid;
+import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -23,9 +22,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tileentity.TileEntity;
@@ -38,10 +35,21 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileMineralWasher extends GenericTileTicking {
-    public static final int TANKCAPACITY_SULFURICACID = 5000;
-    public static final int TANKCAPACITY_MINERAL = 5000;
-    public static final int REQUIRED_SULFURICACID = 1000;
+    public static final int MAX_TANK_CAPACITY = 5000;
+    
+    public static Fluid[] SUPPORTED_INPUT_FLUIDS = new Fluid[] {
 
+	    DeferredRegisters.fluidSulfuricAcid
+
+    };
+    public static Fluid[] SUPPORTED_OUTPUT_FLUIDS;
+    static {
+    	List<FluidMineral> mineralFluids = new ArrayList<>(DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values());
+    	SUPPORTED_OUTPUT_FLUIDS = new Fluid[mineralFluids.size()];
+    	for(int i = 0; i < mineralFluids.size();i++) {
+    		SUPPORTED_OUTPUT_FLUIDS[i] = mineralFluids.get(i);
+    	}
+    }
     public TileMineralWasher() {
 	super(DeferredRegisters.TILE_MINERALWASHER.get());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
@@ -49,16 +57,14 @@ public class TileMineralWasher extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
 		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
-	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values()).fluidTank(DeferredRegisters.fluidSulfuricAcid,
-		TANKCAPACITY_SULFURICACID));
-	ComponentFluidHandler fluids = getComponent(ComponentType.FluidHandler);
-	for (FluidMineral fluid : DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values()) {
-	    fluids.fluidTank(fluid, TANKCAPACITY_MINERAL);
-	}
-	addComponent(new ComponentInventory(this).size(4).relativeSlotFaces(0, Direction.values())
-		.valid((slot, stack) -> slot < 1 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
-	addComponent(new ComponentProcessor(this).upgradeSlots(1, 2, 3).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
-		.type(ComponentProcessorType.ObjectToObject).canProcess(this::canProcess).process(this::process)
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values())
+			.addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
+			.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false));
+	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
+		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
+		.type(ComponentProcessorType.ObjectToObject).canProcess(component -> canProcessMinWash(component))
+		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.mineralwasher")
 		.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
@@ -85,73 +91,26 @@ public class TileMineralWasher extends GenericTileTicking {
 	}
     }
 
-    protected boolean canProcess(ComponentProcessor processor) {
-	FluidMineral fluid = getFluidFromInput(processor);
-	if (fluid == null) {
-	    return false;
-	}
-	ComponentDirection direction = getComponent(ComponentType.Direction);
-	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-	BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
-	TileEntity faceTile = world.getTileEntity(face);
-	if (faceTile != null) {
-	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().getOpposite().rotateY().getOpposite());
-	    if (cap.isPresent()) {
-		IFluidHandler handler = cap.resolve().get();
-		if (handler.isFluidValid(0, tank.getStackFromFluid(fluid))) {
-		    tank.getStackFromFluid(getFluidFromInput(processor)).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+    protected boolean canProcessMinWash(ComponentProcessor processor) {
+		ComponentDirection direction = getComponent(ComponentType.Direction);
+		ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+		BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
+		TileEntity faceTile = world.getTileEntity(face);
+		if (faceTile != null) {
+		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+			    direction.getDirection().getOpposite().rotateY().getOpposite());
+		    if (cap.isPresent()) {
+				IFluidHandler handler = cap.resolve().get();
+				for(Fluid fluid: SUPPORTED_OUTPUT_FLUIDS) {
+					if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+						tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+						break;
+					}
+				}
+		    }
 		}
-	    }
-	}
-	if (processor.getInput().isEmpty() || TANKCAPACITY_MINERAL < tank.getStackFromFluid(fluid).getAmount() + 1000) {
-	    return false;
-	}
-	return electro.getJoulesStored() >= processor.getUsage() && !processor.getInput().isEmpty() && processor.getInput().getCount() > 0
-		&& tank.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).getAmount() >= REQUIRED_SULFURICACID;
+		processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1);
+		return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE);
     }
 
-    public void process(ComponentProcessor processor) {
-	ComponentFluidHandler handler = getComponent(ComponentType.FluidHandler);
-	ItemStack stack = processor.getInput();
-	handler.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid).shrink(REQUIRED_SULFURICACID);
-	handler.getStackFromFluid(getFluidFromInput(processor)).grow(1000);
-	stack.setCount(stack.getCount() - 1);
-	this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-    }
-
-    public static FluidMineral getFluidFromInput(ComponentProcessor processor) {
-	ItemStack stack = processor.getInput();
-	String name = "";
-	if (stack.getItem() instanceof BlockItemDescriptable) {
-	    BlockItemDescriptable descriptable = (BlockItemDescriptable) stack.getItem();
-	    if (descriptable.getBlock() instanceof BlockOre) {
-		BlockOre ore = (BlockOre) descriptable.getBlock();
-		name = ore.ore.name();
-	    }
-	} else if (stack.getItem() == Items.GOLD_ORE) {
-	    name = "gold";
-	} else if (stack.getItem() == Items.IRON_ORE) {
-	    name = "iron";
-	} else if (stack.getItem() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.lepidolite).asItem()) {
-	    name = "lithium";
-	} else if (DeferredRegisters.SUBTYPEITEM_MAPPINGS.values().contains(stack.getItem())) {
-	    ISubtype sub = DeferredRegisters.ITEMSUBTYPE_MAPPINGS.get(stack.getItem());
-	    if (sub instanceof SubtypeCrystal) {
-		name = ((SubtypeCrystal) sub).name();
-	    }
-	}
-	for (SubtypeMineralFluid fluid : SubtypeMineralFluid.values()) {
-	    if (fluid.name().equalsIgnoreCase(name)) {
-		return DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(fluid);
-	    }
-	}
-	return null;
-    }
-
-    public static Item getItemFromMineral(FluidMineral mineral) {
-	return DeferredRegisters.SUBTYPEITEM_MAPPINGS
-		.get(SubtypeCrystal.valueOf(((SubtypeMineralFluid) DeferredRegisters.MINERALFLUIDSUBTYPE_MAPPINGS.get(mineral)).name()));
-    }
 }

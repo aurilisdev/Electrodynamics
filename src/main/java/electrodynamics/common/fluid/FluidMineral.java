@@ -7,7 +7,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +26,7 @@ public class FluidMineral extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-	return Items.AIR;
+	return null;
     }
 
     @Override
@@ -75,13 +74,10 @@ public class FluidMineral extends Fluid {
 	return 0;
     }
 
-    // TODO: Consider naming each variant of mineral fluid for the ore e.g. "Copper
-    // Mineral Fluid".
-    // Just a thought tho
     @Override
     protected FluidAttributes createAttributes() {
 	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/mineral"), new ResourceLocation(References.ID + ":fluid/mineral"))
-		.translationKey("fluid.electrodynamics.mineral").color(-1383766208).build(this);
+		.translationKey("fluid.electrodynamics.mineral" + mineral.name()).color(-1383766208).build(this);
     }
 
     @Override

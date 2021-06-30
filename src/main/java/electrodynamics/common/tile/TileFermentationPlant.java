@@ -33,7 +33,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 public class TileFermentationPlant extends GenericTileTicking {
 
     public static final int MAX_TANK_CAPACITY = 5000;
-
     public static Fluid[] SUPPORTED_INPUT_FLUIDS = new Fluid[] {
 
 	    Fluids.WATER
@@ -55,9 +54,9 @@ public class TileFermentationPlant extends GenericTileTicking {
 	addComponent(
 		new ComponentFluidHandler(this).relativeInput(Direction.EAST).addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
 			.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false).relativeOutput(Direction.WEST));
-	addComponent(new ComponentInventory(this).size(5).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
-		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade));
-	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
+	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
+		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));
+	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
 		.type(ComponentProcessorType.ObjectToObject).canProcess(component -> canProcessFermPlan(component))
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
@@ -85,25 +84,25 @@ public class TileFermentationPlant extends GenericTileTicking {
     }
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
-	ComponentDirection direction = getComponent(ComponentType.Direction);
-	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-	BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
-	TileEntity faceTile = world.getTileEntity(face);
-	if (faceTile != null) {
-	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().getOpposite().rotateY().getOpposite());
-	    if (cap.isPresent()) {
-		IFluidHandler handler = cap.resolve().get();
-		if (handler.isFluidValid(0, tank.getStackFromFluid(DeferredRegisters.fluidEthanol))) {
-		    tank.getStackFromFluid(DeferredRegisters.fluidEthanol)
-			    .shrink(handler.fill(tank.getStackFromFluid(DeferredRegisters.fluidEthanol), FluidAction.EXECUTE));
+		ComponentDirection direction = getComponent(ComponentType.Direction);
+		ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+		BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
+		TileEntity faceTile = world.getTileEntity(face);
+		if (faceTile != null) {
+		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+			    direction.getDirection().getOpposite().rotateY().getOpposite());
+		    if (cap.isPresent()) {
+			IFluidHandler handler = cap.resolve().get();
+			for(Fluid fluid: SUPPORTED_OUTPUT_FLUIDS) {
+				if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+					tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+					break;
+				}
+			}
+		    }
 		}
-	    }
-	}
-	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1);
-	boolean canProcess = processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class,
-		ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
-	return canProcess;
+		processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
+		return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 
 }

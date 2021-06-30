@@ -205,8 +205,10 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	    List<ItemStack> temp = new ArrayList<>();
 	    temp.add(new ItemStack(fluidBucket, 1));
 	    ingredients.add(temp);
+	    NULL_BUCKET = false;
+	    return ingredients;
 	}
-
+	NULL_BUCKET = true;
 	return ingredients;
     }
 

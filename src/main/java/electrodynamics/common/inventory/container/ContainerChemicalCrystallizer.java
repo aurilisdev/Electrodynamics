@@ -16,7 +16,7 @@ import net.minecraft.util.IntArray;
 public class ContainerChemicalCrystallizer extends GenericContainer<TileChemicalCrystallizer> {
 
     public ContainerChemicalCrystallizer(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(4), new IntArray(3));
+	this(id, playerinv, new Inventory(5), new IntArray(3));
     }
 
     public ContainerChemicalCrystallizer(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -29,7 +29,8 @@ public class ContainerChemicalCrystallizer extends GenericContainer<TileChemical
 
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 82, 35));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 82, 31));
+	addSlot(new SlotRestricted(inv, nextIndex(), 82, 51,TileChemicalCrystallizer.SUPPORTED_INPUT_FLUIDS));
 	addSlot(new SlotRestricted(inv, nextIndex(), 150, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));

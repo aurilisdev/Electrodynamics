@@ -2,13 +2,9 @@ package electrodynamics.client.screen;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.api.ISubtype;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
@@ -26,7 +22,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
@@ -52,18 +48,18 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 		}
 	    }
 	    return 0;
-	}, this, 41, 34));
+	}, this, 41, 31));
+	components.add(new ScreenComponentProgress(() -> 0, this, 41, 51).left());
 	components.add(new ScreenComponentFluid(() -> {
 	    TileChemicalCrystallizer boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Entry<FluidMineral, ISubtype> mineral : DeferredRegisters.MINERALFLUIDSUBTYPE_MAPPINGS.entrySet()) {
-		    FluidTank tank = handler.getTankFromFluid(mineral.getKey());
-		    if (tank != null && !tank.getFluid().isEmpty()) {
-			return tank;
-		    }
-		}
-		return handler.getTankFromFluid(Fluids.WATER);
+	    	ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+			for(Fluid fluid : handler.getInputFluids()) {
+				FluidTank tank = handler.getTankFromFluid(fluid);
+				if(tank.getFluidAmount() > 0) {
+					return handler.getTankFromFluid(tank.getFluid().getFluid());
+				}
+			}
 	    }
 	    return null;
 	}, this, 21, 18));

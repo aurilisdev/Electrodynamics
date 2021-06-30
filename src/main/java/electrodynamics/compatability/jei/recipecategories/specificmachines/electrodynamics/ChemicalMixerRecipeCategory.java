@@ -24,6 +24,7 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory {
     private static int[] INPUT_FLUID_BUCKET_OFFSET = { 60, 36 };
     private static int[] INPUT_FLUID_TANK = { 15, 52, 12, 47, 5000 };
     private static int[] OUTPUT_FLUID_TANK = { 109, 52, 12, 47, 5000 };
+    private static int[] OUTPUT_FLUID_BUCKET_OFFSET = {88, 36};
 
     private static int[] MAJOR_PROCESSING_ARROW_OFFSET = { 34, 17 };
     private static int[] MINOR_PROCESSING_ARROW_OFFSET = { 34, 37 };
@@ -45,7 +46,7 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory {
     public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
     private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(Arrays.asList(GUI_BACKGROUND, MAJOR_PROCESSING_ARROW_LOCATION,
-	    MINOR_PROCESSING_ARROW_LOCATION, INPUT_ITEM_OFFSET, INPUT_FLUID_BUCKET_OFFSET, INPUT_FLUID_TANK, OUTPUT_FLUID_TANK,
+	    MINOR_PROCESSING_ARROW_LOCATION, INPUT_ITEM_OFFSET, INPUT_FLUID_BUCKET_OFFSET, INPUT_FLUID_TANK, OUTPUT_FLUID_TANK, OUTPUT_FLUID_BUCKET_OFFSET,
 	    MAJOR_PROCESSING_ARROW_OFFSET, MINOR_PROCESSING_ARROW_OFFSET, FLUID_BAR_LOCATION));
 
     public ChemicalMixerRecipeCategory(IGuiHelper guiHelper) {

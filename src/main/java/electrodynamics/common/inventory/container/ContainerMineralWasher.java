@@ -16,7 +16,7 @@ import net.minecraft.util.IntArray;
 public class ContainerMineralWasher extends GenericContainer<TileMineralWasher> {
 
     public ContainerMineralWasher(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(4), new IntArray(3));
+	this(id, playerinv, new Inventory(5), new IntArray(3));
     }
 
     public ContainerMineralWasher(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
@@ -29,7 +29,8 @@ public class ContainerMineralWasher extends GenericContainer<TileMineralWasher> 
 
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-	addSlot(new GenericSlot(inv, nextIndex(), 82, 35));
+	addSlot(new GenericSlot(inv, nextIndex(), 82, 31));
+	addSlot(new SlotRestricted(inv,nextIndex(),82,51,TileMineralWasher.SUPPORTED_INPUT_FLUIDS));
 	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));

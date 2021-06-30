@@ -1,0 +1,15 @@
+{
+	"type": "electrodynamics:chemical_mixer_recipe",
+	"item_input": {
+		"tag": "forge:oxide/chromiumdisilicide",
+		"count": 1
+	},
+	"fluid_input": {
+		"fluid": "electrodynamics:fluidethanol",
+		"amount": 1000
+	},
+	"fluid_output": {
+		"fluid": "electrodynamics:fluidpolyethylene",
+		"amount": 1000
+	}
+}

@@ -22,7 +22,7 @@ public class FluidSulfuricAcid extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-	return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCanister.sulfuric).get();
+	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.sulfuric);
     }
 
     @Override
