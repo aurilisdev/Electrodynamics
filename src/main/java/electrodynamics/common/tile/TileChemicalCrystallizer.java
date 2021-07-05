@@ -58,17 +58,16 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
 		MAX_TANK_CAPACITY, true));
 	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
 		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
-	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).canProcess(component -> canProcessChemCryst(component))
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4)
+		.canProcess
+		(component -> component.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
+					.canProcessFluid2ItemRecipe(component, Fluid2ItemRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE)
+		)
 		.process(component -> component.processFluid2ItemRecipe(component, Fluid2ItemRecipe.class))
 		.requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK)
 		.type(ComponentProcessorType.ObjectToObject).outputSlot(0));
 	addComponent(new ComponentContainerProvider("container.chemicalcrystallizer")
 		.createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-    }
-
-    public boolean canProcessChemCryst(ComponentProcessor processor) {
-	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1);
-	return processor.canProcessFluid2ItemRecipe(processor, Fluid2ItemRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE);
     }
 
     protected void tickClient(ComponentTickable tickable) {

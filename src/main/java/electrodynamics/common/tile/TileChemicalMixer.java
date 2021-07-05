@@ -21,14 +21,8 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileChemicalMixer extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
@@ -64,7 +58,13 @@ public class TileChemicalMixer extends GenericTileTicking {
 		.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false));
 	addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.EAST, Direction.UP).relativeSlotFaces(1, Direction.DOWN)
 		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));
-	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(component -> canProcessChemMix(component))
+	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5)
+		.canProcess
+		(component -> component.outputToPipe(component, SUPPORTED_OUTPUT_FLUIDS)
+					 .consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
+					 .dispenseBucket(MAX_TANK_CAPACITY, 2)
+					 .canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE)
+		)
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.usage(Constants.CHEMICALMIXER_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject)
 		.requiredTicks(Constants.CHEMICALMIXER_REQUIRED_TICKS));
@@ -75,42 +75,18 @@ public class TileChemicalMixer extends GenericTileTicking {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-	return super.getRenderBoundingBox().grow(1);
+    	return super.getRenderBoundingBox().grow(1);
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
-	if (running) {
-	    if (world.rand.nextDouble() < 0.15) {
-		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
-			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-	    }
-	    clientTicks++;
-	}
-    }
-
-    protected boolean canProcessChemMix(ComponentProcessor processor) {
-
-	ComponentDirection direction = getComponent(ComponentType.Direction);
-	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-	BlockPos face = getPos().offset(direction.getDirection().rotateY().getOpposite());
-	TileEntity faceTile = world.getTileEntity(face);
-	if (faceTile != null) {
-	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().rotateY().getOpposite().getOpposite());
-	    if (cap.isPresent()) {
-		IFluidHandler handler = cap.resolve().get();
-		for (Fluid fluid : SUPPORTED_OUTPUT_FLUIDS) {
-		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-			tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
-			break;
+		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
+		if (running) {
+		    if (world.rand.nextDouble() < 0.15) {
+			world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
+				pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 		    }
+		    clientTicks++;
 		}
-	    }
-	}
-
-	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
-	return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE);
     }
 
 }

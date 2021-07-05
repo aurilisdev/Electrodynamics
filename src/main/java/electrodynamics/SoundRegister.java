@@ -23,5 +23,9 @@ public class SoundRegister {
 	    () -> new SoundEvent(new ResourceLocation(References.ID + ":hydroelectricgenerator")));
     public static final RegistryObject<SoundEvent> SOUND_WINDMILL = SOUNDS.register("windmill",
 	    () -> new SoundEvent(new ResourceLocation(References.ID + ":windmill")));
+    
+    
+    public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEBREAKING = SOUNDS.register
+    	("ceramicplatebreaking", () -> new SoundEvent(new ResourceLocation(References.ID + ":ceramicplatebreaking")));
 
 }
