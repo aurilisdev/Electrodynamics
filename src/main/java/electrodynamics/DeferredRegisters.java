@@ -40,6 +40,8 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.item.ItemCanister;
+import electrodynamics.common.item.ItemElectric;
+import electrodynamics.common.item.ItemElectric.ElectricItemProperties;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemRubberArmor;
@@ -91,6 +93,7 @@ import electrodynamics.common.tile.TileWireMillTriple;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TilePipe;
 import electrodynamics.common.tile.network.TileWire;
+import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -231,7 +234,9 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
+	    supplier(new ItemElectric((ElectricItemProperties) new ItemElectric.ElectricItemProperties().capacity(1000000)
+		    .extract(TransferPack.joulesVoltage(1000000, 120)).receive(TransferPack.joulesVoltage(1000000, 120)).group(References.CORETAB)
+		    .maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_LITHIUMBATTERY = ITEMS.register("lithiumbattery",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
