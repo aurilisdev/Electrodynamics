@@ -35,6 +35,7 @@ import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.ContainerLithiumBatteryBox;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
@@ -71,6 +72,7 @@ import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -234,11 +236,13 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
-	    supplier(new ItemElectric((ElectricItemProperties) new ItemElectric.ElectricItemProperties().capacity(1000000)
-		    .extract(TransferPack.joulesVoltage(1000000, 120)).receive(TransferPack.joulesVoltage(1000000, 120)).group(References.CORETAB)
-		    .maxStackSize(1))));
+	    supplier(new ItemElectric((ElectricItemProperties) new ItemElectric.ElectricItemProperties().capacity(1666666.66667)
+		    .extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120))
+		    .receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_LITHIUMBATTERY = ITEMS.register("lithiumbattery",
-	    supplier(new Item(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
+	    supplier(new ItemElectric((ElectricItemProperties) new ItemElectric.ElectricItemProperties().capacity(4 * 1666666.66667)
+		    .extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240))
+		    .receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter",
 	    supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
@@ -317,6 +321,9 @@ public class DeferredRegisters {
 
     public static final RegistryObject<TileEntityType<TileBatteryBox>> TILE_BATTERYBOX = TILES.register(SubtypeMachine.batterybox.tag(),
 	    () -> new TileEntityType<>(TileBatteryBox::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox)), null));
+    public static final RegistryObject<TileEntityType<TileLithiumBatteryBox>> TILE_LITHIUMBATTERYBOX = TILES
+	    .register(SubtypeMachine.lithiumbatterybox.tag(), () -> new TileEntityType<>(TileLithiumBatteryBox::new,
+		    Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lithiumbatterybox)), null));
     public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
 	    () -> new TileEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
@@ -389,6 +396,8 @@ public class DeferredRegisters {
 
     public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(),
 	    () -> new ContainerType<>(ContainerBatteryBox::new));
+    public static final RegistryObject<ContainerType<ContainerLithiumBatteryBox>> CONTAINER_LITHIUMBATTERYBOX = CONTAINERS
+	    .register(SubtypeMachine.lithiumbatterybox.tag(), () -> new ContainerType<>(ContainerLithiumBatteryBox::new));
     public static final RegistryObject<ContainerType<ContainerFermentationPlant>> CONTAINER_FERMENTATIONPLANT = CONTAINERS
 	    .register(SubtypeMachine.fermentationplant.tag(), () -> new ContainerType<>(ContainerFermentationPlant::new));
     public static final RegistryObject<ContainerType<ContainerMineralWasher>> CONTAINER_MINERALWASHER = CONTAINERS

@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
@@ -66,11 +67,11 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
 		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
 		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-		currentVoltageMultiplier *= upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2;
+		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
 	    }
 	}
 	electro.maxJoules(DEFAULT_MAX_JOULES * currentCapacityMultiplier);
-	electro.voltage(120 * currentVoltageMultiplier);
+	electro.voltage(120.0 * currentVoltageMultiplier);
 	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 	    electro.joules(electro.getMaxJoulesStored());
 	}
@@ -78,6 +79,8 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
 
+	// Power loss
+	electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);
     }
 
     protected void createPacket(CompoundNBT nbt) {

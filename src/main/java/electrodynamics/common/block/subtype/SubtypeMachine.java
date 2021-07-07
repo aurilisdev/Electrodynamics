@@ -16,6 +16,7 @@ import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -67,6 +68,8 @@ public enum SubtypeMachine implements ISubtype {
     mineralgrindertriple(true, TileMineralGrinderTriple.class, true),
     // split
     batterybox(true, TileBatteryBox.class, true),
+    // split
+    lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
     // split
     oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
     // split
