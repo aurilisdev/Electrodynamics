@@ -6,7 +6,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 
 public enum CompositeArmor implements ICustomArmor{
-	COMPOSITE_ARMOR("composite",new int[] { 4, 7, 9, 4 },SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,2.0f);
+	COMPOSITE_ARMOR("composite",new int[] { 2, 6, 8, 2 },SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,2.0f);
 
 	
 	private final String name;
@@ -51,10 +51,5 @@ public enum CompositeArmor implements ICustomArmor{
 	public float getKnockbackResistance() {
 		return 4;
 	}
-
-
-
-
-	
 
 }

@@ -1,6 +1,6 @@
 package electrodynamics.api.capability.compositearmor;
 
-public class DefaultCeramicPlateHolder implements ICeramicPlateHolder{
+public class CapabilityCeramicPlateHolderDefault implements ICapabilityCeramicPlateHolder{
 
 	private int CERAMIC_PLATES_HELD;
 	

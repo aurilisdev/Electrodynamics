@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
-import electrodynamics.api.capability.compositearmor.CeramicPlateHandler;
+import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlateHandler;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
@@ -69,9 +69,9 @@ public class Electrodynamics {
 	CapabilityCeramicPlate.register();
 	NetworkHandler.init();
 	
-	MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class,CeramicPlateHandler::attachOnItemStackCreation);
-	MinecraftForge.EVENT_BUS.addListener(CeramicPlateHandler::takeDamageWithArmor);
-	MinecraftForge.EVENT_BUS.addListener(CeramicPlateHandler::addPlateToArmor);
+	MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class,CapabilityCeramicPlateHandler::attachOnItemStackCreation);
+	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::takeDamageWithArmor);
+	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::addPlateToArmor);
     }
 
     @SubscribeEvent

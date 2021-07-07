@@ -4,29 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.player.armor.CompositeArmorItem;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 
-public class CeramicPlateHandler {
+public class CapabilityCeramicPlateHandler {
 
-	private static final float LETHAL_DAMAGE_AMOUNT = 15.0f;
+	private static final float LETHAL_DAMAGE_AMOUNT = 18.0f;
 	private static final float NO_DAMAGE_DEALT = 1.0f;
 	
 	public static void attachOnItemStackCreation(AttachCapabilitiesEvent<ItemStack> event) {
 		if(event.getObject().getItem() instanceof CompositeArmorItem) {
 			CompositeArmorItem item = (CompositeArmorItem)event.getObject().getItem();
 			if(item.getEquipmentSlot().equals(EquipmentSlotType.CHEST)) {
-				CeramicPlateHolderProvider provider = new CeramicPlateHolderProvider();
+				CapabilityCeramicPlateHolderProvider provider = new CapabilityCeramicPlateHolderProvider();
 				event.addCapability(new ResourceLocation(References.ID,CapabilityCeramicPlate.PLATES_KEY), provider);
 				event.addListener(provider::invalidate);
 			}
@@ -59,14 +61,22 @@ public class CeramicPlateHandler {
 			
 			ItemStack stack = armorPieces.get(2);
 			stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h ->{
-				event.getEntityLiving().replaceItemInInventory(13, new ItemStack(Items.DIAMOND));
 				if(event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getPlateCount() > 0) {
-			
+					
+					event.getEntityLiving().getEntityWorld().playSound(
+							(PlayerEntity) event.getEntityLiving(), event.getEntity().getPosition(),
+							SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundCategory.PLAYERS,
+							100f, 1f);
+					event.getEntityLiving().getEntityWorld().playSound(
+							event.getEntityLiving().chunkCoordX, 
+							event.getEntityLiving().chunkCoordY, 
+							event.getEntityLiving().chunkCoordZ, 
+							SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), 
+							SoundCategory.PLAYERS, 1f, 1f, false);
+					//event.getEntityLiving().playSound(SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), 1f, 1f);
 					event.setAmount((float) Math.sqrt(event.getAmount()));
-					
 					h.setPlateCount(h.getPlateCount() - 1);
-					
-					event.getEntityLiving().replaceItemInInventory(14, new ItemStack(Items.REDSTONE));
+
 				}
 			});
 		}
@@ -84,6 +94,16 @@ public class CeramicPlateHandler {
 			if(ItemStack.areItemsEqualIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.CHEST).get()))) {
 				chestplate.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
 					if(h.getPlateCount() < 2) {
+						event.getEntityLiving().getEntityWorld().playSound(
+								(PlayerEntity) event.getEntityLiving(), event.getEntity().getPosition(),
+								SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundCategory.PLAYERS,
+								100f, 1f);
+						event.getEntityLiving().getEntityWorld().playSound(
+								event.getEntityLiving().chunkCoordX, 
+								event.getEntityLiving().chunkCoordY, 
+								event.getEntityLiving().chunkCoordZ, 
+								SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), 
+								SoundCategory.PLAYERS, 1, 1, false);
 						h.setPlateCount(h.getPlateCount() + 1);
 						event.getItemStack().shrink(1);
 					}

@@ -1,6 +1,6 @@
 package electrodynamics.api.capability.compositearmor;
 
-public interface ICeramicPlateHolder {
+public interface ICapabilityCeramicPlateHolder {
 
 	void setPlateCount(int count);
 	

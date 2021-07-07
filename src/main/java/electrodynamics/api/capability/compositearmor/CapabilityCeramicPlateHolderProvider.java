@@ -6,10 +6,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class CeramicPlateHolderProvider implements ICapabilitySerializable<CompoundNBT>{
+public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializable<CompoundNBT>{
 
-	private final DefaultCeramicPlateHolder plateHolder = new DefaultCeramicPlateHolder();
-	private final LazyOptional<ICeramicPlateHolder> lazyOptional = LazyOptional.of(() -> plateHolder);
+	private final CapabilityCeramicPlateHolderDefault plateHolder = new CapabilityCeramicPlateHolderDefault();
+	private final LazyOptional<ICapabilityCeramicPlateHolder> lazyOptional = LazyOptional.of(() -> plateHolder);
 	
 	
 	public void invalidate() {
@@ -18,7 +18,12 @@ public class CeramicPlateHolderProvider implements ICapabilitySerializable<Compo
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		return lazyOptional.cast();
+		if(cap == CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY){
+			return lazyOptional.cast();
+		}else {
+			return LazyOptional.empty();
+		}
+		
 	}
 
 	@Override
@@ -36,5 +41,6 @@ public class CeramicPlateHolderProvider implements ICapabilitySerializable<Compo
 			CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY.readNBT(plateHolder, null, nbt);
 		}
 	}
+	
 
 }
