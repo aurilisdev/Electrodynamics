@@ -1,4 +1,4 @@
-package electrodynamics.common.item;
+package electrodynamics.prefab.item;
 
 import java.util.List;
 
@@ -72,10 +72,10 @@ public class ItemElectric extends Item {
 	super.addInformation(stack, worldIn, tooltip, flagIn);
 	tooltip.add(new TranslationTextComponent("tooltip.item.electric.info").mergeStyle(TextFormatting.GRAY)
 		.append(new StringTextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
-	tooltip.add(new TranslationTextComponent("tooltip.item.electric.inputvoltage",
-		ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE)).mergeStyle(TextFormatting.RED));
-	tooltip.add(new TranslationTextComponent("tooltip.item.electric.outputvoltage",
-		ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE)).mergeStyle(TextFormatting.RED));
+	tooltip.add(new TranslationTextComponent("tooltip.item.electric.voltage",
+		ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
+			+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
+				.mergeStyle(TextFormatting.RED));
     }
 
     public TransferPack receivePower(ItemStack stack, TransferPack amount, boolean debug) {
