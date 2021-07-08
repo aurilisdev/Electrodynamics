@@ -1,4 +1,4 @@
-package electrodynamics.common.player.armor;
+package electrodynamics.common.player.armor.types.composite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,10 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -21,6 +24,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class CompositeArmorItem extends ArmorItem{
+	
+	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/armor/armorcomposite.png";
+	
 	
 	public CompositeArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot) {
 		super(materialIn, slot, new Item.Properties().maxStackSize(1).group(References.CORETAB).isImmuneToFire().setNoRepair());
@@ -62,6 +68,41 @@ public class CompositeArmorItem extends ArmorItem{
 		) {
 			player.addPotionEffect(new EffectInstance(Effects.SLOWNESS,20));
 		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+		if(itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {	
+			CompositeArmorModel model = new CompositeArmorModel(1.0F);
+			
+			model.bipedHead.showModel = armorSlot.equals(EquipmentSlotType.HEAD);
+			
+			model.bipedBody.showModel = armorSlot.equals(EquipmentSlotType.CHEST);
+			model.bipedRightArm.showModel = armorSlot.equals(EquipmentSlotType.CHEST);
+			model.bipedLeftArm.showModel = armorSlot.equals(EquipmentSlotType.CHEST);
+            
+            model.bipedRightLeg.showModel = armorSlot.equals(EquipmentSlotType.LEGS);
+            model.bipedLeftLeg.showModel = armorSlot.equals(EquipmentSlotType.LEGS);
+            
+            model.bipedRightLeg.showModel = armorSlot.equals(EquipmentSlotType.FEET);
+            model.bipedLeftLeg.showModel = armorSlot.equals(EquipmentSlotType.FEET);
+           
+            model.isChild = _default.isChild;
+            model.isSitting = _default.isSitting;
+            model.isSneak = _default.isSneak;
+            model.rightArmPose = _default.rightArmPose;
+            model.leftArmPose = _default.leftArmPose;
+           
+            return (A) model;
+		}
+		return null;
+	}
+	
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+		return ARMOR_TEXTURE_LOCATION;
 	}
 
 }

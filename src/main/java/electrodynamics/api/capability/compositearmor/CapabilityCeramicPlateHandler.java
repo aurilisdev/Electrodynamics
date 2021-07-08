@@ -7,7 +7,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
-import electrodynamics.common.player.armor.CompositeArmorItem;
+import electrodynamics.common.player.armor.types.composite.CompositeArmorItem;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -59,14 +59,15 @@ public class CapabilityCeramicPlateHandler {
 				}
 			}
 			
+			event.getEntityLiving().getEntityWorld().playSound(
+					(PlayerEntity) event.getEntityLiving(), event.getEntity().getPosition(),
+					SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundCategory.PLAYERS,
+					1f, 1f);
 			ItemStack stack = armorPieces.get(2);
 			stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h ->{
 				if(event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getPlateCount() > 0) {
 					
-					event.getEntityLiving().getEntityWorld().playSound(
-							(PlayerEntity) event.getEntityLiving(), event.getEntity().getPosition(),
-							SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundCategory.PLAYERS,
-							100f, 1f);
+					
 					event.getEntityLiving().getEntityWorld().playSound(
 							event.getEntityLiving().chunkCoordX, 
 							event.getEntityLiving().chunkCoordY, 
