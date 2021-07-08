@@ -102,8 +102,10 @@ public enum SubtypeMachine implements ISubtype {
     circuitbreaker(true, TileCircuitBreaker.class),
     // split
     multimeterblock(true, TileMultimeterBlock.class),
-
-    energizedalloyer(true, TileEnergizedAlloyer.class), energizedalloyerrunning(false, TileEnergizedAlloyer.class);
+    // split
+    energizedalloyer(true, TileEnergizedAlloyer.class),
+    // split
+    energizedalloyerrunning(false, TileEnergizedAlloyer.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

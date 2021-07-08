@@ -37,19 +37,19 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 	TileLithiumBatteryBox box = container.getHostFromIntArray();
 	if (box != null) {
 	    list.add(new TranslationTextComponent("gui.lithiumbatterybox.current",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
-			    TileLithiumBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
-			    ElectricUnit.AMPERE)).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+		    new StringTextComponent(ChatFormatter
+			    .getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE))
+				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.lithiumbatterybox.transfer",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
-			    TileLithiumBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
+		    new StringTextComponent(
+			    ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
 				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.lithiumbatterybox.voltage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.lithiumbatterybox.stored",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ChatFormatter
-			    .getElectricDisplayShort(TileLithiumBatteryBox.DEFAULT_MAX_JOULES * box.currentCapacityMultiplier, ElectricUnit.JOULES))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
+			    + ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
 				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;
@@ -67,23 +67,21 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 	TileLithiumBatteryBox box = container.getHostFromIntArray();
 	if (box != null) {
 	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.lithiumbatterybox.current",
-			    ChatFormatter.getElectricDisplayShort(
-				    TileLithiumBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
-				    ElectricUnit.AMPERE)),
+		    new TranslationTextComponent("gui.lithiumbatterybox.current", ChatFormatter.getElectricDisplayShort(
+			    box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE)),
 		    playerInventoryTitleX, playerInventoryTitleY - 55f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.lithiumbatterybox.transfer",
-			    ChatFormatter.getElectricDisplayShort(
-				    TileLithiumBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
+			    ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
 		    playerInventoryTitleX, playerInventoryTitleY - 42f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.lithiumbatterybox.voltage",
 			    ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)),
 		    playerInventoryTitleX, playerInventoryTitleY - 29f, 4210752);
-	    font.func_243248_b(matrixStack, new TranslationTextComponent("gui.lithiumbatterybox.stored",
-		    ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ChatFormatter
-			    .getElectricDisplayShort(TileLithiumBatteryBox.DEFAULT_MAX_JOULES * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
+	    font.func_243248_b(matrixStack,
+		    new TranslationTextComponent("gui.lithiumbatterybox.stored",
+			    ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
+				    + ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
 		    playerInventoryTitleX, playerInventoryTitleY - 16f, 4210752);
 	}
     }

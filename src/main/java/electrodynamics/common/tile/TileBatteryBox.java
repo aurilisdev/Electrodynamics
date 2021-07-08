@@ -18,6 +18,7 @@ import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -25,17 +26,25 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage {
-    public static final double DEFAULT_OUTPUT_JOULES_PER_TICK = 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0;
-    public static final double DEFAULT_MAX_JOULES = 10000000;
-    public double clientMaxJoulesStored = DEFAULT_MAX_JOULES;
+    public final double powerOutput;
+    public final double maxJoules;
+    public double clientMaxJoulesStored;
     public double currentCapacityMultiplier = 1;
     public double clientVoltage = 120.0;
     public double clientJoules = 0;
-    protected double receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
-    private CachedTileOutput output;
+    protected double receiveLimitLeft;
+    protected CachedTileOutput output;
 
     public TileBatteryBox() {
-	super(DeferredRegisters.TILE_BATTERYBOX.get());
+	this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0, 10000000);
+    }
+
+    public TileBatteryBox(TileEntityType<?> type, double output, double max) {
+	super(type);
+	this.powerOutput = output;
+	this.maxJoules = max;
+	clientMaxJoulesStored = max;
+	receiveLimitLeft = output * currentCapacityMultiplier;
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
@@ -43,7 +52,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	addComponent(new ComponentInventory(this).size(3));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentElectrodynamic(this).maxJoules(DEFAULT_MAX_JOULES).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
+	addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -55,10 +64,10 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (tickable.getTicks() % 40 == 0) {
 	    output.update();
 	}
-	receiveLimitLeft = DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier;
+	receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 	if (electro.getJoulesStored() > 0 && output.valid()) {
 	    electro.joules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(
-		    Math.min(electro.getJoulesStored(), DEFAULT_OUTPUT_JOULES_PER_TICK * currentCapacityMultiplier), electro.getVoltage()), false)
+		    Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
 		    .getJoules());
 	}
 	currentCapacityMultiplier = 1;
@@ -70,7 +79,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
 	    }
 	}
-	electro.maxJoules(DEFAULT_MAX_JOULES * currentCapacityMultiplier);
+	electro.maxJoules(maxJoules * currentCapacityMultiplier);
 	electro.voltage(120.0 * currentVoltageMultiplier);
 	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 	    electro.joules(electro.getMaxJoulesStored());
