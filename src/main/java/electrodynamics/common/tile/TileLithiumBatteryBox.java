@@ -2,9 +2,11 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.common.inventory.container.ContainerLithiumBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -19,6 +21,8 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 
     public TileLithiumBatteryBox() {
 	super(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * CapabilityElectrodynamic.DEFAULT_VOLTAGE) / 20.0, 40000000);
+	forceComponent(new ComponentContainerProvider("container.lithiumbatterybox")
+		.createMenu((id, player) -> new ContainerLithiumBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     @Override
