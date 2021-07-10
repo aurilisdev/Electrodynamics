@@ -1,14 +1,4 @@
 {
-	"item.electrodynamics.compositearmorhelmet":"Composite Helmet",
-	"item.electrodynamics.compositearmorchestplate":"Composite Body Armor",
-	"item.electrodynamics.compositearmorleggings":"Composite Leggings",
-	"item.electrodynamics.compositearmorboots":"Composite Boots",
-	
-	"item.electrodynamics.compositeplating":"Composite Plating",
-	"item.electrodynamics.compositeplatingraw":"Raw Composite Plating",
-	
-	
-	
 	"item.electrodynamics.ingotaluminum": "Aluminum Ingot",
 	"item.electrodynamics.ingotchromium": "Chromium Ingot",
 	"item.electrodynamics.ingotstainlesssteel": "Stainless Steel Ingot",
@@ -82,6 +72,8 @@
 	"item.electrodynamics.platesteel": "Steel Plate",
 	"item.electrodynamics.platebronze": "Bronze Plate",
 	"item.electrodynamics.platelithium": "Lithium Plate",
+	"item.electrodynamics.compositeplating":"Composite Plating",
+	"item.electrodynamics.compositeplatingraw":"Raw Composite Plating",
 	"item.electrodynamics.circuitbasic": "Basic Circuit",
 	"item.electrodynamics.circuitadvanced": "Advanced Circuit",
 	"item.electrodynamics.circuitelite": "Elite Circuit",
@@ -116,6 +108,10 @@
 	"item.electrodynamics.ceramicfuse": "Ceramic Fuse",
 	"item.electrodynamics.rubberboots": "Rubber Boots",
 	"block.electrodynamics.glassclear": "Clear Glass",
+	"item.electrodynamics.compositearmorhelmet":"Composite Helmet",
+	"item.electrodynamics.compositearmorchestplate":"Composite Body Armor",
+	"item.electrodynamics.compositearmorleggings":"Composite Leggings",
+	"item.electrodynamics.compositearmorboots":"Composite Boots",
 	"block.electrodynamics.resourceblockcopper": "Block of Copper",
 	"block.electrodynamics.resourceblocktin": "Block of Tin",
 	"block.electrodynamics.resourceblocklead": "Block of Lead",
