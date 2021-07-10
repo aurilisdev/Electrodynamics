@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 public class CompositeArmorItem extends ArmorItem{
 	
-	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/armor/armorcomposite.png";
+	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 	
 	
 	public CompositeArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot) {
@@ -74,35 +74,40 @@ public class CompositeArmorItem extends ArmorItem{
 	@SuppressWarnings("unchecked")
 	@Override
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+		
+		
 		if(itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {	
-			CompositeArmorModel model = new CompositeArmorModel(1.0F);
 			
-			model.bipedHead.showModel = armorSlot.equals(EquipmentSlotType.HEAD);
+			CompositeArmorModel model = (armorSlot == EquipmentSlotType.LEGS ? new CompositeArmorModel(0.5f) : new CompositeArmorModel(1f));
+
+			model.bipedHeadwear.showModel = false;
+			model.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
 			
-			model.bipedBody.showModel = armorSlot.equals(EquipmentSlotType.CHEST);
-			model.bipedRightArm.showModel = armorSlot.equals(EquipmentSlotType.CHEST);
-			model.bipedLeftArm.showModel = armorSlot.equals(EquipmentSlotType.CHEST);
-            
-            model.bipedRightLeg.showModel = armorSlot.equals(EquipmentSlotType.LEGS);
-            model.bipedLeftLeg.showModel = armorSlot.equals(EquipmentSlotType.LEGS);
-            
-            model.bipedRightLeg.showModel = armorSlot.equals(EquipmentSlotType.FEET);
-            model.bipedLeftLeg.showModel = armorSlot.equals(EquipmentSlotType.FEET);
-           
-            model.isChild = _default.isChild;
-            model.isSitting = _default.isSitting;
-            model.isSneak = _default.isSneak;
-            model.rightArmPose = _default.rightArmPose;
-            model.leftArmPose = _default.leftArmPose;
-           
-            return (A) model;
+			model.bipedBody.showModel = armorSlot == EquipmentSlotType.CHEST;
+			model.bipedLeftArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+			model.bipedRightArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+			
+			model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.LEGS;
+			model.bipedRightLeg.showModel = armorSlot == EquipmentSlotType.HEAD;
+			
+			model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+			model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+			
+			
+			model.isChild = _default.isChild;
+			model.isSitting = _default.isSitting;
+			model.isSneak = _default.isSneak;
+			
+			return (A) model;
+			
 		}
 		return null;
 	}
+	
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
 	}
-
+	
 }

@@ -28,4 +28,7 @@ public class SoundRegister {
     public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEBREAKING = SOUNDS.register
     	("ceramicplatebreaking", () -> new SoundEvent(new ResourceLocation(References.ID + ":ceramicplatebreaking")));
 
+    public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEADDED = SOUNDS.register
+        	("ceramicplateadded", () -> new SoundEvent(new ResourceLocation(References.ID + ":ceramicplateadded")));
+    
 }

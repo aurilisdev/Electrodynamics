@@ -1,9 +1,5 @@
 package electrodynamics.common.player.armor.types.composite;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
@@ -16,136 +12,100 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class CompositeArmorModel extends BipedModel<LivingEntity> {
-    
-	//main render
-	public ModelRenderer HELMET;
-	public ModelRenderer TORSO;
-	public ModelRenderer RIGHT_ARM;
-    public ModelRenderer LEFT_ARM;
-    public ModelRenderer RIGHT_LEG;
-    public ModelRenderer LEFT_LEG;
-    public ModelRenderer RIGHT_BOOT;
-    public ModelRenderer LEFT_BOOT;
-    
-    //temp component
-    public ModelRenderer TorsoPiece_1;
-
+	
     public CompositeArmorModel(float modelSize) {
-    	super(modelSize);
     	
-        this.textureWidth = 256;
-        this.textureHeight = 256;
-        
-        /*HELMET*/
-        
-        HELMET = new ModelRenderer(this, 0, 8);
-        HELMET.setRotationPoint(0.0F, 0.0F, 0.0F);
-        HELMET.setRotationPoint(0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(20, 1).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 1.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(178, 0).addBox(-5.0F, -8.0F, -5.0F, 1.0F, 8.0F, 10.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(200, 0).addBox(4.0F, -8.0F, -5.0F, 1.0F, 8.0F, 10.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(0, 5).addBox(-4.0F, -8.0F, 4.0F, 8.0F, 7.9F, 1.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(44, 1).addBox(-4.0F, -8.0F, -5.0F, 8.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(44, 5).addBox(-4.0F, -1.0F, -5.0F, 8.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(102, 5).addBox(-5.0F, -6.0F, -6.0F, 10.0F, 6.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(56, 3).addBox(-6.0F, -6.0F, -5.0F, 1.0F, 5.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        HELMET.setTextureOffset(134, 3).addBox(5.0F, -6.0F, -5.0F, 1.0F, 5.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        
-        /*TORSO*/
-        
-        //front
-        TORSO = new ModelRenderer(this, 0, 0);
-        TORSO.setRotationPoint(0.0F, 0.0F, 0.0F);
-        TORSO.addBox(-1.0F, 9.0F, -4.0F, 2.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        
-        //back
-        TorsoPiece_1 = new ModelRenderer(this, 6, 0);
-        TorsoPiece_1.setRotationPoint(0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.addBox(-5.0F, 0.0F, -3.0F, 10.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(22, 0).addBox(-5.0F, 1.5F, -4.0F, 10.0F, 7.5F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(44, 0).addBox(-5.0F, 0.5F, -6.0F, 10.0F, 1.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(70, 0).addBox(-3.0F, 1.0F, -5.0F, 6.0F, 6.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(84, 0).addBox(-1.0F, 1.5F, -6.0F, 2.0F, 5.5F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(90, 0).addBox(-1.0F, 7.0F, -5.0F, 2.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(96, 0).addBox(-1.0F, 9.0F, -4.0F, 2.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(102, 0).addBox(-5.0F, 0.0F, 2.0F, 10.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(124, 0).addBox(-5.0F, 0.5F, 2.0F, 10.0F, 1.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(150, 0).addBox(-5.0F, -3.0F, 5.0F, 10.0F, 4.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(172, 0).addBox(-5.0F, 1.5F, 3.0F, 10.0F, 1.5F, 1.0F, 0.0F, 0.0F, 0.0F);
-        TorsoPiece_1.setTextureOffset(194, 0).addBox(-2.0F, 4.0F, 3.0F, 4.0F, 6.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        
-        TORSO.addChild(TorsoPiece_1);
-        
-        /*RIGHT ARM*/
-        
-        RIGHT_ARM = new ModelRenderer(this, 50, 0);
-        RIGHT_ARM.setRotationPoint(5.0F, 2.0F, 0.0F);
-        RIGHT_ARM.setTextureOffset(192, 0).addBox(0.0F, -2.0F, -3.0F, 3.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_ARM.setTextureOffset(140, 3).addBox(0.0F, -2.0F, 2.0F, 3.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_ARM.setTextureOffset(42, 3).addBox(3.0F, -2.0F, -2.0F, 1.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_ARM.setTextureOffset(0, 4).addBox(-1.0F, -3.0F, -2.0F, 4.0F, 1.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        
-        /*LEFT ARM*/
-        
-        LEFT_ARM = new ModelRenderer(this, 64, 0);
-        LEFT_ARM.setRotationPoint(-5.0F, 2.0F, 0.0F);
-        LEFT_ARM.setTextureOffset(148, 0).addBox(-3.0F, -2.0F, -3.0F, 3.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_ARM.setTextureOffset(158, 0).addBox(-3.0F, -2.0F, 2.0F, 3.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_ARM.setTextureOffset(168, 0).addBox(-4.0F, -2.0F, -2.0F, 1.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_ARM.setTextureOffset(110, 3).addBox(-3.0F, -3.0F, -2.0F, 4.0F, 1.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-                       
-        /*RIGHT LEG*/
-        
-        RIGHT_LEG = new ModelRenderer(this, 64, 4);
-        RIGHT_LEG.setRotationPoint(2.0F, 12.0F, 0.0F);
-        RIGHT_LEG.setTextureOffset(2, 0).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_LEG.setTextureOffset(66, 0).addBox(-2.0F, 0.0F, 2.0F, 4.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_LEG.setTextureOffset(76, 0).addBox(-1.5F, 2.0F, -4.0F, 3.0F, 4.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_LEG.setTextureOffset(84, 0).addBox(2.0F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        
-        /*LEFT LEG*/
-        
-        LEFT_LEG = new ModelRenderer(this, 64, 5);
-        LEFT_LEG.setRotationPoint(-2.0F, 12.0F, 0.0F);
-        LEFT_LEG.setTextureOffset(94, 0).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_LEG.setTextureOffset(12, 2).addBox(-2.0F, 0.0F, 2.0F, 4.0F, 12.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_LEG.setTextureOffset(104, 0).addBox(-3.0F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_LEG.setTextureOffset(114, 3).addBox(-1.5F, 2.0F, -4.0F, 3.0F, 4.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        
-        /*RIGHT BOOT*/
-        
-        RIGHT_BOOT = new ModelRenderer(this, 64, 13);
-        RIGHT_BOOT.setRotationPoint(2.0F, 21.0F, 0.0F);
-        RIGHT_BOOT.setTextureOffset(178, 0).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        RIGHT_BOOT.setTextureOffset(53, 0).addBox(2.0F, 0.0F, -4.0F, 1.0F, 3.0F, 7.0F, 0.0F, 0.0F, 0.0F);
-        
-        
-        /*LEFT BOOT*/
-        
-        LEFT_BOOT = new ModelRenderer(this, 64, 13);
-        LEFT_BOOT.setRotationPoint(-2.0F, 21.0F, 0.0F);
-        LEFT_BOOT.setTextureOffset(148, 0).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        LEFT_BOOT.setTextureOffset(15, 0).addBox(-3.0F, 0.0F, -4.0F, 1.0F, 3.0F, 7.0F, 0.0F, 0.0F, 0.0F);
-      
-        
-        
-        
-        //Connect Pieces to bodyparts
+    	super(modelSize,0,128,128);
+    	
+		ModelRenderer HEAD = new ModelRenderer(this);
+		HEAD.setRotationPoint(0.0F, 0.0F, 0.0F);
+		bipedHead.addChild(HEAD);
+		HEAD.setTextureOffset(42, 16).addBox(-5.0F, -6.0F, -4.0F, 1.0F, 5.0F, 8.0F, 0.0F,false);
+		HEAD.setTextureOffset(24, 16).addBox(4.0F, -6.0F, -4.0F, 1.0F, 5.0F, 8.0F, 0.0F,false);
+		HEAD.setTextureOffset(16, 99).addBox(-4.0F, -2.0F, -5.0F, 8.0F, 1.0F, 1.0F, 0.0F,false);
+		HEAD.setTextureOffset(32, 112).addBox(-3.0F, -6.0F, -5.0F, 6.0F, 1.0F, 1.0F, 0.0F,false);
+		HEAD.setTextureOffset(42, 120).addBox(-4.0F, -6.0F, -5.0F, 1.0F, 4.0F, 1.0F, 0.0F,false);
+		HEAD.setTextureOffset(38, 120).addBox(3.0F, -6.0F, -5.0F, 1.0F, 4.0F, 1.0F, 0.0F,false);
+		HEAD.setTextureOffset(0, 57).addBox(-4.0F, -6.0F, 4.0F, 8.0F, 5.0F, 1.0F, 0.0F,false);
+		HEAD.setTextureOffset(0, 16).addBox(-3.0F, -9.0F, -3.0F, 6.0F, 1.0F, 6.0F, 0.0F,false);
+		HEAD.setTextureOffset(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 0.0F, 8.0F, 0.0F,false);
+		HEAD.setTextureOffset(72, 0).addBox(4.0F, -8.0F, -4.0F, 0.0F, 8.0F, 8.0F, 0.0F,false);
+		HEAD.setTextureOffset(32, 41).addBox(-4.0F, -8.0F, 4.0F, 8.0F, 8.0F, 0.0F, 0.0F,false);
+		HEAD.setTextureOffset(56, 0).addBox(-4.0F, -8.0F, -4.0F, 0.0F, 8.0F, 8.0F, 0.0F,false);
+		HEAD.setTextureOffset(32, 111).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 1.0F, 0.0F, 0.0F,false);
+		HEAD.setTextureOffset(34, 99).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 2.0F, 0.0F, 0.0F,false);
 
-        bipedHead.addChild(HELMET);
-        bipedRightArm.addChild(RIGHT_ARM);
-        bipedLeftArm.addChild(LEFT_ARM);
-        bipedRightLeg.addChild(RIGHT_LEG);
-        bipedLeftLeg.addChild(LEFT_LEG);
-        bipedRightLeg.addChild(RIGHT_BOOT);
-        bipedLeftLeg.addChild(LEFT_BOOT);
-    }
+		ModelRenderer CHEST = new ModelRenderer(this);
+		CHEST.setRotationPoint(0.0F, 24.0F, 0.0F);
+		bipedBody.addChild(CHEST);
+		CHEST.setTextureOffset(32, 0).addBox(-4.0F, -24.0F, -2.0F, 8.0F, 12.0F, 4.0F, 0.0F,false);
+		CHEST.setTextureOffset(0, 29).addBox(-4.0F, -23.5F, -3.0F, 8.0F, 11.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(60, 16).addBox(-4.0F, -23.5F, 2.0F, 8.0F, 11.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(16, 101).addBox(-4.0F, -23.5F, -4.0F, 8.0F, 1.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(8, 86).addBox(-3.0F, -22.5F, -4.0F, 6.0F, 6.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(48, 111).addBox(-1.0F, -22.5F, -5.0F, 2.0F, 6.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(32, 120).addBox(-1.0F, -16.5F, -4.0F, 2.0F, 3.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(34, 57).addBox(-4.0F, -23.5F, 3.0F, 8.0F, 3.0F, 1.0F, 0.0F,false);
+		CHEST.setTextureOffset(16, 103).addBox(-2.0F, -20.0F, 3.0F, 4.0F, 5.0F, 2.0F, 0.0F,false);
+		CHEST.setTextureOffset(34, 29).addBox(-4.0F, -24.0F, -2.0F, 8.0F, 12.0F, 0.0F, 0.0F,false);
+		CHEST.setTextureOffset(26, 57).addBox(-4.0F, -24.0F, -2.0F, 0.0F, 12.0F, 4.0F, 0.0F,false);
+		CHEST.setTextureOffset(18, 57).addBox(4.0F, -24.0F, -2.0F, 0.0F, 12.0F, 4.0F, 0.0F,false);
+		CHEST.setTextureOffset(18, 29).addBox(-4.0F, -24.0F, 2.0F, 8.0F, 12.0F, 0.0F, 0.0F,false);
 
-    @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) { 
-        ImmutableList.of(this.HELMET, this.TORSO, this.RIGHT_ARM, this.LEFT_ARM, this.RIGHT_LEG, this.LEFT_LEG, this.RIGHT_BOOT, this.LEFT_BOOT).forEach((modelRenderer) -> { 
-            modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        });
+		ModelRenderer RIGHT_ARM = new ModelRenderer(this);
+		RIGHT_ARM.setRotationPoint(-5.0F, 2.0F, 0.0F);
+		bipedRightArm.addChild(RIGHT_ARM);
+		RIGHT_ARM.setTextureOffset(24, 41).addBox(-3.0F, -2.0F, -2.0F, 0.0F, 12.0F, 4.0F, 0.0F,false);
+		RIGHT_ARM.setTextureOffset(16, 41).addBox(1.0F, -2.0F, -2.0F, 0.0F, 12.0F, 4.0F, 0.0F,false);
+		RIGHT_ARM.setTextureOffset(8, 99).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 0.0F, 0.0F,false);
+		RIGHT_ARM.setTextureOffset(0, 99).addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 0.0F, 0.0F,false);
+		RIGHT_ARM.setTextureOffset(40, 86).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 0.0F, 4.0F, 0.0F,false);
+
+		ModelRenderer LEFTARM = new ModelRenderer(this);
+		LEFTARM.setRotationPoint(5.0F, 2.0F, 0.0F);
+		bipedLeftArm.addChild(LEFTARM);
+		LEFTARM.setTextureOffset(8, 41).addBox(-1.0F, -2.0F, -2.0F, 0.0F, 12.0F, 4.0F, 0.0F,false);
+		LEFTARM.setTextureOffset(0, 41).addBox(3.0F, -2.0F, -2.0F, 0.0F, 12.0F, 4.0F, 0.0F,false);
+		LEFTARM.setTextureOffset(32, 86).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 0.0F, 0.0F,false);
+		LEFTARM.setTextureOffset(24, 86).addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 0.0F, 0.0F,false);
+		LEFTARM.setTextureOffset(8, 93).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 0.0F, 4.0F, 0.0F,false);
+
+		ModelRenderer RIGHTLEG = new ModelRenderer(this);
+		RIGHTLEG.setRotationPoint(-1.9F, 12.0F, 0.0F);
+		bipedRightLeg.addChild(RIGHTLEG);
+		RIGHTLEG.setTextureOffset(24, 111).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 9.0F, 0.0F, 0.0F,false);
+		RIGHTLEG.setTextureOffset(16, 111).addBox(-2.0F, 0.0F, 2.0F, 4.0F, 9.0F, 0.0F, 0.0F,false);
+		RIGHTLEG.setTextureOffset(0, 86).addBox(-2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, 0.0F,false);
+		RIGHTLEG.setTextureOffset(52, 73).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, 0.0F,false);
+		RIGHTLEG.setTextureOffset(8, 120).addBox(-1.6F, 3.0F, -3.0F, 3.0F, 3.0F, 1.0F, 0.0F,false);
+
+		ModelRenderer LEFTLEG = new ModelRenderer(this);
+		LEFTLEG.setRotationPoint(1.9F, 12.0F, 0.0F);
+		bipedLeftLeg.addChild(LEFTLEG);
+		LEFTLEG.setTextureOffset(8, 111).addBox(-1.8F, 0.0F, -2.0F, 4.0F, 9.0F, 0.0F, 0.0F,false);
+		LEFTLEG.setTextureOffset(0, 111).addBox(-1.8F, 0.0F, 2.0F, 4.0F, 9.0F, 0.0F, 0.0F,false);
+		LEFTLEG.setTextureOffset(44, 73).addBox(-1.8F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, 0.0F,false);
+		LEFTLEG.setTextureOffset(36, 73).addBox(2.2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, 0.0F,false);
+		LEFTLEG.setTextureOffset(0, 120).addBox(-1.4F, 3.0F, -3.0F, 3.0F, 3.0F, 1.0F, 0.0F,false);
+
+		ModelRenderer RIGHTSHOE = new ModelRenderer(this);
+		RIGHTSHOE.setRotationPoint(5.9F, 17.0F, 0.0F);
+		bipedRightLeg.addChild(RIGHTSHOE);
+		RIGHTSHOE.setTextureOffset(0, 73).addBox(-1.8F, 4.0F, -4.0F, 0.0F, 3.0F, 6.0F, 0.0F,false);
+		RIGHTSHOE.setTextureOffset(34, 61).addBox(-5.8F, 4.0F, -4.0F, 0.0F, 3.0F, 6.0F, 0.0F,false);
+		RIGHTSHOE.setTextureOffset(46, 120).addBox(-5.8F, 4.0F, -2.0F, 4.0F, 3.0F, -2.0F, 0.0F,false);
+		RIGHTSHOE.setTextureOffset(16, 120).addBox(-5.8F, 4.0F, 2.0F, 4.0F, 3.0F, 0.0F, 0.0F,false);
+		RIGHTSHOE.setTextureOffset(50, 29).addBox(-5.8F, 7.0F, -4.0F, 4.0F, 0.0F, 6.0F, 0.0F,false);
+
+		ModelRenderer LEFTSHOE = new ModelRenderer(this);
+		LEFTSHOE.setRotationPoint(-1.9F, 17.0F, 0.0F);
+		bipedLeftLeg.addChild(LEFTSHOE);
+		LEFTSHOE.setTextureOffset(24, 73).addBox(2.0F, 4.0F, -4.0F, 0.0F, 3.0F, 6.0F, 0.0F,false);
+		LEFTSHOE.setTextureOffset(12, 73).addBox(-2.0F, 4.0F, -4.0F, 0.0F, 3.0F, 6.0F, 0.0F,false);
+		LEFTSHOE.setTextureOffset(24, 120).addBox(-2.0F, 4.0F, 2.0F, 4.0F, 3.0F, 0.0F, 0.0F,false);
+		LEFTSHOE.setTextureOffset(46, 121).addBox(-2.0F, 4.0F, -2.0F, 4.0F, 3.0F, -2.0F, 0.0F,false);
+		LEFTSHOE.setTextureOffset(50, 35).addBox(-2.0F, 7.0F, -4.0F, 4.0F, 0.0F, 6.0F, 0.0F,false);
+        
     }
 
     /**
@@ -156,4 +116,5 @@ public class CompositeArmorModel extends BipedModel<LivingEntity> {
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
+
 }
