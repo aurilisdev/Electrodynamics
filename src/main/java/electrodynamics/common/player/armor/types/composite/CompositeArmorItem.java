@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 public class CompositeArmorItem extends ArmorItem{
 	
-	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
+	//private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 	
 	
 	public CompositeArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot) {
@@ -70,6 +70,7 @@ public class CompositeArmorItem extends ArmorItem{
 		}
 	}
 	
+	/*
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -109,5 +110,5 @@ public class CompositeArmorItem extends ArmorItem{
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
 	}
-	
+	*/
 }
