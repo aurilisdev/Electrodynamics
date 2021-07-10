@@ -22,17 +22,17 @@ public class FluidPolyethylene extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-    	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.polyethylene);
+	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.polyethylene);
     }
 
     @Override
     protected boolean canDisplace(FluidState fluidState, IBlockReader blockReader, BlockPos pos, Fluid fluid, Direction direction) {
-    	return false;
+	return false;
     }
 
     @Override
     protected Vector3d getFlow(IBlockReader blockReader, BlockPos pos, FluidState fluidState) {
-    	return Vector3d.ZERO;
+	return Vector3d.ZERO;
     }
 
     @Override
@@ -42,44 +42,44 @@ public class FluidPolyethylene extends Fluid {
 
     @Override
     protected float getExplosionResistance() {
-    	return 0;
+	return 0;
     }
 
     @Override
     public float getActualHeight(FluidState p_215662_1_, IBlockReader p_215662_2_, BlockPos p_215662_3_) {
-    	return 0;
+	return 0;
     }
 
     @Override
     public float getHeight(FluidState p_223407_1_) {
-    	return 0;
+	return 0;
     }
 
     @Override
     protected BlockState getBlockState(FluidState state) {
-    	return Blocks.AIR.getDefaultState();
+	return Blocks.AIR.getDefaultState();
     }
 
     @Override
     public boolean isSource(FluidState state) {
-    	return false;
+	return false;
     }
 
     @Override
     public int getLevel(FluidState state) {
-    	return 0;
+	return 0;
     }
 
     @Override
     protected FluidAttributes createAttributes() {
-		return FluidAttributes
-			.builder(new ResourceLocation(References.ID + ":fluid/polyethylene"), new ResourceLocation(References.ID + ":fluid/polyethylene"))
-			.translationKey("fluid.electrodynamics.polyethylene").color(-376664948).build(this);
+	return FluidAttributes
+		.builder(new ResourceLocation(References.ID + ":fluid/polyethylene"), new ResourceLocation(References.ID + ":fluid/polyethylene"))
+		.translationKey("fluid.electrodynamics.polyethylene").color(-376664948).build(this);
     }
 
     @Override
     public VoxelShape func_215664_b(FluidState p_215664_1_, IBlockReader p_215664_2_, BlockPos p_215664_3_) {
-    	return VoxelShapes.fullCube();
+	return VoxelShapes.fullCube();
     }
 
 }

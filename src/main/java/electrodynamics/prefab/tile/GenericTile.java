@@ -75,6 +75,13 @@ public class GenericTile extends TileEntity implements INameable {
 	return this;
     }
 
+    @Deprecated
+    public GenericTile forceComponent(Component component) {
+	component.holder(this);
+	components[component.getType().ordinal()] = component;
+	return this;
+    }
+
     @Override
     public void read(BlockState state, CompoundNBT compound) {
 	super.read(state, compound);

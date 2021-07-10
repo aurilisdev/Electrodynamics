@@ -16,6 +16,7 @@ import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -68,6 +69,8 @@ public enum SubtypeMachine implements ISubtype {
     // split
     batterybox(true, TileBatteryBox.class, true),
     // split
+    lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
+    // split
     oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
     // split
     downgradetransformer(true, TileTransformer.class, false, VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1)),
@@ -99,8 +102,10 @@ public enum SubtypeMachine implements ISubtype {
     circuitbreaker(true, TileCircuitBreaker.class),
     // split
     multimeterblock(true, TileMultimeterBlock.class),
-
-    energizedalloyer(true, TileEnergizedAlloyer.class), energizedalloyerrunning(false, TileEnergizedAlloyer.class);
+    // split
+    energizedalloyer(true, TileEnergizedAlloyer.class),
+    // split
+    energizedalloyerrunning(false, TileEnergizedAlloyer.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

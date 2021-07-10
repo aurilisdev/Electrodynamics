@@ -38,18 +38,18 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 	if (box != null) {
 	    list.add(new TranslationTextComponent("gui.batterybox.current",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
-			    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
+			    box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
 			    ElectricUnit.AMPERE)).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.batterybox.transfer",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
-			    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
+			    box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
 				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.batterybox.voltage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.batterybox.stored",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ChatFormatter
-			    .getElectricDisplayShort(TileBatteryBox.DEFAULT_MAX_JOULES * box.currentCapacityMultiplier, ElectricUnit.JOULES))
+			    .getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
 				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;
@@ -69,13 +69,13 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.current",
 			    ChatFormatter.getElectricDisplayShort(
-				    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
+				    box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
 				    ElectricUnit.AMPERE)),
 		    playerInventoryTitleX, playerInventoryTitleY - 55f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.transfer",
 			    ChatFormatter.getElectricDisplayShort(
-				    TileBatteryBox.DEFAULT_OUTPUT_JOULES_PER_TICK * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
+				    box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
 		    playerInventoryTitleX, playerInventoryTitleY - 42f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.voltage",
@@ -84,7 +84,7 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.stored",
 			    ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ChatFormatter
-				    .getElectricDisplayShort(TileBatteryBox.DEFAULT_MAX_JOULES * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
+				    .getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
 		    playerInventoryTitleX, playerInventoryTitleY - 16f, 4210752);
 	}
     }

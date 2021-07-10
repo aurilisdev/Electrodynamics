@@ -8,6 +8,7 @@ import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
+import electrodynamics.client.render.tile.RenderLithiumBatteryBox;
 import electrodynamics.client.render.tile.RenderMineralCrusher;
 import electrodynamics.client.render.tile.RenderMineralCrusherDouble;
 import electrodynamics.client.render.tile.RenderMineralCrusherTriple;
@@ -26,6 +27,7 @@ import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.ScreenFermentationPlant;
+import electrodynamics.client.screen.ScreenLithiumBatteryBox;
 import electrodynamics.client.screen.ScreenMineralWasher;
 import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
@@ -58,6 +60,13 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
 	ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
 	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX2);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX3);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX4);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX5);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX6);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX7);
 	ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
 	ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
 	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
@@ -87,6 +96,13 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_BATTERYBOX5 = new ResourceLocation(References.ID + ":block/batterybox5");
     public static final ResourceLocation MODEL_BATTERYBOX6 = new ResourceLocation(References.ID + ":block/batterybox6");
     public static final ResourceLocation MODEL_BATTERYBOX7 = new ResourceLocation(References.ID + ":block/batterybox7");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX = new ResourceLocation(References.ID + ":block/lithiumbatterybox");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX2 = new ResourceLocation(References.ID + ":block/lithiumbatterybox2");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX3 = new ResourceLocation(References.ID + ":block/lithiumbatterybox3");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX4 = new ResourceLocation(References.ID + ":block/lithiumbatterybox4");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX5 = new ResourceLocation(References.ID + ":block/lithiumbatterybox5");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX6 = new ResourceLocation(References.ID + ":block/lithiumbatterybox6");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX7 = new ResourceLocation(References.ID + ":block/lithiumbatterybox7");
     public static final ResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = new ResourceLocation(
 	    References.ID + ":block/hydroelectricgeneratorblades");
     public static final ResourceLocation MODEL_WINDMILLBLADES = new ResourceLocation(References.ID + ":block/windmillblades");
@@ -110,6 +126,7 @@ public class ClientRegister {
     public static void setup() {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
+	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), RenderLithiumBatteryBox::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_WINDMILL.get(), RenderWindmill::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
@@ -133,6 +150,7 @@ public class ClientRegister {
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_O2OPROCESSORTRIPLE.get(), ScreenO2OProcessorTriple::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
+	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_LITHIUMBATTERYBOX.get(), ScreenLithiumBatteryBox::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);

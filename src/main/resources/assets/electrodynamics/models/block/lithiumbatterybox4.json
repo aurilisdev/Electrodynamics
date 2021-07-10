@@ -1,0 +1,13 @@
+{
+	"credit": "aurilisdev",
+	"parent": "electrodynamics:block/lithiumbatterybox",
+	"ambientocclusion": "false",
+	"texture_size": [
+		64,
+		64
+	],
+	"textures": {
+		"0": "electrodynamics:model/lithiumbatterybox4",
+		"particle": "electrodynamics:model/lithiumbatterybox4"
+	}
+}
