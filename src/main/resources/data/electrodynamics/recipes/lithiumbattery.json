@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" c ",
+		"trt",
+		"twt"
+	],
+	"key": {
+		"c": {
+			"tag": "forge:plates/lithium"
+		},
+		"t": {
+			"tag": "forge:ingots/tin"
+		},
+		"r": {
+			"tag": "forge:oxide/thionylchloride"
+		},
+		"w": {
+			"item": "electrodynamics:wiresuperconductive"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:lithiumbattery",
+		"count": 1
+	}
+}

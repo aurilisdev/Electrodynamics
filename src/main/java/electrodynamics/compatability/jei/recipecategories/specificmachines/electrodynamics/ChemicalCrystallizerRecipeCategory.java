@@ -13,9 +13,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory{
+public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory {
 
-	// JEI Window Parameters
+    // JEI Window Parameters
     private static int[] GUI_BACKGROUND = { 0, 0, 132, 64 };
     private static int[] MAJOR_PROCESSING_ARROW_LOCATION = { 0, 64, 64, 15 };
     private static int[] MINOR_PROCESSING_ARROW_LOCATION = { 0, 79, 20, 15 };
@@ -43,19 +43,19 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 
     public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(Arrays.asList(GUI_BACKGROUND, MAJOR_PROCESSING_ARROW_LOCATION,
-	    MINOR_PROCESSING_ARROW_LOCATION, INPUT_FLUID_BUCKET_OFFSET, INPUT_FLUID_TANK, OUTPUT_ITEM_OFFSET,
-	    MAJOR_PROCESSING_ARROW_OFFSET, MINOR_PROCESSING_ARROW_OFFSET, FLUID_BAR_LOCATION));
-    
-	public ChemicalCrystallizerRecipeCategory(IGuiHelper guiHelper) {
-		
-		super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, TEXT_Y_HEIGHT,
-			MAJOR_ARROW_START_DIRECTION, MINOR_ARROW_START_DIRECTION,SMELT_TIME);
-	}
+    private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(
+	    Arrays.asList(GUI_BACKGROUND, MAJOR_PROCESSING_ARROW_LOCATION, MINOR_PROCESSING_ARROW_LOCATION, INPUT_FLUID_BUCKET_OFFSET,
+		    INPUT_FLUID_TANK, OUTPUT_ITEM_OFFSET, MAJOR_PROCESSING_ARROW_OFFSET, MINOR_PROCESSING_ARROW_OFFSET, FLUID_BAR_LOCATION));
 
-	@Override
-	public ResourceLocation getUid() {
-		return UID;
-	}
+    public ChemicalCrystallizerRecipeCategory(IGuiHelper guiHelper) {
+
+	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, TEXT_Y_HEIGHT, MAJOR_ARROW_START_DIRECTION,
+		MINOR_ARROW_START_DIRECTION, SMELT_TIME);
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+	return UID;
+    }
 
 }

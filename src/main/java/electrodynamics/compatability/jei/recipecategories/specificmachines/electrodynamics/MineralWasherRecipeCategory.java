@@ -13,9 +13,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory{
+public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory {
 
-	// JEI Window Parameters
+    // JEI Window Parameters
     private static int[] GUI_BACKGROUND = { 0, 0, 132, 64 };
     private static int[] MAJOR_PROCESSING_ARROW_LOCATION = { 0, 64, 68, 15 };
     private static int[] MINOR_PROCESSING_ARROW_LOCATION = { 0, 79, 20, 15 };
@@ -24,7 +24,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory{
     private static int[] INPUT_FLUID_BUCKET_OFFSET = { 60, 36 };
     private static int[] INPUT_FLUID_TANK = { 15, 52, 12, 47, 5000 };
     private static int[] OUTPUT_FLUID_TANK = { 109, 52, 12, 47, 5000 };
-    private static int[] OUTPUT_FLUID_BUCKET_OFFSET = {88, 36};
+    private static int[] OUTPUT_FLUID_BUCKET_OFFSET = { 88, 36 };
 
     private static int[] MAJOR_PROCESSING_ARROW_OFFSET = { 34, 17 };
     private static int[] MINOR_PROCESSING_ARROW_OFFSET = { 34, 37 };
@@ -46,18 +46,17 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory{
     public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
     private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(Arrays.asList(GUI_BACKGROUND, MAJOR_PROCESSING_ARROW_LOCATION,
-	    MINOR_PROCESSING_ARROW_LOCATION, INPUT_ITEM_OFFSET, INPUT_FLUID_BUCKET_OFFSET, INPUT_FLUID_TANK, OUTPUT_FLUID_TANK, OUTPUT_FLUID_BUCKET_OFFSET,
-	    MAJOR_PROCESSING_ARROW_OFFSET, MINOR_PROCESSING_ARROW_OFFSET, FLUID_BAR_LOCATION));
-	
-    
-    public MineralWasherRecipeCategory(IGuiHelper guiHelper) {
-    	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, MAJOR_ARROW_START_DIRECTION,
-    			MINOR_ARROW_START_DIRECTION, TEXT_Y_HEIGHT);
-	}
+	    MINOR_PROCESSING_ARROW_LOCATION, INPUT_ITEM_OFFSET, INPUT_FLUID_BUCKET_OFFSET, INPUT_FLUID_TANK, OUTPUT_FLUID_TANK,
+	    OUTPUT_FLUID_BUCKET_OFFSET, MAJOR_PROCESSING_ARROW_OFFSET, MINOR_PROCESSING_ARROW_OFFSET, FLUID_BAR_LOCATION));
 
-	@Override
-	public ResourceLocation getUid() {
-		return UID;
-	}
+    public MineralWasherRecipeCategory(IGuiHelper guiHelper) {
+	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, MAJOR_ARROW_START_DIRECTION,
+		MINOR_ARROW_START_DIRECTION, TEXT_Y_HEIGHT);
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+	return UID;
+    }
 
 }
