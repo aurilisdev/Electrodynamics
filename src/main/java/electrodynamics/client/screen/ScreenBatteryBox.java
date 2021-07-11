@@ -37,19 +37,19 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 	TileBatteryBox box = container.getHostFromIntArray();
 	if (box != null) {
 	    list.add(new TranslationTextComponent("gui.batterybox.current",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
-			    box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
-			    ElectricUnit.AMPERE)).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+		    new StringTextComponent(ChatFormatter
+			    .getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE))
+				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.batterybox.transfer",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(
-			    box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
+		    new StringTextComponent(
+			    ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
 				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.batterybox.voltage",
 		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE))
 			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	    list.add(new TranslationTextComponent("gui.batterybox.stored",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ChatFormatter
-			    .getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
+		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
+			    + ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
 				    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 	return list;
@@ -67,15 +67,12 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 	TileBatteryBox box = container.getHostFromIntArray();
 	if (box != null) {
 	    font.func_243248_b(matrixStack,
-		    new TranslationTextComponent("gui.batterybox.current",
-			    ChatFormatter.getElectricDisplayShort(
-				    box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage,
-				    ElectricUnit.AMPERE)),
+		    new TranslationTextComponent("gui.batterybox.current", ChatFormatter.getElectricDisplayShort(
+			    box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE)),
 		    playerInventoryTitleX, playerInventoryTitleY - 55f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.transfer",
-			    ChatFormatter.getElectricDisplayShort(
-				    box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
+			    ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
 		    playerInventoryTitleX, playerInventoryTitleY - 42f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.voltage",
@@ -83,8 +80,8 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 		    playerInventoryTitleX, playerInventoryTitleY - 29f, 4210752);
 	    font.func_243248_b(matrixStack,
 		    new TranslationTextComponent("gui.batterybox.stored",
-			    ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / " + ChatFormatter
-				    .getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
+			    ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
+				    + ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
 		    playerInventoryTitleX, playerInventoryTitleY - 16f, 4210752);
 	}
     }

@@ -47,30 +47,28 @@ public class TileMineralWasher extends GenericTileTicking {
     }
 
     public TileMineralWasher() {
-		super(DeferredRegisters.TILE_MINERALWASHER.get());
-		ElectrodynamicsRecipe.findRecipesbyType(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, this.world);
-		
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
-			.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
-		addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values())
-			.addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
-			.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false));
-		addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
-			.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
-		addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
-			.type(ComponentProcessorType.ObjectToObject)
-			.canProcess
-			(component -> component.outputToPipe(component, SUPPORTED_OUTPUT_FLUIDS)
-						.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
-						.canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE)
-			)
-			.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
-			.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
-		addComponent(new ComponentContainerProvider("container.mineralwasher")
-			.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	super(DeferredRegisters.TILE_MINERALWASHER.get());
+	ElectrodynamicsRecipe.findRecipesbyType(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, world);
+
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentPacketHandler());
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
+		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values())
+		.addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
+		.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false));
+	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
+		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
+	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
+		.type(ComponentProcessorType.ObjectToObject)
+		.canProcess(component -> component.outputToPipe(component, SUPPORTED_OUTPUT_FLUIDS)
+			.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
+			.canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
+		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
+		.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
+	addComponent(new ComponentContainerProvider("container.mineralwasher")
+		.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     @Override
@@ -93,7 +91,5 @@ public class TileMineralWasher extends GenericTileTicking {
 	    }
 	}
     }
-    
-
 
 }

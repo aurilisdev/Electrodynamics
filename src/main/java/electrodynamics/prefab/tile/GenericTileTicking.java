@@ -6,7 +6,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
 public class GenericTileTicking extends GenericTile implements ITickableTileEntity {
-	
+
     protected GenericTileTicking(TileEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }

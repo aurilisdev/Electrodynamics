@@ -119,7 +119,7 @@ public class DeferredRegisters {
     public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
     public static HashMap<ISubtype, FluidMineral> SUBTYPEMINERALFLUID_MAPPINGS = new HashMap<>();
     public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
-    public static HashMap<EquipmentSlotType,RegistryObject<Item>> COMPOSITE_ARMOR_PIECES = new HashMap<>();
+    public static HashMap<EquipmentSlotType, RegistryObject<Item>> COMPOSITE_ARMOR_PIECES = new HashMap<>();
     public static final HashMap<Item, Fluid> BUCKETFLUID_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
@@ -210,18 +210,19 @@ public class DeferredRegisters {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype), subtype));
 	}
 	ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	ITEMS.register("compositeplating",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	ITEMS.register("compositeplatingraw",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	
-	
-	//Composite Armor Registration
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.HEAD, ITEMS.register("compositearmorhelmet", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.HEAD))));
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.CHEST,ITEMS.register("compositearmorchestplate", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.CHEST))));
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.LEGS,ITEMS.register("compositearmorleggings", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.LEGS))));
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.FEET,ITEMS.register("compositearmorboots", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.FEET))));
-	
-	
-	
+	ITEMS.register("compositeplating", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
+	ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
+
+	// Composite Armor Registration
+	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.HEAD,
+		ITEMS.register("compositearmorhelmet", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.HEAD))));
+	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.CHEST, ITEMS.register("compositearmorchestplate",
+		supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.CHEST))));
+	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.LEGS,
+		ITEMS.register("compositearmorleggings", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.LEGS))));
+	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.FEET,
+		ITEMS.register("compositearmorboots", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.FEET))));
+
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 		"|translate|tooltip.transformer.energyloss");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer),

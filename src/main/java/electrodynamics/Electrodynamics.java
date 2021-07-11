@@ -68,8 +68,8 @@ public class Electrodynamics {
 	CapabilityElectrodynamic.register();
 	CapabilityCeramicPlate.register();
 	NetworkHandler.init();
-	
-	MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class,CapabilityCeramicPlateHandler::attachOnItemStackCreation);
+
+	MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, CapabilityCeramicPlateHandler::attachOnItemStackCreation);
 	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::takeDamageWithArmor);
 	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::addPlateToArmor);
     }

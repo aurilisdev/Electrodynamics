@@ -41,8 +41,8 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 
     public TileBatteryBox(TileEntityType<?> type, double output, double max) {
 	super(type);
-	this.powerOutput = output;
-	this.maxJoules = max;
+	powerOutput = output;
+	maxJoules = max;
 	clientMaxJoulesStored = max;
 	receiveLimitLeft = output * currentCapacityMultiplier;
 	addComponent(new ComponentDirection());
@@ -66,8 +66,9 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	}
 	receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 	if (electro.getJoulesStored() > 0 && output.valid()) {
-	    electro.joules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(
-		    Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
+	    electro.joules(electro.getJoulesStored() - ElectricityUtilities
+		    .receivePower(output.getSafe(), facing, TransferPack
+			    .joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
 		    .getJoules());
 	}
 	currentCapacityMultiplier = 1;
