@@ -21,14 +21,8 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileFermentationPlant extends GenericTileTicking {
 
@@ -84,25 +78,11 @@ public class TileFermentationPlant extends GenericTileTicking {
     }
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
-	ComponentDirection direction = getComponent(ComponentType.Direction);
-	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
-	BlockPos face = getPos().offset(direction.getDirection().getOpposite().rotateY());
-	TileEntity faceTile = world.getTileEntity(face);
-	if (faceTile != null) {
-	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().getOpposite().rotateY().getOpposite());
-	    if (cap.isPresent()) {
-		IFluidHandler handler = cap.resolve().get();
-		for (Fluid fluid : SUPPORTED_OUTPUT_FLUIDS) {
-		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-			tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
-			break;
-		    }
-		}
-	    }
-	}
-	processor.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2);
-	return processor.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
+
+    	return processor.outputToPipe(processor, SUPPORTED_OUTPUT_FLUIDS).
+    		consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).
+    		dispenseBucket(MAX_TANK_CAPACITY, 2).
+    		canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 
 }

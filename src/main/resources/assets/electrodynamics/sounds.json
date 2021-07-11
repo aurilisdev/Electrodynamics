@@ -47,5 +47,19 @@
 		"sounds": [
 			"electrodynamics:combustionchamber"
 		]
+	},
+	"ceramicplatebreaking":{
+		"category": "players",
+		"subtitle": "Ceramic Plates Breaks",
+		"sounds": [
+			"electrodynamics:ceramicplatebreaking"
+		]
+	},
+	"ceramicplateadded":{
+		"category": "players",
+		"subtitle": "Ceramic Plate Added",
+		"sounds": [
+			"electrodynamics:ceramicplateadded"
+		]
 	}
 }

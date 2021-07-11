@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
+import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
+import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlateHandler;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
@@ -19,6 +21,7 @@ import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -30,6 +33,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -62,7 +66,12 @@ public class Electrodynamics {
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
 	CapabilityElectrodynamic.register();
+	CapabilityCeramicPlate.register();
 	NetworkHandler.init();
+	
+	MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class,CapabilityCeramicPlateHandler::attachOnItemStackCreation);
+	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::takeDamageWithArmor);
+	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::addPlateToArmor);
     }
 
     @SubscribeEvent

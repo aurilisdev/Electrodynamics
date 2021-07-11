@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:mineral_crusher_recipe",
+
+    "input":{
+        "item":"electrodynamics:compositeplatingraw",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:compositeplating",
+        "count":1
+    }
+}

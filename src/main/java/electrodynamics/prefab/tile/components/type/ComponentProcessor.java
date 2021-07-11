@@ -26,7 +26,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class ComponentProcessor implements Component {
@@ -296,6 +302,27 @@ public class ComponentProcessor implements Component {
 
 	return this;
     }
+    
+	public ComponentProcessor outputToPipe(ComponentProcessor pr, Fluid[] outputFluids) {
+		ComponentDirection direction = pr.getHolder().getComponent(ComponentType.Direction);
+		ComponentFluidHandler tank = pr.getHolder().getComponent(ComponentType.FluidHandler);
+		BlockPos face = pr.getHolder().getPos().offset(direction.getDirection().rotateY().getOpposite());
+		TileEntity faceTile = pr.getHolder().getWorld().getTileEntity(face);
+		if (faceTile != null) {
+		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+			    direction.getDirection().rotateY().getOpposite().getOpposite());
+		    if (cap.isPresent()) {
+			IFluidHandler handler = cap.resolve().get();
+			for (Fluid fluid : outputFluids) {
+			    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+					tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+					break;
+			    }
+			}
+		    }
+		}
+		return this;
+	}
 
     public GenericTile getHolder() {
 	return holder;
