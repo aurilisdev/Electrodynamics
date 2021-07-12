@@ -59,5 +59,7 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 	if (tickable.getTicks() % 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
+	electro.drainElectricItem(3);
+	electro.fillElectricItem(4);
     }
 }

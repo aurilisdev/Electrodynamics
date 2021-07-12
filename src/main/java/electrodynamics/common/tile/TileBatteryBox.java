@@ -49,7 +49,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
-	addComponent(new ComponentInventory(this).size(3));
+	addComponent(new ComponentInventory(this).size(5));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
@@ -88,6 +88,8 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (tickable.getTicks() % 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
+	electro.drainElectricItem(3);
+	electro.fillElectricItem(4);
 
 	// Power loss
 	electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);

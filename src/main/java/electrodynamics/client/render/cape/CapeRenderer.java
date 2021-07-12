@@ -136,7 +136,7 @@ public final class CapeRenderer {
 
 	private static final int ITERATIONS = 150;
 
-	private static final float DELTA_TIME = 0.0052F;
+	private static final float DELTA_TIME = 0.0092F;
 
 	private static final float GRAVITY = -3333;
 

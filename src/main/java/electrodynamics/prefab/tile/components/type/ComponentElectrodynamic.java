@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -15,6 +16,7 @@ import electrodynamics.prefab.utilities.UtilitiesTiles;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -199,6 +201,30 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     public ComponentElectrodynamic voltage(double voltage) {
 	this.voltage = voltage;
+	return this;
+    }
+
+    public ComponentElectrodynamic drainElectricItem(int slot) {
+	if (holder.hasComponent(ComponentType.Inventory)) {
+	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
+	    ItemStack stack = inventory.getStackInSlot(slot);
+	    if (stack.getItem() instanceof ItemElectric) {
+		ItemElectric el = (ItemElectric) stack.getItem();
+		receivePower(el.extractPower(stack, maxJoules - joules, false), false);
+	    }
+	}
+	return this;
+    }
+
+    public ComponentElectrodynamic fillElectricItem(int slot) {
+	if (holder.hasComponent(ComponentType.Inventory)) {
+	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
+	    ItemStack stack = inventory.getStackInSlot(slot);
+	    if (stack.getItem() instanceof ItemElectric) {
+		ItemElectric el = (ItemElectric) stack.getItem();
+		extractPower(el.receivePower(stack, TransferPack.joulesVoltage(joules, voltage), false), false);
+	    }
+	}
 	return this;
     }
 
