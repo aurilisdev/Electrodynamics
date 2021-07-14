@@ -41,7 +41,8 @@ public class TileChemicalMixer extends GenericTileTicking {
     };
     public static Fluid[] SUPPORTED_OUTPUT_FLUIDS = new Fluid[] {
 
-	    DeferredRegisters.fluidSulfuricAcid, DeferredRegisters.fluidPolyethylene
+	    DeferredRegisters.fluidSulfuricAcid, DeferredRegisters.fluidPolyethylene,
+	    DeferredRegisters.fluidMolybdenum
 
     };
 

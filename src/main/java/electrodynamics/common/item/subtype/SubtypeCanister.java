@@ -7,7 +7,7 @@ import net.minecraft.fluid.Fluids;
 
 public enum SubtypeCanister implements ISubtype {
     empty(Fluids.EMPTY), sulfuric(DeferredRegisters.fluidSulfuricAcid), ethanol(DeferredRegisters.fluidEthanol),
-    polyethylene(DeferredRegisters.fluidPolyethylene);
+    polyethylene(DeferredRegisters.fluidPolyethylene), molybdenum(DeferredRegisters.fluidMolybdenum);
 
     private Fluid fluid;
 

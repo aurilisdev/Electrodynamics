@@ -24,6 +24,7 @@ import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.fluid.FluidEthanol;
 import electrodynamics.common.fluid.FluidMineral;
+import electrodynamics.common.fluid.FluidMolybdenum;
 import electrodynamics.common.fluid.FluidPolyethylene;
 import electrodynamics.common.fluid.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
@@ -41,6 +42,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.item.ItemCanister;
+import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemRubberArmor;
@@ -58,6 +60,9 @@ import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.common.item.tools.KineticRailGun;
+import electrodynamics.common.item.tools.PlasmaRailGun;
 import electrodynamics.common.player.armor.types.composite.CompositeArmor;
 import electrodynamics.common.player.armor.types.composite.CompositeArmorItem;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
@@ -72,6 +77,7 @@ import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
+import electrodynamics.common.tile.TileExtruder;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
@@ -85,6 +91,7 @@ import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
+import electrodynamics.common.tile.TileReinforcedAlloyer;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
@@ -103,6 +110,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntityType;
@@ -119,7 +127,6 @@ public class DeferredRegisters {
     public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
     public static HashMap<ISubtype, FluidMineral> SUBTYPEMINERALFLUID_MAPPINGS = new HashMap<>();
     public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
-    public static HashMap<EquipmentSlotType,RegistryObject<Item>> COMPOSITE_ARMOR_PIECES = new HashMap<>();
     public static final HashMap<Item, Fluid> BUCKETFLUID_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
@@ -130,36 +137,37 @@ public class DeferredRegisters {
     public static FluidEthanol fluidEthanol;
     public static FluidSulfuricAcid fluidSulfuricAcid;
     public static FluidPolyethylene fluidPolyethylene;
+    public static FluidMolybdenum fluidMolybdenum;
 
     static {
-	for (SubtypeOre subtype : SubtypeOre.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
-	}
-	for (SubtypeMachine subtype : SubtypeMachine.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
-	}
-	for (SubtypeWire subtype : SubtypeWire.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
-	}
-	for (SubtypePipe subtype : SubtypePipe.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
-	}
-	for (SubtypeGlass subtype : SubtypeGlass.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
-	}
-	for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
-	}
-	FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
-	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
-	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
-	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
-	    FluidMineral fluid = new FluidMineral(mineral);
-	    SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
-	    MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
-	    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
-	}
-
+		for (SubtypeOre subtype : SubtypeOre.values()) {
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
+		}
+		for (SubtypeMachine subtype : SubtypeMachine.values()) {
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
+		}
+		for (SubtypeWire subtype : SubtypeWire.values()) {
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
+		}
+		for (SubtypePipe subtype : SubtypePipe.values()) {
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
+		}
+		for (SubtypeGlass subtype : SubtypeGlass.values()) {
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
+		}
+		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
+		}
+		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
+		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
+		FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
+		for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
+		    FluidMineral fluid = new FluidMineral(mineral);
+		    SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
+		    MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
+		    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
+		}
+		FLUIDS.register("fluidmolybdenum",supplier(fluidMolybdenum = new FluidMolybdenum()));
     }
 
     private static void registerSubtypeItem(ISubtype[] array) {
@@ -196,11 +204,14 @@ public class DeferredRegisters {
 	registerSubtypeItem(SubtypeGear.values());
 	registerSubtypeItem(SubtypePlate.values());
 	registerSubtypeItem(SubtypeCircuit.values());
+	registerSubtypeItem(SubtypeRod.values());
 	for (SubtypeProcessorUpgrade subtype : SubtypeProcessorUpgrade.values()) {
 	    SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(),
 		    supplier(new ItemProcessorUpgrade(new Item.Properties().group(References.CORETAB), subtype), subtype)));
 	}
-	registerSubtypeItem(SubtypeCeramic.values());
+	for(SubtypeCeramic subtype: SubtypeCeramic.values()) {
+		ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype),subtype));
+	}
 	for (SubtypeCanister subtype : SubtypeCanister.values()) {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype), subtype));
 	}
@@ -212,14 +223,7 @@ public class DeferredRegisters {
 	ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	ITEMS.register("compositeplating",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	ITEMS.register("compositeplatingraw",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	
-	
-	//Composite Armor Registration
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.HEAD, ITEMS.register("compositearmorhelmet", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.HEAD))));
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.CHEST,ITEMS.register("compositearmorchestplate", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.CHEST))));
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.LEGS,ITEMS.register("compositearmorleggings", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.LEGS))));
-	COMPOSITE_ARMOR_PIECES.put(EquipmentSlotType.FEET,ITEMS.register("compositearmorboots", supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.FEET))));
-	
+	ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	
 	
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
@@ -241,6 +245,16 @@ public class DeferredRegisters {
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
 
+    //Composite Armor
+    public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", 
+		supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.HEAD)));
+    public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
+    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.CHEST)));
+    public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings", 
+    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.LEGS)));
+    public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots", 
+    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.FEET)));
+    
     public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic",
@@ -269,6 +283,26 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    
+    
+    //Kinetic Rail Gun
+    public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
+    	supplier(new KineticRailGun((ElectricItemProperties) new ItemElectric.ElectricItemProperties()
+    		.capacity(KineticRailGun.JOULES_PER_SHOT * 5)
+    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5 / (120.0 * 20.0), 240))
+    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5 / (120.0 * 20.0), 240))
+    		.group(References.CORETAB).maxStackSize(1))));
+    
+    //Plasma Rail Gun
+    public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
+    	supplier(new PlasmaRailGun((ElectricItemProperties) new ItemElectric.ElectricItemProperties()
+    		.capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
+    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10 / (120.0 * 20.0), 240))
+    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10 / (120.0 * 20.0), 240))
+    		.group(References.CORETAB).maxStackSize(1))));
+    
+    
+    
 
     // Split from items to tiles
 
@@ -346,7 +380,17 @@ public class DeferredRegisters {
 	    SubtypeMachine.energizedalloyer.tag(),
 	    () -> new TileEntityType<>(TileEnergizedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)), null));
-
+    
+    public static final RegistryObject<TileEntityType<TileExtruder>> TILE_EXTRUDER = TILES.register(
+    	SubtypeMachine.extruder.tag(),
+    	() -> new TileEntityType<>(TileExtruder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.extruder),
+    		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.extruderrunning)), null));
+    
+    public static final RegistryObject<TileEntityType<TileReinforcedAlloyer>> TILE_REINFORCEDALLOYER = TILES.register(
+    	SubtypeMachine.reinforcedalloyer.tag(),
+    	() -> new TileEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer),
+    		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning)), null));
+    
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),

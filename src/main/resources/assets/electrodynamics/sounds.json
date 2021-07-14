@@ -61,5 +61,33 @@
 		"sounds": [
 			"electrodynamics:ceramicplateadded"
 		]
+	},
+	"railgunkinetic":{
+		"category": "players",
+		"subtitle": "Kinetic Railgun Fires",
+		"sounds": [
+			"electrodynamics:railgunkinetic"
+		]
+	},
+	"railgunkinetic_noammo":{
+		"category": "players",
+		"subtitle": "No Ammo Available",
+		"sounds": [
+			"electrodynamics:railgunkinetic_noammo"
+		]
+	},
+	"railgunplasma":{
+		"category": "players",
+		"subtitle": "Plasma Railgun Fires",
+		"sounds": [
+			"electrodynamics:railgunplasma"
+		]
+	},
+	"railgunplasma_nopower":{
+		"category": "players",
+		"subtitle": "Not Enough Power",
+		"sounds": [
+			"electrodynamics:railgunplasma_nopower"
+		]
 	}
 }

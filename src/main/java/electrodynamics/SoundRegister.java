@@ -27,8 +27,20 @@ public class SoundRegister {
     
     public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEBREAKING = SOUNDS.register
     	("ceramicplatebreaking", () -> new SoundEvent(new ResourceLocation(References.ID + ":ceramicplatebreaking")));
-
     public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEADDED = SOUNDS.register
-        	("ceramicplateadded", () -> new SoundEvent(new ResourceLocation(References.ID + ":ceramicplateadded")));
+        ("ceramicplateadded", () -> new SoundEvent(new ResourceLocation(References.ID + ":ceramicplateadded")));
+   
+    public static final RegistryObject<SoundEvent> SOUND_RAILGUNKINETIC = SOUNDS.register
+    	("railgunkinetic", () -> new SoundEvent(new ResourceLocation(References.ID + ":railgunkinetic")));
+    public static final RegistryObject<SoundEvent> SOUND_RAILGUNKINETIC_NOAMMO = SOUNDS.register
+    	("railgunkinetic_noammo", () -> new SoundEvent(new ResourceLocation(References.ID + ":railgunkinetic_noammo")));
+    
+    public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA = SOUNDS.register
+        ("railgunplasma", () -> new SoundEvent(new ResourceLocation(References.ID + ":railgunplasma")));
+    public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA_NOPOWER = SOUNDS.register
+    	("railgunplasma_nopower", () -> new SoundEvent(new ResourceLocation(References.ID + ":railgunplasma_nopower")));
+    
+    
+    
     
 }

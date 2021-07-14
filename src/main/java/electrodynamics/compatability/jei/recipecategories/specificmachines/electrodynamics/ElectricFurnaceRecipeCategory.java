@@ -30,7 +30,7 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
     private static String RECIPE_GROUP = "electric_furnace";
     private static String GUI_TEXTURE = "textures/gui/jei/electric_furnace.png";
 
-    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace));
 
     private static StartDirection START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
 

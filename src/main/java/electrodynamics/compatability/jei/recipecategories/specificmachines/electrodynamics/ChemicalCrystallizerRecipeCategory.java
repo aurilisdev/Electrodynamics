@@ -36,7 +36,7 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
     private static String RECIPE_GROUP = "chemical_crystallizer";
     private static String GUI_TEXTURE = "textures/gui/jei/liq_to_sol_recipe_gui.png";
 
-    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer));
 
     private static StartDirection MAJOR_ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
     private static StartDirection MINOR_ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.RIGHT;

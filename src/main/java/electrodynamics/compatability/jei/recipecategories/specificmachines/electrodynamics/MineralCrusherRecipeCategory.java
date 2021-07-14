@@ -29,7 +29,7 @@ public class MineralCrusherRecipeCategory extends O2ORecipeCategory {
     private static String RECIPE_GROUP = "mineral_crusher";
     private static String GUI_TEXTURE = "textures/gui/jei/o2o_recipe_gui.png";
 
-    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher));
 
     private static IDrawableAnimated.StartDirection ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
 

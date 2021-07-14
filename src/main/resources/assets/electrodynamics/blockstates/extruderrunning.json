@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/extruderrunning",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/extruderrunning",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/extruderrunning",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/extruderrunning",
+			"y": 180
+		}
+	}
+}

@@ -7,7 +7,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 
 public enum CompositeArmor implements ICustomArmor{
-	COMPOSITE_ARMOR(References.ID + ":composite",new int[] { 2, 6, 8, 2 },SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,2.0f);
+	COMPOSITE_ARMOR(References.ID + ":composite",new int[] { 3, 6, 8, 3 },SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,2.0f);
 
 	
 	private final String name;

@@ -6,22 +6,22 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
-import net.minecraft.client.renderer.entity.model.BipedModel;
+import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlateHolderProvider;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class CompositeArmorItem extends ArmorItem{
 	
@@ -30,6 +30,15 @@ public class CompositeArmorItem extends ArmorItem{
 	
 	public CompositeArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot) {
 		super(materialIn, slot, new Item.Properties().maxStackSize(1).group(References.CORETAB).isImmuneToFire().setNoRepair());
+	}
+	
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+		CompositeArmorItem item = (CompositeArmorItem)stack.getItem();
+		if(item.getEquipmentSlot().equals(EquipmentSlotType.CHEST)) {
+			return new CapabilityCeramicPlateHolderProvider();
+		}
+		return null;
 	}
 	
 	@Override
@@ -52,10 +61,10 @@ public class CompositeArmorItem extends ArmorItem{
 	public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
 		super.onArmorTick(stack, world, player);
 		ItemStack[] ARMOR_PIECES = new ItemStack[] {
-				new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.HEAD).get()),
-				new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.CHEST).get()),	
-				new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.LEGS).get()),
-				new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.FEET).get())
+				new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
+				new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()),	
+				new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
+				new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get())
 		};
 		
 		List<ItemStack> armorPieces = new ArrayList<>();

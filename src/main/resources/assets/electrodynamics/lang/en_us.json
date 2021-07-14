@@ -1,4 +1,50 @@
 {
+	
+	"item.electrodynamics.railgunkinetic":"Kinetic Railgun",
+	"item.electrodynamics.railgunplasma":"Plasma Railgun",
+	
+	"item.electrodynamics.rodsteel":"Steel Rod",
+	"item.electrodynamics.rodstainlesssteel":"Stainless Steel Rod",
+	"item.electrodynamics.rodhslasteel":"HSLA Steel Rod",
+	"item.electrodynamics.rodtitaniumcarbide":"Titanium Carbide Rod",
+	
+	"item.electrodynamics.platehslasteel":"HSLA Steel Plate",
+	"item.electrodynamics.platetitaniumcarbide":"Titanium Carbide Plate",
+	
+	"item.electrodynamics.crystalmolybdenum":"Molybdenum Crystal",
+	"item.electrodynamics.impuredustmolybdenum":"Impure Molybdenum Dust",
+	"item.electrodynamics.dustmolybdenum":"Molybdenum Dust",
+	"item.electrodynamics.ingotmolybdenum":"Molybdenum Ingot",
+	"item.electrodynamics.ingottitaniumcarbide":"Titanium Carbide Ingot",
+	
+	"item.electrodynamics.molybdenumfertilizer":"Fertilizer",
+	"item.electrodynamics.canistermolybdenum":"Aqueous Molybdenum Canister",
+	
+	"fluid.electrodynamics.mineralmolybdenum":"Molybdenum Mineral Fluid",
+	"fluid.electrodynamics.molybdenum":"Aqueous Molybdenum",
+	
+	"block.electrodynamics.oremolybdenum":"Molybdnite Ore",
+	"block.electrodynamics.resourceblocktitaniumcarbide":"Block of Titanium Carbide",
+	
+	"block.electrodynamics.extruder": "Extruder",
+	"container.extruder":"Extruder",
+	"gui.electrodynamics.extruder": "Extruder",
+	
+	"block.electrodynamics.reinforcedalloyer":"Reinforced Alloyer",
+	"container.reinforcedalloyer":"Reinforced Alloyer",
+	"gui.electrodynamics.reinforcedalloyer":"Reinforced Alloyer",
+	
+	"gui.jei.category.extruder": "Extruder",
+	"gui.jei.category.extruder.info.power": "7.0 kW 240V",
+	
+	"gui.jei.category.reinforced_alloyer": "Reinforced Alloyer",
+	"gui.jei.category.reinforced_alloyer.info.power": "40.0 kW 720V",
+	
+	"info.jei.item.compositearmorhelmet":"This heavy-duty suit of armor allows the player to survive explosions. However, the player must be wearing a full set and must have Ceramic Plates added to the Body Armor. To add a Ceramic Plate, hold some in your main hand, have the Body Armor equiped to your Chestplate slot, and Right-Click. The Chestplate can hold a maximum of 2 at any given time.",
+	"info.jei.item.compositearmorchestplate":"This heavy-duty suit of armor allows the player to survive explosions. However, the player must be wearing a full set and must have Ceramic Plates added to the Body Armor. To add a Ceramic Plate, hold some in your main hand, have the Body Armor equiped to your Chestplate slot, and Right-Click. The Chestplate can hold a maximum of 2 at any given time.",
+	"info.jei.item.compositearmorleggings":"This heavy-duty suit of armor allows the player to survive explosions. However, the player must be wearing a full set and must have Ceramic Plates added to the Body Armor. To add a Ceramic Plate, hold some in your main hand, have the Body Armor equiped to your Chestplate slot, and Right-Click. The Chestplate can hold a maximum of 2 at any given time.",
+	"info.jei.item.compositearmorboots":"This heavy-duty suit of armor allows the player to survive explosions. However, the player must be wearing a full set and must have Ceramic Plates added to the Body Armor. To add a Ceramic Plate, hold some in your main hand, have the Body Armor equiped to your Chestplate slot, and Right-Click. The Chestplate can hold a maximum of 2 at any given time.",
+	
 	"item.electrodynamics.ingotaluminum": "Aluminum Ingot",
 	"item.electrodynamics.ingotchromium": "Chromium Ingot",
 	"item.electrodynamics.ingotstainlesssteel": "Stainless Steel Ingot",

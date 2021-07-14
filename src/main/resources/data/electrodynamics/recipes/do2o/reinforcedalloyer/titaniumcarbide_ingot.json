@@ -1,0 +1,16 @@
+{
+    "type":"electrodynamics:reinforced_alloyer_recipe",
+
+    "input1":{
+        "tag":"forge:coal_coke",
+        "count":1
+    },
+    "input2":{
+        "tag":"forge:ingots/titanium",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:ingottitaniumcarbide",
+        "count":1
+    }
+}

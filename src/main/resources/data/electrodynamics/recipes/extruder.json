@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "AMA",
+        "MCM",
+        "AWA"
+    ],
+    "key": {
+        "A": {
+            "tag": "forge:plates/aluminum"
+        },
+        "W": {
+            "item": "electrodynamics:wiremill"
+        },
+        "M": {
+            "item": "electrodynamics:motor"
+        },
+        "C": {
+            "tag": "forge:circuits/elite"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:extruder",
+        "count": 1
+    }
+}

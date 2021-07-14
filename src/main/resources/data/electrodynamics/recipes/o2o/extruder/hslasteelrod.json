@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:extruder_recipe",
+
+    "input":{
+        "tag":"forge:ingots/hslasteel",
+        "count":2
+    },
+    "output":{
+        "item":"electrodynamics:rodhslasteel",
+        "count":1
+    }
+}

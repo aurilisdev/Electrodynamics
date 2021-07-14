@@ -64,10 +64,19 @@ public class Constants {
     public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 800.0;
     @IntValue(def = 200)
     public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
-    @IntValue(def = 300)
+    @IntValue(def = 50)
     public static int ENERGIZEDALLOYER_REQUIRED_TICKS = 50;
-    @DoubleValue(def = 4000.0)
+    @DoubleValue(def = 2000.0)
     public static double ENERGIZEDALLOYER_USAGE_PER_TICK = 2000.0;
+    @IntValue(def = 200)
+    public static int EXTRUDER_REQUIRED_TICKS = 200;
+    @DoubleValue(def = 350.0)
+    public static double EXTRUDER_USAGE_PER_TICK = 350.0;
+    @IntValue(def = 50)
+    public static int REINFORCEDALLOYER_REQUIRED_TICKS = 50;
+    @DoubleValue(def = 2000.0)
+    public static double REINFORCEDALLOYER_USAGE_PER_TICK = 2000.0;
+    
 
     public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

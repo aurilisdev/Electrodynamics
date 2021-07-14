@@ -1,0 +1,37 @@
+{
+		
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LXS",
+		"LPR",
+		"WCS"
+	],
+	"key": {
+		"L": {
+			"item": "electrodynamics:lithiumbattery"
+		},
+		"X": {
+			"item": "electrodynamics:upgradetransformer"
+		},
+		"S": {
+			"item": "electrodynamics:wiresuperconductive"
+		},
+		"W": {
+			"tag": "minecraft:planks"
+		},
+		"C": {
+			"tag": "forge:circuits/ultimate"
+		},
+		"P": {
+			"tag": "forge:plates/hslasteel"
+		},
+		"R": {
+			"tag": "forge:rods/titaniumcarbide"
+		}
+		
+	},
+	"result": {
+		"item": "electrodynamics:railgunplasma",
+		"count": 1
+	}
+}

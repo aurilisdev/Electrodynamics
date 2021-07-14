@@ -14,6 +14,7 @@ import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
+import electrodynamics.common.tile.TileExtruder;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
@@ -26,6 +27,7 @@ import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
+import electrodynamics.common.tile.TileReinforcedAlloyer;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
@@ -105,7 +107,13 @@ public enum SubtypeMachine implements ISubtype {
     // split
     energizedalloyer(true, TileEnergizedAlloyer.class),
     // split
-    energizedalloyerrunning(false, TileEnergizedAlloyer.class);
+    energizedalloyerrunning(false, TileEnergizedAlloyer.class),
+    
+    extruder(true,TileExtruder.class),
+    extruderrunning(false,TileExtruder.class),
+    
+    reinforcedalloyer(true,TileReinforcedAlloyer.class),
+    reinforcedalloyerrunning(false,TileReinforcedAlloyer.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

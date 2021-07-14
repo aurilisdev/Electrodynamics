@@ -38,7 +38,7 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory {
     private static String RECIPE_GROUP = "chemical_mixer";
     private static String GUI_TEXTURE = "textures/gui/jei/sol_and_liq_to_liq_recipe_gui.png";
 
-    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer));
 
     private static StartDirection MAJOR_ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
     private static StartDirection MINOR_ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.RIGHT;

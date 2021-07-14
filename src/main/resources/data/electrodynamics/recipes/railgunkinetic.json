@@ -1,0 +1,36 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LXS",
+		"LPR",
+		"WCS"
+	],
+	"key": {
+		"L": {
+			"item": "electrodynamics:lithiumbattery"
+		},
+		"X": {
+			"item": "electrodynamics:upgradetransformer"
+		},
+		"S": {
+			"item": "electrodynamics:wiresuperconductive"
+		},
+		"W": {
+			"tag": "minecraft:planks"
+		},
+		"C": {
+			"tag": "forge:circuits/elite"
+		},
+		"P": {
+			"tag": "forge:plates/stainlesssteel"
+		},
+		"R": {
+			"tag": "forge:rods/stainlesssteel"
+		}
+
+	},
+	"result": {
+		"item": "electrodynamics:railgunkinetic",
+		"count": 1
+	}
+}

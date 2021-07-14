@@ -26,7 +26,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 
 public class TileOxidationFurnace extends GenericTileTicking {
-    public static final int[] SLOTS_OUTPUT = new int[] { 2 };
 
     public TileOxidationFurnace() {
 	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());

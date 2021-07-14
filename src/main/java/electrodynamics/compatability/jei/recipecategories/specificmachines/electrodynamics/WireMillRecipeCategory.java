@@ -29,7 +29,7 @@ public class WireMillRecipeCategory extends O2ORecipeCategory {
     private static String RECIPE_GROUP = "wiremill";
     private static String GUI_TEXTURE = "textures/gui/jei/o2o_recipe_gui.png";
 
-    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill));
 
     private static IDrawableAnimated.StartDirection ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
 

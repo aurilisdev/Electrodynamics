@@ -1,0 +1,12 @@
+{
+    "type":"electrodynamics:extruder_recipe",
+
+    "input":{
+        "tag":"forge:ingots/stainlesssteel",
+        "count":2
+    },
+    "output":{
+        "item":"electrodynamics:rodstainlesssteel",
+        "count":1
+    }
+}
