@@ -83,7 +83,7 @@ public class KineticRailGun extends ItemElectric{
 								SoundCategory.PLAYERS, 1, 1);
 						projectile.setItem(ammoStack);
 						projectile.setShooter(playerIn);
-						projectile.shoot(playerIn.rotationPitch,playerIn.rotationYaw,0.0f,300f,0.0f);
+						projectile.shoot(playerIn.rotationPitch,playerIn.rotationYaw,0.0f,1f,0.0f);
 						worldIn.addEntity(projectile);
 						railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
 						ammoStack.shrink(1);
