@@ -1,49 +1,33 @@
 package electrodynamics.common.item.tools;
 
-import java.util.List;
-
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
-import electrodynamics.common.entity.projectile.types.HSLASteelRod;
-import electrodynamics.common.entity.projectile.types.StainlessSteelRod;
-import electrodynamics.common.entity.projectile.types.SteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.HSLASteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.StainlessSteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.SteelRod;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class KineticRailGun extends ItemElectric{
+public class KineticRailGun extends Railgun{
 
 	public static final double JOULES_PER_SHOT = 100000.0;
-	private static final int OVERHEAT_TEMPERATURE = 1000;
+	private static final int OVERHEAT_TEMPERATURE = 400;
 	private static final int TEMPERATURE_PER_SHOT = 300;
-	private static final double TEMPERATURE_REDUCED_PER_TICK = 1.0;
-	private static final double OVERHEAT_WARNING_THRESHOLD = 0.6;
+	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
+	private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 	
 	
 	public KineticRailGun(ElectricItemProperties properties) {
-		super(properties);
-	}
-	
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		KineticRailGun railgun = (KineticRailGun)stack.getItem();
-		tooltip.add(new StringTextComponent("Temperature: " + railgun.getTemperatureStored(stack) + " C").mergeStyle(TextFormatting.YELLOW));
-		if(railgun.getTemperatureStored(stack) >= OVERHEAT_TEMPERATURE * OVERHEAT_WARNING_THRESHOLD) {
-			tooltip.add(new StringTextComponent("WARNING : OVERHEATING").mergeStyle(TextFormatting.RED,TextFormatting.BOLD));
-		}
+		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
 	}
 	
 	@Override
@@ -52,14 +36,13 @@ public class KineticRailGun extends ItemElectric{
 		if(!worldIn.isRemote) {
 			ItemStack gunStack;
 			ItemStack ammoStack;
-			switch(handIn) {
-				case MAIN_HAND:
-					gunStack = playerIn.getHeldItemMainhand();
-					ammoStack = playerIn.getHeldItemOffhand();
-					break;
-				default:
-					gunStack = playerIn.getHeldItemOffhand();
-					ammoStack = playerIn.getHeldItemMainhand();
+			
+			if(handIn == Hand.MAIN_HAND) {
+				gunStack = playerIn.getHeldItemMainhand();
+				ammoStack = playerIn.getHeldItemOffhand();
+			}else {
+				gunStack = playerIn.getHeldItemOffhand();
+				ammoStack = playerIn.getHeldItemMainhand();
 			}
 			
 			KineticRailGun railgun = (KineticRailGun)gunStack.getItem();
@@ -82,8 +65,9 @@ public class KineticRailGun extends ItemElectric{
 								SoundRegister.SOUND_RAILGUNKINETIC.get(), 
 								SoundCategory.PLAYERS, 1, 1);
 						projectile.setItem(ammoStack);
+						projectile.setNoGravity(true);
 						projectile.setShooter(playerIn);
-						projectile.shoot(playerIn.rotationPitch,playerIn.rotationYaw,0.0f,1f,0.0f);
+						projectile.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0f, 0f, 1.0F);
 						worldIn.addEntity(projectile);
 						railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
 						ammoStack.shrink(1);
@@ -103,14 +87,25 @@ public class KineticRailGun extends ItemElectric{
 		return ActionResult.resultPass(playerIn.getHeldItemMainhand());
 	}
 	
-	@Override
-	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-		((KineticRailGun)stack.getItem()).decreaseTemperature(stack, TEMPERATURE_REDUCED_PER_TICK, false, 0.0);
-	}
-	
 	private boolean validAmmo(ItemStack ammoStack) {
-		return true;
+		if(ammoStack.isEmpty()) {
+			return false;
+		}
+		Ingredient steelRod = Ingredient.fromStacks(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.steel)));
+		Ingredient stainlessSteelRod = Ingredient.fromStacks(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel)));
+		Ingredient hslaSteelRod = Ingredient.fromStacks(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.hslasteel)));
+		
+		for(ItemStack stack: steelRod.getMatchingStacks()) {
+			Electrodynamics.LOGGER.info(stack.toString());
+		}
+		for(ItemStack stack: stainlessSteelRod.getMatchingStacks()) {
+			Electrodynamics.LOGGER.info(stack.toString());
+		}
+		for(ItemStack stack: hslaSteelRod.getMatchingStacks()) {
+			Electrodynamics.LOGGER.info(stack.toString());
+		}
+		
+		return steelRod.test(ammoStack) || stainlessSteelRod.test(ammoStack) || hslaSteelRod.test(ammoStack);
 	}
 	
 	

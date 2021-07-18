@@ -8,6 +8,6 @@ public class DamageSources {
     
     public static final DamageSource ACCELERATED_BOLT = new DamageSource("accelerated_bolt").setProjectile();
     public static final DamageSource ACCELERATED_BOLT_IGNOREARMOR = new DamageSource("accelerated_bolt_ia").setProjectile().setDamageBypassesArmor();
-    public static final DamageSource PLASMA_BOLT = new DamageSource("plasma_bolt").setProjectile().setExplosion().setFireDamage().setDamageBypassesArmor();
+    public static final DamageSource PLASMA_BOLT = new DamageSource("plasma_bolt").setProjectile().setDamageBypassesArmor();
 
 }

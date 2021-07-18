@@ -1,7 +1,8 @@
 package electrodynamics.api.electricity.formatting;
 
 public class ChatFormatter {
-    public static String getElectricDisplay(double value, ElectricUnit unit, int decimalPlaces, boolean isShort) {
+	
+	public static String getElectricDisplay(double value, ElectricUnit unit, int decimalPlaces, boolean isShort) {
 	if (value < Long.MIN_VALUE + 10000) {
 	    return "-Infinite" + (isShort ? unit.symbol : unit.getPlural());
 	} else if (value > Long.MAX_VALUE - 10000) {

@@ -40,7 +40,8 @@ public class SoundRegister {
     public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA_NOPOWER = SOUNDS.register
     	("railgunplasma_nopower", () -> new SoundEvent(new ResourceLocation(References.ID + ":railgunplasma_nopower")));
     
-    
+    public static final RegistryObject<SoundEvent> SOUND_RODIMPACTINGGROUND = SOUNDS.register
+    	("rodhittingground", () -> new SoundEvent(new ResourceLocation(References.ID + ":rodhittingground")));
     
     
 }

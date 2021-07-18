@@ -1,0 +1,29 @@
+{
+	"credit":"skip999",
+	"texture_size":[32,32],
+	"textures":{
+		"0":"electrodynamics:entity/projectile/hslasteelrod"
+	},
+	"elements":[
+		{
+			"from":[8,8,1],
+			"to":[9,9,15],
+			"faces":{
+				"north":{"uv":[7,7,7.5,7.5],"texture":"#0"},
+				"east":{"uv":[0,7,7,7.5],"texture":"#0"},
+				"south":{"uv":[14.5,7,15,7.5],"texture":"#0"},
+				"west":{"uv":[7.5,7,14.5,7.5],"texture":"#0"},
+				"up":{"uv":[7.5,7,7,0],"texture":"#0"},
+				"down":{"uv":[8,0,7.5,7],"texture":"#0"}
+			}
+		}
+	],
+	"groups":[
+		{
+			"name":"hslasteelrod",
+			"origin":[0,0,0],
+			"color":0,
+			"children":[0]
+		}
+	]
+}

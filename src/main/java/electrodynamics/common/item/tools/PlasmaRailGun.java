@@ -1,44 +1,26 @@
 package electrodynamics.common.item.tools;
 
-import java.util.List;
-
 import electrodynamics.SoundRegister;
-import electrodynamics.prefab.item.ItemElectric;
+import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
+import electrodynamics.common.entity.projectile.types.energy.EnergyBlast;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class PlasmaRailGun extends ItemElectric{
+public class PlasmaRailGun extends Railgun{
 
 	public static final double JOULES_PER_SHOT = 1000000.0;
-	private static final int OVERHEAT_TEMPERATURE = 1000;
+	private static final int OVERHEAT_TEMPERATURE = 500;
 	private static final int TEMPERATURE_PER_SHOT = 200;
 	private static final double TEMPERATURE_REDUCED_PER_TICK = 1.0;
-	private static final double OVERHEAT_WARNING_THRESHOLD = 0.6;
-	
-	
+	private static final double OVERHEAT_WARNING_THRESHOLD = 0.5;
 	
 	public PlasmaRailGun(ElectricItemProperties properties) {
-		super(properties);
-	}
-	
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		PlasmaRailGun railgun = (PlasmaRailGun)stack.getItem();
-		tooltip.add(new StringTextComponent("Temperature: " + railgun.getTemperatureStored(stack) + " C").mergeStyle(TextFormatting.YELLOW));
-		if(railgun.getTemperatureStored(stack) >= OVERHEAT_TEMPERATURE * OVERHEAT_WARNING_THRESHOLD) {
-			tooltip.add(new StringTextComponent("WARNING : OVERHEATING").mergeStyle(TextFormatting.RED,TextFormatting.BOLD));
-		}
+		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
 	}
 
 	@Override
@@ -46,17 +28,23 @@ public class PlasmaRailGun extends ItemElectric{
 		
 		ItemStack gunStack;
 		
-		switch(handIn) {
-			case MAIN_HAND:
-				gunStack = playerIn.getHeldItemMainhand();
-				break;
-			default:
-				gunStack = playerIn.getHeldItemOffhand();
+		if(handIn == Hand.MAIN_HAND) {
+			gunStack = playerIn.getHeldItemMainhand();
+		}else {
+			gunStack = playerIn.getHeldItemOffhand();
 		}
 		
 		PlasmaRailGun railgun = (PlasmaRailGun)gunStack.getItem();
 		
 		if((railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT)  && (railgun.getTemperatureStored(gunStack) <= (OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT))) {
+			
+			ElectrodynamicsProjectile projectile = new EnergyBlast(playerIn,worldIn);
+			projectile.setNoGravity(true);
+			projectile.setShooter(playerIn);
+			projectile.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0F, 5f, 1.0F);
+			worldIn.addEntity(projectile);
+			
+			
 			railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
 			worldIn.playSound(null, playerIn.getPosition(),
 					SoundRegister.SOUND_RAILGUNPLASMA.get(), 
@@ -69,11 +57,6 @@ public class PlasmaRailGun extends ItemElectric{
 		}
 		
 		return ActionResult.resultPass(playerIn.getHeldItemMainhand());
-	}
-	
-	@Override
-	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		((PlasmaRailGun)stack.getItem()).decreaseTemperature(stack, TEMPERATURE_REDUCED_PER_TICK, false, 0.0);
 	}
 	
 }

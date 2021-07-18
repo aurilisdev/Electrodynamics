@@ -89,5 +89,12 @@
 		"sounds": [
 			"electrodynamics:railgunplasma_nopower"
 		]
+	},
+	"rodhittingground":{
+		"category": "blocks",
+		"subtitle": "Rail Impacts Ground",
+		"sounds": [
+			"electrodynamics:rodhittingground"
+		]
 	}
 }

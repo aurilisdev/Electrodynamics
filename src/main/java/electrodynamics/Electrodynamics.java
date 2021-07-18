@@ -83,7 +83,6 @@ public class Electrodynamics {
 		    }
 		}
 		ClientRegister.setup();
-		ClientRegister.registerEntities(event.getMinecraftSupplier());
     }
 
     @SubscribeEvent
