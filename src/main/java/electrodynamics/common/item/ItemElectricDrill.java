@@ -1,30 +1,39 @@
-package electrodynamics.prefab.item;
+package electrodynamics.common.item;
 
 import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class ItemElectric extends Item implements IItemElectric {
+public class ItemElectricDrill extends PickaxeItem implements IItemElectric {
 
-    private final ElectricItemProperties properties;
+    public final ElectricItemProperties properties;
 
-    public ItemElectric(ElectricItemProperties properties) {
-	super(properties);
+    public ItemElectricDrill(ElectricItemProperties properties) {
+	super(ElectricItemTier.DRILL, 4, -2.4f, properties.maxDamage(0));
 	this.properties = properties;
+    }
+
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+	return true;
     }
 
     @Override
@@ -39,11 +48,27 @@ public class ItemElectric extends Item implements IItemElectric {
 	}
     }
 
+    @Override
+    public boolean isDamageable() {
+	return false;
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+	return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
+    }
+
     private static void setEnergyStored(ItemStack stack, double amount) {
 	if (!stack.hasTag()) {
 	    stack.setTag(new CompoundNBT());
 	}
 	stack.getTag().putDouble("joules", amount);
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+	extractPower(stack, properties.extract.getJoules(), false);
+	return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
     }
 
     @Override

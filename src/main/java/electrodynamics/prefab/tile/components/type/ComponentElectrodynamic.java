@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
@@ -209,7 +210,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
 	    ItemStack stack = inventory.getStackInSlot(slot);
 	    if (stack.getItem() instanceof ItemElectric) {
-		ItemElectric el = (ItemElectric) stack.getItem();
+		IItemElectric el = (IItemElectric) stack.getItem();
 		receivePower(el.extractPower(stack, maxJoules - joules, false), false);
 	    }
 	}
@@ -221,7 +222,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
 	    ItemStack stack = inventory.getStackInSlot(slot);
 	    if (stack.getItem() instanceof ItemElectric) {
-		ItemElectric el = (ItemElectric) stack.getItem();
+		IItemElectric el = (IItemElectric) stack.getItem();
 		extractPower(el.receivePower(stack, TransferPack.joulesVoltage(joules, voltage), false), false);
 	    }
 	}
