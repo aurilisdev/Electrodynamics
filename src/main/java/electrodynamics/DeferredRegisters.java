@@ -264,8 +264,8 @@ public class DeferredRegisters {
 	    supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_ELECTRICDRILL = ITEMS.register("electricdrill",
 	    supplier(new ItemElectricDrill(
-		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(10000, 240))
-			    .receive(TransferPack.joulesVoltage(10000, 240)).group(References.CORETAB).maxStackSize(1))));
+		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
+			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
