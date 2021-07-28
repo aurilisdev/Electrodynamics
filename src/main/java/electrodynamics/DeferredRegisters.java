@@ -275,6 +275,8 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
+    public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium",
+	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
 
     // Split from items to tiles
 
