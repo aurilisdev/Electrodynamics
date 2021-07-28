@@ -5,7 +5,7 @@ import net.minecraft.item.ItemTier;
 import net.minecraft.item.crafting.Ingredient;
 
 public enum ElectricItemTier implements IItemTier {
-    DRILL(2, 0, ItemTier.GOLD.getEfficiency() * 4f, ItemTier.IRON.getAttackDamage() * 1.6f, 5);
+    DRILL(3, 0, ItemTier.GOLD.getEfficiency() * 4f, ItemTier.IRON.getAttackDamage() * 1.6f, 5);
     private final int harvestLevel;
     private final float efficency;
     private final float attackDammage;
