@@ -1,16 +1,15 @@
 {
-    "type":"electrodynamics:oxidation_furnace_recipe",
-
-    "input1":{
-        "tag":"forge:dusts/vanadium",
-        "count":1
-    },
-    "input2":{
-        "tag":"minecraft:coals",
-        "count":1
-    },
-    "output":{
-        "item":"electrodynamics:oxidevanadium",
-        "count":1
-    }
+	"type": "electrodynamics:oxidation_furnace_recipe",
+	"input1": {
+		"tag": "forge:dusts/vanadium",
+		"count": 1
+	},
+	"input2": {
+		"tag": "minecraft:coals",
+		"count": 1
+	},
+	"output": {
+		"item": "electrodynamics:oxidevanadium",
+		"count": 1
+	}
 }
