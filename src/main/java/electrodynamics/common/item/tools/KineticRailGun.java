@@ -67,8 +67,10 @@ public class KineticRailGun extends Railgun{
 						projectile.setItem(ammoStack);
 						projectile.setNoGravity(true);
 						projectile.setShooter(playerIn);
-						projectile.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0f, 0f, 1.0F);
-						worldIn.addEntity(projectile);
+						projectile.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0f, 20f, 1.0F);
+						if(!worldIn.isRemote) {
+							worldIn.addEntity(projectile);
+						}
 						railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
 						ammoStack.shrink(1);
 					}

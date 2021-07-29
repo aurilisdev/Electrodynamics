@@ -145,6 +145,7 @@ public class ItemElectric extends Item {
     	return stack.hasTag() ? stack.getTag().getDouble("temperature") : 0;
     }
 
+    //I had the charger handle this. It makes more sense imo
     public void overVoltage(TransferPack attempt) {
     	// TODO: how would this be implemented
     }
@@ -173,6 +174,18 @@ public class ItemElectric extends Item {
 		public ElectricItemProperties temperature(double temp) {
 			this.temperature = (int) temp;
 			return this;
+		}
+		
+		public TransferPack getReceiveInfo() {
+			return receive;
+		}
+		
+		public TransferPack getExtractInfo() {
+			return extract;
+		}
+		
+		public double getCapacity() {
+			return capacity;
 		}
 
     }

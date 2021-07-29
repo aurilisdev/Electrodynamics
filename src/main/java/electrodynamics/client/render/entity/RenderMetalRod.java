@@ -12,7 +12,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -42,8 +41,17 @@ public class RenderMetalRod extends EntityRenderer<MetalRod> {
 		IRenderTypeBuffer bufferIn, int packedLightIn) {
 		
 		matrixStackIn.push();
-		matrixStackIn.rotate(new Quaternion(new Vector3f(0, 1, 0), entity.rotationYaw + 90, true));
-		matrixStackIn.rotate(new Quaternion(new Vector3f(0, 0, 1), 90 - entity.rotationPitch, true));
+		
+		
+		//not gonna split hairs immerisve engineering gets credit for this
+		double yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F;
+		double pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+		
+		matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float)yaw, true));
+		matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), (float)pitch, true));
+		
+		matrixStackIn.translate(-0.5, -0.5, -0.5);
+		
 		
 		ItemStack item = entity.getItem();
 		
@@ -70,12 +78,6 @@ public class RenderMetalRod extends EntityRenderer<MetalRod> {
 		
 		}
 	    matrixStackIn.pop();
-	}
-	
-	
-	@Override
-	public boolean shouldRender(MetalRod livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
-		return true;
 	}
 
 	@SuppressWarnings("deprecation")

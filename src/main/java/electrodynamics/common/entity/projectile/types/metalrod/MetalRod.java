@@ -37,7 +37,8 @@ public class MetalRod extends ElectrodynamicsProjectile{
 		if(!ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
 			if(!world.isRemote) {
 				//Hardness of obsidian
-				if(state.getBlockHardness(this.world, p_230299_1_.getPos()) < 50f) {
+				if(state.getBlockHardness(this.world, p_230299_1_.getPos()) < 50f 
+					&& !ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
 					this.world.removeBlock(p_230299_1_.getPos(), false);
 				}
 				this.world.playSound(null, p_230299_1_.getPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), 

@@ -76,6 +76,10 @@ public class Constants {
     public static int REINFORCEDALLOYER_REQUIRED_TICKS = 50;
     @DoubleValue(def = 2000.0)
     public static double REINFORCEDALLOYER_USAGE_PER_TICK = 2000.0;
+    @IntValue(def = 10)
+    public static int CHARGER_REQUIRED_TICKS = 100;
+    @DoubleValue(def = 1000.0)
+    public static double CHARGER_USAGER_PER_TICK = 1000.0;
     
 
     public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);

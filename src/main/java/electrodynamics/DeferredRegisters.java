@@ -28,6 +28,7 @@ import electrodynamics.common.fluid.FluidMolybdenum;
 import electrodynamics.common.fluid.FluidPolyethylene;
 import electrodynamics.common.fluid.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
+import electrodynamics.common.inventory.container.ContainerGenericCharger;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
@@ -47,6 +48,8 @@ import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemRubberArmor;
 import electrodynamics.common.item.ItemWrench;
+import electrodynamics.common.item.armor.types.composite.CompositeArmor;
+import electrodynamics.common.item.armor.types.composite.CompositeArmorItem;
 import electrodynamics.common.item.subtype.SubtypeCanister;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
@@ -63,8 +66,6 @@ import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.item.tools.KineticRailGun;
 import electrodynamics.common.item.tools.PlasmaRailGun;
-import electrodynamics.common.player.armor.types.composite.CompositeArmor;
-import electrodynamics.common.player.armor.types.composite.CompositeArmorItem;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
@@ -79,8 +80,11 @@ import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileExtruder;
 import electrodynamics.common.tile.TileFermentationPlant;
+import electrodynamics.common.tile.TileChargerHV;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileChargerLV;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.common.tile.TileChargerMV;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -289,16 +293,16 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
     	supplier(new KineticRailGun((ElectricItemProperties) new ItemElectric.ElectricItemProperties()
     		.capacity(KineticRailGun.JOULES_PER_SHOT * 5)
-    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5 / (120.0 * 20.0), 240))
-    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5 / (120.0 * 20.0), 240))
+    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
+    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
     		.group(References.CORETAB).maxStackSize(1))));
     
     //Plasma Rail Gun
     public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
     	supplier(new PlasmaRailGun((ElectricItemProperties) new ItemElectric.ElectricItemProperties()
     		.capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
-    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10 / (120.0 * 20.0), 240))
-    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10 / (120.0 * 20.0), 240))
+    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
+    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
     		.group(References.CORETAB).maxStackSize(1))));
     
     
@@ -383,13 +387,24 @@ public class DeferredRegisters {
     
     public static final RegistryObject<TileEntityType<TileExtruder>> TILE_EXTRUDER = TILES.register(
     	SubtypeMachine.extruder.tag(),
-    	() -> new TileEntityType<>(TileExtruder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.extruder),
-    		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.extruderrunning)), null));
+    	() -> new TileEntityType<>(TileExtruder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.extruder)), null));
     
     public static final RegistryObject<TileEntityType<TileReinforcedAlloyer>> TILE_REINFORCEDALLOYER = TILES.register(
     	SubtypeMachine.reinforcedalloyer.tag(),
     	() -> new TileEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer),
     		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning)), null));
+    
+    public static final RegistryObject<TileEntityType<TileChargerLV>> TILE_CHARGERLV = TILES.register(
+    	SubtypeMachine.chargerlv.tag(),
+    	() -> new TileEntityType<>(TileChargerLV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerlv)), null));
+    
+    public static final RegistryObject<TileEntityType<TileChargerMV>> TILE_CHARGERMV = TILES.register(
+    	SubtypeMachine.chargermv.tag(),
+    	() -> new TileEntityType<>(TileChargerMV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargermv)),null));
+    
+    public static final RegistryObject<TileEntityType<TileChargerHV>> TILE_CHARGERHV = TILES.register(
+    	SubtypeMachine.chargerhv.tag(),
+    	() -> new TileEntityType<>(TileChargerHV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv)),null));
     
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
@@ -464,7 +479,11 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.chemicalmixer.tag(), () -> new ContainerType<>(ContainerChemicalMixer::new));
     public static final RegistryObject<ContainerType<ContainerChemicalCrystallizer>> CONTAINER_CHEMICALCRYSTALLIZER = CONTAINERS
 	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
-
+    
+    public static final RegistryObject<ContainerType<ContainerGenericCharger>> CONTAINER_CHARGER = CONTAINERS
+    	.register("genericcharger", () -> new ContainerType<>(ContainerGenericCharger::new));
+    
+    
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;
     }

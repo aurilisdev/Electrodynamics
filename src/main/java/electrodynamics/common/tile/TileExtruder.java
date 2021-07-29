@@ -1,7 +1,10 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.particle.ParticleAPI;
+import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -17,26 +20,25 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 
 public class TileExtruder extends GenericTileTicking{
 
-	public TileExtruder() {
-		this(0);
-	}
+	public long clientRunningTicks = 0;
 	
-	public TileExtruder(int extra) {
+	public TileExtruder() {
 		super(DeferredRegisters.TILE_EXTRUDER.get());
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
 			.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
-			.maxJoules(Constants.EXTRUDER_USAGE_PER_TICK * 20 * (extra + 1)));
-		addComponent(new ComponentInventory(this).size(5 + extra * 2)
-			.valid((slot, stack) -> slot == 0 || slot == extra * 2 || extra == 2 && slot == 2
-				|| slot != extra && slot != extra * 3 && slot != extra * 5 && stack.getItem() instanceof ItemProcessorUpgrade)
-			.setMachineSlots(extra).shouldSendInfo());
+			.maxJoules(Constants.EXTRUDER_USAGE_PER_TICK * 20));
+		addComponent(new ComponentInventory(this).size(5)
+			.valid((slot, stack) -> slot < 1 || slot > 1 && stack.getItem() instanceof ItemProcessorUpgrade)
+			.setMachineSlots(0).shouldSendInfo());
 		addComponent(new ComponentContainerProvider("container.extruder").createMenu((id, player) -> 
 			(new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()))));
 		addProcessor(new ComponentProcessor(this).upgradeSlots(2, 3, 4)
@@ -47,7 +49,22 @@ public class TileExtruder extends GenericTileTicking{
 	}
 	
 	protected void tickClient(ComponentTickable tickable) {
-		
+		if(getProcessor(0).operatingTicks > 0) {
+			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			if (world.rand.nextDouble() < 0.10) {
+				for (int i = 0; i < 5; i++) {
+					double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+					double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+					ParticleAPI.addGrindedParticle(world, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.7,
+						pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D, Blocks.IRON_BLOCK.getDefaultState(), pos);
+				   }
+		    }
+			double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
+			if(progress == 1) {
+				SoundAPI.playSound(SoundRegister.SOUND_LATHEPLAYING.get(), SoundCategory.BLOCKS, 5, .75f, pos);
+			}
+			clientRunningTicks++;
+		}
 	}
 
 }

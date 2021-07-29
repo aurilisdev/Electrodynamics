@@ -3,7 +3,7 @@
 	"pattern": [
 		"LXS",
 		"LPR",
-		"WCS"
+		"BCS"
 	],
 	"key": {
 		"L": {
@@ -15,8 +15,8 @@
 		"S": {
 			"item": "electrodynamics:wiresuperconductive"
 		},
-		"W": {
-			"tag": "minecraft:planks"
+		"B": {
+			"tag": "forge:storage_blocks/stainlesssteel"
 		},
 		"C": {
 			"tag": "forge:circuits/elite"

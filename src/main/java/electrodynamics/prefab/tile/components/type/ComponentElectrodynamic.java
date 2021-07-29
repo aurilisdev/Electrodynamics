@@ -229,4 +229,5 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	hasCapability = test;
 	return this;
     }
+    
 }

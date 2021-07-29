@@ -26,15 +26,30 @@
 	"block.electrodynamics.oremolybdenum":"Molybdnite Ore",
 	"block.electrodynamics.resourceblocktitaniumcarbide":"Block of Titanium Carbide",
 	
-	"block.electrodynamics.extruder": "Extruder",
-	"container.extruder":"Extruder",
-	"gui.electrodynamics.extruder": "Extruder",
+	"block.electrodynamics.extruder": "Lathe",
+	"container.extruder":"Lathe",
+	"gui.electrodynamics.extruder": "Lathe",
 	
 	"block.electrodynamics.reinforcedalloyer":"Reinforced Alloyer",
 	"container.reinforcedalloyer":"Reinforced Alloyer",
 	"gui.electrodynamics.reinforcedalloyer":"Reinforced Alloyer",
 	
-	"gui.jei.category.extruder": "Extruder",
+	"block.electrodynamics.chargerlv":"120V Charger",
+	"container.chargerlv":"120V Charger",
+	"gui.electrodynamics.chargerlv":"120V Charger",
+	
+	"block.electrodynamics.chargermv":"240V Charger",
+	"container.chargermv":"240V Charger",
+	"gui.electrodynamics.chargermv":"240V Charger",
+	
+	"block.electrodynamics.chargerhv":"480V Charger",
+	"container.chargerhv":"480V Charger",
+	"gui.electrodynamics.chargerhv":"480V Charger",
+	
+	"gui.genericcharger.chargeperc":"Charge: %s",
+	"gui.genericcharger.chargecapable":"Possible: %s",
+	
+	"gui.jei.category.extruder": "Lathe",
 	"gui.jei.category.extruder.info.power": "7.0 kW 240V",
 	
 	"gui.jei.category.reinforced_alloyer": "Reinforced Alloyer",
@@ -48,7 +63,11 @@
 	"tooltip.electrodynamics.railguntemp":"Temperature %s",
 	"tooltip.electrodynamics.railgunmaxtemp":"Max Temp: %s",
 	"tooltip.electrodynamics.railgunoverheat":"WARNING : OVERHEATING",
+	"tooltip.electrodynamics.ceramicplatecount":"Plates Remaining: %s",
 	
+	"death.attack.accelerated_bolt":"%1$s was perforated by %2$s",
+	"death.attack.accelerated_bolt_ia":"%1$s was perforated by %2$s",
+	"death.attack.plasma_bolt":"%1$s was vaporized by %2$s",
 	
 	"item.electrodynamics.ingotaluminum": "Aluminum Ingot",
 	"item.electrodynamics.ingotchromium": "Chromium Ingot",

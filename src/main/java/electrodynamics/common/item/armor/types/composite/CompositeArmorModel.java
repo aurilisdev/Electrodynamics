@@ -1,4 +1,4 @@
-package electrodynamics.common.player.armor.types.composite;
+package electrodynamics.common.item.armor.types.composite;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;

@@ -1,4 +1,4 @@
-package electrodynamics.common.player.armor.types.composite;
+package electrodynamics.common.item.armor.types.composite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -51,9 +52,10 @@ public class CompositeArmorItem extends ArmorItem{
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		if(getEquipmentSlot().equals(EquipmentSlotType.CHEST)) {
 			stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
-				tooltip.add(new StringTextComponent("Plates Remaining: " + h.getPlateCount()).mergeStyle(TextFormatting.AQUA));
+				ITextComponent tip = new TranslationTextComponent("tooltip.electrodynamics.ceramicplatecount")
+					.mergeStyle(TextFormatting.AQUA).append(new StringTextComponent(h.getPlateCount() + ""));
+				tooltip.add(tip);
 			});
-			
 		}
 	}
 	

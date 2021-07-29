@@ -54,10 +54,6 @@ import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 
-//TODO rework recipeCatylists to use the RecipeClass defined Machine ItemStack
-//TODO only call getRecipeManager() once to improve recipe loading
-
-
 @JeiPlugin
 public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
@@ -162,9 +158,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	/* Electrodynamics */
 
 	// Electric Furnace
-	// This is broken for the 3.0 gradle mappings and there isn't really a fix for
-	// it. It works on the 4.0
-	// version, so if we ever update then it will work!
+	// still broken; just cleaning up
 	@SuppressWarnings("unchecked")
 	Set<FurnaceRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getRecipesForType((IRecipeType<FurnaceRecipe>) Registry.RECIPE_TYPE.getOrDefault(VanillaRecipeCategoryUid.FURNACE)));
 	registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
@@ -260,10 +254,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 	int[] o2oarrowLoc = { 80 + 5, 35, 22, 15 };
-
-	// Each click area needs to be tied to a unique machine Screen class. Otherwise
-	// you will get multiple machines
-	// popping up as with the O2O recipes for example
 
 	/* Wire Mill, Mineral Grinder, Mineral Crusher, Blast Compressor */
 

@@ -96,5 +96,12 @@
 		"sounds": [
 			"electrodynamics:rodhittingground"
 		]
+	},
+	"latherunning":{
+		"category": "blocks",
+		"subtitle": "Lathe Running",
+		"sounds": [
+			"electrodynamics:latherunning"
+		]
 	}
 }

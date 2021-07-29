@@ -39,7 +39,7 @@ public class EnergyBlast extends ElectrodynamicsProjectile{
 		if(!ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
 			if(!world.isRemote) {
 				world.createExplosion(null, p_230299_1_.getPos().getX(), p_230299_1_.getPos().getY(),
-					p_230299_1_.getPos().getZ(), 0.5f, true, Mode.DESTROY);
+					p_230299_1_.getPos().getZ(), 1f, true, Mode.DESTROY);
 			}
 			this.remove();
 		}

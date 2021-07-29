@@ -36,6 +36,8 @@ public class RenderEnergyBlast extends EntityRenderer<EnergyBlast>{
 		RenderSystem.multMatrix(matrixStackIn.getLast().getMatrix());
 		matrixStackIn.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
 		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F));
+		matrixStackIn.translate(-0.5, -0.5, -0.5);
+		
 		float scale = 0.03f;
 		GlStateManager.scalef(scale, scale, scale);
 

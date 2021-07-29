@@ -1,7 +1,7 @@
 package electrodynamics.client.render.armormodel.armorcomposite;
 
 import electrodynamics.client.render.armormodel.ISidedReference;
-import electrodynamics.common.player.armor.types.composite.CompositeArmorModel;
+import electrodynamics.common.item.armor.types.composite.CompositeArmorModel;
 import net.minecraft.inventory.EquipmentSlotType;
 
 public class SidedCompositeArmorModel implements ISidedReference{

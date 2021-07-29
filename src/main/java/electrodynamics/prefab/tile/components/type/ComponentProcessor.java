@@ -344,12 +344,6 @@ public class ComponentProcessor implements Component {
 	OUTPUT_CAP = outputCap;
     }
 
-    /*
-     * I could technically get two recipe classes with this method, but I would
-     * prefer that each ReicpeType have its own method when practical, as it makes
-     * custom logic and what not easier to implement long-term. Maybe once we're in
-     * the matainence stage of development, we can change it.
-     */
     public <T extends O2ORecipe> boolean canProcessO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
 
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -430,9 +424,6 @@ public class ComponentProcessor implements Component {
 		&& outputCap >= pr.getOutput().getCount() + recipe.getRecipeOutput().getCount();
     }
 
-    /*
-     * Same here!
-     */
     public <T extends O2ORecipe> void processO2ORecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
 	    T recipe = recipeClass.cast(getRecipe());

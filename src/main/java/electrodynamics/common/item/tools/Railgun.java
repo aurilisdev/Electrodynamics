@@ -46,6 +46,14 @@ public class Railgun extends ItemElectric{
 		((Railgun)stack.getItem()).decreaseTemperature(stack, TEMPERATURE_REDUCED_PER_TICK, false, 0.0);
 	}
 	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		if(slotChanged) {
+			return true;
+		}
+		return false;
+	}
+	
 	public double getMaxTemp() {
 		return OVERHEAT_TEMPERATURE;
 	}

@@ -6,8 +6,10 @@ import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
+import electrodynamics.client.render.tile.RenderCharger;
 import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
+import electrodynamics.client.render.tile.RenderExtruder;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderLithiumBatteryBox;
@@ -29,6 +31,7 @@ import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.ScreenFermentationPlant;
+import electrodynamics.client.screen.ScreenChargerGeneric;
 import electrodynamics.client.screen.ScreenLithiumBatteryBox;
 import electrodynamics.client.screen.ScreenMineralWasher;
 import electrodynamics.client.screen.ScreenO2OProcessor;
@@ -89,9 +92,13 @@ public class ClientRegister {
 		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
 		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
 		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
+		
 		ModelLoader.addSpecialModel(MODEL_STEELROD);
 		ModelLoader.addSpecialModel(MODEL_STAINLESSSTEELROD);
 		ModelLoader.addSpecialModel(MODEL_HSLASTEELROD);
+		
+		ModelLoader.addSpecialModel(MODEL_EXTRUDER);
+		ModelLoader.addSpecialModel(MODEL_EXTRUDERSHAFT);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
@@ -130,6 +137,9 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(References.ID + ":block/chemicalmixerblades");
     public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(References.ID + ":block/chemicalmixerwater");
     
+    public static final ResourceLocation MODEL_EXTRUDER = new ResourceLocation(References.ID + ":block/extruder");
+    public static final ResourceLocation MODEL_EXTRUDERSHAFT = new ResourceLocation(References.ID + ":block/extrudershaft");
+    
     public static final ResourceLocation MODEL_STEELROD = new ResourceLocation(References.ID + ":entity/steelrod");
     public static final ResourceLocation MODEL_STAINLESSSTEELROD = new ResourceLocation(References.ID + ":entity/stainlesssteelrod");
     public static final ResourceLocation MODEL_HSLASTEELROD = new ResourceLocation(References.ID + ":entity/hslasteelrod");
@@ -155,7 +165,12 @@ public class ClientRegister {
 		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
 		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
 		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
-	
+		
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_EXTRUDER.get(), RenderExtruder::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderCharger::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderCharger::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderCharger::new);
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), RenderEnergyBlast::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_STEELROD.get(), RenderMetalRod::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_STAINLESSSTEELROD.get(), RenderMetalRod::new);
@@ -175,7 +190,9 @@ public class ClientRegister {
 		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
 		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
 		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
-	
+		
+		ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
+		
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),
