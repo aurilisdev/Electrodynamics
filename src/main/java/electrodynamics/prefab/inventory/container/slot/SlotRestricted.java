@@ -19,10 +19,16 @@ public class SlotRestricted extends GenericSlot {
 	    DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeLeadCanister.empty) };
 
     private List<Item> whitelist;
+    private List<Class<?>> classes;
 
     public SlotRestricted(IInventory inventory, int index, int x, int y, Item... items) {
 	super(inventory, index, x, y);
 	whitelist = Arrays.asList(items);
+    }
+
+    public SlotRestricted(IInventory inventory, int index, int x, int y, boolean holder, Class<?>... items) {
+	super(inventory, index, x, y);
+	classes = Arrays.asList(items);
     }
 
     public SlotRestricted(IInventory inventory, int index, int x, int y, Fluid[] inputFluids) {
@@ -39,6 +45,17 @@ public class SlotRestricted extends GenericSlot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-	return super.isItemValid(stack) && whitelist != null && whitelist.contains(stack.getItem());
+	if (super.isItemValid(stack)) {
+	    if (classes != null) {
+		for (Class<?> cl : classes) {
+		    if (cl.isInstance(stack.getItem())) {
+			return true;
+		    }
+		}
+	    } else {
+		return whitelist != null && whitelist.contains(stack.getItem());
+	    }
+	}
+	return false;
     }
 }

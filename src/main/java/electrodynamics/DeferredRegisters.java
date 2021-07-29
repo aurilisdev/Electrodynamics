@@ -44,6 +44,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.item.ItemCanister;
 import electrodynamics.common.item.ItemCeramic;
+import electrodynamics.common.item.ItemElectricDrill;
 import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.ItemRubberArmor;
@@ -106,8 +107,8 @@ import electrodynamics.common.tile.TileWireMillTriple;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TilePipe;
 import electrodynamics.common.tile.network.TileWire;
+import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
-import electrodynamics.prefab.item.ItemElectric.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
@@ -229,7 +230,6 @@ public class DeferredRegisters {
 	ITEMS.register("compositeplatingraw",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	
-	
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 		"|translate|tooltip.transformer.energyloss");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer),
@@ -268,16 +268,20 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
-	    supplier(new ItemElectric((ElectricItemProperties) new ItemElectric.ElectricItemProperties().capacity(1666666.66667)
+	    supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667)
 		    .extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120))
 		    .receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_LITHIUMBATTERY = ITEMS.register("lithiumbattery",
-	    supplier(new ItemElectric((ElectricItemProperties) new ItemElectric.ElectricItemProperties().capacity(4 * 1666666.66667)
+	    supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(4 * 1666666.66667)
 		    .extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240))
 		    .receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter",
 	    supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
+    public static final RegistryObject<Item> ITEM_ELECTRICDRILL = ITEMS.register("electricdrill",
+	    supplier(new ItemElectricDrill(
+		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
+			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
@@ -306,7 +310,8 @@ public class DeferredRegisters {
     		.group(References.CORETAB).maxStackSize(1))));
     
     
-    
+    public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium",
+	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
 
     // Split from items to tiles
 

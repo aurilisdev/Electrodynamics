@@ -60,12 +60,9 @@ public class TileChemicalMixer extends GenericTileTicking {
 	addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.EAST, Direction.UP).relativeSlotFaces(1, Direction.DOWN)
 		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));
 	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5)
-		.canProcess
-		(component -> component.outputToPipe(component, SUPPORTED_OUTPUT_FLUIDS)
-					 .consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
-					 .dispenseBucket(MAX_TANK_CAPACITY, 2)
-					 .canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE)
-		)
+		.canProcess(component -> component.outputToPipe(component, SUPPORTED_OUTPUT_FLUIDS)
+			.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).dispenseBucket(MAX_TANK_CAPACITY, 2)
+			.canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE))
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.usage(Constants.CHEMICALMIXER_USAGE_PER_TICK).type(ComponentProcessorType.ObjectToObject)
 		.requiredTicks(Constants.CHEMICALMIXER_REQUIRED_TICKS));
@@ -76,18 +73,18 @@ public class TileChemicalMixer extends GenericTileTicking {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-    	return super.getRenderBoundingBox().grow(1);
+	return super.getRenderBoundingBox().grow(1);
     }
 
     protected void tickClient(ComponentTickable tickable) {
-		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
-		if (running) {
-		    if (world.rand.nextDouble() < 0.15) {
-			world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
-				pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-		    }
-		    clientTicks++;
-		}
+	boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
+	if (running) {
+	    if (world.rand.nextDouble() < 0.15) {
+		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
+			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    }
+	    clientTicks++;
+	}
     }
 
 }

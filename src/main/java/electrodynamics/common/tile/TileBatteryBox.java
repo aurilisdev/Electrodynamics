@@ -41,15 +41,15 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 
     public TileBatteryBox(TileEntityType<?> type, double output, double max) {
 	super(type);
-	this.powerOutput = output;
-	this.maxJoules = max;
+	powerOutput = output;
+	maxJoules = max;
 	clientMaxJoulesStored = max;
 	receiveLimitLeft = output * currentCapacityMultiplier;
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
-	addComponent(new ComponentInventory(this).size(3));
+	addComponent(new ComponentInventory(this).size(5));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
@@ -66,8 +66,9 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	}
 	receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 	if (electro.getJoulesStored() > 0 && output.valid()) {
-	    electro.joules(electro.getJoulesStored() - ElectricityUtilities.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(
-		    Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
+	    electro.joules(electro.getJoulesStored() - ElectricityUtilities
+		    .receivePower(output.getSafe(), facing, TransferPack
+			    .joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
 		    .getJoules());
 	}
 	currentCapacityMultiplier = 1;
@@ -87,6 +88,8 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	if (tickable.getTicks() % 50 == 0) {
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
+	electro.drainElectricItem(3);
+	electro.fillElectricItem(4);
 
 	// Power loss
 	electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);

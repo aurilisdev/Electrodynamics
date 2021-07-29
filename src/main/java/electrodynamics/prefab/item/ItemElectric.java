@@ -4,6 +4,7 @@ import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class ItemElectric extends Item {
+public class ItemElectric extends Item implements IItemElectric {
 
     private final ElectricItemProperties properties;
 
@@ -54,9 +55,7 @@ public class ItemElectric extends Item {
     	stack.getTag().putDouble("temperature", amount);
     }
 
-    
-    
-    
+    @Override
     public TransferPack extractPower(ItemStack stack, double amount, boolean debug) {
 		if (!stack.hasTag()) {
 		    return TransferPack.EMPTY;
@@ -102,6 +101,7 @@ public class ItemElectric extends Item {
 					.mergeStyle(TextFormatting.RED));
     }
 
+    @Override
     public TransferPack receivePower(ItemStack stack, TransferPack amount, boolean debug) {
 		if (!stack.hasTag()) {
 		    stack.setTag(new CompoundNBT());
@@ -137,6 +137,7 @@ public class ItemElectric extends Item {
     	return properties;
     }
 
+    @Override
     public double getJoulesStored(ItemStack stack) {
     	return stack.hasTag() ? stack.getTag().getDouble("joules") : 0;
     }
@@ -146,47 +147,9 @@ public class ItemElectric extends Item {
     }
 
     //I had the charger handle this. It makes more sense imo
+    @Override
     public void overVoltage(TransferPack attempt) {
     	// TODO: how would this be implemented
     }
 
-    public static class ElectricItemProperties extends Properties {
-		private double temperature;
-	    private double capacity;
-		private TransferPack receive = TransferPack.EMPTY;
-		private TransferPack extract = TransferPack.EMPTY;
-	
-		public ElectricItemProperties capacity(double capacity) {
-		    this.capacity = (int) capacity;
-		    return this;
-		}
-	
-		public ElectricItemProperties receive(TransferPack receive) {
-		    this.receive = receive;
-		    return this;
-		}
-	
-		public ElectricItemProperties extract(TransferPack extract) {
-		    this.extract = extract;
-		    return this;
-		}
-		
-		public ElectricItemProperties temperature(double temp) {
-			this.temperature = (int) temp;
-			return this;
-		}
-		
-		public TransferPack getReceiveInfo() {
-			return receive;
-		}
-		
-		public TransferPack getExtractInfo() {
-			return extract;
-		}
-		
-		public double getCapacity() {
-			return capacity;
-		}
-
-    }
 }

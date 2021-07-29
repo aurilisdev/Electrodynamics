@@ -1,6 +1,6 @@
 package electrodynamics.api.capability.compositearmor;
 
-public class CapabilityCeramicPlateHolderDefault implements ICapabilityCeramicPlateHolder{
+public class CapabilityCeramicPlateHolderDefault implements ICapabilityCeramicPlateHolder {
 
 	private int CERAMIC_PLATES_HELD;
 
@@ -23,7 +23,4 @@ public class CapabilityCeramicPlateHolderDefault implements ICapabilityCeramicPl
 	public int getPlateCount() {
 		return this.CERAMIC_PLATES_HELD;
 	}
-
-
-
 }

@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" i ",
+		"ipi"
+	],
+	"key": {
+		"i": {
+			"tag": "forge:ingots/titanium"
+		},
+		"p": {
+			"item": "forge:plates/titanium"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:drillheadtitanium",
+		"count": 1
+	}
+}

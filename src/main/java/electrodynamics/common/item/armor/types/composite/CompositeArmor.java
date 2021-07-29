@@ -22,35 +22,35 @@ public enum CompositeArmor implements ICustomArmor{
         this.soundEvent = soundEvent;
         this.toughness = toughness;
     }
-	
-	@Override
-	public int getDurability(EquipmentSlotType slotIn) {
-		return 1600;
-	}
 
-	@Override
-	public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-		return this.damageReductionAmountArray[slotIn.getIndex()];
-	}
+    @Override
+    public int getDurability(EquipmentSlotType slotIn) {
+	return 1600;
+    }
 
-	@Override
-	public SoundEvent getSoundEvent() {
-		return this.soundEvent;
-	}
+    @Override
+    public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+	return damageReductionAmountArray[slotIn.getIndex()];
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public SoundEvent getSoundEvent() {
+	return soundEvent;
+    }
 
-	@Override
-	public float getToughness() {
-		return this.toughness;
-	}
+    @Override
+    public String getName() {
+	return name;
+    }
 
-	@Override
-	public float getKnockbackResistance() {
-		return 4;
-	}
+    @Override
+    public float getToughness() {
+	return toughness;
+    }
+
+    @Override
+    public float getKnockbackResistance() {
+	return 4;
+    }
 
 }

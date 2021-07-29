@@ -9,30 +9,30 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class CapabilityCeramicPlate {
 
-	public static final String PLATES_KEY = "plates";
-	
-	@CapabilityInject(ICapabilityCeramicPlateHolder.class)
-	public static Capability<ICapabilityCeramicPlateHolder> CERAMIC_PLATE_HOLDER_CAPABILITY = null;
-	
-	public static void register() {
-		CapabilityManager.INSTANCE.register(ICapabilityCeramicPlateHolder.class, new PlateStorage(), CapabilityCeramicPlateHolderDefault::new);
-	}
-	
-	public static class PlateStorage implements Capability.IStorage<ICapabilityCeramicPlateHolder>{
+    public static final String PLATES_KEY = "plates";
 
-		@Override
-		public INBT writeNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side) {
-			CompoundNBT nbt = new CompoundNBT();
-			nbt.putInt(PLATES_KEY, instance.getPlateCount());
-			return nbt;
-		}
+    @CapabilityInject(ICapabilityCeramicPlateHolder.class)
+    public static Capability<ICapabilityCeramicPlateHolder> CERAMIC_PLATE_HOLDER_CAPABILITY = null;
 
-		@Override
-		public void readNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side, INBT nbt) {
-			int plateCount = ((CompoundNBT)nbt).getInt(PLATES_KEY);
-			instance.setPlateCount(plateCount);
-		}
-		
+    public static void register() {
+	CapabilityManager.INSTANCE.register(ICapabilityCeramicPlateHolder.class, new PlateStorage(), CapabilityCeramicPlateHolderDefault::new);
+    }
+
+    public static class PlateStorage implements Capability.IStorage<ICapabilityCeramicPlateHolder> {
+
+	@Override
+	public INBT writeNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side) {
+	    CompoundNBT nbt = new CompoundNBT();
+	    nbt.putInt(PLATES_KEY, instance.getPlateCount());
+	    return nbt;
 	}
-	
+
+	@Override
+	public void readNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side, INBT nbt) {
+	    int plateCount = ((CompoundNBT) nbt).getInt(PLATES_KEY);
+	    instance.setPlateCount(plateCount);
+	}
+
+    }
+
 }

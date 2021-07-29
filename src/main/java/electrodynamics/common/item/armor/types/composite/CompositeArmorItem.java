@@ -92,34 +92,63 @@ public class CompositeArmorItem extends ArmorItem{
 			
 			CompositeArmorModel model = (armorSlot == EquipmentSlotType.LEGS ? new CompositeArmorModel(0.5f) : new CompositeArmorModel(1f));
 
-			model.bipedHeadwear.showModel = false;
-			model.bipedHead.showModel = armorSlot == EquipmentSlotType.HEAD;
-			
-			model.bipedBody.showModel = armorSlot == EquipmentSlotType.CHEST;
-			model.bipedLeftArm.showModel = armorSlot == EquipmentSlotType.CHEST;
-			model.bipedRightArm.showModel = armorSlot == EquipmentSlotType.CHEST;
-			
-			model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.LEGS;
-			model.bipedRightLeg.showModel = armorSlot == EquipmentSlotType.HEAD;
-			
-			model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
-			model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
-			
-			
-			model.isChild = _default.isChild;
-			model.isSitting = _default.isSitting;
-			model.isSneak = _default.isSneak;
-			
-			return (A) model;
-			
-		}
-		return null;
 	}
-	
-	
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-		return ARMOR_TEXTURE_LOCATION;
+    }
+
+    @Override
+    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+	super.onArmorTick(stack, world, player);
+	ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.HEAD).get()),
+		new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.CHEST).get()),
+		new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.LEGS).get()),
+		new ItemStack(DeferredRegisters.COMPOSITE_ARMOR_PIECES.get(EquipmentSlotType.FEET).get()) };
+
+	List<ItemStack> armorPieces = new ArrayList<>();
+	player.getArmorInventoryList().forEach(armorPieces::add);
+
+	if (ItemStack.areItemsEqual(armorPieces.get(0), ARMOR_PIECES[3]) || ItemStack.areItemsEqual(armorPieces.get(1), ARMOR_PIECES[2])
+		|| ItemStack.areItemsEqual(armorPieces.get(2), ARMOR_PIECES[1]) || ItemStack.areItemsEqual(armorPieces.get(3), ARMOR_PIECES[0])) {
+	    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20));
 	}
-	*/
+    }
+
+    /*
+     * 
+     * @SuppressWarnings("unchecked")
+     * 
+     * @Override public <A extends BipedModel<?>> A getArmorModel(LivingEntity
+     * entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+     * 
+     * 
+     * if(itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem)
+     * {
+     * 
+     * CompositeArmorModel model = (armorSlot == EquipmentSlotType.LEGS ? new
+     * CompositeArmorModel(0.5f) : new CompositeArmorModel(1f));
+     * 
+     * model.bipedHeadwear.showModel = false; model.bipedHead.showModel = armorSlot
+     * == EquipmentSlotType.HEAD;
+     * 
+     * model.bipedBody.showModel = armorSlot == EquipmentSlotType.CHEST;
+     * model.bipedLeftArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+     * model.bipedRightArm.showModel = armorSlot == EquipmentSlotType.CHEST;
+     * 
+     * model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.LEGS;
+     * model.bipedRightLeg.showModel = armorSlot == EquipmentSlotType.HEAD;
+     * 
+     * model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+     * model.bipedLeftLeg.showModel = armorSlot == EquipmentSlotType.FEET;
+     * 
+     * 
+     * model.isChild = _default.isChild; model.isSitting = _default.isSitting;
+     * model.isSneak = _default.isSneak;
+     * 
+     * return (A) model;
+     * 
+     * } return null; }
+     * 
+     * 
+     * @Override public String getArmorTexture(ItemStack stack, Entity entity,
+     * EquipmentSlotType slot, String type) { return ARMOR_TEXTURE_LOCATION; }
+     */
 }

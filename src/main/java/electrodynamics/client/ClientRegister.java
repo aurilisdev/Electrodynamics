@@ -39,9 +39,11 @@ import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.entity.EntityRegistry;
+import electrodynamics.common.item.ItemElectricDrill;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -206,7 +208,13 @@ public class ClientRegister {
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker),
 			ClientRegister::shouldMultilayerRender);
 		RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
-		
+		ItemModelsProperties
+		.registerProperty(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"),
+			(stack, world,
+				entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
+					&& ((ItemElectricDrill) stack.getItem())
+						.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).properties.extract.getJoules() ? 1
+							: 0);
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {
