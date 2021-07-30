@@ -4,8 +4,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import electrodynamics.common.item.tools.Railgun;
+import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.inventory.EquipmentSlotType;

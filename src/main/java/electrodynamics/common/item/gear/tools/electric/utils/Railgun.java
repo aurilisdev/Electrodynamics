@@ -1,7 +1,8 @@
-package electrodynamics.common.item.tools;
+package electrodynamics.common.item.gear.tools.electric.utils;
 
 import java.util.List;
 
+import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;

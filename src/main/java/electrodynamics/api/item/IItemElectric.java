@@ -1,5 +1,6 @@
 package electrodynamics.api.item;
 
+import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.item.ItemStack;
 
@@ -12,5 +13,7 @@ public interface IItemElectric {
     double getJoulesStored(ItemStack stack);
 
     void overVoltage(TransferPack attempt);
+    
+    ElectricItemProperties getProperties();
 
 }

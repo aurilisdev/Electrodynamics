@@ -132,7 +132,7 @@ public class ItemElectric extends Item implements IItemElectric {
     	return TransferPack.temperature(properties.temperature);
     }
     
-    
+    @Override
     public ElectricItemProperties getProperties() {
     	return properties;
     }

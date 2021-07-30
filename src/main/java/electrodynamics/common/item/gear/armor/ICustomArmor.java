@@ -1,4 +1,4 @@
-package electrodynamics.common.item.armor;
+package electrodynamics.common.item.gear.armor;
 
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;

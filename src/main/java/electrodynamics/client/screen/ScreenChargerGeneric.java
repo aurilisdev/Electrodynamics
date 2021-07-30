@@ -8,9 +8,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.common.inventory.container.ContainerGenericCharger;
+import electrodynamics.api.item.IItemElectric;
+import electrodynamics.common.inventory.container.ContainerChargerGeneric;
 import electrodynamics.common.tile.generic.TileGenericCharger;
-import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentCharge;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
@@ -26,20 +26,20 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScreenChargerGeneric extends GenericScreen<ContainerGenericCharger>{
+public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>{
 
 	private static DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#0.0");
 	
-	public ScreenChargerGeneric(ContainerGenericCharger screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+	public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);
 		
 		components.add(new ScreenComponentCharge(() -> {
 			TileGenericCharger charger = container.getHostFromIntArray();
 			if(charger != null) {
 				ItemStack chargingItem = container.getSlot(0).getStack();
-				if(!chargingItem.isEmpty() && chargingItem.getItem() instanceof ItemElectric) {
-					ItemElectric electricItem = (ItemElectric)chargingItem.getItem();
-					return electricItem.getJoulesStored(chargingItem) / electricItem.getProperties().getCapacity();
+				if(!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
+					IItemElectric electricItem = (IItemElectric)chargingItem.getItem();
+					return electricItem.getJoulesStored(chargingItem) / electricItem.getProperties().capacity;
 				}
 			}
 			return 0;
@@ -53,8 +53,13 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerGenericCharger>
 		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 		List<? extends ITextComponent> screenOverlays = getChargerInfo();
 		
-		font.func_243248_b(matrixStack,screenOverlays.get(0), playerInventoryTitleX , 33f, 0);
-		font.func_243248_b(matrixStack,screenOverlays.get(1), playerInventoryTitleX , 43f, 0);
+		if(screenOverlays.size() > 0) {
+			font.func_243248_b(matrixStack,screenOverlays.get(0), playerInventoryTitleX , 33f, 0);
+			font.func_243248_b(matrixStack,screenOverlays.get(1), playerInventoryTitleX , 43f, 0);
+		}else {
+			this.closeScreen();
+		}
+		
 	}
 	
 	private List<? extends ITextComponent> getChargerInfo(){
@@ -65,13 +70,13 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerGenericCharger>
 			ItemStack chargingItem = container.getSlot(0).getStack();
 			double chargingPercentage = 0;
 			double chargeCapable = 100.0;
-			if(!chargingItem.isEmpty() && chargingItem.getItem() instanceof ItemElectric) {
+			if(!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
 				
 				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
-				ItemElectric electricItem = (ItemElectric)chargingItem.getItem();
+				IItemElectric electricItem = (IItemElectric)chargingItem.getItem();
 				
-				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getProperties().getCapacity() * 100;
-				chargeCapable = electro.getVoltage() / electricItem.getProperties().getReceiveInfo().getVoltage() * 100;
+				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getProperties().capacity * 100;
+				chargeCapable = electro.getVoltage() / electricItem.getProperties().receive.getVoltage() * 100;
 			}
 			
 			list.add(new TranslationTextComponent("gui.genericcharger.chargeperc",

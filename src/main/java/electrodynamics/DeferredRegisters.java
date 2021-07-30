@@ -28,7 +28,7 @@ import electrodynamics.common.fluid.FluidMolybdenum;
 import electrodynamics.common.fluid.FluidPolyethylene;
 import electrodynamics.common.fluid.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
-import electrodynamics.common.inventory.container.ContainerGenericCharger;
+import electrodynamics.common.inventory.container.ContainerChargerGeneric;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
@@ -42,15 +42,17 @@ import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
-import electrodynamics.common.item.ItemCanister;
 import electrodynamics.common.item.ItemCeramic;
-import electrodynamics.common.item.ItemElectricDrill;
-import electrodynamics.common.item.ItemMultimeter;
 import electrodynamics.common.item.ItemProcessorUpgrade;
-import electrodynamics.common.item.ItemRubberArmor;
-import electrodynamics.common.item.ItemWrench;
-import electrodynamics.common.item.armor.types.composite.CompositeArmor;
-import electrodynamics.common.item.armor.types.composite.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
+import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
+import electrodynamics.common.item.gear.tools.ItemCanister;
+import electrodynamics.common.item.gear.tools.ItemMultimeter;
+import electrodynamics.common.item.gear.tools.ItemWrench;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
+import electrodynamics.common.item.gear.tools.electric.KineticRailGun;
+import electrodynamics.common.item.gear.tools.electric.PlasmaRailGun;
 import electrodynamics.common.item.subtype.SubtypeCanister;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
@@ -65,8 +67,6 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import electrodynamics.common.item.tools.KineticRailGun;
-import electrodynamics.common.item.tools.PlasmaRailGun;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
@@ -295,7 +295,7 @@ public class DeferredRegisters {
     
     //Kinetic Rail Gun
     public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
-    	supplier(new KineticRailGun((ElectricItemProperties) new ItemElectric.ElectricItemProperties()
+    	supplier(new KineticRailGun((ElectricItemProperties) new ElectricItemProperties()
     		.capacity(KineticRailGun.JOULES_PER_SHOT * 5)
     		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
     		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
@@ -303,7 +303,7 @@ public class DeferredRegisters {
     
     //Plasma Rail Gun
     public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
-    	supplier(new PlasmaRailGun((ElectricItemProperties) new ItemElectric.ElectricItemProperties()
+    	supplier(new PlasmaRailGun((ElectricItemProperties) new ElectricItemProperties()
     		.capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
     		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
     		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
@@ -485,8 +485,8 @@ public class DeferredRegisters {
     public static final RegistryObject<ContainerType<ContainerChemicalCrystallizer>> CONTAINER_CHEMICALCRYSTALLIZER = CONTAINERS
 	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
     
-    public static final RegistryObject<ContainerType<ContainerGenericCharger>> CONTAINER_CHARGER = CONTAINERS
-    	.register("genericcharger", () -> new ContainerType<>(ContainerGenericCharger::new));
+    public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS
+    	.register("genericcharger", () -> new ContainerType<>(ContainerChargerGeneric::new));
     
     
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {

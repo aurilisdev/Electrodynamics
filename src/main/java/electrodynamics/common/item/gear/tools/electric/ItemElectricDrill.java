@@ -1,10 +1,11 @@
-package electrodynamics.common.item;
+package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.BlockState;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 
 public class ItemElectricDrill extends PickaxeItem implements IItemElectric {
 
-    public final ElectricItemProperties properties;
+    private final ElectricItemProperties properties;
 
     public ItemElectricDrill(ElectricItemProperties properties) {
 	super(ElectricItemTier.DRILL, 4, -2.4f, properties.maxDamage(0));
@@ -134,5 +135,10 @@ public class ItemElectricDrill extends PickaxeItem implements IItemElectric {
     public void overVoltage(TransferPack attempt) {
 	// TODO: how would this be implemented
     }
+
+	@Override
+	public ElectricItemProperties getProperties() {
+		return this.properties;
+	}
 
 }

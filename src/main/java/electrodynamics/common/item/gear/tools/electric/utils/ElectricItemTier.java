@@ -1,4 +1,4 @@
-package electrodynamics.common.item;
+package electrodynamics.common.item.gear.tools.electric.utils;
 
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemTier;

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.item.ItemCanister;
+import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeCanister;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;

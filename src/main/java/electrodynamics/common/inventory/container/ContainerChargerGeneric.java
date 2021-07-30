@@ -11,13 +11,13 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-public class ContainerGenericCharger extends GenericContainer<TileGenericCharger>{
+public class ContainerChargerGeneric extends GenericContainer<TileGenericCharger>{
 
-	public ContainerGenericCharger(int id, PlayerInventory playerinv) {
+	public ContainerChargerGeneric(int id, PlayerInventory playerinv) {
 		this(id, playerinv, new Inventory(9), new IntArray(3));
 	}
 	
-	public ContainerGenericCharger(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+	public ContainerChargerGeneric(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 		super(DeferredRegisters.CONTAINER_CHARGER.get(), id, playerinv, inventory, inventorydata);
 	}
 

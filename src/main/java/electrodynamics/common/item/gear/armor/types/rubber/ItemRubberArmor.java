@@ -1,4 +1,4 @@
-package electrodynamics.common.item;
+package electrodynamics.common.item.gear.armor.types.rubber;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;

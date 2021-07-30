@@ -1,4 +1,4 @@
-package electrodynamics.common.item.tools;
+package electrodynamics.common.item.gear.tools.electric;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.Electrodynamics;
@@ -7,7 +7,9 @@ import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
 import electrodynamics.common.entity.projectile.types.metalrod.HSLASteelRod;
 import electrodynamics.common.entity.projectile.types.metalrod.StainlessSteelRod;
 import electrodynamics.common.entity.projectile.types.metalrod.SteelRod;
+import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

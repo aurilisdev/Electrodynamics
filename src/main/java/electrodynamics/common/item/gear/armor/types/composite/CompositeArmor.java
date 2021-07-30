@@ -1,7 +1,7 @@
-package electrodynamics.common.item.armor.types.composite;
+package electrodynamics.common.item.gear.armor.types.composite;
 
 import electrodynamics.api.References;
-import electrodynamics.common.item.armor.ICustomArmor;
+import electrodynamics.common.item.gear.armor.ICustomArmor;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;

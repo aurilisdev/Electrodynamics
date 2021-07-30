@@ -41,6 +41,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -213,42 +214,45 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-	// Electric Furnace
-	registration.addRecipeCategories(new ElectricFurnaceRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Wire Mill
-	registration.addRecipeCategories(new WireMillRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Mineral Grinder
-	registration.addRecipeCategories(new MineralGrinderRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Mineral Crusher
-	registration.addRecipeCategories(new MineralCrusherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Oxidation Furnace
-	registration.addRecipeCategories(new OxidationFurnaceRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Energized Alloyer
-	registration.addRecipeCategories(new EnergizedAlloyerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Extruder
-	registration.addRecipeCategories(new ExtruderRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+    	
+    	IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
+    	
+		// Electric Furnace
+		registration.addRecipeCategories(new ElectricFurnaceRecipeCategory(guiHelper));
 	
-	// Mineral Washer
-	registration.addRecipeCategories(new MineralWasherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Chemical Crystallizer
-	registration.addRecipeCategories(new ChemicalCrystallizerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Chemical Mixer
-	registration.addRecipeCategories(new ChemicalMixerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Fermentation Chamber
-	registration.addRecipeCategories(new FermentationPlantRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
-	// Reinforced Alloyer
-	registration.addRecipeCategories(new ReinforcedAlloyerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		// Wire Mill
+		registration.addRecipeCategories(new WireMillRecipeCategory(guiHelper));
 	
+		// Mineral Grinder
+		registration.addRecipeCategories(new MineralGrinderRecipeCategory(guiHelper));
+	
+		// Mineral Crusher
+		registration.addRecipeCategories(new MineralCrusherRecipeCategory(guiHelper));
+	
+		// Oxidation Furnace
+		registration.addRecipeCategories(new OxidationFurnaceRecipeCategory(guiHelper));
+	
+		// Energized Alloyer
+		registration.addRecipeCategories(new EnergizedAlloyerRecipeCategory(guiHelper));
+	
+		// Extruder
+		registration.addRecipeCategories(new ExtruderRecipeCategory(guiHelper));
+		
+		// Mineral Washer
+		registration.addRecipeCategories(new MineralWasherRecipeCategory(guiHelper));
+	
+		// Chemical Crystallizer
+		registration.addRecipeCategories(new ChemicalCrystallizerRecipeCategory(guiHelper));
+	
+		// Chemical Mixer
+		registration.addRecipeCategories(new ChemicalMixerRecipeCategory(guiHelper));
+	
+		// Fermentation Chamber
+		registration.addRecipeCategories(new FermentationPlantRecipeCategory(guiHelper));
+	
+		// Reinforced Alloyer
+		registration.addRecipeCategories(new ReinforcedAlloyerRecipeCategory(guiHelper));
+		
     }
 
     @Override
@@ -316,28 +320,31 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
     @Deprecated
     private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
-
-	/*
-	 * Machines currently with tabs:
-	 * 
-	 * Coal Generator Upgrade Transformer Downgrade Transformer Solar Panel Advanced
-	 * Solar Panel Thermoelectric Generator Combustion Chamber Hydroelectric
-	 * Generator Wind Generator Mineral Washer Chemical Mixer Chemical Crystalizer
-	 * 
-	 */
-	ArrayList<ItemStack> edMachines = PsuedoRecipes.ELECTRODYNAMICS_MACHINES;
-	String temp;
-
-	for (ItemStack itemStack : edMachines) {
-	    temp = itemStack.getItem().toString();
-	    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, "info.jei.block." + temp);
-	}
 	
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		/*
+		 * Machines currently with tabs:
+		 * 
+		 * Coal Generator Upgrade Transformer Downgrade Transformer Solar Panel Advanced
+		 * Solar Panel Thermoelectric Generator Combustion Chamber Hydroelectric
+		 * Generator Wind Generator Mineral Washer Chemical Mixer Chemical Crystalizer
+		 * 
+		 */
+		ArrayList<ItemStack> edMachines = PsuedoRecipes.ELECTRODYNAMICS_MACHINES;
+		String temp;
 	
+		for (ItemStack itemStack : edMachines) {
+		    temp = itemStack.getItem().toString();
+		    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, "info.jei.block." + temp);
+		}
+		
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM, "info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		
+		
+		
+		
     }
 
 }

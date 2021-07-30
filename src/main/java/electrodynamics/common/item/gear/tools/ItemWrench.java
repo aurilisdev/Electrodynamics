@@ -1,4 +1,4 @@
-package electrodynamics.common.item;
+package electrodynamics.common.item.gear.tools;
 
 import electrodynamics.api.IWrenchItem;
 import net.minecraft.entity.player.PlayerEntity;

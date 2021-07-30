@@ -1,8 +1,8 @@
 package electrodynamics.common.tile.generic;
 
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.common.inventory.container.ContainerGenericCharger;
-import electrodynamics.prefab.item.ItemElectric;
+import electrodynamics.api.item.IItemElectric;
+import electrodynamics.common.inventory.container.ContainerChargerGeneric;
 import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -12,6 +12,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -26,12 +27,12 @@ public abstract class TileGenericCharger extends GenericTileTicking{
 		super(typeIn);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().guiPacketReader(this::loadFromNBT).guiPacketWriter(this::saveToNBT));
-		addComponent(new ComponentTickable().tickCommon(this::tickCommon).tickClient(this::tickClient));
+		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
 			.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(1000 * voltageMultiplier));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> slot < 1));
 		addComponent(new ComponentContainerProvider("container.charger" + containerName)
-			.createMenu((id, player) -> (new ContainerGenericCharger(id, player, getComponent(ComponentType.Inventory), getCoordsArray()))));
+			.createMenu((id, player) -> (new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray()))));
 		
 	}
 	
@@ -40,20 +41,24 @@ public abstract class TileGenericCharger extends GenericTileTicking{
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		ItemStack itemInput = inventory.getStackInSlot(0);
 		if(!itemInput.isEmpty() && electro.getJoulesStored() == electro.getMaxJoulesStored() 
-			&& itemInput.getItem() instanceof ItemElectric) {
+			&& itemInput.getItem() instanceof IItemElectric) {
 			
-			ItemElectric electricItem = (ItemElectric)itemInput.getItem();
-			double recieveVoltage = electricItem.getProperties().getReceiveInfo().getVoltage();
+			IItemElectric electricItem = (IItemElectric)itemInput.getItem();
+			double recieveVoltage = electricItem.getProperties().receive.getVoltage();
 			double machineVoltage = electro.getVoltage();
 			
 			if(machineVoltage > recieveVoltage) {
+				this.world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
 				this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2f, Mode.DESTROY);
 			}else if(machineVoltage == recieveVoltage) {
 				electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false);
-				electro.extractPower(TransferPack.joulesVoltage(electro.getMaxJoulesStored(), electro.getVoltage()), false);
+				electro.extractPower(
+					electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false),
+					false
+				);
 			}else {
 				float underVoltRatio = (float) (((float)machineVoltage)/recieveVoltage);
-				float itemStoredRatio = (float) ((float)(electricItem.getJoulesStored(itemInput))/electricItem.getProperties().getCapacity());
+				float itemStoredRatio = (float) ((float)(electricItem.getJoulesStored(itemInput))/electricItem.getProperties().capacity);
 				
 				float x = Math.abs(itemStoredRatio / (itemStoredRatio - underVoltRatio + 0.00000001F/*ensures it's never zero*/));
 				float reductionCoef = getRationalFunctionValue(x);
@@ -64,7 +69,7 @@ public abstract class TileGenericCharger extends GenericTileTicking{
 					electro.extractPower(TransferPack.joulesVoltage(electro.getMaxJoulesStored() * reductionCoef, recieveVoltage), false);
 				}
 			}
-			if(electricItem.getJoulesStored(itemInput) == electricItem.getProperties().getCapacity()) {
+			if(electricItem.getJoulesStored(itemInput) == electricItem.getProperties().capacity) {
 				if(inventory.getStackInSlot(1).isEmpty()) {
 					inventory.setInventorySlotContents(1, inventory.getStackInSlot(0).copy());;
 					inventory.getStackInSlot(0).shrink(1);
@@ -73,10 +78,6 @@ public abstract class TileGenericCharger extends GenericTileTicking{
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
 
-	}
-	
-	public void tickClient(ComponentTickable tickable) {
-		
 	}
 
 	//to simulate undervolting a chargable object
@@ -90,14 +91,14 @@ public abstract class TileGenericCharger extends GenericTileTicking{
 		}
 	}
 	
-	 protected void loadFromNBT(CompoundNBT nbt) {
+	protected void loadFromNBT(CompoundNBT nbt) {
 		NonNullList<ItemStack> obj = this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems();
 		obj.clear();
 		ItemStackHelper.loadAllItems(nbt, obj);
-	 }
+	}
 	 
-	 protected void saveToNBT(CompoundNBT nbt) {
-		 ItemStackHelper.saveAllItems(nbt, this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems());
-	 }
+	protected void saveToNBT(CompoundNBT nbt) {
+		ItemStackHelper.saveAllItems(nbt, this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems());
+	}
 
 }

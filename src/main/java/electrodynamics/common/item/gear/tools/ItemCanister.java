@@ -1,4 +1,4 @@
-package electrodynamics.common.item;
+package electrodynamics.common.item.gear.tools;
 
 import electrodynamics.api.References;
 import electrodynamics.common.item.subtype.SubtypeCanister;

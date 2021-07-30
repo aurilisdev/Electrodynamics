@@ -6,7 +6,7 @@ import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
-import electrodynamics.client.render.tile.RenderCharger;
+import electrodynamics.client.render.tile.RenderChargerGeneric;
 import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
 import electrodynamics.client.render.tile.RenderExtruder;
@@ -39,7 +39,7 @@ import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.entity.EntityRegistry;
-import electrodynamics.common.item.ItemElectricDrill;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -169,9 +169,9 @@ public class ClientRegister {
 		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
 		
 		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_EXTRUDER.get(), RenderExtruder::new);
-		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderCharger::new);
-		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderCharger::new);
-		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderCharger::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), RenderEnergyBlast::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_STEELROD.get(), RenderMetalRod::new);
@@ -213,7 +213,7 @@ public class ClientRegister {
 			(stack, world,
 				entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
 					&& ((ItemElectricDrill) stack.getItem())
-						.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).properties.extract.getJoules() ? 1
+						.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getProperties().extract.getJoules() ? 1
 							: 0);
     }
 

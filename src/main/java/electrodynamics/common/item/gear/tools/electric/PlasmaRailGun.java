@@ -1,8 +1,10 @@
-package electrodynamics.common.item.tools;
+package electrodynamics.common.item.gear.tools.electric;
 
 import electrodynamics.SoundRegister;
 import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
 import electrodynamics.common.entity.projectile.types.energy.EnergyBlast;
+import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
+import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
