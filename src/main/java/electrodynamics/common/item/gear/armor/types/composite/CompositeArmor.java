@@ -1,13 +1,13 @@
 package electrodynamics.common.item.gear.armor.types.composite;
 
 import electrodynamics.api.References;
+import electrodynamics.SoundRegister;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 
 public enum CompositeArmor implements ICustomArmor{
-	COMPOSITE_ARMOR(References.ID + ":composite",new int[] { 3, 6, 8, 3 },SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,2.0f);
+	COMPOSITE_ARMOR(References.ID + ":composite",new int[] { 3, 6, 8, 3 },SoundRegister.SOUND_EQUIPHEAVYARMOR.get(),2.0f);
 
 	
 	private final String name;

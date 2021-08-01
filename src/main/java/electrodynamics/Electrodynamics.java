@@ -56,13 +56,13 @@ public class Electrodynamics {
     public Electrodynamics() {
 	ConfigurationHandler.registerConfig(Constants.class);
 	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+	SoundRegister.SOUNDS.register(bus);
 	DeferredRegisters.BLOCKS.register(bus);
 	DeferredRegisters.ITEMS.register(bus);
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
 	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
-	SoundRegister.SOUNDS.register(bus);
 	EntityRegistry.ENTITIES.register(bus);
     }
 
