@@ -14,7 +14,7 @@ import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
 import electrodynamics.common.recipe.categories.o2o.O2ORecipeTypes;
-import electrodynamics.common.recipe.categories.o2o.specificmachines.ExtruderRecipe;
+import electrodynamics.common.recipe.categories.o2o.specificmachines.LatheRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralGrinderRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
@@ -42,7 +42,7 @@ public class ElectrodynamicsRecipeInit {
     public static final IRecipeType<WireMillRecipe> WIRE_MILL_TYPE = registerType(WireMillRecipe.RECIPE_ID);
     public static final IRecipeType<MineralGrinderRecipe> MINERAL_GRINDER_TYPE = registerType(MineralGrinderRecipe.RECIPE_ID);
     public static final IRecipeType<MineralCrusherRecipe> MINERAL_CRUSHER_TYPE = registerType(MineralCrusherRecipe.RECIPE_ID);
-    public static final IRecipeType<ExtruderRecipe> EXTRUDER_TYPE = registerType(ExtruderRecipe.RECIPE_ID);
+    public static final IRecipeType<LatheRecipe> LATHE_TYPE = registerType(LatheRecipe.RECIPE_ID);
     
     // DO2O
     public static final IRecipeType<OxidationFurnaceRecipe> OXIDATION_FURNACE_TYPE = registerType(OxidationFurnaceRecipe.RECIPE_ID);
@@ -66,8 +66,8 @@ public class ElectrodynamicsRecipeInit {
 	    .register(MineralGrinderRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.MINERAL_CRUSHER_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> MINERAL_CRUSHER_SERIALIZER = RECIPE_SERIALIZER
 	    .register(MineralCrusherRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.MINERAL_GRINDER_JSON_SERIALIZER);
-    public static final RegistryObject<IRecipeSerializer<?>> EXTRUDER_SERIALIZER = RECIPE_SERIALIZER
-    	.register(ExtruderRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.EXTRUDER_JSON_SERIALIZER);
+    public static final RegistryObject<IRecipeSerializer<?>> LATHE_SERIALIZER = RECIPE_SERIALIZER
+    	.register(LatheRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.LATHE_JSON_SERIALIZER);
     
     
     // DO2O

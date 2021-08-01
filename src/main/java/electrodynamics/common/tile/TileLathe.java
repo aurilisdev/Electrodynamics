@@ -8,7 +8,7 @@ import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.o2o.specificmachines.ExtruderRecipe;
+import electrodynamics.common.recipe.categories.o2o.specificmachines.LatheRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -24,27 +24,27 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 
-public class TileExtruder extends GenericTileTicking{
+public class TileLathe extends GenericTileTicking{
 
 	public long clientRunningTicks = 0;
 	
-	public TileExtruder() {
-		super(DeferredRegisters.TILE_EXTRUDER.get());
+	public TileLathe() {
+		super(DeferredRegisters.TILE_LATHE.get());
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
 			.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
-			.maxJoules(Constants.EXTRUDER_USAGE_PER_TICK * 20));
+			.maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
 		addComponent(new ComponentInventory(this).size(5)
 			.valid((slot, stack) -> slot < 1 || slot > 1 && stack.getItem() instanceof ItemProcessorUpgrade)
 			.setMachineSlots(0).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.extruder").createMenu((id, player) -> 
+		addComponent(new ComponentContainerProvider("container.lathe").createMenu((id, player) -> 
 			(new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()))));
 		addProcessor(new ComponentProcessor(this).upgradeSlots(2, 3, 4)
-			.canProcess(component -> component.canProcessO2ORecipe(component, ExtruderRecipe.class,ElectrodynamicsRecipeInit.EXTRUDER_TYPE))
-			.process(component -> component.processO2ORecipe(component, ExtruderRecipe.class))
-			.requiredTicks(Constants.EXTRUDER_REQUIRED_TICKS).usage(Constants.EXTRUDER_USAGE_PER_TICK)
+			.canProcess(component -> component.canProcessO2ORecipe(component, LatheRecipe.class,ElectrodynamicsRecipeInit.LATHE_TYPE))
+			.process(component -> component.processO2ORecipe(component, LatheRecipe.class))
+			.requiredTicks(Constants.LATHE_REQUIRED_TICKS).usage(Constants.LATHE_USAGE_PER_TICK)
 			.type(ComponentProcessorType.ObjectToObject));
 	}
 	

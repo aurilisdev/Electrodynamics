@@ -7,6 +7,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
 import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlateHolderProvider;
+import electrodynamics.client.render.model.armor.types.composite.CompositeArmorModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -16,10 +17,12 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -45,7 +48,27 @@ public class CompositeArmorItem extends ArmorItem{
 	}
 	
 	@Override
+	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+		if(isInGroup(group)) {
+			ItemStack filled = new ItemStack(this);
+			if(ItemStack.areItemsEqualIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+				filled.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
+					h.increasePlateCount(2);;
+				});
+				items.add(filled);
+			}
+			ItemStack empty = new ItemStack(this);
+			items.add(empty);
+		}
+	}
+	
+	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+		return false;
+	}
+	
+	@Override
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 	
@@ -54,8 +77,8 @@ public class CompositeArmorItem extends ArmorItem{
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		if(getEquipmentSlot().equals(EquipmentSlotType.CHEST)) {
 			stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
-				ITextComponent tip = new TranslationTextComponent("tooltip.electrodynamics.ceramicplatecount")
-					.mergeStyle(TextFormatting.AQUA).append(new StringTextComponent(h.getPlateCount() + ""));
+				ITextComponent tip = new TranslationTextComponent("tooltip.electrodynamics.ceramicplatecount",
+					new StringTextComponent(h.getPlateCount() + "")).mergeStyle(TextFormatting.AQUA);
 				tooltip.add(tip);
 			});
 		}
@@ -104,12 +127,18 @@ public class CompositeArmorItem extends ArmorItem{
 			model.RIGHT_SHOE.showModel = armorSlot == EquipmentSlotType.FEET;
 			model.LEFT_SHOE.showModel = armorSlot == EquipmentSlotType.FEET;
 			
+			model.isChild = _default.isChild;
+			model.isSitting = _default.isSitting;
+			model.isSneak = _default.isSneak;
+			
+			model.rightArmPose = _default.rightArmPose;
+			model.leftArmPose = _default.leftArmPose;
+			
 			return (A) model;
 
 		}
 		return null;
     }
-	
 	
     @Override 
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) { 

@@ -61,7 +61,6 @@ public class Electrodynamics {
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
-	// This can be moved later
 	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	SoundRegister.SOUNDS.register(bus);
 	EntityRegistry.ENTITIES.register(bus);

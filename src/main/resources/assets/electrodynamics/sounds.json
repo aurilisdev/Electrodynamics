@@ -103,5 +103,12 @@
 		"sounds": [
 			"electrodynamics:latherunning"
 		]
+	},
+	"equipheavyarmor":{
+		"category": "players",
+		"subtitle": "Heavy Armor Equiped",
+		"sounds": [
+			"electrodynamics:heavyarmorequiped"
+		]
 	}
 }

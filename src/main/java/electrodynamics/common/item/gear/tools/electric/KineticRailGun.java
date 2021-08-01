@@ -34,19 +34,18 @@ public class KineticRailGun extends Railgun{
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) { 
+		ItemStack gunStack;
+		ItemStack ammoStack;
+		
+		if(handIn == Hand.MAIN_HAND) {
+			gunStack = playerIn.getHeldItemMainhand();
+			ammoStack = playerIn.getHeldItemOffhand();
+		}else {
+			gunStack = playerIn.getHeldItemOffhand();
+			ammoStack = playerIn.getHeldItemMainhand();
+		}
 		
 		if(!worldIn.isRemote) {
-			ItemStack gunStack;
-			ItemStack ammoStack;
-			
-			if(handIn == Hand.MAIN_HAND) {
-				gunStack = playerIn.getHeldItemMainhand();
-				ammoStack = playerIn.getHeldItemOffhand();
-			}else {
-				gunStack = playerIn.getHeldItemOffhand();
-				ammoStack = playerIn.getHeldItemMainhand();
-			}
-			
 			KineticRailGun railgun = (KineticRailGun)gunStack.getItem();
 			
 			if(railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT) {
@@ -76,7 +75,6 @@ public class KineticRailGun extends Railgun{
 						railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
 						ammoStack.shrink(1);
 					}
-					
 				}else {
 					worldIn.playSound(null,playerIn.getPosition(),
 						SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(),
@@ -88,7 +86,7 @@ public class KineticRailGun extends Railgun{
 						SoundCategory.PLAYERS,1,1);
 			}
 		}
-		return ActionResult.resultPass(playerIn.getHeldItemMainhand());
+		return ActionResult.resultPass(gunStack);
 	}
 	
 	private boolean validAmmo(ItemStack ammoStack) {
@@ -99,6 +97,7 @@ public class KineticRailGun extends Railgun{
 		Ingredient stainlessSteelRod = Ingredient.fromStacks(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel)));
 		Ingredient hslaSteelRod = Ingredient.fromStacks(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.hslasteel)));
 		
+		/*
 		for(ItemStack stack: steelRod.getMatchingStacks()) {
 			Electrodynamics.LOGGER.info(stack.toString());
 		}
@@ -108,10 +107,7 @@ public class KineticRailGun extends Railgun{
 		for(ItemStack stack: hslaSteelRod.getMatchingStacks()) {
 			Electrodynamics.LOGGER.info(stack.toString());
 		}
-		
+		*/
 		return steelRod.test(ammoStack) || stainlessSteelRod.test(ammoStack) || hslaSteelRod.test(ammoStack);
 	}
-	
-	
-
 }

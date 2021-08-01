@@ -1,5 +1,5 @@
 {
-    "type":"electrodynamics:extruder_recipe",
+    "type":"electrodynamics:lathe_recipe",
 
     "input":{
         "tag":"forge:ingots/steel",

@@ -79,7 +79,7 @@ import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
-import electrodynamics.common.tile.TileExtruder;
+import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileChargerHV;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
@@ -248,16 +248,6 @@ public class DeferredRegisters {
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
-
-    //Composite Armor
-    public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", 
-		supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.HEAD)));
-    public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
-    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.CHEST)));
-    public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings", 
-    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.LEGS)));
-    public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots", 
-    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.FEET)));
     
     public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
@@ -282,6 +272,18 @@ public class DeferredRegisters {
 	    supplier(new ItemElectricDrill(
 		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
 			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
+    public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
+        	supplier(new KineticRailGun((ElectricItemProperties) new ElectricItemProperties()
+        		.capacity(KineticRailGun.JOULES_PER_SHOT * 5)
+        		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
+        		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
+        		.group(References.CORETAB).maxStackSize(1))));
+        public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
+        	supplier(new PlasmaRailGun((ElectricItemProperties) new ElectricItemProperties()
+        		.capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
+        		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
+        		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
+        		.group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
@@ -292,27 +294,18 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     
-    
-    //Kinetic Rail Gun
-    public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
-    	supplier(new KineticRailGun((ElectricItemProperties) new ElectricItemProperties()
-    		.capacity(KineticRailGun.JOULES_PER_SHOT * 5)
-    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
-    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
-    		.group(References.CORETAB).maxStackSize(1))));
-    
-    //Plasma Rail Gun
-    public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
-    	supplier(new PlasmaRailGun((ElectricItemProperties) new ElectricItemProperties()
-    		.capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
-    		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
-    		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
-    		.group(References.CORETAB).maxStackSize(1))));
-    
-    
     public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
 
+    public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", 
+		supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.HEAD)));
+    public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
+    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.CHEST)));
+    public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings", 
+    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.LEGS)));
+    public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots", 
+    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.FEET)));
+    
     // Split from items to tiles
 
     public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
@@ -384,21 +377,17 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
 	    () -> new TileEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
-
     public static final RegistryObject<TileEntityType<TileEnergizedAlloyer>> TILE_ENERGIZEDALLOYER = TILES.register(
 	    SubtypeMachine.energizedalloyer.tag(),
 	    () -> new TileEntityType<>(TileEnergizedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)), null));
-    
-    public static final RegistryObject<TileEntityType<TileExtruder>> TILE_EXTRUDER = TILES.register(
-    	SubtypeMachine.extruder.tag(),
-    	() -> new TileEntityType<>(TileExtruder::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.extruder)), null));
-    
+    public static final RegistryObject<TileEntityType<TileLathe>> TILE_LATHE = TILES.register(
+    	SubtypeMachine.lathe.tag(),
+    	() -> new TileEntityType<>(TileLathe::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lathe)), null));
     public static final RegistryObject<TileEntityType<TileReinforcedAlloyer>> TILE_REINFORCEDALLOYER = TILES.register(
     	SubtypeMachine.reinforcedalloyer.tag(),
     	() -> new TileEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer),
     		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning)), null));
-    
     public static final RegistryObject<TileEntityType<TileChargerLV>> TILE_CHARGERLV = TILES.register(
     	SubtypeMachine.chargerlv.tag(),
     	() -> new TileEntityType<>(TileChargerLV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerlv)), null));
@@ -406,16 +395,13 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileChargerMV>> TILE_CHARGERMV = TILES.register(
     	SubtypeMachine.chargermv.tag(),
     	() -> new TileEntityType<>(TileChargerMV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargermv)),null));
-    
     public static final RegistryObject<TileEntityType<TileChargerHV>> TILE_CHARGERHV = TILES.register(
     	SubtypeMachine.chargerhv.tag(),
     	() -> new TileEntityType<>(TileChargerHV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv)),null));
-    
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
-
     public static final RegistryObject<TileEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
 	    () -> new TileEntityType<>(TileElectricPump::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
     public static final RegistryObject<TileEntityType<TileThermoelectricGenerator>> TILE_THERMOELECTRICGENERATOR = TILES
@@ -444,10 +430,8 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileMultimeterBlock>> TILE_MULTIMETERBLOCK = TILES.register(
 	    SubtypeMachine.multimeterblock.tag(),
 	    () -> new TileEntityType<>(TileMultimeterBlock::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.multimeterblock)), null));
-
     public static final RegistryObject<TileEntityType<TileMultiSubnode>> TILE_MULTI = TILES.register("multisubnode",
 	    () -> new TileEntityType<>(TileMultiSubnode::new, Sets.newHashSet(multi), null));
-
     public static final RegistryObject<TileEntityType<TileWire>> TILE_WIRE = TILES.register("wiregenerictile",
 	    () -> new TileEntityType<>(TileWire::new, BlockWire.WIRESET, null));
     public static final RegistryObject<TileEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile",
@@ -462,7 +446,6 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.electricfurnacedouble.tag(), () -> new ContainerType<>(ContainerElectricFurnaceDouble::new));
     public static final RegistryObject<ContainerType<ContainerElectricFurnaceTriple>> CONTAINER_ELECTRICFURNACETRIPLE = CONTAINERS
 	    .register(SubtypeMachine.electricfurnacetriple.tag(), () -> new ContainerType<>(ContainerElectricFurnaceTriple::new));
-
     public static final RegistryObject<ContainerType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor",
 	    () -> new ContainerType<>(ContainerO2OProcessor::new));
     public static final RegistryObject<ContainerType<ContainerO2OProcessorDouble>> CONTAINER_O2OPROCESSORDOUBLE = CONTAINERS
@@ -471,7 +454,6 @@ public class DeferredRegisters {
 	    .register("o2oprocessortriple", () -> new ContainerType<>(ContainerO2OProcessorTriple::new));
     public static final RegistryObject<ContainerType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = CONTAINERS.register("do2oprocessor",
 	    () -> new ContainerType<>(ContainerDO2OProcessor::new));
-
     public static final RegistryObject<ContainerType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = CONTAINERS.register(SubtypeMachine.batterybox.tag(),
 	    () -> new ContainerType<>(ContainerBatteryBox::new));
     public static final RegistryObject<ContainerType<ContainerLithiumBatteryBox>> CONTAINER_LITHIUMBATTERYBOX = CONTAINERS
@@ -484,7 +466,6 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.chemicalmixer.tag(), () -> new ContainerType<>(ContainerChemicalMixer::new));
     public static final RegistryObject<ContainerType<ContainerChemicalCrystallizer>> CONTAINER_CHEMICALCRYSTALLIZER = CONTAINERS
 	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
-    
     public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS
     	.register("genericcharger", () -> new ContainerType<>(ContainerChargerGeneric::new));
     

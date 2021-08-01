@@ -69,9 +69,9 @@ public class Constants {
     @DoubleValue(def = 2000.0)
     public static double ENERGIZEDALLOYER_USAGE_PER_TICK = 2000.0;
     @IntValue(def = 200)
-    public static int EXTRUDER_REQUIRED_TICKS = 200;
+    public static int LATHE_REQUIRED_TICKS = 200;
     @DoubleValue(def = 350.0)
-    public static double EXTRUDER_USAGE_PER_TICK = 350.0;
+    public static double LATHE_USAGE_PER_TICK = 350.0;
     @IntValue(def = 50)
     public static int REINFORCEDALLOYER_REQUIRED_TICKS = 50;
     @DoubleValue(def = 2000.0)

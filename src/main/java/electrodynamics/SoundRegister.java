@@ -26,30 +26,24 @@ public class SoundRegister {
     	supplier(new SoundEvent(new ResourceLocation(References.ID + ":hydroelectricgenerator"))));
     public static final RegistryObject<SoundEvent> SOUND_WINDMILL = SOUNDS.register("windmill",
     	supplier(new SoundEvent(new ResourceLocation(References.ID + ":windmill"))));
-    
-    
     public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEBREAKING = SOUNDS.register
     	("ceramicplatebreaking", supplier(new SoundEvent(new ResourceLocation(References.ID + ":ceramicplatebreaking"))));
     public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEADDED = SOUNDS.register
         ("ceramicplateadded", supplier(new SoundEvent(new ResourceLocation(References.ID + ":ceramicplateadded"))));
-   
     public static final RegistryObject<SoundEvent> SOUND_RAILGUNKINETIC = SOUNDS.register
     	("railgunkinetic", supplier(new SoundEvent(new ResourceLocation(References.ID + ":railgunkinetic"))));
     public static final RegistryObject<SoundEvent> SOUND_RAILGUNKINETIC_NOAMMO = SOUNDS.register
     	("railgunkinetic_noammo", supplier(new SoundEvent(new ResourceLocation(References.ID + ":railgunkinetic_noammo"))));
-    
     public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA = SOUNDS.register
         ("railgunplasma", supplier(new SoundEvent(new ResourceLocation(References.ID + ":railgunplasma"))));
     public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA_NOPOWER = SOUNDS.register
     	("railgunplasma_nopower", supplier(new SoundEvent(new ResourceLocation(References.ID + ":railgunplasma_nopower"))));
-    
     public static final RegistryObject<SoundEvent> SOUND_RODIMPACTINGGROUND = SOUNDS.register
     	("rodhittingground", supplier(new SoundEvent(new ResourceLocation(References.ID + ":rodhittingground"))));
-    
     public static final RegistryObject<SoundEvent> SOUND_LATHEPLAYING = SOUNDS.register
     	("latherunning", supplier(new SoundEvent(new ResourceLocation(References.ID + ":latherunning"))));
-
-
+    public static final RegistryObject<SoundEvent> SOUND_EQUIPHEAVYARMOR = SOUNDS.register
+    	("equipheavyarmor", supplier(new SoundEvent(new ResourceLocation(References.ID + ":equipheavyarmor"))));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
     	return () -> entry;

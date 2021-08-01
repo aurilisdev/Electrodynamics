@@ -51,10 +51,10 @@ public class ClientRenderEvents {
 			correction = "";
 		}
 		
-		ITextComponent currTempText = new TranslationTextComponent("tooltip.electrodynamics.railguntemp")
-			.mergeStyle(TextFormatting.YELLOW).append(new StringTextComponent(temperature + correction + " C"));
-		ITextComponent maxTempText = new TranslationTextComponent("tooltip.electrodynamics.railgunmaxtemp")
-			.mergeStyle(TextFormatting.YELLOW).append(new StringTextComponent(railgun.getMaxTemp() + " C"));
+		ITextComponent currTempText = new TranslationTextComponent("tooltip.electrodynamics.railguntemp",
+			new StringTextComponent(temperature + correction + " C")).mergeStyle(TextFormatting.YELLOW);
+		ITextComponent maxTempText = new TranslationTextComponent("tooltip.electrodynamics.railgunmaxtemp",
+			new StringTextComponent(railgun.getMaxTemp() + " C")).mergeStyle(TextFormatting.YELLOW);
 		
 		minecraft.currentScreen.drawCenteredString(event.getMatrixStack(), minecraft.fontRenderer,
 			currTempText, 55, 2, 0);

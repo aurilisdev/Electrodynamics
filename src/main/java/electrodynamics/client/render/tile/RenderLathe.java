@@ -3,7 +3,7 @@ package electrodynamics.client.render.tile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileExtruder;
+import electrodynamics.common.tile.TileLathe;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -16,21 +16,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class RenderExtruder extends TileEntityRenderer<TileExtruder>{
+public class RenderLathe extends TileEntityRenderer<TileLathe>{
 
-	public RenderExtruder(TileEntityRendererDispatcher rendererDispatcherIn) {
+	public RenderLathe(TileEntityRendererDispatcher rendererDispatcherIn) {
 		super(rendererDispatcherIn);
 	}
 
 	@Override
-	public void render(TileExtruder tileEntityIn, float partialTicks, MatrixStack matrixStackIn,
+	public void render(TileLathe tileEntityIn, float partialTicks, MatrixStack matrixStackIn,
 			IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		
 		matrixStackIn.push();
-		IBakedModel extruder = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_EXTRUDER);
+		IBakedModel lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHE);
 		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0f, 1.0 / 16.0, 0f);
-		UtilitiesRendering.renderModel(extruder, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		
 		double progress = Math.sin(0.05 * Math.PI * partialTicks);
 		float progressDegrees = 0.0F;
@@ -39,8 +39,8 @@ public class RenderExtruder extends TileEntityRenderer<TileExtruder>{
 		}
 		
 		matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-		extruder = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_EXTRUDERSHAFT);
-		UtilitiesRendering.renderModel(extruder, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHESHAFT);
+		UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.pop();
 		ItemStack stack = tileEntityIn.getProcessor(0).getInput();
 		if(!stack.isEmpty()) {

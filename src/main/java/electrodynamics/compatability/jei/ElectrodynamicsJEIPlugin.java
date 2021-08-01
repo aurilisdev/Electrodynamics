@@ -29,7 +29,7 @@ import electrodynamics.compatability.jei.recipecategories.specificmachines.elect
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalMixerRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ElectricFurnaceRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.EnergizedAlloyerRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ExtruderRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.LatheRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.FermentationPlantRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralCrusherRecipeCategory;
 import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralGrinderRecipeCategory;
@@ -123,9 +123,9 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	registration.addRecipeCatalyst(EnergizedAlloyerRecipeCategory.INPUT_MACHINE,EnergizedAlloyerRecipeCategory.UID);
 	
-	/* Extruder */
+	/* Lathe */
 	
-	registration.addRecipeCatalyst(ExtruderRecipeCategory.INPUT_MACHINE,ExtruderRecipeCategory.UID);
+	registration.addRecipeCatalyst(LatheRecipeCategory.INPUT_MACHINE,LatheRecipeCategory.UID);
 
 	/* Mineral Washer */
 
@@ -156,8 +156,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	ClientWorld world = Objects.requireNonNull(mc.world);
 	RecipeManager recipeManager = world.getRecipeManager();
 
-	/* Electrodynamics */
-
 	// Electric Furnace
 	// still broken; just cleaning up
 	@SuppressWarnings("unchecked")
@@ -184,9 +182,9 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	Set<DO2ORecipe> energizedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getRecipesForType(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE));
 	registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
 
-	// Extruder
-	Set<O2ORecipe> extruderRecipes = ImmutableSet.copyOf(recipeManager.getRecipesForType(ElectrodynamicsRecipeInit.EXTRUDER_TYPE));
-	registration.addRecipes(extruderRecipes, ExtruderRecipeCategory.UID);
+	// Lathe
+	Set<O2ORecipe> latheRecipes = ImmutableSet.copyOf(recipeManager.getRecipesForType(ElectrodynamicsRecipeInit.LATHE_TYPE));
+	registration.addRecipes(latheRecipes, LatheRecipeCategory.UID);
 	
 	// Mineral Washer
 	Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet.copyOf(recipeManager.getRecipesForType(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE));
@@ -236,7 +234,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipeCategories(new EnergizedAlloyerRecipeCategory(guiHelper));
 	
 		// Extruder
-		registration.addRecipeCategories(new ExtruderRecipeCategory(guiHelper));
+		registration.addRecipeCategories(new LatheRecipeCategory(guiHelper));
 		
 		// Mineral Washer
 		registration.addRecipeCategories(new MineralWasherRecipeCategory(guiHelper));
@@ -306,7 +304,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	locations.add(WireMillRecipeCategory.UID);
 	locations.add(MineralGrinderRecipeCategory.UID);
 	locations.add(MineralCrusherRecipeCategory.UID);
-	locations.add(ExtruderRecipeCategory.UID);
+	locations.add(LatheRecipeCategory.UID);
 	
 	ResourceLocation[] totalLocations = new ResourceLocation[locations.size()];
 

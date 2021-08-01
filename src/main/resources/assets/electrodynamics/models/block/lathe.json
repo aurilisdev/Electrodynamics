@@ -3,8 +3,8 @@
 	"credit":"skip999",
 	"texture_size":[64,64],
 	"textures":{
-		"0":"electrodynamics:model/extruder",
-		"particle":"electrodynamics:model/extruder"
+		"0":"electrodynamics:model/lathe",
+		"particle":"electrodynamics:model/lathe"
 	},
 	"elements":[
 		{
@@ -275,7 +275,7 @@
 	],
 	"groups":[
 		{
-			"name":"extruder",
+			"name":"lathe",
 			"origin":[8,8,8],
 			"color":0,
 			"children":[0,1,
