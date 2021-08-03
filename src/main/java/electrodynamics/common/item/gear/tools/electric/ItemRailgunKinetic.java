@@ -18,7 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class KineticRailGun extends Railgun {
+public class ItemRailgunKinetic extends Railgun {
 
     public static final double JOULES_PER_SHOT = 100000.0;
     private static final int OVERHEAT_TEMPERATURE = 400;
@@ -26,7 +26,7 @@ public class KineticRailGun extends Railgun {
     private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
     private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 
-    public KineticRailGun(ElectricItemProperties properties) {
+    public ItemRailgunKinetic(ElectricItemProperties properties) {
 	super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
     }
 
@@ -44,7 +44,7 @@ public class KineticRailGun extends Railgun {
 	}
 
 	if (!worldIn.isRemote) {
-	    KineticRailGun railgun = (KineticRailGun) gunStack.getItem();
+	    ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
 
 	    if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT) {
 		if (validAmmo(ammoStack) && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {

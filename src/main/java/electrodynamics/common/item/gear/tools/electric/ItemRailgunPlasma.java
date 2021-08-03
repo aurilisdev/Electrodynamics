@@ -13,7 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class PlasmaRailGun extends Railgun {
+public class ItemRailgunPlasma extends Railgun {
 
     public static final double JOULES_PER_SHOT = 1000000.0;
     private static final int OVERHEAT_TEMPERATURE = 500;
@@ -21,7 +21,7 @@ public class PlasmaRailGun extends Railgun {
     private static final double TEMPERATURE_REDUCED_PER_TICK = 1.0;
     private static final double OVERHEAT_WARNING_THRESHOLD = 0.5;
 
-    public PlasmaRailGun(ElectricItemProperties properties) {
+    public ItemRailgunPlasma(ElectricItemProperties properties) {
 	super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
     }
 
@@ -35,7 +35,7 @@ public class PlasmaRailGun extends Railgun {
 	    gunStack = playerIn.getHeldItemOffhand();
 	}
 	if (!worldIn.isRemote) {
-	    PlasmaRailGun railgun = (PlasmaRailGun) gunStack.getItem();
+	    ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
 
 	    if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT
 		    && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {

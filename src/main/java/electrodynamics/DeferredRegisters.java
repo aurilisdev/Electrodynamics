@@ -51,8 +51,8 @@ import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
 import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
-import electrodynamics.common.item.gear.tools.electric.KineticRailGun;
-import electrodynamics.common.item.gear.tools.electric.PlasmaRailGun;
+import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
+import electrodynamics.common.item.gear.tools.electric.ItemRailgunPlasma;
 import electrodynamics.common.item.subtype.SubtypeCanister;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
@@ -273,13 +273,13 @@ public class DeferredRegisters {
 		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
 			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
-	    supplier(new KineticRailGun((ElectricItemProperties) new ElectricItemProperties().capacity(KineticRailGun.JOULES_PER_SHOT * 5)
-		    .extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
-		    .receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240)).group(References.CORETAB).maxStackSize(1))));
+	    supplier(new ItemRailgunKinetic((ElectricItemProperties) new ElectricItemProperties().capacity(ItemRailgunKinetic.JOULES_PER_SHOT * 5)
+		    .extract(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 5, 240))
+		    .receive(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 5, 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
-	    supplier(new PlasmaRailGun((ElectricItemProperties) new ElectricItemProperties().capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
-		    .extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
-		    .receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480)).group(References.CORETAB).maxStackSize(1))));
+	    supplier(new ItemRailgunPlasma((ElectricItemProperties) new ElectricItemProperties().capacity(ItemRailgunPlasma.JOULES_PER_SHOT * 10)
+		    .extract(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480))
+		    .receive(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
