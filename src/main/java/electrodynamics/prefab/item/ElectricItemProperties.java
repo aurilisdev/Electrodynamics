@@ -4,7 +4,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.item.Item.Properties;
 
 public class ElectricItemProperties extends Properties {
-	public double temperature;
+    public double temperature;
     public double capacity;
     public TransferPack receive = TransferPack.EMPTY;
     public TransferPack extract = TransferPack.EMPTY;
@@ -13,10 +13,10 @@ public class ElectricItemProperties extends Properties {
 	this.capacity = (int) capacity;
 	return this;
     }
-    
+
     public ElectricItemProperties temperature(double temperature) {
-    	this.temperature = temperature;
-    	return this;
+	this.temperature = temperature;
+	return this;
     }
 
     public ElectricItemProperties receive(TransferPack receive) {

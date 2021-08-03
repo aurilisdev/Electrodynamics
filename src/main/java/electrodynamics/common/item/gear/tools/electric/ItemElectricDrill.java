@@ -136,9 +136,9 @@ public class ItemElectricDrill extends PickaxeItem implements IItemElectric {
 	// TODO: how would this be implemented
     }
 
-	@Override
-	public ElectricItemProperties getProperties() {
-		return this.properties;
-	}
+    @Override
+    public ElectricItemProperties getProperties() {
+	return properties;
+    }
 
 }

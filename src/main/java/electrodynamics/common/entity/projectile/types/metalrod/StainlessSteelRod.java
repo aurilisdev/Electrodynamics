@@ -11,24 +11,22 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class StainlessSteelRod extends MetalRod{
+public class StainlessSteelRod extends MetalRod {
 
-	private static final float DAMAGE_DEALT = 20f;
-	private static final DamageSource DAMAGE_SOURCE = DamageSources.ACCELERATED_BOLT;
-	private static Item ITEM = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel);
-	
-	public StainlessSteelRod(EntityType<? extends ProjectileItemEntity> type, World world) {
-		super(type, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
-	}
-	
-	public StainlessSteelRod(LivingEntity entity, World world) {
-		super(EntityRegistry.PROJECTILE_STAINLESSSTEELROD.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
-	}
-	
-	public StainlessSteelRod(double x, double y, double z, World worldIn) {
-		super(EntityRegistry.PROJECTILE_STAINLESSSTEELROD.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
-	}
-	
-	
-	
+    private static final float DAMAGE_DEALT = 20f;
+    private static final DamageSource DAMAGE_SOURCE = DamageSources.ACCELERATED_BOLT;
+    private static Item ITEM = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel);
+
+    public StainlessSteelRod(EntityType<? extends ProjectileItemEntity> type, World world) {
+	super(type, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    }
+
+    public StainlessSteelRod(LivingEntity entity, World world) {
+	super(EntityRegistry.PROJECTILE_STAINLESSSTEELROD.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    }
+
+    public StainlessSteelRod(double x, double y, double z, World worldIn) {
+	super(EntityRegistry.PROJECTILE_STAINLESSSTEELROD.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    }
+
 }

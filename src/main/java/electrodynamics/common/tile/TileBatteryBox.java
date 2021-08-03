@@ -27,10 +27,10 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage {
-    
-	private static final int CHARGE_SLOT = 4;
-	
-	public final double powerOutput;
+
+    private static final int CHARGE_SLOT = 4;
+
+    public final double powerOutput;
     public final double maxJoules;
     public double clientMaxJoulesStored;
     public double currentCapacityMultiplier = 1;
@@ -60,50 +60,49 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
     }
 
     protected void tickServer(ComponentTickable tickable) {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		if (output == null) {
-		    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
-		}
-		if (tickable.getTicks() % 40 == 0) {
-		    output.update();
-		}
-		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
-		if (electro.getJoulesStored() > 0 && output.valid()) {
-		    electro.joules(electro.getJoulesStored() - ElectricityUtilities
-			    .receivePower(output.getSafe(), facing, TransferPack
-				    .joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
-			    .getJoules());
-		}
-		currentCapacityMultiplier = 1;
-		int currentVoltageMultiplier = 1;
-		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-		    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-			ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
-			currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-			currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
-		    }
-		}
-		electro.maxJoules(maxJoules * currentCapacityMultiplier);
-		electro.voltage(120.0 * currentVoltageMultiplier);
-		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
-		    electro.joules(electro.getMaxJoulesStored());
-		}
-		if (tickable.getTicks() % 50 == 0) {
-		    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		}
-		electro.drainElectricItem(3);
+	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+	ComponentInventory inv = getComponent(ComponentType.Inventory);
+	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	if (output == null) {
+	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
+	}
+	if (tickable.getTicks() % 40 == 0) {
+	    output.update();
+	}
+	receiveLimitLeft = powerOutput * currentCapacityMultiplier;
+	if (electro.getJoulesStored() > 0 && output.valid()) {
+	    electro.joules(electro.getJoulesStored() - ElectricityUtilities
+		    .receivePower(output.getSafe(), facing, TransferPack
+			    .joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
+		    .getJoules());
+	}
+	currentCapacityMultiplier = 1;
+	int currentVoltageMultiplier = 1;
+	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
+	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
+		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
+		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
+	    }
+	}
+	electro.maxJoules(maxJoules * currentCapacityMultiplier);
+	electro.voltage(120.0 * currentVoltageMultiplier);
+	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
+	    electro.joules(electro.getMaxJoulesStored());
+	}
+	if (tickable.getTicks() % 50 == 0) {
+	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+	}
+	electro.drainElectricItem(3);
 
-		Item item = inv.getStackInSlot(CHARGE_SLOT).getItem();
-		if(item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_BATTERY.get().getRegistryName().toString())
-			|| item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_LITHIUMBATTERY.get().getRegistryName().toString())) {
-			electro.fillElectricItem(CHARGE_SLOT);
-		}
-		
-	
-		// Power loss
-		electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);
+	Item item = inv.getStackInSlot(CHARGE_SLOT).getItem();
+	if (item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_BATTERY.get().getRegistryName().toString())
+		|| item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_LITHIUMBATTERY.get().getRegistryName().toString())) {
+	    electro.fillElectricItem(CHARGE_SLOT);
+	}
+
+	// Power loss
+	electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);
     }
 
     protected void createPacket(CompoundNBT nbt) {

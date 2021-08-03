@@ -16,42 +16,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class RenderLathe extends TileEntityRenderer<TileLathe>{
+public class RenderLathe extends TileEntityRenderer<TileLathe> {
 
-	public RenderLathe(TileEntityRendererDispatcher rendererDispatcherIn) {
-		super(rendererDispatcherIn);
+    public RenderLathe(TileEntityRendererDispatcher rendererDispatcherIn) {
+	super(rendererDispatcherIn);
+    }
+
+    @Override
+    public void render(TileLathe tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
+	    int combinedOverlayIn) {
+
+	matrixStackIn.push();
+	IBakedModel lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHE);
+	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+	matrixStackIn.translate(0f, 1.0 / 16.0, 0f);
+	UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+
+	double progress = Math.sin(0.05 * Math.PI * partialTicks);
+	float progressDegrees = 0.0F;
+	if (tileEntityIn.getProcessor(0).operatingTicks > 0) {
+	    progressDegrees = 360.0f * (float) progress;
 	}
 
-	@Override
-	public void render(TileLathe tileEntityIn, float partialTicks, MatrixStack matrixStackIn,
-			IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		
-		matrixStackIn.push();
-		IBakedModel lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHE);
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-		matrixStackIn.translate(0f, 1.0 / 16.0, 0f);
-		UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		
-		double progress = Math.sin(0.05 * Math.PI * partialTicks);
-		float progressDegrees = 0.0F;
-		if(tileEntityIn.getProcessor(0).operatingTicks > 0) {
-			progressDegrees = 360.0f * (float)progress;
-		}
-		
-		matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-		lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHESHAFT);
-		UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		matrixStackIn.pop();
-		ItemStack stack = tileEntityIn.getProcessor(0).getInput();
-		if(!stack.isEmpty()) {
-			matrixStackIn.push();
-		    matrixStackIn.translate(0.5f, 0.78f, 0.5f);
-		    matrixStackIn.scale(0.35f, 0.35f, 0.35f);
-		    matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-		    Minecraft.getInstance().getItemRenderer().renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-				    bufferIn);
-		    matrixStackIn.pop();
-		}
+	matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
+	lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHESHAFT);
+	UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	matrixStackIn.pop();
+	ItemStack stack = tileEntityIn.getProcessor(0).getInput();
+	if (!stack.isEmpty()) {
+	    matrixStackIn.push();
+	    matrixStackIn.translate(0.5f, 0.78f, 0.5f);
+	    matrixStackIn.scale(0.35f, 0.35f, 0.35f);
+	    matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
+	    Minecraft.getInstance().getItemRenderer().renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
+		    bufferIn);
+	    matrixStackIn.pop();
 	}
+    }
 
 }

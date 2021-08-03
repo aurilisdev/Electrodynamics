@@ -69,6 +69,9 @@ import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileChargerHV;
+import electrodynamics.common.tile.TileChargerLV;
+import electrodynamics.common.tile.TileChargerMV;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCircuitBreaker;
@@ -79,13 +82,10 @@ import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
-import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileFermentationPlant;
-import electrodynamics.common.tile.TileChargerHV;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
-import electrodynamics.common.tile.TileChargerLV;
+import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
-import electrodynamics.common.tile.TileChargerMV;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -145,34 +145,34 @@ public class DeferredRegisters {
     public static FluidMolybdenum fluidMolybdenum;
 
     static {
-		for (SubtypeOre subtype : SubtypeOre.values()) {
-		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
-		}
-		for (SubtypeMachine subtype : SubtypeMachine.values()) {
-		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
-		}
-		for (SubtypeWire subtype : SubtypeWire.values()) {
-		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
-		}
-		for (SubtypePipe subtype : SubtypePipe.values()) {
-		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
-		}
-		for (SubtypeGlass subtype : SubtypeGlass.values()) {
-		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
-		}
-		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
-		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
-		}
-		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
-		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
-		FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
-		for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
-		    FluidMineral fluid = new FluidMineral(mineral);
-		    SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
-		    MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
-		    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
-		}
-		FLUIDS.register("fluidmolybdenum",supplier(fluidMolybdenum = new FluidMolybdenum()));
+	for (SubtypeOre subtype : SubtypeOre.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
+	}
+	for (SubtypeMachine subtype : SubtypeMachine.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
+	}
+	for (SubtypeWire subtype : SubtypeWire.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
+	}
+	for (SubtypePipe subtype : SubtypePipe.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
+	}
+	for (SubtypeGlass subtype : SubtypeGlass.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
+	}
+	for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
+	}
+	FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
+	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
+	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
+	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
+	    FluidMineral fluid = new FluidMineral(mineral);
+	    SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
+	    MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
+	    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
+	}
+	FLUIDS.register("fluidmolybdenum", supplier(fluidMolybdenum = new FluidMolybdenum()));
     }
 
     private static void registerSubtypeItem(ISubtype[] array) {
@@ -214,8 +214,8 @@ public class DeferredRegisters {
 	    SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(),
 		    supplier(new ItemProcessorUpgrade(new Item.Properties().group(References.CORETAB), subtype), subtype)));
 	}
-	for(SubtypeCeramic subtype: SubtypeCeramic.values()) {
-		ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype),subtype));
+	for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
+	    ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));
 	}
 	for (SubtypeCanister subtype : SubtypeCanister.values()) {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype), subtype));
@@ -226,10 +226,10 @@ public class DeferredRegisters {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype), subtype));
 	}
 	ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	ITEMS.register("compositeplating",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	ITEMS.register("compositeplatingraw",supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
+	ITEMS.register("compositeplating", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
+	ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
-	
+
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 		"|translate|tooltip.transformer.energyloss");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer),
@@ -248,7 +248,7 @@ public class DeferredRegisters {
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
-    
+
     public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic",
@@ -273,17 +273,13 @@ public class DeferredRegisters {
 		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
 			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
-        	supplier(new KineticRailGun((ElectricItemProperties) new ElectricItemProperties()
-        		.capacity(KineticRailGun.JOULES_PER_SHOT * 5)
-        		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
-        		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
-        		.group(References.CORETAB).maxStackSize(1))));
-        public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
-        	supplier(new PlasmaRailGun((ElectricItemProperties) new ElectricItemProperties()
-        		.capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
-        		.extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
-        		.receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
-        		.group(References.CORETAB).maxStackSize(1))));
+	    supplier(new KineticRailGun((ElectricItemProperties) new ElectricItemProperties().capacity(KineticRailGun.JOULES_PER_SHOT * 5)
+		    .extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240))
+		    .receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 5, 240)).group(References.CORETAB).maxStackSize(1))));
+    public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma",
+	    supplier(new PlasmaRailGun((ElectricItemProperties) new ElectricItemProperties().capacity(PlasmaRailGun.JOULES_PER_SHOT * 10)
+		    .extract(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480))
+		    .receive(TransferPack.joulesVoltage(KineticRailGun.JOULES_PER_SHOT * 10, 480)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
@@ -293,19 +289,19 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-    
+
     public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
 
-    public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", 
-		supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.HEAD)));
+    public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet",
+	    supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.HEAD)));
     public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
-    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.CHEST)));
-    public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings", 
-    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.LEGS)));
-    public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots", 
-    	supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR,EquipmentSlotType.FEET)));
-    
+	    supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.CHEST)));
+    public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings",
+	    supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.LEGS)));
+    public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots",
+	    supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlotType.FEET)));
+
     // Split from items to tiles
 
     public static final RegistryObject<TileEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
@@ -381,23 +377,19 @@ public class DeferredRegisters {
 	    SubtypeMachine.energizedalloyer.tag(),
 	    () -> new TileEntityType<>(TileEnergizedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)), null));
-    public static final RegistryObject<TileEntityType<TileLathe>> TILE_LATHE = TILES.register(
-    	SubtypeMachine.lathe.tag(),
-    	() -> new TileEntityType<>(TileLathe::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lathe)), null));
+    public static final RegistryObject<TileEntityType<TileLathe>> TILE_LATHE = TILES.register(SubtypeMachine.lathe.tag(),
+	    () -> new TileEntityType<>(TileLathe::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lathe)), null));
     public static final RegistryObject<TileEntityType<TileReinforcedAlloyer>> TILE_REINFORCEDALLOYER = TILES.register(
-    	SubtypeMachine.reinforcedalloyer.tag(),
-    	() -> new TileEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer),
-    		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning)), null));
-    public static final RegistryObject<TileEntityType<TileChargerLV>> TILE_CHARGERLV = TILES.register(
-    	SubtypeMachine.chargerlv.tag(),
-    	() -> new TileEntityType<>(TileChargerLV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerlv)), null));
-    
-    public static final RegistryObject<TileEntityType<TileChargerMV>> TILE_CHARGERMV = TILES.register(
-    	SubtypeMachine.chargermv.tag(),
-    	() -> new TileEntityType<>(TileChargerMV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargermv)),null));
-    public static final RegistryObject<TileEntityType<TileChargerHV>> TILE_CHARGERHV = TILES.register(
-    	SubtypeMachine.chargerhv.tag(),
-    	() -> new TileEntityType<>(TileChargerHV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv)),null));
+	    SubtypeMachine.reinforcedalloyer.tag(),
+	    () -> new TileEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer),
+		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning)), null));
+    public static final RegistryObject<TileEntityType<TileChargerLV>> TILE_CHARGERLV = TILES.register(SubtypeMachine.chargerlv.tag(),
+	    () -> new TileEntityType<>(TileChargerLV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerlv)), null));
+
+    public static final RegistryObject<TileEntityType<TileChargerMV>> TILE_CHARGERMV = TILES.register(SubtypeMachine.chargermv.tag(),
+	    () -> new TileEntityType<>(TileChargerMV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargermv)), null));
+    public static final RegistryObject<TileEntityType<TileChargerHV>> TILE_CHARGERHV = TILES.register(SubtypeMachine.chargerhv.tag(),
+	    () -> new TileEntityType<>(TileChargerHV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv)), null));
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
@@ -466,10 +458,9 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.chemicalmixer.tag(), () -> new ContainerType<>(ContainerChemicalMixer::new));
     public static final RegistryObject<ContainerType<ContainerChemicalCrystallizer>> CONTAINER_CHEMICALCRYSTALLIZER = CONTAINERS
 	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
-    public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS
-    	.register("genericcharger", () -> new ContainerType<>(ContainerChargerGeneric::new));
-    
-    
+    public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS.register("genericcharger",
+	    () -> new ContainerType<>(ContainerChargerGeneric::new));
+
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;
     }

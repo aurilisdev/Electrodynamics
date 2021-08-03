@@ -2,7 +2,42 @@ package electrodynamics.common.block.subtype;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.tile.*;
+import electrodynamics.common.tile.TileAdvancedSolarPanel;
+import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileChargerHV;
+import electrodynamics.common.tile.TileChargerLV;
+import electrodynamics.common.tile.TileChargerMV;
+import electrodynamics.common.tile.TileChemicalCrystallizer;
+import electrodynamics.common.tile.TileChemicalMixer;
+import electrodynamics.common.tile.TileCircuitBreaker;
+import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.TileElectricFurnace;
+import electrodynamics.common.tile.TileElectricFurnaceDouble;
+import electrodynamics.common.tile.TileElectricFurnaceTriple;
+import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileEnergizedAlloyer;
+import electrodynamics.common.tile.TileFermentationPlant;
+import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileLathe;
+import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.common.tile.TileMineralCrusher;
+import electrodynamics.common.tile.TileMineralCrusherDouble;
+import electrodynamics.common.tile.TileMineralCrusherTriple;
+import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.TileMineralGrinderDouble;
+import electrodynamics.common.tile.TileMineralGrinderTriple;
+import electrodynamics.common.tile.TileMineralWasher;
+import electrodynamics.common.tile.TileMultimeterBlock;
+import electrodynamics.common.tile.TileOxidationFurnace;
+import electrodynamics.common.tile.TileReinforcedAlloyer;
+import electrodynamics.common.tile.TileSolarPanel;
+import electrodynamics.common.tile.TileThermoelectricGenerator;
+import electrodynamics.common.tile.TileTransformer;
+import electrodynamics.common.tile.TileWindmill;
+import electrodynamics.common.tile.TileWireMill;
+import electrodynamics.common.tile.TileWireMillDouble;
+import electrodynamics.common.tile.TileWireMillTriple;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -76,20 +111,18 @@ public enum SubtypeMachine implements ISubtype {
     energizedalloyer(true, TileEnergizedAlloyer.class),
     // split
     energizedalloyerrunning(false, TileEnergizedAlloyer.class),
-    
-    lathe(true,TileLathe.class),
-    
-    reinforcedalloyer(true,TileReinforcedAlloyer.class),
-    
-    reinforcedalloyerrunning(false,TileReinforcedAlloyer.class),
-	
-	chargerlv(true, TileChargerLV.class),
-	
-	chargermv(true,TileChargerMV.class),
-	
-	chargerhv(true,TileChargerHV.class);
-	
-	
+
+    lathe(true, TileLathe.class),
+
+    reinforcedalloyer(true, TileReinforcedAlloyer.class),
+
+    reinforcedalloyerrunning(false, TileReinforcedAlloyer.class),
+
+    chargerlv(true, TileChargerLV.class),
+
+    chargermv(true, TileChargerMV.class),
+
+    chargerhv(true, TileChargerHV.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;
@@ -123,22 +156,17 @@ public enum SubtypeMachine implements ISubtype {
 	if (bb instanceof BlockMachine && ba instanceof BlockMachine) {
 	    SubtypeMachine mb = ((BlockMachine) bb).machine;
 	    SubtypeMachine ma = ((BlockMachine) ba).machine;
-	    
-	    
+
 	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
 		    || mb == electricfurnacedouble && ma == electricfurnacedoublerunning
 		    || mb == electricfurnacedoublerunning && ma == electricfurnacedouble
 		    || mb == electricfurnacetriple && ma == electricfurnacetriplerunning
-		    || mb == electricfurnacetriplerunning && ma == electricfurnacetriple 
-		    || mb == coalgenerator && ma == coalgeneratorrunning
-		    || mb == coalgeneratorrunning && ma == coalgenerator 
-		    || mb == oxidationfurnace && ma == oxidationfurnacerunning
-		    || mb == oxidationfurnacerunning && ma == oxidationfurnace 
-		    || mb == energizedalloyer && ma == energizedalloyerrunning
-		    || ma == energizedalloyer && mb == energizedalloyerrunning
-		    || ma == reinforcedalloyer && mb == reinforcedalloyerrunning
-		    || mb == reinforcedalloyer && ma == reinforcedalloyerrunning) 
-	    	
+		    || mb == electricfurnacetriplerunning && ma == electricfurnacetriple || mb == coalgenerator && ma == coalgeneratorrunning
+		    || mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
+		    || mb == oxidationfurnacerunning && ma == oxidationfurnace || mb == energizedalloyer && ma == energizedalloyerrunning
+		    || ma == energizedalloyer && mb == energizedalloyerrunning || ma == reinforcedalloyer && mb == reinforcedalloyerrunning
+		    || mb == reinforcedalloyer && ma == reinforcedalloyerrunning)
+
 	    {
 		return false;
 	    }

@@ -33,10 +33,7 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
 
     public static Fluid[] SUPPORTED_INPUT_FLUIDS;
-    public static Fluid[] OTHER_INPUT_FLUIDS = new Fluid[] {
-    		DeferredRegisters.fluidPolyethylene,
-    		DeferredRegisters.fluidMolybdenum
-    };
+    public static Fluid[] OTHER_INPUT_FLUIDS = new Fluid[] { DeferredRegisters.fluidPolyethylene, DeferredRegisters.fluidMolybdenum };
     static {
 	List<FluidMineral> mineralFluids = new ArrayList<>(DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values());
 	SUPPORTED_INPUT_FLUIDS = new Fluid[mineralFluids.size() + OTHER_INPUT_FLUIDS.length];

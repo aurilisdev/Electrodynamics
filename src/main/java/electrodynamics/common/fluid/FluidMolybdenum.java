@@ -18,67 +18,68 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.fluids.FluidAttributes;
 
-public class FluidMolybdenum extends Fluid{
+public class FluidMolybdenum extends Fluid {
 
-	@Override
+    @Override
     public Item getFilledBucket() {
-		return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.molybdenum);
+	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.molybdenum);
     }
 
     @Override
     protected boolean canDisplace(FluidState fluidState, IBlockReader blockReader, BlockPos pos, Fluid fluid, Direction direction) {
-    	return false;
+	return false;
     }
 
     @Override
     protected Vector3d getFlow(IBlockReader blockReader, BlockPos pos, FluidState fluidState) {
-    	return Vector3d.ZERO;
+	return Vector3d.ZERO;
     }
 
     @Override
     public int getTickRate(IWorldReader p_205569_1_) {
-    	return 0;
+	return 0;
     }
 
     @Override
     protected float getExplosionResistance() {
-    	return 0;
+	return 0;
     }
 
     @Override
     public float getActualHeight(FluidState p_215662_1_, IBlockReader p_215662_2_, BlockPos p_215662_3_) {
-    	return 0;
+	return 0;
     }
 
     @Override
     public float getHeight(FluidState p_223407_1_) {
-    	return 0;
+	return 0;
     }
 
     @Override
     protected BlockState getBlockState(FluidState state) {
-    	return Blocks.AIR.getDefaultState();
+	return Blocks.AIR.getDefaultState();
     }
 
     @Override
     public boolean isSource(FluidState state) {
-    	return false;
+	return false;
     }
 
     @Override
     public int getLevel(FluidState state) {
-    	return 0;
+	return 0;
     }
 
     @Override
     protected FluidAttributes createAttributes() {
-		return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/molybdenum"), new ResourceLocation(References.ID + ":fluid/molybdenum"))
-			.translationKey("fluid.electrodynamics.molybdenum").build(this);
+	return FluidAttributes
+		.builder(new ResourceLocation(References.ID + ":fluid/molybdenum"), new ResourceLocation(References.ID + ":fluid/molybdenum"))
+		.translationKey("fluid.electrodynamics.molybdenum").build(this);
     }
 
     @Override
     public VoxelShape func_215664_b(FluidState p_215664_1_, IBlockReader p_215664_2_, BlockPos p_215664_3_) {
-    	return VoxelShapes.fullCube();
+	return VoxelShapes.fullCube();
     }
 
 }

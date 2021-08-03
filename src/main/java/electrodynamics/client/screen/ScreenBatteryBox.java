@@ -29,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
     public ScreenBatteryBox(ContainerBatteryBox container, PlayerInventory playerInventory, ITextComponent title) {
 	super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
+	components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
     private List<? extends ITextProperties> getElectricInformation() {

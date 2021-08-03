@@ -12,7 +12,7 @@ public class DO2ORecipeTypes {
 
     public static final IRecipeSerializer<EnergizedAlloyerRecipe> ENERGIZED_ALLOYER_JSON_SERIALIZER = new DO2ORecipeSerializer<>(
 	    EnergizedAlloyerRecipe.class);
-    
+
     public static final IRecipeSerializer<ReinforcedAlloyerRecipe> REINFORCED_ALLOYER_JSON_SERIALIZER = new DO2ORecipeSerializer<>(
-    	ReinforcedAlloyerRecipe.class);
+	    ReinforcedAlloyerRecipe.class);
 }

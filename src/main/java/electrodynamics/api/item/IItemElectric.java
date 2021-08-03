@@ -13,7 +13,7 @@ public interface IItemElectric {
     double getJoulesStored(ItemStack stack);
 
     void overVoltage(TransferPack attempt);
-    
+
     ElectricItemProperties getProperties();
 
 }

@@ -13,9 +13,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ReinforcedAlloyerRecipeCategory extends DO2ORecipeCategory{
+public class ReinforcedAlloyerRecipeCategory extends DO2ORecipeCategory {
 
-	// JEI Window Parameters
+    // JEI Window Parameters
     private static int[] GUI_BACKGROUND = { 0, 0, 132, 58 };
     private static int[] PROCESSING_ARROW_LOCATION = { 132, 0, 24, 17 };
 
@@ -39,15 +39,14 @@ public class ReinforcedAlloyerRecipeCategory extends DO2ORecipeCategory{
 
     private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(Arrays.asList(GUI_BACKGROUND, PROCESSING_ARROW_LOCATION, INPUT_1_ITEM_OFFSET,
 	    INPUT_2_ITEM_OFFSET, OUTPUT_ITEM_OFFSET, PROCESSING_ARROW_OFFSET));
-	
-	public ReinforcedAlloyerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, ARROW_START_DIRECTION,
-				TEXT_Y_HEIGHT);
-	}
 
-	@Override
-	public ResourceLocation getUid() {
-		return UID;
-	}
+    public ReinforcedAlloyerRecipeCategory(IGuiHelper guiHelper) {
+	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, ARROW_START_DIRECTION, TEXT_Y_HEIGHT);
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+	return UID;
+    }
 
 }

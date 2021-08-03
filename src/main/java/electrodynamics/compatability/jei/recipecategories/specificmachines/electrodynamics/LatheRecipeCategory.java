@@ -12,9 +12,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class LatheRecipeCategory extends O2ORecipeCategory{
+public class LatheRecipeCategory extends O2ORecipeCategory {
 
-	// JEI Window Parameters
+    // JEI Window Parameters
     private static int[] GUI_BACKGROUND = { 0, 0, 132, 58 };
     private static int[] PROCESSING_ARROW_LOCATION = { 132, 0, 24, 17 };
 
@@ -38,14 +38,13 @@ public class LatheRecipeCategory extends O2ORecipeCategory{
     private static ArrayList<int[]> INPUT_COORDINATES = new ArrayList<>(
 	    Arrays.asList(GUI_BACKGROUND, PROCESSING_ARROW_LOCATION, INPUT_ITEM_OFFSET, OUTPUT_ITEM_OFFSET, PROCESSING_ARROW_OFFSET));
 
-	public LatheRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, TEXT_Y_HEIGHT,
-			ARROW_START_DIRECTION);
-	}
+    public LatheRecipeCategory(IGuiHelper guiHelper) {
+	super(guiHelper, MOD_ID, RECIPE_GROUP, GUI_TEXTURE, INPUT_MACHINE, INPUT_COORDINATES, SMELT_TIME, TEXT_Y_HEIGHT, ARROW_START_DIRECTION);
+    }
 
-	@Override
-	public ResourceLocation getUid() {
-		return UID;
-	}
+    @Override
+    public ResourceLocation getUid() {
+	return UID;
+    }
 
 }

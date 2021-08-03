@@ -20,8 +20,8 @@ import net.minecraft.util.Direction;
 
 public class TileLithiumBatteryBox extends TileBatteryBox {
 
-	private static final int CHARGE_SLOT = 4;
-	
+    private static final int CHARGE_SLOT = 4;
+
     public TileLithiumBatteryBox() {
 	super(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * CapabilityElectrodynamic.DEFAULT_VOLTAGE) / 20.0, 40000000);
 	forceComponent(new ComponentContainerProvider("container.lithiumbatterybox")
@@ -30,44 +30,44 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 
     @Override
     protected void tickServer(ComponentTickable tickable) {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		if (output == null) {
-		    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
-		}
-		if (tickable.getTicks() % 40 == 0) {
-		    output.update();
-		}
-		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
-		if (electro.getJoulesStored() > 0 && output.valid()) {
-		    electro.joules(electro.getJoulesStored() - ElectricityUtilities
-			    .receivePower(output.getSafe(), facing, TransferPack
-				    .joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
-			    .getJoules());
-		}
-		currentCapacityMultiplier = 1;
-		int currentVoltageMultiplier = 1;
-		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-		    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-			ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
-			currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-			currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
-		    }
-		}
-		electro.maxJoules(maxJoules * currentCapacityMultiplier);
-		electro.voltage(240.0 * currentVoltageMultiplier);
-		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
-		    electro.joules(electro.getMaxJoulesStored());
-		}
-		if (tickable.getTicks() % 50 == 0) {
-		    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		}
-		electro.drainElectricItem(3);
-		Item item = inv.getStackInSlot(CHARGE_SLOT).getItem();
-		if(item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_BATTERY.get().getRegistryName().toString())
-			|| item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_LITHIUMBATTERY.get().getRegistryName().toString())) {
-			electro.fillElectricItem(CHARGE_SLOT);
-		}
+	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+	ComponentInventory inv = getComponent(ComponentType.Inventory);
+	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	if (output == null) {
+	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
+	}
+	if (tickable.getTicks() % 40 == 0) {
+	    output.update();
+	}
+	receiveLimitLeft = powerOutput * currentCapacityMultiplier;
+	if (electro.getJoulesStored() > 0 && output.valid()) {
+	    electro.joules(electro.getJoulesStored() - ElectricityUtilities
+		    .receivePower(output.getSafe(), facing, TransferPack
+			    .joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
+		    .getJoules());
+	}
+	currentCapacityMultiplier = 1;
+	int currentVoltageMultiplier = 1;
+	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
+	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
+		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
+		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
+	    }
+	}
+	electro.maxJoules(maxJoules * currentCapacityMultiplier);
+	electro.voltage(240.0 * currentVoltageMultiplier);
+	if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
+	    electro.joules(electro.getMaxJoulesStored());
+	}
+	if (tickable.getTicks() % 50 == 0) {
+	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+	}
+	electro.drainElectricItem(3);
+	Item item = inv.getStackInSlot(CHARGE_SLOT).getItem();
+	if (item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_BATTERY.get().getRegistryName().toString())
+		|| item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_LITHIUMBATTERY.get().getRegistryName().toString())) {
+	    electro.fillElectricItem(CHARGE_SLOT);
+	}
     }
 }

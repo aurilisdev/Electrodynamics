@@ -19,7 +19,7 @@ public class ContainerBatteryBox extends GenericContainer<TileBatteryBox> {
     }
 
     public ContainerBatteryBox(int id, PlayerInventory pinv, IInventory inv, IIntArray data) {
-    	super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
+	super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
     }
 
     @Override

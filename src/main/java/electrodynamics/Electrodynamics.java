@@ -51,8 +51,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class Electrodynamics {
 
-	public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
-	
+    public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
+
     public Electrodynamics() {
 	ConfigurationHandler.registerConfig(Constants.class);
 	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -76,12 +76,12 @@ public class Electrodynamics {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
-		for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
-		    if (block.get() instanceof BlockCustomGlass) {
-			RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
-		    }
-		}
-		ClientRegister.setup();
+	for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
+	    if (block.get() instanceof BlockCustomGlass) {
+		RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
+	    }
+	}
+	ClientRegister.setup();
     }
 
     @SubscribeEvent
