@@ -3,9 +3,9 @@ package electrodynamics.common.item.gear.tools.electric;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
-import electrodynamics.common.entity.projectile.types.metalrod.HSLASteelRod;
-import electrodynamics.common.entity.projectile.types.metalrod.StainlessSteelRod;
-import electrodynamics.common.entity.projectile.types.metalrod.SteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.EntityHSLASteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.EntityStainlessSteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.EntitySteelRod;
 import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.prefab.item.ElectricItemProperties;
@@ -51,12 +51,12 @@ public class ItemRailgunKinetic extends Railgun {
 		    EntityCustomProjectile projectile = null;
 
 		    if (ItemStack.areItemsEqual(ammoStack, new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.steel)))) {
-			projectile = new SteelRod(playerIn, worldIn);
+			projectile = new EntitySteelRod(playerIn, worldIn);
 		    } else if (ItemStack.areItemsEqual(ammoStack,
 			    new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel)))) {
-			projectile = new StainlessSteelRod(playerIn, worldIn);
+			projectile = new EntityStainlessSteelRod(playerIn, worldIn);
 		    } else if (ItemStack.areItemsEqual(ammoStack, new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.hslasteel)))) {
-			projectile = new HSLASteelRod(playerIn, worldIn);
+			projectile = new EntityHSLASteelRod(playerIn, worldIn);
 		    }
 
 		    if (projectile != null) {

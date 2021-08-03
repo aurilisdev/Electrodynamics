@@ -169,9 +169,9 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
 
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_STEELROD.get(), RenderMetalRod::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_STAINLESSSTEELROD.get(), RenderMetalRod::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_HSLASTEELROD.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_RODSTEEL.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_RODSTAINLESS.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_RODHSLA.get(), RenderMetalRod::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

@@ -111,17 +111,17 @@ public enum SubtypeMachine implements ISubtype {
     energizedalloyer(true, TileEnergizedAlloyer.class),
     // split
     energizedalloyerrunning(false, TileEnergizedAlloyer.class),
-
+    // split
     lathe(true, TileLathe.class, true),
-
+    // split
     reinforcedalloyer(true, TileReinforcedAlloyer.class),
-
+    // split
     reinforcedalloyerrunning(false, TileReinforcedAlloyer.class),
-
+    // split
     chargerlv(true, TileChargerLV.class),
-
+    // split
     chargermv(true, TileChargerMV.class),
-
+    // split
     chargerhv(true, TileChargerHV.class);
 
     public final Class<? extends TileEntity> tileclass;

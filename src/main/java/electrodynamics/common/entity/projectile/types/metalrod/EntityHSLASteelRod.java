@@ -10,22 +10,22 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class HSLASteelRod extends EntityMetalRod {
+public class EntityHSLASteelRod extends EntityMetalRod {
 
     private static final float DAMAGE_DEALT = 4f;
     private static DamageSource DAMAGE_SOURCE = DamageSources.ACCELERATED_BOLT_IGNOREARMOR;
     private static Item ITEM = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.hslasteel);
 
-    public HSLASteelRod(EntityType<? extends ProjectileItemEntity> type, World world) {
+    public EntityHSLASteelRod(EntityType<? extends ProjectileItemEntity> type, World world) {
 	super(type, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
-    public HSLASteelRod(LivingEntity entity, World world) {
-	super(DeferredRegisters.ENTITY_HSLASTEELROD.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    public EntityHSLASteelRod(LivingEntity entity, World world) {
+	super(DeferredRegisters.ENTITY_RODHSLA.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
-    public HSLASteelRod(double x, double y, double z, World worldIn) {
-	super(DeferredRegisters.ENTITY_HSLASTEELROD.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    public EntityHSLASteelRod(double x, double y, double z, World worldIn) {
+	super(DeferredRegisters.ENTITY_RODHSLA.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
 }

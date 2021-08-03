@@ -10,22 +10,22 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class SteelRod extends EntityMetalRod {
+public class EntitySteelRod extends EntityMetalRod {
 
     private static final float DAMAGE_DEALT = 16f;
     private static DamageSource DAMAGE_SOURCE = DamageSources.ACCELERATED_BOLT;
     private static Item ITEM = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.steel);
 
-    public SteelRod(EntityType<? extends ProjectileItemEntity> type, World world) {
+    public EntitySteelRod(EntityType<? extends ProjectileItemEntity> type, World world) {
 	super(type, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
-    public SteelRod(LivingEntity entity, World world) {
-	super(DeferredRegisters.ENTITY_STEELROD.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    public EntitySteelRod(LivingEntity entity, World world) {
+	super(DeferredRegisters.ENTITY_RODSTEEL.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
-    public SteelRod(double x, double y, double z, World worldIn) {
-	super(DeferredRegisters.ENTITY_STEELROD.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+    public EntitySteelRod(double x, double y, double z, World worldIn) {
+	super(DeferredRegisters.ENTITY_RODSTEEL.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
 }

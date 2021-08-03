@@ -1,7 +1,3 @@
-/**
- * This removes the need for an event listener for the 
- * ceramic plate right click
- */
 package electrodynamics.common.item;
 
 import java.util.ArrayList;
