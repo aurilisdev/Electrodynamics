@@ -1,7 +1,7 @@
 package electrodynamics.common.entity;
 
 import electrodynamics.api.References;
-import electrodynamics.common.entity.projectile.types.energy.EnergyBlast;
+import electrodynamics.common.entity.projectile.types.energy.EntityEnergyBlast;
 import electrodynamics.common.entity.projectile.types.metalrod.HSLASteelRod;
 import electrodynamics.common.entity.projectile.types.metalrod.StainlessSteelRod;
 import electrodynamics.common.entity.projectile.types.metalrod.SteelRod;
@@ -27,8 +27,8 @@ public class EntityRegistry {
 	    () -> EntityType.Builder.<HSLASteelRod>create(HSLASteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
 		    .build(References.ID + ".projectile_hslasteelrod"));
 
-    public static final RegistryObject<EntityType<EnergyBlast>> PROJECTILE_ENERGYBLAST = ENTITIES.register("projectile_energyblast",
-	    () -> EntityType.Builder.<EnergyBlast>create(EnergyBlast::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
+    public static final RegistryObject<EntityType<EntityEnergyBlast>> PROJECTILE_ENERGYBLAST = ENTITIES.register("projectile_energyblast",
+	    () -> EntityType.Builder.<EntityEnergyBlast>create(EntityEnergyBlast::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
 		    .build(References.ID + ".projectile_energyblast"));
 
 }

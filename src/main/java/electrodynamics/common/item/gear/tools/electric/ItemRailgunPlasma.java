@@ -1,8 +1,8 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import electrodynamics.SoundRegister;
-import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
-import electrodynamics.common.entity.projectile.types.energy.EnergyBlast;
+import electrodynamics.common.entity.projectile.EntityCustomProjectile;
+import electrodynamics.common.entity.projectile.types.energy.EntityEnergyBlast;
 import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -40,7 +40,7 @@ public class ItemRailgunPlasma extends Railgun {
 	    if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT
 		    && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
 
-		ElectrodynamicsProjectile projectile = new EnergyBlast(playerIn, worldIn);
+		EntityCustomProjectile projectile = new EntityEnergyBlast(playerIn, worldIn);
 		projectile.setNoGravity(true);
 		projectile.setShooter(playerIn);
 		projectile.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0F, 5f, 1.0F);

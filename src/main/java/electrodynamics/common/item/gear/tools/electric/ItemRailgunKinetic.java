@@ -2,7 +2,7 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
+import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.metalrod.HSLASteelRod;
 import electrodynamics.common.entity.projectile.types.metalrod.StainlessSteelRod;
 import electrodynamics.common.entity.projectile.types.metalrod.SteelRod;
@@ -48,7 +48,7 @@ public class ItemRailgunKinetic extends Railgun {
 
 	    if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT) {
 		if (validAmmo(ammoStack) && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
-		    ElectrodynamicsProjectile projectile = null;
+		    EntityCustomProjectile projectile = null;
 
 		    if (ItemStack.areItemsEqual(ammoStack, new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.steel)))) {
 			projectile = new SteelRod(playerIn, worldIn);

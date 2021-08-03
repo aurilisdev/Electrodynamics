@@ -2,7 +2,7 @@ package electrodynamics.common.entity.projectile.types.energy;
 
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.EntityRegistry;
-import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
+import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -15,21 +15,21 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 
-public class EnergyBlast extends ElectrodynamicsProjectile {
+public class EntityEnergyBlast extends EntityCustomProjectile {
 
     private static final float DAMAGE_DEALT = 4f;
     private static final DamageSource DAMAGE_SOURCE = DamageSources.PLASMA_BOLT;
     private static Item ITEM = Items.COBBLESTONE;
 
-    public EnergyBlast(EntityType<? extends ProjectileItemEntity> type, World world) {
+    public EntityEnergyBlast(EntityType<? extends ProjectileItemEntity> type, World world) {
 	super(type, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
-    public EnergyBlast(LivingEntity entity, World world) {
+    public EntityEnergyBlast(LivingEntity entity, World world) {
 	super(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
-    public EnergyBlast(double x, double y, double z, World worldIn) {
+    public EntityEnergyBlast(double x, double y, double z, World worldIn) {
 	super(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 

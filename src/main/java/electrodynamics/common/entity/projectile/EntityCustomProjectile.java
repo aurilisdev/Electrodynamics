@@ -11,40 +11,39 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class ElectrodynamicsProjectile extends ProjectileItemEntity {
+public abstract class EntityCustomProjectile extends ProjectileItemEntity {
 
-    private Item ITEM;
-    private DamageSource DAMAGE_SOURCE;
-    private float DAMAGE_AMOUNT;
+    private Item item;
+    private DamageSource src;
+    private float damage;
 
-    public ElectrodynamicsProjectile(EntityType<? extends ProjectileItemEntity> type, World world, Item item, DamageSource damageSource,
+    protected EntityCustomProjectile(EntityType<? extends ProjectileItemEntity> type, World world, Item item, DamageSource damageSource,
 	    float damageAmount) {
 
 	super(type, world);
 
-	ITEM = item;
-	DAMAGE_SOURCE = damageSource;
-	DAMAGE_AMOUNT = damageAmount;
+	this.item = item;
+	src = damageSource;
+	damage = damageAmount;
     }
 
-    public ElectrodynamicsProjectile(EntityType<? extends ProjectileItemEntity> type, LivingEntity entity, World world, Item item,
+    protected EntityCustomProjectile(EntityType<? extends ProjectileItemEntity> type, LivingEntity entity, World world, Item item,
 	    DamageSource damageSource, float damageAmount) {
 
 	super(type, entity, world);
 
-	ITEM = item;
-	DAMAGE_SOURCE = damageSource;
-	DAMAGE_AMOUNT = damageAmount;
+	this.item = item;
+	src = damageSource;
+	damage = damageAmount;
     }
 
-    public ElectrodynamicsProjectile(EntityType<? extends ProjectileItemEntity> type, double x, double y, double z, World worldIn, Item item,
+    protected EntityCustomProjectile(EntityType<? extends ProjectileItemEntity> type, double x, double y, double z, World worldIn, Item item,
 	    DamageSource damageSource, float damageAmount) {
 
 	super(type, x, y, z, worldIn);
-
-	ITEM = item;
-	DAMAGE_SOURCE = damageSource;
-	DAMAGE_AMOUNT = damageAmount;
+	this.item = item;
+	src = damageSource;
+	damage = damageAmount;
     }
 
     @Override
@@ -59,13 +58,13 @@ public abstract class ElectrodynamicsProjectile extends ProjectileItemEntity {
 
     @Override
     public void onEntityHit(EntityRayTraceResult p_213868_1_) {
-	p_213868_1_.getEntity().attackEntityFrom(DAMAGE_SOURCE, DAMAGE_AMOUNT);
+	p_213868_1_.getEntity().attackEntityFrom(src, damage);
 	this.remove();
     }
 
     @Override
     protected Item getDefaultItem() {
-	return ITEM;
+	return item;
     }
 
 }

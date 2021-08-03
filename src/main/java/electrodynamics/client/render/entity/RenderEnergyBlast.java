@@ -8,7 +8,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import electrodynamics.common.entity.projectile.types.energy.EnergyBlast;
+import electrodynamics.common.entity.projectile.types.energy.EntityEnergyBlast;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -20,14 +20,14 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class RenderEnergyBlast extends EntityRenderer<EnergyBlast> {
+public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
     public RenderEnergyBlast(EntityRendererManager renderManager) {
 	super(renderManager);
     }
 
     @Override
-    public void render(EnergyBlast entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+    public void render(EntityEnergyBlast entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 	    int packedLightIn) {
 	Tessellator tessellator = Tessellator.getInstance();
 	BufferBuilder bufferBuilder = tessellator.getBuffer();
@@ -91,7 +91,7 @@ public class RenderEnergyBlast extends EntityRenderer<EnergyBlast> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(EnergyBlast entity) {
+    public ResourceLocation getEntityTexture(EntityEnergyBlast entity) {
 	return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 

@@ -1,7 +1,7 @@
 package electrodynamics.common.entity.projectile.types.metalrod;
 
 import electrodynamics.SoundRegister;
-import electrodynamics.common.entity.projectile.ElectrodynamicsProjectile;
+import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +14,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
-public class MetalRod extends ElectrodynamicsProjectile {
+public class MetalRod extends EntityCustomProjectile {
 
     public MetalRod(EntityType<? extends ProjectileItemEntity> type, World world, Item item, DamageSource damageSource, float damageAmount) {
 	super(type, world, item, damageSource, damageAmount);
