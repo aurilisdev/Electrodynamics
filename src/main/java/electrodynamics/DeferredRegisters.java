@@ -22,6 +22,10 @@ import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
+import electrodynamics.common.entity.projectile.types.energy.EntityEnergyBlast;
+import electrodynamics.common.entity.projectile.types.metalrod.HSLASteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.StainlessSteelRod;
+import electrodynamics.common.entity.projectile.types.metalrod.SteelRod;
 import electrodynamics.common.fluid.FluidEthanol;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.fluid.FluidMolybdenum;
@@ -111,6 +115,8 @@ import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -138,6 +144,7 @@ public class DeferredRegisters {
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, References.ID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
     public static BlockMultiSubnode multi = new BlockMultiSubnode();
     public static FluidEthanol fluidEthanol;
     public static FluidSulfuricAcid fluidSulfuricAcid;
@@ -460,6 +467,22 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
     public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS.register("genericcharger",
 	    () -> new ContainerType<>(ContainerChargerGeneric::new));
+
+    public static final RegistryObject<EntityType<SteelRod>> ENTITY_STEELROD = ENTITIES.register("projectile_steelrod",
+	    () -> EntityType.Builder.<SteelRod>create(SteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
+		    .build(References.ID + ".projectile_steelrod"));
+
+    public static final RegistryObject<EntityType<StainlessSteelRod>> ENTITY_STAINLESSSTEELROD = ENTITIES.register("projectile_stainlesssteelrod",
+	    () -> EntityType.Builder.<StainlessSteelRod>create(StainlessSteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
+		    .build(References.ID + ".projectile_stainlesssteelrod"));
+
+    public static final RegistryObject<EntityType<HSLASteelRod>> ENTITY_HSLASTEELROD = ENTITIES.register("projectile_hslasteelrod",
+	    () -> EntityType.Builder.<HSLASteelRod>create(HSLASteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
+		    .build(References.ID + ".projectile_hslasteelrod"));
+
+    public static final RegistryObject<EntityType<EntityEnergyBlast>> ENTITY_ENERGYBLAST = ENTITIES.register("projectile_energyblast",
+	    () -> EntityType.Builder.<EntityEnergyBlast>create(EntityEnergyBlast::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
+		    .build(References.ID + ".projectile_energyblast"));
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 	return () -> entry;

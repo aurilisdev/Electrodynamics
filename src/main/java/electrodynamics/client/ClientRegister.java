@@ -38,7 +38,6 @@ import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.entity.EntityRegistry;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
@@ -169,10 +168,10 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
 
-	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), RenderEnergyBlast::new);
-	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_STEELROD.get(), RenderMetalRod::new);
-	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_STAINLESSSTEELROD.get(), RenderMetalRod::new);
-	RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.PROJECTILE_HSLASTEELROD.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_STEELROD.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_STAINLESSSTEELROD.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_HSLASTEELROD.get(), RenderMetalRod::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

@@ -16,7 +16,6 @@ import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.entity.EntityRegistry;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
@@ -62,8 +61,9 @@ public class Electrodynamics {
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
+	DeferredRegisters.ENTITIES.register(bus);
 	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
-	EntityRegistry.ENTITIES.register(bus);
+
     }
 
     @SubscribeEvent

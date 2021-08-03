@@ -6,7 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.entity.projectile.types.metalrod.MetalRod;
+import electrodynamics.common.entity.projectile.types.metalrod.EntityMetalRod;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderMetalRod extends EntityRenderer<MetalRod> {
+public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 
     private static ItemStack STEEL_ROD = new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.steel));
     private static ItemStack STAINLESS_STEEL_ROD = new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel));
@@ -34,9 +34,8 @@ public class RenderMetalRod extends EntityRenderer<MetalRod> {
 	super(renderManager);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void render(MetalRod entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+    public void render(EntityMetalRod entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 	    int packedLightIn) {
 
 	matrixStackIn.push();
@@ -78,9 +77,8 @@ public class RenderMetalRod extends EntityRenderer<MetalRod> {
 	matrixStackIn.pop();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public ResourceLocation getEntityTexture(MetalRod entity) {
+    public ResourceLocation getEntityTexture(EntityMetalRod entity) {
 	ItemStack item = entity.getItem();
 	if (ItemStack.areItemsEqual(item, STEEL_ROD)) {
 	    return ClientRegister.TEXTURE_STEELROD;

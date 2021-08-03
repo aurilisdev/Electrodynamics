@@ -1,7 +1,7 @@
 package electrodynamics.common.entity.projectile.types.energy;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.damage.DamageSources;
-import electrodynamics.common.entity.EntityRegistry;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -26,11 +26,11 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
     }
 
     public EntityEnergyBlast(LivingEntity entity, World world) {
-	super(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+	super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), entity, world, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
     public EntityEnergyBlast(double x, double y, double z, World worldIn) {
-	super(EntityRegistry.PROJECTILE_ENERGYBLAST.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
+	super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn, ITEM, DAMAGE_SOURCE, DAMAGE_DEALT);
     }
 
     @Override

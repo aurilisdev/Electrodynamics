@@ -14,18 +14,18 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
-public class MetalRod extends EntityCustomProjectile {
+public class EntityMetalRod extends EntityCustomProjectile {
 
-    public MetalRod(EntityType<? extends ProjectileItemEntity> type, World world, Item item, DamageSource damageSource, float damageAmount) {
+    public EntityMetalRod(EntityType<? extends ProjectileItemEntity> type, World world, Item item, DamageSource damageSource, float damageAmount) {
 	super(type, world, item, damageSource, damageAmount);
     }
 
-    public MetalRod(EntityType<? extends ProjectileItemEntity> type, LivingEntity entity, World world, Item item, DamageSource damageSource,
+    public EntityMetalRod(EntityType<? extends ProjectileItemEntity> type, LivingEntity entity, World world, Item item, DamageSource damageSource,
 	    float damageAmount) {
 	super(type, entity, world, item, damageSource, damageAmount);
     }
 
-    public MetalRod(EntityType<? extends ProjectileItemEntity> type, double x, double y, double z, World worldIn, Item item,
+    public EntityMetalRod(EntityType<? extends ProjectileItemEntity> type, double x, double y, double z, World worldIn, Item item,
 	    DamageSource damageSource, float damageAmount) {
 	super(type, x, y, z, worldIn, item, damageSource, damageAmount);
     }
