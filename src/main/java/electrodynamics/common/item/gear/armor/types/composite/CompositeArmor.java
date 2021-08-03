@@ -1,24 +1,22 @@
 package electrodynamics.common.item.gear.armor.types.composite;
 
+import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 
 public enum CompositeArmor implements ICustomArmor {
-    COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 3, 6, 8, 3 }, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 2.0f);
+    COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 3, 6, 8, 3 }, 2.0f);
 
     private final String name;
     private final int[] damageReductionAmountArray;
-    private final SoundEvent soundEvent;
     private final float toughness;
 
     // Constructor
-    private CompositeArmor(String name, int[] damageReductionAmountArray, SoundEvent soundEvent, float toughness) {
+    private CompositeArmor(String name, int[] damageReductionAmountArray, float toughness) {
 	this.name = name;
 	this.damageReductionAmountArray = damageReductionAmountArray;
-	this.soundEvent = soundEvent;
 	this.toughness = toughness;
     }
 
@@ -34,7 +32,7 @@ public enum CompositeArmor implements ICustomArmor {
 
     @Override
     public SoundEvent getSoundEvent() {
-	return soundEvent;
+	return SoundRegister.SOUND_EQUIPHEAVYARMOR.get();
     }
 
     @Override
