@@ -26,8 +26,6 @@ public class MineralCrusherRecipe extends O2ORecipe/* <MineralCrusherRecipe> */ 
 
     @Override
     public IRecipeType<?> getType() {
-	// LOGGER.info("Recipe Type " + MineralCrusherRecipe.class.toString() + ": " +
-	// Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID));
 	return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
     }
 

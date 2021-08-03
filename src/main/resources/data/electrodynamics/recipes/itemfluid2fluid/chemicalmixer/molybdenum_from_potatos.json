@@ -1,0 +1,15 @@
+{
+	"type": "electrodynamics:chemical_mixer_recipe",
+	"item_input": {
+		"tag": "forge:crops/potato",
+		"count": 4
+	},
+	"fluid_input": {
+		"fluid": "electrodynamics:fluidsulfuricacid",
+		"amount": 100
+	},
+	"fluid_output": {
+		"fluid": "electrodynamics:fluidmolybdenum",
+		"amount": 250
+	}
+}

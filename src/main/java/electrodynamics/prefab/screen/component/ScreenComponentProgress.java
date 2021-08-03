@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentProgress extends ScreenComponent {
-    public static final int WIDTHARROW = 22;
+	public static final int WIDTHARROW = 22;
     private static final int HEIGHTARROW = 16;
     private static final int POSXARROW = 0;
     private static final int POSYARROW = 0;

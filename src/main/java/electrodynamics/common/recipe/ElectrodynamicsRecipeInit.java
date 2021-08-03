@@ -6,6 +6,7 @@ import java.util.HashMap;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipeTypes;
 import electrodynamics.common.recipe.categories.do2o.specificmachines.EnergizedAlloyerRecipe;
 import electrodynamics.common.recipe.categories.do2o.specificmachines.OxidationFurnaceRecipe;
+import electrodynamics.common.recipe.categories.do2o.specificmachines.ReinforcedAlloyerRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipeTypes;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipeTypes;
@@ -13,6 +14,7 @@ import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
 import electrodynamics.common.recipe.categories.o2o.O2ORecipeTypes;
+import electrodynamics.common.recipe.categories.o2o.specificmachines.LatheRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralGrinderRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
@@ -40,11 +42,13 @@ public class ElectrodynamicsRecipeInit {
     public static final IRecipeType<WireMillRecipe> WIRE_MILL_TYPE = registerType(WireMillRecipe.RECIPE_ID);
     public static final IRecipeType<MineralGrinderRecipe> MINERAL_GRINDER_TYPE = registerType(MineralGrinderRecipe.RECIPE_ID);
     public static final IRecipeType<MineralCrusherRecipe> MINERAL_CRUSHER_TYPE = registerType(MineralCrusherRecipe.RECIPE_ID);
-
+    public static final IRecipeType<LatheRecipe> LATHE_TYPE = registerType(LatheRecipe.RECIPE_ID);
+    
     // DO2O
     public static final IRecipeType<OxidationFurnaceRecipe> OXIDATION_FURNACE_TYPE = registerType(OxidationFurnaceRecipe.RECIPE_ID);
     public static final IRecipeType<EnergizedAlloyerRecipe> ENERGIZED_ALLOYER_TYPE = registerType(EnergizedAlloyerRecipe.RECIPE_ID);
-
+    public static final IRecipeType<ReinforcedAlloyerRecipe> REINFORCED_ALLOYER_TYPE = registerType(ReinforcedAlloyerRecipe.RECIPE_ID);
+    
     // FluidItem2Fluid
     public static final IRecipeType<ChemicalMixerRecipe> CHEMICAL_MIXER_TYPE = registerType(ChemicalMixerRecipe.RECIPE_ID);
     public static final IRecipeType<FermentationPlantRecipe> FERMENTATION_PLANT_TYPE = registerType(FermentationPlantRecipe.RECIPE_ID);
@@ -62,13 +66,18 @@ public class ElectrodynamicsRecipeInit {
 	    .register(MineralGrinderRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.MINERAL_CRUSHER_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> MINERAL_CRUSHER_SERIALIZER = RECIPE_SERIALIZER
 	    .register(MineralCrusherRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.MINERAL_GRINDER_JSON_SERIALIZER);
-
+    public static final RegistryObject<IRecipeSerializer<?>> LATHE_SERIALIZER = RECIPE_SERIALIZER
+    	.register(LatheRecipe.RECIPE_GROUP, () -> O2ORecipeTypes.LATHE_JSON_SERIALIZER);
+    
+    
     // DO2O
     public static final RegistryObject<IRecipeSerializer<?>> OXIDATION_FURNACE_SERIALIZER = RECIPE_SERIALIZER
 	    .register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.OXIDATION_FURNACE_JSON_SERIALIZER);
     public static final RegistryObject<IRecipeSerializer<?>> ENERGIZED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER
 	    .register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
-
+    public static final RegistryObject<IRecipeSerializer<?>> REINFORCED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER
+    	.register(ReinforcedAlloyerRecipe.RECIPE_GROUP, () -> DO2ORecipeTypes.REINFORCED_ALLOYER_JSON_SERIALIZER);
+    
     // FluidItem2Fluid
     public static final RegistryObject<IRecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalMixerRecipe.RECIPE_GROUP,
 	    () -> FluidItem2FluidRecipeTypes.CHEMICAL_MIXER_JSON_SERIALIZER);

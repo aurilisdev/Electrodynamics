@@ -10,7 +10,8 @@ public enum SubtypeResourceBlock implements ISubtype {
     bronze(2.0f, 3.0f, Material.IRON, SoundType.METAL), steel(2.0f, 3.0f, Material.IRON, SoundType.METAL),
     aluminum(2.0f, 3.0f, Material.IRON, SoundType.METAL), chromium(2.0f, 3.0f, Material.IRON, SoundType.METAL),
     stainlesssteel(2.0f, 3.0f, Material.IRON, SoundType.METAL), vanadiumsteel(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    hslasteel(2.0f, 3.0f, Material.IRON, SoundType.METAL), titanium(2.0f, 3.0f, Material.IRON, SoundType.METAL);
+    hslasteel(2.0f, 3.0f, Material.IRON, SoundType.METAL), titanium(2.0f, 3.0f, Material.IRON, SoundType.METAL),
+	titaniumcarbide(2.0f, 3.0f, Material.IRON, SoundType.METAL);
 
     private float hardness;
     private float resistance;

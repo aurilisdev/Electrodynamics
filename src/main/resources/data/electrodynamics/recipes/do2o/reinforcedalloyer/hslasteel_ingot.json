@@ -1,0 +1,16 @@
+{
+    "type":"electrodynamics:reinforced_alloyer_recipe",
+
+    "input1":{
+        "tag":"forge:ingots/molybdenum",
+        "count":1
+    },
+    "input2":{
+        "tag":"forge:ingots/stainlesssteel",
+        "count":1
+    },
+    "output":{
+        "item":"electrodynamics:ingothslasteel",
+        "count":1
+    }
+}

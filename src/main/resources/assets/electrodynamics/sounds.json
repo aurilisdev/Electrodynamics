@@ -61,5 +61,54 @@
 		"sounds": [
 			"electrodynamics:ceramicplateadded"
 		]
+	},
+	"railgunkinetic":{
+		"category": "players",
+		"subtitle": "Kinetic Railgun Fires",
+		"sounds": [
+			"electrodynamics:railgunkinetic"
+		]
+	},
+	"railgunkinetic_noammo":{
+		"category": "players",
+		"subtitle": "No Ammo Available",
+		"sounds": [
+			"electrodynamics:railgunkinetic_noammo"
+		]
+	},
+	"railgunplasma":{
+		"category": "players",
+		"subtitle": "Plasma Railgun Fires",
+		"sounds": [
+			"electrodynamics:railgunplasma"
+		]
+	},
+	"railgunplasma_nopower":{
+		"category": "players",
+		"subtitle": "Not Enough Power",
+		"sounds": [
+			"electrodynamics:railgunplasma_nopower"
+		]
+	},
+	"rodhittingground":{
+		"category": "blocks",
+		"subtitle": "Rail Impacts Ground",
+		"sounds": [
+			"electrodynamics:rodhittingground"
+		]
+	},
+	"latherunning":{
+		"category": "blocks",
+		"subtitle": "Lathe Running",
+		"sounds": [
+			"electrodynamics:latherunning"
+		]
+	},
+	"equipheavyarmor":{
+		"category": "players",
+		"subtitle": "Heavy Armor Equiped",
+		"sounds": [
+			"electrodynamics:equipheavyarmor"
+		]
 	}
 }

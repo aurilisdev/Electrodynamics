@@ -31,7 +31,7 @@ public class EnergizedAlloyerRecipeCategory extends DO2ORecipeCategory {
     private static String RECIPE_GROUP = "energized_alloyer";
     private static String GUI_TEXTURE = "textures/gui/jei/do2o_recipe_gui.png";
 
-    private static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer));
 
     private static StartDirection ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
 

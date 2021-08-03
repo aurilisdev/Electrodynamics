@@ -17,9 +17,6 @@ public class WireMillRecipe extends O2ORecipe {
 
     public WireMillRecipe(ResourceLocation id, CountableIngredient input, ItemStack output) {
 	super(id, input, output);
-	// LOGGER.info("Recipe ID : " + id);
-	// LOGGER.info("Recipe Input : " + input);
-	// LOGGER.info("Recipe Output: " + output);
     }
 
     @Override
@@ -29,8 +26,6 @@ public class WireMillRecipe extends O2ORecipe {
 
     @Override
     public IRecipeType<?> getType() {
-	// LOGGER.info("Recipe Type " + WireMillRecipe.class.toString() + ": " +
-	// Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID));
 	return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
     }
 

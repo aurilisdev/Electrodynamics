@@ -209,7 +209,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	if (holder.hasComponent(ComponentType.Inventory)) {
 	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
 	    ItemStack stack = inventory.getStackInSlot(slot);
-	    if (stack.getItem() instanceof IItemElectric) {
+	    if (stack.getItem() instanceof ItemElectric) {
 		IItemElectric el = (IItemElectric) stack.getItem();
 		receivePower(el.extractPower(stack, maxJoules - joules, false), false);
 	    }
@@ -221,7 +221,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	if (holder.hasComponent(ComponentType.Inventory)) {
 	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
 	    ItemStack stack = inventory.getStackInSlot(slot);
-	    if (stack.getItem() instanceof IItemElectric) {
+	    if (stack.getItem() instanceof ItemElectric) {
 		IItemElectric el = (IItemElectric) stack.getItem();
 		extractPower(el.receivePower(stack, TransferPack.joulesVoltage(joules, voltage), false), false);
 	    }
@@ -256,4 +256,5 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	hasCapability = test;
 	return this;
     }
+    
 }

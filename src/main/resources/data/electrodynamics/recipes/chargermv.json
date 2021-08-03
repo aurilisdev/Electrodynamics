@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "W W",
+        "PLP",
+        "PCP"
+    ],
+    "key": {
+        "W": {
+            "item": "electrodynamics:wirehighlyinsulatedgold"
+        },
+        "P": {
+            "tag": "forge:plates/stainlesssteel"
+        },
+        "L": {
+            "item": "electrodynamics:lithiumbatterybox"
+        },
+        "C": {
+            "tag": "forge:circuits/elite"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:chargermv",
+        "count": 1
+    }
+}

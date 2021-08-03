@@ -9,7 +9,7 @@
 			"tag": "forge:ingots/titanium"
 		},
 		"p": {
-			"item": "forge:plates/titanium"
+			"tag": "forge:plates/titanium"
 		}
 	},
 	"result": {

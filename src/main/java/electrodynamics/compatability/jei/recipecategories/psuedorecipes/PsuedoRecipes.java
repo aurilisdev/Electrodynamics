@@ -22,59 +22,10 @@ public class PsuedoRecipes {
     public static ArrayList<Fluid> ELECTRODYNAMICS_FLUIDS = new ArrayList<>();
     public static ArrayList<ItemStack> ELECTRODYNAMICS_MACHINES = new ArrayList<>();
 
-    // public static ArrayList<Psuedo5XRecipe> X5_ORE_RECIPES = new ArrayList<>();
-
     public static void addElectrodynamicsRecipes() {
 	addElectrodynamicsMachines();
 	addElectrodynamicsFluids();
 	addElectrodynamicsItems();
-
-	/* 5x Ore Processing */
-	/*
-	 * // Iron X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(0),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(2), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(0))); // Gold X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(1),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(3), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(1))); // Copper X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(2),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(4), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(2))); // Tin X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(3),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(5), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(3))); // Lead X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(4),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(6), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(4))); // Silver X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(5),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(7), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(5))); // Vanadium X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(6),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(8), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(6)));
-	 * 
-	 * // Lithiumho X5_ORE_RECIPES.add(new
-	 * Psuedo5XRecipe(ELECTRODYNAMICS_ITEMS.get(0).get(10),
-	 * ELECTRODYNAMICS_MACHINES.get(0), ELECTRODYNAMICS_MACHINES.get(1), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(1), 1000), new
-	 * FluidStack(ELECTRODYNAMICS_FLUIDS.get(9), 1000),
-	 * ELECTRODYNAMICS_ITEMS.get(2).get(7)));
-	 */
     }
 
     public static void addElectrodynamicsMachines() {
@@ -106,8 +57,6 @@ public class PsuedoRecipes {
 	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.windmill)));
 	// Fermentation Chamber
 	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant)));
-	// Energized Alloyer
-	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)));
     }
 
     public static void addElectrodynamicsFluids() {

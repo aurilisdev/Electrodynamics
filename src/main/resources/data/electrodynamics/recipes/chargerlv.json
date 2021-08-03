@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "W W",
+        "PBP",
+        "PCP"
+    ],
+    "key": {
+        "W": {
+            "item": "electrodynamics:wireinsulatedcopper"
+        },
+        "P": {
+            "tag": "forge:plates/steel"
+        },
+        "B": {
+            "item": "electrodynamics:batterybox"
+        },
+        "C": {
+            "tag": "forge:circuits/advanced"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:chargerlv",
+        "count": 1
+    }
+}

@@ -1,5 +1,6 @@
 package electrodynamics.common.recipe.categories.o2o;
 
+import electrodynamics.common.recipe.categories.o2o.specificmachines.LatheRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralGrinderRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
@@ -12,5 +13,5 @@ public class O2ORecipeTypes {
 	    MineralGrinderRecipe.class);
     public static final IRecipeSerializer<MineralCrusherRecipe> MINERAL_GRINDER_JSON_SERIALIZER = new O2ORecipeSerializer<>(
 	    MineralCrusherRecipe.class);
-
+    public static final IRecipeSerializer<LatheRecipe> LATHE_JSON_SERIALIZER = new O2ORecipeSerializer<>(LatheRecipe.class);
 }

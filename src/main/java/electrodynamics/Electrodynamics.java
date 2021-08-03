@@ -5,15 +5,18 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
-import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlateHandler;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.entity.EntityRegistry;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
@@ -21,7 +24,6 @@ import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -33,7 +35,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -50,17 +51,19 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class Electrodynamics {
 
+	public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
+	
     public Electrodynamics() {
 	ConfigurationHandler.registerConfig(Constants.class);
 	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+	SoundRegister.SOUNDS.register(bus);
 	DeferredRegisters.BLOCKS.register(bus);
 	DeferredRegisters.ITEMS.register(bus);
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
-	// This can be moved later
 	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
-	SoundRegister.SOUNDS.register(bus);
+	EntityRegistry.ENTITIES.register(bus);
     }
 
     @SubscribeEvent
@@ -68,21 +71,17 @@ public class Electrodynamics {
 	CapabilityElectrodynamic.register();
 	CapabilityCeramicPlate.register();
 	NetworkHandler.init();
-
-	MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, CapabilityCeramicPlateHandler::attachOnItemStackCreation);
-	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::takeDamageWithArmor);
-	MinecraftForge.EVENT_BUS.addListener(CapabilityCeramicPlateHandler::addPlateToArmor);
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
-	for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
-	    if (block.get() instanceof BlockCustomGlass) {
-		RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
-	    }
-	}
-	ClientRegister.setup();
+		for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
+		    if (block.get() instanceof BlockCustomGlass) {
+			RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
+		    }
+		}
+		ClientRegister.setup();
     }
 
     @SubscribeEvent

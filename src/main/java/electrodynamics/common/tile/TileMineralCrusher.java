@@ -86,50 +86,50 @@ public class TileMineralCrusher extends GenericTileTicking {
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	boolean has = getType() == DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get()
-		? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0
-		: getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get()
-			? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
-			: getProcessor(0).operatingTicks > 0;
-	if (has) {
-	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    if (world.rand.nextDouble() < 0.15) {
-		double d4 = world.rand.nextDouble();
-		double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
-		double d6 = world.rand.nextDouble();
-		double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
-		world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
-	    }
-	    double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
-	    if (progress == 1) {
-		SoundAPI.playSound(SoundRegister.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 5, .75f, pos);
-	    } else if (progress < 0.3) {
-		for (int i = 0; i < 5; i++) {
-		    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-		    double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-		    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
-			    pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D);
-		}
-		int amount = getType() == DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get() ? 2
-			: getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
-		for (int in = 0; in < amount; in++) {
-		    ItemStack stack = getProcessor(in).getInput();
-		    if (stack.getItem() instanceof BlockItem) {
-			if (stack.getItem() instanceof BlockItem) {
-			    BlockItem it = (BlockItem) stack.getItem();
-			    Block block = it.getBlock();
-			    for (int i = 0; i < 5; i++) {
-				double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-				double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-				ParticleAPI.addGrindedParticle(world, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
-					pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D, block.getDefaultState(), pos);
-			    }
-			}
+		boolean has = getType() == DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get()
+			? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0
+			: getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get()
+				? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
+				: getProcessor(0).operatingTicks > 0;
+		if (has) {
+		    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		    if (world.rand.nextDouble() < 0.15) {
+				double d4 = world.rand.nextDouble();
+				double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
+				double d6 = world.rand.nextDouble();
+				double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
+				world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		    }
+		    double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
+		    if (progress == 1) {
+		    	SoundAPI.playSound(SoundRegister.SOUND_MINERALCRUSHER.get(), SoundCategory.BLOCKS, 5, .75f, pos);
+		    } else if (progress < 0.3) {
+				for (int i = 0; i < 5; i++) {
+				    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+				    double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+				    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
+					    pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D);
+				}
+				int amount = getType() == DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get() ? 2
+					: getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
+				for (int in = 0; in < amount; in++) {
+				    ItemStack stack = getProcessor(in).getInput();
+				    if (stack.getItem() instanceof BlockItem) {
+						if (stack.getItem() instanceof BlockItem) {
+						    BlockItem it = (BlockItem) stack.getItem();
+						    Block block = it.getBlock();
+						    for (int i = 0; i < 5; i++) {
+							double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+							double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+							ParticleAPI.addGrindedParticle(world, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.4,
+								pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D, block.getDefaultState(), pos);
+						    }
+						}
+				    }
+				}
+			}
+		    clientRunningTicks++;
 		}
-	    }
-	    clientRunningTicks++;
-	}
     }
 
 }

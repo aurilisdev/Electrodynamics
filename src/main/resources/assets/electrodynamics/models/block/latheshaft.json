@@ -1,0 +1,30 @@
+{
+	"parent": "block/cube_all",
+	"credit":"skip999",
+	"textures":{
+		"0":"electrodynamics:model/latheshaft",
+		"particle":"electrodynamics:model/latheshaft"
+	},
+	"elements":[
+		{
+			"from":[6.5,10,6.5],
+			"to":[9.5,11,9.5],
+			"faces":{
+				"north":{"uv":[3,3,6,4],"texture":"#0"},
+				"east":{"uv":[0,3,3,4],"texture":"#0"},
+				"south":{"uv":[9,3,12,4],"texture":"#0"},
+				"west":{"uv":[6,3,9,4],"texture":"#0"},
+				"up":{"uv":[6,3,3,0],"texture":"#0"},
+				"down":{"uv":[9,0,6,3],"texture":"#0"}
+			}
+		}
+	],
+	"groups":[
+		{
+			"name":"shaft",
+			"origin":[8,8,8],
+			"color":0,
+			"children":[0]
+		}
+	]
+}

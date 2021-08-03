@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/chargerlv",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/chargerlv",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/chargerlv",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/chargerlv",
+			"y": 180
+		}
+	}
+}
