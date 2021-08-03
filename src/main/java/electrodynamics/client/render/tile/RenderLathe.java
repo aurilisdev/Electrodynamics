@@ -25,7 +25,6 @@ public class RenderLathe extends TileEntityRenderer<TileLathe> {
     @Override
     public void render(TileLathe tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
-
 	matrixStackIn.push();
 	IBakedModel lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHE);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
