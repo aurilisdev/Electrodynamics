@@ -23,6 +23,9 @@ public class NetworkHandler {
 		PacketSpawnSmokeParticle::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 	CHANNEL.registerMessage(disc++, PacketPlayerInformation.class, PacketPlayerInformation::encode, PacketPlayerInformation::decode,
 		PacketPlayerInformation::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+	CHANNEL.registerMessage(disc++, PacketServerUpdateTile.class, PacketServerUpdateTile::encode, PacketServerUpdateTile::decode,
+		PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+
     }
 
     public static String getPlayerInformation(String username) {
