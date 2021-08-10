@@ -86,7 +86,7 @@ public class TileElectricFurnace extends GenericTileTicking {
 	ItemStack input = component.getInput();
 	input.shrink(1);
 	if (input.getCount() == 0) {
-	    inv.setInventorySlotContents(0, ItemStack.EMPTY);
+	    inv.setInventorySlotContents(component.getInputOne(), ItemStack.EMPTY);
 	}
     }
 
