@@ -93,9 +93,9 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
-	ModelLoader.addSpecialModel(MODEL_STEELROD);
-	ModelLoader.addSpecialModel(MODEL_STAINLESSSTEELROD);
-	ModelLoader.addSpecialModel(MODEL_HSLASTEELROD);
+	ModelLoader.addSpecialModel(MODEL_RODSTEEL);
+	ModelLoader.addSpecialModel(MODEL_RODSTAINLESSSTEEL);
+	ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
 	ModelLoader.addSpecialModel(MODEL_LATHE);
 	ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
     }
@@ -137,14 +137,14 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(References.ID + ":block/chemicalmixerwater");
     public static final ResourceLocation MODEL_LATHE = new ResourceLocation(References.ID + ":block/lathe");
     public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(References.ID + ":block/latheshaft");
-    public static final ResourceLocation MODEL_STEELROD = new ResourceLocation(References.ID + ":entity/steelrod");
-    public static final ResourceLocation MODEL_STAINLESSSTEELROD = new ResourceLocation(References.ID + ":entity/stainlesssteelrod");
-    public static final ResourceLocation MODEL_HSLASTEELROD = new ResourceLocation(References.ID + ":entity/hslasteelrod");
+    public static final ResourceLocation MODEL_RODSTEEL = new ResourceLocation(References.ID + ":entity/rodsteel");
+    public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":entity/rodstainlesssteel");
+    public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
 
-    public static final ResourceLocation TEXTURE_STEELROD = new ResourceLocation(References.ID + ":textures/entity/projectile/steelrod.png");
-    public static final ResourceLocation TEXTURE_STAINLESSSTEELROD = new ResourceLocation(
-	    References.ID + ":textures/entity/projectile/stainlesssteelrod.png");
-    public static final ResourceLocation TEXTURE_HSLASTEELROD = new ResourceLocation(References.ID + ":textures/entity/projectile/hslasteelrod.png");
+    public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
+    public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(
+	    References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
+    public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
     public static void setup() {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
@@ -169,9 +169,7 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
 
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_RODSTEEL.get(), RenderMetalRod::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_RODSTAINLESS.get(), RenderMetalRod::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_RODHSLA.get(), RenderMetalRod::new);
+	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
 
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);

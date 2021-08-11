@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "electrodynamics:block/glass/clear"
+    "all": "electrodynamics:block/glass/glassclear"
   }
 }

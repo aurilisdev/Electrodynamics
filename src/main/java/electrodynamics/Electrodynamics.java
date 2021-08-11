@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
-import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
+import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;

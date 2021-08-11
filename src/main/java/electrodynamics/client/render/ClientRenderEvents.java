@@ -34,7 +34,6 @@ public class ClientRenderEvents {
 	}
     }
 
-    @SuppressWarnings("static-access")
     private static void renderHeatToolTip(RenderGameOverlayEvent.Post event, ItemStack stack) {
 	Minecraft minecraft = Minecraft.getInstance();
 	Railgun railgun = (Railgun) stack.getItem();
