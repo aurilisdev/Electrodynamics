@@ -2,8 +2,8 @@
 	"credit":"skip999",
 	"texture_size":[32,32],
 	"textures":{
-		"0":"electrodynamics:entity/projectile/hslasteelrod",
-		"particle":"electrodynamics:entity/projectile/hslasteelrod"
+		"0":"electrodynamics:entity/projectile/rodhslasteel",
+		"particle":"electrodynamics:entity/projectile/rodhslasteel"
 	},
 	"elements":[
 		{

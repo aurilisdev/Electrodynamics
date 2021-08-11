@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
+import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

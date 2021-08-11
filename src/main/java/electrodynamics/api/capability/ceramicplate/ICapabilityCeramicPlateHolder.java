@@ -1,4 +1,4 @@
-package electrodynamics.api.capability.compositearmor;
+package electrodynamics.api.capability.ceramicplate;
 
 public interface ICapabilityCeramicPlateHolder {
 

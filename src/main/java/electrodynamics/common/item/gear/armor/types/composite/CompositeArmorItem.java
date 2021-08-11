@@ -5,9 +5,9 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlate;
-import electrodynamics.api.capability.compositearmor.CapabilityCeramicPlateHolderProvider;
-import electrodynamics.client.render.model.armor.types.composite.CompositeArmorModel;
+import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
+import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlateHolderProvider;
+import electrodynamics.client.render.model.armor.types.RenderCompositeArmor;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -106,7 +106,7 @@ public class CompositeArmorItem extends ArmorItem {
 
 	if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {
 
-	    CompositeArmorModel model = armorSlot == EquipmentSlotType.LEGS ? new CompositeArmorModel(0.5f) : new CompositeArmorModel(1f);
+	    RenderCompositeArmor model = armorSlot == EquipmentSlotType.LEGS ? new RenderCompositeArmor(0.5f) : new RenderCompositeArmor(1f);
 
 	    model.HEAD.showModel = armorSlot == EquipmentSlotType.HEAD;
 

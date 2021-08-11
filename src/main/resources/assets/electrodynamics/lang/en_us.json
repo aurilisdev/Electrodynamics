@@ -315,7 +315,7 @@
 	"tooltip.chemicalcrystallizer.voltage": "Voltage: 240 Volts",
 	"tooltip.item.electric.info": "Energy Stored: %s",
 	"tooltip.item.electric.voltage": "Input/Output Voltage: %s",
-	
+	"tooltip.electrodynamics.itemcanister":"1000 mB",
 	"tooltip.electrodynamics.railguntemp":"Temperature %s",
 	"tooltip.electrodynamics.railgunmaxtemp":"Max Temp: %s",
 	"tooltip.electrodynamics.railgunoverheat":"WARNING : OVERHEATING",

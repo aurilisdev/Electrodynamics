@@ -2,7 +2,7 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import electrodynamics.SoundRegister;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
-import electrodynamics.common.entity.projectile.types.energy.EntityEnergyBlast;
+import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;

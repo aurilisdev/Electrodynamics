@@ -22,10 +22,8 @@ import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
-import electrodynamics.common.entity.projectile.types.energy.EntityEnergyBlast;
-import electrodynamics.common.entity.projectile.types.metalrod.EntityHSLASteelRod;
-import electrodynamics.common.entity.projectile.types.metalrod.EntityStainlessSteelRod;
-import electrodynamics.common.entity.projectile.types.metalrod.EntitySteelRod;
+import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
+import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.fluid.FluidEthanol;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.fluid.FluidMolybdenum;
@@ -468,18 +466,9 @@ public class DeferredRegisters {
     public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS.register("genericcharger",
 	    () -> new ContainerType<>(ContainerChargerGeneric::new));
 
-    public static final RegistryObject<EntityType<EntitySteelRod>> ENTITY_RODSTEEL = ENTITIES.register("rodsteel",
-	    () -> EntityType.Builder.<EntitySteelRod>create(EntitySteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
-		    .build(References.ID + ".rodsteel"));
-
-    public static final RegistryObject<EntityType<EntityStainlessSteelRod>> ENTITY_RODSTAINLESS = ENTITIES.register("rodstainlesssteel",
-	    () -> EntityType.Builder.<EntityStainlessSteelRod>create(EntityStainlessSteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f)
-		    .immuneToFire().build(References.ID + ".rodstainlesssteel"));
-
-    public static final RegistryObject<EntityType<EntityHSLASteelRod>> ENTITY_RODHSLA = ENTITIES.register("rodhslasteel",
-	    () -> EntityType.Builder.<EntityHSLASteelRod>create(EntityHSLASteelRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
-		    .build(References.ID + ".rodhslasteel"));
-
+    public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod",
+	    () -> EntityType.Builder.<EntityMetalRod>create(EntityMetalRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
+		    .build(References.ID + ".metalrod"));
     public static final RegistryObject<EntityType<EntityEnergyBlast>> ENTITY_ENERGYBLAST = ENTITIES.register("energyblast",
 	    () -> EntityType.Builder.<EntityEnergyBlast>create(EntityEnergyBlast::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()
 		    .build(References.ID + ".energyblast"));

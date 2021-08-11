@@ -1,4 +1,4 @@
-package electrodynamics.client.render.model.armor.types.composite;
+package electrodynamics.client.render.model.armor.types;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CompositeArmorModel extends BipedModel<LivingEntity> {
+public class RenderCompositeArmor extends BipedModel<LivingEntity> {
 
     public final ModelRenderer HEAD;
 
@@ -24,7 +24,7 @@ public class CompositeArmorModel extends BipedModel<LivingEntity> {
     public final ModelRenderer RIGHT_SHOE;
     public final ModelRenderer LEFT_SHOE;
 
-    public CompositeArmorModel(float size) {
+    public RenderCompositeArmor(float size) {
 	super(size, 0, 128, 128);
 
 	HEAD = new ModelRenderer(this);
