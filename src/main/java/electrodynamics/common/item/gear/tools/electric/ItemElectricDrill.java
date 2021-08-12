@@ -132,12 +132,7 @@ public class ItemElectricDrill extends PickaxeItem implements IItemElectric {
     }
 
     @Override
-    public void overVoltage(TransferPack attempt) {
-	// TODO: how would this be implemented
-    }
-
-    @Override
-    public ElectricItemProperties getProperties() {
+    public ElectricItemProperties getElectricProperties() {
 	return properties;
     }
 

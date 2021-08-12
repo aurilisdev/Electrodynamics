@@ -202,12 +202,11 @@ public class ClientRegister {
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
 	ItemModelsProperties
 		.registerProperty(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"),
-			(stack, world,
-				entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
-					&& ((ItemElectricDrill) stack.getItem())
-						.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getProperties().extract.getJoules()
-							? 1
-							: 0);
+			(stack, world, entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
+				&& ((ItemElectricDrill) stack.getItem())
+					.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules()
+						? 1
+						: 0);
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {

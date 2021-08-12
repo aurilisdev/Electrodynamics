@@ -43,10 +43,11 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 	if (!itemInput.isEmpty() && electro.getJoulesStored() == electro.getMaxJoulesStored() && itemInput.getItem() instanceof IItemElectric) {
 
 	    IItemElectric electricItem = (IItemElectric) itemInput.getItem();
-	    double recieveVoltage = electricItem.getProperties().receive.getVoltage();
+	    double recieveVoltage = electricItem.getElectricProperties().receive.getVoltage();
 	    double machineVoltage = electro.getVoltage();
 
 	    if (machineVoltage > recieveVoltage) {
+		electricItem.overVoltage(TransferPack.joulesVoltage(electricItem.getElectricProperties().receive.getJoules(), machineVoltage));
 		world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 2f, Mode.DESTROY);
 	    } else if (machineVoltage == recieveVoltage) {
@@ -55,7 +56,7 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 			electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false), false);
 	    } else {
 		float underVoltRatio = (float) ((float) machineVoltage / recieveVoltage);
-		float itemStoredRatio = (float) ((float) electricItem.getJoulesStored(itemInput) / electricItem.getProperties().capacity);
+		float itemStoredRatio = (float) ((float) electricItem.getJoulesStored(itemInput) / electricItem.getElectricProperties().capacity);
 
 		float x = Math.abs(itemStoredRatio / (itemStoredRatio - underVoltRatio + 0.00000001F/* ensures it's never zero */));
 		float reductionCoef = getRationalFunctionValue(x);
@@ -67,7 +68,7 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 		    electro.extractPower(TransferPack.joulesVoltage(electro.getMaxJoulesStored() * reductionCoef, recieveVoltage), false);
 		}
 	    }
-	    if (electricItem.getJoulesStored(itemInput) == electricItem.getProperties().capacity && inventory.getStackInSlot(1).isEmpty()) {
+	    if (electricItem.getJoulesStored(itemInput) == electricItem.getElectricProperties().capacity && inventory.getStackInSlot(1).isEmpty()) {
 		inventory.setInventorySlotContents(1, inventory.getStackInSlot(0).copy());
 		inventory.getStackInSlot(0).shrink(1);
 	    }

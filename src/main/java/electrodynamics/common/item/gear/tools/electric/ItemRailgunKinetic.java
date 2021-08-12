@@ -7,7 +7,7 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
-import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
+import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemRailgunKinetic extends Railgun {
+public class ItemRailgunKinetic extends ItemRailgun {
 
     public static final double JOULES_PER_SHOT = 100000.0;
     private static final int OVERHEAT_TEMPERATURE = 400;
