@@ -91,7 +91,6 @@ public class ElectrodynamicsRecipeInit {
 
     /* Functional Methods */
 
-    @SuppressWarnings("unchecked")
     public static <T extends IRecipeType<?>> T registerType(ResourceLocation recipeTypeId) {
 	return (T) Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new RecipeType<>());
     }

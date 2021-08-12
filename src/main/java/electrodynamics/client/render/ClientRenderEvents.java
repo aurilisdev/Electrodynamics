@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientRenderEvents {
 
-    @SuppressWarnings("resource")
     @SubscribeEvent
     public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 

@@ -1,5 +1,6 @@
 package electrodynamics.common.recipe;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,16 +24,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
 
-    public ResourceLocation RECIPE_ID;
+    public ResourceLocation id;
     public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
 
-    public ElectrodynamicsRecipe(ResourceLocation recipeID) {
-	RECIPE_ID = recipeID;
+    protected ElectrodynamicsRecipe(ResourceLocation recipeID) {
+	id = recipeID;
     }
 
     @Override
     public ResourceLocation getId() {
-	return RECIPE_ID;
+	return id;
     }
 
     public static Set<IRecipe<?>> findRecipesbyType(IRecipeType<?> typeIn, World world) {
@@ -40,7 +41,6 @@ public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
 		: Collections.emptySet();
     }
 
-    @SuppressWarnings("resource")
     @OnlyIn(Dist.CLIENT)
     public static Set<IRecipe<?>> findRecipesbyType(IRecipeType<?> typeIn) {
 	ClientWorld world = Minecraft.getInstance().world;
@@ -62,11 +62,8 @@ public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
 	for (IRecipe<?> recipe : recipes) {
 	    NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
-	    ingredients.forEach(ingredient -> {
-		for (ItemStack stack : ingredient.getMatchingStacks()) {
-		    inputs.add(stack);
-		}
-	    });
+	    ingredients.forEach(ingredient -> inputs.addAll(Arrays.asList(ingredient.getMatchingStacks())));
+
 	}
 	return inputs;
     }
