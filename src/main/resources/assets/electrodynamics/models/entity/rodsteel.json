@@ -2,8 +2,8 @@
 	"credit":"skip999",
 	"texture_size":[32,32],
 	"textures":{
-		"0":"electrodynamics:entity/projectile/stainlesssteelrod",
-		"particle":"electrodynamics:entity/projectile/stainlesssteelrod"
+		"0":"electrodynamics:entity/projectile/rodsteel",
+		"particle":"electrodynamics:entity/projectile/rodsteel"
 	},
 	"elements":[
 		{
@@ -21,7 +21,7 @@
 	],
 	"groups":[
 		{
-			"name":"stainlesssteelrod",
+			"name":"steelrod",
 			"origin":[8,8,8],
 			"color":0,
 			"children":[0]

@@ -1,4 +1,4 @@
-package electrodynamics.api.capability.compositearmor;
+package electrodynamics.api.capability.ceramicplate;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package electrodynamics.api.capability.compositearmor;
+package electrodynamics.api.capability.ceramicplate;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;

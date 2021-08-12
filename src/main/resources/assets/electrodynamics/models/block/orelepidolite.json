@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "electrodynamics:block/orelepidolite"
+    "all": "electrodynamics:block/ore/orelepidolite"
   }
 }
