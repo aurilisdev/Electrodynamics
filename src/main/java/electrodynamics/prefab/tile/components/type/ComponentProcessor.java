@@ -190,8 +190,16 @@ public class ComponentProcessor implements Component {
 	return holder.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(inputOne);
     }
 
+    public int getInputOne() {
+	return inputOne;
+    }
+
     public ItemStack getSecondInput() {
 	return holder.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(inputTwo);
+    }
+
+    public int getInputTwo() {
+	return inputTwo;
     }
 
     public ItemStack getOutput() {

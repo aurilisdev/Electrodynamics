@@ -18,22 +18,22 @@ import net.minecraft.world.World;
 public class ItemCanister extends BucketItem {
 
     public ItemCanister(SubtypeCanister canister) {
-    	super(() -> canister.getFluid(), new Item.Properties().maxStackSize(4).group(References.CORETAB)
-    		.containerItem(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.empty)));
+	super(() -> canister.getFluid(), new Item.Properties().maxStackSize(4).group(References.CORETAB)
+		.containerItem(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.empty)));
     }
 
     public ItemCanister(SubtypeLeadCanister canister) {
-    	super(() -> canister.getFluid(), new Item.Properties().maxStackSize(2).group(References.CORETAB)
-    		.containerItem(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeLeadCanister.empty)));
+	super(() -> canister.getFluid(), new Item.Properties().maxStackSize(2).group(References.CORETAB)
+		.containerItem(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeLeadCanister.empty)));
     }
-    
+
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    	ItemCanister canister = (ItemCanister)stack.getItem();
-    	if(!canister.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-    		tooltip.add(new TranslationTextComponent("tooltip.electrodynamics.itemcanister"));
-    	}
-    	super.addInformation(stack, worldIn, tooltip, flagIn);
+	ItemCanister canister = (ItemCanister) stack.getItem();
+	if (!canister.getFluid().isEquivalentTo(Fluids.EMPTY)) {
+	    tooltip.add(new TranslationTextComponent("tooltip.electrodynamics.itemcanister"));
+	}
+	super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
 }

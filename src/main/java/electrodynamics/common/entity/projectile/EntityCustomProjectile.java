@@ -14,35 +14,35 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public abstract class EntityCustomProjectile extends ProjectileItemEntity {
 
     protected EntityCustomProjectile(EntityType<? extends ProjectileItemEntity> type, World world) {
-    	super(type, world);
+	super(type, world);
     }
 
     protected EntityCustomProjectile(EntityType<? extends ProjectileItemEntity> type, LivingEntity entity, World world) {
-    	super(type, entity, world);
+	super(type, entity, world);
     }
 
     protected EntityCustomProjectile(EntityType<? extends ProjectileItemEntity> type, double x, double y, double z, World worldIn) {
-    	super(type, x, y, z, worldIn);
+	super(type, x, y, z, worldIn);
     }
 
     @Override
     public IPacket<?> createSpawnPacket() {
-    	return NetworkHooks.getEntitySpawningPacket(this);
+	return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     protected void func_230299_a_(BlockRayTraceResult p_230299_1_) {
-    	this.remove();
+	this.remove();
     }
 
     @Override
     public void onEntityHit(EntityRayTraceResult p_213868_1_) {
-		this.remove();
+	this.remove();
     }
-    
-	@Override
-	protected Item getDefaultItem() {
-		return Items.COBBLESTONE;
-	}
+
+    @Override
+    protected Item getDefaultItem() {
+	return Items.COBBLESTONE;
+    }
 
 }
