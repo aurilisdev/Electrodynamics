@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"dp ",
+		" sb"
+	],
+	"key": {
+		"s": {
+			"tag": "forge:rods/steel"
+		},
+		"b": {
+			"item": "electrodynamics:battery"
+		},
+		"p": {
+			"item": "electrodynamics:sheetplastic"
+		},
+		"d": {
+			"item": "electrodynamics:drillheadtitanium"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:electricdrill",
+		"count": 1
+	}
+}
