@@ -31,7 +31,6 @@ public class ContainerLithiumBatteryBox extends GenericContainer<TileLithiumBatt
 	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basiccapacity),
 		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedcapacity)));
 	addSlot(new SlotRestricted(inv, nextIndex(), 133, 14, false, ItemElectric.class));
-	addSlot(new SlotRestricted(inv, nextIndex(), 133, 54, false, ItemElectric.class));
     }
 
 }

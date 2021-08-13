@@ -16,7 +16,6 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
@@ -27,8 +26,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage {
-
-    private static final int CHARGE_SLOT = 4;
 
     public final double powerOutput;
     public final double maxJoules;
@@ -53,7 +50,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
-	addComponent(new ComponentInventory(this).size(5));
+	addComponent(new ComponentInventory(this).size(4));
 	addComponent(new ComponentContainerProvider("container.batterybox")
 		.createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
@@ -61,7 +58,6 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 
     protected void tickServer(ComponentTickable tickable) {
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (output == null) {
 	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
@@ -94,12 +90,6 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 	}
 	electro.drainElectricItem(3);
-
-	Item item = inv.getStackInSlot(CHARGE_SLOT).getItem();
-	if (item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_BATTERY.get().getRegistryName().toString())
-		|| item.getRegistryName().getNamespace().equals(DeferredRegisters.ITEM_LITHIUMBATTERY.get().getRegistryName().toString())) {
-	    electro.fillElectricItem(CHARGE_SLOT);
-	}
 
 	// Power loss
 	electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);

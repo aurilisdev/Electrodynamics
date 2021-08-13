@@ -58,58 +58,6 @@ public class ItemCanister extends Item {
 	    		}
     		}
     	}
-    }
-    
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-    	return new FluidHandlerItemStack.SwapEmpty(stack, stack, 1000);
-    }
-    
-    @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {;
-    	if(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
-    		stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-    			if(!(((FluidHandlerItemStack.SwapEmpty)h).getFluid().getFluid().isEquivalentTo(EMPTY_FLUID))) {
-    				FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty)h;
-    				tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + " mB"));
-    				tooltip.add(new StringTextComponent(cap.getFluid().getDisplayName().getString()));
-    			}
-    		});
-    	}
-    	super.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-    
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-    	return ActionResult.resultFail(playerIn.getHeldItem(handIn));
-    }
-    
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) {
-    	boolean show = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-    		FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty)h;
-    		return !cap.getFluid().getFluid().isEquivalentTo(EMPTY_FLUID);
-    	}).orElse(false);
-    	return show;
-    }
-    
-    @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-    	double amt = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-    		FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty)h;
-    		return cap.getFluid().getAmount()/cap.getTankCapacity(0);
-    	}).orElse(1);
-    	return 1.0 - amt;
-    }
-    
-    @Override
-    public boolean hasContainerItem() {
-    	return true;
-    }
-    
-    @Override
-    public ItemStack getContainerItem(ItemStack itemStack) {
-    	return new ItemStack(new ItemCanister());
-    }
+
     
 }
