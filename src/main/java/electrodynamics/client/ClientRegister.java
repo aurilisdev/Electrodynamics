@@ -54,6 +54,8 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+//TODO implement a variable texture renderer for the canisters; should use same base model and fill in
+//fluid texture in "window". Cheap way of doing this is removing said window, but where's the fun in that
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = { Dist.CLIENT })
 public class ClientRegister {
@@ -202,12 +204,11 @@ public class ClientRegister {
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.multi, RenderType.getCutout());
 	ItemModelsProperties
 		.registerProperty(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"),
-			(stack, world,
-				entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
-					&& ((ItemElectricDrill) stack.getItem())
-						.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getProperties().extract.getJoules()
-							? 1
-							: 0);
+			(stack, world, entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
+				&& ((ItemElectricDrill) stack.getItem())
+					.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules()
+						? 1
+						: 0);
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {

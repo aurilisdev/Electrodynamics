@@ -56,9 +56,9 @@ public class DO2ORecipeSerializer<T extends DO2ORecipe> extends ElectrodynamicsR
     @Override
     public void write(PacketBuffer buffer, T recipe) {
 	CountableIngredient input1 = (CountableIngredient) recipe.getIngredients().get(0);
-		CountableIngredient input2 = (CountableIngredient) recipe.getIngredients().get(1);
-		input1.writeStack(buffer);
-		input2.writeStack(buffer);
-		buffer.writeItemStack(recipe.getRecipeOutput(), false);
+	CountableIngredient input2 = (CountableIngredient) recipe.getIngredients().get(1);
+	input1.writeStack(buffer);
+	input2.writeStack(buffer);
+	buffer.writeItemStack(recipe.getRecipeOutput(), false);
     }
 }

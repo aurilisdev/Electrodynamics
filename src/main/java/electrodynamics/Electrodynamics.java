@@ -68,7 +68,7 @@ public class Electrodynamics {
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
-	CapabilityElectrodynamic.register();
+	CapabilityElectrodynamic.register(); // TODO: Move to the upcoming RegisterCapabilitiesEvent when it is implemented.
 	CapabilityCeramicPlate.register();
 	NetworkHandler.init();
     }

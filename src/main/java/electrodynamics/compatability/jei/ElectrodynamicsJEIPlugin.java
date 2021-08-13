@@ -54,6 +54,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.TranslationTextComponent;
 
 @JeiPlugin
 public class ElectrodynamicsJEIPlugin implements IModPlugin {
@@ -158,7 +159,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Electric Furnace
 	// still broken; just cleaning up
-	@SuppressWarnings("unchecked")
 	Set<FurnaceRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(
 		recipeManager.getRecipesForType((IRecipeType<FurnaceRecipe>) Registry.RECIPE_TYPE.getOrDefault(VanillaRecipeCategoryUid.FURNACE)));
 	registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
@@ -324,9 +324,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
     }
 
-    @Deprecated
     private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
-
 	/*
 	 * Machines currently with tabs:
 	 * 
@@ -340,17 +338,19 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	for (ItemStack itemStack : edMachines) {
 	    temp = itemStack.getItem().toString();
-	    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, "info.jei.block." + temp);
+	    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, new TranslationTextComponent("info.jei.block." + temp));
 	}
 
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
-		"info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
-		"info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
-		"info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
-		"info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get());
+		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
+	// ince JEI 7.6.4, use {@link #addIngredientInfo(Object, IIngredientType,
+	// ITextComponent...)} instead.
 
     }
 

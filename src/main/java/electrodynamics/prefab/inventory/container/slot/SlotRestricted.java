@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.common.item.subtype.SubtypeCanister;
-import electrodynamics.common.item.subtype.SubtypeLeadCanister;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraftforge.fml.ModList;
 
 public class SlotRestricted extends GenericSlot {
+	
+    static {
+    	if(ModList.get().isLoaded("nuclearscience")) {
 
-    public static final Item[] VALID_EMPTY_BUCKETS = new Item[] { Items.BUCKET, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.empty),
-	    DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeLeadCanister.empty) };
-
+    	}
+    }
+    
     private List<Item> whitelist;
     private List<Class<?>> classes;
 

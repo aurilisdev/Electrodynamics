@@ -2,7 +2,6 @@ package electrodynamics.common.fluid;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
-import electrodynamics.common.item.subtype.SubtypeCanister;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
@@ -22,7 +21,7 @@ public class FluidPolyethylene extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-	return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCanister.polyethylene);
+    	return DeferredRegisters.ITEM_CANISTERREINFORCED.get();
     }
 
     @Override

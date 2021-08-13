@@ -52,9 +52,7 @@ public class CompositeArmorItem extends ArmorItem {
 	if (isInGroup(group)) {
 	    ItemStack filled = new ItemStack(this);
 	    if (ItemStack.areItemsEqualIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-		filled.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
-		    h.increasePlateCount(2);
-		});
+		filled.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> h.increasePlateCount(2));
 		items.add(filled);
 	    }
 	    ItemStack empty = new ItemStack(this);
@@ -87,22 +85,21 @@ public class CompositeArmorItem extends ArmorItem {
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
 	super.onArmorTick(stack, world, player);
-	ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
+	ItemStack[] pieces = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
 		new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
 		new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
 
 	List<ItemStack> armorPieces = new ArrayList<>();
 	player.getArmorInventoryList().forEach(armorPieces::add);
 
-	if (ItemStack.areItemsEqual(armorPieces.get(0), ARMOR_PIECES[3]) || ItemStack.areItemsEqual(armorPieces.get(1), ARMOR_PIECES[2])
-		|| ItemStack.areItemsEqual(armorPieces.get(2), ARMOR_PIECES[1]) || ItemStack.areItemsEqual(armorPieces.get(3), ARMOR_PIECES[0])) {
+	if (ItemStack.areItemsEqual(armorPieces.get(0), pieces[3]) || ItemStack.areItemsEqual(armorPieces.get(1), pieces[2])
+		|| ItemStack.areItemsEqual(armorPieces.get(2), pieces[1]) || ItemStack.areItemsEqual(armorPieces.get(3), pieces[0])) {
 	    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20));
 	}
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A defaultM) {
 
 	if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {
 
@@ -120,12 +117,12 @@ public class CompositeArmorItem extends ArmorItem {
 	    model.RIGHT_SHOE.showModel = armorSlot == EquipmentSlotType.FEET;
 	    model.LEFT_SHOE.showModel = armorSlot == EquipmentSlotType.FEET;
 
-	    model.isChild = _default.isChild;
-	    model.isSitting = _default.isSitting;
-	    model.isSneak = _default.isSneak;
+	    model.isChild = defaultM.isChild;
+	    model.isSitting = defaultM.isSitting;
+	    model.isSneak = defaultM.isSneak;
 
-	    model.rightArmPose = _default.rightArmPose;
-	    model.leftArmPose = _default.leftArmPose;
+	    model.rightArmPose = defaultM.rightArmPose;
+	    model.leftArmPose = defaultM.leftArmPose;
 
 	    return (A) model;
 

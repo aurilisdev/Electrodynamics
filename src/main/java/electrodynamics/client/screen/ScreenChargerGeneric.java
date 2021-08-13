@@ -39,7 +39,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 		ItemStack chargingItem = container.getSlot(0).getStack();
 		if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
 		    IItemElectric electricItem = (IItemElectric) chargingItem.getItem();
-		    return electricItem.getJoulesStored(chargingItem) / electricItem.getProperties().capacity;
+		    return electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity;
 		}
 	    }
 	    return 0;
@@ -75,8 +75,8 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 		ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
 		IItemElectric electricItem = (IItemElectric) chargingItem.getItem();
 
-		chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getProperties().capacity * 100;
-		chargeCapable = electro.getVoltage() / electricItem.getProperties().receive.getVoltage() * 100;
+		chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity * 100;
+		chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 	    }
 
 	    list.add(new TranslationTextComponent("gui.genericcharger.chargeperc",

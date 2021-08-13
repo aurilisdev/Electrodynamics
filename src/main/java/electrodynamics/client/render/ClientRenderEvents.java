@@ -1,6 +1,6 @@
 package electrodynamics.client.render;
 
-import electrodynamics.common.item.gear.tools.electric.utils.Railgun;
+import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientRenderEvents {
 
-    @SuppressWarnings("resource")
     @SubscribeEvent
     public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 
@@ -26,9 +25,9 @@ public class ClientRenderEvents {
 	    ItemStack gunStackMainHand = Minecraft.getInstance().player.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
 	    ItemStack gunStackOffHand = Minecraft.getInstance().player.getItemStackFromSlot(EquipmentSlotType.OFFHAND);
 
-	    if (gunStackMainHand.getItem() instanceof Railgun) {
+	    if (gunStackMainHand.getItem() instanceof ItemRailgun) {
 		renderHeatToolTip(event, gunStackMainHand);
-	    } else if (gunStackOffHand.getItem() instanceof Railgun) {
+	    } else if (gunStackOffHand.getItem() instanceof ItemRailgun) {
 		renderHeatToolTip(event, gunStackOffHand);
 	    }
 	}
@@ -36,7 +35,7 @@ public class ClientRenderEvents {
 
     private static void renderHeatToolTip(RenderGameOverlayEvent.Post event, ItemStack stack) {
 	Minecraft minecraft = Minecraft.getInstance();
-	Railgun railgun = (Railgun) stack.getItem();
+	ItemRailgun railgun = (ItemRailgun) stack.getItem();
 	double temperature = railgun.getTemperatureStored(stack);
 	String correction = "";
 
