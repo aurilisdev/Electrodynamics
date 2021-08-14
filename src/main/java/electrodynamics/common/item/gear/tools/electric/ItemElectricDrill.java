@@ -13,6 +13,7 @@ import electrodynamics.prefab.item.ElectricItemProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemGroup;
@@ -99,8 +100,23 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
     }
 
     @Override
+    public boolean canHarvestBlock(BlockState blockIn) {
+	int i = getTier().getHarvestLevel();
+	if (blockIn.getHarvestTool() == ToolType.PICKAXE) {
+	    return i >= blockIn.getHarvestLevel();
+	}
+	Material material = blockIn.getMaterial();
+	return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL || blockIn.isIn(Blocks.SNOW)
+		|| blockIn.isIn(Blocks.SNOW_BLOCK);
+    }
+
+    @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-	return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
+	Material material = state.getMaterial();
+	return getJoulesStored(stack) > properties.extract.getJoules()
+		? material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state)
+			: efficiency
+		: 0;
     }
 
     @Override

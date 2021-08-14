@@ -25,13 +25,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * Acts as a universal canister container. Can hold a maximum of 2000 mB of
- * fluid.
- * 
- * @author skip999
- *
- */
 public class ItemCanister extends Item {
 
     public static final int MAX_FLUID_CAPACITY = 1000;
@@ -87,11 +80,10 @@ public class ItemCanister extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-	boolean show = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
 	    FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
 	    return !cap.getFluid().getFluid().isEquivalentTo(EMPTY_FLUID);
 	}).orElse(false);
-	return show;
     }
 
     @Override
@@ -104,6 +96,7 @@ public class ItemCanister extends Item {
     }
 
     @Override
+    @Deprecated
     public boolean hasContainerItem() {
 	return true;
     }

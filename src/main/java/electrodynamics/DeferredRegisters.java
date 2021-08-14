@@ -52,6 +52,7 @@ import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
 import electrodynamics.common.item.gear.tools.ItemWrench;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunPlasma;
@@ -262,6 +263,10 @@ public class DeferredRegisters {
 	    supplier(new ItemMultimeter(new Item.Properties().group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_ELECTRICDRILL = ITEMS.register("electricdrill",
 	    supplier(new ItemElectricDrill(
+		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
+			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
+    public static final RegistryObject<Item> ITEM_ELECTRICCHAINSAW = ITEMS.register("electricchainsaw",
+	    supplier(new ItemElectricChainsaw(
 		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
 			    .receive(TransferPack.joulesVoltage(1000, 240)).group(References.CORETAB).maxStackSize(1))));
     public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",

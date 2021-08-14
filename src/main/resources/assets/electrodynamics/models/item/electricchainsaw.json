@@ -1,0 +1,14 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "electrodynamics:item/tools/electricchainsaw"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"on": 1.0
+			},
+			"model": "electrodynamics:item/electricchainsawon"
+		}
+	]
+}

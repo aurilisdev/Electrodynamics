@@ -38,6 +38,7 @@ import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
@@ -209,6 +210,13 @@ public class ClientRegister {
 					.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules()
 						? 1
 						: 0);
+	ItemModelsProperties
+		.registerProperty(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"),
+			(stack, world,
+				entity) -> entity != null && (entity.getHeldItemMainhand() == stack || entity.getHeldItemOffhand() == stack)
+					&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
+						stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
+							: 0);
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {
