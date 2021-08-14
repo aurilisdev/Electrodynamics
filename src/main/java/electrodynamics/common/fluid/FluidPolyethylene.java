@@ -21,7 +21,7 @@ public class FluidPolyethylene extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-    	return DeferredRegisters.ITEM_CANISTERREINFORCED.get();
+	return DeferredRegisters.ITEM_CANISTERREINFORCED.get();
     }
 
     @Override

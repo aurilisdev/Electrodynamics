@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
 public class SlotRestricted extends GenericSlot {
-	
-    static {
-    	if(ModList.get().isLoaded("nuclearscience")) {
 
-    	}
+    static {
+	if (ModList.get().isLoaded("nuclearscience")) {
+
+	}
     }
-    
+
     private List<Item> whitelist;
     private List<Class<?>> classes;
 

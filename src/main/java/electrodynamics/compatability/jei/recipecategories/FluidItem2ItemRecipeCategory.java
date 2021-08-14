@@ -151,8 +151,8 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	int leftHeightOffset = (int) Math.ceil(fluidInputAmount / (float) INPUT_FLUID_TANK[4] * INPUT_FLUID_TANK[3]);
 	int leftStartY = INPUT_FLUID_TANK[1] - leftHeightOffset + 1;
 
-	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
-		fluidInputAmount, true, null);
+	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset, fluidInputAmount,
+		true, null);
 
 	guiItemStacks.set(ingredients);
 	guiFluidStacks.set(ingredients);
@@ -190,17 +190,17 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2ItemRecipe recipe) {
-		List<List<ItemStack>> ingredients = new ArrayList<>();
-		ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
-		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
-		ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
-		canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-			h.fill(stack, FluidAction.EXECUTE);
-		});
-		List<ItemStack> buckets = new ArrayList<>();
-		buckets.add(canister);
-		ingredients.add(buckets);
-		return ingredients;
+	List<List<ItemStack>> ingredients = new ArrayList<>();
+	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
+	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
+	ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+	canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+	    h.fill(stack, FluidAction.EXECUTE);
+	});
+	List<ItemStack> buckets = new ArrayList<>();
+	buckets.add(canister);
+	ingredients.add(buckets);
+	return ingredients;
     }
 
 }

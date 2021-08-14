@@ -121,10 +121,10 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 
     @Override
     public void setIngredients(Fluid2ItemRecipe recipe, IIngredients ingredients) {
-		ItemStack bucket = getBucket(recipe);
-		ingredients.setInput(VanillaTypes.ITEM, bucket);
-		ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+	ItemStack bucket = getBucket(recipe);
+	ingredients.setInput(VanillaTypes.ITEM, bucket);
+	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
+	ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
     }
 
     @Override
@@ -141,8 +141,8 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 	int leftHeightOffset = (int) Math.ceil(fluidInputAmount / (float) INPUT_FLUID_TANK[4] * INPUT_FLUID_TANK[3]);
 	int leftStartY = INPUT_FLUID_TANK[1] - leftHeightOffset + 1;
 
-	guiFluidStacks.init(INPUT_FLUID_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
-		fluidInputAmount, true, null);
+	guiFluidStacks.init(INPUT_FLUID_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset, fluidInputAmount, true,
+		null);
 
 	guiItemStacks.set(ingredients);
 	guiFluidStacks.set(ingredients);
@@ -178,12 +178,12 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
     }
 
     public ItemStack getBucket(Fluid2ItemRecipe recipe) {
-		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
-		ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
-		canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-			h.fill(stack, FluidAction.EXECUTE);
-		});
-		return canister;
+	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
+	ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+	canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+	    h.fill(stack, FluidAction.EXECUTE);
+	});
+	return canister;
     }
 
 }
