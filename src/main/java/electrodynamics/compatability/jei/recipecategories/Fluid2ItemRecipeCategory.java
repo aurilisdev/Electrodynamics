@@ -8,6 +8,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import mezz.jei.api.constants.VanillaTypes;
@@ -20,11 +21,12 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<Fluid2ItemRecipe> {
 
@@ -46,8 +48,6 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
     private StartDirection MINOR_ARROW_START_DIRECTION;
 
     private LoadingCache<Integer, ArrayList<IDrawableAnimated>> CACHED_ARROWS;
-
-    private boolean NULL_BUCKET = false;
 
     public Fluid2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    ArrayList<int[]> inputCoordinates, int smeltTime, StartDirection majorArrowDirection, StartDirection minorArrowDirection,
@@ -121,12 +121,10 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 
     @Override
     public void setIngredients(Fluid2ItemRecipe recipe, IIngredients ingredients) {
-	ItemStack bucket = getBucket(recipe);
-	if (!NULL_BUCKET) {
-	    ingredients.setInput(VanillaTypes.ITEM, bucket);
-	}
-	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
-	ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+		ItemStack bucket = getBucket(recipe);
+		ingredients.setInput(VanillaTypes.ITEM, bucket);
+		ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
+		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
     }
 
     @Override
@@ -134,23 +132,16 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 	IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-	if (!NULL_BUCKET) {
-	    guiItemStacks.init(INPUT_FLUID_STACK_SLOT, true, FLUID_BUCKET_OFFSET[0], FLUID_BUCKET_OFFSET[1]);
-	}
+	guiItemStacks.init(INPUT_FLUID_STACK_SLOT, true, FLUID_BUCKET_OFFSET[0], FLUID_BUCKET_OFFSET[1]);
 
-	int nullBucket = 0;
-	if (NULL_BUCKET) {
-	    nullBucket = 1;
-	}
-
-	guiItemStacks.init(OUTPUT_ITEM_SLOT - nullBucket, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
+	guiItemStacks.init(OUTPUT_ITEM_SLOT, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
 
 	int fluidInputAmount = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack().getAmount();
 
 	int leftHeightOffset = (int) Math.ceil(fluidInputAmount / (float) INPUT_FLUID_TANK[4] * INPUT_FLUID_TANK[3]);
 	int leftStartY = INPUT_FLUID_TANK[1] - leftHeightOffset + 1;
 
-	guiFluidStacks.init(INPUT_FLUID_SLOT - nullBucket, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
+	guiFluidStacks.init(INPUT_FLUID_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
 		fluidInputAmount, true, null);
 
 	guiItemStacks.set(ingredients);
@@ -162,9 +153,7 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 	ArrayList<IDrawableAnimated> arrows = getArrows(recipe);
 
 	arrows.get(0).draw(matrixStack, MAJOR_PROCESSING_ARROW_OFFSET[0], MAJOR_PROCESSING_ARROW_OFFSET[1]);
-	if (!NULL_BUCKET) {
-	    arrows.get(1).draw(matrixStack, MINOR_PROCESSING_ARROW_OFFSET[0], MINOR_PROCESSING_ARROW_OFFSET[1]);
-	}
+	arrows.get(1).draw(matrixStack, MINOR_PROCESSING_ARROW_OFFSET[0], MINOR_PROCESSING_ARROW_OFFSET[1]);
 	drawSmeltTime(recipe, matrixStack, getYHeight());
     }
 
@@ -189,13 +178,12 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
     }
 
     public ItemStack getBucket(Fluid2ItemRecipe recipe) {
-	Item fluidBucket = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack().getFluid().getFilledBucket();
-	if (fluidBucket != null) {
-	    NULL_BUCKET = false;
-	    return new ItemStack(fluidBucket);
-	}
-	NULL_BUCKET = true;
-	return null;
+		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
+		ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+		canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+			h.fill(stack, FluidAction.EXECUTE);
+		});
+		return canister;
     }
 
 }

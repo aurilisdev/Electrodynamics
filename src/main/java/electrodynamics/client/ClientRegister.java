@@ -54,6 +54,8 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+//TODO implement a variable texture renderer for the canisters; should use same base model and fill in
+//fluid texture in "window". Cheap way of doing this is removing said window, but where's the fun in that
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = { Dist.CLIENT })
 public class ClientRegister {

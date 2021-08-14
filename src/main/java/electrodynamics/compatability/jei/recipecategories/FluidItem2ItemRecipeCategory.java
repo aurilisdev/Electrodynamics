@@ -9,6 +9,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -22,11 +23,12 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<FluidItem2ItemRecipe> {
 
@@ -50,8 +52,6 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     private StartDirection MINOR_ARROW_START_DIRECTION;
 
     private LoadingCache<Integer, ArrayList<IDrawableAnimated>> CACHED_ARROWS;
-
-    private boolean NULL_BUCKET = false;
 
     public FluidItem2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    ArrayList<int[]> inputCoordinates, int smeltTime, StartDirection majorArrowDirection, StartDirection minorArrowDirection,
@@ -142,23 +142,16 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 	guiItemStacks.init(ITEM_INPUT_SLOT, true, INPUT_ITEM_OFFSET[0], INPUT_ITEM_OFFSET[1]);
-	if (!NULL_BUCKET) {
-	    guiItemStacks.init(INPUT_FLUID_SLOT, true, FLUID_BUCKET_OFFSET[0], FLUID_BUCKET_OFFSET[1]);
-	}
+	guiItemStacks.init(INPUT_FLUID_SLOT, true, FLUID_BUCKET_OFFSET[0], FLUID_BUCKET_OFFSET[1]);
 
-	int nullBucket = 0;
-	if (NULL_BUCKET) {
-	    nullBucket = 1;
-	}
-
-	guiItemStacks.init(OUTPUT_ITEM_SLOT - nullBucket, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
+	guiItemStacks.init(OUTPUT_ITEM_SLOT, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
 
 	int fluidInputAmount = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack().getAmount();
 
 	int leftHeightOffset = (int) Math.ceil(fluidInputAmount / (float) INPUT_FLUID_TANK[4] * INPUT_FLUID_TANK[3]);
 	int leftStartY = INPUT_FLUID_TANK[1] - leftHeightOffset + 1;
 
-	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT - nullBucket, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
+	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
 		fluidInputAmount, true, null);
 
 	guiItemStacks.set(ingredients);
@@ -197,19 +190,17 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2ItemRecipe recipe) {
-	List<List<ItemStack>> ingredients = new ArrayList<>();
-	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
-
-	Item fluidBucket = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack().getFluid().getFilledBucket();
-	if (fluidBucket != null) {
-	    List<ItemStack> temp = new ArrayList<>();
-	    temp.add(new ItemStack(fluidBucket, 1));
-	    ingredients.add(temp);
-	    NULL_BUCKET = false;
-	    return ingredients;
-	}
-	NULL_BUCKET = true;
-	return ingredients;
+		List<List<ItemStack>> ingredients = new ArrayList<>();
+		ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
+		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
+		ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+		canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+			h.fill(stack, FluidAction.EXECUTE);
+		});
+		List<ItemStack> buckets = new ArrayList<>();
+		buckets.add(canister);
+		ingredients.add(buckets);
+		return ingredients;
     }
 
 }

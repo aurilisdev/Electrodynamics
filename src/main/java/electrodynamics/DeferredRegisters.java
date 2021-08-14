@@ -55,7 +55,6 @@ import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunPlasma;
-import electrodynamics.common.item.subtype.SubtypeCanister;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -63,7 +62,6 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.item.subtype.SubtypeLeadCanister;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
@@ -116,12 +114,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -136,7 +132,6 @@ public class DeferredRegisters {
     public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
     public static HashMap<ISubtype, FluidMineral> SUBTYPEMINERALFLUID_MAPPINGS = new HashMap<>();
     public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
-    public static final HashMap<Item, Fluid> BUCKETFLUID_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
@@ -222,14 +217,6 @@ public class DeferredRegisters {
 	for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));
 	}
-	for (SubtypeCanister subtype : SubtypeCanister.values()) {
-	    ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype), subtype));
-	}
-	BUCKETFLUID_MAPPINGS.put(Items.WATER_BUCKET, Fluids.WATER);
-	BUCKETFLUID_MAPPINGS.put(Items.LAVA_BUCKET, Fluids.LAVA);
-	for (SubtypeLeadCanister subtype : SubtypeLeadCanister.values()) {
-	    ITEMS.register(subtype.tag(), supplier(new ItemCanister(subtype), subtype));
-	}
 	ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	ITEMS.register("compositeplating", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
 	ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().maxStackSize(64).group(References.CORETAB))));
@@ -289,7 +276,7 @@ public class DeferredRegisters {
 	    supplier(new ItemWrench(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
-
+    public static final RegistryObject<Item> ITEM_CANISTERREINFORCED = ITEMS.register("canisterreinforced", supplier(new ItemCanister()));
     public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",
