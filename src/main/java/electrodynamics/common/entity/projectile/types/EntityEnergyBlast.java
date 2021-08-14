@@ -33,16 +33,19 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	BlockState state = world.getBlockState(p_230299_1_.getPos());
 	if (!ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
 	    if (!world.isRemote) {
-		world.createExplosion(null, p_230299_1_.getPos().getX(), p_230299_1_.getPos().getY(), p_230299_1_.getPos().getZ(), 1f, true,
-			Mode.DESTROY);
+		world.createExplosion(null, p_230299_1_.getPos().getX(), p_230299_1_.getPos().getY(), p_230299_1_.getPos().getZ(),
+			3f / (ticksExisted / 40.0f + 1), true, Mode.DESTROY);
 	    }
+	    this.remove();
+	}
+	if (ticksExisted > 100) {
 	    this.remove();
 	}
     }
 
     @Override
     public void onEntityHit(EntityRayTraceResult p_213868_1_) {
-	p_213868_1_.getEntity().attackEntityFrom(DamageSources.PLASMA_BOLT, 4f);
+	p_213868_1_.getEntity().attackEntityFrom(DamageSources.PLASMA_BOLT, 20f / (ticksExisted / 40.0f + 1));
 	super.onEntityHit(p_213868_1_);
     }
 

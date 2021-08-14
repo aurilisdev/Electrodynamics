@@ -1,7 +1,7 @@
 {
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "electrodynamics:item/electricdrill"
+		"layer0": "electrodynamics:item/tools/electricdrill"
 	},
 	"overrides": [
 		{
