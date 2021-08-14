@@ -30,8 +30,8 @@ public class ContainerChemicalMixer extends GenericContainer<TileChemicalMixer> 
     @Override
     public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 83, 31));
-	addSlot(new SlotRestricted(inv, nextIndex(), 83, 51, TileChemicalMixer.SUPPORTED_INPUT_FLUIDS));
-	addSlot(new SlotRestricted(inv, nextIndex(), 108, 51, SlotRestricted.VALID_EMPTY_BUCKETS[1]));
+	addSlot(new GenericSlot(inv, nextIndex(), 83, 51));
+	addSlot(new GenericSlot(inv, nextIndex(), 108, 51));
 	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14,
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
 		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));

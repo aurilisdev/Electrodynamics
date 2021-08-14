@@ -9,6 +9,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -23,11 +24,12 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecipeCategory<FluidItem2FluidRecipe> {
 
@@ -56,9 +58,6 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 
     private StartDirection MAJOR_ARROW_START_DIRECTION;
     private StartDirection MINOR_ARROW_START_DIRECTION;
-
-    private boolean NULL_INPUT_BUCKET = false;
-    private boolean NULL_OUTPUT_BUCKET = false;
 
     private IDrawableStatic OUTPUT_FLUID_BAR;
 
@@ -157,13 +156,10 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 
     @Override
     public void setIngredients(FluidItem2FluidRecipe recipe, IIngredients ingredients) {
-	ingredients.setInputLists(VanillaTypes.ITEM, getIngredients(recipe));
-	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
-	ingredients.setOutput(VanillaTypes.FLUID, recipe.getFluidRecipeOutput());
-	ItemStack outputBucket = getBucketOutput(recipe);
-	if (!NULL_OUTPUT_BUCKET) {
-	    ingredients.setOutput(VanillaTypes.ITEM, outputBucket);
-	}
+		ingredients.setInputLists(VanillaTypes.ITEM, getIngredients(recipe));
+		ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
+		ingredients.setOutput(VanillaTypes.FLUID, recipe.getFluidRecipeOutput());
+		ingredients.setOutput(VanillaTypes.ITEM, getBucketOutput(recipe));
     }
 
     @Override
@@ -173,13 +169,7 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 	IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 	guiItemStacks.init(ITEM_INPUT_SLOT, true, INPUT_ITEM_OFFSET[0], INPUT_ITEM_OFFSET[1]);
-	if (!NULL_INPUT_BUCKET) {
-	    guiItemStacks.init(INPUT_FLUID_SLOT, true, INPUT_FLUID_BUCKET_OFFSET[0], INPUT_FLUID_BUCKET_OFFSET[1]);
-	}
-	int isBucketNull = 0;
-	if (NULL_INPUT_BUCKET) {
-	    isBucketNull = 1;
-	}
+	guiItemStacks.init(INPUT_FLUID_SLOT, true, INPUT_FLUID_BUCKET_OFFSET[0], INPUT_FLUID_BUCKET_OFFSET[1]);
 
 	int fluidInputAmount = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack().getAmount();
 	int fluidOutputAmount = recipe.getFluidRecipeOutput().getAmount();
@@ -190,14 +180,12 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 	int rightHeightOffset = (int) Math.ceil(fluidOutputAmount / (float) OUTPUT_FLUID_TANK[4] * OUTPUT_FLUID_TANK[3]);
 	int rightStartY = OUTPUT_FLUID_TANK[1] - rightHeightOffset + 1;
 
-	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT - isBucketNull, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
+	guiFluidStacks.init(INPUT_FLUID_STACK_SLOT, true, INPUT_FLUID_TANK[0], leftStartY, INPUT_FLUID_TANK[2], leftHeightOffset,
 		fluidInputAmount, true, null);
-	guiFluidStacks.init(OUTPUT_FLUID_SLOT - isBucketNull, false, OUTPUT_FLUID_TANK[0], rightStartY, OUTPUT_FLUID_TANK[2], rightHeightOffset,
+	guiFluidStacks.init(OUTPUT_FLUID_SLOT, false, OUTPUT_FLUID_TANK[0], rightStartY, OUTPUT_FLUID_TANK[2], rightHeightOffset,
 		fluidOutputAmount, true, null);
 
-	if (!NULL_OUTPUT_BUCKET) {
-	    guiItemStacks.init(OUTPUT_FLUID_STACK_SLOT, false, OUTPUT_FLUID_STACK_OFFSET[0], OUTPUT_FLUID_STACK_OFFSET[1]);
-	}
+	guiItemStacks.init(OUTPUT_FLUID_STACK_SLOT, false, OUTPUT_FLUID_STACK_OFFSET[0], OUTPUT_FLUID_STACK_OFFSET[1]);
 	guiItemStacks.set(ingredients);
 	guiFluidStacks.set(ingredients);
 
@@ -247,27 +235,25 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2FluidRecipe recipe) {
-	List<List<ItemStack>> ingredients = new ArrayList<>();
-	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
-	Item fluidBucket = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack().getFluid().getFilledBucket();
-	if (fluidBucket != null) {
-	    List<ItemStack> temp = new ArrayList<>();
-	    temp.add(new ItemStack(fluidBucket, 1));
-	    ingredients.add(temp);
-	    NULL_INPUT_BUCKET = false;
-	    return ingredients;
-	}
-	NULL_INPUT_BUCKET = true;
-	return ingredients;
+		List<List<ItemStack>> ingredients = new ArrayList<>();
+		ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
+		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
+		ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+		canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+			h.fill(stack, FluidAction.EXECUTE);
+		});
+		List<ItemStack> buckets = new ArrayList<>();
+		buckets.add(canister);
+		ingredients.add(buckets);
+		return ingredients;
     }
 
     public ItemStack getBucketOutput(FluidItem2FluidRecipe recipe) {
-	Item outputBucket = recipe.getFluidRecipeOutput().getFluid().getFilledBucket();
-	if (outputBucket != null) {
-	    NULL_OUTPUT_BUCKET = false;
-	    return new ItemStack(outputBucket);
-	}
-	NULL_OUTPUT_BUCKET = true;
-	return null;
+		FluidStack stack = recipe.getFluidRecipeOutput();
+		ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+		canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+			h.fill(stack, FluidAction.EXECUTE);
+		});
+		return canister;
     }
 }

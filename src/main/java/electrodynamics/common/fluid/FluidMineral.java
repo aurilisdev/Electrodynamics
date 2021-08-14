@@ -1,5 +1,6 @@
 package electrodynamics.common.fluid;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import net.minecraft.block.BlockState;
@@ -26,7 +27,7 @@ public class FluidMineral extends Fluid {
 
     @Override
     public Item getFilledBucket() {
-	return null;
+    	return DeferredRegisters.ITEM_CANISTERREINFORCED.get();
     }
 
     @Override

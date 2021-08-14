@@ -1,10 +1,5 @@
 {
-	"item.electrodynamics.canisterempty": "Empty Canister",
-	"item.electrodynamics.canistersulfuric": "Sulfuric Acid Canister",
-	"item.electrodynamics.canisterethanol": "Ethanol Canister",
-	"item.electrodynamics.canisterpolyethylene": "Polyethylene Canister",
-	"item.electrodynamics.canistermolybdenum":"Aqueous Molybdenum Canister",
-	"item.electrodynamics.leadcanisterempty": "Empty Lined Canister",
+	"item.electrodynamics.canisterreinforced":"Reinforced Canister",
 	"item.electrodynamics.sheetplastic": "Polyethylene Sheet",
 	"item.electrodynamics.ingotbronze": "Bronze Ingot",
 	"item.electrodynamics.ingotcopper": "Copper Ingot",
