@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -113,11 +112,12 @@ public class ItemCanister extends Item {
     }
     
     @Override
+    //TODO handle NBT canister crafting
     public ItemStack getContainerItem(ItemStack itemStack) {
     	return new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
     }
     
-    private static ArrayList<Fluid> getWhitelistedFluids(){
+    public ArrayList<Fluid> getWhitelistedFluids(){
     	ArrayList<Fluid> whitelisted = new ArrayList<>();
     	/* Current Whitelist:
     	 * > Electrodynamics Fluids 
