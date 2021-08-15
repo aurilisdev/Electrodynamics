@@ -38,8 +38,8 @@ public class ItemCanister extends Item {
 	public static final int MAX_FLUID_CAPACITY = 5000;
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	
-    public ItemCanister() {
-    	super(new Item.Properties().maxStackSize(1).group(References.CORETAB));
+    public ItemCanister(Item.Properties itemProperty) {
+    	super(itemProperty);
     }
     
     
