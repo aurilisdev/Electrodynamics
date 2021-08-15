@@ -9,7 +9,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -235,25 +234,25 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2FluidRecipe recipe) {
-	List<List<ItemStack>> ingredients = new ArrayList<>();
-	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
-	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
-	ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
-	canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-	    h.fill(stack, FluidAction.EXECUTE);
-	});
-	List<ItemStack> buckets = new ArrayList<>();
-	buckets.add(canister);
-	ingredients.add(buckets);
-	return ingredients;
+		List<List<ItemStack>> ingredients = new ArrayList<>();
+		ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
+		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
+		ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+		bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+		    h.fill(stack, FluidAction.EXECUTE);
+		});
+		List<ItemStack> buckets = new ArrayList<>();
+		buckets.add(bucket);
+		ingredients.add(buckets);
+		return ingredients;
     }
 
     public ItemStack getBucketOutput(FluidItem2FluidRecipe recipe) {
-	FluidStack stack = recipe.getFluidRecipeOutput();
-	ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
-	canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-	    h.fill(stack, FluidAction.EXECUTE);
-	});
-	return canister;
+    	FluidStack stack = recipe.getFluidRecipeOutput();
+    	ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+		bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+		    h.fill(stack, FluidAction.EXECUTE);
+		});
+		return bucket;
     }
 }

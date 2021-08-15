@@ -79,8 +79,7 @@ public class TileFermentationPlant extends GenericTileTicking {
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
 
-	return processor.outputToPipe(processor, SUPPORTED_OUTPUT_FLUIDS).consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
-		.dispenseBucket(MAX_TANK_CAPACITY, 2)
+	return processor.outputToPipe(processor, SUPPORTED_OUTPUT_FLUIDS).consumeBucket(1).dispenseBucket(2)
 		.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 

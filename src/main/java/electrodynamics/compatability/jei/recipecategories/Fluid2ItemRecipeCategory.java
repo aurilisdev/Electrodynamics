@@ -8,7 +8,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import mezz.jei.api.constants.VanillaTypes;
@@ -178,12 +177,12 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
     }
 
     public ItemStack getBucket(Fluid2ItemRecipe recipe) {
-	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
-	ItemStack canister = new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
-	canister.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-	    h.fill(stack, FluidAction.EXECUTE);
-	});
-	return canister;
+		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
+		ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+		bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+		    h.fill(stack, FluidAction.EXECUTE);
+		});
+		return bucket;
     }
 
 }

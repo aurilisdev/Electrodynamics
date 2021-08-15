@@ -59,7 +59,7 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
 	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
 		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4)
-		.canProcess(component -> component.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).canProcessFluid2ItemRecipe(component,
+		.canProcess(component -> component.consumeBucket(1).canProcessFluid2ItemRecipe(component,
 			Fluid2ItemRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE))
 		.process(component -> component.processFluid2ItemRecipe(component, Fluid2ItemRecipe.class))
 		.requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK)

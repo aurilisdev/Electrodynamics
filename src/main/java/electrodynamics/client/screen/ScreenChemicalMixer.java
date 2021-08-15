@@ -43,12 +43,22 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 	    if (furnace != null) {
 		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
 		if (processor.operatingTicks > 0) {
-		    return processor.operatingTicks / processor.requiredTicks;
+		    return Math.min(1.0, processor.operatingTicks / (processor.requiredTicks / 2.0));
 		}
 	    }
 	    return 0;
-	}, this, 46, 30));
-	components.add(new ScreenComponentProgress(() -> 0, this, 46, 50).left());
+	}, this, 42, 30));
+	components.add(new ScreenComponentProgress(() -> {
+	    GenericTile furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > processor.requiredTicks / 2.0) {
+		    return Math.min(1.0, (processor.operatingTicks - processor.requiredTicks / 2.0) / (processor.requiredTicks / 2.0));
+		}
+	    }
+	    return 0;
+	}, this, 98, 30));
+	components.add(new ScreenComponentProgress(() -> 0, this, 42, 50).left());
 	components.add(new ScreenComponentFluid(() -> {
 	    TileChemicalMixer boiler = container.getHostFromIntArray();
 	    if (boiler != null) {

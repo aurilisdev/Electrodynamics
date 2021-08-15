@@ -63,7 +63,7 @@ public class TileMineralWasher extends GenericTileTicking {
 	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
 		.type(ComponentProcessorType.ObjectToObject)
 		.canProcess(component -> component.outputToPipe(component, SUPPORTED_OUTPUT_FLUIDS)
-			.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
+			.consumeBucket(1)
 			.canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));

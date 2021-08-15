@@ -17,7 +17,10 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -233,67 +236,87 @@ public class ComponentProcessor implements Component {
      * @param slot
      * @return
      */
-    // TODO add a special case for a water bucket
-    public ComponentProcessor consumeBucket(int maxCapacity, Fluid[] fluids, int slot) {
-	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
-	ItemStack bucketStack = inv.getStackInSlot(slot);
-
-	if (!bucketStack.isEmpty() && CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
-	    bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-		int tankCount = h.getTanks();
-		Fluid filledFluid = null;
-		for (Fluid fluid : tank.getInputFluids()) {
-		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-			filledFluid = fluid;
-			break;
-		    }
-		}
-		for (int i = 0; i < tankCount; i++) {
-		    FluidStack capFluidStack = h.getFluidInTank(i);
-		    if (filledFluid == null || filledFluid.isEquivalentTo(capFluidStack.getFluid())) {
-			FluidTank fluidTank = tank.getTankFromFluid(capFluidStack.getFluid());
-			int room = fluidTank.getCapacity() - fluidTank.getFluidAmount();
-			int amtStored = capFluidStack.getAmount();
-			if (amtStored <= room && amtStored > 0) {
-			    h.drain(new FluidStack(capFluidStack.getFluid(), amtStored), FluidAction.EXECUTE);
-			    tank.getStackFromFluid(capFluidStack.getFluid())
-				    .setAmount(tank.getStackFromFluid(capFluidStack.getFluid()).getAmount() + amtStored);
-			} else if (amtStored > room) {
-			    h.drain(new FluidStack(capFluidStack.getFluid(), room), FluidAction.EXECUTE);
-			    tank.getStackFromFluid(capFluidStack.getFluid())
-				    .setAmount(tank.getStackFromFluid(capFluidStack.getFluid()).getAmount() + room);
+    public ComponentProcessor consumeBucket(int slot) {
+		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
+		ItemStack bucketStack = inv.getStackInSlot(slot);
+	
+		if (!bucketStack.isEmpty() && CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
+			
+			Fluid filledFluid = null;
+			//Is there a fluid currently in the machine?
+			for(Fluid fluid : tank.getInputFluids()) {
+				if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+					filledFluid = fluid;
+					break;
+				}
 			}
-		    }
+			
+			if(filledFluid == null) {
+				boolean matchingFluid = false;
+				FluidStack containerFluid = bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+					return h.drain(tank.getTankCapacity(0), FluidAction.SIMULATE);
+				}).orElse(null);
+				if(containerFluid != null && !containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
+					for(Fluid fluid : tank.getInputFluids()) {
+						if(fluid.isEquivalentTo(containerFluid.getFluid())) {
+							matchingFluid = true;
+							break;
+						}
+					}
+					if(matchingFluid) {
+						bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+							h.drain(containerFluid, FluidAction.EXECUTE);
+						});
+						tank.getStackFromFluid(containerFluid.getFluid()).setAmount(containerFluid.getAmount());
+						if(bucketStack.getItem() instanceof BucketItem) {
+							inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
+						} 
+					}
+				}	
+			} else {
+				FluidTank fluidTank = tank.getTankFromFluid(filledFluid);
+				int room = fluidTank.getCapacity() - fluidTank.getFluidAmount();
+				FluidStack amtDrained = bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+					return h.drain(new FluidStack(fluidTank.getFluid().getFluid(), room), FluidAction.SIMULATE);
+				}).orElse(null);
+				if(amtDrained != null && !amtDrained.getFluid().isEquivalentTo(Fluids.EMPTY)) {
+					bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+						h.drain(amtDrained, FluidAction.EXECUTE);
+					});
+					tank.getStackFromFluid(amtDrained.getFluid()).setAmount(tank.getStackFromFluid(amtDrained.getFluid()).getAmount() + amtDrained.getAmount());	
+					if(bucketStack.getItem() instanceof BucketItem) {
+						inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
+					}
+				}
+			}	
 		}
-	    });
-	}
-
-	return this;
+		
+		return this;
     }
 
-    // TODO add a special case for a water bucket
-    public ComponentProcessor dispenseBucket(int maxCapacity, int slot) {
-
-	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
-	ItemStack bucketStack = inv.getStackInSlot(slot);
-
-	if (!bucketStack.isEmpty() && CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
-	    bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-		for (Fluid fluid : tank.getOutputFluids()) {
-		    FluidStack stack = tank.getTankFromFluid(fluid).getFluid();
-		    if (stack.getAmount() > 0) {
-			int amountAccepted = h.fill(stack, FluidAction.SIMULATE);
-			h.fill(new FluidStack(stack.getFluid(), amountAccepted), FluidAction.EXECUTE);
-			tank.getStackFromFluid(fluid).setAmount(tank.getStackFromFluid(fluid).getAmount() - amountAccepted);
-			break;
-		    }
+    public ComponentProcessor dispenseBucket(int slot) {
+		
+    	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
+		ItemStack bucketStack = inv.getStackInSlot(slot);
+	
+		if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) &&
+				CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
+			bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+				for(Fluid fluid : tank.getOutputFluids()) {
+					FluidStack stack = tank.getTankFromFluid(fluid).getFluid();
+					if(stack.getAmount() > 0) {
+						int amountAccepted = h.fill(stack, FluidAction.SIMULATE);
+						h.fill(new FluidStack(stack.getFluid(), amountAccepted), FluidAction.EXECUTE);
+						tank.getStackFromFluid(fluid).setAmount(tank.getStackFromFluid(fluid).getAmount() - amountAccepted);
+						break;
+					}
+				}
+			});
 		}
-	    });
-	}
-
-	return this;
+	
+		return this;
     }
 
     public ComponentProcessor outputToPipe(ComponentProcessor pr, Fluid[] outputFluids) {

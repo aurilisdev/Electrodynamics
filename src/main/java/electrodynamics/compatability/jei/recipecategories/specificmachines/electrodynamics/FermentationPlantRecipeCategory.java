@@ -38,7 +38,7 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
     private static String RECIPE_GROUP = "fermenting";
     private static String GUI_TEXTURE = "textures/gui/jei/sol_and_liq_to_liq_recipe_gui.png";
 
-    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer));
+    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant));
 
     private static StartDirection MAJOR_ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.LEFT;
     private static StartDirection MINOR_ARROW_START_DIRECTION = IDrawableAnimated.StartDirection.RIGHT;
