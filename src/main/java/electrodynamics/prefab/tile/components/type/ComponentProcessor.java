@@ -93,12 +93,6 @@ public class ComponentProcessor implements Component {
 	    electro.maxJoules(usage * operatingSpeed * 10);
 	}
 
-	/**
-	 * OVERRIDE THIS
-	 * 
-	 * @param stack
-	 * @return
-	 */
 	if (canProcess.test(this)) {
 	    operatingTicks += operatingSpeed;
 	    if (operatingTicks >= requiredTicks) {
@@ -245,7 +239,7 @@ public class ComponentProcessor implements Component {
 			
 			Fluid filledFluid = null;
 			//Is there a fluid currently in the machine?
-			for(Fluid fluid : tank.getInputFluids()) {
+			for(Fluid fluid : tank.getValidFluids().get(0)) {
 				if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
 					filledFluid = fluid;
 					break;
@@ -258,7 +252,7 @@ public class ComponentProcessor implements Component {
 					return h.drain(tank.getTankCapacity(0), FluidAction.SIMULATE);
 				}).orElse(null);
 				if(containerFluid != null && !containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-					for(Fluid fluid : tank.getInputFluids()) {
+					for(Fluid fluid : tank.getValidFluids().get(0)) {
 						if(fluid.isEquivalentTo(containerFluid.getFluid())) {
 							matchingFluid = true;
 							break;
@@ -304,7 +298,7 @@ public class ComponentProcessor implements Component {
 		if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) &&
 				CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
 			bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-				for(Fluid fluid : tank.getOutputFluids()) {
+				for(Fluid fluid : tank.getValidFluids().get(1)) {
 					FluidStack stack = tank.getTankFromFluid(fluid).getFluid();
 					if(stack.getAmount() > 0) {
 						int amountAccepted = h.fill(stack, FluidAction.SIMULATE);
@@ -319,22 +313,22 @@ public class ComponentProcessor implements Component {
 		return this;
     }
 
-    public ComponentProcessor outputToPipe(ComponentProcessor pr, Fluid[] outputFluids) {
-	ComponentDirection direction = pr.getHolder().getComponent(ComponentType.Direction);
-	ComponentFluidHandler tank = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	BlockPos face = pr.getHolder().getPos().offset(direction.getDirection().rotateY().getOpposite());
-	TileEntity faceTile = pr.getHolder().getWorld().getTileEntity(face);
-	if (faceTile != null) {
-	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().rotateY().getOpposite().getOpposite());
-	    if (cap.isPresent()) {
-		IFluidHandler handler = cap.resolve().get();
-		for (Fluid fluid : outputFluids) {
-		    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-			tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
-			break;
-		    }
-		}
+    public ComponentProcessor outputToPipe(ComponentProcessor pr) {
+		ComponentDirection direction = pr.getHolder().getComponent(ComponentType.Direction);
+		ComponentFluidHandler tank = pr.getHolder().getComponent(ComponentType.FluidHandler);
+		BlockPos face = pr.getHolder().getPos().offset(direction.getDirection().rotateY().getOpposite());
+		TileEntity faceTile = pr.getHolder().getWorld().getTileEntity(face);
+		if (faceTile != null) {
+		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+			    direction.getDirection().rotateY().getOpposite().getOpposite());
+		    if (cap.isPresent()) {
+			IFluidHandler handler = cap.resolve().get();
+			for (Fluid fluid : tank.getValidFluids().get(1)) {
+			    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+				tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+				break;
+			    }
+			}
 	    }
 	}
 	return this;

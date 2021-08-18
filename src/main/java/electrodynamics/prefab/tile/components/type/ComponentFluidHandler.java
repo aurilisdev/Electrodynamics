@@ -5,14 +5,22 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import electrodynamics.common.recipe.recipeutils.FluidIngredient;
+import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
@@ -29,21 +37,20 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public void holder(GenericTile holder) {
-	this.holder = holder;
+    	this.holder = holder;
     }
 
-    @Deprecated
-    // we need to rework this to split it into input tanks and output tanks
     protected HashMap<Fluid, FluidTank> fluids = new HashMap<>();
-
+    
     protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
     protected HashSet<Direction> relativeInputDirections = new HashSet<>();
     protected HashSet<Direction> outputDirections = new HashSet<>();
     protected HashSet<Direction> inputDirections = new HashSet<>();
     protected Direction lastDirection = null;
 
-    private ArrayList<Fluid> INPUT_FLUIDS = new ArrayList<>();
-    private ArrayList<Fluid> OUTPUT_FLUIDS = new ArrayList<>();
+    //Inputs in slot 0, outputs in slot 1 ALWAYS
+    private List<List<Fluid>> VALID_FLUIDS = getInitList();     
+
 
     public ComponentFluidHandler(GenericTile source) {
 	holder(source);
@@ -54,7 +61,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	    handler.guiPacketReader(this::readGuiPacket);
 	}
     }
-
+    
     private void writeGuiPacket(CompoundNBT nbt) {
 	saveToNBT(nbt);
     }
@@ -124,7 +131,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public int getTankCapacity(int tank) {
-	return ((FluidTank) fluids.values().toArray()[tank]).getCapacity();
+    	return ((FluidTank) fluids.values().toArray()[tank]).getCapacity();
     }
 
     @Override
@@ -185,29 +192,28 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-	ListNBT list = nbt.getList("list", 10);
-	for (INBT tag : list) {
-	    CompoundNBT compound = (CompoundNBT) tag;
-	    FluidTank tank = new FluidTank(0).readFromNBT(compound);
-	    fluids.get(tank.getFluid().getRawFluid()).setFluid(tank.getFluid());
-	}
+		ListNBT list = nbt.getList("list", 10);
+		for (INBT tag : list) {
+		    CompoundNBT compound = (CompoundNBT) tag;
+		    FluidTank tank = new FluidTank(0).readFromNBT(compound);
+		    fluids.get(tank.getFluid().getRawFluid()).setFluid(tank.getFluid());
+		}
     }
 
     @Override
     public void saveToNBT(CompoundNBT nbt) {
-	ListNBT list = new ListNBT();
-	for (FluidTank stack : fluids.values()) {
-	    CompoundNBT tag = new CompoundNBT();
-	    // Don't use native read cause it doesn't use getRawFluid
-	    tag.putString("FluidName", stack.getFluid().getRawFluid().getRegistryName().toString());
-	    tag.putInt("Amount", stack.getFluid().getAmount());
-
-	    if (stack.getFluid().getTag() != null) {
-		tag.put("Tag", stack.getFluid().getTag());
-	    }
-	    list.add(tag);
-	}
-	nbt.put("list", list);
+		ListNBT list = new ListNBT();
+		for (FluidTank stack : fluids.values()) {
+		    CompoundNBT tag = new CompoundNBT();
+		    // Don't use native read cause it doesn't use getRawFluid
+		    tag.putString("FluidName", stack.getFluid().getRawFluid().getRegistryName().toString());
+		    tag.putInt("Amount", stack.getFluid().getAmount());
+	
+		    if (stack.getFluid().getTag() != null) {
+			tag.put("Tag", stack.getFluid().getTag());
+		    }
+		    list.add(tag);
+		}
     }
 
     public GenericTile getHolder() {
@@ -226,33 +232,51 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     public Set<Fluid> getFluids() {
 	return fluids.keySet();
     }
-
-    public ArrayList<Fluid> getInputFluids() {
-	return INPUT_FLUIDS;
+    
+    public List<List<Fluid>> getValidFluids(){
+    	return VALID_FLUIDS;
     }
 
-    public ArrayList<Fluid> getOutputFluids() {
-	return OUTPUT_FLUIDS;
+    //Now it has some teeth
+    public <T extends ElectrodynamicsRecipe> ComponentFluidHandler addFluids(Class<T> recipeClass, IRecipeType<?> recipeType, 
+    	int capacity, boolean hasInput, boolean hasOutput) {
+    	
+    	List<Fluid> input = new ArrayList<>();
+    	List<Fluid> output = new ArrayList<>();
+    	Electrodynamics.LOGGER.info("Method Called");
+    	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, this.holder.getWorld());
+    	Electrodynamics.LOGGER.info("Recipes retrieved");
+    	recipes.forEach(recipe -> Electrodynamics.LOGGER.info("recipe: " + recipe.toString()));
+    	for (IRecipe<?> iRecipe : recipes) {
+    		T recipe = recipeClass.cast(iRecipe);
+    		if(hasInput) {
+    			List<Ingredient> ingredients = recipe.getIngredients();
+    			Fluid fluid = ((FluidIngredient)recipe.getIngredients().get(0 + ingredients.size() - 1)).getFluidStack().getFluid();
+    			input.add(fluid);
+    			Electrodynamics.LOGGER.info("Input Fluids");
+    			Electrodynamics.LOGGER.info(fluid.getRegistryName().toString());
+    			fluidTank(fluid, capacity);
+    		}
+    		if(hasOutput) {
+    			IFluidRecipe fRecipe = (IFluidRecipe)recipe;
+    			Fluid fluid = fRecipe.getFluidRecipeOutput().getFluid();
+    			output.add(fluid);
+    			Electrodynamics.LOGGER.info("Output Fluids");
+    			Electrodynamics.LOGGER.info(fluid.getRegistryName().toString());
+    			fluidTank(fluid, capacity);
+    		}
+    	}
+    	VALID_FLUIDS.set(0,input);
+    	VALID_FLUIDS.set(1,output);
+    	
+    	return this;
     }
-
-    public void setInputFluid(Fluid fluid) {
-	INPUT_FLUIDS.add(fluid);
-    }
-
-    public void setOutputFluid(Fluid fluid) {
-	OUTPUT_FLUIDS.add(fluid);
-    }
-
-    public ComponentFluidHandler addMultipleFluidTanks(Fluid[] fluids, int capacity, boolean input) {
-	for (Fluid fluid : fluids) {
-	    if (input) {
-		setInputFluid(fluid);
-	    } else {
-		setOutputFluid(fluid);
-	    }
-	    fluidTank(fluid, capacity);
-	}
-	return this;
+    
+    private static List<List<Fluid>> getInitList(){
+    	List<List<Fluid>> list = new ArrayList<>();
+    	list.add(new ArrayList<Fluid>());
+    	list.add(new ArrayList<Fluid>());
+    	return list;
     }
 
 }

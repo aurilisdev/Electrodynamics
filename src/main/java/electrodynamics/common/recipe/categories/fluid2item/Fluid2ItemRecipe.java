@@ -1,6 +1,6 @@
 package electrodynamics.common.recipe.categories.fluid2item;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -35,7 +35,7 @@ public abstract class Fluid2ItemRecipe extends ElectrodynamicsRecipe implements 
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
 	ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	ArrayList<Fluid> inputFluids = fluid.getInputFluids();
+	List<Fluid> inputFluids = fluid.getValidFluids().get(0);
 	for (int i = 0; i < inputFluids.size(); i++) {
 	    FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i));
 	    if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())

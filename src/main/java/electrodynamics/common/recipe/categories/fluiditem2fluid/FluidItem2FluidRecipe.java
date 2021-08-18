@@ -1,6 +1,6 @@
 package electrodynamics.common.recipe.categories.fluiditem2fluid;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import electrodynamics.common.inventory.invutils.FluidRecipeWrapper;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
@@ -43,7 +43,7 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
 	// LOGGER.info("Matching Stacks: " + (INPUT_ITEM.testStack(pr.getInput())));
 	if (INPUT_ITEM.testStack(pr.getInput())) {
 	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	    ArrayList<Fluid> inputFluids = fluid.getInputFluids();
+	    List<Fluid> inputFluids = fluid.getValidFluids().get(0);
 	    for (int i = 0; i < inputFluids.size(); i++) {
 		FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i));
 		if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())

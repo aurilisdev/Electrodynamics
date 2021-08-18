@@ -18,7 +18,7 @@ import electrodynamics.common.recipe.categories.o2o.specificmachines.LatheRecipe
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralGrinderRecipe;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
-import net.minecraft.fluid.Fluid;
+import electrodynamics.common.recipe.recipeutils.IOFluidWrapper;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -34,7 +34,7 @@ public class ElectrodynamicsRecipeInit {
     public static DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,
 	    electrodynamics.api.References.ID);
 
-    public static HashMap<IRecipeType<?>, ArrayList<ArrayList<Fluid>>> RECIPE_FLUIDS = new HashMap<>();
+    public static HashMap<IRecipeType<?>, ArrayList<ArrayList<IOFluidWrapper>>> RECIPE_FLUIDS = new HashMap<>();
 
     /* RECIPE TYPES */
 

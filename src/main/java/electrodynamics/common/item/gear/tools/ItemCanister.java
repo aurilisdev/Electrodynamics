@@ -12,6 +12,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -114,7 +115,13 @@ public class ItemCanister extends Item {
     @Override
     //TODO handle NBT canister crafting
     public ItemStack getContainerItem(ItemStack itemStack) {
-    	return new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+    	boolean isEmpty = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(m ->{
+    		return m.getFluidInTank(0).getFluid().isEquivalentTo(Fluids.EMPTY);
+    	}).orElse(true);
+    	if(isEmpty) {
+    		return new ItemStack(Items.AIR);
+    	}
+		return new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
     }
     
     public ArrayList<Fluid> getWhitelistedFluids(){
@@ -126,12 +133,7 @@ public class ItemCanister extends Item {
     	for(RegistryObject<Fluid> fluid : DeferredRegisters.FLUIDS.getEntries()) {
     		whitelisted.add(fluid.get());
     	}
-    	
-    	for(Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-			if(fluid.isEquivalentTo(Fluids.WATER)) {
-				whitelisted.add(fluid);
-			}
-    	}
+    	whitelisted.add(Fluids.WATER);
     	return whitelisted;
     }
     

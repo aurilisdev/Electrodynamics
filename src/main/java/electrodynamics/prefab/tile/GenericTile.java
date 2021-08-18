@@ -193,16 +193,6 @@ public class GenericTile extends TileEntity implements INameable {
 	return 256;
     }
 
-    /**
-     * Returns an O2O type Recipe based upon the input inventory of the TileEntity
-     * in question
-     * 
-     * @param <T>         an O2O RecipeType subclass
-     * @param pr          the component processor of the machine
-     * @param recipeClass the Class of the RecipeType
-     * @param typeIn      the RecipeType of the Recipe
-     * @return a recipe. CAN BE NULL!
-     */
     @Nullable
     public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
 	ItemStack stack = pr.getInput();
