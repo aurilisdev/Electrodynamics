@@ -34,7 +34,8 @@ public class TileCombustionChamber extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-	addComponent(new ComponentFluidHandler(this).fluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY).relativeInput(Direction.WEST));
+	addComponent(new ComponentFluidHandler(this).addFluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY, true)
+		.relativeInput(Direction.WEST));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -51,7 +52,7 @@ public class TileCombustionChamber extends GenericTileTicking {
 	if (burnTime <= 0) {
 	    boolean shouldSend = !running;
 	    running = false;
-	    FluidStack stack = tank.getStackFromFluid(DeferredRegisters.fluidEthanol);
+	    FluidStack stack = tank.getStackFromFluid(DeferredRegisters.fluidEthanol, true);
 	    if (stack.getAmount() > 0) {
 		stack.setAmount(stack.getAmount() - 1);
 		running = true;

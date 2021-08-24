@@ -26,15 +26,6 @@ public abstract class DO2ORecipe extends ElectrodynamicsRecipe {
 	OUTPUT = output;
     }
 
-    /*
-     * @Override public boolean matches(RecipeWrapper inv, World worldIn) {
-     * if(this.INPUT_1.testStack(inv.getStackInSlot(0))) {
-     * if(this.INPUT_2.testStack(inv.getStackInSlot(1))) { return true; } }
-     * if(this.INPUT_2.testStack(inv.getStackInSlot(0))) {
-     * if(this.INPUT_1.testStack(inv.getStackInSlot(1))) { return true; } } return
-     * false; }
-     */
-
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
 	if (INPUT_1.testStack(pr.getInput())) {

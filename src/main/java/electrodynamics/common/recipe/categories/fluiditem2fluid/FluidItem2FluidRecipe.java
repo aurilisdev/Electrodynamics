@@ -2,7 +2,6 @@ package electrodynamics.common.recipe.categories.fluiditem2fluid;
 
 import java.util.List;
 
-import electrodynamics.common.inventory.invutils.FluidRecipeWrapper;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -30,22 +29,15 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
 	INPUT_FLUID = inputFluid;
 	OUTPUT_FLUID = outputFluid;
     }
-
-    /*
-     * @Override public boolean matches(FluidRecipeWrapper inv, World worldIn) {
-     * if(this.ITEM_INPUT.testStack(inv.getStackInSlot(0))) {
-     * if(this.INPUT_FLUID.testFluid(inv.getInputTankInSlot(0).getFluid())){ return
-     * true; } } return false; }
-     */
+    
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
-
-	// LOGGER.info("Matching Stacks: " + (INPUT_ITEM.testStack(pr.getInput())));
+    	
 	if (INPUT_ITEM.testStack(pr.getInput())) {
 	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	    List<Fluid> inputFluids = fluid.getValidFluids().get(0);
+	    List<Fluid> inputFluids = fluid.getValidInputFluids();
 	    for (int i = 0; i < inputFluids.size(); i++) {
-		FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i));
+		FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i), true);
 		if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())
 			&& tank.getFluidAmount() >= INPUT_FLUID.getFluidStack().getAmount()) {
 		    return true;
@@ -53,13 +45,7 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
 	    }
 
 	}
-	// LOGGER.info("");
 	return false;
-    }
-
-    @Override
-    public FluidStack getFluidCraftingResult(FluidRecipeWrapper inv) {
-	return OUTPUT_FLUID;
     }
 
     @Override

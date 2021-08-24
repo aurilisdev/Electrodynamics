@@ -65,7 +65,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 	return this;
     }
-
+    
     public GenericTile addComponent(Component component) {
 	component.holder(this);
 	if (hasComponent(component.getType())) {
@@ -122,14 +122,20 @@ public class GenericTile extends TileEntity implements INameable {
 
     @Override
     public void onLoad() {
-	super.onLoad();
-	if (hasComponent(ComponentType.PacketHandler)) {
-	    Scheduler.schedule(1, () -> {
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-	    });
-
-	}
+    	super.onLoad();
+    	//JSON recipe fluids have to be added at load time
+		if (hasComponent(ComponentType.FluidHandler)) {
+			ComponentFluidHandler tank = this.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler);
+			if(tank.getTanks() == 0) {
+				tank.addFluids();
+			}
+		}
+		if (hasComponent(ComponentType.PacketHandler)) {
+		    Scheduler.schedule(1, () -> {
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+		    });
+		}
     }
 
     @Override
@@ -234,7 +240,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 
 	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
 	    }
@@ -258,7 +264,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 
 	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
 	    }
@@ -277,7 +283,7 @@ public class GenericTile extends TileEntity implements INameable {
 
     public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
 	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
 	    }

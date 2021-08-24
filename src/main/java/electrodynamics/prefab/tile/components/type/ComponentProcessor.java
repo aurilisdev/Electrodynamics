@@ -57,20 +57,20 @@ public class ComponentProcessor implements Component {
     private int outputCap;
 
     public ComponentProcessor(GenericTile source) {
-	holder(source);
-	if (!holder.hasComponent(ComponentType.Inventory)) {
-	    throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
-	}
-	if (holder.hasComponent(ComponentType.Tickable)) {
-	    holder.<ComponentTickable>getComponent(ComponentType.Tickable).tickServer(this::tickServer);
-	} else {
-	    throw new UnsupportedOperationException("You need to implement a tickable component to use the processor component!");
-	}
-	if (holder.hasComponent(ComponentType.PacketHandler)) {
-	    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-	    handler.guiPacketWriter(this::writeGuiPacket);
-	    handler.guiPacketReader(this::readGuiPacket);
-	}
+		holder(source);
+		if (!holder.hasComponent(ComponentType.Inventory)) {
+		    throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
+		}
+		if (holder.hasComponent(ComponentType.Tickable)) {
+		    holder.<ComponentTickable>getComponent(ComponentType.Tickable).tickServer(this::tickServer);
+		} else {
+		    throw new UnsupportedOperationException("You need to implement a tickable component to use the processor component!");
+		}
+		if (holder.hasComponent(ComponentType.PacketHandler)) {
+		    ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
+		    handler.guiPacketWriter(this::writeGuiPacket);
+		    handler.guiPacketReader(this::readGuiPacket);
+		}
     }
 
     private void tickServer(ComponentTickable tickable) {
@@ -221,15 +221,6 @@ public class ComponentProcessor implements Component {
 	return ComponentType.Processor;
     }
 
-    /**
-     * Consumes a bucket in a particular inventory slot if the container is able to
-     * accept the fluid.
-     * 
-     * @param maxCapacity
-     * @param fluids
-     * @param slot
-     * @return
-     */
     public ComponentProcessor consumeBucket(int slot) {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
@@ -239,8 +230,8 @@ public class ComponentProcessor implements Component {
 			
 			Fluid filledFluid = null;
 			//Is there a fluid currently in the machine?
-			for(Fluid fluid : tank.getValidFluids().get(0)) {
-				if(tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
+			for(Fluid fluid : tank.getValidInputFluids()) {
+				if(tank.getTankFromFluid(fluid, true).getFluidAmount() > 0) {
 					filledFluid = fluid;
 					break;
 				}
@@ -252,7 +243,7 @@ public class ComponentProcessor implements Component {
 					return h.drain(tank.getTankCapacity(0), FluidAction.SIMULATE);
 				}).orElse(null);
 				if(containerFluid != null && !containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-					for(Fluid fluid : tank.getValidFluids().get(0)) {
+					for(Fluid fluid : tank.getValidInputFluids()) {
 						if(fluid.isEquivalentTo(containerFluid.getFluid())) {
 							matchingFluid = true;
 							break;
@@ -262,14 +253,14 @@ public class ComponentProcessor implements Component {
 						bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 							h.drain(containerFluid, FluidAction.EXECUTE);
 						});
-						tank.getStackFromFluid(containerFluid.getFluid()).setAmount(containerFluid.getAmount());
+						tank.getStackFromFluid(containerFluid.getFluid(), true).setAmount(containerFluid.getAmount());
 						if(bucketStack.getItem() instanceof BucketItem) {
 							inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
 						} 
 					}
 				}	
 			} else {
-				FluidTank fluidTank = tank.getTankFromFluid(filledFluid);
+				FluidTank fluidTank = tank.getTankFromFluid(filledFluid, true);
 				int room = fluidTank.getCapacity() - fluidTank.getFluidAmount();
 				FluidStack amtDrained = bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
 					return h.drain(new FluidStack(fluidTank.getFluid().getFluid(), room), FluidAction.SIMULATE);
@@ -278,7 +269,7 @@ public class ComponentProcessor implements Component {
 					bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 						h.drain(amtDrained, FluidAction.EXECUTE);
 					});
-					tank.getStackFromFluid(amtDrained.getFluid()).setAmount(tank.getStackFromFluid(amtDrained.getFluid()).getAmount() + amtDrained.getAmount());	
+					tank.getStackFromFluid(amtDrained.getFluid(), true).setAmount(tank.getStackFromFluid(amtDrained.getFluid(), true).getAmount() + amtDrained.getAmount());	
 					if(bucketStack.getItem() instanceof BucketItem) {
 						inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
 					}
@@ -298,12 +289,12 @@ public class ComponentProcessor implements Component {
 		if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) &&
 				CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
 			bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-				for(Fluid fluid : tank.getValidFluids().get(1)) {
-					FluidStack stack = tank.getTankFromFluid(fluid).getFluid();
+				for(Fluid fluid : tank.getValidOutputFluids()) {
+					FluidStack stack = tank.getTankFromFluid(fluid, false).getFluid();
 					if(stack.getAmount() > 0) {
 						int amountAccepted = h.fill(stack, FluidAction.SIMULATE);
 						h.fill(new FluidStack(stack.getFluid(), amountAccepted), FluidAction.EXECUTE);
-						tank.getStackFromFluid(fluid).setAmount(tank.getStackFromFluid(fluid).getAmount() - amountAccepted);
+						tank.getStackFromFluid(fluid, false).setAmount(tank.getStackFromFluid(fluid, false).getAmount() - amountAccepted);
 						break;
 					}
 				}
@@ -322,10 +313,10 @@ public class ComponentProcessor implements Component {
 		    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
 			    direction.getDirection().rotateY().getOpposite().getOpposite());
 		    if (cap.isPresent()) {
-			IFluidHandler handler = cap.resolve().get();
-			for (Fluid fluid : tank.getValidFluids().get(1)) {
-			    if (tank.getTankFromFluid(fluid).getFluidAmount() > 0) {
-				tank.getStackFromFluid(fluid).shrink(handler.fill(tank.getStackFromFluid(fluid), FluidAction.EXECUTE));
+		    	IFluidHandler handler = cap.resolve().get();
+			for (Fluid fluid : tank.getValidOutputFluids()) {
+			    if (tank.getTankFromFluid(fluid, false).getFluidAmount() > 0) {
+			    	tank.getStackFromFluid(fluid, false).shrink(handler.fill(tank.getStackFromFluid(fluid, false), FluidAction.EXECUTE));
 				break;
 			    }
 			}
@@ -394,12 +385,12 @@ public class ComponentProcessor implements Component {
 
 	if (localRecipe != null) {
 	    outputFluid = localRecipe.getFluidRecipeOutput().getFluid();
-	    locCap = fluid.getTankFromFluid(outputFluid).getCapacity();
+	    locCap = fluid.getTankFromFluid(outputFluid, false).getCapacity();
 	}
 	setOutputCap(locCap);
 
 	return localRecipe != null && electro.getJoulesStored() >= pr.getUsage()
-		&& locCap >= fluid.getTankFromFluid(outputFluid).getFluidAmount() + localRecipe.getFluidRecipeOutput().getAmount();
+		&& locCap >= fluid.getTankFromFluid(outputFluid, false).getFluidAmount() + localRecipe.getFluidRecipeOutput().getAmount();
 
     }
 
@@ -472,12 +463,12 @@ public class ComponentProcessor implements Component {
 	    FluidStack outputFluid = locRecipe.getFluidRecipeOutput();
 	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(1)).getFluidStack();
 
-	    FluidTank outputFluidTank = fluid.getTankFromFluid(outputFluid.getFluid());
+	    FluidTank outputFluidTank = fluid.getTankFromFluid(outputFluid.getFluid(), false);
 
 	    if (getOutputCap() >= outputFluid.getAmount() + outputFluidTank.getFluidAmount()) {
 		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
-		fluid.getStackFromFluid(inputFluid.getFluid()).shrink(inputFluid.getAmount());
-		fluid.getStackFromFluid(outputFluid.getFluid()).grow(outputFluid.getAmount());
+		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
+		fluid.getStackFromFluid(outputFluid.getFluid(), false).grow(outputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	    }
 	}
@@ -496,7 +487,7 @@ public class ComponentProcessor implements Component {
 		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
 		}
 		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
-		fluid.getStackFromFluid(inputFluid.getFluid()).shrink(inputFluid.getAmount());
+		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	    }
 	}
@@ -513,7 +504,7 @@ public class ComponentProcessor implements Component {
 		} else {
 		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
 		}
-		fluid.getStackFromFluid(inputFluid.getFluid()).shrink(inputFluid.getAmount());
+		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	    }
 	}
