@@ -44,9 +44,14 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 		return holder;
 	}
 
-	// We have to do this to make a distinction between input and output fluids
-	// For example, the chemical mixer has two sulfuric acid tanks b/c it is both an
-	// input and output
+	/*  
+	 * We have to do this to make a distinction between input and output fluids.
+	 * For example, the chemical mixer with the old system has two sulfuric acid tanks b/c 
+	 * it is both an input and output. This is the most straight-forward
+	 * solution to the problem to still keep the multiple fluids in a machine at once 
+	 * system. The more complex solution is to have each machine have a single universal input
+	 * and output tank.
+	*/
 	protected HashMap<Fluid, FluidTank> inputFluids = new HashMap<>();
 	protected HashMap<Fluid, FluidTank> outputFluids = new HashMap<>();
 
@@ -61,8 +66,6 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	private int tankCapacity;
 	private boolean hasInput;
 	private boolean hasOutput;
-	private boolean inputFromNBT = false;
-	private boolean outputFromNBT = false;
 
 	public ComponentFluidHandler(GenericTile source) {
 		holder(source);
@@ -89,8 +92,8 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
 		for (int i = 0; i < inputList.size(); i++) {
 			CompoundNBT compound = (CompoundNBT) inputList.get(i);
-			FluidTank tank = new FluidTank(inputCaps.getInt(i)).readFromNBT(compound);
-			addFluidTank(tank.getFluid(), tank.getCapacity(), true);
+			FluidTank tank = new FluidTank(0).readFromNBT(compound);
+			addFluidTank(tank.getFluid(), ((CompoundNBT) inputCaps.get(i)).getInt("cap"), true);
 		}
 
 		ListNBT outputCaps = nbt.getList("outputCaps", 10);
@@ -98,8 +101,8 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
 		for (int i = 0; i < outputList.size(); i++) {
 			CompoundNBT compound = (CompoundNBT) outputList.get(i);
-			FluidTank tank = new FluidTank(outputCaps.getInt(i)).readFromNBT(compound);
-			addFluidTank(tank.getFluid(), tank.getCapacity(), false);
+			FluidTank tank = new FluidTank(0).readFromNBT(compound);
+			addFluidTank(tank.getFluid(), ((CompoundNBT) outputCaps.get(i)).getInt("cap"), false);
 		}
 	}
 
@@ -176,8 +179,9 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 		return this;
 	}
 
+	//Should only be used to manually add fluid tanks (such as in the combustion generator)
+	//Otherwise use the JSON system
 	public ComponentFluidHandler addFluidTank(Fluid fluid, int capacity, boolean isInput) {
-		// ensures no duplicate entries like the fluid tanks
 		if (isInput) {
 			if (!getValidInputFluids().contains(fluid)) {
 				inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
@@ -195,19 +199,17 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	//private method for NBT to use; avoids overwriting fluids with empty values if they're JSON-based
 	private void addFluidTank(FluidStack stack, int capacity, boolean isInput) {
 		if (isInput) {
-			Fluid fluid = stack.getFluid();
+			Fluid fluid = stack.getRawFluid();
 			if (!getValidInputFluids().contains(fluid)) {
 				inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
 			}
 			inputFluids.get(fluid).setFluid(stack);
-			this.inputFromNBT = true;
 		} else {
-			Fluid fluid = stack.getFluid();
+			Fluid fluid = stack.getRawFluid();
 			if (!getValidOutputFluids().contains(fluid)) {
 				outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
 			}
 			outputFluids.get(fluid).setFluid(stack);
-			this.outputFromNBT = true;
 		}
 	}
 
@@ -372,18 +374,18 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 		return this;
 	}
 
-	// Now it has some teeth
+	// this has to be called on world load; otherwise the RecipeManager is null
 	public void addFluids() {
 		if (this.recipeType != null) {
 			Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(this.recipeType, this.holder.getWorld());
 			for (IRecipe<?> iRecipe : recipes) {
-				if (this.hasInput && !inputFromNBT) {
+				if (this.hasInput) {
 					List<Ingredient> ingredients = this.recipeClass.cast(iRecipe).getIngredients();
 					Fluid fluid = ((FluidIngredient) this.recipeClass.cast(iRecipe).getIngredients()
 							.get(0 + ingredients.size() - 1)).getFluidStack().getFluid();
 					addFluidTank(fluid, this.tankCapacity, true);
 				}
-				if (this.hasOutput && !outputFromNBT) {
+				if (this.hasOutput) {
 					IFluidRecipe fRecipe = (IFluidRecipe) this.recipeClass.cast(iRecipe);
 					Fluid fluid = fRecipe.getFluidRecipeOutput().getFluid();
 					addFluidTank(fluid, this.tankCapacity, false);

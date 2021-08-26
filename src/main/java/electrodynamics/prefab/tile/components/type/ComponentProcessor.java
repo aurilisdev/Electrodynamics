@@ -54,7 +54,7 @@ public class ComponentProcessor implements Component {
     private int output = 1;
 
     private ElectrodynamicsRecipe recipe;
-    private int outputCap;
+    private int outputCap = 0;
 
     public ComponentProcessor(GenericTile source) {
 		holder(source);
@@ -385,13 +385,13 @@ public class ComponentProcessor implements Component {
 
 	if (localRecipe != null) {
 	    outputFluid = localRecipe.getFluidRecipeOutput().getFluid();
-	    locCap = fluid.getTankFromFluid(outputFluid, false).getCapacity();
+	   locCap = fluid.getTankFromFluid(outputFluid, false).getCapacity();
 	}
 	setOutputCap(locCap);
-
+	
 	return localRecipe != null && electro.getJoulesStored() >= pr.getUsage()
 		&& locCap >= fluid.getTankFromFluid(outputFluid, false).getFluidAmount() + localRecipe.getFluidRecipeOutput().getAmount();
-
+	
     }
 
     public <T extends FluidItem2ItemRecipe> boolean canProcessFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass,
