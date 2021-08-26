@@ -126,9 +126,7 @@ public class GenericTile extends TileEntity implements INameable {
     	//JSON recipe fluids have to be added at load time
 		if (hasComponent(ComponentType.FluidHandler)) {
 			ComponentFluidHandler tank = this.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler);
-			if(tank.getTanks() == 0) {
-				tank.addFluids();
-			}
+			tank.addFluids();
 		}
 		if (hasComponent(ComponentType.PacketHandler)) {
 		    Scheduler.schedule(1, () -> {
