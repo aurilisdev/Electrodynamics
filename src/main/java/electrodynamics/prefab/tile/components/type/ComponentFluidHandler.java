@@ -23,6 +23,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,10 +48,11 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	/*  
 	 * We have to do this to make a distinction between input and output fluids.
 	 * For example, the chemical mixer with the old system has two sulfuric acid tanks b/c 
-	 * it is both an input and output. This is the most straight-forward
-	 * solution to the problem to still keep the multiple fluids in a machine at once 
-	 * system. The more complex solution is to have each machine have a single universal input
-	 * and output tank.
+	 * it is both an input and output. 
+	 * 
+	 * This is the most straight-forward solution to the problem to still keep the multiple 
+	 * fluids in a machine at once system. The more complex solution is to have each machine 
+	 * have a single universal input and output tank.
 	*/
 	protected HashMap<Fluid, FluidTank> inputFluids = new HashMap<>();
 	protected HashMap<Fluid, FluidTank> outputFluids = new HashMap<>();
@@ -87,36 +89,24 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
 	@Override
 	public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-		ListNBT inputCaps = nbt.getList("inputCaps", 10);
+		
 		ListNBT inputList = nbt.getList("inputList", 10);
-
-		for (int i = 0; i < inputList.size(); i++) {
-			CompoundNBT compound = (CompoundNBT) inputList.get(i);
+		for (INBT tag : inputList) {
+			CompoundNBT compound = (CompoundNBT) tag;
 			FluidTank tank = new FluidTank(0).readFromNBT(compound);
-			addFluidTank(tank.getFluid(), ((CompoundNBT) inputCaps.get(i)).getInt("cap"), true);
+			addFluidTank(tank.getFluid(), compound.getInt("cap"), true);
 		}
 
-		ListNBT outputCaps = nbt.getList("outputCaps", 10);
 		ListNBT outputList = nbt.getList("outputList", 10);
-
-		for (int i = 0; i < outputList.size(); i++) {
-			CompoundNBT compound = (CompoundNBT) outputList.get(i);
+		for (INBT tag : outputList) {
+			CompoundNBT compound = (CompoundNBT) tag;
 			FluidTank tank = new FluidTank(0).readFromNBT(compound);
-			addFluidTank(tank.getFluid(), ((CompoundNBT) outputCaps.get(i)).getInt("cap"), false);
+			addFluidTank(tank.getFluid(), compound.getInt("cap"), false);
 		}
 	}
 
 	@Override
 	public void saveToNBT(CompoundNBT nbt) {
-		// Need tank capacities for JSON-based loading
-		ListNBT inputCaps = new ListNBT();
-		for (FluidTank tank : inputFluids.values()) {
-			CompoundNBT cap = new CompoundNBT();
-			cap.putInt("cap", tank.getCapacity());
-			inputCaps.add(cap);
-		}
-		nbt.put("inputCaps", inputCaps);
-
 		ListNBT inputList = new ListNBT();
 		for (FluidTank tank : inputFluids.values()) {
 			CompoundNBT tag = new CompoundNBT();
@@ -126,17 +116,11 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 			if (tank.getFluid().getTag() != null) {
 				tag.put("Tag", tank.getFluid().getTag());
 			}
+			//tank capacities needed for JSON tanks
+			tag.putInt("cap", tank.getCapacity());
 			inputList.add(tag);
 		}
 		nbt.put("inputList", inputList);
-
-		ListNBT outputCaps = new ListNBT();
-		for (FluidTank tank : outputFluids.values()) {
-			CompoundNBT cap = new CompoundNBT();
-			cap.putInt("cap", tank.getCapacity());
-			outputCaps.add(cap);
-		}
-		nbt.put("outputCaps", outputCaps);
 
 		ListNBT outputList = new ListNBT();
 		for (FluidTank tank : outputFluids.values()) {
@@ -147,6 +131,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 			if (tank.getFluid().getTag() != null) {
 				tag.put("Tag", tank.getFluid().getTag());
 			}
+			tag.putInt("cap", tank.getCapacity());
 			outputList.add(tag);
 		}
 		nbt.put("outputList", outputList);
@@ -179,7 +164,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 		return this;
 	}
 
-	//Should only be used to manually add fluid tanks (such as in the combustion generator)
+	//Should only be used to manually add NEW fluid tanks (such as in the combustion generator)
 	//Otherwise use the JSON system
 	public ComponentFluidHandler addFluidTank(Fluid fluid, int capacity, boolean isInput) {
 		if (isInput) {
