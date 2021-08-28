@@ -54,7 +54,7 @@ public class GenericTile extends TileEntity implements INameable {
     public ComponentProcessor getProcessor(int id) {
 	return processors[id];
     }
-
+    
     public GenericTile addProcessor(ComponentProcessor processor) {
 	for (int i = 0; i < processors.length; i++) {
 	    if (processors[i] == null) {

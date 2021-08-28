@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
@@ -226,7 +227,7 @@ public class ComponentProcessor implements Component {
 		ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
 		ItemStack bucketStack = inv.getStackInSlot(slot);
 	
-		if (!bucketStack.isEmpty() && CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
+		if (!bucketStack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
 			
 			Fluid filledFluid = null;
 			//Is there a fluid currently in the machine?
@@ -238,22 +239,11 @@ public class ComponentProcessor implements Component {
 			}
 			
 			if(filledFluid == null) {
-				boolean matchingFluid = false;
-				FluidStack containerFluid = bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-					return h.drain(tank.getTankCapacity(0), FluidAction.SIMULATE);
-				}).orElse(null);
-				if(containerFluid != null && !containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-					for(Fluid fluid : tank.getValidInputFluids()) {
-						if(fluid.isEquivalentTo(containerFluid.getFluid())) {
-							matchingFluid = true;
-							break;
-						}
-					}
-					if(matchingFluid) {
-						bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-							h.drain(containerFluid, FluidAction.EXECUTE);
-						});
-						tank.getStackFromFluid(containerFluid.getFluid(), true).setAmount(containerFluid.getAmount());
+				FluidStack containerFluid = CapabilityUtils.simDrain(bucketStack, tank.getTankCapacity(0));
+				if(!containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
+					if(tank.getValidInputFluids().contains(containerFluid.getFluid())) {
+						CapabilityUtils.drain(bucketStack, containerFluid);
+						tank.addFluidToTank(containerFluid, true);
 						if(bucketStack.getItem() instanceof BucketItem) {
 							inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
 						} 
@@ -262,14 +252,10 @@ public class ComponentProcessor implements Component {
 			} else {
 				FluidTank fluidTank = tank.getTankFromFluid(filledFluid, true);
 				int room = fluidTank.getCapacity() - fluidTank.getFluidAmount();
-				FluidStack amtDrained = bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-					return h.drain(new FluidStack(fluidTank.getFluid().getFluid(), room), FluidAction.SIMULATE);
-				}).orElse(null);
-				if(amtDrained != null && !amtDrained.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-					bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-						h.drain(amtDrained, FluidAction.EXECUTE);
-					});
-					tank.getStackFromFluid(amtDrained.getFluid(), true).setAmount(tank.getStackFromFluid(amtDrained.getFluid(), true).getAmount() + amtDrained.getAmount());	
+				FluidStack amtDrained = CapabilityUtils.simDrain(bucketStack, new FluidStack(fluidTank.getFluid().getFluid(),room));
+				if(amtDrained.getAmount() > 0) {
+					CapabilityUtils.drain(bucketStack, amtDrained);
+					tank.addFluidToTank(amtDrained, true);
 					if(bucketStack.getItem() instanceof BucketItem) {
 						inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
 					}
@@ -286,19 +272,17 @@ public class ComponentProcessor implements Component {
 		ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
 		ItemStack bucketStack = inv.getStackInSlot(slot);
 	
-		if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) &&
-				CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
-			bucketStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-				for(Fluid fluid : tank.getValidOutputFluids()) {
-					FluidStack stack = tank.getTankFromFluid(fluid, false).getFluid();
-					if(stack.getAmount() > 0) {
-						int amountAccepted = h.fill(stack, FluidAction.SIMULATE);
-						h.fill(new FluidStack(stack.getFluid(), amountAccepted), FluidAction.EXECUTE);
-						tank.getStackFromFluid(fluid, false).setAmount(tank.getStackFromFluid(fluid, false).getAmount() - amountAccepted);
-						break;
-					}
+		if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) && !CapabilityUtils.isFluidItemNull()) {
+			for(Fluid fluid : tank.getValidOutputFluids()) {
+				FluidStack stack = tank.getTankFromFluid(fluid, false).getFluid();
+				int amtFilled = CapabilityUtils.simFill(bucketStack, stack);
+				if(amtFilled > 0) {
+					CapabilityUtils.fill(bucketStack, new FluidStack(stack.getFluid(),amtFilled));
+					//I would use the drain() method, however I fear it might interfere with the directional
+					tank.drainFluidFromTank(new FluidStack(stack.getFluid(), amtFilled), false);
+					break;
 				}
-			});
+			}
 		}
 	
 		return this;

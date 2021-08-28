@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import electrodynamics.api.IWrenchItem;
+import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
@@ -75,20 +76,22 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
     @Deprecated
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
 	    BlockRayTraceResult hit) {
-	if (worldIn.isRemote) {
-	    return ActionResultType.SUCCESS;
-	} else if (!(player.getHeldItem(handIn).getItem() instanceof IWrenchItem)) {
-	    TileEntity tile = worldIn.getTileEntity(pos);
-	    if (tile instanceof GenericTile) {
-		GenericTile generic = (GenericTile) tile;
-		if (generic.hasComponent(ComponentType.ContainerProvider)) {
-		    player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
+    	
+    	if (worldIn.isRemote) {
+		    return ActionResultType.SUCCESS;
+		} else if (!CapabilityUtils.hasFluidItemCap(player.getHeldItem(handIn)) && 
+				!(player.getHeldItem(handIn).getItem() instanceof IWrenchItem)) {
+		    TileEntity tile = worldIn.getTileEntity(pos);
+		    if (tile instanceof GenericTile) {
+				GenericTile generic = (GenericTile) tile;
+				if (generic.hasComponent(ComponentType.ContainerProvider)) {
+				    player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
+				}
+		    }
+		    player.addStat(Stats.INTERACT_WITH_FURNACE);
+		    return ActionResultType.CONSUME;
 		}
-	    }
-	    player.addStat(Stats.INTERACT_WITH_FURNACE);
-	    return ActionResultType.CONSUME;
-	}
-	return ActionResultType.FAIL;
+		return ActionResultType.FAIL;
     }
 
     @Override
