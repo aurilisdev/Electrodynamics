@@ -230,7 +230,6 @@ public class ComponentProcessor implements Component {
 		if (!bucketStack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
 			
 			Fluid filledFluid = null;
-			//Is there a fluid currently in the machine?
 			for(Fluid fluid : tank.getValidInputFluids()) {
 				if(tank.getTankFromFluid(fluid, true).getFluidAmount() > 0) {
 					filledFluid = fluid;
@@ -239,7 +238,7 @@ public class ComponentProcessor implements Component {
 			}
 			
 			if(filledFluid == null) {
-				FluidStack containerFluid = CapabilityUtils.simDrain(bucketStack, tank.getTankCapacity(0));
+				FluidStack containerFluid = CapabilityUtils.simDrain(bucketStack, Integer.MAX_VALUE);
 				if(!containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
 					if(tank.getValidInputFluids().contains(containerFluid.getFluid())) {
 						CapabilityUtils.drain(bucketStack, containerFluid);
@@ -278,7 +277,6 @@ public class ComponentProcessor implements Component {
 				int amtFilled = CapabilityUtils.simFill(bucketStack, stack);
 				if(amtFilled > 0) {
 					CapabilityUtils.fill(bucketStack, new FluidStack(stack.getFluid(),amtFilled));
-					//I would use the drain() method, however I fear it might interfere with the directional
 					tank.drainFluidFromTank(new FluidStack(stack.getFluid(), amtFilled), false);
 					break;
 				}

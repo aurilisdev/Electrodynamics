@@ -17,7 +17,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
@@ -138,35 +137,7 @@ public class ItemCanister extends Item {
     					world.setBlockState(pos, Blocks.AIR.getDefaultState());
     				}
     			}
-    		} else if(state.getBlock().hasTileEntity(state)){
-    			TileEntity tile = world.getTileEntity(pos);
-    			FluidStack containedFluid = CapabilityUtils.getItemStackFluid(stack, 0);
-    			int amtTaken = CapabilityUtils.simFill(tile, containedFluid);
-    			if(amtTaken > 0) {
-    				CapabilityUtils.drain(stack, new FluidStack(containedFluid.getFluid(),amtTaken));
-    				CapabilityUtils.simFill(tile, new FluidStack(containedFluid.getFluid(), amtTaken));
-    			} else {
-    				int tankCapacity = CapabilityUtils.getItemStackCapacity(stack, 0);
-    				if(!containedFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-    					int room = Math.max(tankCapacity - containedFluid.getAmount(), 0);
-    					int amtAccepted = 
-    							CapabilityUtils.simDrain(tile, new FluidStack(containedFluid.getFluid(),room)).getAmount();
-    					if(amtAccepted > 0) {
-    						CapabilityUtils.fill(stack, new FluidStack(containedFluid.getFluid(), amtAccepted));
-    						CapabilityUtils.drain(tile, new FluidStack(containedFluid.getFluid(), amtAccepted));
-    					}
-    				} else {
-    					for(Fluid fluid : getWhitelistedFluids()) {
-    						FluidStack fluidDrained = CapabilityUtils.simDrain(tile, new FluidStack(fluid, tankCapacity));
-    						if(!fluidDrained.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-    							CapabilityUtils.fill(stack, fluidDrained);
-        						CapabilityUtils.drain(tile, fluidDrained);
-    						}
-    					}
-    				}
-    			}
     		}
-        	
     	}
     }
     

@@ -13,10 +13,6 @@ import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimpl
 
 public class CapabilityUtils {
 	
-	private static Capability<IFluidHandlerItem> FLUID_ITEM_CAP = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
-	private static Capability<IFluidHandler> FLUID_CAP = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-	
-	
 	/*Items*/
 	
 	//FLUID
@@ -26,7 +22,7 @@ public class CapabilityUtils {
 	}
 	
 	public static Capability<IFluidHandlerItem> getFluidItemCap(){
-		return FLUID_ITEM_CAP;
+		return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
 	}
 	
 	public static boolean hasFluidItemCap(ItemStack stack) {
@@ -112,7 +108,7 @@ public class CapabilityUtils {
 	}
 	
 	public static Capability<IFluidHandler> getFluidCap(){
-		return FLUID_CAP;
+		return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 	
 	public static boolean hasFluidCap(TileEntity tile) {
@@ -122,19 +118,25 @@ public class CapabilityUtils {
 	}
 	
 	public static int simFill(TileEntity tile, FluidStack fluid) {
-		return tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(m ->{
+		return tile.getCapability(getFluidCap()).map(m ->{
 			return m.fill(fluid, FluidAction.SIMULATE);
 		}).orElse(0);
 	}
 	
+	public static void fill(TileEntity tile, FluidStack fluid) {
+		tile.getCapability(getFluidCap()).ifPresent(h ->{
+			h.fill(fluid, FluidAction.EXECUTE);
+		});
+	}
+	
 	public static FluidStack simDrain(TileEntity tile, FluidStack fluid) {
-		return tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(m ->{
+		return tile.getCapability(getFluidCap()).map(m ->{
 			return m.drain(fluid, FluidAction.SIMULATE);
 		}).orElse(FluidStack.EMPTY);
 	}
 	
 	public static void drain(TileEntity tile, FluidStack fluid) {
-		tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(h ->{
+		tile.getCapability(getFluidCap()).ifPresent(h ->{
 			h.drain(fluid, FluidAction.EXECUTE);
 		});
 	}
