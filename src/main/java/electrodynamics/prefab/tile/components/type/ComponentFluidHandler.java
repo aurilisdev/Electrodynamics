@@ -342,8 +342,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     }
 
     private Collection<FluidTank> getCombinedTanks() {
-	Collection<FluidTank> fluids = Stream.concat(inputFluids.values().stream(), outputFluids.values().stream()).collect(Collectors.toList());
-	return fluids;
+	return Stream.concat(inputFluids.values().stream(), outputFluids.values().stream()).collect(Collectors.toList());
     }
 
     public List<Fluid> getValidInputFluids() {

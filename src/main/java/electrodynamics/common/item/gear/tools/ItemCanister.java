@@ -100,6 +100,7 @@ public class ItemCanister extends Item {
     }
 
     @Override
+    @Deprecated
     public boolean hasContainerItem() {
 	return true;
     }
@@ -107,9 +108,8 @@ public class ItemCanister extends Item {
     @Override
     // TODO handle NBT canister crafting
     public ItemStack getContainerItem(ItemStack itemStack) {
-	boolean isEmpty = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(m -> {
-	    return m.getFluidInTank(0).getFluid().isEquivalentTo(Fluids.EMPTY);
-	}).orElse(true);
+	boolean isEmpty = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+		.map(m -> m.getFluidInTank(0).getFluid().isEquivalentTo(Fluids.EMPTY)).orElse(true);
 	if (isEmpty) {
 	    return new ItemStack(Items.AIR);
 	}
@@ -125,7 +125,7 @@ public class ItemCanister extends Item {
     public void useCanister(World world, PlayerEntity player, Hand hand) {
 	ItemStack stack = player.getHeldItem(hand);
 	RayTraceResult trace = rayTrace(world, player, FluidMode.ANY);
-	if (!world.isRemote && !(trace.getType() == Type.MISS) && !(trace.getType() == Type.ENTITY)) {
+	if (!world.isRemote && trace.getType() != Type.MISS && trace.getType() != Type.ENTITY) {
 	    BlockRayTraceResult blockTrace = (BlockRayTraceResult) trace;
 	    BlockPos pos = blockTrace.getPos();
 	    BlockState state = world.getBlockState(pos);
