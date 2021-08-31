@@ -1,6 +1,6 @@
 package electrodynamics.common.recipe.categories.fluid2item;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -27,17 +27,12 @@ public abstract class Fluid2ItemRecipe extends ElectrodynamicsRecipe implements 
 	ITEM_OUTPUT = itemOutput;
     }
 
-    /*
-     * @Override public boolean matches(FluidRecipeWrapper inv, World worldIn) {
-     * if(this.FLUID_INPUT.testFluid(inv.getInputTankInSlot(0).getFluid())) { return
-     * true; } return false; }
-     */
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
 	ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	ArrayList<Fluid> inputFluids = fluid.getInputFluids();
+	List<Fluid> inputFluids = fluid.getValidInputFluids();
 	for (int i = 0; i < inputFluids.size(); i++) {
-	    FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i));
+	    FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i), true);
 	    if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())
 		    && tank.getFluidAmount() >= INPUT_FLUID.getFluidStack().getAmount()) {
 		return true;

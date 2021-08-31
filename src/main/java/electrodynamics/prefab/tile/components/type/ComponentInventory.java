@@ -206,8 +206,9 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     @Override
     public boolean isUsableByPlayer(PlayerEntity player) {
-	BlockPos pos = holder.getPos();
-	return holder.getWorld().getTileEntity(pos) == holder && player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
+		BlockPos pos = holder.getPos();
+		return holder.getWorld().getTileEntity(pos) == holder && 
+			player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
     }
 
     @Override

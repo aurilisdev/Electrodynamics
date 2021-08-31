@@ -1,13 +1,9 @@
 package electrodynamics.common.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
-import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -24,7 +20,6 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -32,34 +27,19 @@ import net.minecraft.util.SoundCategory;
 public class TileChemicalCrystallizer extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
 
-    public static Fluid[] SUPPORTED_INPUT_FLUIDS;
-    public static Fluid[] OTHER_INPUT_FLUIDS = new Fluid[] { DeferredRegisters.fluidPolyethylene, DeferredRegisters.fluidMolybdenum };
-    static {
-	List<FluidMineral> mineralFluids = new ArrayList<>(DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.values());
-	SUPPORTED_INPUT_FLUIDS = new Fluid[mineralFluids.size() + OTHER_INPUT_FLUIDS.length];
-	int pos = 0;
-	for (int i = 0; i < mineralFluids.size(); i++) {
-	    SUPPORTED_INPUT_FLUIDS[i] = mineralFluids.get(i);
-	    pos = i;
-	}
-	for (int i = 0; i + pos + 1 < SUPPORTED_INPUT_FLUIDS.length; i++) {
-	    SUPPORTED_INPUT_FLUIDS[i + pos + 1] = OTHER_INPUT_FLUIDS[i];
-	}
-    }
-
     public TileChemicalCrystallizer() {
 	super(DeferredRegisters.TILE_CHEMICALCRYSTALLIZER.get());
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentTickable().tickClient(this::tickClient)/* .tickCommon(this::tickCommon) */);
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
 		.maxJoules(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK * 10));
-	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values()).addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS,
-		MAX_TANK_CAPACITY, true));
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.values())
+		.setAddFluidsValues(Fluid2ItemRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE, MAX_TANK_CAPACITY, true, false));
 	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
 		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4)
-		.canProcess(component -> component.consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1).canProcessFluid2ItemRecipe(component,
+		.canProcess(component -> component.consumeBucket(1).canProcessFluid2ItemRecipe(component,
 			Fluid2ItemRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE))
 		.process(component -> component.processFluid2ItemRecipe(component, Fluid2ItemRecipe.class))
 		.requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK)

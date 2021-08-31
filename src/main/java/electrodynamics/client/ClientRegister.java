@@ -55,8 +55,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-//TODO implement a variable texture renderer for the canisters; should use same base model and fill in
-//fluid texture in "window". Cheap way of doing this is removing said window, but where's the fun in that
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = { Dist.CLIENT })
 public class ClientRegister {
@@ -101,6 +99,7 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
 	ModelLoader.addSpecialModel(MODEL_LATHE);
 	ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
+	ModelLoader.addSpecialModel(MODEL_EMPTYCANISTER);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
@@ -143,7 +142,8 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_RODSTEEL = new ResourceLocation(References.ID + ":entity/rodsteel");
     public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":entity/rodstainlesssteel");
     public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
-
+    public static final ResourceLocation MODEL_EMPTYCANISTER = new ResourceLocation(References.ID + ":item/canisterreinforced");
+    
     public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
     public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(
 	    References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
@@ -173,7 +173,7 @@ public class ClientRegister {
 
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
-
+	
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
@@ -217,6 +217,7 @@ public class ClientRegister {
 					&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
 						stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
 							: 0);
+	
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {

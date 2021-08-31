@@ -18,8 +18,6 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,16 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class TileFermentationPlant extends GenericTileTicking {
 
     public static final int MAX_TANK_CAPACITY = 5000;
-    public static Fluid[] SUPPORTED_INPUT_FLUIDS = new Fluid[] {
-
-	    Fluids.WATER
-
-    };
-    public static Fluid[] SUPPORTED_OUTPUT_FLUIDS = new Fluid[] {
-
-	    DeferredRegisters.fluidEthanol
-
-    };
 
     public TileFermentationPlant() {
 	super(DeferredRegisters.TILE_FERMENTATIONPLANT.get());
@@ -45,9 +33,8 @@ public class TileFermentationPlant extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
 		.maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
-	addComponent(
-		new ComponentFluidHandler(this).relativeInput(Direction.EAST).addMultipleFluidTanks(SUPPORTED_INPUT_FLUIDS, MAX_TANK_CAPACITY, true)
-			.addMultipleFluidTanks(SUPPORTED_OUTPUT_FLUIDS, MAX_TANK_CAPACITY, false).relativeOutput(Direction.WEST));
+	addComponent(new ComponentFluidHandler(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST)
+		.setAddFluidsValues(FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE, MAX_TANK_CAPACITY, true, true));
 	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
 		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));
 	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
@@ -79,8 +66,7 @@ public class TileFermentationPlant extends GenericTileTicking {
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
 
-	return processor.outputToPipe(processor, SUPPORTED_OUTPUT_FLUIDS).consumeBucket(MAX_TANK_CAPACITY, SUPPORTED_INPUT_FLUIDS, 1)
-		.dispenseBucket(MAX_TANK_CAPACITY, 2)
+	return processor.outputToPipe(processor).consumeBucket(1).dispenseBucket(2)
 		.canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 

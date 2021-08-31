@@ -58,12 +58,11 @@ public class Electrodynamics {
 	SoundRegister.SOUNDS.register(bus);
 	DeferredRegisters.BLOCKS.register(bus);
 	DeferredRegisters.ITEMS.register(bus);
+	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
 	DeferredRegisters.ENTITIES.register(bus);
-	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
-
     }
 
     @SubscribeEvent

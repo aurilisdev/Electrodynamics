@@ -1,6 +1,3 @@
-/*
- * This is mainly here in case we need to add some custom methods or what not
- */
 package electrodynamics.common.recipe.recipeutils;
 
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
@@ -15,12 +12,17 @@ public interface IElectrodynamicsRecipe extends IRecipe<RecipeWrapper> {
      */
     @Override
     default boolean matches(RecipeWrapper inv, World world) {
-	return false;
+    	return false;
     }
 
     @Override
     default boolean canFit(int width, int height) {
-	return false;
+    	return false;
+    }
+    
+    @Override
+    default boolean isDynamic() {
+    	return true;
     }
 
     boolean matchesRecipe(ComponentProcessor pr);

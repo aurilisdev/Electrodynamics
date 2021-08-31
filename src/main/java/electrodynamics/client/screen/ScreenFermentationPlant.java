@@ -63,10 +63,10 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
 		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Fluid fluid : handler.getInputFluids()) {
-		    FluidTank tank = handler.getTankFromFluid(fluid);
+		for (Fluid fluid : handler.getValidInputFluids()) {
+		    FluidTank tank = handler.getTankFromFluid(fluid, true);
 		    if (tank.getFluidAmount() > 0) {
-			return handler.getTankFromFluid(tank.getFluid().getFluid());
+		    	return tank;
 		    }
 		}
 	    }
@@ -76,10 +76,10 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
 		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Fluid fluid : handler.getOutputFluids()) {
-		    FluidTank tank = handler.getTankFromFluid(fluid);
+		for (Fluid fluid : handler.getValidOutputFluids()) {
+		    FluidTank tank = handler.getTankFromFluid(fluid, false);
 		    if (tank.getFluidAmount() > 0) {
-			return handler.getTankFromFluid(tank.getFluid().getFluid());
+		    	return tank;
 		    }
 		}
 	    }

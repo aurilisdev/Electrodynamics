@@ -54,7 +54,7 @@ public class GenericTile extends TileEntity implements INameable {
     public ComponentProcessor getProcessor(int id) {
 	return processors[id];
     }
-
+    
     public GenericTile addProcessor(ComponentProcessor processor) {
 	for (int i = 0; i < processors.length; i++) {
 	    if (processors[i] == null) {
@@ -65,7 +65,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 	return this;
     }
-
+    
     public GenericTile addComponent(Component component) {
 	component.holder(this);
 	if (hasComponent(component.getType())) {
@@ -122,14 +122,18 @@ public class GenericTile extends TileEntity implements INameable {
 
     @Override
     public void onLoad() {
-	super.onLoad();
-	if (hasComponent(ComponentType.PacketHandler)) {
-	    Scheduler.schedule(1, () -> {
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-	    });
-
-	}
+    	super.onLoad();
+    	//JSON recipe fluids have to be added at load time
+		if (hasComponent(ComponentType.FluidHandler)) {
+			ComponentFluidHandler tank = this.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler);
+			tank.addFluids();
+		}
+		if (hasComponent(ComponentType.PacketHandler)) {
+		    Scheduler.schedule(1, () -> {
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+		    });
+		}
     }
 
     @Override
@@ -193,16 +197,6 @@ public class GenericTile extends TileEntity implements INameable {
 	return 256;
     }
 
-    /**
-     * Returns an O2O type Recipe based upon the input inventory of the TileEntity
-     * in question
-     * 
-     * @param <T>         an O2O RecipeType subclass
-     * @param pr          the component processor of the machine
-     * @param recipeClass the Class of the RecipeType
-     * @param typeIn      the RecipeType of the Recipe
-     * @return a recipe. CAN BE NULL!
-     */
     @Nullable
     public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
 	ItemStack stack = pr.getInput();
@@ -244,7 +238,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 
 	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
 	    }
@@ -268,7 +262,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 
 	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
 	    }
@@ -287,7 +281,7 @@ public class GenericTile extends TileEntity implements INameable {
 
     public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
 	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getFluidTanks()) {
+	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
 	    }
