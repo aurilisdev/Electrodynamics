@@ -189,17 +189,17 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2ItemRecipe recipe) {
-		List<List<ItemStack>> ingredients = new ArrayList<>();
-		ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
-		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
-		ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
-		bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-		    h.fill(stack, FluidAction.EXECUTE);
-		});
-		List<ItemStack> buckets = new ArrayList<>();
-		buckets.add(bucket);
-		ingredients.add(buckets);
-		return ingredients;
+	List<List<ItemStack>> ingredients = new ArrayList<>();
+	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
+	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
+	ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+	bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+	    h.fill(stack, FluidAction.EXECUTE);
+	});
+	List<ItemStack> buckets = new ArrayList<>();
+	buckets.add(bucket);
+	ingredients.add(buckets);
+	return ingredients;
     }
 
 }

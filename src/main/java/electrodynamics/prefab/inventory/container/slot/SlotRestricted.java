@@ -15,39 +15,41 @@ public class SlotRestricted extends GenericSlot {
     private List<Capability<?>> validCapabilities;
 
     public SlotRestricted(IInventory inventory, int index, int x, int y, Item... items) {
-		super(inventory, index, x, y);
-		whitelist = Arrays.asList(items);
+	super(inventory, index, x, y);
+	whitelist = Arrays.asList(items);
     }
 
     public SlotRestricted(IInventory inventory, int index, int x, int y, boolean holder, Class<?>... items) {
-		super(inventory, index, x, y);
-		classes = Arrays.asList(items);
+	super(inventory, index, x, y);
+	classes = Arrays.asList(items);
     }
-    
+
     public SlotRestricted(IInventory inv, int index, int x, int y, int holder, Capability<?>... capabilities) {
-    	super(inv, index, x, y);
-    	validCapabilities = Arrays.asList(capabilities);
+	super(inv, index, x, y);
+	validCapabilities = Arrays.asList(capabilities);
     }
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-		if (super.isItemValid(stack)) {
-		    if(validCapabilities != null) {
-		    	for(Capability<?> cap : validCapabilities) {
-		    		if(stack.getCapability(cap).map(m ->{return true;}).orElse(false)) {
-		    			return true;
-		    		}
-		    	}
+	if (super.isItemValid(stack)) {
+	    if (validCapabilities != null) {
+		for (Capability<?> cap : validCapabilities) {
+		    if (stack.getCapability(cap).map(m -> {
+			return true;
+		    }).orElse(false)) {
+			return true;
 		    }
-			if (classes != null) {
-				for (Class<?> cl : classes) {
-				    if (cl.isInstance(stack.getItem())) {
-				    	return true;
-				    }
-				}
+		}
+	    }
+	    if (classes != null) {
+		for (Class<?> cl : classes) {
+		    if (cl.isInstance(stack.getItem())) {
+			return true;
 		    }
-		    	
-		return whitelist != null && whitelist.contains(stack.getItem());
+		}
+	    }
+
+	    return whitelist != null && whitelist.contains(stack.getItem());
 	}
 	return false;
     }

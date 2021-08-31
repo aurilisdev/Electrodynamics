@@ -57,7 +57,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 		for (Fluid fluid : handler.getValidInputFluids()) {
 		    FluidTank tank = handler.getTankFromFluid(fluid, true);
 		    if (tank.getFluidAmount() > 0) {
-		    	return tank;
+			return tank;
 		    }
 		}
 	    }

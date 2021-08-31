@@ -177,12 +177,12 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
     }
 
     public ItemStack getBucket(Fluid2ItemRecipe recipe) {
-		FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
-		ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
-		bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-		    h.fill(stack, FluidAction.EXECUTE);
-		});
-		return bucket;
+	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack();
+	ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+	bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+	    h.fill(stack, FluidAction.EXECUTE);
+	});
+	return bucket;
     }
 
 }

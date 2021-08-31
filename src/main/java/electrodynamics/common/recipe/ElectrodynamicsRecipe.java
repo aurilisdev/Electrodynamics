@@ -26,11 +26,11 @@ public abstract class ElectrodynamicsRecipe implements IElectrodynamicsRecipe {
     public ResourceLocation getId() {
 	return id;
     }
-   
+
     public static Set<IRecipe<?>> findRecipesbyType(IRecipeType<?> typeIn, World world) {
-    	
+
 	return world != null ? world.getRecipeManager().getRecipes().stream().filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet())
 		: Collections.emptySet();
     }
-    
+
 }

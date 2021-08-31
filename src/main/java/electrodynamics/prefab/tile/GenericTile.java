@@ -54,7 +54,7 @@ public class GenericTile extends TileEntity implements INameable {
     public ComponentProcessor getProcessor(int id) {
 	return processors[id];
     }
-    
+
     public GenericTile addProcessor(ComponentProcessor processor) {
 	for (int i = 0; i < processors.length; i++) {
 	    if (processors[i] == null) {
@@ -65,7 +65,7 @@ public class GenericTile extends TileEntity implements INameable {
 	}
 	return this;
     }
-    
+
     public GenericTile addComponent(Component component) {
 	component.holder(this);
 	if (hasComponent(component.getType())) {
@@ -122,18 +122,18 @@ public class GenericTile extends TileEntity implements INameable {
 
     @Override
     public void onLoad() {
-    	super.onLoad();
-    	//JSON recipe fluids have to be added at load time
-		if (hasComponent(ComponentType.FluidHandler)) {
-			ComponentFluidHandler tank = this.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler);
-			tank.addFluids();
-		}
-		if (hasComponent(ComponentType.PacketHandler)) {
-		    Scheduler.schedule(1, () -> {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		    });
-		}
+	super.onLoad();
+	// JSON recipe fluids have to be added at load time
+	if (hasComponent(ComponentType.FluidHandler)) {
+	    ComponentFluidHandler tank = this.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler);
+	    tank.addFluids();
+	}
+	if (hasComponent(ComponentType.PacketHandler)) {
+	    Scheduler.schedule(1, () -> {
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	    });
+	}
     }
 
     @Override

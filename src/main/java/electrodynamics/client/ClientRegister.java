@@ -143,7 +143,7 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":entity/rodstainlesssteel");
     public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
     public static final ResourceLocation MODEL_EMPTYCANISTER = new ResourceLocation(References.ID + ":item/canisterreinforced");
-    
+
     public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
     public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(
 	    References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
@@ -173,7 +173,7 @@ public class ClientRegister {
 
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
-	
+
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
@@ -217,7 +217,7 @@ public class ClientRegister {
 					&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
 						stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
 							: 0);
-	
+
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {

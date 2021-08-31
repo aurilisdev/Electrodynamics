@@ -28,9 +28,9 @@ import net.minecraftforge.fml.loading.FMLPaths;
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class ConfigurationHandler {
     private static final HashSet<Class<?>> configurationMappings = new HashSet<>();
-    //to help keep log spam down
+    // to help keep log spam down
     private static final boolean DEBUG_MODE = false;
-    
+
     public static void registerConfig(Class<?> configclass) {
 	if (configclass.isAnnotationPresent(Configuration.class)) {
 	    configurationMappings.add(configclass);
@@ -41,7 +41,7 @@ public class ConfigurationHandler {
 
     @SubscribeEvent
     public static void onPreInit(FMLCommonSetupEvent event) {
-    	load();
+	load();
     }
 
     public static void load() {
@@ -169,8 +169,8 @@ public class ConfigurationHandler {
 				System.out.println("Field: " + split[0]);
 				System.out.println("Value: " + split[1]);
 			    }
-			    if(DEBUG_MODE) {
-			    	System.out.println("Parsed config field '" + split[0] + "' as -> " + split[1]);
+			    if (DEBUG_MODE) {
+				System.out.println("Parsed config field '" + split[0] + "' as -> " + split[1]);
 			    }
 			}
 			line = reader.readLine();

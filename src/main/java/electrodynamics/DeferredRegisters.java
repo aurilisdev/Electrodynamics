@@ -282,7 +282,7 @@ public class DeferredRegisters {
     public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_CANISTERREINFORCED = ITEMS.register("canisterreinforced",
-    	supplier(new ItemCanister(new Item.Properties().maxStackSize(1).group(References.CORETAB))));
+	    supplier(new ItemCanister(new Item.Properties().maxStackSize(1).group(References.CORETAB))));
     public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil",
 	    supplier(new Item(new Item.Properties().group(References.CORETAB))));
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",

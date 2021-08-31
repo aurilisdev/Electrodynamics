@@ -26,8 +26,8 @@ public class RenderCombustionChamber extends TileEntityRenderer<TileCombustionCh
     public void render(TileCombustionChamber tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.push();
-	float prog = tileEntityIn.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler).getStackFromFluid(DeferredRegisters.fluidEthanol, true)
-		.getAmount() / (float) TileCombustionChamber.TANK_CAPACITY;
+	float prog = tileEntityIn.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler)
+		.getStackFromFluid(DeferredRegisters.fluidEthanol, true).getAmount() / (float) TileCombustionChamber.TANK_CAPACITY;
 	matrixStackIn.translate(0, 2.0 / 16.0, 0);
 	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_COMBUSTIONCHAMBERETHANOL);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);

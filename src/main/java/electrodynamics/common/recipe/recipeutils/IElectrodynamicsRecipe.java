@@ -12,17 +12,17 @@ public interface IElectrodynamicsRecipe extends IRecipe<RecipeWrapper> {
      */
     @Override
     default boolean matches(RecipeWrapper inv, World world) {
-    	return false;
+	return false;
     }
 
     @Override
     default boolean canFit(int width, int height) {
-    	return false;
+	return false;
     }
-    
+
     @Override
     default boolean isDynamic() {
-    	return true;
+	return true;
     }
 
     boolean matchesRecipe(ComponentProcessor pr);

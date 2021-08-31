@@ -29,10 +29,10 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
 	INPUT_FLUID = inputFluid;
 	OUTPUT_FLUID = outputFluid;
     }
-    
+
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
-    	
+
 	if (INPUT_ITEM.testStack(pr.getInput())) {
 	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    List<Fluid> inputFluids = fluid.getValidInputFluids();

@@ -66,7 +66,7 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 		for (Fluid fluid : handler.getValidInputFluids()) {
 		    FluidTank tank = handler.getTankFromFluid(fluid, true);
 		    if (tank.getFluidAmount() > 0) {
-		    	return tank;
+			return tank;
 		    }
 		}
 	    }
@@ -79,7 +79,7 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 		for (Fluid fluid : handler.getValidOutputFluids()) {
 		    FluidTank tank = handler.getTankFromFluid(fluid, false);
 		    if (tank.getFluidAmount() > 0) {
-		    	return tank;
+			return tank;
 		    }
 		}
 	    }

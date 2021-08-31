@@ -27,14 +27,14 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
     @Deprecated
     public void render(TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
-    	
-    	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
+
+	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
 	matrixStackIn.push();
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 	matrixStackIn.translate(0, 1 / 16.0, 0);
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	matrixStackIn.pop();
-	
+
 	matrixStackIn.push();
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 	matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
@@ -50,7 +50,7 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
 	matrixStackIn.translate(0.5, 0.2, 0.5);
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
 	float prog = tileEntityIn.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true).getAmount()
-				/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
+		/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 	if (prog > 0) {
 	    matrixStackIn.scale(1, prog / 16.0f * 4f, 1);
 	    UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn,
