@@ -222,9 +222,8 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	public FluidStack getFluidInTank(int tank, boolean isInput) {
 		if (isInput) {
 			return ((FluidTank) inputFluids.values().toArray()[tank]).getFluid();
-		} else {
-			return ((FluidTank) outputFluids.values().toArray()[tank]).getFluid();
 		}
+		return ((FluidTank) outputFluids.values().toArray()[tank]).getFluid();
 	}
 
 	public FluidStack getStackFromFluid(Fluid fluid, boolean isInput) {
@@ -245,9 +244,8 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	public FluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
 		if (isInput) {
 			return inputFluids.get(fluid);
-		} else {
-			return outputFluids.get(fluid);
 		}
+		return outputFluids.get(fluid);
 	}
 
 	public ComponentFluidHandler setFluidInTank(FluidStack stack, int tank, boolean isInput) {

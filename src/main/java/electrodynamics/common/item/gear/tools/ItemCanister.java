@@ -33,125 +33,126 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.RegistryObject;
+
 /**
- * Acts as a universal canister container. Can hold a maximum of 5000 mB of fluid. 
+ * Acts as a universal canister container. Can hold a maximum of 5000 mB of
+ * fluid.
+ * 
  * @author skip999
  */
 public class ItemCanister extends Item {
 
-	public static final int MAX_FLUID_CAPACITY = 5000;
-	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
-	
+    public static final int MAX_FLUID_CAPACITY = 5000;
+    public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
+
     public ItemCanister(Item.Properties itemProperty) {
-    	super(itemProperty);
+	super(itemProperty);
     }
-    
+
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-    	if(isInGroup(group)) {
-    		items.add(new ItemStack(this));
-    		if(!CapabilityUtils.isFluidItemNull()) {
-    			for(Fluid fluid : getWhitelistedFluids()) {
-    				ItemStack temp = new ItemStack(this);
-    				CapabilityUtils.fill(temp, new FluidStack(fluid,MAX_FLUID_CAPACITY));
-	    			items.add(temp);
-    			}
-    			
-    		}
-    	}
+	if (isInGroup(group)) {
+	    items.add(new ItemStack(this));
+	    if (!CapabilityUtils.isFluidItemNull()) {
+		for (Fluid fluid : getWhitelistedFluids()) {
+		    ItemStack temp = new ItemStack(this);
+		    CapabilityUtils.fill(temp, new FluidStack(fluid, MAX_FLUID_CAPACITY));
+		    items.add(temp);
+		}
+
+	    }
+	}
     }
-    
+
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
-    	return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, getWhitelistedFluids());
+	return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, getWhitelistedFluids());
     }
-    
+
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {;
-    	if(!CapabilityUtils.isFluidItemNull()) {
-    		stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-    			if(!(((FluidHandlerItemStack.SwapEmpty)h).getFluid().getFluid().isEquivalentTo(EMPTY_FLUID))) {
-    				FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty)h;
-    				tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + "/" + MAX_FLUID_CAPACITY + " mB"));
-    				tooltip.add(new StringTextComponent(cap.getFluid().getDisplayName().getString()));
-    			}
-    		});
-    	}
-    	super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	if (!CapabilityUtils.isFluidItemNull()) {
+	    stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+		if (!(((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isEquivalentTo(EMPTY_FLUID))) {
+		    FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
+		    tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + "/" + MAX_FLUID_CAPACITY + " mB"));
+		    tooltip.add(new StringTextComponent(cap.getFluid().getDisplayName().getString()));
+		}
+	    });
+	}
+	super.addInformation(stack, worldIn, tooltip, flagIn);
     }
-    
+
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-    	boolean show = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-    		RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack)h;
-    		return !cap.getFluid().getFluid().isEquivalentTo(EMPTY_FLUID);
-    	}).orElse(false);
-    	return show;
+	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
+	    return !cap.getFluid().getFluid().isEquivalentTo(EMPTY_FLUID);
+	}).orElse(false);
     }
-    
+
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-    	return 1.0 - stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-    		RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack)h;
-    		return (double)cap.getFluidInTank(0).getAmount() / (double)cap.getTankCapacity(0);
-    	}).orElse(1.0);
+	return 1.0 - stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
+	    return (double) cap.getFluidInTank(0).getAmount() / (double) cap.getTankCapacity(0);
+	}).orElse(1.0);
     }
-    
+
     @Override
     public boolean hasContainerItem() {
-    	return true;
+	return true;
     }
-    
+
     @Override
-    //TODO handle NBT canister crafting
+    // TODO handle NBT canister crafting
     public ItemStack getContainerItem(ItemStack itemStack) {
-    	boolean isEmpty = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(m ->{
-    		return m.getFluidInTank(0).getFluid().isEquivalentTo(Fluids.EMPTY);
-    	}).orElse(true);
-    	if(isEmpty) {
-    		return new ItemStack(Items.AIR);
-    	}
-		return new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
+	boolean isEmpty = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(m -> {
+	    return m.getFluidInTank(0).getFluid().isEquivalentTo(Fluids.EMPTY);
+	}).orElse(true);
+	if (isEmpty) {
+	    return new ItemStack(Items.AIR);
+	}
+	return new ItemStack(DeferredRegisters.ITEM_CANISTERREINFORCED.get());
     }
-    
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-    	useCanister(worldIn, playerIn, handIn);
-    	return ActionResult.resultPass(playerIn.getHeldItem(handIn));
+	useCanister(worldIn, playerIn, handIn);
+	return ActionResult.resultPass(playerIn.getHeldItem(handIn));
     }
-    
+
     public void useCanister(World world, PlayerEntity player, Hand hand) {
-    	ItemStack stack = player.getHeldItem(hand);
-    	RayTraceResult trace = rayTrace(world, player, FluidMode.ANY);
-    	if(!world.isRemote && !(trace.getType() == Type.MISS) && !(trace.getType() == Type.ENTITY)) {
-    		BlockRayTraceResult blockTrace = (BlockRayTraceResult) trace;
-    		BlockPos pos = blockTrace.getPos();
-    		BlockState state = world.getBlockState(pos);
-    		if(state.getFluidState().isSource() && !state.getFluidState().getFluid().isEquivalentTo(Fluids.EMPTY)) {
-    			FluidStack sourceFluid = new FluidStack(state.getFluidState().getFluid(),1000);
-    			boolean validFluid = CapabilityUtils.canFillItemStack(stack, sourceFluid);
-    			if(validFluid) {
-    				int amtFilled = CapabilityUtils.simFill(stack, sourceFluid);
-    				if(amtFilled >= 1000) {
-    					CapabilityUtils.fill(stack,sourceFluid);
-    					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-    				}
-    			}
-    		}
-    	}
+	ItemStack stack = player.getHeldItem(hand);
+	RayTraceResult trace = rayTrace(world, player, FluidMode.ANY);
+	if (!world.isRemote && !(trace.getType() == Type.MISS) && !(trace.getType() == Type.ENTITY)) {
+	    BlockRayTraceResult blockTrace = (BlockRayTraceResult) trace;
+	    BlockPos pos = blockTrace.getPos();
+	    BlockState state = world.getBlockState(pos);
+	    if (state.getFluidState().isSource() && !state.getFluidState().getFluid().isEquivalentTo(Fluids.EMPTY)) {
+		FluidStack sourceFluid = new FluidStack(state.getFluidState().getFluid(), 1000);
+		boolean validFluid = CapabilityUtils.canFillItemStack(stack, sourceFluid);
+		if (validFluid) {
+		    int amtFilled = CapabilityUtils.simFill(stack, sourceFluid);
+		    if (amtFilled >= 1000) {
+			CapabilityUtils.fill(stack, sourceFluid);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		    }
+		}
+	    }
+	}
     }
-    
-    public ArrayList<Fluid> getWhitelistedFluids(){
-    	ArrayList<Fluid> whitelisted = new ArrayList<>();
-    	/* Current Whitelist:
-    	 * > Electrodynamics Fluids 
-    	 * > Water
-    	 */
-    	for(RegistryObject<Fluid> fluid : DeferredRegisters.FLUIDS.getEntries()) {
-    		whitelisted.add(fluid.get());
-    	}
-    	whitelisted.add(Fluids.WATER);
-    	return whitelisted;
+
+    public ArrayList<Fluid> getWhitelistedFluids() {
+	ArrayList<Fluid> whitelisted = new ArrayList<>();
+	/*
+	 * Current Whitelist: > Electrodynamics Fluids > Water
+	 */
+	for (RegistryObject<Fluid> fluid : DeferredRegisters.FLUIDS.getEntries()) {
+	    whitelisted.add(fluid.get());
+	}
+	whitelisted.add(Fluids.WATER);
+	return whitelisted;
     }
-    
+
 }

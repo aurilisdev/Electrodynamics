@@ -83,79 +83,78 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
     @Deprecated
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
 	    BlockRayTraceResult hit) {
-    	
-    	if (worldIn.isRemote) {
-		    return ActionResultType.SUCCESS;
-		} else {
-			TileEntity tile = worldIn.getTileEntity(pos);
-			ItemStack stack = player.getHeldItem(handIn);
-			//allows you to right-click a canister on a machine and drain/fill it
-			if(CapabilityUtils.hasFluidItemCap(stack)) {
-    			if(tile instanceof GenericTile) {
-    				GenericTile generic = (GenericTile) tile;
-    				if(generic.hasComponent(ComponentType.FluidHandler)) {
-    					ComponentFluidHandler tank = generic.getComponent(ComponentType.FluidHandler);
-    					boolean isBucket = stack.getItem() instanceof BucketItem;
-    					int tankroom = 0;
-    					
-    					FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-    					FluidTank inputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), true);
-    					if(inputFluidTank != null) {
-    						tankroom = inputFluidTank.getCapacity() - inputFluidTank.getFluidAmount();
-    					}
-    					FluidStack amtTaken = CapabilityUtils.simDrain(stack, new FluidStack(containedFluid.getFluid(), tankroom));
-    					if(!amtTaken.getFluid().isEquivalentTo(Fluids.EMPTY) && amtTaken.getAmount() > 0 && !isBucket) {
-    	    				CapabilityUtils.drain(stack, amtTaken);
-    	    				tank.addFluidToTank(amtTaken, true);
-    	    				return ActionResultType.FAIL;
-    	    			} else if(!amtTaken.getFluid().isEquivalentTo(Fluids.EMPTY) && amtTaken.getAmount() >= 1000 && isBucket){
-    	    				CapabilityUtils.drain(stack, new FluidStack(amtTaken.getFluid(),1000));
-    	    				tank.addFluidToTank(new FluidStack(amtTaken.getFluid(),1000),true);
-    	    				player.setHeldItem(handIn, new ItemStack(Items.BUCKET, 1));
-    	    				return ActionResultType.FAIL;
-    	    			} else if (!isBucket){
-    	    				if(!containedFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-    	    					int amtAccepted = 0;
-    	    					FluidTank outputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), false);
-    	    					if(outputFluidTank != null) {
-    	    						amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
-    	    					}
-    	    					if(amtAccepted > 0) {
-    	    						CapabilityUtils.fill(stack, new FluidStack(containedFluid.getFluid(), amtAccepted));
-    	    						tank.drainFluidFromTank(new FluidStack(containedFluid.getFluid(),amtAccepted),false);
-    	    						return ActionResultType.FAIL;
-    	    					}
-    	    				} else {
-    	    					for(Fluid fluid : tank.getValidOutputFluids()) {
-    	    						FluidTank outputFluidTank = tank.getTankFromFluid(fluid, false);
-    	    						int amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
-    	    						if(amtAccepted > 0) {
-    	    							CapabilityUtils.fill(stack, new FluidStack(fluid,amtAccepted));
-    	    							tank.drainFluidFromTank(new FluidStack(fluid,amtAccepted), false);
-    	        						return ActionResultType.FAIL;
-    	    						}
-    	    					}
-    	    				}
-    	    			}
-    	    			if (generic.hasComponent(ComponentType.ContainerProvider)) {
-    					    player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
-    					}
-    				}
-    			} 
-    			player.addStat(Stats.INTERACT_WITH_FURNACE);
-			    return ActionResultType.CONSUME;
-	    	} else if (!(stack.getItem() instanceof IWrenchItem)) {
-				if (tile instanceof GenericTile) {
-					GenericTile generic = (GenericTile) tile;
-					if (generic.hasComponent(ComponentType.ContainerProvider)) {
-					    player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
-					}
+
+	if (worldIn.isRemote) {
+	    return ActionResultType.SUCCESS;
+	}
+	TileEntity tile = worldIn.getTileEntity(pos);
+	ItemStack stack = player.getHeldItem(handIn);
+	// allows you to right-click a canister on a machine and drain/fill it
+	if (CapabilityUtils.hasFluidItemCap(stack)) {
+	    if (tile instanceof GenericTile) {
+		GenericTile generic = (GenericTile) tile;
+		if (generic.hasComponent(ComponentType.FluidHandler)) {
+		    ComponentFluidHandler tank = generic.getComponent(ComponentType.FluidHandler);
+		    boolean isBucket = stack.getItem() instanceof BucketItem;
+		    int tankroom = 0;
+
+		    FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+		    FluidTank inputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), true);
+		    if (inputFluidTank != null) {
+			tankroom = inputFluidTank.getCapacity() - inputFluidTank.getFluidAmount();
+		    }
+		    FluidStack amtTaken = CapabilityUtils.simDrain(stack, new FluidStack(containedFluid.getFluid(), tankroom));
+		    if (!amtTaken.getFluid().isEquivalentTo(Fluids.EMPTY) && amtTaken.getAmount() > 0 && !isBucket) {
+			CapabilityUtils.drain(stack, amtTaken);
+			tank.addFluidToTank(amtTaken, true);
+			return ActionResultType.FAIL;
+		    } else if (!amtTaken.getFluid().isEquivalentTo(Fluids.EMPTY) && amtTaken.getAmount() >= 1000 && isBucket) {
+			CapabilityUtils.drain(stack, new FluidStack(amtTaken.getFluid(), 1000));
+			tank.addFluidToTank(new FluidStack(amtTaken.getFluid(), 1000), true);
+			player.setHeldItem(handIn, new ItemStack(Items.BUCKET, 1));
+			return ActionResultType.FAIL;
+		    } else if (!isBucket) {
+			if (!containedFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
+			    int amtAccepted = 0;
+			    FluidTank outputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), false);
+			    if (outputFluidTank != null) {
+				amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
 			    }
-			    player.addStat(Stats.INTERACT_WITH_FURNACE);
-			    return ActionResultType.CONSUME;
+			    if (amtAccepted > 0) {
+				CapabilityUtils.fill(stack, new FluidStack(containedFluid.getFluid(), amtAccepted));
+				tank.drainFluidFromTank(new FluidStack(containedFluid.getFluid(), amtAccepted), false);
+				return ActionResultType.FAIL;
+			    }
+			} else {
+			    for (Fluid fluid : tank.getValidOutputFluids()) {
+				FluidTank outputFluidTank = tank.getTankFromFluid(fluid, false);
+				int amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
+				if (amtAccepted > 0) {
+				    CapabilityUtils.fill(stack, new FluidStack(fluid, amtAccepted));
+				    tank.drainFluidFromTank(new FluidStack(fluid, amtAccepted), false);
+				    return ActionResultType.FAIL;
+				}
+			    }
 			}
+		    }
+		    if (generic.hasComponent(ComponentType.ContainerProvider)) {
+			player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
+		    }
 		}
-		return ActionResultType.FAIL;
+	    }
+	    player.addStat(Stats.INTERACT_WITH_FURNACE);
+	    return ActionResultType.CONSUME;
+	} else if (!(stack.getItem() instanceof IWrenchItem)) {
+	    if (tile instanceof GenericTile) {
+		GenericTile generic = (GenericTile) tile;
+		if (generic.hasComponent(ComponentType.ContainerProvider)) {
+		    player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
+		}
+	    }
+	    player.addStat(Stats.INTERACT_WITH_FURNACE);
+	    return ActionResultType.CONSUME;
+	}
+	return ActionResultType.FAIL;
     }
 
     @Override
