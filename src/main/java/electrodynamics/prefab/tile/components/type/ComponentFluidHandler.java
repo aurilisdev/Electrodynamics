@@ -366,6 +366,11 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 	this.hasOutput = hasOutput;
 	return this;
     }
+    
+    //needed for Universal; ignore here
+    public ComponentFluidHandler setValidFluids(List<Fluid> fluids) {
+		return this;
+	}
 
     // this has to be called on world load; otherwise the RecipeManager is null
     public void addFluids() {

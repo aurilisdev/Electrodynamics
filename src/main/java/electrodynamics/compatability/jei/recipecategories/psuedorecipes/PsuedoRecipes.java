@@ -29,12 +29,6 @@ public class PsuedoRecipes {
     }
 
     public static void addElectrodynamicsMachines() {
-	// Mineral Washer
-	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher)));
-	// Chemical Crystallizer
-	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer)));
-	// Chemical Mixer
-	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer)));
 	// Coal Generator
 	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator)));
 	// Upgrade Transformer
@@ -55,8 +49,12 @@ public class PsuedoRecipes {
 		.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.hydroelectricgenerator)));
 	// Wind Generator
 	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.windmill)));
-	// Fermentation Chamber
-	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant)));
+	// Steel Fluid Tank
+	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)));
+	// Reinforced Fluid Tank
+	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)));
+	// HSLA Fluid Tank
+	ELECTRODYNAMICS_MACHINES.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla)));
     }
 
     public static void addElectrodynamicsFluids() {

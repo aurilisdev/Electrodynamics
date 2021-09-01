@@ -34,6 +34,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -107,11 +109,13 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
 		    if (!amtTaken.getFluid().isEquivalentTo(Fluids.EMPTY) && amtTaken.getAmount() > 0 && !isBucket) {
 			CapabilityUtils.drain(stack, amtTaken);
 			tank.addFluidToTank(amtTaken, true);
+			worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 1, 1);
 			return ActionResultType.FAIL;
 		    } else if (!amtTaken.getFluid().isEquivalentTo(Fluids.EMPTY) && amtTaken.getAmount() >= 1000 && isBucket) {
 			CapabilityUtils.drain(stack, new FluidStack(amtTaken.getFluid(), 1000));
 			tank.addFluidToTank(new FluidStack(amtTaken.getFluid(), 1000), true);
 			player.setHeldItem(handIn, new ItemStack(Items.BUCKET, 1));
+			worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 1, 1);
 			return ActionResultType.FAIL;
 		    } else if (!isBucket) {
 			if (!containedFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
@@ -123,6 +127,7 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
 			    if (amtAccepted > 0) {
 				CapabilityUtils.fill(stack, new FluidStack(containedFluid.getFluid(), amtAccepted));
 				tank.drainFluidFromTank(new FluidStack(containedFluid.getFluid(), amtAccepted), false);
+				worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
 				return ActionResultType.FAIL;
 			    }
 			} else {
@@ -132,6 +137,7 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
 				if (amtAccepted > 0) {
 				    CapabilityUtils.fill(stack, new FluidStack(fluid, amtAccepted));
 				    tank.drainFluidFromTank(new FluidStack(fluid, amtAccepted), false);
+				    worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
 				    return ActionResultType.FAIL;
 				}
 			    }

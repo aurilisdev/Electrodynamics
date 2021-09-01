@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sgs",
+		"gtg",
+		"sgs"
+	],
+	"key": {
+		"g": {
+			"item": "electrodynamics:glassaluminum"
+		},
+		"s": {
+			"tag": "forge:plates/hslasteel"
+		},
+		"t": {
+			"item": "electrodynamics:tankreinforced"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:tankhsla",
+		"count": 1
+	}
+}
