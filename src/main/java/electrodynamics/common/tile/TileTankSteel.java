@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.tile.generic.TileTankGeneric;
+import electrodynamics.common.tile.generic.TileGenericTank;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 
-public class TileTankSteel extends TileTankGeneric{
+public class TileTankSteel extends TileGenericTank{
 
 	private static int capacity = 8000;
 	private static List<Fluid> fluids = new ArrayList<>();

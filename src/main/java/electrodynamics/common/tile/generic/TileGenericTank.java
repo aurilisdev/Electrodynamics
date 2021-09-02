@@ -28,22 +28,21 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileTankGeneric extends GenericTileTicking{
+public class TileGenericTank extends GenericTileTicking{
 
-	public TileTankGeneric(TileEntityType<?> tile, int capacity, List<Fluid> validFluids, String name) {
+	public TileGenericTank(TileEntityType<?> tile, int capacity, List<Fluid> validFluids, String name) {
 		super(tile);
-		addComponent(new ComponentTickable().tickServer(this::tickServer));
+		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentUniversalFluidHandler(this).input(Direction.NORTH).input(Direction.EAST)
-			.input(Direction.SOUTH).output(Direction.WEST).addFluidTank(Fluids.EMPTY, capacity, true)
-			.setValidFluids(validFluids));
+		addComponent(new ComponentUniversalFluidHandler(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST)
+			.addFluidTank(Fluids.EMPTY, capacity, true).setValidFluids(validFluids));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider("container.tank" + name)
 				.createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 	
-	public void tickServer(ComponentTickable tick) {
+	public void tickCommon(ComponentTickable tick) {
 		ComponentUniversalFluidHandler handler = getComponent(ComponentType.UniversalFluidHandler);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ComponentDirection direction = getComponent(ComponentType.Direction);
@@ -57,15 +56,11 @@ public class TileTankGeneric extends GenericTileTicking{
 			FluidStack stack = CapabilityUtils.simDrain(input, Integer.MAX_VALUE);
 			FluidTank tank = handler.getTankFromFluid(stack.getFluid(), true);
 			int room = tank.getCapacity() - tank.getFluidAmount();
-			if(room > 0 && stack.getFluid().getFluid().isEquivalentTo(Fluids.EMPTY) && 
-				handler.isFluidValid(0, stack) && !isInputBucket) {
-				
+			if(room > 0 && handler.isFluidValid(0, stack) && !isInputBucket) {
 				handler.addFluidToTank(stack, true);
 				CapabilityUtils.drain(input, stack);
 			
-			} else if(room >= 1000 && stack.getFluid().getFluid().isEquivalentTo(Fluids.EMPTY) && 
-					handler.isFluidValid(0, stack) && isInputBucket) {
-				
+			} else if(room >= 1000 && handler.isFluidValid(0, stack) && isInputBucket) {
 				handler.addFluidToTank(stack, true);
 				inv.setInventorySlotContents(0, new ItemStack(Items.BUCKET, 1));
 				
@@ -76,9 +71,17 @@ public class TileTankGeneric extends GenericTileTicking{
 			boolean isBucket = output.getItem() instanceof BucketItem;
 			FluidStack tankFluid = handler.getFluidInTank(0);
 			int amtTaken = CapabilityUtils.simFill(output, handler.getFluidInTank(0));
+			Fluid fluid = tankFluid.getFluid();
 			if(amtTaken > 0 && !isBucket) {
-				CapabilityUtils.fill(output, new FluidStack(tankFluid.getFluid(), amtTaken));
-				handler.drainFluidFromTank(new FluidStack(tankFluid.getFluid(), amtTaken), false);
+				CapabilityUtils.fill(output, new FluidStack(fluid, amtTaken));
+				handler.drainFluidFromTank(new FluidStack(fluid, amtTaken), false);
+			} else if(amtTaken >= 1000 && isBucket && (fluid.isEquivalentTo(Fluids.WATER) || fluid.isEquivalentTo(Fluids.LAVA))){
+				handler.drainFluidFromTank(new FluidStack(fluid, amtTaken), false);
+				if(fluid.isEquivalentTo(Fluids.WATER)) {
+					inv.setInventorySlotContents(1, new ItemStack(Items.WATER_BUCKET, 1));
+				} else {
+					inv.setInventorySlotContents(1, new ItemStack(Items.LAVA_BUCKET, 1));
+				}
 			}
 		}
 		//try to output to pipe
@@ -95,6 +98,7 @@ public class TileTankGeneric extends GenericTileTicking{
 				}
 		    }
 		}
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 		
 		

@@ -273,7 +273,20 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
-	return ((FluidTank) getCombinedTanks().toArray()[tank]).isFluidValid(stack);
+    	if(!getValidInputFluids().contains(stack.getFluid())) return false;
+    	
+		FluidTank fluidTank = getTankFromFluid(stack.getFluid(), true);
+		if(fluidTank.getCapacity() > 0) {
+			return true;
+		} else {
+			for(Fluid fluid : getValidInputFluids()) {
+    			FluidTank temp = getTankFromFluid(fluid, true);
+    			if(!temp.getFluid().getFluid().isEquivalentTo(stack.getFluid()) && temp.getFluidAmount() > 0) {
+    				return false;
+    			}
+    		}
+			return true;
+		}
     }
 
     @Override
@@ -284,7 +297,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 		lastDirection);
 	boolean canFill = inputDirections.contains(lastDirection)
 		|| holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-	return canFill && inputFluids.containsKey(resource.getFluid()) ? inputFluids.get(resource.getFluid()).fill(resource, action) : 0;
+	return canFill && isFluidValid(0, resource) ? inputFluids.get(resource.getFluid()).fill(resource, action) : 0;
     }
 
     @Override
@@ -295,7 +308,7 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
 		lastDirection);
 	boolean canDrain = outputDirections.contains(lastDirection)
 		|| holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
-	return canDrain && outputFluids.containsKey(resource.getFluid()) ? outputFluids.get(resource.getFluid()).drain(resource, action)
+	return canDrain ? outputFluids.get(resource.getFluid()).drain(resource, action)
 		: FluidStack.EMPTY;
     }
 

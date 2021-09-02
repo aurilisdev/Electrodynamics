@@ -1,6 +1,7 @@
 package electrodynamics.prefab.tile.components.type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -28,8 +30,6 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 
 	@Nullable
 	private FluidTank fluidTank;
-	private int capacity = 0;
-	
 	private List<Fluid> validFluids;
 	
 	public ComponentUniversalFluidHandler(GenericTile source) {
@@ -41,23 +41,49 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 		CompoundNBT tag = new CompoundNBT();
 		tag.putString("FluidName", fluidTank.getFluid().getRawFluid().getRegistryName().toString());
 		tag.putInt("Amount", fluidTank.getFluid().getAmount());
-
 		if (fluidTank.getFluid().getTag() != null) {
 			tag.put("Tag", fluidTank.getFluid().getTag());
 		}
-		tag.putInt("cap", fluidTank.getCapacity());
-		
+		tag.putInt("cap", this.fluidTank.getCapacity());
 		nbt.put("fluidtank", tag);
 	}
 	
 	@Override
 	public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-		CompoundNBT compound = nbt.getCompound("cap");
+		CompoundNBT compound = nbt.getCompound("fluidtank");
+		int cap = compound.getInt("cap");
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(compound);
-		FluidTank tank = new FluidTank(this.capacity,test -> test.getFluid() == stack.getFluid());
+		FluidTank tank = new FluidTank(cap);
 		tank.setFluid(stack);
 		this.fluidTank = tank;
 	}
+	
+	public ComponentUniversalFluidHandler universalInput() {
+		for (Direction dir : Direction.values()) {
+		    input(dir);
+		}
+		return this;
+    }
+
+    public ComponentUniversalFluidHandler input(Direction dir) {
+		inputDirections.add(dir);
+		return this;
+    }
+
+    public ComponentUniversalFluidHandler output(Direction dir) {
+		outputDirections.add(dir);
+		return this;
+    }
+
+    public ComponentUniversalFluidHandler relativeInput(Direction... dir) {
+		relativeInputDirections.addAll(Arrays.asList(dir));
+		return this;
+    }
+
+    public ComponentFluidHandler relativeOutput(Direction... dir) {
+		relativeOutputDirections.addAll(Arrays.asList(dir));
+		return this;
+    }
 	
 	@Override
 	public ComponentType getType() {
@@ -81,7 +107,8 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 
 	@Override
 	public boolean isFluidValid(int tank, FluidStack stack) {
-		return getValidInputFluids().contains(stack.getFluid()) && fluidTank.isFluidValid(stack);
+		return getValidInputFluids().contains(stack.getFluid()) 
+			&& (fluidTank.getFluid().getFluid().isEquivalentTo(Fluids.EMPTY) || fluidTank.getFluid().getFluid().isEquivalentTo(stack.getFluid()));
 	}
 
 	@Override
@@ -111,8 +138,8 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 	
 	@Override
 	public ComponentUniversalFluidHandler addFluidTank(Fluid fluid, int capacity, boolean isInput) {
-		fluidTank = new FluidTank(capacity, test -> test.getFluid() == fluid);
-		this.capacity = capacity;
+		fluidTank = new FluidTank(capacity);
+		fluidTank.setFluid(new FluidStack(fluid, 0));
 		return this;
 	}
 	
@@ -156,7 +183,7 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 	
 	@Override
 	public FluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
-		return fluidTank.getFluid().getFluid().isEquivalentTo(fluid.getFluid()) ? fluidTank : new FluidTank(0);
+		return fluidTank;
 	}
 	
 	@Override
@@ -173,7 +200,10 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 	
 	@Override
 	public void drainFluidFromTank(FluidStack fluid, boolean isInput) {
-		fluidTank.drain(fluid, FluidAction.EXECUTE);
+		fluidTank.getFluid().shrink(fluid.getAmount());
+		if(fluidTank.getFluidAmount() == 0) {
+			fluidTank.setFluid(FluidStack.EMPTY);
+		}
 	}
 	
 	@Override
