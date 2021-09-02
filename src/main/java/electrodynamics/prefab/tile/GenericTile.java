@@ -18,6 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -125,7 +126,7 @@ public class GenericTile extends TileEntity implements INameable {
 	super.onLoad();
 	// JSON recipe fluids have to be added at load time
 	if (hasComponent(ComponentType.FluidHandler)) {
-	    ComponentFluidHandler tank = this.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler);
+		AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
 	    tank.addFluids();
 	}
 	if (hasComponent(ComponentType.PacketHandler)) {

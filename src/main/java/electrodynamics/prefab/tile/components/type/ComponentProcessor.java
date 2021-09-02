@@ -17,6 +17,7 @@ import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
@@ -224,7 +225,7 @@ public class ComponentProcessor implements Component {
 
     public ComponentProcessor consumeBucket(int slot) {
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
+	AbstractFluidHandler<?> tank = holder.getComponent(ComponentType.FluidHandler);
 	ItemStack bucketStack = inv.getStackInSlot(slot);
 
 	if (!bucketStack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
@@ -268,7 +269,7 @@ public class ComponentProcessor implements Component {
     public ComponentProcessor dispenseBucket(int slot) {
 
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	ComponentFluidHandler tank = holder.getComponent(ComponentType.FluidHandler);
+	AbstractFluidHandler<?> tank = holder.getComponent(ComponentType.FluidHandler);
 	ItemStack bucketStack = inv.getStackInSlot(slot);
 
 	if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) && !CapabilityUtils.isFluidItemNull()) {
@@ -288,7 +289,7 @@ public class ComponentProcessor implements Component {
 
     public ComponentProcessor outputToPipe(ComponentProcessor pr) {
 	ComponentDirection direction = pr.getHolder().getComponent(ComponentType.Direction);
-	ComponentFluidHandler tank = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	AbstractFluidHandler<?> tank = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	BlockPos face = pr.getHolder().getPos().offset(direction.getDirection().rotateY().getOpposite());
 	TileEntity faceTile = pr.getHolder().getWorld().getTileEntity(face);
 	if (faceTile != null) {
@@ -357,7 +358,7 @@ public class ComponentProcessor implements Component {
 	    IRecipeType<?> typeIn) {
 
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-	ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	FluidItem2FluidRecipe localRecipe = pr.holder.getFluidItem2FluidRecipe(pr, recipeClass, typeIn);
 
 	int locCap = 0;
@@ -441,7 +442,7 @@ public class ComponentProcessor implements Component {
 	if (getRecipe() != null) {
 	    T locRecipe = recipeClass.cast(getRecipe());
 
-	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    FluidStack outputFluid = locRecipe.getFluidRecipeOutput();
 	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(1)).getFluidStack();
 
@@ -459,7 +460,7 @@ public class ComponentProcessor implements Component {
     public <T extends FluidItem2ItemRecipe> void processFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
 	    T locRecipe = recipeClass.cast(getRecipe());
-	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(1)).getFluidStack();
 
 	    if (getOutputCap() >= pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount()) {
@@ -478,7 +479,7 @@ public class ComponentProcessor implements Component {
     public <T extends Fluid2ItemRecipe> void processFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
 	    T locRecipe = recipeClass.cast(getRecipe());
-	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(0)).getFluidStack();
 	    if (getOutputCap() >= pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount()) {
 		if (pr.getOutput().isEmpty()) {

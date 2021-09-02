@@ -7,13 +7,11 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.utilities.UtilitiesTiles;
+import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -23,7 +21,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
  * for fluid storage tiles
  * @author skip999
  */
-public class ComponentFluidHandlerUniversal extends ComponentFluidHandler{
+public class ComponentFluidHandlerUniversal extends AbstractFluidHandler<ComponentFluidHandlerUniversal>{
 
 	@Nullable
 	private FluidTank fluidTank;
@@ -74,26 +72,6 @@ public class ComponentFluidHandlerUniversal extends ComponentFluidHandler{
 	public boolean isFluidValid(int tank, FluidStack stack) {
 		return getValidInputFluids().contains(stack.getFluid()) 
 			&& (fluidTank.getFluid().getFluid().isEquivalentTo(Fluids.EMPTY) || fluidTank.getFluid().getFluid().isEquivalentTo(stack.getFluid()));
-	}
-
-	@Override
-	public int fill(FluidStack resource, FluidAction action) {
-		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: Direction.UP, lastDirection);
-		boolean canFill = inputDirections.contains(lastDirection)
-				|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-		return canFill && getValidInputFluids().contains(resource.getFluid()) ? fluidTank.fill(resource, action) : 0;
-	}
-
-	@Override
-	public FluidStack drain(FluidStack resource, FluidAction action) {
-		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: Direction.UP, lastDirection);
-		boolean canDrain = outputDirections.contains(lastDirection)
-				|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
-		return canDrain ? fluidTank.drain(resource, action) : FluidStack.EMPTY;
 	}
 
 	@Override
@@ -171,7 +149,6 @@ public class ComponentFluidHandlerUniversal extends ComponentFluidHandler{
 		}
 	}
 	
-	@Override
 	public ComponentFluidHandlerUniversal setValidFluids(List<Fluid> fluids) {
 		this.validFluids = fluids;
 		return this;
@@ -181,6 +158,11 @@ public class ComponentFluidHandlerUniversal extends ComponentFluidHandler{
 	public ComponentFluidHandlerUniversal setFluidInTank(FluidStack stack, int tank, boolean isInput) {
 		fluidTank.setFluid(stack);
 		return this;
+	}
+
+	@Override
+	public void addFluids() {
+	//not needed
 	}
 
 }

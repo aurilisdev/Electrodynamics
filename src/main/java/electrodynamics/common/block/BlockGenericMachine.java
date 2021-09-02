@@ -9,7 +9,7 @@ import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -96,7 +96,7 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
 		    if (tile instanceof GenericTile) {
 				GenericTile generic = (GenericTile) tile;
 				if (generic.hasComponent(ComponentType.FluidHandler)) {
-				    ComponentFluidHandler tank = generic.getComponent(ComponentType.FluidHandler);
+					AbstractFluidHandler<?> tank = generic.getComponent(ComponentType.FluidHandler);
 				    boolean isBucket = stack.getItem() instanceof BucketItem;
 				    
 				    FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);

@@ -35,8 +35,8 @@ public class TileGenericTank extends GenericTileTicking{
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerUniversal(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST)
-			.addFluidTank(Fluids.EMPTY, capacity, true).setValidFluids(validFluids));
+		addComponent(((ComponentFluidHandlerUniversal) new ComponentFluidHandlerUniversal(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST)
+			.addFluidTank(Fluids.EMPTY, capacity, true)).setValidFluids(validFluids));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider("container.tank" + name)
 				.createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
