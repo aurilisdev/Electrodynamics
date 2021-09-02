@@ -1,20 +1,17 @@
 package electrodynamics.prefab.tile.components.type;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,13 +23,13 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
  * for fluid storage tiles
  * @author skip999
  */
-public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
+public class ComponentFluidHandlerUniversal extends ComponentFluidHandler{
 
 	@Nullable
 	private FluidTank fluidTank;
 	private List<Fluid> validFluids;
 	
-	public ComponentUniversalFluidHandler(GenericTile source) {
+	public ComponentFluidHandlerUniversal(GenericTile source) {
 		super(source);
 	}
 	
@@ -56,38 +53,6 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 		FluidTank tank = new FluidTank(cap);
 		tank.setFluid(stack);
 		this.fluidTank = tank;
-	}
-	
-	public ComponentUniversalFluidHandler universalInput() {
-		for (Direction dir : Direction.values()) {
-		    input(dir);
-		}
-		return this;
-    }
-
-    public ComponentUniversalFluidHandler input(Direction dir) {
-		inputDirections.add(dir);
-		return this;
-    }
-
-    public ComponentUniversalFluidHandler output(Direction dir) {
-		outputDirections.add(dir);
-		return this;
-    }
-
-    public ComponentUniversalFluidHandler relativeInput(Direction... dir) {
-		relativeInputDirections.addAll(Arrays.asList(dir));
-		return this;
-    }
-
-    public ComponentFluidHandler relativeOutput(Direction... dir) {
-		relativeOutputDirections.addAll(Arrays.asList(dir));
-		return this;
-    }
-	
-	@Override
-	public ComponentType getType() {
-		return ComponentType.UniversalFluidHandler;
 	}
 	
 	@Override
@@ -137,7 +102,7 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 	}
 	
 	@Override
-	public ComponentUniversalFluidHandler addFluidTank(Fluid fluid, int capacity, boolean isInput) {
+	public ComponentFluidHandlerUniversal addFluidTank(Fluid fluid, int capacity, boolean isInput) {
 		fluidTank = new FluidTank(capacity);
 		fluidTank.setFluid(new FluidStack(fluid, 0));
 		return this;
@@ -145,7 +110,7 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 	
 	@Override
 	public FluidStack getFluidInTank(int tank, boolean isInput) {
-		return fluidTank.getFluid();
+		return getFluidInTank(tank);
 	}
 	
 	@Override
@@ -207,26 +172,15 @@ public class ComponentUniversalFluidHandler extends ComponentFluidHandler{
 	}
 	
 	@Override
-	public ComponentUniversalFluidHandler setValidFluids(List<Fluid> fluids) {
+	public ComponentFluidHandlerUniversal setValidFluids(List<Fluid> fluids) {
 		this.validFluids = fluids;
 		return this;
 	}
 	
 	@Override
-	public <T extends ElectrodynamicsRecipe> ComponentUniversalFluidHandler setAddFluidsValues(Class<T> recipeClass,
-			IRecipeType<?> recipeType, int capacity, boolean hasInput, boolean hasOutput) {
-		return this;
-	}
-	
-	@Override
-	//not needed
-	public ComponentUniversalFluidHandler setFluidInTank(FluidStack stack, int tank, boolean isInput) {
+	public ComponentFluidHandlerUniversal setFluidInTank(FluidStack stack, int tank, boolean isInput) {
 		fluidTank.setFluid(stack);
 		return this;
 	}
-	
-	@Override
-	//not needed
-	public void addFluids() {}
 
 }

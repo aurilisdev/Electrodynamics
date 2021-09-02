@@ -243,10 +243,10 @@ public class ComponentFluidHandler implements Component, IFluidHandler {
     }
 
     public FluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
-	if (isInput) {
-	    return inputFluids.get(fluid);
-	}
-	return outputFluids.get(fluid);
+		if (isInput) {
+			return getValidInputFluids().contains(fluid) ? inputFluids.get(fluid) : new FluidTank(0);
+		}
+		return getValidOutputFluids().contains(fluid) ? outputFluids.get(fluid) : new FluidTank(0);
     }
 
     public ComponentFluidHandler setFluidInTank(FluidStack stack, int tank, boolean isInput) {

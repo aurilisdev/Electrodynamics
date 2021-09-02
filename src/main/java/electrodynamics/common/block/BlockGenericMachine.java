@@ -95,75 +95,63 @@ public class BlockGenericMachine extends HorizontalBlock implements IWrenchable 
 		if (CapabilityUtils.hasFluidItemCap(stack)) {
 		    if (tile instanceof GenericTile) {
 				GenericTile generic = (GenericTile) tile;
-				boolean hasUniversal = generic.hasComponent(ComponentType.UniversalFluidHandler);
-				if (generic.hasComponent(ComponentType.FluidHandler) || hasUniversal) {
-				    ComponentFluidHandler tank;
-				    if(hasUniversal) {
-				    	tank = generic.getComponent(ComponentType.UniversalFluidHandler);
-				    } else {
-				    	tank = generic.getComponent(ComponentType.FluidHandler);
-				    }
+				if (generic.hasComponent(ComponentType.FluidHandler)) {
+				    ComponentFluidHandler tank = generic.getComponent(ComponentType.FluidHandler);
 				    boolean isBucket = stack.getItem() instanceof BucketItem;
-				    int tankroom = 0;
+				    
 				    FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
 				    FluidTank inputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), true);
-				    
-				    if (inputFluidTank != null) {
-				    	tankroom = inputFluidTank.getCapacity() - inputFluidTank.getFluidAmount();
-				    }
+				    int tankroom = inputFluidTank.getCapacity() - inputFluidTank.getFluidAmount();
 				    FluidStack amtTaken = CapabilityUtils.simDrain(stack, new FluidStack(containedFluid.getFluid(), tankroom));
 				    if (tank.isFluidValid(0, amtTaken) && amtTaken.getAmount() > 0 && !isBucket) {
 						CapabilityUtils.drain(stack, amtTaken);
 						tank.addFluidToTank(amtTaken, true);
 						worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 1, 1);
 						return ActionResultType.FAIL;
-					    } else if (tank.isFluidValid(0, amtTaken) && amtTaken.getAmount() >= 1000 && isBucket) {
-							CapabilityUtils.drain(stack, new FluidStack(amtTaken.getFluid(), 1000));
-							tank.addFluidToTank(new FluidStack(amtTaken.getFluid(), 1000), true);
-							player.setHeldItem(handIn, new ItemStack(Items.BUCKET, 1));
-							worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 1, 1);
-							return ActionResultType.FAIL;
-					    } else {
-							if (!containedFluid.getFluid().isEquivalentTo(Fluids.EMPTY) && !isBucket) {
-							    int amtAccepted = 0;
-							    FluidTank outputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), false);
-							    if (outputFluidTank != null) {
-							    	amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
-							    }
-							    if (amtAccepted > 0) {
-									CapabilityUtils.fill(stack, new FluidStack(containedFluid.getFluid(), amtAccepted));
-									tank.drainFluidFromTank(new FluidStack(containedFluid.getFluid(), amtAccepted), false);
-									worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
-									return ActionResultType.FAIL;
-							    }
-							} else {
-							    for (Fluid fluid : tank.getValidOutputFluids()) {
-									FluidTank outputFluidTank = tank.getTankFromFluid(fluid, false);
-									int amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
-									if (amtAccepted > 0 && !isBucket) {
-									    CapabilityUtils.fill(stack, new FluidStack(fluid, amtAccepted));
-									    tank.drainFluidFromTank(new FluidStack(fluid, amtAccepted), false);
-									    worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
-									    return ActionResultType.FAIL;
-									} else if(amtAccepted >= 1000 && isBucket && 
-										(outputFluidTank.getFluid().getFluid().isEquivalentTo(Fluids.WATER) || outputFluidTank.getFluid().getFluid().isEquivalentTo(Fluids.LAVA))) {
-										if(outputFluidTank.getFluid().getFluid().isEquivalentTo(Fluids.WATER)) {
-											player.setHeldItem(handIn, new ItemStack(Items.WATER_BUCKET, 1));
-										} else {
-											player.setHeldItem(handIn, new ItemStack(Items.LAVA_BUCKET, 1));
-										}
-										tank.drainFluidFromTank(new FluidStack(fluid, 1000), false);
-										worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
-									    return ActionResultType.FAIL;
+				    } else if (tank.isFluidValid(0, amtTaken) && amtTaken.getAmount() >= 1000 && isBucket) {
+						CapabilityUtils.drain(stack, new FluidStack(amtTaken.getFluid(), 1000));
+						tank.addFluidToTank(new FluidStack(amtTaken.getFluid(), 1000), true);
+						player.setHeldItem(handIn, new ItemStack(Items.BUCKET, 1));
+						worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 1, 1);
+						return ActionResultType.FAIL;
+				    } else {
+						if (!containedFluid.getFluid().isEquivalentTo(Fluids.EMPTY) && !isBucket) {
+						    FluidTank outputFluidTank = tank.getTankFromFluid(containedFluid.getFluid(), false);
+						    int amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
+						    if (amtAccepted > 0) {
+								CapabilityUtils.fill(stack, new FluidStack(containedFluid.getFluid(), amtAccepted));
+								tank.drainFluidFromTank(new FluidStack(containedFluid.getFluid(), amtAccepted), false);
+								worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
+								return ActionResultType.FAIL;
+						    }
+						} else {
+						    for (Fluid fluid : tank.getValidOutputFluids()) {
+								FluidTank outputFluidTank = tank.getTankFromFluid(fluid, false);
+								int amtAccepted = CapabilityUtils.simFill(stack, outputFluidTank.getFluid());
+								if (amtAccepted > 0 && !isBucket) {
+								    CapabilityUtils.fill(stack, new FluidStack(fluid, amtAccepted));
+								    tank.drainFluidFromTank(new FluidStack(fluid, amtAccepted), false);
+								    worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
+								    return ActionResultType.FAIL;
+								} else if(amtAccepted >= 1000 && isBucket && 
+									(outputFluidTank.getFluid().getFluid().isEquivalentTo(Fluids.WATER) || outputFluidTank.getFluid().getFluid().isEquivalentTo(Fluids.LAVA))) {
+									if(outputFluidTank.getFluid().getFluid().isEquivalentTo(Fluids.WATER)) {
+										player.setHeldItem(handIn, new ItemStack(Items.WATER_BUCKET, 1));
+									} else {
+										player.setHeldItem(handIn, new ItemStack(Items.LAVA_BUCKET, 1));
 									}
-							    }
-							}
-					    }
-					    if (generic.hasComponent(ComponentType.ContainerProvider)) {
-					    	player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
-					    }
-					}
-		    	}
+									tank.drainFluidFromTank(new FluidStack(fluid, 1000), false);
+									worldIn.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 1, 1);
+								    return ActionResultType.FAIL;
+								}
+						    }
+						}
+				    }
+				    if (generic.hasComponent(ComponentType.ContainerProvider)) {
+				    	player.openContainer(generic.getComponent(ComponentType.ContainerProvider));
+				    }
+				}
+	    	}
 		    player.addStat(Stats.INTERACT_WITH_FURNACE);
 		    return ActionResultType.CONSUME;
 		} else if (!(stack.getItem() instanceof IWrenchItem)) {

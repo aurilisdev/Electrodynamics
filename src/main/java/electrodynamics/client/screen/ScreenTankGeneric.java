@@ -6,7 +6,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentUniversalFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerUniversal;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -21,7 +21,7 @@ public class ScreenTankGeneric extends GenericScreen<ContainerTankGeneric>{
 		components.add(new ScreenComponentFluid(() -> {
 			TileGenericTank boiler = container.getHostFromIntArray();;
 			if(boiler != null) {
-				ComponentUniversalFluidHandler handler = boiler.getComponent(ComponentType.UniversalFluidHandler);
+				ComponentFluidHandlerUniversal handler = (ComponentFluidHandlerUniversal)boiler.getComponent(ComponentType.FluidHandler);
 				FluidTank tank = handler.getTankFromFluid(null, true);
 				if(tank.getFluidAmount() > 0) {
 					return tank;

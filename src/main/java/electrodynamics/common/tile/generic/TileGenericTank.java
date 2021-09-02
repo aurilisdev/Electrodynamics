@@ -11,7 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentUniversalFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerUniversal;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
@@ -35,7 +35,7 @@ public class TileGenericTank extends GenericTileTicking{
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentUniversalFluidHandler(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST)
+		addComponent(new ComponentFluidHandlerUniversal(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST)
 			.addFluidTank(Fluids.EMPTY, capacity, true).setValidFluids(validFluids));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider("container.tank" + name)
@@ -43,7 +43,7 @@ public class TileGenericTank extends GenericTileTicking{
 	}
 	
 	public void tickCommon(ComponentTickable tick) {
-		ComponentUniversalFluidHandler handler = getComponent(ComponentType.UniversalFluidHandler);
+		ComponentFluidHandlerUniversal handler = (ComponentFluidHandlerUniversal)getComponent(ComponentType.FluidHandler);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		BlockPos face = getPos().offset(direction.getDirection().rotateY().getOpposite());
@@ -59,7 +59,6 @@ public class TileGenericTank extends GenericTileTicking{
 			if(room > 0 && handler.isFluidValid(0, stack) && !isInputBucket) {
 				handler.addFluidToTank(stack, true);
 				CapabilityUtils.drain(input, stack);
-			
 			} else if(room >= 1000 && handler.isFluidValid(0, stack) && isInputBucket) {
 				handler.addFluidToTank(stack, true);
 				inv.setInventorySlotContents(0, new ItemStack(Items.BUCKET, 1));
