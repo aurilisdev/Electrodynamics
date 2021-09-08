@@ -35,8 +35,11 @@ public class TileGenericTank extends GenericTileTicking{
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(((ComponentFluidHandlerUniversal) new ComponentFluidHandlerUniversal(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST)
-			.addFluidTank(Fluids.EMPTY, capacity, true)).setValidFluids(validFluids));
+		addComponent(((ComponentFluidHandlerUniversal) new ComponentFluidHandlerUniversal(this)
+			.relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP)
+			.relativeOutput(Direction.WEST, Direction.DOWN).addFluidTank(Fluids.EMPTY, capacity, true))
+			.setValidFluids(validFluids)
+		);
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider("container.tank" + name)
 				.createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
@@ -97,6 +100,35 @@ public class TileGenericTank extends GenericTileTicking{
 				}
 		    }
 		}
+		
+		
+		//Output to tank below
+		BlockPos pos = getPos();
+		BlockPos below = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
+		
+		if(world.getBlockState(below).hasTileEntity()) {
+			TileEntity tile = world.getTileEntity(below);
+			if(tile instanceof TileGenericTank) {
+				TileGenericTank tankBelow = (TileGenericTank) tile;
+				ComponentFluidHandlerUniversal belowHandler = tankBelow.getComponent(ComponentType.FluidHandler);
+				ComponentFluidHandlerUniversal thisHandler = getComponent(ComponentType.FluidHandler);
+				FluidTank belowTank = belowHandler.getTankFromFluid(null, true);
+				FluidStack thisTankFluid = thisHandler.getFluidInTank(0);
+				
+				if(belowHandler.isFluidValid(0, thisTankFluid)) {
+					int room = belowTank.getCapacity() - belowTank.getFluidAmount();
+					if(room > 0) {
+						int amtTaken = room >= thisTankFluid.getAmount() ? thisTankFluid.getAmount() : room;
+						FluidStack stack = new FluidStack(thisTankFluid.getFluid(), amtTaken);
+						belowHandler.addFluidToTank(stack, true);
+						thisHandler.drainFluidFromTank(stack, true);
+					}
+				}
+				
+				
+			}
+		}
+		
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 		
