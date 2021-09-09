@@ -240,13 +240,11 @@ public class ComponentProcessor implements Component {
 
 	    if (filledFluid == null) {
 		FluidStack containerFluid = CapabilityUtils.simDrain(bucketStack, Integer.MAX_VALUE);
-		if (!containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY)) {
-		    if (tank.getValidInputFluids().contains(containerFluid.getFluid())) {
-			CapabilityUtils.drain(bucketStack, containerFluid);
-			tank.addFluidToTank(containerFluid, true);
-			if (bucketStack.getItem() instanceof BucketItem) {
-			    inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
-			}
+		if (!containerFluid.getFluid().isEquivalentTo(Fluids.EMPTY) && tank.getValidInputFluids().contains(containerFluid.getFluid())) {
+		    CapabilityUtils.drain(bucketStack, containerFluid);
+		    tank.addFluidToTank(containerFluid, true);
+		    if (bucketStack.getItem() instanceof BucketItem) {
+			inv.setInventorySlotContents(slot, new ItemStack(Items.BUCKET, 1));
 		    }
 		}
 	    } else {

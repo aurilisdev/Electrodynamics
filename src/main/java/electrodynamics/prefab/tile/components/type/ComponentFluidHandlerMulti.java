@@ -191,10 +191,10 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	    return true;
 	}
 	for (Fluid fluid : getValidInputFluids()) {
-	FluidTank temp = getTankFromFluid(fluid, true);
-	if (!temp.getFluid().getFluid().isEquivalentTo(stack.getFluid()) && temp.getFluidAmount() > 0) {
-	    return false;
-	}
+	    FluidTank temp = getTankFromFluid(fluid, true);
+	    if (!temp.getFluid().getFluid().isEquivalentTo(stack.getFluid()) && temp.getFluidAmount() > 0) {
+		return false;
+	    }
 	}
 	return true;
     }
@@ -248,8 +248,8 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
     }
 
-    public <T extends ElectrodynamicsRecipe> ComponentFluidHandlerMulti setAddFluidsValues(Class<T> recipeClass, IRecipeType<?> recipeType, int capacity,
-	    boolean hasInput, boolean hasOutput) {
+    public <T extends ElectrodynamicsRecipe> ComponentFluidHandlerMulti setAddFluidsValues(Class<T> recipeClass, IRecipeType<?> recipeType,
+	    int capacity, boolean hasInput, boolean hasOutput) {
 	this.recipeClass = recipeClass;
 	this.recipeType = recipeType;
 	tankCapacity = capacity;
