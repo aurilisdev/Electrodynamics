@@ -137,10 +137,14 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     @Override
     public FluidStack getStackFromFluid(Fluid fluid, boolean isInput) {
 	if (isInput && getValidInputFluids().contains(fluid)) {
-	    inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+	    if (inputFluids.get(fluid).getFluid() == null) {
+		inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+	    }
 	    return inputFluids.get(fluid).getFluid();
 	} else if (getValidOutputFluids().contains(fluid)) {
-	    outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+	    if (outputFluids.get(fluid).getFluid() == null) {
+		outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+	    }
 	    return outputFluids.get(fluid).getFluid();
 	}
 	return FluidStack.EMPTY;

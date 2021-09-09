@@ -26,39 +26,27 @@ public class CapabilityUtils {
     }
 
     public static boolean hasFluidItemCap(ItemStack stack) {
-	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    return true;
-	}).orElse(false);
+	return stack.getCapability(getFluidItemCap()).map(m -> true).orElse(false);
     }
 
     public static int simFill(ItemStack stack, FluidStack fluid) {
-	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    return m.fill(fluid, FluidAction.SIMULATE);
-	}).orElse(0);
+	return stack.getCapability(getFluidItemCap()).map(m -> m.fill(fluid, FluidAction.SIMULATE)).orElse(0);
     }
 
     public static void fill(ItemStack stack, FluidStack fluid) {
-	stack.getCapability(getFluidItemCap()).ifPresent(h -> {
-	    h.fill(fluid, FluidAction.EXECUTE);
-	});
+	stack.getCapability(getFluidItemCap()).ifPresent(h -> h.fill(fluid, FluidAction.EXECUTE));
     }
 
     public static FluidStack simDrain(ItemStack stack, FluidStack fluid) {
-	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    return m.drain(fluid, FluidAction.SIMULATE);
-	}).orElse(FluidStack.EMPTY);
+	return stack.getCapability(getFluidItemCap()).map(m -> m.drain(fluid, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
     }
 
     public static FluidStack simDrain(ItemStack stack, int amount) {
-	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    return m.drain(amount, FluidAction.SIMULATE);
-	}).orElse(FluidStack.EMPTY);
+	return stack.getCapability(getFluidItemCap()).map(m -> m.drain(amount, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
     }
 
     public static void drain(ItemStack stack, FluidStack fluid) {
-	stack.getCapability(getFluidItemCap()).ifPresent(h -> {
-	    h.drain(fluid, FluidAction.EXECUTE);
-	});
+	stack.getCapability(getFluidItemCap()).ifPresent(h -> h.drain(fluid, FluidAction.EXECUTE));
     }
 
     public static boolean canFillItemStack(ItemStack stack, FluidStack fluid) {
@@ -112,33 +100,23 @@ public class CapabilityUtils {
     }
 
     public static boolean hasFluidCap(TileEntity tile) {
-	return tile.getCapability(getFluidCap()).map(m -> {
-	    return true;
-	}).orElse(false);
+	return tile.getCapability(getFluidCap()).map(m -> true).orElse(false);
     }
 
     public static int simFill(TileEntity tile, FluidStack fluid) {
-	return tile.getCapability(getFluidCap()).map(m -> {
-	    return m.fill(fluid, FluidAction.SIMULATE);
-	}).orElse(0);
+	return tile.getCapability(getFluidCap()).map(m -> m.fill(fluid, FluidAction.SIMULATE)).orElse(0);
     }
 
     public static void fill(TileEntity tile, FluidStack fluid) {
-	tile.getCapability(getFluidCap()).ifPresent(h -> {
-	    h.fill(fluid, FluidAction.EXECUTE);
-	});
+	tile.getCapability(getFluidCap()).ifPresent(h -> h.fill(fluid, FluidAction.EXECUTE));
     }
 
     public static FluidStack simDrain(TileEntity tile, FluidStack fluid) {
-	return tile.getCapability(getFluidCap()).map(m -> {
-	    return m.drain(fluid, FluidAction.SIMULATE);
-	}).orElse(FluidStack.EMPTY);
+	return tile.getCapability(getFluidCap()).map(m -> m.drain(fluid, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
     }
 
     public static void drain(TileEntity tile, FluidStack fluid) {
-	tile.getCapability(getFluidCap()).ifPresent(h -> {
-	    h.drain(fluid, FluidAction.EXECUTE);
-	});
+	tile.getCapability(getFluidCap()).ifPresent(h -> h.drain(fluid, FluidAction.EXECUTE));
     }
 
 }
