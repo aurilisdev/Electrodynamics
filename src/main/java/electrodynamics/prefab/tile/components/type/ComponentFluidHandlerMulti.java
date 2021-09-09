@@ -41,7 +41,6 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 
     @Override
     public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-
 	ListNBT inputList = nbt.getList("inputList", 10);
 	for (INBT tag : inputList) {
 	    CompoundNBT compound = (CompoundNBT) tag;

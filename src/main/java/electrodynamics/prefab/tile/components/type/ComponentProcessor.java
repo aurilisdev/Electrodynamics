@@ -260,7 +260,6 @@ public class ComponentProcessor implements Component {
 		}
 	    }
 	}
-
 	return this;
     }
 
@@ -269,7 +268,6 @@ public class ComponentProcessor implements Component {
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	AbstractFluidHandler<?> tank = holder.getComponent(ComponentType.FluidHandler);
 	ItemStack bucketStack = inv.getStackInSlot(slot);
-
 	if (!bucketStack.isEmpty() && !(bucketStack.getItem() instanceof BucketItem) && !CapabilityUtils.isFluidItemNull()) {
 	    for (Fluid fluid : tank.getValidOutputFluids()) {
 		FluidStack stack = tank.getTankFromFluid(fluid, false).getFluid();
