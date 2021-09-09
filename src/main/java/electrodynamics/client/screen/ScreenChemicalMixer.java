@@ -19,8 +19,8 @@ import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Slot;
@@ -62,7 +62,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 	components.add(new ScreenComponentFluid(() -> {
 	    TileChemicalMixer boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
 		for (Fluid fluid : handler.getValidInputFluids()) {
 		    FluidTank tank = handler.getTankFromFluid(fluid, true);
 		    if (tank.getFluidAmount() > 0) {
@@ -75,7 +75,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 	components.add(new ScreenComponentFluid(() -> {
 	    TileChemicalMixer boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		ComponentFluidHandler handler = boiler.getComponent(ComponentType.FluidHandler);
+		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
 		for (Fluid fluid : handler.getValidOutputFluids()) {
 		    FluidTank tank = handler.getTankFromFluid(fluid, false);
 		    if (tank.getFluidAmount() > 0) {

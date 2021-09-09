@@ -2,42 +2,7 @@ package electrodynamics.common.block.subtype;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.tile.TileAdvancedSolarPanel;
-import electrodynamics.common.tile.TileBatteryBox;
-import electrodynamics.common.tile.TileChargerHV;
-import electrodynamics.common.tile.TileChargerLV;
-import electrodynamics.common.tile.TileChargerMV;
-import electrodynamics.common.tile.TileChemicalCrystallizer;
-import electrodynamics.common.tile.TileChemicalMixer;
-import electrodynamics.common.tile.TileCircuitBreaker;
-import electrodynamics.common.tile.TileCoalGenerator;
-import electrodynamics.common.tile.TileCombustionChamber;
-import electrodynamics.common.tile.TileElectricFurnace;
-import electrodynamics.common.tile.TileElectricFurnaceDouble;
-import electrodynamics.common.tile.TileElectricFurnaceTriple;
-import electrodynamics.common.tile.TileElectricPump;
-import electrodynamics.common.tile.TileEnergizedAlloyer;
-import electrodynamics.common.tile.TileFermentationPlant;
-import electrodynamics.common.tile.TileHydroelectricGenerator;
-import electrodynamics.common.tile.TileLathe;
-import electrodynamics.common.tile.TileLithiumBatteryBox;
-import electrodynamics.common.tile.TileMineralCrusher;
-import electrodynamics.common.tile.TileMineralCrusherDouble;
-import electrodynamics.common.tile.TileMineralCrusherTriple;
-import electrodynamics.common.tile.TileMineralGrinder;
-import electrodynamics.common.tile.TileMineralGrinderDouble;
-import electrodynamics.common.tile.TileMineralGrinderTriple;
-import electrodynamics.common.tile.TileMineralWasher;
-import electrodynamics.common.tile.TileMultimeterBlock;
-import electrodynamics.common.tile.TileOxidationFurnace;
-import electrodynamics.common.tile.TileReinforcedAlloyer;
-import electrodynamics.common.tile.TileSolarPanel;
-import electrodynamics.common.tile.TileThermoelectricGenerator;
-import electrodynamics.common.tile.TileTransformer;
-import electrodynamics.common.tile.TileWindmill;
-import electrodynamics.common.tile.TileWireMill;
-import electrodynamics.common.tile.TileWireMillDouble;
-import electrodynamics.common.tile.TileWireMillTriple;
+import electrodynamics.common.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -122,7 +87,13 @@ public enum SubtypeMachine implements ISubtype {
     // split
     chargermv(true, TileChargerMV.class),
     // split
-    chargerhv(true, TileChargerHV.class);
+    chargerhv(true, TileChargerHV.class),
+    //split
+  	tanksteel(true, TileTankSteel.class),
+  	//split
+  	tankreinforced(true, TileTankReinforced.class),
+  	//split
+  	tankhsla(true, TileTankHSLA.class);
 
     public final Class<? extends TileEntity> tileclass;
     public final boolean showInItemGroup;

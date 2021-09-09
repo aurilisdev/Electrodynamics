@@ -44,6 +44,7 @@ import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
+import electrodynamics.common.inventory.container.ContainerTankGeneric;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
@@ -99,6 +100,9 @@ import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
 import electrodynamics.common.tile.TileSolarPanel;
+import electrodynamics.common.tile.TileTankHSLA;
+import electrodynamics.common.tile.TileTankReinforced;
+import electrodynamics.common.tile.TileTankSteel;
 import electrodynamics.common.tile.TileThermoelectricGenerator;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.TileWindmill;
@@ -120,6 +124,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -238,6 +243,13 @@ public class DeferredRegisters {
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer), "|translate|tooltip.chemicalmixer.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
 		"|translate|tooltip.chemicalcrystallizer.voltage");
+	boolean jeiLoaded = (ModList.get().isLoaded("jei"));
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
+	if(jeiLoaded) BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.usejei");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
+	if(jeiLoaded) BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tanksteel.usejei");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
+	if(jeiLoaded) BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tanksteel.usejei");
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
@@ -383,11 +395,16 @@ public class DeferredRegisters {
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning)), null));
     public static final RegistryObject<TileEntityType<TileChargerLV>> TILE_CHARGERLV = TILES.register(SubtypeMachine.chargerlv.tag(),
 	    () -> new TileEntityType<>(TileChargerLV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerlv)), null));
-
     public static final RegistryObject<TileEntityType<TileChargerMV>> TILE_CHARGERMV = TILES.register(SubtypeMachine.chargermv.tag(),
 	    () -> new TileEntityType<>(TileChargerMV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargermv)), null));
     public static final RegistryObject<TileEntityType<TileChargerHV>> TILE_CHARGERHV = TILES.register(SubtypeMachine.chargerhv.tag(),
 	    () -> new TileEntityType<>(TileChargerHV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv)), null));
+    public static final RegistryObject<TileEntityType<TileTankSteel>> TILE_TANKSTEEL = TILES.register(SubtypeMachine.tanksteel.tag(),
+    	() -> new TileEntityType<>(TileTankSteel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)),null));
+    public static final RegistryObject<TileEntityType<TileTankReinforced>> TILE_TANKREINFORCED = TILES.register(SubtypeMachine.tankreinforced.tag(),
+    	() -> new TileEntityType<>(TileTankReinforced::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)),null));    
+    public static final RegistryObject<TileEntityType<TileTankHSLA>> TILE_TANKHSLA = TILES.register(SubtypeMachine.tankhsla.tag(), 
+    	() -> new TileEntityType<>(TileTankHSLA::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla)),null));
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
@@ -458,6 +475,8 @@ public class DeferredRegisters {
 	    .register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new ContainerType<>(ContainerChemicalCrystallizer::new));
     public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS.register("genericcharger",
 	    () -> new ContainerType<>(ContainerChargerGeneric::new));
+    public static final RegistryObject<ContainerType<ContainerTankGeneric>> CONTAINER_TANK = CONTAINERS.register("generictank",
+    	() -> new ContainerType<>(ContainerTankGeneric::new));
 
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod",
 	    () -> EntityType.Builder.<EntityMetalRod>create(EntityMetalRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()

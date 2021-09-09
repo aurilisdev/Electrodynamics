@@ -7,8 +7,8 @@ import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -34,7 +34,7 @@ public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implem
     public boolean matchesRecipe(ComponentProcessor pr) {
 
 	if (INPUT_ITEM.testStack(pr.getInput())) {
-	    ComponentFluidHandler fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    List<Fluid> inputFluids = fluid.getValidInputFluids();
 	    for (int i = 0; i < inputFluids.size(); i++) {
 		FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i), true);

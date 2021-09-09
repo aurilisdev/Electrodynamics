@@ -342,13 +342,13 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	}
 
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
-		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
+		new TranslationTextComponent("info.jei.item.compositearmor"));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
-		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
+		new TranslationTextComponent("info.jei.item.compositearmor"));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
-		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
+		new TranslationTextComponent("info.jei.item.compositearmor"));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
-		new TranslationTextComponent("info.jei.item." + DeferredRegisters.COMPOSITE_HELMET.get()));
+		new TranslationTextComponent("info.jei.item.compositearmor"));
 	// ince JEI 7.6.4, use {@link #addIngredientInfo(Object, IIngredientType,
 	// ITextComponent...)} instead.
 
