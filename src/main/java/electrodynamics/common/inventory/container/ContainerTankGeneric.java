@@ -11,22 +11,21 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-public class ContainerTankGeneric extends GenericContainer<TileGenericTank>{
+public class ContainerTankGeneric extends GenericContainer<TileGenericTank> {
 
-
-	public ContainerTankGeneric(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(9), new IntArray(3));
+    public ContainerTankGeneric(int id, PlayerInventory playerinv) {
+	this(id, playerinv, new Inventory(9), new IntArray(3));
     }
-	
-	public ContainerTankGeneric(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
-		super(DeferredRegisters.CONTAINER_TANK.get(), id, playerinv, inventory, inventorydata);
-	}
 
-	@Override
-	public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 27, 34, 0, CapabilityUtils.getFluidItemCap()));
-		addSlot(new SlotRestricted(inv, nextIndex(), 133, 34, 0, CapabilityUtils.getFluidItemCap()));
-		
-	}
+    public ContainerTankGeneric(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+	super(DeferredRegisters.CONTAINER_TANK.get(), id, playerinv, inventory, inventorydata);
+    }
+
+    @Override
+    public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
+	addSlot(new SlotRestricted(inv, nextIndex(), 27, 34, 0, CapabilityUtils.getFluidItemCap()));
+	addSlot(new SlotRestricted(inv, nextIndex(), 133, 34, 0, CapabilityUtils.getFluidItemCap()));
+
+    }
 
 }

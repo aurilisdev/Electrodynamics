@@ -12,7 +12,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
@@ -33,7 +33,7 @@ public class TileFermentationPlant extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
 		.maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
-	addComponent(((ComponentFluidHandler) new ComponentFluidHandler(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST))
+	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST))
 		.setAddFluidsValues(FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE, MAX_TANK_CAPACITY, true, true));
 	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
 		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));

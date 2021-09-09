@@ -5,7 +5,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
@@ -49,7 +49,7 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 	matrixStackIn.translate(0.5, 0.2, 0.5);
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
-	float prog = tileEntityIn.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true).getAmount()
+	float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true).getAmount()
 		/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 	if (prog > 0) {
 	    matrixStackIn.scale(1, prog / 16.0f * 4f, 1);

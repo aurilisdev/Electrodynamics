@@ -243,13 +243,19 @@ public class DeferredRegisters {
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer), "|translate|tooltip.chemicalmixer.voltage");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
 		"|translate|tooltip.chemicalcrystallizer.voltage");
-	boolean jeiLoaded = (ModList.get().isLoaded("jei"));
+	boolean jeiLoaded = ModList.get().isLoaded("jei");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
-	if(jeiLoaded) BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.usejei");
+	if (jeiLoaded) {
+	    BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.usejei");
+	}
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
-	if(jeiLoaded) BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tanksteel.usejei");
+	if (jeiLoaded) {
+	    BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tanksteel.usejei");
+	}
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
-	if(jeiLoaded) BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tanksteel.usejei");
+	if (jeiLoaded) {
+	    BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tanksteel.usejei");
+	}
 	BLOCKS.register("multisubnode", supplier(multi));
 	ITEMS.register("multisubnode", supplier(new BlockItemDescriptable(multi, new Item.Properties())));
     }
@@ -400,11 +406,11 @@ public class DeferredRegisters {
     public static final RegistryObject<TileEntityType<TileChargerHV>> TILE_CHARGERHV = TILES.register(SubtypeMachine.chargerhv.tag(),
 	    () -> new TileEntityType<>(TileChargerHV::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv)), null));
     public static final RegistryObject<TileEntityType<TileTankSteel>> TILE_TANKSTEEL = TILES.register(SubtypeMachine.tanksteel.tag(),
-    	() -> new TileEntityType<>(TileTankSteel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)),null));
+	    () -> new TileEntityType<>(TileTankSteel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), null));
     public static final RegistryObject<TileEntityType<TileTankReinforced>> TILE_TANKREINFORCED = TILES.register(SubtypeMachine.tankreinforced.tag(),
-    	() -> new TileEntityType<>(TileTankReinforced::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)),null));    
-    public static final RegistryObject<TileEntityType<TileTankHSLA>> TILE_TANKHSLA = TILES.register(SubtypeMachine.tankhsla.tag(), 
-    	() -> new TileEntityType<>(TileTankHSLA::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla)),null));
+	    () -> new TileEntityType<>(TileTankReinforced::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), null));
+    public static final RegistryObject<TileEntityType<TileTankHSLA>> TILE_TANKHSLA = TILES.register(SubtypeMachine.tankhsla.tag(),
+	    () -> new TileEntityType<>(TileTankHSLA::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla)), null));
     public static final RegistryObject<TileEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = TILES.register(
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new TileEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
@@ -476,7 +482,7 @@ public class DeferredRegisters {
     public static final RegistryObject<ContainerType<ContainerChargerGeneric>> CONTAINER_CHARGER = CONTAINERS.register("genericcharger",
 	    () -> new ContainerType<>(ContainerChargerGeneric::new));
     public static final RegistryObject<ContainerType<ContainerTankGeneric>> CONTAINER_TANK = CONTAINERS.register("generictank",
-    	() -> new ContainerType<>(ContainerTankGeneric::new));
+	    () -> new ContainerType<>(ContainerTankGeneric::new));
 
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod",
 	    () -> EntityType.Builder.<EntityMetalRod>create(EntityMetalRod::new, EntityClassification.MISC).size(0.25f, 0.25f).immuneToFire()

@@ -14,7 +14,7 @@ import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRec
 import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
@@ -126,7 +126,7 @@ public class GenericTile extends TileEntity implements INameable {
 	super.onLoad();
 	// JSON recipe fluids have to be added at load time
 	if (hasComponent(ComponentType.FluidHandler)) {
-		AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
+	    AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
 	    tank.addFluids();
 	}
 	if (hasComponent(ComponentType.PacketHandler)) {
@@ -238,7 +238,7 @@ public class GenericTile extends TileEntity implements INameable {
 	    return null;
 	}
 
-	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
@@ -262,7 +262,7 @@ public class GenericTile extends TileEntity implements INameable {
 	    return null;
 	}
 
-	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;
@@ -281,7 +281,7 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ComponentFluidHandler fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
 		break;

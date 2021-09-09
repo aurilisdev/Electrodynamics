@@ -6,7 +6,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -27,7 +27,7 @@ public class RenderFermentationPlant extends TileEntityRenderer<TileFermentation
     public void render(TileFermentationPlant tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.push();
-	float prog = tileEntityIn.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler)
+	float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
 		.getStackFromFluid(DeferredRegisters.fluidEthanol, false).getAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 	matrixStackIn.translate(0, 1.0 / 16.0 - 2.5 / 16.0 * (1 - prog), 0);
 	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTETHANOL);
@@ -42,7 +42,7 @@ public class RenderFermentationPlant extends TileEntityRenderer<TileFermentation
 	matrixStackIn.translate(0, 1.0 / 16.0, 0);
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTWATER);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-	prog = tileEntityIn.<ComponentFluidHandler>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true).getAmount()
+	prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true).getAmount()
 		/ (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 	if (prog > 0) {
 	    matrixStackIn.scale(1, prog / 16.0f * 12f, 1);

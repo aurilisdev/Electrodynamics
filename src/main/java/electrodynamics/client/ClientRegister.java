@@ -146,8 +146,7 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
     public static final ResourceLocation MODEL_EMPTYCANISTER = new ResourceLocation(References.ID + ":item/canisterreinforced");
     public static final ResourceLocation MODEL_FLUIDLEVEL = new ResourceLocation(References.ID + "block/fluidlevel");
-    
-    
+
     public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
     public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(
 	    References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
@@ -175,7 +174,7 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
-	
+
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
 
@@ -195,8 +194,7 @@ public class ClientRegister {
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
 	ScreenManager.registerFactory(DeferredRegisters.CONTAINER_TANK.get(), ScreenTankGeneric::new);
-	
-	
+
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.getCutout());
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.getCutout());
 	RenderTypeLookup.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),

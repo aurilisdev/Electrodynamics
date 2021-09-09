@@ -29,7 +29,7 @@ public abstract class Fluid2ItemRecipe extends ElectrodynamicsRecipe implements 
 
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
-    	AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	List<Fluid> inputFluids = fluid.getValidInputFluids();
 	for (int i = 0; i < inputFluids.size(); i++) {
 	    FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i), true);

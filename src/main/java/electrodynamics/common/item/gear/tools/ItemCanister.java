@@ -99,7 +99,7 @@ public class ItemCanister extends Item {
 	    return (double) cap.getFluidInTank(0).getAmount() / (double) cap.getTankCapacity(0);
 	}).orElse(1.0);
     }
-    
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 	useCanister(worldIn, playerIn, handIn);

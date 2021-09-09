@@ -9,7 +9,7 @@ import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
@@ -30,7 +30,7 @@ public class TileElectricPump extends GenericTileTicking {
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::writeNBT).customPacketReader(this::readNBT));
-	addComponent(new ComponentFluidHandler(this).addFluidTank(Fluids.WATER, 0, false).relativeInput(Direction.EAST));
+	addComponent(new ComponentFluidHandlerMulti(this).addFluidTank(Fluids.WATER, 0, false).relativeInput(Direction.EAST));
     }
 
     protected CachedTileOutput output;

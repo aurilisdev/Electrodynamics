@@ -9,7 +9,7 @@ import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
@@ -34,7 +34,7 @@ public class TileCombustionChamber extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-	addComponent(new ComponentFluidHandler(this).addFluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY, true).relativeInput(Direction.WEST));
+	addComponent(new ComponentFluidHandlerMulti(this).addFluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY, true).relativeInput(Direction.WEST));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -46,7 +46,7 @@ public class TileCombustionChamber extends GenericTileTicking {
 	if (tickable.getTicks() % 40 == 0) {
 	    output.update();
 	}
-	ComponentFluidHandler tank = getComponent(ComponentType.FluidHandler);
+	ComponentFluidHandlerMulti tank = getComponent(ComponentType.FluidHandler);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (burnTime <= 0) {
 	    boolean shouldSend = !running;

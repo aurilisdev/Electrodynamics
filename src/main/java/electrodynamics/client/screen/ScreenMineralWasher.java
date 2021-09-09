@@ -52,7 +52,7 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 	components.add(new ScreenComponentFluid(() -> {
 	    TileMineralWasher boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-	    	AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
+		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
 		for (Fluid fluid : handler.getValidInputFluids()) {
 		    FluidTank tank = handler.getTankFromFluid(fluid, true);
 		    if (tank.getFluidAmount() > 0) {

@@ -14,7 +14,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
@@ -34,8 +34,8 @@ public class TileChemicalCrystallizer extends GenericTileTicking {
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
 		.maxJoules(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK * 10));
-	addComponent(((ComponentFluidHandler) new ComponentFluidHandler(this).relativeInput(Direction.values())).setAddFluidsValues(Fluid2ItemRecipe.class,
-		ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE, MAX_TANK_CAPACITY, true, false));
+	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
+		.setAddFluidsValues(Fluid2ItemRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE, MAX_TANK_CAPACITY, true, false));
 	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
 		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
 	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4)

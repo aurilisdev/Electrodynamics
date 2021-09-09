@@ -88,9 +88,8 @@ public class UtilitiesRendering {
 	Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn,
 		combinedOverlayIn, model);
     }
-    
 
-	public static void prepareRotationalTileModel(TileEntity tile, MatrixStack stack) {
+    public static void prepareRotationalTileModel(TileEntity tile, MatrixStack stack) {
 	BlockState state = tile.getBlockState();
 	stack.translate(0.5, 7.0 / 16.0, 0.5);
 	if (state.hasProperty(BlockGenericMachine.FACING)) {
@@ -124,9 +123,9 @@ public class UtilitiesRendering {
     public static float getAlpha(int color) {
 	return (color >> 24 & 0xFF) / 255.0F;
     }
-    
+
     public static float[] getColorArray(int color) {
-    	return new float[] {getRed(color), getGreen(color), getBlue(color), getAlpha(color)}; 
+	return new float[] { getRed(color), getGreen(color), getBlue(color), getAlpha(color) };
     }
 
     public static void color(int color) {
