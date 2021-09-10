@@ -60,6 +60,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = { Dist.CLIENT })
 public class ClientRegister {
+	
+	private static final String BLOCK_LOC = References.ID + ":block/";
+	
     @SubscribeEvent
     public static void onModelEvent(ModelRegistryEvent event) {
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -101,51 +104,48 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
 	ModelLoader.addSpecialModel(MODEL_LATHE);
 	ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
-	ModelLoader.addSpecialModel(MODEL_EMPTYCANISTER);
     }
 
-    public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(References.ID + ":block/advancedsolarpaneltop");
-    public static final ResourceLocation MODEL_ADVSOLARBASE = new ResourceLocation(References.ID + ":block/advancedsolarpanelbase");
-    public static final ResourceLocation MODEL_BATTERYBOX = new ResourceLocation(References.ID + ":block/batterybox");
-    public static final ResourceLocation MODEL_BATTERYBOX2 = new ResourceLocation(References.ID + ":block/batterybox2");
-    public static final ResourceLocation MODEL_BATTERYBOX3 = new ResourceLocation(References.ID + ":block/batterybox3");
-    public static final ResourceLocation MODEL_BATTERYBOX4 = new ResourceLocation(References.ID + ":block/batterybox4");
-    public static final ResourceLocation MODEL_BATTERYBOX5 = new ResourceLocation(References.ID + ":block/batterybox5");
-    public static final ResourceLocation MODEL_BATTERYBOX6 = new ResourceLocation(References.ID + ":block/batterybox6");
-    public static final ResourceLocation MODEL_BATTERYBOX7 = new ResourceLocation(References.ID + ":block/batterybox7");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX = new ResourceLocation(References.ID + ":block/lithiumbatterybox");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX2 = new ResourceLocation(References.ID + ":block/lithiumbatterybox2");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX3 = new ResourceLocation(References.ID + ":block/lithiumbatterybox3");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX4 = new ResourceLocation(References.ID + ":block/lithiumbatterybox4");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX5 = new ResourceLocation(References.ID + ":block/lithiumbatterybox5");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX6 = new ResourceLocation(References.ID + ":block/lithiumbatterybox6");
-    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX7 = new ResourceLocation(References.ID + ":block/lithiumbatterybox7");
+    public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(BLOCK_LOC + "advancedsolarpaneltop");
+    public static final ResourceLocation MODEL_ADVSOLARBASE = new ResourceLocation(BLOCK_LOC + "advancedsolarpanelbase");
+    public static final ResourceLocation MODEL_BATTERYBOX = new ResourceLocation(BLOCK_LOC + "batterybox");
+    public static final ResourceLocation MODEL_BATTERYBOX2 = new ResourceLocation(BLOCK_LOC + "batterybox2");
+    public static final ResourceLocation MODEL_BATTERYBOX3 = new ResourceLocation(BLOCK_LOC + "batterybox3");
+    public static final ResourceLocation MODEL_BATTERYBOX4 = new ResourceLocation(BLOCK_LOC + "batterybox4");
+    public static final ResourceLocation MODEL_BATTERYBOX5 = new ResourceLocation(BLOCK_LOC + "batterybox5");
+    public static final ResourceLocation MODEL_BATTERYBOX6 = new ResourceLocation(BLOCK_LOC + "batterybox6");
+    public static final ResourceLocation MODEL_BATTERYBOX7 = new ResourceLocation(BLOCK_LOC + "batterybox7");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX2 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox2");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX3 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox3");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX4 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox4");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX5 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox5");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX6 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox6");
+    public static final ResourceLocation MODEL_LITHIUMBATTERYBOX7 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox7");
     public static final ResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = new ResourceLocation(
-	    References.ID + ":block/hydroelectricgeneratorblades");
-    public static final ResourceLocation MODEL_WINDMILLBLADES = new ResourceLocation(References.ID + ":block/windmillblades");
-    public static final ResourceLocation MODEL_MINERALCRUSHERBASE = new ResourceLocation(References.ID + ":block/mineralcrusherbase");
-    public static final ResourceLocation MODEL_MINERALCRUSHERHANDLE = new ResourceLocation(References.ID + ":block/mineralcrusherhandle");
-    public static final ResourceLocation MODEL_MINERALCRUSHERDOUBLEBASE = new ResourceLocation(References.ID + ":block/mineralcrusherdoublebase");
-    public static final ResourceLocation MODEL_MINERALCRUSHERDOUBLEHANDLE = new ResourceLocation(References.ID + ":block/mineralcrusherdoublehandle");
-    public static final ResourceLocation MODEL_MINERALCRUSHERTRIPLEBASE = new ResourceLocation(References.ID + ":block/mineralcrushertriplebase");
-    public static final ResourceLocation MODEL_MINERALCRUSHERTRIPLEHANDLE = new ResourceLocation(References.ID + ":block/mineralcrushertriplehandle");
-    public static final ResourceLocation MODEL_MINERALGRINDERBASE = new ResourceLocation(References.ID + ":block/mineralgrinderbase");
-    public static final ResourceLocation MODEL_MINERALGRINDERDOUBLEBASE = new ResourceLocation(References.ID + ":block/mineralgrinderdoublebase");
-    public static final ResourceLocation MODEL_MINERALGRINDERTRIPLEBASE = new ResourceLocation(References.ID + ":block/mineralgrindertriplebase");
-    public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(References.ID + ":block/mineralgrinderwheel");
-    public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(References.ID + ":block/fermentationplantwater");
-    public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(References.ID + ":block/fermentationplantethanol");
-    public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(References.ID + ":block/combustionchamberethanol");
-    public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(References.ID + ":block/chemicalmixerbase");
-    public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(References.ID + ":block/chemicalmixerblades");
-    public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(References.ID + ":block/chemicalmixerwater");
-    public static final ResourceLocation MODEL_LATHE = new ResourceLocation(References.ID + ":block/lathe");
-    public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(References.ID + ":block/latheshaft");
+	    BLOCK_LOC + "hydroelectricgeneratorblades");
+    public static final ResourceLocation MODEL_WINDMILLBLADES = new ResourceLocation(BLOCK_LOC + "windmillblades");
+    public static final ResourceLocation MODEL_MINERALCRUSHERBASE = new ResourceLocation(BLOCK_LOC + "mineralcrusherbase");
+    public static final ResourceLocation MODEL_MINERALCRUSHERHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrusherhandle");
+    public static final ResourceLocation MODEL_MINERALCRUSHERDOUBLEBASE = new ResourceLocation(BLOCK_LOC + "mineralcrusherdoublebase");
+    public static final ResourceLocation MODEL_MINERALCRUSHERDOUBLEHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrusherdoublehandle");
+    public static final ResourceLocation MODEL_MINERALCRUSHERTRIPLEBASE = new ResourceLocation(BLOCK_LOC + "mineralcrushertriplebase");
+    public static final ResourceLocation MODEL_MINERALCRUSHERTRIPLEHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrushertriplehandle");
+    public static final ResourceLocation MODEL_MINERALGRINDERBASE = new ResourceLocation(BLOCK_LOC + "mineralgrinderbase");
+    public static final ResourceLocation MODEL_MINERALGRINDERDOUBLEBASE = new ResourceLocation(BLOCK_LOC + "mineralgrinderdoublebase");
+    public static final ResourceLocation MODEL_MINERALGRINDERTRIPLEBASE = new ResourceLocation(BLOCK_LOC + "mineralgrindertriplebase");
+    public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(BLOCK_LOC + "mineralgrinderwheel");
+    public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(BLOCK_LOC + "fermentationplantwater");
+    public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(BLOCK_LOC + "fermentationplantethanol");
+    public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(BLOCK_LOC + "combustionchamberethanol");
+    public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(BLOCK_LOC + "chemicalmixerbase");
+    public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(BLOCK_LOC + "chemicalmixerblades");
+    public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(BLOCK_LOC + "chemicalmixerwater");
+    public static final ResourceLocation MODEL_LATHE = new ResourceLocation(BLOCK_LOC + "lathe");
+    public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(BLOCK_LOC + "latheshaft");
     public static final ResourceLocation MODEL_RODSTEEL = new ResourceLocation(References.ID + ":entity/rodsteel");
     public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":entity/rodstainlesssteel");
     public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
-    public static final ResourceLocation MODEL_EMPTYCANISTER = new ResourceLocation(References.ID + ":item/canisterreinforced");
-    public static final ResourceLocation MODEL_FLUIDLEVEL = new ResourceLocation(References.ID + "block/fluidlevel");
 
     public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
     public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(
@@ -173,7 +173,6 @@ public class ClientRegister {
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
 
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
 	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
@@ -222,10 +221,10 @@ public class ClientRegister {
 					&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
 						stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
 							: 0);
-
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {
 	return type == RenderType.getTranslucent() || type == RenderType.getSolid();
     }
+    
 }
