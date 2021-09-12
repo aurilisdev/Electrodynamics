@@ -21,7 +21,6 @@ import electrodynamics.client.render.tile.RenderMineralGrinderDouble;
 import electrodynamics.client.render.tile.RenderMineralGrinderTriple;
 import electrodynamics.client.render.tile.RenderMineralWasher;
 import electrodynamics.client.render.tile.RenderMultimeterBlock;
-import electrodynamics.client.render.tile.RenderTankGeneric;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.ScreenBatteryBox;
 import electrodynamics.client.screen.ScreenChargerGeneric;
@@ -60,9 +59,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = { Dist.CLIENT })
 public class ClientRegister {
-	
-	private static final String BLOCK_LOC = References.ID + ":block/";
-	
+
+    private static final String BLOCK_LOC = References.ID + ":block/";
+
     @SubscribeEvent
     public static void onModelEvent(ModelRegistryEvent event) {
 	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -122,8 +121,7 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_LITHIUMBATTERYBOX5 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox5");
     public static final ResourceLocation MODEL_LITHIUMBATTERYBOX6 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox6");
     public static final ResourceLocation MODEL_LITHIUMBATTERYBOX7 = new ResourceLocation(BLOCK_LOC + "lithiumbatterybox7");
-    public static final ResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = new ResourceLocation(
-	    BLOCK_LOC + "hydroelectricgeneratorblades");
+    public static final ResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = new ResourceLocation(BLOCK_LOC + "hydroelectricgeneratorblades");
     public static final ResourceLocation MODEL_WINDMILLBLADES = new ResourceLocation(BLOCK_LOC + "windmillblades");
     public static final ResourceLocation MODEL_MINERALCRUSHERBASE = new ResourceLocation(BLOCK_LOC + "mineralcrusherbase");
     public static final ResourceLocation MODEL_MINERALCRUSHERHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrusherhandle");
@@ -226,5 +224,5 @@ public class ClientRegister {
     public static boolean shouldMultilayerRender(RenderType type) {
 	return type == RenderType.getTranslucent() || type == RenderType.getSolid();
     }
-    
+
 }
