@@ -25,6 +25,7 @@ import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.fluid.FluidEthanol;
+import electrodynamics.common.fluid.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.FluidMineral;
 import electrodynamics.common.fluid.FluidMolybdenum;
 import electrodynamics.common.fluid.FluidPolyethylene;
@@ -147,6 +148,7 @@ public class DeferredRegisters {
     public static BlockMultiSubnode multi = new BlockMultiSubnode();
     public static FluidEthanol fluidEthanol;
     public static FluidSulfuricAcid fluidSulfuricAcid;
+    public static FluidHydrogenFluoride fluidHydrogenFluoride;
     public static FluidPolyethylene fluidPolyethylene;
     public static FluidMolybdenum fluidMolybdenum;
 
@@ -171,6 +173,7 @@ public class DeferredRegisters {
 	}
 	FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
+	FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
 	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
 	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
 	    FluidMineral fluid = new FluidMineral(mineral);

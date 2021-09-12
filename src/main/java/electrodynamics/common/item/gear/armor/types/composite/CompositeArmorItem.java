@@ -28,6 +28,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class CompositeArmorItem extends ArmorItem {
@@ -99,6 +101,7 @@ public class CompositeArmorItem extends ArmorItem {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A defaultM) {
 
 	if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {

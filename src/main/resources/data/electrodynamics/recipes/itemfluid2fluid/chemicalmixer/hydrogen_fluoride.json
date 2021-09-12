@@ -1,0 +1,15 @@
+{
+	"type": "electrodynamics:chemical_mixer_recipe",
+	"item_input": {
+		"tag": "forge:ore/fluorite",
+		"count": 1
+	},
+	"fluid_input": {
+		"fluid": "electrodynamics:fluidsulfuricacid",
+		"amount": 1000
+	},
+	"fluid_output": {
+		"fluid": "electrodynamics:fluidhydrogenfluoride",
+		"amount": 1000
+	}
+}

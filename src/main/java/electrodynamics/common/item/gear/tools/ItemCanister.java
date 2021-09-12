@@ -35,12 +35,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.RegistryObject;
 
-/**
- * Acts as a universal canister container. Can hold a maximum of 5000 mB of
- * fluid.
- * 
- * @author skip999
- */
 public class ItemCanister extends Item {
 
     public static final int MAX_FLUID_CAPACITY = 5000;

@@ -34,11 +34,8 @@ public class BlockOre extends OreBlock {
 	// Plus it gives you a little more wiggle room with drops!
 	switch (ore) {
 	case sulfur:
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.sulfur);
-	    count = new Random().nextInt(2) + 1;
-	    break;
 	case niter:
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeDust.niter);
+	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore == SubtypeOre.sulfur ? SubtypeDust.sulfur : SubtypeDust.niter);
 	    count = new Random().nextInt(2) + 1;
 	    break;
 	case halite:
