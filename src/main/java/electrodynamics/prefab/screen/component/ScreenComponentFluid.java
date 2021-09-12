@@ -49,7 +49,7 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 	IFluidTank tank = fluidInfoHandler.getTank();
 	if (tank != null) {
 	    FluidStack fluidStack = tank.getFluid();
-	    return fluidStack.getFluid().getAttributes().getFlowingTexture();
+	    return fluidStack.getFluid().getAttributes().getStillTexture();
 	}
 	return resource;
     }

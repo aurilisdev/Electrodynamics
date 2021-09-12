@@ -44,14 +44,14 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	ListNBT inputList = nbt.getList("inputList", 10);
 	for (INBT tag : inputList) {
 	    CompoundNBT compound = (CompoundNBT) tag;
-	    FluidTank tank = new FluidTank(0).readFromNBT(compound);
+	    FluidTank tank = new FluidTank(compound.getInt("cap")).readFromNBT(compound);
 	    addFluidTank(tank.getFluid(), compound.getInt("cap"), true);
 	}
 
 	ListNBT outputList = nbt.getList("outputList", 10);
 	for (INBT tag : outputList) {
 	    CompoundNBT compound = (CompoundNBT) tag;
-	    FluidTank tank = new FluidTank(0).readFromNBT(compound);
+	    FluidTank tank = new FluidTank(compound.getInt("cap")).readFromNBT(compound);
 	    addFluidTank(tank.getFluid(), compound.getInt("cap"), false);
 	}
     }
