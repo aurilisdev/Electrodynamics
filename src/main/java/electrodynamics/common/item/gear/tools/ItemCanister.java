@@ -34,6 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemCanister extends Item {
 
@@ -124,11 +125,11 @@ public class ItemCanister extends Item {
 
     public ArrayList<Fluid> getWhitelistedFluids() {
 	ArrayList<Fluid> whitelisted = new ArrayList<>();
-	/*
-	 * Current Whitelist: > Electrodynamics Fluids > Water
-	 */
-	for (RegistryObject<Fluid> fluid : DeferredRegisters.FLUIDS.getEntries()) {
-	    whitelisted.add(fluid.get());
+	for(Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
+		//have to compare registry name otherwise will have major loading error
+		if(fluid.getFilledBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+			whitelisted.add(fluid);
+		}
 	}
 	whitelisted.add(Fluids.WATER);
 	return whitelisted;
