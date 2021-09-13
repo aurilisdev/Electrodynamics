@@ -34,7 +34,8 @@ public class TileCombustionChamber extends GenericTileTicking {
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-	addComponent(new ComponentFluidHandlerMulti(this).addFluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY, true).relativeInput(Direction.WEST));
+	addComponent(
+		new ComponentFluidHandlerMulti(this).addFluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY, true).relativeInput(Direction.WEST));
     }
 
     protected void tickServer(ComponentTickable tickable) {

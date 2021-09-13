@@ -7,7 +7,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 public class FluidMolybdenum extends FluidNonPlaceable {
 
     public FluidMolybdenum() {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "molybdenum");
-	}
+	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "molybdenum");
+    }
 
 }

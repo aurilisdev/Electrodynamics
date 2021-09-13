@@ -7,7 +7,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 public class FluidSulfuricAcid extends FluidNonPlaceable {
 
     public FluidSulfuricAcid() {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "sulfuricacid", -375879936);
-	}
+	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "sulfuricacid", -375879936);
+    }
 
 }

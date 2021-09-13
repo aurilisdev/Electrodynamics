@@ -7,7 +7,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 public class FluidEthanol extends FluidNonPlaceable {
 
     public FluidEthanol() {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "ethanol", -428574419);
-	}
+	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "ethanol", -428574419);
+    }
 
 }

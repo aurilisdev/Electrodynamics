@@ -7,7 +7,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 public class FluidPolyethylene extends FluidNonPlaceable {
 
     public FluidPolyethylene() {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "polyethylene", -376664948);
-	}
+	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "polyethylene", -376664948);
+    }
 
 }

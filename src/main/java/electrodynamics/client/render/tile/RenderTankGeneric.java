@@ -28,7 +28,8 @@ public class RenderTankGeneric extends TileEntityRenderer<TileGenericTank> {
 	AbstractFluidHandler<?> tank = tileEntityIn.getComponent(ComponentType.FluidHandler);
 	FluidTank fluidTank = tank.getTankFromFluid(null, true);
 	if (!fluidTank.getFluid().getFluid().isEquivalentTo(Fluids.EMPTY)) {
-	//    float fluidRatio = (float) fluidTank.getFluidAmount() / (float) fluidTank.getCapacity();
+	    // float fluidRatio = (float) fluidTank.getFluidAmount() / (float)
+	    // fluidTank.getCapacity();
 	}
     }
 

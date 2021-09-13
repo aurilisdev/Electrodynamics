@@ -7,7 +7,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 public class FluidHydrogenFluoride extends FluidNonPlaceable {
 
     public FluidHydrogenFluoride() {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "hydrogenfluoride", -375879936);
-	}
+	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "hydrogenfluoride", -375879936);
+    }
 
 }
