@@ -53,6 +53,7 @@ public class ComponentProcessor implements Component {
     private HashSet<Integer> upgradeSlots = new HashSet<>();
     private int inputOne = 0;
     private int inputTwo = 1;
+    private int inputThree = 2;
     private int output = 1;
 
     private ElectrodynamicsRecipe recipe;
@@ -153,7 +154,8 @@ public class ComponentProcessor implements Component {
 	processorType = type;
 	inputOne = 0;
 	inputTwo = 1;
-	output = type == ComponentProcessorType.DoubleObjectToObject ? 2 : 1;
+	inputThree = 2;
+	output = type == ComponentProcessorType.DoubleObjectToObject ? 2 : type == ComponentProcessorType.TripleObjectToObject ? 3 : 1;
 	return this;
     }
 
@@ -171,6 +173,11 @@ public class ComponentProcessor implements Component {
 
     public ComponentProcessor secondInputSlot(int inputTwo) {
 	this.inputTwo = inputTwo;
+	return this;
+    }
+
+    public ComponentProcessor thirdInputSlot(int inputThree) {
+	this.inputThree = inputThree;
 	return this;
     }
 
@@ -193,6 +200,14 @@ public class ComponentProcessor implements Component {
 
     public int getInputTwo() {
 	return inputTwo;
+    }
+
+    public ItemStack getThirdInput() {
+	return holder.<ComponentInventory>getComponent(ComponentType.Inventory).getStackInSlot(inputThree);
+    }
+
+    public int getInputThree() {
+	return inputThree;
     }
 
     public ItemStack getOutput() {
@@ -406,7 +421,7 @@ public class ComponentProcessor implements Component {
 
     public <T extends O2ORecipe> void processO2ORecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
-	    T locRecipe = recipeClass.cast(getRecipe());
+	    T locRecipe = (T) getRecipe();
 	    if (getOutputCap() >= pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount()) {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
@@ -420,7 +435,7 @@ public class ComponentProcessor implements Component {
 
     public <T extends DO2ORecipe> void processDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
-	    T locRecipe = recipeClass.cast(getRecipe());
+	    T locRecipe = (T) getRecipe();
 	    if (getOutputCap() >= pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount()) {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
@@ -436,7 +451,7 @@ public class ComponentProcessor implements Component {
 
     public <T extends FluidItem2FluidRecipe> void processFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
-	    T locRecipe = recipeClass.cast(getRecipe());
+	    T locRecipe = (T) getRecipe();
 
 	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    FluidStack outputFluid = locRecipe.getFluidRecipeOutput();
@@ -455,7 +470,7 @@ public class ComponentProcessor implements Component {
 
     public <T extends FluidItem2ItemRecipe> void processFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
-	    T locRecipe = recipeClass.cast(getRecipe());
+	    T locRecipe = (T) getRecipe();
 	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(1)).getFluidStack();
 
@@ -474,7 +489,7 @@ public class ComponentProcessor implements Component {
 
     public <T extends Fluid2ItemRecipe> void processFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
 	if (getRecipe() != null) {
-	    T locRecipe = recipeClass.cast(getRecipe());
+	    T locRecipe = (T) getRecipe();
 	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(0)).getFluidStack();
 	    if (getOutputCap() >= pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount()) {
