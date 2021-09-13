@@ -1,7 +1,7 @@
 {
 	"type": "electrodynamics:chemical_mixer_recipe",
 	"item_input": {
-		"tag": "forge:ore/fluorite",
+		"tag": "forge:ores/fluorite",
 		"count": 1
 	},
 	"fluid_input": {

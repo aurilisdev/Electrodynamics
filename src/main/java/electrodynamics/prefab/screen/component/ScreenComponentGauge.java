@@ -10,8 +10,8 @@ import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +32,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
     }
 
     @Override
+    @SuppressWarnings("java:S1874")
     public void renderBackground(MatrixStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 	UtilitiesRendering.bindTexture(resource);
 
@@ -41,7 +42,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 	int scale = getScaledLevel();
 
 	if (texture != null && scale > 0) {
-	    ResourceLocation blocks = AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+	    ResourceLocation blocks = PlayerContainer.LOCATION_BLOCKS_TEXTURE;
 	    TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(blocks).apply(texture);
 	    sprite.getAtlasTexture().bindTexture();
 	    applyColor();
