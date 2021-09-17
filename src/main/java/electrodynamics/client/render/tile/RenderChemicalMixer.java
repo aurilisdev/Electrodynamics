@@ -2,6 +2,7 @@ package electrodynamics.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -24,7 +25,6 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
     }
 
     @Override
-    @Deprecated
     public void render(TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 
@@ -49,8 +49,11 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 	matrixStackIn.translate(0.5, 0.2, 0.5);
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
-	float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true)
-		.getAmount() / (float) TileChemicalMixer.MAX_TANK_CAPACITY;
+	float prog = (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true)
+		.getAmount()
+		+ tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
+			.getStackFromFluid(DeferredRegisters.fluidHydrogenFluoride, true).getAmount())
+		/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 	if (prog > 0) {
 	    matrixStackIn.scale(1, prog / 16.0f, 1);
 	    matrixStackIn.translate(0, prog / 8.0, 0);

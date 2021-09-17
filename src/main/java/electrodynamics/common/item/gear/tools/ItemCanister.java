@@ -28,6 +28,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,8 +71,9 @@ public class ItemCanister extends Item {
 	    stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 		if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isEquivalentTo(EMPTY_FLUID)) {
 		    FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-		    tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + "/" + MAX_FLUID_CAPACITY + " mB"));
-		    tooltip.add(new StringTextComponent(cap.getFluid().getDisplayName().getString()));
+		    tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + "/" + MAX_FLUID_CAPACITY + " mB")
+			    .mergeStyle(TextFormatting.GRAY));
+		    tooltip.add(new StringTextComponent(cap.getFluid().getDisplayName().getString()).mergeStyle(TextFormatting.DARK_GRAY));
 		}
 	    });
 	}
@@ -80,10 +82,8 @@ public class ItemCanister extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-	    return !cap.getFluid().getFluid().isEquivalentTo(EMPTY_FLUID);
-	}).orElse(false);
+	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+		.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isEquivalentTo(EMPTY_FLUID)).orElse(false);
     }
 
     @Override
