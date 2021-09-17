@@ -98,6 +98,7 @@ public class ClientRegister {
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
 	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERSULFURICACID);
 	ModelLoader.addSpecialModel(MODEL_RODSTEEL);
 	ModelLoader.addSpecialModel(MODEL_RODSTAINLESSSTEEL);
 	ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
@@ -139,6 +140,7 @@ public class ClientRegister {
     public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(BLOCK_LOC + "chemicalmixerbase");
     public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(BLOCK_LOC + "chemicalmixerblades");
     public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(BLOCK_LOC + "chemicalmixerwater");
+    public static final ResourceLocation MODEL_CHEMICALMIXERSULFURICACID = new ResourceLocation(BLOCK_LOC + "chemicalmixersulfuricacid");
     public static final ResourceLocation MODEL_LATHE = new ResourceLocation(BLOCK_LOC + "lathe");
     public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(BLOCK_LOC + "latheshaft");
     public static final ResourceLocation MODEL_RODSTEEL = new ResourceLocation(References.ID + ":entity/rodsteel");

@@ -52,11 +52,15 @@ public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
 	float prog = (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true)
 		.getAmount()
 		+ tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-			.getStackFromFluid(DeferredRegisters.fluidHydrogenFluoride, true).getAmount())
+			.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getAmount())
 		/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 	if (prog > 0) {
 	    matrixStackIn.scale(1, prog / 16.0f, 1);
 	    matrixStackIn.translate(0, prog / 8.0, 0);
+	    if (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
+		    .getStackFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getAmount() > 0) {
+		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERSULFURICACID);
+	    }
 	    UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn,
 		    combinedOverlayIn);
 	}

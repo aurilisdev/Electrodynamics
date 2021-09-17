@@ -71,7 +71,7 @@ public class ItemCanister extends Item {
 	    stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 		if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isEquivalentTo(EMPTY_FLUID)) {
 		    FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-		    tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + "/" + MAX_FLUID_CAPACITY + " mB")
+		    tooltip.add(new StringTextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB")
 			    .mergeStyle(TextFormatting.GRAY));
 		    tooltip.add(new StringTextComponent(cap.getFluid().getDisplayName().getString()).mergeStyle(TextFormatting.DARK_GRAY));
 		}
