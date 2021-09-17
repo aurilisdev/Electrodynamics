@@ -9,6 +9,7 @@ import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
+import electrodynamics.common.recipe.categories.fluid3items2item.Fluid3Items2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRecipe;
 import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
@@ -331,11 +332,11 @@ public class ComponentProcessor implements Component {
 	return outputCap;
     }
 
-    private void setRecipe(ElectrodynamicsRecipe recipe) {
+    public void setRecipe(ElectrodynamicsRecipe recipe) {
 	this.recipe = recipe;
     }
 
-    private void setOutputCap(int outputCap) {
+    public void setOutputCap(int outputCap) {
 	this.outputCap = outputCap;
     }
 
@@ -392,6 +393,20 @@ public class ComponentProcessor implements Component {
 	    IRecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	FluidItem2ItemRecipe localRecipe = pr.holder.getFluidItem2ItemRecipe(pr, recipeClass, typeIn);
+
+	int locCap = pr.getOutput().isEmpty() ? 64 : pr.getOutput().getMaxStackSize();
+
+	setRecipe(localRecipe);
+	setOutputCap(locCap);
+
+	return localRecipe != null && electro.getJoulesStored() >= pr.getUsage()
+		&& locCap >= pr.getOutput().getCount() + localRecipe.getRecipeOutput().getCount();
+    }
+
+    public <T extends Fluid3Items2ItemRecipe> boolean canProcessFluid3Items2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass,
+	    IRecipeType<?> typeIn) {
+	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+	Fluid3Items2ItemRecipe localRecipe = pr.holder.getFluid3Items2ItemRecipe(pr, recipeClass, typeIn);
 
 	int locCap = pr.getOutput().isEmpty() ? 64 : pr.getOutput().getMaxStackSize();
 
@@ -481,6 +496,28 @@ public class ComponentProcessor implements Component {
 		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
 		}
 		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
+		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
+		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+	    }
+	}
+    }
+
+    public <T extends Fluid3Items2ItemRecipe> void processFluid3Items2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
+	if (pr.getRecipe() != null) {
+	    T locRecipe = (T) pr.getRecipe();
+	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
+	    FluidStack inputFluid = ((FluidIngredient) locRecipe.getIngredients().get(3)).getFluidStack();
+
+	    if (pr.getOutputCap() >= pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount()) {
+		if (pr.getOutput().isEmpty()) {
+		    pr.output(locRecipe.getRecipeOutput().copy());
+		} else {
+		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
+		}
+		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
+		pr.getSecondInput()
+			.setCount(pr.getSecondInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(1)).getStackSize());
+		pr.getThirdInput().setCount(pr.getThirdInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(2)).getStackSize());
 		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	    }

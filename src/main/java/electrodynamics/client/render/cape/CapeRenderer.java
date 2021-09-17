@@ -265,21 +265,7 @@ public final class CapeRenderer {
 	    }
 	}
 
-	private static boolean isFluid(World world, float x, float y, float z) {
-	    BlockPos scratchPos = new BlockPos(x, y, z);
-	    long key = scratchPos.toLong();
-	    if (fluidCache.containsKey(key)) {
-		return fluidCache.get(key);
-	    }
-	    boolean isFluid = RenderCape.isFluid(world.getBlockState(scratchPos));
-	    fluidCache.put(key, isFluid);
-	    return isFluid;
-	}
-
-	private static boolean isFluid(BlockState state) {
-	    return state.getBlock() instanceof IFluidBlock || state.getBlock() instanceof FlowingFluidBlock;
-	}
-
+	@SuppressWarnings("java:S1874")
 	private void render(PlayerEntity player, double x, double y, double z, float delta, MatrixStack stack) {
 	    stack.push();
 	    stack.scale(0.5f, 0.5f, 0.5f);
@@ -387,7 +373,7 @@ public final class CapeRenderer {
 		    GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		    for (int i1 = 0; i1 < (int) scale; i1++) {
 			bufferBuilder.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
-			GL11.glLineWidth(1 + rand.nextInt(2));
+			GL11.glLineWidth(1.0f + rand.nextInt(2));
 			bufferBuilder
 				.pos(player.getMotion().x * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
 					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
@@ -537,6 +523,21 @@ public final class CapeRenderer {
 		posY = y;
 		posZ = z;
 		motionX = motionY = motionZ = 0;
+	    }
+
+	    private static boolean isFluid(World world, float x, float y, float z) {
+		BlockPos scratchPos = new BlockPos(x, y, z);
+		long key = scratchPos.toLong();
+		if (fluidCache.containsKey(key)) {
+		    return fluidCache.get(key);
+		}
+		boolean isFluid = isFluid(world.getBlockState(scratchPos));
+		fluidCache.put(key, isFluid);
+		return isFluid;
+	    }
+
+	    private static boolean isFluid(BlockState state) {
+		return state.getBlock() instanceof IFluidBlock || state.getBlock() instanceof FlowingFluidBlock;
 	    }
 
 	    private void resolveConstraints(PlayerEntity player) {
