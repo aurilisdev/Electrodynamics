@@ -26,8 +26,8 @@ public abstract class Fluid3Items2ItemRecipe extends ElectrodynamicsRecipe imple
 
     protected ItemStack OUTPUT_ITEM;
 
-    protected Fluid3Items2ItemRecipe(ResourceLocation location, FluidIngredient iNPUT_FLUID, CountableIngredient iNPUT_ITEM1, CountableIngredient iNPUT_ITEM2,
-	    CountableIngredient iNPUT_ITEM3, ItemStack oUTPUT_ITEM) {
+    protected Fluid3Items2ItemRecipe(ResourceLocation location, FluidIngredient iNPUT_FLUID, CountableIngredient iNPUT_ITEM1,
+	    CountableIngredient iNPUT_ITEM2, CountableIngredient iNPUT_ITEM3, ItemStack oUTPUT_ITEM) {
 	super(location);
 	INPUT_FLUID = iNPUT_FLUID;
 	INPUT_ITEM1 = iNPUT_ITEM1;
