@@ -27,9 +27,9 @@ public class O2ORecipeSerializer<T extends O2ORecipe> extends ElectrodynamicsRec
 	CountableIngredient input = CountableIngredient.deserialize(JSONUtils.getJsonObject(json, "input"));
 	ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
 	try {
-	    Constructor<T> recipeConstructor = getRecipeClass()
-		    .getDeclaredConstructor(new Class[] { ResourceLocation.class, CountableIngredient.class, ItemStack.class });
-	    return recipeConstructor.newInstance(new Object[] { recipeId, input, output });
+	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
+		    ItemStack.class);
+	    return recipeConstructor.newInstance(recipeId, input, output);
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Recipe generation has failed!");
 	    return null;
@@ -42,9 +42,9 @@ public class O2ORecipeSerializer<T extends O2ORecipe> extends ElectrodynamicsRec
 	CountableIngredient input = CountableIngredient.read(buffer);
 	ItemStack output = buffer.readItemStack();
 	try {
-	    Constructor<T> recipeConstructor = getRecipeClass()
-		    .getDeclaredConstructor(new Class[] { ResourceLocation.class, CountableIngredient.class, ItemStack.class });
-	    return recipeConstructor.newInstance(new Object[] { recipeId, input, output });
+	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
+		    ItemStack.class);
+	    return recipeConstructor.newInstance(recipeId, input, output);
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Recipe generation has failed!");
 	    return null;

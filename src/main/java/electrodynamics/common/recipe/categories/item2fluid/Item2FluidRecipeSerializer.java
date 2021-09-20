@@ -26,8 +26,8 @@ public class Item2FluidRecipeSerializer<T extends Item2FluidRecipe> extends Elec
 
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass()
-		    .getDeclaredConstructor(new Class[] { ResourceLocation.class, CountableIngredient.class, FluidStack.class });
-	    return recipeConstructor.newInstance(new Object[] { recipeId, itemInput, fluidOutput });
+		    .getDeclaredConstructor( ResourceLocation.class, CountableIngredient.class, FluidStack.class );
+	    return recipeConstructor.newInstance( recipeId, itemInput, fluidOutput);
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Recipe generation has failed!");
 	    return null;
@@ -41,8 +41,8 @@ public class Item2FluidRecipeSerializer<T extends Item2FluidRecipe> extends Elec
 
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass()
-		    .getDeclaredConstructor(new Class[] { ResourceLocation.class, CountableIngredient.class, FluidStack.class });
-	    return recipeConstructor.newInstance(new Object[] { recipeId, itemInput, fluidOutput });
+		    .getDeclaredConstructor( ResourceLocation.class, CountableIngredient.class, FluidStack.class );
+	    return recipeConstructor.newInstance( recipeId, itemInput, fluidOutput );
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Recipe generation has failed!");
 	    return null;
