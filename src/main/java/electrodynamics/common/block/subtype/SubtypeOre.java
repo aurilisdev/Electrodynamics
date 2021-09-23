@@ -12,7 +12,7 @@ public enum SubtypeOre implements ISubtype {
     aluminum(ToolType.PICKAXE, 2, 5, 5, 0, 64, 4f, 4.4f), chromite(ToolType.PICKAXE, 3, 3, 8, 0, 32, 10f, 6.5f),
     rutile(ToolType.PICKAXE, 3, 3, 8, 0, 32, 10f, 6.5f), halite(ToolType.PICKAXE, 1, 9, 9, 32, 64, 3f, 5f),
     lepidolite(ToolType.PICKAXE, 2, 2, 9, 0, 64, 4f, 8f), molybdenum(ToolType.PICKAXE, 1, 9, 4, 50, 60, 3f, 3f),
-    fluorite(ToolType.PICKAXE, 1, 3, 4, 10, 50, 2f, 2f);
+    fluorite(ToolType.PICKAXE, 1, 3, 4, 10, 50, 2f, 2f), sylvite(ToolType.PICKAXE, 1, 3, 4, 10, 50, 2f, 2f);
 
     public final ToolType harvestTool;
     public final int harvestLevel;

@@ -98,6 +98,7 @@
 	"item.electrodynamics.oxidetitanium": "Titanium Oxide",
 	"item.electrodynamics.oxidechromite": "Chromium Oxide",
 	"item.electrodynamics.oxidechromiumdisilicide": "Chromium Disilicide",
+	"item.electrodynamics.crystalpotassiumchloride": "Potassium Chloride Crystal",
 	"item.electrodynamics.insulation": "Insulation",
 	"item.electrodynamics.insulationceramic": "Ceramic Insulation",
 	"item.electrodynamics.motor": "Motor",
@@ -156,6 +157,7 @@
 	"block.electrodynamics.orehalite": "Halite Ore",
 	"block.electrodynamics.oremolybdenum": "Molybdnite Ore",
 	"block.electrodynamics.orefluorite": "Fluorite Ore",
+	"block.electrodynamics.oresylvite": "Sylvite Ore",
 	"block.electrodynamics.coalgenerator": "Coal Generator",
 	"block.electrodynamics.coalgeneratorrunning": "Coal Generator Running",
 	"block.electrodynamics.solarpanel": "Solar Panel",
@@ -197,9 +199,9 @@
 	"block.electrodynamics.chargerlv": "120V Charger",
 	"block.electrodynamics.chargermv": "240V Charger",
 	"block.electrodynamics.chargerhv": "480V Charger",
-	"block.electrodynamics.tanksteel":"Steel Fluid Tank",
-	"block.electrodynamics.tankreinforced":"Reinforced Fluid Tank",
-	"block.electrodynamics.tankhsla":"HSLA Fluid Tank",
+	"block.electrodynamics.tanksteel": "Steel Fluid Tank",
+	"block.electrodynamics.tankreinforced": "Reinforced Fluid Tank",
+	"block.electrodynamics.tankhsla": "HSLA Fluid Tank",
 	"block.electrodynamics.wiretin": "Tin Wire",
 	"block.electrodynamics.wireiron": "Iron Wire",
 	"block.electrodynamics.wirecopper": "Copper Wire",
@@ -259,11 +261,9 @@
 	"container.chargerlv": "120V Charger",
 	"container.chargermv": "240V Charger",
 	"container.chargerhv": "480V Charger",
-	
-	"container.tanksteel":"Steel Fluid Tank",
-	"container.tankreinforced":"Reinforced Fluid Tank",
-	"container.tankhsla":"HSLA Fluid Tank",
-	
+	"container.tanksteel": "Steel Fluid Tank",
+	"container.tankreinforced": "Reinforced Fluid Tank",
+	"container.tankhsla": "HSLA Fluid Tank",
 	"gui.coalgenerator.timeleft": "Time Left: %s",
 	"gui.coalgenerator.output": "Output: %s",
 	"gui.coalgenerator.current": "Current: %s",
@@ -299,11 +299,9 @@
 	"gui.electrodynamics.chargerlv": "120V Charger",
 	"gui.electrodynamics.chargermv": "240V Charger",
 	"gui.electrodynamics.chargerhv": "480V Charger",
-	
-	"gui.electrodynamics.tanksteel":"Steel Fluid Tank",
-	"gui.electrodynamics.tankreinforced":"Reinforced Fluid Tank",
-	"gui.electrodynamics.tankhsla":"HSLA Fluid Tank",
-	
+	"gui.electrodynamics.tanksteel": "Steel Fluid Tank",
+	"gui.electrodynamics.tankreinforced": "Reinforced Fluid Tank",
+	"gui.electrodynamics.tankhsla": "HSLA Fluid Tank",
 	"itemGroup.itemgroupelectrodynamics": "Electrodynamics",
 	"tooltip.itemwire.resistance": "Resistance: %s",
 	"tooltip.itemwire.maxamps": "Max Amps: %s",
@@ -330,12 +328,10 @@
 	"tooltip.electrodynamics.railgunmaxtemp": "Max Temp: %s",
 	"tooltip.electrodynamics.railgunoverheat": "WARNING : OVERHEATING",
 	"tooltip.electrodynamics.ceramicplatecount": "Plates Remaining: %s",
-	
-	"tooltip.tanksteel.capacity":"Capacity : 8000 mB",
-	"tooltip.tanksteel.usejei":"Press 'U' to see valid fluids",
-	"tooltip.tankreinforced.capacity":"Capacity : 32000 mB",
-	"tooltip.tankhsla.capacity":"Capacity : 120000 mB",
-	
+	"tooltip.tanksteel.capacity": "Capacity : 8000 mB",
+	"tooltip.tanksteel.usejei": "Press 'U' to see valid fluids",
+	"tooltip.tankreinforced.capacity": "Capacity : 32000 mB",
+	"tooltip.tankhsla.capacity": "Capacity : 120000 mB",
 	"death.attack.electricity": "%s was electrocuted",
 	"death.attack.accelerated_bolt": "%1$s was perforated by %2$s",
 	"death.attack.accelerated_bolt_ia": "%1$s was perforated by %2$s",
@@ -393,8 +389,7 @@
 	"info.jei.block.combustionchamber": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 350 W\n    Maximum Current: 2.2 A\n\nFuel Source: Ethanol",
 	"info.jei.block.hydroelectricgenerator": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 720 W\n    Maximum Current: 6 A",
 	"info.jei.block.windmill": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 1.2 kW\n    Maximum Current: 10.0 A\n\nIdeal Height: Y = 135",
-	
-	"info.jei.block.tanksteel":"Valid Fluids:\n    Water\n    Lava\n    Ethanol",
-	"info.jei.block.tankreinforced":"Valid Fluids:\n    Water\n    Lava\n    Ethanol\n    Polyethlyene\n    Molybdenum\n    Sulfuric Acid\n    All Mineral Fluids",
-	"info.jei.block.tankhsla":"Valid Fluids:\n    Any"
+	"info.jei.block.tanksteel": "Valid Fluids:\n    Water\n    Lava\n    Ethanol",
+	"info.jei.block.tankreinforced": "Valid Fluids:\n    Water\n    Lava\n    Ethanol\n    Polyethlyene\n    Molybdenum\n    Sulfuric Acid\n    All Mineral Fluids",
+	"info.jei.block.tankhsla": "Valid Fluids:\n    Any"
 }
