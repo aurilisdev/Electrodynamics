@@ -80,6 +80,8 @@ public class Constants {
     public static int CHARGER_REQUIRED_TICKS = 100;
     @DoubleValue(def = 1000.0)
     public static double CHARGER_USAGER_PER_TICK = 1000.0;
+    @DoubleValue(def = 0.75)
+    public static double OREGENERATIONMULTIPLIER = 0.75;
 
     public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

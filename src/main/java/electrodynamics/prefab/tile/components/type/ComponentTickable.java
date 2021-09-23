@@ -2,6 +2,8 @@ package electrodynamics.prefab.tile.components.type;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -19,7 +21,7 @@ public class ComponentTickable implements Component {
     protected Consumer<ComponentTickable> tickServer;
     private long ticks = 0;
 
-    public ComponentTickable tickCommon(Consumer<ComponentTickable> consumer) {
+    public ComponentTickable tickCommon(@Nonnull Consumer<ComponentTickable> consumer) {
 	Consumer<ComponentTickable> safe = consumer;
 	if (tickCommon != null) {
 	    safe = safe.andThen(tickCommon);
@@ -28,7 +30,7 @@ public class ComponentTickable implements Component {
 	return this;
     }
 
-    public ComponentTickable tickClient(Consumer<ComponentTickable> consumer) {
+    public ComponentTickable tickClient(@Nonnull Consumer<ComponentTickable> consumer) {
 	Consumer<ComponentTickable> safe = consumer;
 	if (tickClient != null) {
 	    safe = safe.andThen(tickClient);
@@ -37,7 +39,7 @@ public class ComponentTickable implements Component {
 	return this;
     }
 
-    public ComponentTickable tickServer(Consumer<ComponentTickable> consumer) {
+    public ComponentTickable tickServer(@Nonnull Consumer<ComponentTickable> consumer) {
 	Consumer<ComponentTickable> safe = consumer;
 	if (tickServer != null) {
 	    safe = safe.andThen(tickServer);

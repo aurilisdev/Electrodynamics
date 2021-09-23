@@ -90,7 +90,8 @@ public class Electrodynamics {
 	    OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
 		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
 	    Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
-		    Feature.ORE.withConfiguration(feature).range(ore.maxY).func_242731_b(ore.veinsPerChunk).square());
+		    Feature.ORE.withConfiguration(feature).range(ore.maxY)
+			    .func_242731_b((int) (ore.veinsPerChunk * Constants.OREGENERATIONMULTIPLIER)).square());
 	}
 	setupGen();
     }
