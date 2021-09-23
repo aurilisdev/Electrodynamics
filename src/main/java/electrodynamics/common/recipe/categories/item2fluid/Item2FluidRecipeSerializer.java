@@ -25,9 +25,9 @@ public class Item2FluidRecipeSerializer<T extends Item2FluidRecipe> extends Elec
 	FluidStack fluidOutput = FluidIngredient.deserialize(JSONUtils.getJsonObject(json, "fluid_output")).getFluidStack();
 
 	try {
-	    Constructor<T> recipeConstructor = getRecipeClass()
-		    .getDeclaredConstructor( ResourceLocation.class, CountableIngredient.class, FluidStack.class );
-	    return recipeConstructor.newInstance( recipeId, itemInput, fluidOutput);
+	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
+		    FluidStack.class);
+	    return recipeConstructor.newInstance(recipeId, itemInput, fluidOutput);
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Recipe generation has failed!");
 	    return null;
@@ -40,9 +40,9 @@ public class Item2FluidRecipeSerializer<T extends Item2FluidRecipe> extends Elec
 	FluidStack fluidOutput = FluidIngredient.read(buffer).getFluidStack();
 
 	try {
-	    Constructor<T> recipeConstructor = getRecipeClass()
-		    .getDeclaredConstructor( ResourceLocation.class, CountableIngredient.class, FluidStack.class );
-	    return recipeConstructor.newInstance( recipeId, itemInput, fluidOutput );
+	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
+		    FluidStack.class);
+	    return recipeConstructor.newInstance(recipeId, itemInput, fluidOutput);
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Recipe generation has failed!");
 	    return null;
