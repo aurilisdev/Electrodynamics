@@ -37,7 +37,6 @@ public abstract class Fluid3Items2ItemRecipe extends ElectrodynamicsRecipe imple
     }
 
     @Override
-    @SuppressWarnings("java:S1066")
     public boolean matchesRecipe(ComponentProcessor pr) {
 	if (INPUT_ITEM1.testStack(pr.getInput()) || INPUT_ITEM1.testStack(pr.getSecondInput()) || INPUT_ITEM1.testStack(pr.getThirdInput())) {
 	    if (INPUT_ITEM2.testStack(pr.getInput()) || INPUT_ITEM2.testStack(pr.getSecondInput()) || INPUT_ITEM2.testStack(pr.getThirdInput())) {
