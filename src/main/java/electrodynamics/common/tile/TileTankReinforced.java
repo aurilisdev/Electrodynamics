@@ -17,9 +17,7 @@ public class TileTankReinforced extends TileGenericTank {
     static {
 	fluids.add(Fluids.WATER);
 	fluids.add(Fluids.LAVA);
-	DeferredRegisters.FLUIDS.getEntries().forEach(h -> {
-	    fluids.add(h.get());
-	});
+	DeferredRegisters.FLUIDS.getEntries().forEach(h -> fluids.add(h.get()));
     }
 
     public TileTankReinforced() {

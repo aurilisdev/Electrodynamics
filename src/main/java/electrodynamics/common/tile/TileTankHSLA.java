@@ -15,9 +15,7 @@ public class TileTankHSLA extends TileGenericTank {
     private static String name = "hsla";
 
     static {
-	ForgeRegistries.FLUIDS.getValues().forEach(h -> {
-	    fluids.add(h);
-	});
+	ForgeRegistries.FLUIDS.getValues().forEach(h -> fluids.add(h));
     }
 
     public TileTankHSLA() {
