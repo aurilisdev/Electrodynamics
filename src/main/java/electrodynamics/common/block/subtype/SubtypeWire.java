@@ -44,7 +44,7 @@ public enum SubtypeWire implements ISubtype {
     public final boolean logistical;
     public final boolean ceramic;
 
-    private SubtypeWire(double resistance, long capacity, boolean insulated, boolean logistical, boolean ceramic, boolean highlyinsulated) {
+    SubtypeWire(double resistance, long capacity, boolean insulated, boolean logistical, boolean ceramic, boolean highlyinsulated) {
 	this.resistance = resistance;
 	this.capacity = capacity;
 	this.insulated = insulated;

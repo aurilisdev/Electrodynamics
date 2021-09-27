@@ -28,10 +28,7 @@ public class ElectricityUtilities {
 
     public static boolean isElectricReceiver(TileEntity tile, Direction dir) {
 	if (tile != null) {
-	    if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, dir).isPresent()) {
-		return true;
-	    }
-	    if (tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
+	    if (tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, dir).isPresent() || tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
 		return true;
 	    }
 	}

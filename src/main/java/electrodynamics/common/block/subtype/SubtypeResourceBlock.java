@@ -18,7 +18,7 @@ public enum SubtypeResourceBlock implements ISubtype {
     private Material material;
     private SoundType soundType;
 
-    private SubtypeResourceBlock(float hardness, float resistance, Material material, SoundType soundType) {
+    SubtypeResourceBlock(float hardness, float resistance, Material material, SoundType soundType) {
 	this.hardness = hardness;
 	this.resistance = resistance;
 	this.material = material;

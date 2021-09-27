@@ -14,7 +14,7 @@ public enum CompositeArmor implements ICustomArmor {
     private final float toughness;
 
     // Constructor
-    private CompositeArmor(String name, int[] damageReductionAmountArray, float toughness) {
+    CompositeArmor(String name, int[] damageReductionAmountArray, float toughness) {
 	this.name = name;
 	this.damageReductionAmountArray = damageReductionAmountArray;
 	this.toughness = toughness;

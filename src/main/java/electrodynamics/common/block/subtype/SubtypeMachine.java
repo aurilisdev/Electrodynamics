@@ -138,19 +138,19 @@ public enum SubtypeMachine implements ISubtype {
     private BlockRenderType type = BlockRenderType.MODEL;
     private VoxelShape customShape = null;
 
-    private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass) {
+    SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass) {
 	this.showInItemGroup = showInItemGroup;
 	this.tileclass = tileclass;
     }
 
-    private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel) {
+    SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel) {
 	this(showInItemGroup, tileclass);
 	if (customModel) {
 	    type = BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
     }
 
-    private SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel, VoxelShape shape) {
+    SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel, VoxelShape shape) {
 	this(showInItemGroup, tileclass, customModel);
 	customShape = shape;
     }

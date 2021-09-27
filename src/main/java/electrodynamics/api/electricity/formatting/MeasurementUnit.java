@@ -8,7 +8,7 @@ public enum MeasurementUnit {
     protected String symbol;
     protected String name;
 
-    private MeasurementUnit(String name, String symbol, double value) {
+    MeasurementUnit(String name, String symbol, double value) {
 	this.name = name;
 	this.symbol = symbol;
 	this.value = value;

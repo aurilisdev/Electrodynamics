@@ -5,6 +5,7 @@ import net.minecraft.util.IStringSerializable;
 
 public enum EnumConnectType implements IStringSerializable {
     NONE, WIRE, INVENTORY;
+
     public static final EnumProperty<EnumConnectType> DOWN = EnumProperty.create("down", EnumConnectType.class);
     public static final EnumProperty<EnumConnectType> UP = EnumProperty.create("up", EnumConnectType.class);
     public static final EnumProperty<EnumConnectType> NORTH = EnumProperty.create("north", EnumConnectType.class);

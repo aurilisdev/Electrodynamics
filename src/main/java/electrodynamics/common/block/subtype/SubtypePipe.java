@@ -7,7 +7,7 @@ public enum SubtypePipe implements ISubtype {
 
     public final long maxTransfer;
 
-    private SubtypePipe(long maxTransfer) {
+    SubtypePipe(long maxTransfer) {
 	this.maxTransfer = maxTransfer;
     }
 

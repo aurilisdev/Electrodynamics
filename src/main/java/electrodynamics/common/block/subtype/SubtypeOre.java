@@ -23,8 +23,7 @@ public enum SubtypeOre implements ISubtype {
     public final float hardness;
     public final float resistance;
 
-    private SubtypeOre(ToolType harvestTool, int harvestLevel, int veinsPerChunk, int veinSize, int minY, int maxY, float hardness,
-	    float resistance) {
+    SubtypeOre(ToolType harvestTool, int harvestLevel, int veinsPerChunk, int veinSize, int minY, int maxY, float hardness, float resistance) {
 	this.harvestTool = harvestTool;
 	this.harvestLevel = harvestLevel;
 	this.veinsPerChunk = veinsPerChunk;

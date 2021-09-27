@@ -35,9 +35,9 @@ public abstract class FluidItem2ItemRecipe extends ElectrodynamicsRecipe impleme
 	if (ITEM_INPUT.testStack(pr.getInput())) {
 	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	    List<Fluid> inputFluids = fluid.getValidInputFluids();
-	    for (int i = 0; i < inputFluids.size(); i++) {
+	    for (Fluid inputFluid : inputFluids) {
 
-		FluidTank tank = fluid.getTankFromFluid(inputFluids.get(i), true);
+		FluidTank tank = fluid.getTankFromFluid(inputFluid, true);
 
 		if (tank != null && tank.getFluid().getFluid().isEquivalentTo(FLUID_INPUT.getFluidStack().getFluid())
 			&& tank.getFluidAmount() >= FLUID_INPUT.getFluidStack().getAmount()) {

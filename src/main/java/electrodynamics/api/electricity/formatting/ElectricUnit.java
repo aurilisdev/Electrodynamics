@@ -8,7 +8,7 @@ public enum ElectricUnit {
 
     protected String name;
 
-    private ElectricUnit(String name, String symbol) {
+    ElectricUnit(String name, String symbol) {
 	this.name = name;
 	this.symbol = symbol;
     }

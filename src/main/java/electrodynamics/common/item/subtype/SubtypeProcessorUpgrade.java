@@ -8,7 +8,7 @@ public enum SubtypeProcessorUpgrade implements ISubtype {
     public final double speedMultiplier;
     public final double capacityMultiplier;
 
-    private SubtypeProcessorUpgrade(double speedMultiplier, double capacityMultiplier) {
+    SubtypeProcessorUpgrade(double speedMultiplier, double capacityMultiplier) {
 	this.speedMultiplier = speedMultiplier;
 	this.capacityMultiplier = capacityMultiplier;
     }

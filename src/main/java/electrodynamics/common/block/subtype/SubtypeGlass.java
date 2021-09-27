@@ -8,7 +8,7 @@ public enum SubtypeGlass implements ISubtype {
     public final float hardness;
     public final float resistance;
 
-    private SubtypeGlass(float hardness, float resistance) {
+    SubtypeGlass(float hardness, float resistance) {
 	this.hardness = hardness;
 	this.resistance = resistance;
     }
