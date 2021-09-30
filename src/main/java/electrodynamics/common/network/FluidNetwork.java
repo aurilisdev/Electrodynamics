@@ -44,6 +44,12 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 	NetworkRegistry.register(this);
     }
 
+    /**
+     * TODO: Fix this so it cant hypothetically give infinite fluids if you have two
+     * inputs. This is fixed for such cases in
+     * {@link ElectricNetwork#emit(electrodynamics.prefab.utilities.object.TransferPack, ArrayList, boolean)}
+     * This should be fixed after the "// HERE" line in the method underneath.
+     */
     @Override
     public FluidStack emit(FluidStack transfer, ArrayList<TileEntity> ignored, boolean debug) {
 	if (transfer.getAmount() > 0) {
@@ -54,6 +60,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 		FluidStack perReceiver = new FluidStack(transfer.getFluid(), transfer.getAmount() / availableAcceptors.size());
 		for (TileEntity receiver : availableAcceptors) {
 		    if (acceptorInputMap.containsKey(receiver)) {
+			// HERE
 			for (Direction connection : acceptorInputMap.get(receiver)) {
 			    int rec = FluidUtilities.receiveFluid(receiver, connection, perReceiver, false);
 			    joulesSent.setAmount(joulesSent.getAmount() + rec);

@@ -217,7 +217,8 @@ public class GenericTile extends TileEntity implements INameable {
 
     public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
 	ItemStack[] stack = new ItemStack[] { pr.getInput(), pr.getSecondInput() };
-	if (stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true) || stack[1] == null || stack[1].equals(new ItemStack(Items.AIR), true)) {
+	if (stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true) || stack[1] == null
+		|| stack[1].equals(new ItemStack(Items.AIR), true)) {
 	    return null;
 	}
 	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
