@@ -45,11 +45,15 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	    for (Direction direction : Direction.values()) {
 		TileEntity acceptor = tileEntity.getWorld()
 			.getTileEntity(new BlockPos(tileEntity.getPos()).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
-		if (!isConductor(acceptor) && isAcceptor(acceptor, direction) && canConnect(acceptor, direction)) {
-		    acceptorSet.add((A) acceptor);
-		    HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
-		    directions.add(direction.getOpposite());
-		    acceptorInputMap.put((A) acceptor, directions);
+		if (acceptor != null && !isConductor(acceptor)) {
+		    if (isAcceptor(acceptor, direction)) {
+			if (canConnect(acceptor, direction)) {
+			    acceptorSet.add((A) acceptor);
+			    HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
+			    directions.add(direction.getOpposite());
+			    acceptorInputMap.put((A) acceptor, directions);
+			}
+		    }
 		}
 	    }
 	}
@@ -97,24 +101,26 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	    }
 	    for (int countOne = 0; countOne < connectedTiles.length; countOne++) {
 		TileEntity connectedBlockA = connectedTiles[countOne];
-		if (connectedBlockA != null && isConductor(connectedBlockA) && !dealtWith[countOne]) {
-		    AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(), connectedBlockA.getPos(), this,
-			    ((TileEntity) splitPoint).getPos());
-		    List<TileEntity> partNetwork = finder.exploreNetwork();
-		    for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
-			TileEntity connectedBlockB = connectedTiles[countTwo];
-			if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
-			    dealtWith[countTwo] = true;
+		if (connectedBlockA != null) {
+		    if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
+			AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(), connectedBlockA.getPos(), this,
+				((TileEntity) splitPoint).getPos());
+			List<TileEntity> partNetwork = finder.exploreNetwork();
+			for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
+			    TileEntity connectedBlockB = connectedTiles[countTwo];
+			    if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
+				dealtWith[countTwo] = true;
+			    }
 			}
-		    }
-		    AbstractNetwork<C, T, A, P> newNetwork = createInstance();
+			AbstractNetwork<C, T, A, P> newNetwork = createInstance();
 
-		    for (TileEntity tile : finder.iteratedTiles) {
-			if (tile != splitPoint) {
-			    newNetwork.conductorSet.add((C) tile);
+			for (TileEntity tile : finder.iteratedTiles) {
+			    if (tile != splitPoint) {
+				newNetwork.conductorSet.add((C) tile);
+			    }
 			}
+			newNetwork.refresh();
 		    }
-		    newNetwork.refresh();
 		}
 	    }
 	    deregister();
