@@ -145,6 +145,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     @Override
     public void refreshNetwork() {
 	if (!world.isRemote) {
+	    updateAdjacent();
 	    ArrayList<FluidNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
 		TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
