@@ -20,6 +20,7 @@ import electrodynamics.prefab.utilities.UtilitiesElectricity;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -45,7 +46,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class BlockWire extends Block {
+public class BlockWire extends Block implements IWaterLoggable {
     public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
 	p.put(Direction.NORTH, EnumConnectType.NORTH);
 	p.put(Direction.EAST, EnumConnectType.EAST);
