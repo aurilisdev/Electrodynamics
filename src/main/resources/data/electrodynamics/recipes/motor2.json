@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"wsw",
+		"sis",
+		"wsw"
+	],
+	"key": {
+		"s": {
+			"tag": "forge:ingots/stainlesssteel"
+		},
+		"w": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		},
+		"i": {
+			"item": "electrodynamics:coil"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:motor",
+		"count": 2
+	}
+}
