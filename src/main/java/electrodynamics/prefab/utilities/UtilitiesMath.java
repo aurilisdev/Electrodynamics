@@ -23,8 +23,7 @@ public class UtilitiesMath {
 	// consideration for more math.
 	Vector3d rayPath = direction.normalize().scale(rayLength);
 	Vector3d to = from.add(rayPath);
-	RayTraceContext rayContext = new RayTraceContext(from, to, RayTraceContext.BlockMode.OUTLINE,
-		RayTraceContext.FluidMode.ANY, null);
+	RayTraceContext rayContext = new RayTraceContext(from, to, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, null);
 	BlockRayTraceResult rayHit = world.rayTraceBlocks(rayContext);
 
 	return rayHit.getType() != Type.BLOCK ? null : new Location(rayHit.getPos());
