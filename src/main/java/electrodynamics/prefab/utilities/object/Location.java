@@ -198,6 +198,11 @@ public final class Location {
 		&& Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
     }
 
+    @Override
+    public String toString() {
+	return "[" + intX() + ", " + intY() + ", " + intZ() + "]";
+    }
+
     public static Location readFromNBT(CompoundNBT nbt, String name) {
 	return new Location(nbt.getDouble(name + "X"), nbt.getDouble(name + "Y"), nbt.getDouble(name + "Z"));
     }
