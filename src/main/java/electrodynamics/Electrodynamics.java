@@ -19,6 +19,7 @@ import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.OreConfig;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
@@ -54,6 +55,7 @@ public class Electrodynamics {
 
     public Electrodynamics() {
 	ConfigurationHandler.registerConfig(Constants.class);
+	ConfigurationHandler.registerConfig(OreConfig.class);
 	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 	SoundRegister.SOUNDS.register(bus);
 	DeferredRegisters.BLOCKS.register(bus);
@@ -87,11 +89,13 @@ public class Electrodynamics {
     @Deprecated
     public static void onLoadEvent(FMLLoadCompleteEvent event) {
 	for (SubtypeOre ore : SubtypeOre.values()) {
-	    OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
-		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
-	    Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
-		    Feature.ORE.withConfiguration(feature).range(ore.maxY)
-			    .func_242731_b((int) (ore.veinsPerChunk * Constants.OREGENERATIONMULTIPLIER)).square());
+	    if (OreConfig.oresToSpawn.contains(ore.name())) {
+		OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
+		Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
+			Feature.ORE.withConfiguration(feature).range(ore.maxY)
+				.func_242731_b((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)).square());
+	    }
 	}
 	setupGen();
     }
@@ -99,10 +103,13 @@ public class Electrodynamics {
     @Deprecated
     public static void setupGen() {
 	for (SubtypeOre ore : SubtypeOre.values()) {
-	    for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.BIOME.getEntries()) {
-		if (!biome.getValue().getCategory().equals(Biome.Category.NETHER) && !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
-		    addFeatureToBiome(biome.getValue(), GenerationStage.Decoration.UNDERGROUND_ORES,
-			    WorldGenRegistries.CONFIGURED_FEATURE.getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
+	    if (OreConfig.oresToSpawn.contains(ore.name())) {
+		for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.BIOME.getEntries()) {
+		    if (!biome.getValue().getCategory().equals(Biome.Category.NETHER)
+			    && !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
+			addFeatureToBiome(biome.getValue(), GenerationStage.Decoration.UNDERGROUND_ORES,
+				WorldGenRegistries.CONFIGURED_FEATURE.getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
+		    }
 		}
 	    }
 	}
