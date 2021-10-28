@@ -12,21 +12,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderMineralCrusherDouble extends BlockEntityRenderer<TileMineralCrusherDouble> {
-
-    public RenderMineralCrusherDouble(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMineralCrusherDouble> {
 
     @Override
-    @Deprecated
     public void render(TileMineralCrusherDouble tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.pushPose();
@@ -55,7 +49,7 @@ public class RenderMineralCrusherDouble extends BlockEntityRenderer<TileMineralC
 		matrixStackIn.translate(0, -0.5, 0);
 	    }
 	    Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-		    bufferIn);
+		    bufferIn, 0);
 	    matrixStackIn.popPose();
 	}
 	stack = tileEntityIn.getProcessor(1).getInput();
@@ -73,7 +67,7 @@ public class RenderMineralCrusherDouble extends BlockEntityRenderer<TileMineralC
 		matrixStackIn.translate(0, -0.5, 0);
 	    }
 	    Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-		    bufferIn);
+		    bufferIn, 0);
 	    matrixStackIn.popPose();
 	}
     }

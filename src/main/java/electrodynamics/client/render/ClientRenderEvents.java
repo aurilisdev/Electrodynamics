@@ -63,7 +63,7 @@ public class ClientRenderEvents {
 	    GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, overheatWarn, 70, 20, 0);
 	}
 
-	minecraft.getTextureManager().bind(GuiComponent.GUI_ICONS_LOCATION);
+	minecraft.getTextureManager().bindForSetup(GuiComponent.GUI_ICONS_LOCATION);
 
 	event.getMatrixStack().popPose();
     }

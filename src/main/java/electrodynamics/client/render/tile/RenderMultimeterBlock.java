@@ -12,16 +12,11 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
 
-public class RenderMultimeterBlock extends BlockEntityRenderer<TileMultimeterBlock> {
-
-    public RenderMultimeterBlock(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeterBlock> {
 
     @Override
     public void render(TileMultimeterBlock tilemultimeter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,

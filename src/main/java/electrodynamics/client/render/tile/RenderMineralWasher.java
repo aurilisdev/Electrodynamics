@@ -9,20 +9,14 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderMineralWasher extends BlockEntityRenderer<TileMineralWasher> {
-
-    public RenderMineralWasher(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderMineralWasher implements BlockEntityRenderer<TileMineralWasher> {
 
     @Override
-    @Deprecated
     public void render(TileMineralWasher tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 	ItemStack stack = tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).getInput();
@@ -35,7 +29,7 @@ public class RenderMineralWasher extends BlockEntityRenderer<TileMineralWasher> 
 	    matrixStackIn.scale(0.3f, 0.3f, 0.3f);
 	    matrixStackIn.translate(0, -0.2, 0);
 	    Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-		    bufferIn);
+		    bufferIn, 0);
 	    matrixStackIn.popPose();
 	}
     }
