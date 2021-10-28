@@ -13,17 +13,11 @@ import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.level.material.Fluids;
 
-public class RenderChemicalMixer extends BlockEntityRenderer<TileChemicalMixer> {
-
-    public RenderChemicalMixer(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
-
+public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixer> {
     @Override
     public void render(TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {

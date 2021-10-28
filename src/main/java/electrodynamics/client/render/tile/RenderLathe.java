@@ -11,16 +11,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderLathe extends BlockEntityRenderer<TileLathe> {
-
-    public RenderLathe(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderLathe implements BlockEntityRenderer<TileLathe> {
 
     @Override
     public void render(TileLathe tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
@@ -48,7 +43,7 @@ public class RenderLathe extends BlockEntityRenderer<TileLathe> {
 	    matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 	    matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
 	    Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-		    bufferIn);
+		    bufferIn, 0);
 	    matrixStackIn.popPose();
 	}
     }

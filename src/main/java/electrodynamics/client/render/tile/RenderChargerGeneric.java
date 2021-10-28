@@ -12,17 +12,12 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderChargerGeneric extends BlockEntityRenderer<TileGenericCharger> {
-
-    public RenderChargerGeneric(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderChargerGeneric implements BlockEntityRenderer<TileGenericCharger> {
 
     @Override
     public void render(TileGenericCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
@@ -85,7 +80,7 @@ public class RenderChargerGeneric extends BlockEntityRenderer<TileGenericCharger
 		}
 	    }
 	    Minecraft.getInstance().getItemRenderer().renderStatic(chargingItem, TransformType.NONE, combinedLightIn, combinedOverlayIn,
-		    matrixStackIn, bufferIn);
+		    matrixStackIn, bufferIn, 0);
 	    matrixStackIn.popPose();
 	}
 

@@ -10,18 +10,12 @@ import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 
-public class RenderBatteryBox extends BlockEntityRenderer<TileBatteryBox> {
-
-    public RenderBatteryBox(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderBatteryBox implements BlockEntityRenderer<TileBatteryBox> {
 
     @Override
-    @Deprecated
     public void render(TileBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 	BakedModel ibakedmodel;

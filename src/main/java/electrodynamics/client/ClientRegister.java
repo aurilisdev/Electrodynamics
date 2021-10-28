@@ -153,7 +153,7 @@ public class ClientRegister {
     public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
     public static void setup() {
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
+	ClientRegistry.ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), RenderLithiumBatteryBox::new);
 	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
@@ -209,15 +209,15 @@ public class ClientRegister {
 	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.multi, RenderType.cutout());
 	ItemProperties
 		.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"),
-			(stack, world, entity) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+			(stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
 				&& ((ItemElectricDrill) stack.getItem())
 					.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules()
 						? 1
 						: 0);
 	ItemProperties
 		.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"),
-			(stack, world,
-				entity) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+			(stack, world, entity,
+				call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
 					&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
 						stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
 							: 0);

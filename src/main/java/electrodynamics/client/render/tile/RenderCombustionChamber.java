@@ -11,18 +11,12 @@ import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 
-public class RenderCombustionChamber extends BlockEntityRenderer<TileCombustionChamber> {
-
-    public RenderCombustionChamber(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderCombustionChamber implements BlockEntityRenderer<TileCombustionChamber> {
 
     @Override
-    @Deprecated
     public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.pushPose();
