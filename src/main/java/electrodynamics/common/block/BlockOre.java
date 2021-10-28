@@ -25,6 +25,7 @@ public class BlockOre extends OreBlock {
     }
 
     @Override
+    @Deprecated
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 
 	Item oreItem;

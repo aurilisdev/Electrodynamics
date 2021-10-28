@@ -10,18 +10,12 @@ import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 
-public class RenderAdvancedSolarPanel extends BlockEntityRenderer<TileAdvancedSolarPanel> {
-
-    public RenderAdvancedSolarPanel(BlockEntityRenderDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+public class RenderAdvancedSolarPanel implements BlockEntityRenderer<TileAdvancedSolarPanel> {
 
     @Override
-    @Deprecated
     public void render(TileAdvancedSolarPanel tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.translate(0.5, 2, 0.5);

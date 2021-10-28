@@ -4,6 +4,8 @@ import electrodynamics.common.multiblock.IMultiblockSubnode;
 import electrodynamics.common.tile.TileMultiSubnode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +30,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 
     public BlockMultiSubnode() {
 	super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor(BlockMultiSubnode::isntSolid)
-		.harvestTool(ToolType.PICKAXE).noOcclusion());
+		.harvestTool(BlockTags.PICKAXE).noOcclusion());
     }
 
     private static boolean isntSolid(BlockState state, BlockGetter reader, BlockPos pos) {
@@ -39,8 +41,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     @Deprecated
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
-	if (tile instanceof TileMultiSubnode) {
-	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
+	if (tile instanceof TileMultiSubnode subnode) {
 	    return subnode.getShape();
 	}
 	return Shapes.block();
@@ -81,8 +82,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     @Deprecated
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
-	if (tile instanceof TileMultiSubnode) {
-	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
+	if (tile instanceof TileMultiSubnode subnode) {
 	    if (subnode.nodePos != null) {
 		subnode.nodePos.getBlock(worldIn).use(subnode.nodePos.getBlockState(worldIn), worldIn, subnode.nodePos.toBlockPos(), player, handIn,
 			hit);
@@ -101,8 +101,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     @Deprecated
     public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
-	if (tile instanceof TileMultiSubnode) {
-	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
+	if (tile instanceof TileMultiSubnode subnode) {
 	    if (subnode.nodePos != null) {
 		return subnode.nodePos.getBlock(blockAccess).getDirectSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
 			subnode.nodePos.toBlockPos(), side);
@@ -112,28 +111,22 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "Default MC")
     public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
-	if (tile instanceof TileMultiSubnode) {
-	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
-	    if (subnode.nodePos != null) {
-		return subnode.nodePos.getBlock(blockAccess).getSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
-			subnode.nodePos.toBlockPos(), side);
-	    }
+	if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+	    return subnode.nodePos.getBlock(blockAccess).getSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
+		    subnode.nodePos.toBlockPos(), side);
 	}
 	return super.getSignal(blockState, blockAccess, pos, side);
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "Default MC")
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
-	if (tile instanceof TileMultiSubnode) {
-	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
-	    if (subnode.nodePos != null) {
-		worldIn.destroyBlock(subnode.nodePos.toBlockPos(), true);
-	    }
+	if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+	    worldIn.destroyBlock(subnode.nodePos.toBlockPos(), true);
 	}
 	super.onRemove(state, worldIn, pos, newState, isMoving);
     }
