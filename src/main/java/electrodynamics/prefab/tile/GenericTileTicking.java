@@ -2,12 +2,12 @@ package electrodynamics.prefab.tile;
 
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.TickingBlockEntity;
 
-public class GenericTileTicking extends GenericTile implements ITickableTileEntity {
+public class GenericTileTicking extends GenericTile implements TickingBlockEntity {
 
-    protected GenericTileTicking(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileTicking(BlockEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }
 
@@ -16,7 +16,7 @@ public class GenericTileTicking extends GenericTile implements ITickableTileEnti
 	if (hasComponent(ComponentType.Tickable)) {
 	    ComponentTickable tickable = getComponent(ComponentType.Tickable);
 	    tickable.tickCommon();
-	    if (!world.isRemote) {
+	    if (!level.isClientSide) {
 		tickable.tickServer();
 	    } else {
 		tickable.tickClient();

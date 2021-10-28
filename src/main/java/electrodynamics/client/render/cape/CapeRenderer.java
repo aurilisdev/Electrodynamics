@@ -16,28 +16,28 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.math.Vector3f;
 
 import electrodynamics.api.References;
 import electrodynamics.prefab.utilities.Scheduler;
 import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -50,7 +50,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public final class CapeRenderer {
-    private static final LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
+    private static final LoadingCache<Player, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS)
 	    .ticker(new Ticker() {
 		@Override
 		public long read() {
@@ -94,19 +94,19 @@ public final class CapeRenderer {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onPlayerRender(RenderPlayerEvent.Pre event) {
-	PlayerEntity player = event.getPlayer();
+	Player player = event.getPlayer();
 	float delta = event.getPartialRenderTick();
-	if (!player.isInvisible() && !player.isElytraFlying() && !player.isSleeping()) {
+	if (!player.isInvisible() && !player.isFallFlying() && !player.isSleeping()) {
 	    RenderCape cape = getCape(player);
 	    if (RenderCape.isPresent(player)) {
-		cape.render(player, player.getPosX() - TileEntityRendererDispatcher.instance.renderInfo.getProjectedView().getX(),
-			player.getPosY() - TileEntityRendererDispatcher.instance.renderInfo.getProjectedView().getY(),
-			player.getPosZ() - TileEntityRendererDispatcher.instance.renderInfo.getProjectedView().getZ(), delta, event.getMatrixStack());
+		cape.render(player, player.getX() - BlockEntityRenderDispatcher.instance.camera.getPosition().x(),
+			player.getY() - BlockEntityRenderDispatcher.instance.camera.getPosition().y(),
+			player.getZ() - BlockEntityRenderDispatcher.instance.camera.getPosition().z(), delta, event.getMatrixStack());
 	    }
 	}
     }
 
-    private static RenderCape getCape(PlayerEntity player) {
+    private static RenderCape getCape(Player player) {
 	return capes.getUnchecked(player);
     }
 
@@ -114,9 +114,9 @@ public final class CapeRenderer {
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
 	if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.END) {
-	    World world = Minecraft.getInstance().world;
+	    Level world = Minecraft.getInstance().level;
 	    if (world != null) {
-		for (PlayerEntity player : world.getPlayers()) {
+		for (Player player : world.players()) {
 		    getCape(player).update(player);
 		}
 	    }
@@ -211,16 +211,15 @@ public final class CapeRenderer {
 		    }
 		}
 	    }
-	    points.sort(
-		    (a, b) -> Double.compare(MathHelper.sqrt(b.posX * b.posX + b.posY + b.posY), MathHelper.sqrt(a.posX * a.posX + a.posY + a.posY)));
+	    points.sort((a, b) -> Double.compare(Mth.sqrt(b.posX * b.posX + b.posY + b.posY), Mth.sqrt(a.posX * a.posX + a.posY + a.posY)));
 	    return new RenderCape(ImmutableList.copyOf(points), quads.build());
 	}
 
-	private static boolean isPresent(PlayerEntity player) {
+	private static boolean isPresent(Player player) {
 	    return Holder.INSTANCE.mapList.containsKey(player.getName().getString().toLowerCase());
 	}
 
-	private void update(PlayerEntity player) {
+	private void update(Player player) {
 	    if (isPresent(player)) {
 		updatePlayerPos(player);
 		updatePoints(player);
@@ -228,10 +227,10 @@ public final class CapeRenderer {
 	    }
 	}
 
-	private void updatePlayerPos(PlayerEntity player) {
-	    double dx = player.getPosX() - posX;
-	    double dy = player.getPosY() - posY;
-	    double dz = player.getPosZ() - posZ;
+	private void updatePlayerPos(Player player) {
+	    double dx = player.getX() - posX;
+	    double dy = player.getY() - posY;
+	    double dz = player.getZ() - posZ;
 	    double dist = dx * dx + dy * dy + dz * dz;
 	    if (dist > PLAYER_SKIP_RANGE) {
 		for (Point point : points) {
@@ -243,14 +242,14 @@ public final class CapeRenderer {
 		    point.prevPosZ += dz;
 		}
 	    }
-	    posX = player.getPosX();
-	    posY = player.getPosY();
-	    posZ = player.getPosZ();
+	    posX = player.getX();
+	    posY = player.getY();
+	    posZ = player.getZ();
 	}
 
-	private void updatePoints(PlayerEntity player) {
+	private void updatePoints(Player player) {
 	    for (Point point : points) {
-		point.update(player.world, DELTA_TIME);
+		point.update(player.level, DELTA_TIME);
 	    }
 	    for (int i = 0; i < ITERATIONS; i++) {
 		for (int j = points.size(); j-- > 0;) {
@@ -259,37 +258,38 @@ public final class CapeRenderer {
 	    }
 	}
 
-	private static void updateFluidCache(PlayerEntity player) {
-	    if (player.ticksExisted % FLUID_CACHE_CLEAR_RATE == 0 && fluidCache.size() > FLUID_CACHE_CLEAR_SIZE) {
+	private static void updateFluidCache(Player player) {
+	    if (player.tickCount % FLUID_CACHE_CLEAR_RATE == 0 && fluidCache.size() > FLUID_CACHE_CLEAR_SIZE) {
 		fluidCache.clear();
 	    }
 	}
 
 	@SuppressWarnings("java:S1874")
-	private void render(PlayerEntity player, double x, double y, double z, float delta, MatrixStack stack) {
-	    stack.push();
+	private void render(Player player, double x, double y, double z, float delta, PoseStack stack) {
+	    stack.pushPose();
 	    stack.scale(0.5f, 0.5f, 0.5f);
 	    stack.translate(-player.getEyePosition(delta).x,
-		    -player.getEyePosition(delta).y + player.getEyeHeight() + (player.isSneaking() ? 1.35 : 1.45), -player.getEyePosition(delta).z);
+		    -player.getEyePosition(delta).y + player.getEyeHeight() + (player.isShiftKeyDown() ? 1.35 : 1.45),
+		    -player.getEyePosition(delta).z);
 
-	    GlStateManager.pushMatrix();
-	    RenderSystem.multMatrix(stack.getLast().getMatrix());
-	    stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
-	    stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
+	    GlStateManager._pushMatrix();
+	    RenderSystem.multMatrix(stack.last().pose());
+	    stack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+	    stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 
-	    GlStateManager.pushMatrix();
-	    Tessellator tes = Tessellator.getInstance();
-	    BufferBuilder buf = tes.getBuffer();
-	    GlStateManager.color4f(1, 1, 1, 1);
-	    GlStateManager.enableCull();
-	    GlStateManager.enableBlend();
-	    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param);
+	    GlStateManager._pushMatrix();
+	    Tesselator tes = Tesselator.getInstance();
+	    BufferBuilder buf = tes.getBuilder();
+	    GlStateManager._color4f(1, 1, 1, 1);
+	    GlStateManager._enableCull();
+	    GlStateManager._enableBlend();
+	    GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
 	    ResourceLocation fallBackCape = new ResourceLocation(References.ID,
 		    "textures/cape/" + Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()) + ".png");
-	    Minecraft.getInstance().getTextureManager().bindTexture(fallBackCape);
+	    Minecraft.getInstance().getTextureManager().bind(fallBackCape);
 	    RenderSystem.enableDepthTest();
 
-	    GlStateManager.pushMatrix();
+	    GlStateManager._pushMatrix();
 	    for (Quad quad : quads) {
 		Quad.Vertex v00 = quad.getV00();
 		Quad.Vertex v01 = quad.getV01();
@@ -310,107 +310,107 @@ public final class CapeRenderer {
 		float nx = (v11y - v00y) * (v10z - v01z) - (v11z - v00z) * (v10y - v01y);
 		float ny = (v10x - v01x) * (v11z - v00z) - (v10z - v01z) * (v11x - v00x);
 		float nz = (v11x - v00x) * (v10y - v01y) - (v11y - v00y) * (v10x - v01x);
-		float len = MathHelper.sqrt(nx * nx + ny * ny + nz * nz);
+		float len = Mth.sqrt(nx * nx + ny * ny + nz * nz);
 		nx /= len;
 		ny /= len;
 		nz /= len;
-		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buf.pos(v00x, v00y, v00z).tex((float) v00.getU(), (float) v00.getV()).normal(nx, ny, nz).endVertex();
-		buf.pos(v01x, v01y, v01z).tex((float) v01.getU(), (float) v01.getV()).normal(nx, ny, nz).endVertex();
-		buf.pos(v11x, v11y, v11z).tex((float) v11.getU(), (float) v11.getV()).normal(nx, ny, nz).endVertex();
-		buf.pos(v10x, v10y, v10z).tex((float) v10.getU(), (float) v10.getV()).normal(nx, ny, nz).endVertex();
-		tes.draw();
-		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buf.pos(v10x, v10y, v10z).tex((float) v10.getU(), (float) v10.getV()).normal(nx, ny, nz).endVertex();
-		buf.pos(v11x, v11y, v11z).tex((float) v11.getU(), (float) v11.getV()).normal(nx, ny, nz).endVertex();
-		buf.pos(v01x, v01y, v01z).tex((float) v01.getU(), (float) v01.getV()).normal(nx, ny, nz).endVertex();
-		buf.pos(v00x, v00y, v00z).tex((float) v00.getU(), (float) v00.getV()).normal(nx, ny, nz).endVertex();
-		tes.draw();
+		buf.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX);
+		buf.vertex(v00x, v00y, v00z).uv((float) v00.getU(), (float) v00.getV()).normal(nx, ny, nz).endVertex();
+		buf.vertex(v01x, v01y, v01z).uv((float) v01.getU(), (float) v01.getV()).normal(nx, ny, nz).endVertex();
+		buf.vertex(v11x, v11y, v11z).uv((float) v11.getU(), (float) v11.getV()).normal(nx, ny, nz).endVertex();
+		buf.vertex(v10x, v10y, v10z).uv((float) v10.getU(), (float) v10.getV()).normal(nx, ny, nz).endVertex();
+		tes.end();
+		buf.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX);
+		buf.vertex(v10x, v10y, v10z).uv((float) v10.getU(), (float) v10.getV()).normal(nx, ny, nz).endVertex();
+		buf.vertex(v11x, v11y, v11z).uv((float) v11.getU(), (float) v11.getV()).normal(nx, ny, nz).endVertex();
+		buf.vertex(v01x, v01y, v01z).uv((float) v01.getU(), (float) v01.getV()).normal(nx, ny, nz).endVertex();
+		buf.vertex(v00x, v00y, v00z).uv((float) v00.getU(), (float) v00.getV()).normal(nx, ny, nz).endVertex();
+		tes.end();
 	    }
-	    GlStateManager.popMatrix();
+	    GlStateManager._popMatrix();
 
 	    RenderSystem.disableDepthTest();
-	    GlStateManager.disableCull();
-	    GlStateManager.disableBlend();
-	    GlStateManager.popMatrix();
+	    GlStateManager._disableCull();
+	    GlStateManager._disableBlend();
+	    GlStateManager._popMatrix();
 
-	    GlStateManager.popMatrix();
-	    stack.pop();
+	    GlStateManager._popMatrix();
+	    stack.popPose();
 	    if (Holder.INSTANCE.mapList.getOrDefault(player.getName().getString().toLowerCase(), "").equalsIgnoreCase("dev")) {
-		stack.push();
+		stack.pushPose();
 		stack.scale(0.5f, 0.5f, 0.5f);
 
-		GlStateManager.pushMatrix();
-		RenderSystem.multMatrix(stack.getLast().getMatrix());
-		stack.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
-		stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
+		GlStateManager._pushMatrix();
+		RenderSystem.multMatrix(stack.last().pose());
+		stack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+		stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 
-		GlStateManager.pushMatrix();
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferBuilder = tessellator.getBuffer();
-		GlStateManager.disableTexture();
-		GlStateManager.disableLighting();
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		GlStateManager.enableBlend();
+		GlStateManager._pushMatrix();
+		Tesselator tessellator = Tesselator.getInstance();
+		BufferBuilder bufferBuilder = tessellator.getBuilder();
+		GlStateManager._disableTexture();
+		GlStateManager._disableLighting();
+		GlStateManager._shadeModel(GL11.GL_SMOOTH);
+		GlStateManager._enableBlend();
 		GlStateManager.glBlendFuncSeparate(770, 771, 1, 0);
-		GlStateManager.blendFunc(770, 1);
-		GlStateManager.disableAlphaTest();
-		GlStateManager.enableCull();
-		GlStateManager.enableDepthTest();
+		GlStateManager._blendFunc(770, 1);
+		GlStateManager._disableAlphaTest();
+		GlStateManager._enableCull();
+		GlStateManager._enableDepthTest();
 
-		GlStateManager.pushMatrix();
-		float scale = (float) Math.floor(player.getMotion().length() * 20 + 1);
-		Random rand = player.world.rand;
-		GlStateManager.translated(player.getMotion().x * -rand.nextFloat(), player.getMotion().getY() * -rand.nextFloat(),
-			player.getMotion().z * -rand.nextFloat());
-		GlStateManager.scaled(0.05, 0.05, 0.05);
+		GlStateManager._pushMatrix();
+		float scale = (float) Math.floor(player.getDeltaMovement().length() * 20 + 1);
+		Random rand = player.level.random;
+		GlStateManager._translated(player.getDeltaMovement().x * -rand.nextFloat(), player.getDeltaMovement().y() * -rand.nextFloat(),
+			player.getDeltaMovement().z * -rand.nextFloat());
+		GlStateManager._scaled(0.05, 0.05, 0.05);
 		double r = rand.nextFloat();
 		double g = 1;
 		double b = 1;
 		double a = 1;
 		try {
-		    GlStateManager.translated(0, 40, 0);
+		    GlStateManager._translated(0, 40, 0);
 		    GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		    for (int i1 = 0; i1 < (int) scale; i1++) {
-			bufferBuilder.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
+			bufferBuilder.begin(GL11.GL_POLYGON, DefaultVertexFormat.POSITION_COLOR);
 			GL11.glLineWidth(1.0f + rand.nextInt(2));
-			bufferBuilder
-				.pos(player.getMotion().x * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
-					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
-					player.getMotion().z * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
+			bufferBuilder.vertex(
+				player.getDeltaMovement().x * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
+				rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
+				player.getDeltaMovement().z * -scale * 2 + rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
 				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
 			bufferBuilder
-				.pos(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
-					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
-					rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
-				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-			bufferBuilder
-				.pos(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
+				.vertex(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
 					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
 					rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
 				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-			tessellator.draw();
+			bufferBuilder
+				.vertex(rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * 20 * 2 - 20,
+					rand.nextFloat() * 30 - 15 + rand.nextFloat() * scale - scale * 0.5)
+				.color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+			tessellator.end();
 		    }
 		    GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-		GlStateManager.popMatrix();
-		GlStateManager.disableDepthTest();
-		GlStateManager.disableBlend();
-		GlStateManager.shadeModel(GL11.GL_FLAT);
-		GlStateManager.color4f(1, 1, 1, 1);
-		GlStateManager.enableTexture();
-		GlStateManager.enableLighting();
-		GlStateManager.enableAlphaTest();
-		GlStateManager.popMatrix();
-		GlStateManager.popMatrix();
-		stack.pop();
+		GlStateManager._popMatrix();
+		GlStateManager._disableDepthTest();
+		GlStateManager._disableBlend();
+		GlStateManager._shadeModel(GL11.GL_FLAT);
+		GlStateManager._color4f(1, 1, 1, 1);
+		GlStateManager._enableTexture();
+		GlStateManager._enableLighting();
+		GlStateManager._enableAlphaTest();
+		GlStateManager._popMatrix();
+		GlStateManager._popMatrix();
+		stack.popPose();
 	    }
 	}
 
 	private interface ConstraintResolver {
-	    void resolve(PlayerEntity player, Point point);
+	    void resolve(Player player, Point point);
 	}
 
 	private static final class Quad {
@@ -511,7 +511,7 @@ public final class CapeRenderer {
 		motionZ += z;
 	    }
 
-	    private void update(World world, float delta) {
+	    private void update(Level world, float delta) {
 		applyForce(0, isFluid(world, posX, posY, posZ) ? FLUID_FORCE : GRAVITY, 0);
 		float x = posX + (posX - prevPosX) * delta + motionX * 0.5F * (delta * delta);
 		float y = posY + (posY - prevPosY) * delta + motionY * 0.5F * (delta * delta);
@@ -525,9 +525,9 @@ public final class CapeRenderer {
 		motionX = motionY = motionZ = 0;
 	    }
 
-	    private static boolean isFluid(World world, float x, float y, float z) {
+	    private static boolean isFluid(Level world, float x, float y, float z) {
 		BlockPos scratchPos = new BlockPos(x, y, z);
-		long key = scratchPos.toLong();
+		long key = scratchPos.asLong();
 		if (fluidCache.containsKey(key)) {
 		    return fluidCache.get(key);
 		}
@@ -537,10 +537,10 @@ public final class CapeRenderer {
 	    }
 
 	    private static boolean isFluid(BlockState state) {
-		return state.getBlock() instanceof IFluidBlock || state.getBlock() instanceof FlowingFluidBlock;
+		return state.getBlock() instanceof IFluidBlock || state.getBlock() instanceof LiquidBlock;
 	    }
 
-	    private void resolveConstraints(PlayerEntity player) {
+	    private void resolveConstraints(Player player) {
 		for (ConstraintResolver r : constraintResolvers) {
 		    r.resolve(player, this);
 		}
@@ -548,8 +548,8 @@ public final class CapeRenderer {
 	}
 
 	interface PlayerResolver extends ConstraintResolver {
-	    default float getBack(PlayerEntity player, float offset) {
-		if (player.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty()) {
+	    default float getBack(Player player, float offset) {
+		if (player.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
 		    return offset;
 		}
 		return offset + 0.075F;
@@ -567,22 +567,22 @@ public final class CapeRenderer {
 	    }
 
 	    @Override
-	    public void resolve(PlayerEntity player, Point point) {
-		float yaw = (float) Math.toRadians(player.renderYawOffset);
+	    public void resolve(Player player, Point point) {
+		float yaw = (float) Math.toRadians(player.yBodyRot);
 		float height;
 		float back;
-		if (player.isSneaking()) {
+		if (player.isShiftKeyDown()) {
 		    height = 1.15F;
 		    back = getBack(player, 0.135F);
 		} else {
 		    height = 1.38F;
 		    back = getBack(player, 0.14F);
 		}
-		float vx = MathHelper.cos(yaw) * x + MathHelper.cos(yaw - (float) Math.PI / 2) * back * 2;
-		float vz = MathHelper.sin(yaw) * x + MathHelper.sin(yaw - (float) Math.PI / 2) * back * 2;
-		point.posX = (float) player.getPosX() + vx;
-		point.posY = (float) player.getPosY() + height + y;
-		point.posZ = (float) player.getPosZ() + vz;
+		float vx = Mth.cos(yaw) * x + Mth.cos(yaw - (float) Math.PI / 2) * back * 2;
+		float vz = Mth.sin(yaw) * x + Mth.sin(yaw - (float) Math.PI / 2) * back * 2;
+		point.posX = (float) player.getX() + vx;
+		point.posY = (float) player.getY() + height + y;
+		point.posZ = (float) player.getZ() + vz;
 	    }
 	}
 
@@ -595,7 +595,7 @@ public final class CapeRenderer {
 	    }
 
 	    @Override
-	    public void resolve(PlayerEntity player, Point point) {
+	    public void resolve(Player player, Point point) {
 		for (int i = constraints.size(); i-- > 0;) {
 		    constraints.get(i).resolve(point);
 		}
@@ -620,7 +620,7 @@ public final class CapeRenderer {
 		    float dx = point.posX - dest.posX;
 		    float dy = point.posY - dest.posY;
 		    float dz = point.posZ - dest.posZ;
-		    float dist = MathHelper.sqrt(dx * dx + dy * dy + dz * dz);
+		    float dist = Mth.sqrt(dx * dx + dy * dy + dz * dz);
 		    float d = dist * (point.invMass + dest.invMass);
 		    float diff = d < EPSILON ? length / 2 : (dist - length) / d;
 		    float px = dx * diff * strength;
@@ -638,29 +638,29 @@ public final class CapeRenderer {
 
 	private static final class PlayerCollisionResolver implements PlayerResolver {
 	    @Override
-	    public void resolve(PlayerEntity player, Point point) {
-		float yaw = (float) (Math.toRadians(player.renderYawOffset) - Math.PI / 2);
-		float dx = MathHelper.cos(yaw);
-		float dz = MathHelper.sin(yaw);
-		float px = (float) player.getPosX();
-		float py = (float) player.getPosY() + 0.56F;
-		float pz = (float) player.getPosZ();
-		if (player.isSneaking()) {
+	    public void resolve(Player player, Point point) {
+		float yaw = (float) (Math.toRadians(player.yBodyRot) - Math.PI / 2);
+		float dx = Mth.cos(yaw);
+		float dz = Mth.sin(yaw);
+		float px = (float) player.getX();
+		float py = (float) player.getY() + 0.56F;
+		float pz = (float) player.getZ();
+		if (player.isShiftKeyDown()) {
 		    float dist = getBack(player, 0.55F);
 		    float backX = px + dx * dist;
 		    float backZ = pz + dz * dist;
 		    float dy = 1.4F;
-		    float len = MathHelper.sqrt(1 + dy * dy);
+		    float len = Mth.sqrt(1 + dy * dy);
 		    dx /= len;
 		    dy /= len;
 		    dz /= len;
-		    float rz = (point.posX - (float) player.getPosX()) * dx + (point.posZ - (float) player.getPosZ()) * dz;
-		    float a = (MathHelper.clamp(-rz, -0.5F, -0.4F) + 0.5F) / 0.1F;
+		    float rz = (point.posX - (float) player.getX()) * dx + (point.posZ - (float) player.getZ()) * dz;
+		    float a = (Mth.clamp(-rz, -0.5F, -0.4F) + 0.5F) / 0.1F;
 		    collideWithPlane(point, backX, py, backZ, dx, dy, dz, a);
 		} else {
-		    float rx = (point.posX - (float) player.getPosX()) * MathHelper.cos(yaw + (float) Math.PI / 2)
-			    + (point.posZ - (float) player.getPosZ()) * MathHelper.sin(yaw + (float) Math.PI / 2);
-		    float a = 1 - (MathHelper.clamp(Math.abs(rx), 0.24F, 0.36F) - 0.24F) / (0.36F - 0.24F);
+		    float rx = (point.posX - (float) player.getX()) * Mth.cos(yaw + (float) Math.PI / 2)
+			    + (point.posZ - (float) player.getZ()) * Mth.sin(yaw + (float) Math.PI / 2);
+		    float a = 1 - (Mth.clamp(Math.abs(rx), 0.24F, 0.36F) - 0.24F) / (0.36F - 0.24F);
 		    float dist = getBack(player, 0.14F);
 		    collideWithPlane(point, px + dx * dist, py, pz + dz * dist, dx, 0, dz, a);
 		}

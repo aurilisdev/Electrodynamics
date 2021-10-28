@@ -5,39 +5,39 @@ import electrodynamics.SoundRegister;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class EntityMetalRod extends EntityCustomProjectile {
 
     /*
      * 0 = Steel 1 = Stainless Steel 2 = HSLA Steel
      */
-    private static final DataParameter<Integer> NUMBER = EntityDataManager.createKey(EntityMetalRod.class, DataSerializers.VARINT);
+    private static final EntityDataAccessor<Integer> NUMBER = SynchedEntityData.defineId(EntityMetalRod.class, EntityDataSerializers.INT);
     private int number = 0;
 
-    public EntityMetalRod(EntityType<? extends ProjectileItemEntity> type, World world) {
+    public EntityMetalRod(EntityType<? extends ThrowableItemProjectile> type, Level world) {
 	super(DeferredRegisters.ENTITY_METALROD.get(), world);
     }
 
-    public EntityMetalRod(LivingEntity entity, World world, int number) {
+    public EntityMetalRod(LivingEntity entity, Level world, int number) {
 	super(DeferredRegisters.ENTITY_METALROD.get(), entity, world);
 	this.number = number;
     }
 
-    public EntityMetalRod(double x, double y, double z, World worldIn, int number) {
+    public EntityMetalRod(double x, double y, double z, Level worldIn, int number) {
 	super(DeferredRegisters.ENTITY_METALROD.get(), x, y, z, worldIn);
 	this.number = number;
     }
@@ -45,53 +45,53 @@ public class EntityMetalRod extends EntityCustomProjectile {
     @Override
     public void tick() {
 	super.tick();
-	if (!world.isRemote) {
-	    dataManager.set(NUMBER, number);
+	if (!level.isClientSide) {
+	    entityData.set(NUMBER, number);
 	} else {
-	    if (!dataManager.isEmpty()) {
-		number = dataManager.get(NUMBER);
+	    if (!entityData.isEmpty()) {
+		number = entityData.get(NUMBER);
 	    }
 	}
     }
 
     @Override
-    protected void func_230299_a_(BlockRayTraceResult p_230299_1_) {
-	BlockState state = world.getBlockState(p_230299_1_.getPos());
-	if (!ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
-	    if (!world.isRemote) {
+    protected void onHitBlock(BlockHitResult p_230299_1_) {
+	BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
+	if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
+	    if (!level.isClientSide) {
 		// Hardness of obsidian
-		if (state.getBlockHardness(world, p_230299_1_.getPos()) < 50f
-			&& !ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
-		    world.removeBlock(p_230299_1_.getPos(), false);
+		if (state.getDestroySpeed(level, p_230299_1_.getBlockPos()) < 50f
+			&& !ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
+		    level.removeBlock(p_230299_1_.getBlockPos(), false);
 		}
-		world.playSound(null, p_230299_1_.getPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundCategory.BLOCKS, 1f, 1f);
+		level.playSound(null, p_230299_1_.getBlockPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
 	    }
-	    this.remove();
+	    remove();
 	}
     }
 
     @Override
-    protected void registerData() {
-	super.registerData();
-	dataManager.register(NUMBER, number);
+    protected void defineSynchedData() {
+	super.defineSynchedData();
+	entityData.define(NUMBER, number);
     }
 
     // It bugs for some reason if I don't have the break
     @Override
-    public void onEntityHit(EntityRayTraceResult p_213868_1_) {
+    public void onHitEntity(EntityHitResult p_213868_1_) {
 	switch (number) {
 	case 0:
-	    p_213868_1_.getEntity().attackEntityFrom(DamageSources.ACCELERATED_BOLT, 16f);
+	    p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
 	    break;
 	case 1:
-	    p_213868_1_.getEntity().attackEntityFrom(DamageSources.ACCELERATED_BOLT, 20f);
+	    p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
 	    break;
 	case 2:
-	    p_213868_1_.getEntity().attackEntityFrom(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
+	    p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
 	    break;
 	default:
 	}
-	super.onEntityHit(p_213868_1_);
+	super.onHitEntity(p_213868_1_);
     }
 
     @Override

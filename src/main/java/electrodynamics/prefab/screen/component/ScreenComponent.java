@@ -2,13 +2,13 @@ package electrodynamics.prefab.screen.component;
 
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.IGuiComponent;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,30 +27,30 @@ public abstract class ScreenComponent implements IGuiComponent {
 	yLocation = y;
     }
 
-    public void displayTooltip(MatrixStack stack, ITextComponent tooltip, int xAxis, int yAxis) {
+    public void displayTooltip(PoseStack stack, Component tooltip, int xAxis, int yAxis) {
 	gui.displayTooltip(stack, tooltip, xAxis, yAxis);
     }
 
-    public void displayTooltips(MatrixStack stack, List<? extends ITextProperties> tooltips, int xAxis, int yAxis) {
+    public void displayTooltips(PoseStack stack, List<? extends FormattedText> tooltips, int xAxis, int yAxis) {
 	gui.displayTooltips(stack, tooltips, xAxis, yAxis);
     }
 
-    public void renderScaledText(MatrixStack stack, String text, int x, int y, int color, int maxX) {
-	int length = gui.getFontRenderer().getStringWidth(text);
+    public void renderScaledText(PoseStack stack, String text, int x, int y, int color, int maxX) {
+	int length = gui.getFontRenderer().width(text);
 
 	if (length <= maxX) {
-	    gui.getFontRenderer().drawString(stack, text, x, y, color);
+	    gui.getFontRenderer().draw(stack, text, x, y, color);
 	} else {
 	    float scale = (float) maxX / length;
 	    float reverse = 1 / scale;
 	    float yAdd = 4 - scale * 8 / 2F;
 
-	    stack.push();
+	    stack.pushPose();
 
 	    stack.scale(scale, scale, scale);
-	    gui.getFontRenderer().drawString(stack, text, (int) (x * reverse), (int) (y * reverse + yAdd), color);
+	    gui.getFontRenderer().draw(stack, text, (int) (x * reverse), (int) (y * reverse + yAdd), color);
 
-	    stack.pop();
+	    stack.popPose();
 	}
     }
 

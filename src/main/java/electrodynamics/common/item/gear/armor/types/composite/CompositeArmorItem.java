@@ -8,26 +8,26 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
 import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlateHolderProvider;
 import electrodynamics.client.render.model.armor.types.RenderCompositeArmor;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -36,24 +36,24 @@ public class CompositeArmorItem extends ArmorItem {
 
     private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 
-    public CompositeArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot) {
-	super(materialIn, slot, new Item.Properties().maxStackSize(1).group(References.CORETAB).isImmuneToFire().setNoRepair());
+    public CompositeArmorItem(ArmorMaterial materialIn, EquipmentSlot slot) {
+	super(materialIn, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());
     }
 
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 	CompositeArmorItem item = (CompositeArmorItem) stack.getItem();
-	if (item.getEquipmentSlot().equals(EquipmentSlotType.CHEST)) {
+	if (item.getSlot().equals(EquipmentSlot.CHEST)) {
 	    return new CapabilityCeramicPlateHolderProvider();
 	}
 	return null;
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-	if (isInGroup(group)) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+	if (allowdedIn(group)) {
 	    ItemStack filled = new ItemStack(this);
-	    if (ItemStack.areItemsEqualIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+	    if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
 		filled.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> h.increasePlateCount(2));
 		items.add(filled);
 	    }
@@ -63,7 +63,7 @@ public class CompositeArmorItem extends ArmorItem {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
 	return false;
     }
 
@@ -73,56 +73,56 @@ public class CompositeArmorItem extends ArmorItem {
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-	super.addInformation(stack, worldIn, tooltip, flagIn);
-	if (getEquipmentSlot().equals(EquipmentSlotType.CHEST)) {
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	if (getSlot().equals(EquipmentSlot.CHEST)) {
 	    stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
-		ITextComponent tip = new TranslationTextComponent("tooltip.electrodynamics.ceramicplatecount",
-			new StringTextComponent(h.getPlateCount() + "")).mergeStyle(TextFormatting.AQUA);
+		Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getPlateCount() + ""))
+			.withStyle(ChatFormatting.AQUA);
 		tooltip.add(tip);
 	    });
 	}
     }
 
     @Override
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+    public void onArmorTick(ItemStack stack, Level world, Player player) {
 	super.onArmorTick(stack, world, player);
 	ItemStack[] pieces = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
 		new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
 		new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
 
 	List<ItemStack> armorPieces = new ArrayList<>();
-	player.getArmorInventoryList().forEach(armorPieces::add);
+	player.getArmorSlots().forEach(armorPieces::add);
 
-	if (ItemStack.areItemsEqual(armorPieces.get(0), pieces[3]) || ItemStack.areItemsEqual(armorPieces.get(1), pieces[2])
-		|| ItemStack.areItemsEqual(armorPieces.get(2), pieces[1]) || ItemStack.areItemsEqual(armorPieces.get(3), pieces[0])) {
-	    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20));
+	if (ItemStack.isSame(armorPieces.get(0), pieces[3]) || ItemStack.isSame(armorPieces.get(1), pieces[2])
+		|| ItemStack.isSame(armorPieces.get(2), pieces[1]) || ItemStack.isSame(armorPieces.get(3), pieces[0])) {
+	    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
 	}
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A defaultM) {
+    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defaultM) {
 
 	if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {
 
-	    RenderCompositeArmor model = armorSlot == EquipmentSlotType.LEGS ? new RenderCompositeArmor(0.5f) : new RenderCompositeArmor(1f);
+	    RenderCompositeArmor model = armorSlot == EquipmentSlot.LEGS ? new RenderCompositeArmor(0.5f) : new RenderCompositeArmor(1f);
 
-	    model.HEAD.showModel = armorSlot == EquipmentSlotType.HEAD;
+	    model.HEAD.visible = armorSlot == EquipmentSlot.HEAD;
 
-	    model.CHEST.showModel = armorSlot == EquipmentSlotType.CHEST;
-	    model.RIGHT_ARM.showModel = armorSlot == EquipmentSlotType.CHEST;
-	    model.LEFT_ARM.showModel = armorSlot == EquipmentSlotType.CHEST;
+	    model.CHEST.visible = armorSlot == EquipmentSlot.CHEST;
+	    model.RIGHT_ARM.visible = armorSlot == EquipmentSlot.CHEST;
+	    model.LEFT_ARM.visible = armorSlot == EquipmentSlot.CHEST;
 
-	    model.RIGHT_LEG.showModel = armorSlot == EquipmentSlotType.LEGS;
-	    model.LEFT_LEG.showModel = armorSlot == EquipmentSlotType.LEGS;
+	    model.RIGHT_LEG.visible = armorSlot == EquipmentSlot.LEGS;
+	    model.LEFT_LEG.visible = armorSlot == EquipmentSlot.LEGS;
 
-	    model.RIGHT_SHOE.showModel = armorSlot == EquipmentSlotType.FEET;
-	    model.LEFT_SHOE.showModel = armorSlot == EquipmentSlotType.FEET;
+	    model.RIGHT_SHOE.visible = armorSlot == EquipmentSlot.FEET;
+	    model.LEFT_SHOE.visible = armorSlot == EquipmentSlot.FEET;
 
-	    model.isChild = defaultM.isChild;
-	    model.isSitting = defaultM.isSitting;
-	    model.isSneak = defaultM.isSneak;
+	    model.young = defaultM.young;
+	    model.riding = defaultM.riding;
+	    model.crouching = defaultM.crouching;
 
 	    model.rightArmPose = defaultM.rightArmPose;
 	    model.leftArmPose = defaultM.leftArmPose;
@@ -134,7 +134,7 @@ public class CompositeArmorItem extends ArmorItem {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 	return ARMOR_TEXTURE_LOCATION;
     }
 }

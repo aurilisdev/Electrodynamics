@@ -2,7 +2,7 @@ package electrodynamics.api.screen.component;
 
 import java.awt.Rectangle;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -11,10 +11,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public interface IGuiComponent {
     Rectangle getBounds(int guiWidth, int guiHeight);
 
-    default void renderBackground(MatrixStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+    default void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
     }
 
-    default void renderForeground(MatrixStack stack, int xAxis, int yAxis) {
+    default void renderForeground(PoseStack stack, int xAxis, int yAxis) {
     }
 
     default void preMouseClicked(double xAxis, double yAxis, int button) {

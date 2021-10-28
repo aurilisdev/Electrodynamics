@@ -7,25 +7,24 @@ import electrodynamics.prefab.tile.IUpdateableTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class PacketUpdateTile {
 
-    private final CompoundNBT updateTag;
+    private final CompoundTag updateTag;
     private final BlockPos pos;
     private boolean isGUI;
 
     public PacketUpdateTile(IUpdateableTile tile, boolean isGUI) {
-	this(tile.getTile().getPos(), isGUI ? tile.writeGUIPacket() : tile.writeCustomPacket(), isGUI);
+	this(tile.getTile().getBlockPos(), isGUI ? tile.writeGUIPacket() : tile.writeCustomPacket(), isGUI);
 	this.isGUI = isGUI;
     }
 
-    public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI, CompoundNBT base) {
+    public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI, CompoundTag base) {
 	this(pos, base, isGUI);
 	if (isGUI) {
 	    if (component.getGuiPacketSupplier() != null) {
@@ -39,7 +38,7 @@ public class PacketUpdateTile {
 	this.isGUI = isGUI;
     }
 
-    private PacketUpdateTile(BlockPos pos, CompoundNBT updateTag, boolean isGUI) {
+    private PacketUpdateTile(BlockPos pos, CompoundTag updateTag, boolean isGUI) {
 	this.pos = pos;
 	this.updateTag = updateTag;
 	this.isGUI = isGUI;
@@ -48,9 +47,9 @@ public class PacketUpdateTile {
     public static void handle(PacketUpdateTile message, Supplier<Context> context) {
 	Context ctx = context.get();
 	ctx.enqueueWork(() -> {
-	    ClientWorld world = Minecraft.getInstance().world;
+	    ClientLevel world = Minecraft.getInstance().level;
 	    if (world != null) {
-		TileEntity tile = world.getTileEntity(message.pos);
+		BlockEntity tile = world.getBlockEntity(message.pos);
 		if (tile instanceof IUpdateableTile) {
 		    IUpdateableTile updateable = (IUpdateableTile) tile;
 		    if (message.isGUI) {
@@ -78,13 +77,13 @@ public class PacketUpdateTile {
 	ctx.setPacketHandled(true);
     }
 
-    public static void encode(PacketUpdateTile pkt, PacketBuffer buf) {
+    public static void encode(PacketUpdateTile pkt, FriendlyByteBuf buf) {
 	buf.writeBlockPos(pkt.pos);
-	buf.writeCompoundTag(pkt.updateTag);
+	buf.writeNbt(pkt.updateTag);
 	buf.writeBoolean(pkt.isGUI);
     }
 
-    public static PacketUpdateTile decode(PacketBuffer buf) {
-	return new PacketUpdateTile(buf.readBlockPos(), buf.readCompoundTag(), buf.readBoolean());
+    public static PacketUpdateTile decode(FriendlyByteBuf buf) {
+	return new PacketUpdateTile(buf.readBlockPos(), buf.readNbt(), buf.readBoolean());
     }
 }

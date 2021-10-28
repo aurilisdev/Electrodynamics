@@ -10,13 +10,13 @@ import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 
 public class ItemRailgunKinetic extends ItemRailgun {
 
@@ -31,19 +31,19 @@ public class ItemRailgunKinetic extends ItemRailgun {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 	ItemStack gunStack;
 	ItemStack ammoStack;
 
-	if (handIn == Hand.MAIN_HAND) {
-	    gunStack = playerIn.getHeldItemMainhand();
-	    ammoStack = playerIn.getHeldItemOffhand();
+	if (handIn == InteractionHand.MAIN_HAND) {
+	    gunStack = playerIn.getMainHandItem();
+	    ammoStack = playerIn.getOffhandItem();
 	} else {
-	    gunStack = playerIn.getHeldItemOffhand();
-	    ammoStack = playerIn.getHeldItemMainhand();
+	    gunStack = playerIn.getOffhandItem();
+	    ammoStack = playerIn.getMainHandItem();
 	}
 
-	if (!worldIn.isRemote) {
+	if (!worldIn.isClientSide) {
 	    ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
 
 	    if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && !ammoStack.isEmpty()
@@ -61,25 +61,25 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		}
 
 		if (projectile == null) {
-		    worldIn.playSound(null, playerIn.getPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundCategory.PLAYERS, 1, 1);
+		    worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 		} else {
 		    railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
-		    worldIn.playSound(null, playerIn.getPosition(), SoundRegister.SOUND_RAILGUNKINETIC.get(), SoundCategory.PLAYERS, 1, 1);
+		    worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC.get(), SoundSource.PLAYERS, 1, 1);
 		    projectile.setItem(ammoStack);
 		    projectile.setNoGravity(true);
-		    projectile.setShooter(playerIn);
-		    projectile.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0f, 20f, 1.0F);
-		    if (!worldIn.isRemote) {
-			worldIn.addEntity(projectile);
+		    projectile.setOwner(playerIn);
+		    projectile.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0f, 20f, 1.0F);
+		    if (!worldIn.isClientSide) {
+			worldIn.addFreshEntity(projectile);
 		    }
 		    railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
 		    ammoStack.shrink(1);
 		}
 	    } else {
-		worldIn.playSound(null, playerIn.getPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundCategory.PLAYERS, 1, 1);
+		worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 	    }
 	}
-	return ActionResult.resultPass(gunStack);
+	return InteractionResultHolder.pass(gunStack);
     }
 
     /*

@@ -9,10 +9,10 @@ import com.google.gson.JsonObject;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeSerializer;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class DO2ORecipeSerializer<T extends DO2ORecipe> extends ElectrodynamicsRecipeSerializer<T> {
@@ -23,10 +23,10 @@ public class DO2ORecipeSerializer<T extends DO2ORecipe> extends ElectrodynamicsR
 
     @Nullable
     @Override
-    public T read(ResourceLocation recipeId, JsonObject json) {
-	CountableIngredient input1 = CountableIngredient.deserialize(JSONUtils.getJsonObject(json, "input1"));
-	CountableIngredient input2 = CountableIngredient.deserialize(JSONUtils.getJsonObject(json, "input2"));
-	ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
+    public T fromJson(ResourceLocation recipeId, JsonObject json) {
+	CountableIngredient input1 = CountableIngredient.deserialize(GsonHelper.getAsJsonObject(json, "input1"));
+	CountableIngredient input2 = CountableIngredient.deserialize(GsonHelper.getAsJsonObject(json, "input2"));
+	ItemStack output = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "output"), true);
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
 		    CountableIngredient.class, ItemStack.class);
@@ -39,10 +39,10 @@ public class DO2ORecipeSerializer<T extends DO2ORecipe> extends ElectrodynamicsR
 
     @Nullable
     @Override
-    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
+    public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 	CountableIngredient input1 = CountableIngredient.read(buffer);
 	CountableIngredient input2 = CountableIngredient.read(buffer);
-	ItemStack output = buffer.readItemStack();
+	ItemStack output = buffer.readItem();
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
 		    CountableIngredient.class, ItemStack.class);
@@ -54,11 +54,11 @@ public class DO2ORecipeSerializer<T extends DO2ORecipe> extends ElectrodynamicsR
     }
 
     @Override
-    public void write(PacketBuffer buffer, T recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, T recipe) {
 	CountableIngredient input1 = (CountableIngredient) recipe.getIngredients().get(0);
 	CountableIngredient input2 = (CountableIngredient) recipe.getIngredients().get(1);
 	input1.writeStack(buffer);
 	input2.writeStack(buffer);
-	buffer.writeItemStack(recipe.getRecipeOutput(), false);
+	buffer.writeItemStack(recipe.getResultItem(), false);
     }
 }

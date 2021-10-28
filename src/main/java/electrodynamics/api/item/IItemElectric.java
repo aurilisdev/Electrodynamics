@@ -2,8 +2,8 @@ package electrodynamics.api.item;
 
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 public interface IItemElectric {
 
@@ -21,7 +21,7 @@ public interface IItemElectric {
 
     default TransferPack receivePower(ItemStack stack, TransferPack amount, boolean debug) {
 	if (!stack.hasTag()) {
-	    stack.setTag(new CompoundNBT());
+	    stack.setTag(new CompoundTag());
 	}
 
 	double current = stack.getTag().getDouble("joules");
@@ -47,7 +47,7 @@ public interface IItemElectric {
 
     static void setEnergyStored(ItemStack stack, double amount) {
 	if (!stack.hasTag()) {
-	    stack.setTag(new CompoundNBT());
+	    stack.setTag(new CompoundTag());
 	}
 	stack.getTag().putDouble("joules", amount);
     }

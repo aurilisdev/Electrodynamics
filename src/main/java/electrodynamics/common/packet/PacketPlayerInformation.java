@@ -4,11 +4,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class PacketPlayerInformation {
 
@@ -20,8 +19,8 @@ public class PacketPlayerInformation {
 	for (ModInfo info : total) {
 	    actual += info.getModId() + ":";
 	}
-	for (ResourcePackInfo pack : Minecraft.getInstance().getResourcePackList().getAllPacks()) {
-	    actual += pack.getName() + "," + pack.getTitle().getString() + "," + pack.getDescription() + ":";
+	for (Pack pack : Minecraft.getInstance().getResourcePackRepository().getAvailablePacks()) {
+	    actual += pack.getId() + "," + pack.getTitle().getString() + "," + pack.getDescription() + ":";
 	}
 	information = actual;
     }
@@ -36,11 +35,11 @@ public class PacketPlayerInformation {
 	ctx.setPacketHandled(true);
     }
 
-    public static void encode(PacketPlayerInformation pkt, PacketBuffer buf) {
-	buf.writeString(pkt.information);
+    public static void encode(PacketPlayerInformation pkt, FriendlyByteBuf buf) {
+	buf.writeUtf(pkt.information);
     }
 
-    public static PacketPlayerInformation decode(PacketBuffer buf) {
-	return new PacketPlayerInformation(buf.readString(999999));
+    public static PacketPlayerInformation decode(FriendlyByteBuf buf) {
+	return new PacketPlayerInformation(buf.readUtf(999999));
     }
 }

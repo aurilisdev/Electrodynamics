@@ -8,11 +8,11 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -34,13 +34,13 @@ public class FluidIngredient extends Ingredient {
 
 	Preconditions.checkArgument(jsonObject != null, "FluidStack can only be deserialized from a JsonObject");
 	try {
-	    if (JSONUtils.hasField(jsonObject, "fluid")) {
-		ResourceLocation resourceLocation = new ResourceLocation(JSONUtils.getString(jsonObject, "fluid"));
-		int amount = JSONUtils.getInt(jsonObject, "amount");
+	    if (GsonHelper.isValidNode(jsonObject, "fluid")) {
+		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "fluid"));
+		int amount = GsonHelper.getAsInt(jsonObject, "amount");
 		return new FluidIngredient(new FluidStack(getFluidFromTag(resourceLocation), amount));
-	    } else if (JSONUtils.hasField(jsonObject, "tag")) {
-		ResourceLocation resourceLocation = new ResourceLocation(JSONUtils.getString(jsonObject, "tag"));
-		int amount = JSONUtils.getInt(jsonObject, "amount");
+	    } else if (GsonHelper.isValidNode(jsonObject, "tag")) {
+		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
+		int amount = GsonHelper.getAsInt(jsonObject, "amount");
 		return new FluidIngredient(new FluidStack(getFluidFromTag(resourceLocation), amount));
 	    }
 	} catch (Exception e) {
@@ -53,7 +53,7 @@ public class FluidIngredient extends Ingredient {
     public boolean testFluid(@Nullable FluidStack t) {
 	if (t != null) {
 	    if (t.getAmount() < FLUID_STACK.getAmount()) {
-		if (t.getFluid().isEquivalentTo(FLUID_STACK.getFluid())) {
+		if (t.getFluid().isSame(FLUID_STACK.getFluid())) {
 		    return true;
 		}
 	    }
@@ -61,11 +61,11 @@ public class FluidIngredient extends Ingredient {
 	return false;
     }
 
-    public static FluidIngredient read(PacketBuffer input) {
+    public static FluidIngredient read(FriendlyByteBuf input) {
 	return new FluidIngredient(input.readFluidStack());
     }
 
-    public void writeStack(PacketBuffer output) {
+    public void writeStack(FriendlyByteBuf output) {
 	output.writeFluidStack(FLUID_STACK);
     }
 

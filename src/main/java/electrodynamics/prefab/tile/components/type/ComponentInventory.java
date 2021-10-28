@@ -14,21 +14,21 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-public class ComponentInventory implements Component, ISidedInventory {
+public class ComponentInventory implements Component, WorldlyContainer {
     protected GenericTile holder = null;
 
     @Override
@@ -37,9 +37,9 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     protected static final int[] SLOTS_EMPTY = new int[] {};
-    protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+    protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
     protected BiPredicate<Integer, ItemStack> itemValidPredicate = (x, y) -> true;
-    protected HashSet<PlayerEntity> viewing = new HashSet<>();
+    protected HashSet<Player> viewing = new HashSet<>();
     protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
     protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
     protected Direction lastDirection = null;
@@ -66,7 +66,7 @@ public class ComponentInventory implements Component, ISidedInventory {
 
     public ComponentInventory size(int inventorySize) {
 	this.inventorySize = inventorySize;
-	items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+	items = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 	return this;
     }
 
@@ -117,31 +117,31 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-	ItemStackHelper.loadAllItems(nbt, items);
+    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+	ContainerHelper.loadAllItems(nbt, items);
     }
 
     @Override
-    public void saveToNBT(CompoundNBT nbt) {
-	ItemStackHelper.saveAllItems(nbt, items);
+    public void saveToNBT(CompoundTag nbt) {
+	ContainerHelper.saveAllItems(nbt, items);
     }
 
-    protected void loadNBT(CompoundNBT nbt) {
+    protected void loadNBT(CompoundTag nbt) {
 	items.clear();
 	loadFromNBT(holder.getBlockState(), nbt);
     }
 
-    protected void saveNBT(CompoundNBT nbt) {
+    protected void saveNBT(CompoundTag nbt) {
 	saveToNBT(nbt);
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
+    public void startOpen(Player player) {
 	viewing.add(player);
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
+    public void stopOpen(Player player) {
 	viewing.remove(player);
     }
 
@@ -160,7 +160,7 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
 	return inventorySize;
     }
 
@@ -175,24 +175,24 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack getItem(int index) {
 	return items.get(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-	return ItemStackHelper.getAndSplit(items, index, count);
+    public ItemStack removeItem(int index, int count) {
+	return ContainerHelper.removeItem(items, index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-	return ItemStackHelper.getAndRemove(items, index);
+    public ItemStack removeItemNoUpdate(int index) {
+	return ContainerHelper.takeItem(items, index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-	if (stack.getCount() > getInventoryStackLimit()) {
-	    stack.setCount(getInventoryStackLimit());
+    public void setItem(int index, ItemStack stack) {
+	if (stack.getCount() > getMaxStackSize()) {
+	    stack.setCount(getMaxStackSize());
 	}
 	if (shouldSendInfo && stack.getCount() != items.get(index).getCount() || stack.getItem() != items.get(index).getItem()) {
 	    items.set(index, stack);
@@ -205,13 +205,13 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-	BlockPos pos = holder.getPos();
-	return holder.getWorld().getTileEntity(pos) == holder && player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
+    public boolean stillValid(Player player) {
+	BlockPos pos = holder.getBlockPos();
+	return holder.getLevel().getBlockEntity(pos) == holder && player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
 	items.clear();
     }
 
@@ -238,22 +238,22 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
+    public boolean canPlaceItem(int index, ItemStack stack) {
 	return itemValidPredicate.test(index, stack);
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, Direction direction) {
 	lastDirection = direction;
 	ArrayList<Integer> test = new ArrayList<>();
 	for (int i : getSlotsForFace(direction)) {
 	    test.add(i);
 	}
-	return test.contains(index) && isItemValidForSlot(index, itemStackIn);
+	return test.contains(index) && canPlaceItem(index, itemStackIn);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
 	lastDirection = direction;
 	ArrayList<Integer> test = new ArrayList<>();
 	for (int i : getSlotsForFace(direction)) {
@@ -266,7 +266,7 @@ public class ComponentInventory implements Component, ISidedInventory {
 	return items;
     }
 
-    public HashSet<PlayerEntity> getViewing() {
+    public HashSet<Player> getViewing() {
 	return viewing;
     }
 
@@ -281,7 +281,7 @@ public class ComponentInventory implements Component, ISidedInventory {
     }
 
     @Override
-    public void markDirty() {
-	holder.markDirty();
+    public void setChanged() {
+	holder.setChanged();
     }
 }

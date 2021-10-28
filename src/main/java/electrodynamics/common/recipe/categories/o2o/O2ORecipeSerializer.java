@@ -9,10 +9,10 @@ import com.google.gson.JsonObject;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeSerializer;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class O2ORecipeSerializer<T extends O2ORecipe> extends ElectrodynamicsRecipeSerializer<T> {
@@ -23,9 +23,9 @@ public class O2ORecipeSerializer<T extends O2ORecipe> extends ElectrodynamicsRec
 
     @Nullable
     @Override
-    public T read(ResourceLocation recipeId, JsonObject json) {
-	CountableIngredient input = CountableIngredient.deserialize(JSONUtils.getJsonObject(json, "input"));
-	ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
+    public T fromJson(ResourceLocation recipeId, JsonObject json) {
+	CountableIngredient input = CountableIngredient.deserialize(GsonHelper.getAsJsonObject(json, "input"));
+	ItemStack output = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "output"), true);
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
 		    ItemStack.class);
@@ -38,9 +38,9 @@ public class O2ORecipeSerializer<T extends O2ORecipe> extends ElectrodynamicsRec
 
     @Nullable
     @Override
-    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
+    public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 	CountableIngredient input = CountableIngredient.read(buffer);
-	ItemStack output = buffer.readItemStack();
+	ItemStack output = buffer.readItem();
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient.class,
 		    ItemStack.class);
@@ -52,10 +52,10 @@ public class O2ORecipeSerializer<T extends O2ORecipe> extends ElectrodynamicsRec
     }
 
     @Override
-    public void write(PacketBuffer buffer, T recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, T recipe) {
 	CountableIngredient input = (CountableIngredient) recipe.getIngredients().get(0);
 	input.writeStack(buffer);
-	buffer.writeItemStack(recipe.getRecipeOutput(), false);
+	buffer.writeItemStack(recipe.getResultItem(), false);
     }
 
 }

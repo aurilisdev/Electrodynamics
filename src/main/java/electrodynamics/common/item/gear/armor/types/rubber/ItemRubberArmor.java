@@ -2,56 +2,56 @@ package electrodynamics.common.item.gear.armor.types.rubber;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class ItemRubberArmor extends ArmorItem {
 
-    public ItemRubberArmor(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builderIn) {
+    public ItemRubberArmor(ArmorMaterial materialIn, EquipmentSlot slot, Properties builderIn) {
 	super(materialIn, slot, builderIn);
     }
 
-    public ItemRubberArmor(EquipmentSlotType slot, Properties builderIn) {
+    public ItemRubberArmor(EquipmentSlot slot, Properties builderIn) {
 	this(ArmorMaterialRubber.rubber, slot, builderIn);
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 	return References.ID + ":textures/model/rubberarmor.png";
     }
 
-    public enum ArmorMaterialRubber implements IArmorMaterial {
+    public enum ArmorMaterialRubber implements ArmorMaterial {
 	rubber;
 
 	@Override
-	public int getDurability(EquipmentSlotType slotIn) {
+	public int getDurabilityForSlot(EquipmentSlot slotIn) {
 	    return 100000;
 	}
 
 	@Override
-	public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+	public int getDefenseForSlot(EquipmentSlot slotIn) {
 	    return 2;
 	}
 
 	@Override
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 	    return 0;
 	}
 
 	@Override
-	public SoundEvent getSoundEvent() {
-	    return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
+	public SoundEvent getEquipSound() {
+	    return SoundEvents.ARMOR_EQUIP_LEATHER;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
-	    return Ingredient.fromItems(DeferredRegisters.ITEM_INSULATION.get());
+	public Ingredient getRepairIngredient() {
+	    return Ingredient.of(DeferredRegisters.ITEM_INSULATION.get());
 	}
 
 	@Override

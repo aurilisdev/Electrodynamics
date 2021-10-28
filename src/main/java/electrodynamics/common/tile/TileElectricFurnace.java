@@ -21,17 +21,17 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Block;
 
 public class TileElectricFurnace extends GenericTileTicking {
 
-    protected IRecipe<?> cachedRecipe = null;
+    protected Recipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;
 
     public TileElectricFurnace() {
@@ -77,7 +77,7 @@ public class TileElectricFurnace extends GenericTileTicking {
     protected void process(ComponentProcessor component) {
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	ItemStack output = component.getOutput();
-	ItemStack result = cachedRecipe.getRecipeOutput();
+	ItemStack result = cachedRecipe.getResultItem();
 	if (!output.isEmpty()) {
 	    output.setCount(output.getCount() + result.getCount());
 	} else {
@@ -86,7 +86,7 @@ public class TileElectricFurnace extends GenericTileTicking {
 	ItemStack input = component.getInput();
 	input.shrink(1);
 	if (input.getCount() == 0) {
-	    inv.setInventorySlotContents(component.getInputOne(), ItemStack.EMPTY);
+	    inv.setItem(component.getInputOne(), ItemStack.EMPTY);
 	}
     }
 
@@ -97,14 +97,19 @@ public class TileElectricFurnace extends GenericTileTicking {
 	    if (timeSinceChange > 40) {
 		Block bl = getBlockState().getBlock();
 		if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
-		    world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).getDefaultState()
-			    .with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		    level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)
+			    .defaultBlockState().setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)),
+			    2 | 16 | 32);
 		} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)) {
-		    world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)
-			    .getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		    level.setBlock(
+			    worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)
+				    .defaultBlockState().setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)),
+			    2 | 16 | 32);
 		} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)) {
-		    world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)
-			    .getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		    level.setBlock(
+			    worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)
+				    .defaultBlockState().setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)),
+			    2 | 16 | 32);
 		}
 		// TODO: This system should probably change to blockstate properties
 		timeSinceChange = 0;
@@ -115,8 +120,8 @@ public class TileElectricFurnace extends GenericTileTicking {
 		}
 		boolean hasRecipe = cachedRecipe != null;
 		if (!hasRecipe) {
-		    for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {
-			if (recipe.getType() == IRecipeType.SMELTING && recipe.getIngredients().get(0).test(component.getInput())) {
+		    for (Recipe<?> recipe : level.getRecipeManager().getRecipes()) {
+			if (recipe.getType() == RecipeType.SMELTING && recipe.getIngredients().get(0).test(component.getInput())) {
 			    hasRecipe = true;
 			    cachedRecipe = recipe;
 			}
@@ -124,8 +129,8 @@ public class TileElectricFurnace extends GenericTileTicking {
 		}
 		if (hasRecipe && cachedRecipe.getIngredients().get(0).test(component.getInput())) {
 		    ItemStack output = component.getOutput();
-		    ItemStack result = cachedRecipe.getRecipeOutput();
-		    return (output.isEmpty() || ItemStack.areItemsEqual(output, result))
+		    ItemStack result = cachedRecipe.getResultItem();
+		    return (output.isEmpty() || ItemStack.isSame(output, result))
 			    && output.getCount() + result.getCount() <= output.getMaxStackSize();
 		}
 	    }
@@ -133,14 +138,14 @@ public class TileElectricFurnace extends GenericTileTicking {
 	    timeSinceChange = 0;
 	    Block bl = getBlockState().getBlock();
 	    if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)) {
-		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).getDefaultState()
-			.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).defaultBlockState()
+			.setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)), 2 | 16 | 32);
 	    } else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)) {
-		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble).getDefaultState()
-			.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble).defaultBlockState()
+			.setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)), 2 | 16 | 32);
 	    } else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)) {
-		world.setBlockState(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple).getDefaultState()
-			.with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple).defaultBlockState()
+			.setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)), 2 | 16 | 32);
 	    }
 	    // TODO: This system should probably change to blockstate properties
 	}
@@ -154,16 +159,16 @@ public class TileElectricFurnace extends GenericTileTicking {
 		: getType() == DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get()
 			? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
 			: getProcessor(0).operatingTicks > 0;
-	if (has && world.rand.nextDouble() < 0.15) {
+	if (has && level.random.nextDouble() < 0.15) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    double d4 = world.rand.nextDouble();
-	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getXOffset() * (direction.getXOffset() == -1 ? 0 : 1) : d4;
-	    double d6 = world.rand.nextDouble();
-	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getZOffset() * (direction.getZOffset() == -1 ? 0 : 1) : d4;
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + d5, pos.getY() + d6, pos.getZ() + d7, 0.0D, 0.0D, 0.0D);
+	    double d4 = level.random.nextDouble();
+	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
+	    double d6 = level.random.nextDouble();
+	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
+	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 	}
 	if (has && tickable.getTicks() % 200 == 0) {
-	    SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundCategory.BLOCKS, 1, 1, pos);
+	    SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 	}
     }
 }

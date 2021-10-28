@@ -4,11 +4,11 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.tile.network.TileWire;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ItemMultimeter extends Item {
 
@@ -17,9 +17,9 @@ public class ItemMultimeter extends Item {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-	if (!context.getWorld().isRemote) {
-	    TileEntity tile = context.getWorld().getTileEntity(context.getPos());
+    public InteractionResult useOn(UseOnContext context) {
+	if (!context.getLevel().isClientSide) {
+	    BlockEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
 	    if (tile instanceof TileWire) {
 		TileWire wire = (TileWire) tile;
 		ElectricNetwork net = wire.getNetwork();
@@ -32,9 +32,9 @@ public class ItemMultimeter extends Item {
 		finalString += ChatFormatter.getElectricDisplay(net.getResistance(), ElectricUnit.RESISTANCE) + " ( -"
 			+ Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100) + "% "
 			+ ChatFormatter.getElectricDisplay(net.getLastEnergyLoss() * 20, ElectricUnit.WATT) + " )";
-		context.getPlayer().sendStatusMessage(new StringTextComponent(finalString), true);
+		context.getPlayer().displayClientMessage(new TextComponent(finalString), true);
 	    }
 	}
-	return super.onItemUse(context);
+	return super.useOn(context);
     }
 }

@@ -1,11 +1,11 @@
 package electrodynamics.api;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public interface IWrenchItem {
-    boolean onRotate(ItemStack stack, BlockPos pos, PlayerEntity player);
+    boolean onRotate(ItemStack stack, BlockPos pos, Player player);
 
-    boolean onPickup(ItemStack stack, BlockPos pos, PlayerEntity player);
+    boolean onPickup(ItemStack stack, BlockPos pos, Player player);
 }

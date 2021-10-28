@@ -4,9 +4,9 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class Item2FluidRecipe extends ElectrodynamicsRecipe implements IFluidRecipe {
@@ -32,7 +32,7 @@ public abstract class Item2FluidRecipe extends ElectrodynamicsRecipe implements 
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, ITEM_INPUT);
+	return NonNullList.of(null, ITEM_INPUT);
     }
 
 }

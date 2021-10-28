@@ -1,7 +1,7 @@
 package electrodynamics.prefab.item;
 
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class ElectricItemProperties extends Properties {
     public double temperature;

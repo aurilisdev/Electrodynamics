@@ -10,25 +10,25 @@ import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolType;
 
-public class ItemElectricDrill extends ToolItem implements IItemElectric {
+public class ItemElectricDrill extends DiggerItem implements IItemElectric {
     private static final Set<Block> EFFECTIVE_ON = ImmutableSet.of(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL,
 	    Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.POWERED_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.NETHER_GOLD_ORE, Blocks.ICE,
 	    Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE,
@@ -71,9 +71,8 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
     private final ElectricItemProperties properties;
 
     public ItemElectricDrill(ElectricItemProperties properties) {
-	super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON,
-		properties.maxDamage(0).addToolType(ToolType.PICKAXE, ElectricItemTier.DRILL.getHarvestLevel()).addToolType(ToolType.SHOVEL,
-			ElectricItemTier.DRILL.getHarvestLevel()));
+	super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON, properties.durability(0)
+		.addToolType(ToolType.PICKAXE, ElectricItemTier.DRILL.getLevel()).addToolType(ToolType.SHOVEL, ElectricItemTier.DRILL.getLevel()));
 	this.properties = properties;
     }
 
@@ -83,8 +82,8 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-	if (isInGroup(group)) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+	if (allowdedIn(group)) {
 	    ItemStack charged = new ItemStack(this);
 	    IItemElectric.setEnergyStored(charged, properties.capacity);
 	    items.add(charged);
@@ -95,34 +94,34 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
     }
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
 	return false;
     }
 
     @Override
-    public boolean canHarvestBlock(BlockState blockIn) {
-	int i = getTier().getHarvestLevel();
+    public boolean isCorrectToolForDrops(BlockState blockIn) {
+	int i = getTier().getLevel();
 	if (blockIn.getHarvestTool() == ToolType.PICKAXE) {
 	    return i >= blockIn.getHarvestLevel();
 	}
 	Material material = blockIn.getMaterial();
-	return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL || blockIn.isIn(Blocks.SNOW)
-		|| blockIn.isIn(Blocks.SNOW_BLOCK);
+	return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL || blockIn.is(Blocks.SNOW)
+		|| blockIn.is(Blocks.SNOW_BLOCK);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
 	Material material = state.getMaterial();
 	return getJoulesStored(stack) > properties.extract.getJoules()
-		? material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state)
-			: efficiency
+		? material != Material.METAL && material != Material.HEAVY_METAL && material != Material.STONE ? super.getDestroySpeed(stack, state)
+			: speed
 		: 0;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 	extractPower(stack, properties.extract.getJoules() * (PICK_EFFECTIVE_ON.contains(state.getBlock()) ? 1.5 : 1), false);
-	return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
     }
 
     @Override
@@ -136,14 +135,14 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-	super.addInformation(stack, worldIn, tooltip, flagIn);
-	tooltip.add(new TranslationTextComponent("tooltip.item.electric.info").mergeStyle(TextFormatting.GRAY)
-		.append(new StringTextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
-	tooltip.add(new TranslationTextComponent("tooltip.item.electric.voltage",
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
+		.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
+	tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
 		ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
 			+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
-				.mergeStyle(TextFormatting.RED));
+				.withStyle(ChatFormatting.RED));
     }
 
     @Override

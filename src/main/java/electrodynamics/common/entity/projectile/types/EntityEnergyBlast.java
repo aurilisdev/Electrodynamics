@@ -3,43 +3,43 @@ package electrodynamics.common.entity.projectile.types;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class EntityEnergyBlast extends EntityCustomProjectile {
 
-    public EntityEnergyBlast(EntityType<? extends ProjectileItemEntity> type, World world) {
+    public EntityEnergyBlast(EntityType<? extends ThrowableItemProjectile> type, Level world) {
 	super(type, world);
     }
 
-    public EntityEnergyBlast(LivingEntity entity, World world) {
+    public EntityEnergyBlast(LivingEntity entity, Level world) {
 	super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), entity, world);
     }
 
-    public EntityEnergyBlast(double x, double y, double z, World worldIn) {
+    public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
 	super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
     }
 
     @Override
-    protected void func_230299_a_(BlockRayTraceResult p_230299_1_) {
-	BlockState state = world.getBlockState(p_230299_1_.getPos());
-	if (!ItemStack.areItemsEqual(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
-	    if (!world.isRemote) {
-		world.createExplosion(null, p_230299_1_.getPos().getX(), p_230299_1_.getPos().getY(), p_230299_1_.getPos().getZ(),
-			4f / (ticksExisted / 40.0f + 1), true, Mode.DESTROY);
+    protected void onHitBlock(BlockHitResult p_230299_1_) {
+	BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
+	if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
+	    if (!level.isClientSide) {
+		level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(),
+			4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
 	    }
-	    this.remove();
+	    remove();
 	}
-	if (ticksExisted > 100) {
-	    this.remove();
+	if (tickCount > 100) {
+	    remove();
 	}
     }
 
@@ -47,14 +47,14 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
     public void tick() {
 	super.tick();
 	if (isInWater() || isInLava()) {
-	    this.remove();
+	    remove();
 	}
     }
 
     @Override
-    public void onEntityHit(EntityRayTraceResult p_213868_1_) {
-	p_213868_1_.getEntity().attackEntityFrom(DamageSources.PLASMA_BOLT, 40F / (ticksExisted / 40.0f + 1));
-	super.onEntityHit(p_213868_1_);
+    public void onHitEntity(EntityHitResult p_213868_1_) {
+	p_213868_1_.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
+	super.onHitEntity(p_213868_1_);
     }
 
 }

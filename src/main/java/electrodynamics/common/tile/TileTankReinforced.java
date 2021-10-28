@@ -5,8 +5,8 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.TileGenericTank;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 public class TileTankReinforced extends TileGenericTank {
 

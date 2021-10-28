@@ -8,12 +8,12 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.Location;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileMultiSubnode extends GenericTile {
     public Location nodePos;
@@ -25,26 +25,26 @@ public class TileMultiSubnode extends GenericTile {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
 	if (nodePos != null) {
 	    nodePos.writeToNBT(compound, "node");
 	}
-	return super.write(compound);
+	return super.save(compound);
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-	super.read(state, compound);
+    public void load(BlockState state, CompoundTag compound) {
+	super.load(state, compound);
 	nodePos = Location.readFromNBT(compound, "node");
 	Scheduler.schedule(20, this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler)::sendCustomPacket);
     }
 
-    protected void readCustomPacket(CompoundNBT tag) {
-	read(getBlockState(), tag);
+    protected void readCustomPacket(CompoundTag tag) {
+	load(getBlockState(), tag);
     }
 
-    protected void writeCustomPacket(CompoundNBT nbt) {
-	write(nbt);
+    protected void writeCustomPacket(CompoundTag nbt) {
+	save(nbt);
     }
 
     public VoxelShape getShape() {
@@ -52,11 +52,11 @@ public class TileMultiSubnode extends GenericTile {
 	    return shapeCache;
 	}
 	if (nodePos != null) {
-	    TileEntity tile = nodePos.getTile(world);
+	    BlockEntity tile = nodePos.getTile(level);
 	    if (tile instanceof IMultiblockTileNode) {
 		IMultiblockTileNode node = (IMultiblockTileNode) tile;
-		BlockPos tp = tile.getPos();
-		BlockPos offset = new BlockPos(pos.getX() - tp.getX(), pos.getY() - tp.getY(), pos.getZ() - tp.getZ());
+		BlockPos tp = tile.getBlockPos();
+		BlockPos offset = new BlockPos(worldPosition.getX() - tp.getX(), worldPosition.getY() - tp.getY(), worldPosition.getZ() - tp.getZ());
 		for (Subnode sub : node.getSubNodes()) {
 		    if (offset.equals(sub.pos)) {
 			shapeCache = sub.shape;
@@ -65,7 +65,7 @@ public class TileMultiSubnode extends GenericTile {
 		}
 	    }
 	}
-	return VoxelShapes.fullCube();
+	return Shapes.block();
     }
 
 }

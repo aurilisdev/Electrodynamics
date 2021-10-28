@@ -2,14 +2,14 @@ package electrodynamics.api.item;
 
 import electrodynamics.prefab.item.TemperateItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 public interface IItemTemperate {
 
     static void setTemperature(ItemStack stack, double amount) {
 	if (!stack.hasTag()) {
-	    stack.setTag(new CompoundNBT());
+	    stack.setTag(new CompoundTag());
 	}
 	stack.getTag().putDouble("temperature", amount);
     }
@@ -27,7 +27,7 @@ public interface IItemTemperate {
 
     default TransferPack recieveHeat(ItemStack stack, TransferPack amount, boolean debug) {
 	if (!stack.hasTag()) {
-	    stack.setTag(new CompoundNBT());
+	    stack.setTag(new CompoundTag());
 	}
 	double currTemp = stack.getTag().getDouble("temperature");
 	if (!debug) {

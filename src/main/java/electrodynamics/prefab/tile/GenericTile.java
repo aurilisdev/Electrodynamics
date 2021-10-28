@@ -21,27 +21,26 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import electrodynamics.prefab.utilities.Scheduler;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.INameable;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.Nameable;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class GenericTile extends TileEntity implements INameable {
+public class GenericTile extends BlockEntity implements Nameable {
     private Component[] components = new Component[ComponentType.values().length];
     private ComponentProcessor[] processors = new ComponentProcessor[5];
 
@@ -85,24 +84,23 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-	super.read(state, compound);
+    public void load( CompoundTag compound) {
 	for (Component component : components) {
 	    if (component != null) {
 		component.holder(this);
-		component.loadFromNBT(state, compound);
+		component.loadFromNBT( compound);
 	    }
 	}
 	for (ComponentProcessor pr : processors) {
 	    if (pr != null) {
 		pr.holder(this);
-		pr.loadFromNBT(state, compound);
+		pr.loadFromNBT( compound);
 	    }
 	}
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
 	for (Component component : components) {
 	    if (component != null) {
 		component.holder(this);
@@ -115,10 +113,10 @@ public class GenericTile extends TileEntity implements INameable {
 		pr.saveToNBT(compound);
 	    }
 	}
-	return super.write(compound);
+	return super.save(compound);
     }
 
-    protected GenericTile(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTile(BlockEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
     }
 
@@ -139,9 +137,9 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     @Override
-    public ITextComponent getName() {
+    public net.minecraft.network.chat.Component getName() {
 	return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName()
-		: new StringTextComponent(References.ID + ".default.tile.name");
+		: new TextComponent(References.ID + ".default.tile.name");
     }
 
     @Override
@@ -165,8 +163,8 @@ public class GenericTile extends TileEntity implements INameable {
     }
 
     @Override
-    public void remove() {
-	super.remove();
+    public void setRemoved() {
+	super.setRemoved();
 	for (Component component : components) {
 	    if (component != null) {
 		component.holder(this);
@@ -181,32 +179,32 @@ public class GenericTile extends TileEntity implements INameable {
 	}
     }
 
-    public IntArray getCoordsArray() {
-	IntArray array = new IntArray(3);
-	array.set(0, pos.getX());
-	array.set(1, pos.getY());
-	array.set(2, pos.getZ());
+    public SimpleContainerData getCoordsArray() {
+	SimpleContainerData array = new SimpleContainerData(3);
+	array.set(0, worldPosition.getX());
+	array.set(1, worldPosition.getY());
+	array.set(2, worldPosition.getZ());
 	return array;
     }
 
     @Override
-    public BlockPos getPos() {
-	return pos;
+    public BlockPos getBlockPos() {
+	return worldPosition;
     }
 
     @Override
-    public double getMaxRenderDistanceSquared() {
+    public double getViewDistance() {
 	return 256;
     }
 
     @Nullable
-    public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+    public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 	ItemStack stack = pr.getInput();
 	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
 	    return null;
 	}
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
+	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
+	for (Recipe<?> iRecipe : recipes) {
 	    T recipe = recipeClass.cast(iRecipe);
 	    if (recipe.matchesRecipe(pr)) {
 		return recipe;
@@ -215,14 +213,14 @@ public class GenericTile extends TileEntity implements INameable {
 	return null;
     }
 
-    public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+    public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 	ItemStack[] stack = new ItemStack[] { pr.getInput(), pr.getSecondInput() };
 	if (stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true) || stack[1] == null
 		|| stack[1].equals(new ItemStack(Items.AIR), true)) {
 	    return null;
 	}
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
+	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
+	for (Recipe<?> iRecipe : recipes) {
 	    T recipe = recipeClass.cast(iRecipe);
 	    if (recipe.matchesRecipe(pr)) {
 		return recipe;
@@ -231,7 +229,7 @@ public class GenericTile extends TileEntity implements INameable {
 	return null;
     }
 
-    public <T extends FluidItem2FluidRecipe> T getFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+    public <T extends FluidItem2FluidRecipe> T getFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 	ItemStack stack = pr.getInput();
 	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
 	    return null;
@@ -245,8 +243,8 @@ public class GenericTile extends TileEntity implements INameable {
 	    return null;
 	}
 
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
+	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
+	for (Recipe<?> iRecipe : recipes) {
 	    T recipe = recipeClass.cast(iRecipe);
 	    if (recipe.matchesRecipe(pr)) {
 		return recipe;
@@ -255,7 +253,7 @@ public class GenericTile extends TileEntity implements INameable {
 	return null;
     }
 
-    public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+    public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 	ItemStack stack = pr.getInput();
 	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
 	    return null;
@@ -269,8 +267,8 @@ public class GenericTile extends TileEntity implements INameable {
 	    return null;
 	}
 
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
+	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
+	for (Recipe<?> iRecipe : recipes) {
 	    T recipe = recipeClass.cast(iRecipe);
 	    if (recipe.matchesRecipe(pr)) {
 		return recipe;
@@ -279,7 +277,7 @@ public class GenericTile extends TileEntity implements INameable {
 	return null;
     }
 
-    public <T extends Fluid3Items2ItemRecipe> T getFluid3Items2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+    public <T extends Fluid3Items2ItemRecipe> T getFluid3Items2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 	ItemStack stack = pr.getInput();
 	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
 	    return null;
@@ -293,8 +291,8 @@ public class GenericTile extends TileEntity implements INameable {
 	    return null;
 	}
 
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
+	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
+	for (Recipe<?> iRecipe : recipes) {
 	    T recipe = recipeClass.cast(iRecipe);
 	    if (recipe.matchesRecipe(pr)) {
 		return recipe;
@@ -303,7 +301,7 @@ public class GenericTile extends TileEntity implements INameable {
 	return null;
     }
 
-    public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
+    public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
 	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
 	    if (fluidTank.getCapacity() > 0) {
@@ -311,8 +309,8 @@ public class GenericTile extends TileEntity implements INameable {
 	    }
 	    return null;
 	}
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
+	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
+	for (Recipe<?> iRecipe : recipes) {
 	    T recipe = recipeClass.cast(iRecipe);
 	    if (recipe.matchesRecipe(pr)) {
 		return recipe;

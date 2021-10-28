@@ -18,10 +18,10 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.AABB;
 
 public class TileMineralWasher extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
@@ -48,22 +48,23 @@ public class TileMineralWasher extends GenericTileTicking {
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-	return super.getRenderBoundingBox().grow(1);
+    public AABB getRenderBoundingBox() {
+	return super.getRenderBoundingBox().inflate(1);
     }
 
     protected void tickClient(ComponentTickable tickable) {
 	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0) {
-	    if (world.rand.nextDouble() < 0.15) {
-		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
-			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    if (level.random.nextDouble() < 0.15) {
+		level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+			worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D,
+			0.0D);
 	    }
 	    for (int i = 0; i < 2; i++) {
-		double x = 0.5 + world.rand.nextDouble() * 0.4 - 0.2;
-		double y = 0.5 + world.rand.nextDouble() * 0.3 - 0.15;
-		double z = 0.5 + world.rand.nextDouble() * 0.4 - 0.2;
-		world.addParticle(new RedstoneParticleData(1f, 1f, 0, 1), pos.getX() + x, pos.getY() + y, pos.getZ() + z,
-			world.rand.nextDouble() * 0.2 - 0.1, world.rand.nextDouble() * 0.2 - 0.1, world.rand.nextDouble() * 0.2 - 0.1);
+		double x = 0.5 + level.random.nextDouble() * 0.4 - 0.2;
+		double y = 0.5 + level.random.nextDouble() * 0.3 - 0.15;
+		double z = 0.5 + level.random.nextDouble() * 0.4 - 0.2;
+		level.addParticle(new DustParticleOptions(1f, 1f, 0, 1), worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z,
+			level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1);
 	    }
 	}
     }

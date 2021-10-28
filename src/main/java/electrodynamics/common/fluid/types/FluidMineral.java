@@ -4,7 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidMineral extends FluidNonPlaceable {

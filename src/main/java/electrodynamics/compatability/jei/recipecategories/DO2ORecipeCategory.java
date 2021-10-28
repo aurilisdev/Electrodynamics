@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
@@ -18,9 +18,9 @@ import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 
 public abstract class DO2ORecipeCategory extends ElectrodynamicsRecipeCategory<DO2ORecipe> {
 
@@ -89,7 +89,7 @@ public abstract class DO2ORecipeCategory extends ElectrodynamicsRecipeCategory<D
 	inputs.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
 	inputs.add(((CountableIngredient) recipe.getIngredients().get(1)).fetchCountedStacks());
 	ingredients.setInputLists(VanillaTypes.ITEM, inputs);
-	ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+	ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
     @Override
@@ -107,7 +107,7 @@ public abstract class DO2ORecipeCategory extends ElectrodynamicsRecipeCategory<D
     }
 
     @Override
-    public void draw(DO2ORecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void draw(DO2ORecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 	IDrawableAnimated arrow = getArrow(recipe);
 	arrow.draw(matrixStack, PROCESSING_ARROW_OFFSET[0], PROCESSING_ARROW_OFFSET[1]);
 
@@ -118,13 +118,13 @@ public abstract class DO2ORecipeCategory extends ElectrodynamicsRecipeCategory<D
 	return CACHED_ARROWS.getUnchecked(getArrowSmeltTime());
     }
 
-    protected void drawSmeltTime(DO2ORecipe recipe, MatrixStack matrixStack, int y) {
+    protected void drawSmeltTime(DO2ORecipe recipe, PoseStack matrixStack, int y) {
 	int smeltTimeSeconds = getArrowSmeltTime() / 20;
 
-	TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category." + getRecipeGroup() + ".info.power", smeltTimeSeconds);
+	TranslatableComponent timeString = new TranslatableComponent("gui.jei.category." + getRecipeGroup() + ".info.power", smeltTimeSeconds);
 	Minecraft minecraft = Minecraft.getInstance();
-	FontRenderer fontRenderer = minecraft.fontRenderer;
-	int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-	fontRenderer.func_243248_b(matrixStack, timeString, getBackground().getWidth() - stringWidth, y, 0xFF808080);
+	Font fontRenderer = minecraft.font;
+	int stringWidth = fontRenderer.width(timeString);
+	fontRenderer.draw(matrixStack, timeString, getBackground().getWidth() - stringWidth, y, 0xFF808080);
     }
 }

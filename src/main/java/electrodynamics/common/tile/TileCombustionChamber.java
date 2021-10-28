@@ -14,10 +14,10 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileCombustionChamber extends GenericTileTicking {
@@ -42,7 +42,7 @@ public class TileCombustionChamber extends GenericTileTicking {
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	Direction facing = direction.getDirection();
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(facing.rotateY()));
+	    output = new CachedTileOutput(level, worldPosition.relative(facing.getClockWise()));
 	}
 	if (tickable.getTicks() % 40 == 0) {
 	    output.update();
@@ -67,26 +67,26 @@ public class TileCombustionChamber extends GenericTileTicking {
 	    burnTime--;
 	}
 	if (running && burnTime > 0 && output.valid()) {
-	    ElectricityUtilities.receivePower(output.getSafe(), facing.rotateY().getOpposite(),
+	    ElectricityUtilities.receivePower(output.getSafe(), facing.getClockWise().getOpposite(),
 		    TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK, electro.getVoltage()), false);
 	}
     }
 
     protected void tickClient(ComponentTickable tickable) {
-	if (running && world.rand.nextDouble() < 0.15) {
-	    world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble(),
-		    pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	if (running && level.random.nextDouble() < 0.15) {
+	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble(),
+		    worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 	}
 	if (running && tickable.getTicks() % 100 == 0) {
-	    SoundAPI.playSound(SoundRegister.SOUND_COMBUSTIONCHAMBER.get(), SoundCategory.BLOCKS, 1, 1, pos);
+	    SoundAPI.playSound(SoundRegister.SOUND_COMBUSTIONCHAMBER.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 	}
     }
 
-    protected void writeNBT(CompoundNBT nbt) {
+    protected void writeNBT(CompoundTag nbt) {
 	nbt.putBoolean("running", running);
     }
 
-    protected void readNBT(CompoundNBT nbt) {
+    protected void readNBT(CompoundTag nbt) {
 	running = nbt.getBoolean("running");
     }
 }

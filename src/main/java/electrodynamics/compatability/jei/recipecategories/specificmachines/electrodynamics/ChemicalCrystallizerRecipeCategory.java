@@ -10,8 +10,8 @@ import electrodynamics.compatability.jei.recipecategories.Fluid2ItemRecipeCatego
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
 import mezz.jei.api.helpers.IGuiHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory {
 

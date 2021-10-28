@@ -1,8 +1,8 @@
 package electrodynamics.api.screen.component;
 
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 @FunctionalInterface
 public interface TextSupplier {
-    ITextComponent getText();
+    Component getText();
 }

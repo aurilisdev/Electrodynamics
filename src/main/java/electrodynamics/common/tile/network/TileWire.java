@@ -4,9 +4,9 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.generic.GenericTileWire;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileWire extends GenericTileWire {
     public double transmit = 0;
@@ -15,7 +15,7 @@ public class TileWire extends GenericTileWire {
 	super(DeferredRegisters.TILE_WIRE.get());
     }
 
-    public TileWire(TileEntityType<TileLogisticalWire> tileEntityType) {
+    public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType) {
 	super(tileEntityType);
     }
 
@@ -30,24 +30,24 @@ public class TileWire extends GenericTileWire {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
 	compound.putInt("ord", getWireType().ordinal());
-	return super.write(compound);
+	return super.save(compound);
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-	super.read(state, compound);
+    public void load(BlockState state, CompoundTag compound) {
+	super.load(state, compound);
 	wire = SubtypeWire.values()[compound.getInt("ord")];
     }
 
     @Override
-    protected void writeCustomPacket(CompoundNBT nbt) {
+    protected void writeCustomPacket(CompoundTag nbt) {
 	nbt.putDouble("transmit", transmit);
     }
 
     @Override
-    protected void readCustomPacket(CompoundNBT nbt) {
+    protected void readCustomPacket(CompoundTag nbt) {
 	transmit = nbt.getDouble("transmit");
     }
 }

@@ -3,10 +3,10 @@ package electrodynamics.prefab.screen.component;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,13 +55,12 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
     }
 
     @Override
-    protected ITextComponent getTooltip() {
+    protected Component getTooltip() {
 	IFluidTank tank = fluidInfoHandler.getTank();
 	if (tank != null) {
 	    FluidStack fluidStack = tank.getFluid();
 	    if (fluidStack.getAmount() > 0) {
-		return new TranslationTextComponent(fluidStack.getTranslationKey())
-			.append(new StringTextComponent(" " + tank.getFluidAmount() + " mB"));
+		return new TranslatableComponent(fluidStack.getTranslationKey()).append(new TextComponent(" " + tank.getFluidAmount() + " mB"));
 	    }
 	}
 	return FluidStack.EMPTY.getDisplayName();

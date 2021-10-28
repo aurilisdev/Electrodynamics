@@ -15,12 +15,12 @@ import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,7 +46,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	return fluidNetwork;
     }
 
-    protected GenericTilePipe(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTilePipe(BlockEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
 	for (Direction dir : Direction.values()) {
 	    handler.add(new IFluidHandler() {
@@ -76,8 +76,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 		    if (action == FluidAction.SIMULATE || getNetwork() == null) {
 			return 0;
 		    }
-		    ArrayList<TileEntity> ignored = new ArrayList<>();
-		    ignored.add(world.getTileEntity(new BlockPos(pos).offset(dir)));
+		    ArrayList<BlockEntity> ignored = new ArrayList<>();
+		    ignored.add(level.getBlockEntity(new BlockPos(worldPosition).relative(dir)));
 		    return fluidNetwork.emit(resource, ignored, false).getAmount();
 		}
 
@@ -98,7 +98,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     private HashSet<IPipe> getConnectedConductors() {
 	HashSet<IPipe> set = new HashSet<>();
 	for (Direction dir : Direction.values()) {
-	    TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
+	    BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
 	    if (facing instanceof IPipe) {
 		set.add((IPipe) facing);
 	    }
@@ -144,11 +144,11 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     @Override
     public void refreshNetwork() {
-	if (!world.isRemote) {
+	if (!level.isClientSide) {
 	    updateAdjacent();
 	    ArrayList<FluidNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
-		TileEntity facing = world.getTileEntity(new BlockPos(pos).offset(dir));
+		BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
 		if (facing instanceof IPipe && ((IPipe) facing).getNetwork() instanceof FluidNetwork) {
 		    foundNetworks.add((FluidNetwork) ((IPipe) facing).getNetwork());
 		}
@@ -175,12 +175,12 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     }
 
     private boolean[] connections = new boolean[6];
-    private TileEntity[] tileConnections = new TileEntity[6];
+    private BlockEntity[] tileConnections = new BlockEntity[6];
 
     public boolean updateAdjacent() {
 	boolean flag = false;
 	for (Direction dir : Direction.values()) {
-	    TileEntity tile = world.getTileEntity(pos.offset(dir));
+	    BlockEntity tile = level.getBlockEntity(worldPosition.relative(dir));
 	    boolean is = FluidUtilities.isFluidReceiver(tile, dir.getOpposite());
 	    if (connections[dir.ordinal()] != is) {
 		connections[dir.ordinal()] = is;
@@ -193,7 +193,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     }
 
     @Override
-    public TileEntity[] getAdjacentConnections() {
+    public BlockEntity[] getAdjacentConnections() {
 	return tileConnections;
     }
 
@@ -209,16 +209,16 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
     }
 
     @Override
-    public void remove() {
-	if (!world.isRemote && fluidNetwork != null) {
+    public void setRemoved() {
+	if (!level.isClientSide && fluidNetwork != null) {
 	    getNetwork().split(this);
 	}
-	super.remove();
+	super.setRemoved();
     }
 
     @Override
     public void onChunkUnloaded() {
-	if (!world.isRemote && fluidNetwork != null) {
+	if (!level.isClientSide && fluidNetwork != null) {
 	    getNetwork().split(this);
 	}
     }
@@ -229,8 +229,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	Scheduler.schedule(1, this::refreshNetwork);
     }
 
-    protected abstract void writeCustomPacket(CompoundNBT nbt);
+    protected abstract void writeCustomPacket(CompoundTag nbt);
 
-    protected abstract void readCustomPacket(CompoundNBT nbt);
+    protected abstract void readCustomPacket(CompoundTag nbt);
 
 }

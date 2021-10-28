@@ -41,12 +41,12 @@ import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
 import electrodynamics.common.tile.TileWireMillDouble;
 import electrodynamics.common.tile.TileWireMillTriple;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
@@ -81,11 +81,11 @@ public enum SubtypeMachine implements ISubtype {
     // split
     oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
     // split
-    downgradetransformer(true, TileTransformer.class, false, VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1)),
+    downgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
     // split
-    upgradetransformer(true, TileTransformer.class, false, VoxelShapes.create(0, 0, 0, 1, 15.0 / 16.0, 1)),
+    upgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
     // split
-    solarpanel(true, TileSolarPanel.class, false, VoxelShapes.create(0, 0, 0, 1, 9.0 / 16.0, 1)),
+    solarpanel(true, TileSolarPanel.class, false, Shapes.box(0, 0, 0, 1, 9.0 / 16.0, 1)),
     // split
     advancedsolarpanel(true, TileAdvancedSolarPanel.class),
     // split
@@ -133,29 +133,29 @@ public enum SubtypeMachine implements ISubtype {
     // split
     tankhsla(true, TileTankHSLA.class);
 
-    public final Class<? extends TileEntity> tileclass;
+    public final Class<? extends BlockEntity> tileclass;
     public final boolean showInItemGroup;
-    private BlockRenderType type = BlockRenderType.MODEL;
+    private RenderShape type = RenderShape.MODEL;
     private VoxelShape customShape = null;
 
-    SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass) {
+    SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass) {
 	this.showInItemGroup = showInItemGroup;
 	this.tileclass = tileclass;
     }
 
-    SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel) {
+    SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel) {
 	this(showInItemGroup, tileclass);
 	if (customModel) {
-	    type = BlockRenderType.ENTITYBLOCK_ANIMATED;
+	    type = RenderShape.ENTITYBLOCK_ANIMATED;
 	}
     }
 
-    SubtypeMachine(boolean showInItemGroup, Class<? extends TileEntity> tileclass, boolean customModel, VoxelShape shape) {
+    SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel, VoxelShape shape) {
 	this(showInItemGroup, tileclass, customModel);
 	customShape = shape;
     }
 
-    public BlockRenderType getRenderType() {
+    public RenderShape getRenderType() {
 	return type;
     }
 
@@ -183,7 +183,7 @@ public enum SubtypeMachine implements ISubtype {
 	return true;
     }
 
-    public TileEntity createTileEntity() {
+    public BlockEntity createTileEntity() {
 	if (tileclass != null) {
 	    try {
 		return tileclass.newInstance();

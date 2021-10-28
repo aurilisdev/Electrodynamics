@@ -1,30 +1,30 @@
 package electrodynamics.client.render.tile;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 
-public class RenderLithiumBatteryBox extends TileEntityRenderer<TileLithiumBatteryBox> {
+public class RenderLithiumBatteryBox extends BlockEntityRenderer<TileLithiumBatteryBox> {
 
-    public RenderLithiumBatteryBox(TileEntityRendererDispatcher rendererDispatcherIn) {
+    public RenderLithiumBatteryBox(BlockEntityRenderDispatcher rendererDispatcherIn) {
 	super(rendererDispatcherIn);
     }
 
     @Override
     @Deprecated
-    public void render(TileLithiumBatteryBox tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+    public void render(TileLithiumBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 	    int combinedLightIn, int combinedOverlayIn) {
-	IBakedModel ibakedmodel;
+	BakedModel ibakedmodel;
 	int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
 	switch (stored) {
 	default:
@@ -51,23 +51,23 @@ public class RenderLithiumBatteryBox extends TileEntityRenderer<TileLithiumBatte
 	    break;
 	}
 
-	switch (tileEntityIn.getBlockState().get(BlockGenericMachine.FACING)) {
+	switch (tileEntityIn.getBlockState().getValue(BlockGenericMachine.FACING)) {
 	case NORTH:
-	    matrixStackIn.rotate(new Quaternion(0, 90, 0, true));
+	    matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
 	    matrixStackIn.translate(-1, 0, 0);
 	    break;
 	case SOUTH:
-	    matrixStackIn.rotate(new Quaternion(0, 270, 0, true));
+	    matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
 	    matrixStackIn.translate(0, 0, -1);
 	    break;
 	case WEST:
-	    matrixStackIn.rotate(new Quaternion(0, 180, 0, true));
+	    matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
 	    matrixStackIn.translate(-1, 0, -1);
 	    break;
 	default:
 	    break;
 	}
 	matrixStackIn.translate(0.5, 0.5, 0.5);
-	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
 }

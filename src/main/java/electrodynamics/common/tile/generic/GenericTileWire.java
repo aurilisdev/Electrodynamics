@@ -18,12 +18,12 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -31,7 +31,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     public ElectricNetwork electricNetwork;
 
-    protected GenericTileWire(TileEntityType<?> tileEntityTypeIn) {
+    protected GenericTileWire(BlockEntityType<?> tileEntityTypeIn) {
 	super(tileEntityTypeIn);
 	for (Direction dir : Direction.values()) {
 	    handler.add(new IElectrodynamic() {
@@ -47,8 +47,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
 		@Override
 		public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		    ArrayList<TileEntity> ignored = new ArrayList<>();
-		    ignored.add(world.getTileEntity(new BlockPos(pos).offset(dir)));
+		    ArrayList<BlockEntity> ignored = new ArrayList<>();
+		    ignored.add(level.getBlockEntity(new BlockPos(worldPosition).relative(dir)));
 		    if (!debug) {
 			getNetwork().addProducer(ignored.get(0), transfer.getVoltage());
 		    }
@@ -79,7 +79,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	HashSet<IConductor> set = new HashSet<>();
 
 	for (Direction dir : Direction.values()) {
-	    TileEntity facing = world.getTileEntity(pos.offset(dir));
+	    BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
 	    if (facing instanceof IConductor) {
 		set.add((IConductor) facing);
 	    }
@@ -120,11 +120,11 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     @Override
     public void refreshNetwork() {
-	if (!world.isRemote) {
+	if (!level.isClientSide) {
 	    updateAdjacent();
 	    ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
-		TileEntity facing = world.getTileEntity(pos.offset(dir));
+		BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
 		if (facing instanceof IConductor && ((IConductor) facing).getNetwork() instanceof ElectricNetwork) {
 		    foundNetworks.add((ElectricNetwork) ((IConductor) facing).getNetwork());
 		}
@@ -144,12 +144,12 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     private boolean[] connections = new boolean[6];
-    private TileEntity[] tileConnections = new TileEntity[6];
+    private BlockEntity[] tileConnections = new BlockEntity[6];
 
     public boolean updateAdjacent() {
 	boolean flag = false;
 	for (Direction dir : Direction.values()) {
-	    TileEntity tile = world.getTileEntity(pos.offset(dir));
+	    BlockEntity tile = level.getBlockEntity(worldPosition.relative(dir));
 	    boolean is = ElectricityUtilities.isElectricReceiver(tile, dir.getOpposite());
 	    if (connections[dir.ordinal()] != is) {
 		connections[dir.ordinal()] = is;
@@ -162,7 +162,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     @Override
-    public TileEntity[] getAdjacentConnections() {
+    public BlockEntity[] getAdjacentConnections() {
 	return tileConnections;
     }
 
@@ -187,13 +187,13 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     @Override
     public void destroyViolently() {
-	world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+	level.setBlockAndUpdate(worldPosition, Blocks.FIRE.defaultBlockState());
     }
 
     @Override
     protected void invalidateCaps() {
 	super.invalidateCaps();
-	if (!world.isRemote && electricNetwork != null) {
+	if (!level.isClientSide && electricNetwork != null) {
 	    getNetwork().split(this);
 	}
     }
@@ -204,8 +204,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	Scheduler.schedule(1, this::refreshNetwork);
     }
 
-    protected abstract void writeCustomPacket(CompoundNBT nbt);
+    protected abstract void writeCustomPacket(CompoundTag nbt);
 
-    protected abstract void readCustomPacket(CompoundNBT nbt);
+    protected abstract void readCustomPacket(CompoundTag nbt);
 
 }

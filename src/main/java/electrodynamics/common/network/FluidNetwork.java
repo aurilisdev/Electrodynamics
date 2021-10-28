@@ -8,11 +8,11 @@ import java.util.Set;
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.prefab.network.AbstractNetwork;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> {
+public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> {
     public FluidNetwork() {
 	this(new HashSet<IPipe>());
     }
@@ -22,8 +22,8 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 	NetworkRegistry.register(this);
     }
 
-    public FluidNetwork(Set<AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack>> networks) {
-	for (AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> net : networks) {
+    public FluidNetwork(Set<AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack>> networks) {
+	for (AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> net : networks) {
 	    if (net != null) {
 		conductorSet.addAll(net.conductorSet);
 		net.deregister();
@@ -51,14 +51,14 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
      * This should be fixed after the "// HERE" line in the method underneath.
      */
     @Override
-    public FluidStack emit(FluidStack transfer, ArrayList<TileEntity> ignored, boolean debug) {
+    public FluidStack emit(FluidStack transfer, ArrayList<BlockEntity> ignored, boolean debug) {
 	if (transfer.getAmount() > 0) {
-	    Set<TileEntity> availableAcceptors = getFluidAcceptors(transfer);
+	    Set<BlockEntity> availableAcceptors = getFluidAcceptors(transfer);
 	    FluidStack joulesSent = new FluidStack(transfer.getFluid(), 0);
 	    availableAcceptors.removeAll(ignored);
 	    if (!availableAcceptors.isEmpty()) {
 		FluidStack perReceiver = new FluidStack(transfer.getFluid(), transfer.getAmount() / availableAcceptors.size());
-		for (TileEntity receiver : availableAcceptors) {
+		for (BlockEntity receiver : availableAcceptors) {
 		    if (acceptorInputMap.containsKey(receiver)) {
 			// HERE
 			for (Direction connection : acceptorInputMap.get(receiver)) {
@@ -75,8 +75,8 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
 	return FluidStack.EMPTY;
     }
 
-    public Set<TileEntity> getFluidAcceptors(FluidStack compare) {
-	Set<TileEntity> toReturn = new HashSet<>();
+    public Set<BlockEntity> getFluidAcceptors(FluidStack compare) {
+	Set<BlockEntity> toReturn = new HashSet<>();
 	toReturn.addAll(acceptorSet);
 	return toReturn;
     }
@@ -100,28 +100,28 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
     }
 
     @Override
-    public boolean isConductor(TileEntity tile) {
+    public boolean isConductor(BlockEntity tile) {
 	return tile instanceof IPipe;
     }
 
     @Override
-    public boolean isAcceptor(TileEntity acceptor, Direction orientation) {
+    public boolean isAcceptor(BlockEntity acceptor, Direction orientation) {
 	return FluidUtilities.isFluidReceiver(acceptor);
     }
 
     @Override
-    public AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> createInstance() {
+    public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstance() {
 	return new FluidNetwork();
     }
 
     @Override
-    public AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> createInstanceConductor(Set<IPipe> conductors) {
+    public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstanceConductor(Set<IPipe> conductors) {
 	return new FluidNetwork(conductors);
     }
 
     @Override
-    public AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack> createInstance(
-	    Set<AbstractNetwork<IPipe, SubtypePipe, TileEntity, FluidStack>> networks) {
+    public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstance(
+	    Set<AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack>> networks) {
 	return new FluidNetwork(networks);
 
     }
@@ -132,7 +132,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, TileEntity
     }
 
     @Override
-    public boolean canConnect(TileEntity acceptor, Direction orientation) {
+    public boolean canConnect(BlockEntity acceptor, Direction orientation) {
 	return FluidUtilities.isFluidReceiver(acceptor, orientation.getOpposite());
     }
 }

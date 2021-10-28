@@ -1,9 +1,8 @@
 package electrodynamics.prefab.tile.components;
 
 import electrodynamics.prefab.tile.GenericTile;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -13,10 +12,10 @@ public interface Component {
     default void holder(GenericTile holder) {
     }
 
-    default void loadFromNBT(BlockState state, CompoundNBT nbt) {
+    default void loadFromNBT(CompoundTag nbt) {
     }
 
-    default void saveToNBT(CompoundNBT nbt) {
+    default void saveToNBT(CompoundTag nbt) {
     }
 
     default void remove() {

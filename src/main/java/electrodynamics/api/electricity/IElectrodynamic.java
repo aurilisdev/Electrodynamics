@@ -2,11 +2,11 @@ package electrodynamics.api.electricity;
 
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.block.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IElectrodynamic {
     default void setJoulesStored(double joules) {
@@ -49,22 +49,22 @@ public interface IElectrodynamic {
     }
 
     default void overVoltage(TransferPack transfer) {
-	if (this instanceof TileEntity) {
-	    TileEntity tile = (TileEntity) this;
-	    World world = tile.getWorld();
-	    BlockPos pos = tile.getPos();
-	    world.setBlockState(pos, Blocks.AIR.getDefaultState());
-	    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
-		    Mode.DESTROY);
+	if (this instanceof BlockEntity) {
+	    BlockEntity tile = (BlockEntity) this;
+	    Level world = tile.getLevel();
+	    BlockPos pos = tile.getBlockPos();
+	    world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+	    world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
+		    BlockInteraction.DESTROY);
 	} else if (this instanceof ComponentElectrodynamic) {
 	    ComponentElectrodynamic electro = (ComponentElectrodynamic) this;
-	    TileEntity tile = electro.getHolder();
+	    BlockEntity tile = electro.getHolder();
 	    if (tile != null) {
-		World world = tile.getWorld();
-		BlockPos pos = tile.getPos();
-		world.setBlockState(pos, Blocks.AIR.getDefaultState());
-		world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
-			Mode.DESTROY);
+		Level world = tile.getLevel();
+		BlockPos pos = tile.getBlockPos();
+		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
+			BlockInteraction.DESTROY);
 	    }
 	}
     }

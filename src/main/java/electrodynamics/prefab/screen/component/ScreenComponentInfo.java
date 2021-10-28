@@ -3,13 +3,13 @@ package electrodynamics.prefab.screen.component;
 import java.awt.Rectangle;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,14 +30,14 @@ public abstract class ScreenComponentInfo extends ScreenComponent {
     }
 
     @Override
-    public void renderBackground(MatrixStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+    public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 	UtilitiesRendering.bindTexture(resource);
 
 	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, SIZE, SIZE);
     }
 
     @Override
-    public void renderForeground(MatrixStack stack, int xAxis, int yAxis) {
+    public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
 	if (isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
 	    displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
 	}
@@ -70,7 +70,7 @@ public abstract class ScreenComponentInfo extends ScreenComponent {
 
     }
 
-    protected abstract List<? extends ITextProperties> getInfo(List<? extends ITextProperties> list);
+    protected abstract List<? extends FormattedText> getInfo(List<? extends FormattedText> list);
 
     protected void buttonClicked() {
 

@@ -12,18 +12,18 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.Explosion.Mode;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public abstract class TileGenericCharger extends GenericTileTicking {
 
-    protected TileGenericCharger(TileEntityType<?> typeIn, int voltageMultiplier, String containerName) {
+    protected TileGenericCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName) {
 	super(typeIn);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler().guiPacketReader(this::loadFromNBT).guiPacketWriter(this::saveToNBT));
@@ -39,7 +39,7 @@ public abstract class TileGenericCharger extends GenericTileTicking {
     public void tickCommon(ComponentTickable tickable) {
 	ComponentInventory inventory = getComponent(ComponentType.Inventory);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-	ItemStack itemInput = inventory.getStackInSlot(0);
+	ItemStack itemInput = inventory.getItem(0);
 	if (!itemInput.isEmpty() && electro.getJoulesStored() == electro.getMaxJoulesStored() && itemInput.getItem() instanceof IItemElectric) {
 
 	    IItemElectric electricItem = (IItemElectric) itemInput.getItem();
@@ -48,8 +48,8 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 
 	    if (machineVoltage > recieveVoltage) {
 		electricItem.overVoltage(TransferPack.joulesVoltage(electricItem.getElectricProperties().receive.getJoules(), machineVoltage));
-		world.setBlockState(pos, Blocks.AIR.getDefaultState());
-		world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 2f, Mode.DESTROY);
+		level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
+		level.explode(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 2f, BlockInteraction.DESTROY);
 	    } else if (machineVoltage == recieveVoltage) {
 		electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false);
 		electro.extractPower(
@@ -68,9 +68,9 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 		    electro.extractPower(TransferPack.joulesVoltage(electro.getMaxJoulesStored() * reductionCoef, recieveVoltage), false);
 		}
 	    }
-	    if (electricItem.getJoulesStored(itemInput) == electricItem.getElectricProperties().capacity && inventory.getStackInSlot(1).isEmpty()) {
-		inventory.setInventorySlotContents(1, inventory.getStackInSlot(0).copy());
-		inventory.getStackInSlot(0).shrink(1);
+	    if (electricItem.getJoulesStored(itemInput) == electricItem.getElectricProperties().capacity && inventory.getItem(1).isEmpty()) {
+		inventory.setItem(1, inventory.getItem(0).copy());
+		inventory.getItem(0).shrink(1);
 	    }
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
@@ -88,14 +88,14 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 	}
     }
 
-    protected void loadFromNBT(CompoundNBT nbt) {
+    protected void loadFromNBT(CompoundTag nbt) {
 	NonNullList<ItemStack> obj = this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems();
 	obj.clear();
-	ItemStackHelper.loadAllItems(nbt, obj);
+	ContainerHelper.loadAllItems(nbt, obj);
     }
 
-    protected void saveToNBT(CompoundNBT nbt) {
-	ItemStackHelper.saveAllItems(nbt, this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems());
+    protected void saveToNBT(CompoundTag nbt) {
+	ContainerHelper.saveAllItems(nbt, this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems());
     }
 
 }

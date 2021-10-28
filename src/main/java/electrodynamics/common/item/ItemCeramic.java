@@ -8,41 +8,40 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ItemCeramic extends Item {
 
     public ItemCeramic(SubtypeCeramic subtype) {
-	super(new Item.Properties().maxStackSize(64).group(References.CORETAB));
+	super(new Item.Properties().stacksTo(64).tab(References.CORETAB));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 
-	if (ItemStack.areItemStackTagsEqual(playerIn.getHeldItem(handIn),
-		new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
+	if (ItemStack.tagMatches(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
 	    List<ItemStack> armorPieces = new ArrayList<>();
-	    playerIn.getArmorInventoryList().forEach(armorPieces::add);
+	    playerIn.getArmorSlots().forEach(armorPieces::add);
 
 	    ItemStack chestplate = armorPieces.get(2);
-	    if (ItemStack.areItemsEqualIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+	    if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
 		chestplate.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
 		    if (h.getPlateCount() < 2) {
-			playerIn.playSound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundCategory.PLAYERS, 1, 1);
+			playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
 			h.increasePlateCount(1);
-			playerIn.getHeldItem(handIn).shrink(1);
+			playerIn.getItemInHand(handIn).shrink(1);
 		    }
 		});
 	    }
 	}
 
-	return ActionResult.resultPass(playerIn.getHeldItem(handIn));
+	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
     }
 
 }

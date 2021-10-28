@@ -7,9 +7,9 @@ import com.google.gson.JsonObject;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeSerializer;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraftforge.fluids.FluidStack;
 
 public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends ElectrodynamicsRecipeSerializer<T> {
@@ -19,9 +19,9 @@ public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends El
     }
 
     @Override
-    public T read(ResourceLocation recipeId, JsonObject json) {
-	FluidIngredient fluidInput = FluidIngredient.deserialize(JSONUtils.getJsonObject(json, "fluid_input"));
-	FluidStack fluidOutput = FluidIngredient.deserialize(JSONUtils.getJsonObject(json, "fluid_output")).getFluidStack();
+    public T fromJson(ResourceLocation recipeId, JsonObject json) {
+	FluidIngredient fluidInput = FluidIngredient.deserialize(GsonHelper.getAsJsonObject(json, "fluid_input"));
+	FluidStack fluidOutput = FluidIngredient.deserialize(GsonHelper.getAsJsonObject(json, "fluid_output")).getFluidStack();
 
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, FluidIngredient.class,
@@ -34,7 +34,7 @@ public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends El
     }
 
     @Override
-    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
+    public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 	FluidIngredient fluidInput = FluidIngredient.read(buffer);
 	FluidStack fluidOutput = FluidIngredient.read(buffer).getFluidStack();
 
@@ -49,7 +49,7 @@ public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends El
     }
 
     @Override
-    public void write(PacketBuffer buffer, T recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, T recipe) {
 	FluidIngredient fluidInput = (FluidIngredient) recipe.getIngredients().get(0);
 	FluidIngredient fluidOutput = new FluidIngredient(recipe.getFluidRecipeOutput());
 	fluidInput.writeStack(buffer);

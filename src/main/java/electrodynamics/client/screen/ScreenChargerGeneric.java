@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
@@ -18,25 +18,25 @@ import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric> {
 
     private static DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#0.0");
 
-    public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, Inventory inv, Component titleIn) {
 	super(screenContainer, inv, titleIn);
 
 	components.add(new ScreenComponentCharge(() -> {
-	    TileGenericCharger charger = container.getHostFromIntArray();
+	    TileGenericCharger charger = menu.getHostFromIntArray();
 	    if (charger != null) {
-		ItemStack chargingItem = container.getSlot(0).getStack();
+		ItemStack chargingItem = menu.getSlot(0).getItem();
 		if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
 		    IItemElectric electricItem = (IItemElectric) chargingItem.getItem();
 		    return electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity;
@@ -49,25 +49,25 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-	super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-	List<? extends ITextComponent> screenOverlays = getChargerInfo();
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+	super.renderLabels(matrixStack, mouseX, mouseY);
+	List<? extends Component> screenOverlays = getChargerInfo();
 
 	if (screenOverlays.size() > 0) {
-	    font.func_243248_b(matrixStack, screenOverlays.get(0), playerInventoryTitleX, 33f, 0);
-	    font.func_243248_b(matrixStack, screenOverlays.get(1), playerInventoryTitleX, 43f, 0);
+	    font.draw(matrixStack, screenOverlays.get(0), inventoryLabelX, 33f, 0);
+	    font.draw(matrixStack, screenOverlays.get(1), inventoryLabelX, 43f, 0);
 	} else {
-	    closeScreen();
+	    onClose();
 	}
 
     }
 
-    private List<? extends ITextComponent> getChargerInfo() {
-	ArrayList<ITextComponent> list = new ArrayList<>();
-	TileGenericCharger charger = container.getHostFromIntArray();
+    private List<? extends Component> getChargerInfo() {
+	ArrayList<Component> list = new ArrayList<>();
+	TileGenericCharger charger = menu.getHostFromIntArray();
 	if (charger != null) {
 
-	    ItemStack chargingItem = container.getSlot(0).getStack();
+	    ItemStack chargingItem = menu.getSlot(0).getItem();
 	    double chargingPercentage = 0;
 	    double chargeCapable = 100.0;
 	    if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
@@ -79,41 +79,41 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 		chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 	    }
 
-	    list.add(new TranslationTextComponent("gui.genericcharger.chargeperc",
-		    new StringTextComponent(DECIMAL_FORMATTER.format(chargingPercentage) + "%").mergeStyle(TextFormatting.DARK_GRAY))
-			    .mergeStyle(TextFormatting.DARK_GRAY));
+	    list.add(new TranslatableComponent("gui.genericcharger.chargeperc",
+		    new TextComponent(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.DARK_GRAY));
 
 	    if (chargeCapable < 33) {
-		list.add(getChargeCapableFormatted(chargeCapable, TextFormatting.RED));
+		list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.RED));
 	    } else if (chargeCapable < 66) {
-		list.add(getChargeCapableFormatted(chargeCapable, TextFormatting.YELLOW));
+		list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.YELLOW));
 	    } else {
-		list.add(getChargeCapableFormatted(chargeCapable, TextFormatting.GREEN));
+		list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN));
 	    }
 
 	}
 	return list;
     }
 
-    private List<? extends ITextProperties> getEnergyInformation() {
-	ArrayList<ITextProperties> list = new ArrayList<>();
-	GenericTile box = container.getHostFromIntArray();
+    private List<? extends FormattedText> getEnergyInformation() {
+	ArrayList<FormattedText> list = new ArrayList<>();
+	GenericTile box = menu.getHostFromIntArray();
 	if (box != null) {
 	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
 
-	    list.add(new TranslationTextComponent("gui.o2oprocessor.usage",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getMaxJoulesStored() * 20, ElectricUnit.WATT))
-			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
-	    list.add(new TranslationTextComponent("gui.o2oprocessor.voltage",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+	    list.add(new TranslatableComponent("gui.o2oprocessor.usage",
+		    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getMaxJoulesStored() * 20, ElectricUnit.WATT))
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+	    list.add(new TranslatableComponent("gui.o2oprocessor.voltage",
+		    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 	}
 	return list;
     }
 
-    private static ITextComponent getChargeCapableFormatted(double chargeCapable, TextFormatting formatColor) {
-	return new TranslationTextComponent("gui.genericcharger.chargecapable",
-		new StringTextComponent(DECIMAL_FORMATTER.format(chargeCapable) + "%").mergeStyle(formatColor)).mergeStyle(TextFormatting.DARK_GRAY);
+    private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
+	return new TranslatableComponent("gui.genericcharger.chargecapable",
+		new TextComponent(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
     }
 
 }

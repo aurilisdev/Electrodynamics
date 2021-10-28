@@ -2,18 +2,18 @@ package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -33,7 +33,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 
     @Override
     @SuppressWarnings("java:S1874")
-    public void renderBackground(MatrixStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+    public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 	UtilitiesRendering.bindTexture(resource);
 
 	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, WIDTH, HEIGHT);
@@ -42,9 +42,9 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 	int scale = getScaledLevel();
 
 	if (texture != null && scale > 0) {
-	    ResourceLocation blocks = PlayerContainer.LOCATION_BLOCKS_TEXTURE;
-	    TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(blocks).apply(texture);
-	    sprite.getAtlasTexture().bindTexture();
+	    ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
+	    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(texture);
+	    sprite.atlas().bind();
 	    applyColor();
 	    for (int i = 0; i < 16; i += 16) {
 		for (int j = 0; j < scale; j += 16) {
@@ -53,10 +53,10 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 
 		    int drawX = guiWidth + xLocation + 1;
 		    int drawY = guiHeight + yLocation - 1 + HEIGHT - Math.min(scale - j, HEIGHT);
-		    AbstractGui.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
+		    GuiComponent.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
 		}
 	    }
-	    GlStateManager.color4f(1, 1, 1, 1);
+	    GlStateManager._color4f(1, 1, 1, 1);
 	}
 
 	UtilitiesRendering.bindTexture(resource);
@@ -67,9 +67,9 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
     protected abstract void applyColor();
 
     @Override
-    public void renderForeground(MatrixStack stack, int xAxis, int yAxis) {
+    public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
 	if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, WIDTH, HEIGHT)) {
-	    ITextComponent tooltip = getTooltip();
+	    Component tooltip = getTooltip();
 
 	    if (tooltip != null && !tooltip.getString().isEmpty()) {
 		gui.displayTooltip(stack, tooltip, xAxis, yAxis);
@@ -81,5 +81,5 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 
     protected abstract ResourceLocation getTexture();
 
-    protected abstract ITextComponent getTooltip();
+    protected abstract Component getTooltip();
 }

@@ -1,7 +1,7 @@
 package electrodynamics.api.capability;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -99,23 +99,23 @@ public class CapabilityUtils {
 	return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
-    public static boolean hasFluidCap(TileEntity tile) {
+    public static boolean hasFluidCap(BlockEntity tile) {
 	return tile.getCapability(getFluidCap()).map(m -> true).orElse(false);
     }
 
-    public static int simFill(TileEntity tile, FluidStack fluid) {
+    public static int simFill(BlockEntity tile, FluidStack fluid) {
 	return tile.getCapability(getFluidCap()).map(m -> m.fill(fluid, FluidAction.SIMULATE)).orElse(0);
     }
 
-    public static void fill(TileEntity tile, FluidStack fluid) {
+    public static void fill(BlockEntity tile, FluidStack fluid) {
 	tile.getCapability(getFluidCap()).ifPresent(h -> h.fill(fluid, FluidAction.EXECUTE));
     }
 
-    public static FluidStack simDrain(TileEntity tile, FluidStack fluid) {
+    public static FluidStack simDrain(BlockEntity tile, FluidStack fluid) {
 	return tile.getCapability(getFluidCap()).map(m -> m.drain(fluid, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
     }
 
-    public static void drain(TileEntity tile, FluidStack fluid) {
+    public static void drain(BlockEntity tile, FluidStack fluid) {
 	tile.getCapability(getFluidCap()).ifPresent(h -> h.drain(fluid, FluidAction.EXECUTE));
     }
 

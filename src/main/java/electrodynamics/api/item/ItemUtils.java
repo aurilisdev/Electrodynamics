@@ -2,11 +2,11 @@ package electrodynamics.api.item;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class ItemUtils {
 
@@ -18,7 +18,7 @@ public class ItemUtils {
      * @return boolean if the items are equal or not
      */
     public static boolean testItems(Item itemA, Item itemB) {
-	return ItemStack.areItemsEqual(new ItemStack(itemA), new ItemStack(itemB));
+	return ItemStack.isSame(new ItemStack(itemA), new ItemStack(itemB));
     }
 
     /**
@@ -30,7 +30,7 @@ public class ItemUtils {
      */
     @Nullable
     public static Ingredient getIngredientFromTag(String location, String tag) {
-	return Ingredient.fromTag(ItemTags.getCollection().get(new ResourceLocation(location, tag)));
+	return Ingredient.of(ItemTags.getAllTags().getTag(new ResourceLocation(location, tag)));
     }
 
 }

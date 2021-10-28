@@ -12,15 +12,15 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -30,7 +30,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileGenericTank extends GenericTileTicking {
 
-    public TileGenericTank(TileEntityType<?> tile, int capacity, List<Fluid> validFluids, String name) {
+    public TileGenericTank(BlockEntityType<?> tile, int capacity, List<Fluid> validFluids, String name) {
 	super(tile);
 	addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 	addComponent(new ComponentDirection());
@@ -47,10 +47,10 @@ public class TileGenericTank extends GenericTileTicking {
 	ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	ComponentDirection direction = getComponent(ComponentType.Direction);
-	BlockPos face = getPos().offset(direction.getDirection().rotateY().getOpposite());
-	TileEntity faceTile = getWorld().getTileEntity(face);
-	ItemStack input = inv.getStackInSlot(0);
-	ItemStack output = inv.getStackInSlot(1);
+	BlockPos face = getBlockPos().relative(direction.getDirection().getClockWise().getOpposite());
+	BlockEntity faceTile = getLevel().getBlockEntity(face);
+	ItemStack input = inv.getItem(0);
+	ItemStack output = inv.getItem(1);
 	// try to drain slot 0
 	if (!input.isEmpty() && CapabilityUtils.hasFluidItemCap(input)) {
 	    boolean isInputBucket = input.getItem() instanceof BucketItem;
@@ -62,7 +62,7 @@ public class TileGenericTank extends GenericTileTicking {
 		CapabilityUtils.drain(input, stack);
 	    } else if (room >= 1000 && handler.isFluidValid(0, stack) && isInputBucket) {
 		handler.addFluidToTank(stack, true);
-		inv.setInventorySlotContents(0, new ItemStack(Items.BUCKET, 1));
+		inv.setItem(0, new ItemStack(Items.BUCKET, 1));
 
 	    }
 	}
@@ -75,19 +75,19 @@ public class TileGenericTank extends GenericTileTicking {
 	    if (amtTaken > 0 && !isBucket) {
 		CapabilityUtils.fill(output, new FluidStack(fluid, amtTaken));
 		handler.drainFluidFromTank(new FluidStack(fluid, amtTaken), false);
-	    } else if (amtTaken >= 1000 && isBucket && (fluid.isEquivalentTo(Fluids.WATER) || fluid.isEquivalentTo(Fluids.LAVA))) {
+	    } else if (amtTaken >= 1000 && isBucket && (fluid.isSame(Fluids.WATER) || fluid.isSame(Fluids.LAVA))) {
 		handler.drainFluidFromTank(new FluidStack(fluid, amtTaken), false);
-		if (fluid.isEquivalentTo(Fluids.WATER)) {
-		    inv.setInventorySlotContents(1, new ItemStack(Items.WATER_BUCKET, 1));
+		if (fluid.isSame(Fluids.WATER)) {
+		    inv.setItem(1, new ItemStack(Items.WATER_BUCKET, 1));
 		} else {
-		    inv.setInventorySlotContents(1, new ItemStack(Items.LAVA_BUCKET, 1));
+		    inv.setItem(1, new ItemStack(Items.LAVA_BUCKET, 1));
 		}
 	    }
 	}
 	// try to output to pipe
 	if (faceTile != null) {
 	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-		    direction.getDirection().rotateY().getOpposite().getOpposite());
+		    direction.getDirection().getClockWise().getOpposite().getOpposite());
 	    if (cap.isPresent()) {
 		IFluidHandler iHandler = cap.resolve().get();
 		for (Fluid fluid : handler.getValidOutputFluids()) {
@@ -100,11 +100,11 @@ public class TileGenericTank extends GenericTileTicking {
 	}
 
 	// Output to tank below
-	BlockPos pos = getPos();
+	BlockPos pos = getBlockPos();
 	BlockPos below = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
 
-	if (world.getBlockState(below).hasTileEntity()) {
-	    TileEntity tile = world.getTileEntity(below);
+	if (level.getBlockState(below).hasTileEntity()) {
+	    BlockEntity tile = level.getBlockEntity(below);
 	    if (tile instanceof TileGenericTank) {
 		TileGenericTank tankBelow = (TileGenericTank) tile;
 		ComponentFluidHandlerSimple belowHandler = tankBelow.getComponent(ComponentType.FluidHandler);

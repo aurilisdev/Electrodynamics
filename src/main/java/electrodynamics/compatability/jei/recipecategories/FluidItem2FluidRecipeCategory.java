@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
@@ -22,10 +22,10 @@ import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -191,7 +191,7 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
     }
 
     @Override
-    public void draw(FluidItem2FluidRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void draw(FluidItem2FluidRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 
 	int fluidOutputAmount = recipe.getFluidRecipeOutput().getAmount();
 
@@ -216,14 +216,13 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 	return CACHED_FLUID_BARS.getUnchecked(getArrowSmeltTime());
     }
 
-    protected void drawSmeltTime(FluidItem2FluidRecipe recipe, MatrixStack matrixStack, int y) {
+    protected void drawSmeltTime(FluidItem2FluidRecipe recipe, PoseStack matrixStack, int y) {
 	int smeltTimeSeconds = getArrowSmeltTime() / 20;
-	TranslationTextComponent outputString = new TranslationTextComponent("gui.jei.category." + getRecipeGroup() + ".info.power",
-		smeltTimeSeconds);
+	TranslatableComponent outputString = new TranslatableComponent("gui.jei.category." + getRecipeGroup() + ".info.power", smeltTimeSeconds);
 	Minecraft minecraft = Minecraft.getInstance();
-	FontRenderer fontRenderer = minecraft.fontRenderer;
-	int outputWidth = fontRenderer.getStringPropertyWidth(outputString);
-	fontRenderer.func_243248_b(matrixStack, outputString, getBackground().getWidth() - outputWidth, y + 8, 0xFF808080);
+	Font fontRenderer = minecraft.font;
+	int outputWidth = fontRenderer.width(outputString);
+	fontRenderer.draw(matrixStack, outputString, getBackground().getWidth() - outputWidth, y + 8, 0xFF808080);
 
     }
 
@@ -237,7 +236,7 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 	List<List<ItemStack>> ingredients = new ArrayList<>();
 	ingredients.add(((CountableIngredient) recipe.getIngredients().get(0)).fetchCountedStacks());
 	FluidStack stack = ((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack();
-	ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+	ItemStack bucket = new ItemStack(stack.getFluid().getBucket());
 	bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 	    h.fill(stack, FluidAction.EXECUTE);
 	});
@@ -249,7 +248,7 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 
     public ItemStack getBucketOutput(FluidItem2FluidRecipe recipe) {
 	FluidStack stack = recipe.getFluidRecipeOutput();
-	ItemStack bucket = new ItemStack(stack.getFluid().getFilledBucket());
+	ItemStack bucket = new ItemStack(stack.getFluid().getBucket());
 	bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 	    h.fill(stack, FluidAction.EXECUTE);
 	});

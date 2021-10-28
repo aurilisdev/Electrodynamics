@@ -1,8 +1,8 @@
 package electrodynamics.common.network;
 
 import electrodynamics.api.network.pipe.IPipe;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class FluidUtilities {
 
-    public static boolean isFluidReceiver(TileEntity acceptor) {
+    public static boolean isFluidReceiver(BlockEntity acceptor) {
 	for (Direction dir : Direction.values()) {
 	    boolean is = isFluidReceiver(acceptor, dir);
 	    if (is) {
@@ -21,7 +21,7 @@ public class FluidUtilities {
 	return false;
     }
 
-    public static boolean isFluidReceiver(TileEntity acceptor, Direction dir) {
+    public static boolean isFluidReceiver(BlockEntity acceptor, Direction dir) {
 	if (acceptor != null) {
 	    if (acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir).isPresent()) {
 		return true;
@@ -30,11 +30,11 @@ public class FluidUtilities {
 	return false;
     }
 
-    public static boolean isConductor(TileEntity acceptor) {
+    public static boolean isConductor(BlockEntity acceptor) {
 	return acceptor instanceof IPipe;
     }
 
-    public static Integer receiveFluid(TileEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
+    public static Integer receiveFluid(BlockEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
 	if (isFluidReceiver(acceptor, direction)) {
 	    LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
 	    if (cap.isPresent()) {
@@ -54,7 +54,7 @@ public class FluidUtilities {
 	return 0;
     }
 
-    public static boolean canInputFluid(TileEntity acceptor, Direction direction, FluidStack stack) {
+    public static boolean canInputFluid(BlockEntity acceptor, Direction direction, FluidStack stack) {
 	return isFluidReceiver(acceptor, direction);
     }
 

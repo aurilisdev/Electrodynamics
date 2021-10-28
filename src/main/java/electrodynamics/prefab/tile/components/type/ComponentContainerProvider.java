@@ -5,14 +5,13 @@ import java.util.function.BiFunction;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 
-public class ComponentContainerProvider implements Component, INamedContainerProvider {
+public class ComponentContainerProvider implements Component, MenuProvider {
     protected GenericTile holder = null;
 
     @Override
@@ -20,25 +19,25 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
 	this.holder = holder;
     }
 
-    protected BiFunction<Integer, PlayerInventory, Container> createMenuFunction;
+    protected BiFunction<Integer, Inventory, AbstractContainerMenu> createMenuFunction;
     protected String name = "";
 
     public ComponentContainerProvider(String name) {
 	this.name = name;
     }
 
-    public ComponentContainerProvider createMenu(BiFunction<Integer, PlayerInventory, Container> createMenuFunction) {
+    public ComponentContainerProvider createMenu(BiFunction<Integer, Inventory, AbstractContainerMenu> createMenuFunction) {
 	this.createMenuFunction = createMenuFunction;
 	return this;
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory inv, PlayerEntity pl) {
+    public AbstractContainerMenu createMenu(int id, Inventory inv, Player pl) {
 	if (createMenuFunction != null) {
 	    if (holder.hasComponent(ComponentType.Inventory)) {
 		ComponentInventory componentinv = holder.getComponent(ComponentType.Inventory);
-		if (componentinv.isUsableByPlayer(pl)) {
-		    componentinv.openInventory(pl);
+		if (componentinv.stillValid(pl)) {
+		    componentinv.startOpen(pl);
 		} else {
 		    return null;
 		}
@@ -49,8 +48,8 @@ public class ComponentContainerProvider implements Component, INamedContainerPro
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-	return new TranslationTextComponent(name);
+    public Component getDisplayName() {
+	return new TranslatableComponent(name);
     }
 
     @Override

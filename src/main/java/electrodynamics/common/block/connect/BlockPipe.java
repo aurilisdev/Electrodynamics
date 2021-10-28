@@ -15,34 +15,34 @@ import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.tile.network.TilePipe;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlockPipe extends Block implements IWaterLoggable {
+public class BlockPipe extends Block implements SimpleWaterloggedBlock {
 
     public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
 	p.put(Direction.NORTH, EnumConnectType.NORTH);
@@ -69,33 +69,33 @@ public class BlockPipe extends Block implements IWaterLoggable {
     public final SubtypePipe pipe;
 
     public BlockPipe(SubtypePipe pipe) {
-	super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(0.15f).variableOpacity());
+	super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(0.15f).dynamicShape());
 	this.pipe = pipe;
 	double w = 3;
 	double sm = 8 - w;
 	double lg = 8 + w;
-	cube = Block.makeCuboidShape(sm, sm, sm, lg, lg, lg);
-	cubeup = Block.makeCuboidShape(sm, sm, sm, lg, 16, lg);
-	cubedown = Block.makeCuboidShape(sm, 0, sm, lg, lg, lg);
-	cubenorth = Block.makeCuboidShape(sm, sm, 0, lg, lg, lg);
-	cubesouth = Block.makeCuboidShape(sm, sm, sm, lg, lg, 16);
-	cubewest = Block.makeCuboidShape(0, sm, sm, lg, lg, lg);
-	cubeeast = Block.makeCuboidShape(sm, sm, sm, 16, lg, lg);
+	cube = Block.box(sm, sm, sm, lg, lg, lg);
+	cubeup = Block.box(sm, sm, sm, lg, 16, lg);
+	cubedown = Block.box(sm, 0, sm, lg, lg, lg);
+	cubenorth = Block.box(sm, sm, 0, lg, lg, lg);
+	cubesouth = Block.box(sm, sm, sm, lg, lg, 16);
+	cubewest = Block.box(0, sm, sm, lg, lg, lg);
+	cubeeast = Block.box(sm, sm, sm, 16, lg, lg);
 	PIPESET.add(this);
-	setDefaultState(stateContainer.getBaseState().with(BlockStateProperties.WATERLOGGED, false));
+	registerDefaultState(stateDefinition.any().setValue(BlockStateProperties.WATERLOGGED, false));
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-	FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-	return super.getStateForPlacement(context).with(BlockStateProperties.WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+	FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+	return super.getStateForPlacement(context).setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
     }
 
     @Override
     @Deprecated
     public FluidState getFluidState(BlockState state) {
-	return state.get(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
@@ -105,39 +105,39 @@ public class BlockPipe extends Block implements IWaterLoggable {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-	super.fillStateContainer(builder);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+	super.createBlockStateDefinition(builder);
 	builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST, EnumConnectType.SOUTH,
 		EnumConnectType.WEST);
 	builder.add(BlockStateProperties.WATERLOGGED);
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 	return true;
     }
 
     @Override
     @Deprecated
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
-	if (!state.get(EnumConnectType.UP).equals(EnumConnectType.NONE)) {
+	if (!state.getValue(EnumConnectType.UP).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.UP);
 	}
-	if (!state.get(EnumConnectType.DOWN).equals(EnumConnectType.NONE)) {
+	if (!state.getValue(EnumConnectType.DOWN).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.DOWN);
 	}
-	if (!state.get(EnumConnectType.WEST).equals(EnumConnectType.NONE)) {
+	if (!state.getValue(EnumConnectType.WEST).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.WEST);
 	}
-	if (!state.get(EnumConnectType.EAST).equals(EnumConnectType.NONE)) {
+	if (!state.getValue(EnumConnectType.EAST).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.EAST);
 	}
-	if (!state.get(EnumConnectType.NORTH).equals(EnumConnectType.NONE)) {
+	if (!state.getValue(EnumConnectType.NORTH).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.NORTH);
 	}
-	if (!state.get(EnumConnectType.SOUTH).equals(EnumConnectType.NONE)) {
+	if (!state.getValue(EnumConnectType.SOUTH).equals(EnumConnectType.NONE)) {
 	    checked.add(Direction.SOUTH);
 	}
 	locked = true;
@@ -149,22 +149,22 @@ public class BlockPipe extends Block implements IWaterLoggable {
 	for (Direction dir : checked) {
 	    switch (dir) {
 	    case DOWN:
-		shape = VoxelShapes.combineAndSimplify(shape, cubedown, IBooleanFunction.OR);
+		shape = Shapes.join(shape, cubedown, BooleanOp.OR);
 		break;
 	    case EAST:
-		shape = VoxelShapes.combineAndSimplify(shape, cubeeast, IBooleanFunction.OR);
+		shape = Shapes.join(shape, cubeeast, BooleanOp.OR);
 		break;
 	    case NORTH:
-		shape = VoxelShapes.combineAndSimplify(shape, cubenorth, IBooleanFunction.OR);
+		shape = Shapes.join(shape, cubenorth, BooleanOp.OR);
 		break;
 	    case SOUTH:
-		shape = VoxelShapes.combineAndSimplify(shape, cubesouth, IBooleanFunction.OR);
+		shape = Shapes.join(shape, cubesouth, BooleanOp.OR);
 		break;
 	    case UP:
-		shape = VoxelShapes.combineAndSimplify(shape, cubeup, IBooleanFunction.OR);
+		shape = Shapes.join(shape, cubeup, BooleanOp.OR);
 		break;
 	    case WEST:
-		shape = VoxelShapes.combineAndSimplify(shape, cubewest, IBooleanFunction.OR);
+		shape = Shapes.join(shape, cubewest, BooleanOp.OR);
 		break;
 	    default:
 		break;
@@ -175,31 +175,31 @@ public class BlockPipe extends Block implements IWaterLoggable {
 	}
 	shapestates.put(checked, shape);
 	if (shape == null) {
-	    return VoxelShapes.empty();
+	    return Shapes.empty();
 	}
 	return shape;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
 	BlockState acc = stateIn;
 	for (Direction d : Direction.values()) {
-	    TileEntity facingTile = worldIn.getTileEntity(pos.offset(d));
+	    BlockEntity facingTile = worldIn.getBlockEntity(pos.relative(d));
 	    if (FluidUtilities.isConductor(facingTile)) {
-		acc = acc.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
+		acc = acc.setValue(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
 	    } else if (FluidUtilities.isFluidReceiver(facingTile, d.getOpposite())) {
-		acc = acc.with(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.INVENTORY);
+		acc = acc.setValue(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.INVENTORY);
 	    }
 	}
-	worldIn.setBlockState(pos, acc);
+	worldIn.setBlockAndUpdate(pos, acc);
     }
 
     @Deprecated
     @Override
-    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-	super.onBlockAdded(state, worldIn, pos, oldState, isMoving);
-	if (!worldIn.isRemote) {
-	    TileEntity tile = worldIn.getTileEntity(pos);
+    public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	super.onPlace(state, worldIn, pos, oldState, isMoving);
+	if (!worldIn.isClientSide) {
+	    BlockEntity tile = worldIn.getBlockEntity(pos);
 	    if (tile instanceof IPipe) {
 		((IPipe) tile).refreshNetwork();
 	    }
@@ -207,10 +207,10 @@ public class BlockPipe extends Block implements IWaterLoggable {
     }
 
     @Override
-    public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
+    public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
 	super.onNeighborChange(state, world, pos, neighbor);
-	if (!world.isRemote()) {
-	    TileEntity tile = world.getTileEntity(pos);
+	if (!world.isClientSide()) {
+	    BlockEntity tile = world.getBlockEntity(pos);
 	    if (tile instanceof IPipe) {
 		((IPipe) tile).refreshNetworkIfChange();
 	    }
@@ -219,19 +219,19 @@ public class BlockPipe extends Block implements IWaterLoggable {
 
     @Override
     @Deprecated
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos,
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
 	    BlockPos facingPos) {
-	if (stateIn.get(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
-	    world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
+	    world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 	}
 	EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(facing);
-	TileEntity tile = world.getTileEntity(facingPos);
+	BlockEntity tile = world.getBlockEntity(facingPos);
 	if (tile instanceof IPipe) {
-	    return stateIn.with(property, EnumConnectType.WIRE);
+	    return stateIn.setValue(property, EnumConnectType.WIRE);
 	} else if (FluidUtilities.isFluidReceiver(tile, facing.getOpposite())) {
-	    return stateIn.with(property, EnumConnectType.INVENTORY);
+	    return stateIn.setValue(property, EnumConnectType.INVENTORY);
 	} else {
-	    return stateIn.with(property, EnumConnectType.NONE);
+	    return stateIn.setValue(property, EnumConnectType.NONE);
 	}
     }
 
@@ -241,7 +241,7 @@ public class BlockPipe extends Block implements IWaterLoggable {
     }
 
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 	return new TilePipe();
     }
 }

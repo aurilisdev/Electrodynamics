@@ -18,9 +18,9 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.AABB;
 
 public class TileFermentationPlant extends GenericTileTicking {
 
@@ -47,20 +47,21 @@ public class TileFermentationPlant extends GenericTileTicking {
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-	return super.getRenderBoundingBox().grow(1);
+    public AABB getRenderBoundingBox() {
+	return super.getRenderBoundingBox().inflate(1);
     }
 
     protected void tickClient(ComponentTickable tickable) {
 	if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0) {
-	    if (world.rand.nextDouble() < 0.15) {
-		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.4 + 0.5,
-			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    if (level.random.nextDouble() < 0.15) {
+		level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+			worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D,
+			0.0D);
 	    }
-	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().rotateY();
-	    double x = pos.getX() + 0.55 + dir.getXOffset() * 0.2;
-	    double z = pos.getZ() + 0.55 + dir.getZOffset() * 0.2;
-	    world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, pos.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
+	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getClockWise();
+	    double x = worldPosition.getX() + 0.55 + dir.getStepX() * 0.2;
+	    double z = worldPosition.getZ() + 0.55 + dir.getStepZ() * 0.2;
+	    level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
 	}
     }
 

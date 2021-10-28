@@ -4,7 +4,7 @@ import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 public class ComponentDirection implements Component {
     private GenericTile holder;
@@ -19,7 +19,7 @@ public class ComponentDirection implements Component {
     public Direction getDirection() {
 	if (System.currentTimeMillis() - last > 10000 || cachedDirection == null) {
 	    if (holder.getBlockState().hasProperty(BlockGenericMachine.FACING)) {
-		cachedDirection = holder.getBlockState().get(BlockGenericMachine.FACING);
+		cachedDirection = holder.getBlockState().getValue(BlockGenericMachine.FACING);
 	    }
 	    last = System.currentTimeMillis();
 	}

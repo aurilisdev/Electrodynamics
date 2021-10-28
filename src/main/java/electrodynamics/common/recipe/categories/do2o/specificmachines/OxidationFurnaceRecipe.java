@@ -3,11 +3,11 @@ package electrodynamics.common.recipe.categories.do2o.specificmachines;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class OxidationFurnaceRecipe extends DO2ORecipe {
 
@@ -20,13 +20,13 @@ public class OxidationFurnaceRecipe extends DO2ORecipe {
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
 	return ElectrodynamicsRecipeInit.OXIDATION_FURNACE_SERIALIZER.get();
     }
 
     @Override
-    public IRecipeType<?> getType() {
-	return Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID);
+    public RecipeType<?> getType() {
+	return Registry.RECIPE_TYPE.get(RECIPE_ID);
     }
 
 }

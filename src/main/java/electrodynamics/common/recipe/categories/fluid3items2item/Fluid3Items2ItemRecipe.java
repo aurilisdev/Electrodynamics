@@ -9,11 +9,11 @@ import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
@@ -45,7 +45,7 @@ public abstract class Fluid3Items2ItemRecipe extends ElectrodynamicsRecipe imple
 		    List<Fluid> inputFluids = fluid.getValidInputFluids();
 		    for (Fluid inputFluid : inputFluids) {
 			FluidTank tank = fluid.getTankFromFluid(inputFluid, true);
-			if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())
+			if (tank != null && tank.getFluid().getFluid().isSame(INPUT_FLUID.getFluidStack().getFluid())
 				&& tank.getFluidAmount() >= INPUT_FLUID.getFluidStack().getAmount()) {
 			    return true;
 			}
@@ -58,18 +58,18 @@ public abstract class Fluid3Items2ItemRecipe extends ElectrodynamicsRecipe imple
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
 	return OUTPUT_ITEM;
     }
 
     @Override
-    public ItemStack getCraftingResult(RecipeWrapper inv) {
+    public ItemStack assemble(RecipeWrapper inv) {
 	return OUTPUT_ITEM;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, INPUT_ITEM1, INPUT_ITEM2, INPUT_ITEM3, INPUT_FLUID);
+	return NonNullList.of(null, INPUT_ITEM1, INPUT_ITEM2, INPUT_ITEM3, INPUT_FLUID);
     }
 
 }

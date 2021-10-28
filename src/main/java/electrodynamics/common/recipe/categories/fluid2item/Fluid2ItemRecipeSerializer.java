@@ -7,10 +7,10 @@ import com.google.gson.JsonObject;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeSerializer;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class Fluid2ItemRecipeSerializer<T extends Fluid2ItemRecipe> extends ElectrodynamicsRecipeSerializer<T> {
@@ -20,9 +20,9 @@ public class Fluid2ItemRecipeSerializer<T extends Fluid2ItemRecipe> extends Elec
     }
 
     @Override
-    public T read(ResourceLocation recipeId, JsonObject json) {
-	FluidIngredient fluidInput = FluidIngredient.deserialize(JSONUtils.getJsonObject(json, "fluid_input"));
-	ItemStack itemOutput = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "item_output"), true);
+    public T fromJson(ResourceLocation recipeId, JsonObject json) {
+	FluidIngredient fluidInput = FluidIngredient.deserialize(GsonHelper.getAsJsonObject(json, "fluid_input"));
+	ItemStack itemOutput = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "item_output"), true);
 
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, FluidIngredient.class,
@@ -35,9 +35,9 @@ public class Fluid2ItemRecipeSerializer<T extends Fluid2ItemRecipe> extends Elec
     }
 
     @Override
-    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
+    public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 	FluidIngredient fluidInput = FluidIngredient.read(buffer);
-	ItemStack itemOutput = buffer.readItemStack();
+	ItemStack itemOutput = buffer.readItem();
 
 	try {
 	    Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, FluidIngredient.class,
@@ -50,10 +50,10 @@ public class Fluid2ItemRecipeSerializer<T extends Fluid2ItemRecipe> extends Elec
     }
 
     @Override
-    public void write(PacketBuffer buffer, T recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, T recipe) {
 	FluidIngredient fluidInput = (FluidIngredient) recipe.getIngredients().get(0);
 	fluidInput.writeStack(buffer);
-	buffer.writeItemStack(recipe.getRecipeOutput());
+	buffer.writeItem(recipe.getResultItem());
     }
 
 }

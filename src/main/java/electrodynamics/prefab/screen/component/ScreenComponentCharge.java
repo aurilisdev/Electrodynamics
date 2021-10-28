@@ -3,12 +3,12 @@ package electrodynamics.prefab.screen.component;
 import java.awt.Rectangle;
 import java.util.function.DoubleSupplier;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class ScreenComponentCharge extends ScreenComponent {
 
@@ -30,7 +30,7 @@ public class ScreenComponentCharge extends ScreenComponent {
     }
 
     @Override
-    public void renderBackground(MatrixStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
+    public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
 	UtilitiesRendering.bindTexture(resource);
 
 	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW, POSYARROW, WIDTHARROW, HEIGHTARROW);

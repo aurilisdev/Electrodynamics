@@ -9,11 +9,11 @@ import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
@@ -39,7 +39,7 @@ public abstract class FluidItem2ItemRecipe extends ElectrodynamicsRecipe impleme
 
 		FluidTank tank = fluid.getTankFromFluid(inputFluid, true);
 
-		if (tank != null && tank.getFluid().getFluid().isEquivalentTo(FLUID_INPUT.getFluidStack().getFluid())
+		if (tank != null && tank.getFluid().getFluid().isSame(FLUID_INPUT.getFluidStack().getFluid())
 			&& tank.getFluidAmount() >= FLUID_INPUT.getFluidStack().getAmount()) {
 		    return true;
 		}
@@ -49,18 +49,18 @@ public abstract class FluidItem2ItemRecipe extends ElectrodynamicsRecipe impleme
     }
 
     @Override
-    public ItemStack getCraftingResult(RecipeWrapper inv) {
+    public ItemStack assemble(RecipeWrapper inv) {
 	return ITEM_OUTPUT;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
 	return ITEM_OUTPUT;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, ITEM_INPUT, FLUID_INPUT);
+	return NonNullList.of(null, ITEM_INPUT, FLUID_INPUT);
     }
 
 }

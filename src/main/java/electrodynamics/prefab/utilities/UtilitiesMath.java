@@ -1,12 +1,12 @@
 package electrodynamics.prefab.utilities;
 
 import electrodynamics.prefab.utilities.object.Location;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult.Type;
+import net.minecraft.world.phys.Vec3;
 
 public class UtilitiesMath {
     public static Location getRaytracedBlock(Entity entity) {
@@ -14,18 +14,18 @@ public class UtilitiesMath {
     }
 
     public static Location getRaytracedBlock(Entity entity, double rayLength) {
-	return getRaytracedBlock(entity.world, entity.getLookVec(), entity.getEyePosition(0), rayLength);
+	return getRaytracedBlock(entity.level, entity.getLookAngle(), entity.getEyePosition(0), rayLength);
     }
 
-    public static Location getRaytracedBlock(World world, Vector3d direction, Vector3d from, double rayLength) {
+    public static Location getRaytracedBlock(Level world, Vec3 direction, Vec3 from, double rayLength) {
 	// Just normalize for safety. Allows the direction
 	// vector to be from some block to another with no
 	// consideration for more math.
-	Vector3d rayPath = direction.normalize().scale(rayLength);
-	Vector3d to = from.add(rayPath);
-	RayTraceContext rayContext = new RayTraceContext(from, to, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, null);
-	BlockRayTraceResult rayHit = world.rayTraceBlocks(rayContext);
+	Vec3 rayPath = direction.normalize().scale(rayLength);
+	Vec3 to = from.add(rayPath);
+	ClipContext rayContext = new ClipContext(from, to, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, null);
+	BlockHitResult rayHit = world.clip(rayContext);
 
-	return rayHit.getType() != Type.BLOCK ? null : new Location(rayHit.getPos());
+	return rayHit.getType() != Type.BLOCK ? null : new Location(rayHit.getBlockPos());
     }
 }

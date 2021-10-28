@@ -2,24 +2,24 @@ package electrodynamics.common.block;
 
 import electrodynamics.common.multiblock.IMultiblockSubnode;
 import electrodynamics.common.tile.TileMultiSubnode;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -27,116 +27,115 @@ import net.minecraftforge.common.ToolType;
 public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 
     public BlockMultiSubnode() {
-	super(AbstractBlock.Properties.create(Material.GLASS).hardnessAndResistance(3.5F).sound(SoundType.METAL)
-		.setOpaque(BlockMultiSubnode::isntSolid).harvestTool(ToolType.PICKAXE).notSolid());
+	super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor(BlockMultiSubnode::isntSolid)
+		.harvestTool(ToolType.PICKAXE).noOcclusion());
     }
 
-    private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
+    private static boolean isntSolid(BlockState state, BlockGetter reader, BlockPos pos) {
 	return false;
     }
 
     @Override
     @Deprecated
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-	TileEntity tile = worldIn.getTileEntity(pos);
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    return subnode.getShape();
 	}
-	return VoxelShapes.fullCube();
+	return Shapes.block();
     }
 
     @Override
     @Deprecated
-    public BlockRenderType getRenderType(BlockState state) {
-	return BlockRenderType.INVISIBLE;
+    public RenderShape getRenderShape(BlockState state) {
+	return RenderShape.INVISIBLE;
     }
 
     @Override
     @Deprecated
-    public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-	return VoxelShapes.empty();
+    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+	return Shapes.empty();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     @Deprecated
-    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 	return true;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     @Deprecated
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 	return 1.0f;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 	return true;
     }
 
     @Override
     @Deprecated
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
-	    BlockRayTraceResult hit) {
-	TileEntity tile = worldIn.getTileEntity(pos);
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		subnode.nodePos.getBlock(worldIn).onBlockActivated(subnode.nodePos.getBlockState(worldIn), worldIn, subnode.nodePos.toBlockPos(),
-			player, handIn, hit);
+		subnode.nodePos.getBlock(worldIn).use(subnode.nodePos.getBlockState(worldIn), worldIn, subnode.nodePos.toBlockPos(), player, handIn,
+			hit);
 	    }
 	}
-	return ActionResultType.SUCCESS;
+	return InteractionResult.SUCCESS;
     }
 
     @Override
     @Deprecated
-    public boolean canProvidePower(BlockState state) {
+    public boolean isSignalSource(BlockState state) {
 	return true;
     }
 
     @Override
     @Deprecated
-    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-	TileEntity tile = blockAccess.getTileEntity(pos);
+    public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+	BlockEntity tile = blockAccess.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		return subnode.nodePos.getBlock(blockAccess).getStrongPower(subnode.nodePos.getBlockState(blockAccess), blockAccess,
+		return subnode.nodePos.getBlock(blockAccess).getDirectSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
 			subnode.nodePos.toBlockPos(), side);
 	    }
 	}
-	return super.getStrongPower(blockState, blockAccess, pos, side);
+	return super.getDirectSignal(blockState, blockAccess, pos, side);
     }
 
     @Override
     @Deprecated
-    public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-	TileEntity tile = blockAccess.getTileEntity(pos);
+    public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+	BlockEntity tile = blockAccess.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
-		return subnode.nodePos.getBlock(blockAccess).getWeakPower(subnode.nodePos.getBlockState(blockAccess), blockAccess,
+		return subnode.nodePos.getBlock(blockAccess).getSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
 			subnode.nodePos.toBlockPos(), side);
 	    }
 	}
-	return super.getWeakPower(blockState, blockAccess, pos, side);
+	return super.getSignal(blockState, blockAccess, pos, side);
     }
 
     @Override
     @Deprecated
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-	TileEntity tile = worldIn.getTileEntity(pos);
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode) {
 	    TileMultiSubnode subnode = (TileMultiSubnode) tile;
 	    if (subnode.nodePos != null) {
 		worldIn.destroyBlock(subnode.nodePos.toBlockPos(), true);
 	    }
 	}
-	super.onReplaced(state, worldIn, pos, newState, isMoving);
+	super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
@@ -146,7 +145,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
     }
 
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 	return new TileMultiSubnode();
     }
 }

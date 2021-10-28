@@ -3,9 +3,9 @@ package electrodynamics.common.tile.network;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
 
-public class TileLogisticalWire extends TileWire implements ITickableTileEntity {
+public class TileLogisticalWire extends TileWire implements TickableBlockEntity {
     public boolean isPowered = false;
 
     public TileLogisticalWire() {
@@ -21,7 +21,7 @@ public class TileLogisticalWire extends TileWire implements ITickableTileEntity 
 	if (hasComponent(ComponentType.Tickable)) {
 	    ComponentTickable tickable = getComponent(ComponentType.Tickable);
 	    tickable.tickCommon();
-	    if (!world.isRemote) {
+	    if (!level.isClientSide) {
 		tickable.tickServer();
 	    } else {
 		tickable.tickClient();
@@ -34,7 +34,7 @@ public class TileLogisticalWire extends TileWire implements ITickableTileEntity 
 	    boolean shouldPower = getNetwork().getActiveTransmitted() > 0;
 	    if (shouldPower != isPowered) {
 		isPowered = shouldPower;
-		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
+		level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
 	    }
 	}
     }

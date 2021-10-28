@@ -5,9 +5,9 @@ import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class CountableIngredient extends Ingredient {
 
@@ -22,7 +22,7 @@ public class CountableIngredient extends Ingredient {
     }
 
     public static CountableIngredient deserialize(JsonElement jsonElement) {
-	Ingredient itemIngredient = Ingredient.deserialize(jsonElement);
+	Ingredient itemIngredient = Ingredient.fromJson(jsonElement);
 	int count;
 	try {
 	    count = jsonElement.getAsJsonObject().get("count").getAsInt();
@@ -46,20 +46,20 @@ public class CountableIngredient extends Ingredient {
 	return STACK_SIZE;
     }
 
-    public static CountableIngredient read(PacketBuffer buffer) {
-	Ingredient ingredient = Ingredient.read(buffer);
+    public static CountableIngredient read(FriendlyByteBuf buffer) {
+	Ingredient ingredient = Ingredient.fromNetwork(buffer);
 	int stackSize = buffer.readInt();
 	return new CountableIngredient(ingredient, stackSize);
     }
 
-    public void writeStack(PacketBuffer buffer) {
-	INGREDIENT.write(buffer);
+    public void writeStack(FriendlyByteBuf buffer) {
+	INGREDIENT.toNetwork(buffer);
 	buffer.writeInt(STACK_SIZE);
     }
 
     public ArrayList<ItemStack> fetchCountedStacks() {
 	ArrayList<ItemStack> countedStacks = new ArrayList<>();
-	for (ItemStack itemStack : INGREDIENT.getMatchingStacks()) {
+	for (ItemStack itemStack : INGREDIENT.getItems()) {
 	    itemStack.setCount(STACK_SIZE);
 	    countedStacks.add(itemStack);
 	}

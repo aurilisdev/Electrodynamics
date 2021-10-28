@@ -1,9 +1,9 @@
 package electrodynamics.common.block.connect;
 
-import net.minecraft.state.EnumProperty;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-public enum EnumConnectType implements IStringSerializable {
+public enum EnumConnectType implements StringRepresentable {
     NONE, WIRE, INVENTORY;
 
     public static final EnumProperty<EnumConnectType> DOWN = EnumProperty.create("down", EnumConnectType.class);
@@ -14,7 +14,7 @@ public enum EnumConnectType implements IStringSerializable {
     public static final EnumProperty<EnumConnectType> EAST = EnumProperty.create("east", EnumConnectType.class);
 
     @Override
-    public String getString() {
+    public String getSerializedName() {
 	return name().toLowerCase();
     }
 }

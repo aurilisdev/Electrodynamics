@@ -17,19 +17,19 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
-    public ScreenDO2OProcessor(ContainerDO2OProcessor container, PlayerInventory playerInventory, ITextComponent title) {
+    public ScreenDO2OProcessor(ContainerDO2OProcessor container, Inventory playerInventory, Component title) {
 	super(container, playerInventory, title);
 	components.add(new ScreenComponentProgress(() -> {
 	    GenericTile furnace = container.getHostFromIntArray();
@@ -46,22 +46,22 @@ public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
 
     @Override
     protected ScreenComponentSlot createScreenSlot(Slot slot) {
-	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.xPos - 1, slot.yPos - 1);
+	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
     }
 
-    private List<? extends ITextProperties> getEnergyInformation() {
-	ArrayList<ITextProperties> list = new ArrayList<>();
-	GenericTile box = container.getHostFromIntArray();
+    private List<? extends FormattedText> getEnergyInformation() {
+	ArrayList<FormattedText> list = new ArrayList<>();
+	GenericTile box = menu.getHostFromIntArray();
 	if (box != null) {
 	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
 	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
 
-	    list.add(new TranslationTextComponent("gui.do2oprocessor.usage",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
-			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
-	    list.add(new TranslationTextComponent("gui.do2oprocessor.voltage",
-		    new StringTextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-			    .mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.DARK_GRAY));
+	    list.add(new TranslatableComponent("gui.do2oprocessor.usage",
+		    new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+	    list.add(new TranslatableComponent("gui.do2oprocessor.voltage",
+		    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 	}
 	return list;
     }

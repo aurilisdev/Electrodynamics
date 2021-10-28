@@ -1,8 +1,8 @@
 package electrodynamics.api.capability.temperature;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -21,15 +21,15 @@ public class CapabilityTemperature {
     public static class Temperature implements Capability.IStorage<ICapabilityTemperature> {
 
 	@Override
-	public INBT writeNBT(Capability<ICapabilityTemperature> capability, ICapabilityTemperature instance, Direction side) {
-	    CompoundNBT nbt = new CompoundNBT();
+	public Tag writeNBT(Capability<ICapabilityTemperature> capability, ICapabilityTemperature instance, Direction side) {
+	    CompoundTag nbt = new CompoundTag();
 	    nbt.putInt(TEMPERATURE_KEY, instance.getTemperature());
 	    return nbt;
 	}
 
 	@Override
-	public void readNBT(Capability<ICapabilityTemperature> capability, ICapabilityTemperature instance, Direction side, INBT nbt) {
-	    int temperature = ((CompoundNBT) nbt).getInt(TEMPERATURE_KEY);
+	public void readNBT(Capability<ICapabilityTemperature> capability, ICapabilityTemperature instance, Direction side, Tag nbt) {
+	    int temperature = ((CompoundTag) nbt).getInt(TEMPERATURE_KEY);
 	    instance.setTemperature(temperature);
 	}
 

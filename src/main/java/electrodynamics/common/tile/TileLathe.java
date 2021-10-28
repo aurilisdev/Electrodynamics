@@ -20,9 +20,9 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.Blocks;
 
 public class TileLathe extends GenericTileTicking {
 
@@ -48,17 +48,18 @@ public class TileLathe extends GenericTileTicking {
     protected void tickClient(ComponentTickable tickable) {
 	if (getProcessor(0).operatingTicks > 0) {
 	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    if (world.rand.nextDouble() < 0.10) {
+	    if (level.random.nextDouble() < 0.10) {
 		for (int i = 0; i < 5; i++) {
-		    double d4 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-		    double d6 = world.rand.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-		    ParticleAPI.addGrindedParticle(world, pos.getX() + d4 + direction.getXOffset() * 0.2, pos.getY() + 0.7,
-			    pos.getZ() + d6 + direction.getZOffset() * 0.2, 0.0D, 0.0D, 0.0D, Blocks.IRON_BLOCK.getDefaultState(), pos);
+		    double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+		    double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+		    ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.7,
+			    worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D, Blocks.IRON_BLOCK.defaultBlockState(),
+			    worldPosition);
 		}
 	    }
 	    double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
 	    if (progress == 1) {
-		SoundAPI.playSound(SoundRegister.SOUND_LATHEPLAYING.get(), SoundCategory.BLOCKS, 5, .75f, pos);
+		SoundAPI.playSound(SoundRegister.SOUND_LATHEPLAYING.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
 	    }
 	    clientRunningTicks++;
 	}

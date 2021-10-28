@@ -18,11 +18,11 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
 
 public class TileWindmill extends GenericTileTicking implements IMultiblockTileNode {
     protected CachedTileOutput output;
@@ -41,21 +41,21 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-	return super.getRenderBoundingBox().expand(0, 1.5, 0);
+    public AABB getRenderBoundingBox() {
+	return super.getRenderBoundingBox().expandTowards(0, 1.5, 0);
     }
 
     protected void tickServer(ComponentTickable tickable) {
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	Direction facing = direction.getDirection();
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(Direction.DOWN));
+	    output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 	}
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (tickable.getTicks() % 40 == 0) {
 	    output.update();
-	    isGenerating = world.isAirBlock(pos.offset(facing).offset(Direction.UP));
-	    generating = Constants.WINDMILL_MAX_AMPERAGE * (0.6 + Math.sin((pos.getY() - 60) / 50.0) * 0.4);
+	    isGenerating = level.isEmptyBlock(worldPosition.relative(facing).relative(Direction.UP));
+	    generating = Constants.WINDMILL_MAX_AMPERAGE * (0.6 + Math.sin((worldPosition.getY() - 60) / 50.0) * 0.4);
 	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 	if (isGenerating && output.valid()) {
@@ -65,22 +65,22 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
 
     protected void tickCommon(ComponentTickable tickable) {
 	savedTickRotation += (directionFlag ? 1 : -1) * rotationSpeed;
-	rotationSpeed = MathHelper.clamp(rotationSpeed + 0.05 * (isGenerating ? 1 : -1), 0.0, 1.0);
+	rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating ? 1 : -1), 0.0, 1.0);
     }
 
     protected void tickClient(ComponentTickable tickable) {
 	if (isGenerating && tickable.getTicks() % 180 == 0) {
-	    SoundAPI.playSound(SoundRegister.SOUND_WINDMILL.get(), SoundCategory.BLOCKS, 1, 1, pos);
+	    SoundAPI.playSound(SoundRegister.SOUND_WINDMILL.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 	}
     }
 
-    protected void writeNBT(CompoundNBT nbt) {
+    protected void writeNBT(CompoundTag nbt) {
 	nbt.putBoolean("isGenerating", isGenerating);
 	nbt.putBoolean("directionFlag", directionFlag);
 	nbt.putDouble("generating", generating);
     }
 
-    protected void readNBT(CompoundNBT nbt) {
+    protected void readNBT(CompoundTag nbt) {
 	isGenerating = nbt.getBoolean("isGenerating");
 	directionFlag = nbt.getBoolean("directionFlag");
 	generating = nbt.getDouble("generating");

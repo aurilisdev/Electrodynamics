@@ -4,17 +4,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import electrodynamics.common.block.subtype.SubtypeGlass;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -22,17 +22,13 @@ import net.minecraftforge.common.ToolType;
 public class BlockCustomGlass extends Block {
 
     public BlockCustomGlass(float hardness, float resistance) {
-	super(Properties.create(Material.GLASS).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(hardness, resistance)
-		.setOpaque(BlockCustomGlass::isntSolid).notSolid());
+	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(hardness, resistance)
+		.isRedstoneConductor(BlockCustomGlass::isntSolid).noOcclusion());
     }
 
     public BlockCustomGlass(SubtypeGlass glass) {
-	super(Properties.create(Material.GLASS).setRequiresTool().harvestTool(ToolType.PICKAXE)
-		.hardnessAndResistance(glass.hardness, glass.resistance).setOpaque(BlockCustomGlass::isntSolid).notSolid());
-    }
-
-    private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
-	return false;
+	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(glass.hardness, glass.resistance)
+		.isRedstoneConductor(BlockCustomGlass::isntSolid).noOcclusion());
     }
 
     @Override
@@ -43,26 +39,26 @@ public class BlockCustomGlass extends Block {
 
     @Override
     @Deprecated
-    public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-	return VoxelShapes.empty();
+    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+	return Shapes.empty();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     @Deprecated
-    public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-	return adjacentBlockState.isIn(this) || super.isSideInvisible(state, adjacentBlockState, side);
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+	return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     @Deprecated
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 	return 1.0F;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 	return true;
     }
 

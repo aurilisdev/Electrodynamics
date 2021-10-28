@@ -1,17 +1,17 @@
 package electrodynamics.common.block.subtype;
 
 import electrodynamics.api.ISubtype;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
 
 public enum SubtypeResourceBlock implements ISubtype {
-    copper(2.0f, 3.0f, Material.IRON, SoundType.METAL), tin(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    lead(2.0f, 3.0f, Material.IRON, SoundType.METAL), silver(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    bronze(2.0f, 3.0f, Material.IRON, SoundType.METAL), steel(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    aluminum(2.0f, 3.0f, Material.IRON, SoundType.METAL), chromium(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    stainlesssteel(2.0f, 3.0f, Material.IRON, SoundType.METAL), vanadiumsteel(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    hslasteel(2.0f, 3.0f, Material.IRON, SoundType.METAL), titanium(2.0f, 3.0f, Material.IRON, SoundType.METAL),
-    titaniumcarbide(2.0f, 3.0f, Material.IRON, SoundType.METAL);
+    copper(2.0f, 3.0f, Material.METAL, SoundType.METAL), tin(2.0f, 3.0f, Material.METAL, SoundType.METAL),
+    lead(2.0f, 3.0f, Material.METAL, SoundType.METAL), silver(2.0f, 3.0f, Material.METAL, SoundType.METAL),
+    bronze(2.0f, 3.0f, Material.METAL, SoundType.METAL), steel(2.0f, 3.0f, Material.METAL, SoundType.METAL),
+    aluminum(2.0f, 3.0f, Material.METAL, SoundType.METAL), chromium(2.0f, 3.0f, Material.METAL, SoundType.METAL),
+    stainlesssteel(2.0f, 3.0f, Material.METAL, SoundType.METAL), vanadiumsteel(2.0f, 3.0f, Material.METAL, SoundType.METAL),
+    hslasteel(2.0f, 3.0f, Material.METAL, SoundType.METAL), titanium(2.0f, 3.0f, Material.METAL, SoundType.METAL),
+    titaniumcarbide(2.0f, 3.0f, Material.METAL, SoundType.METAL);
 
     private float hardness;
     private float resistance;

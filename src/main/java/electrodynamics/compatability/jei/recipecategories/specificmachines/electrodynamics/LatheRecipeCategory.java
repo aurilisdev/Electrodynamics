@@ -9,8 +9,8 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.compatability.jei.recipecategories.O2ORecipeCategory;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.helpers.IGuiHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class LatheRecipeCategory extends O2ORecipeCategory {
 

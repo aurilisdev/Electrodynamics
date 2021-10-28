@@ -6,14 +6,14 @@ import electrodynamics.api.References;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.tile.IWrenchable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -24,14 +24,14 @@ public class InteractionHandler {
 
     @SubscribeEvent
     public static void onPlayerInteract(RightClickBlock event) {
-	PlayerEntity player = event.getPlayer();
-	if (!player.world.isRemote) {
+	Player player = event.getPlayer();
+	if (!player.level.isClientSide) {
 	    BlockState state = event.getWorld().getBlockState(event.getPos());
 	    Block block = state.getBlock();
 	    ItemStack stack = event.getItemStack();
 	    Item item = stack.getItem();
 	    if (block instanceof IWrenchable && item instanceof IWrenchItem) {
-		if (player.isSneaking()) {
+		if (player.isShiftKeyDown()) {
 		    if (((IWrenchItem) item).onPickup(stack, event.getPos(), player)) {
 			((IWrenchable) block).onPickup(stack, event.getPos(), player);
 		    }
@@ -44,44 +44,44 @@ public class InteractionHandler {
 		SubtypeWire wire = ((BlockWire) block).wire;
 		if (item == Items.SHEARS) {
 		    if (wire.ceramic) {
-			player.world.setBlockState(event.getPos(),
-				Block.getValidBlockForPosition(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
-					.get(SubtypeWire.valueOf(wire.name().replace("ceramic", ""))).getDefaultState(), player.world,
+			player.level.setBlockAndUpdate(event.getPos(),
+				Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
+					.get(SubtypeWire.valueOf(wire.name().replace("ceramic", ""))).defaultBlockState(), player.level,
 					event.getPos()));
 			ItemStack insu = new ItemStack(DeferredRegisters.ITEM_CERAMICINSULATION.get());
-			if (!player.addItemStackToInventory(insu)) {
-			    player.world.addEntity(
-				    new ItemEntity(player.world, (int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ(), insu));
+			if (!player.addItem(insu)) {
+			    player.level.addFreshEntity(
+				    new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), insu));
 			}
 		    } else if (wire.insulated && !wire.highlyinsulated) {
-			player.world.setBlockState(event.getPos(),
-				Block.getValidBlockForPosition(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
+			player.level.setBlockAndUpdate(event.getPos(),
+				Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
 					.get(SubtypeWire.valueOf(wire.name().replace(wire.logistical ? "logistics" : "insulated", "")))
-					.getDefaultState(), player.world, event.getPos()));
+					.defaultBlockState(), player.level, event.getPos()));
 			ItemStack insu = new ItemStack(DeferredRegisters.ITEM_INSULATION.get());
-			if (!player.addItemStackToInventory(insu)) {
-			    player.world.addEntity(
-				    new ItemEntity(player.world, (int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ(), insu));
+			if (!player.addItem(insu)) {
+			    player.level.addFreshEntity(
+				    new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), insu));
 			}
 		    }
 		} else {
 		    if (item == DeferredRegisters.ITEM_INSULATION.get()) {
 			if (!wire.insulated && !wire.logistical) {
-			    player.world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
-			    player.world
-				    .setBlockState(event.getPos(),
-					    Block.getValidBlockForPosition(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
-						    .get(SubtypeWire.valueOf("insulated" + wire.name())).getDefaultState(), player.world,
+			    player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
+			    player.level
+				    .setBlockAndUpdate(event.getPos(),
+					    Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS
+						    .get(SubtypeWire.valueOf("insulated" + wire.name())).defaultBlockState(), player.level,
 						    event.getPos()));
 			    stack.shrink(1);
 			}
 		    } else if (item == DeferredRegisters.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical
 			    && !wire.highlyinsulated) {
-			player.world.setBlockState(event.getPos(), Blocks.AIR.getDefaultState());
-			player.world.setBlockState(event.getPos(),
-				Block.getValidBlockForPosition(
-					DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("ceramic" + wire.name())).getDefaultState(),
-					player.world, event.getPos()));
+			player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
+			player.level.setBlockAndUpdate(event.getPos(),
+				Block.updateFromNeighbourShapes(
+					DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("ceramic" + wire.name())).defaultBlockState(),
+					player.level, event.getPos()));
 			stack.shrink(1);
 		    }
 		}

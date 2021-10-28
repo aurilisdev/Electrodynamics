@@ -3,18 +3,17 @@ package electrodynamics.common.packet;
 import java.util.function.Supplier;
 
 import electrodynamics.api.tile.IPacketServerUpdateTile;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class PacketServerUpdateTile {
     private final BlockPos target;
-    private final CompoundNBT nbt;
+    private final CompoundTag nbt;
 
-    public PacketServerUpdateTile(CompoundNBT nbt, BlockPos target) {
+    public PacketServerUpdateTile(CompoundTag nbt, BlockPos target) {
 	this.nbt = nbt;
 	this.target = target;
     }
@@ -22,9 +21,9 @@ public class PacketServerUpdateTile {
     public static void handle(PacketServerUpdateTile message, Supplier<Context> context) {
 	Context ctx = context.get();
 	ctx.enqueueWork(() -> {
-	    ServerWorld world = context.get().getSender().getServerWorld();
+	    ServerLevel world = context.get().getSender().getLevel();
 	    if (world != null) {
-		TileEntity tile = world.getTileEntity(message.target);
+		BlockEntity tile = world.getBlockEntity(message.target);
 		if (tile instanceof IPacketServerUpdateTile) {
 		    ((IPacketServerUpdateTile) tile).readCustomUpdate(message.nbt);
 		}
@@ -33,12 +32,12 @@ public class PacketServerUpdateTile {
 	ctx.setPacketHandled(true);
     }
 
-    public static void encode(PacketServerUpdateTile pkt, PacketBuffer buf) {
-	buf.writeCompoundTag(pkt.nbt);
+    public static void encode(PacketServerUpdateTile pkt, FriendlyByteBuf buf) {
+	buf.writeNbt(pkt.nbt);
 	buf.writeBlockPos(pkt.target);
     }
 
-    public static PacketServerUpdateTile decode(PacketBuffer buf) {
-	return new PacketServerUpdateTile(buf.readCompoundTag(), buf.readBlockPos());
+    public static PacketServerUpdateTile decode(FriendlyByteBuf buf) {
+	return new PacketServerUpdateTile(buf.readNbt(), buf.readBlockPos());
     }
 }

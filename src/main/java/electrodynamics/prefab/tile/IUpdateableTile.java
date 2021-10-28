@@ -2,46 +2,46 @@ package electrodynamics.prefab.tile;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.PacketUpdateTile;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 
 public interface IUpdateableTile {
-    CompoundNBT writeCustomPacket();
+    CompoundTag writeCustomPacket();
 
-    CompoundNBT writeGUIPacket();
+    CompoundTag writeGUIPacket();
 
-    void readGUIPacket(CompoundNBT nbt);
+    void readGUIPacket(CompoundTag nbt);
 
-    void readCustomPacket(CompoundNBT nbt);
+    void readCustomPacket(CompoundTag nbt);
 
-    default TileEntity getTile() {
-	return (TileEntity) this;
+    default BlockEntity getTile() {
+	return (BlockEntity) this;
     }
 
     default void sendCustomPacket() {
 	PacketUpdateTile packet = new PacketUpdateTile(this, false);
-	TileEntity source = getTile();
-	World world = source.getWorld();
-	BlockPos pos = source.getPos();
-	if (world instanceof ServerWorld) {
-	    ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+	BlockEntity source = getTile();
+	Level world = source.getLevel();
+	BlockPos pos = source.getBlockPos();
+	if (world instanceof ServerLevel) {
+	    ((ServerLevel) world).getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
 
     default void sendGUIPacket() {
 	PacketUpdateTile packet = new PacketUpdateTile(this, true);
-	TileEntity source = getTile();
-	World world = source.getWorld();
-	BlockPos pos = source.getPos();
-	if (world instanceof ServerWorld) {
-	    ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+	BlockEntity source = getTile();
+	Level world = source.getLevel();
+	BlockPos pos = source.getBlockPos();
+	if (world instanceof ServerLevel) {
+	    ((ServerLevel) world).getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
 }

@@ -1,11 +1,11 @@
 package electrodynamics.prefab.tile;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public interface IWrenchable {
-    void onRotate(ItemStack stack, BlockPos pos, PlayerEntity player);
+    void onRotate(ItemStack stack, BlockPos pos, Player player);
 
-    void onPickup(ItemStack stack, BlockPos pos, PlayerEntity player);
+    void onPickup(ItemStack stack, BlockPos pos, Player player);
 }

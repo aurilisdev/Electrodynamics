@@ -8,18 +8,18 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.OreBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.OreBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
 
 public class BlockOre extends OreBlock {
     public SubtypeOre ore;
 
     public BlockOre(SubtypeOre subtype) {
-	super(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(subtype.hardness, subtype.resistance)
+	super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance)
 		.harvestLevel(subtype.harvestLevel).harvestTool(subtype.harvestTool));
 	ore = subtype;
     }

@@ -1,7 +1,7 @@
 package electrodynamics.common.multiblock;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class Subnode {
     public BlockPos pos;

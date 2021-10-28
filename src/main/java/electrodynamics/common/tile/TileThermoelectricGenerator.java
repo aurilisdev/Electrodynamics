@@ -10,8 +10,8 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.material.Fluids;
 
 public class TileThermoelectricGenerator extends GenericTileTicking {
     protected CachedTileOutput output;
@@ -26,12 +26,12 @@ public class TileThermoelectricGenerator extends GenericTileTicking {
 
     protected void tickServer(ComponentTickable tickable) {
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(Direction.UP));
+	    output = new CachedTileOutput(level, worldPosition.relative(Direction.UP));
 	}
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (tickable.getTicks() % 60 == 0) {
-	    hasHeat = world.getFluidState(pos.offset(direction.getDirection().getOpposite())).getFluid() == Fluids.LAVA;
+	    hasHeat = level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getType() == Fluids.LAVA;
 	    output.update();
 	}
 	if (hasHeat && output.valid()) {

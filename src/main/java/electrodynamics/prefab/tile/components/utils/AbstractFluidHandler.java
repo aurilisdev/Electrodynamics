@@ -11,9 +11,9 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,11 +54,11 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	return ComponentType.FluidHandler;
     }
 
-    private void writeGuiPacket(CompoundNBT nbt) {
+    private void writeGuiPacket(CompoundTag nbt) {
 	saveToNBT(nbt);
     }
 
-    private void readGuiPacket(CompoundNBT nbt) {
+    private void readGuiPacket(CompoundTag nbt) {
 	loadFromNBT(null, nbt);
     }
 

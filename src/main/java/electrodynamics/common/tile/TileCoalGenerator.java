@@ -18,14 +18,14 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileCoalGenerator extends GenericTileTicking {
     public static final int COAL_BURN_TIME = 1000;
@@ -54,15 +54,15 @@ public class TileCoalGenerator extends GenericTileTicking {
     protected void tickServer(ComponentTickable tickable) {
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	if (output == null) {
-	    output = new CachedTileOutput(world, new BlockPos(pos).offset(direction.getDirection().getOpposite()));
+	    output = new CachedTileOutput(level, new BlockPos(worldPosition).relative(direction.getDirection().getOpposite()));
 	}
 	if (tickable.getTicks() % 20 == 0) {
 	    output.update();
 	}
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
-	if (burnTime <= 0 && !inv.getStackInSlot(0).isEmpty()) {
-	    burnTime = inv.getStackInSlot(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
-	    inv.decrStackSize(0, 1);
+	if (burnTime <= 0 && !inv.getItem(0).isEmpty()) {
+	    burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
+	    inv.removeItem(0, 1);
 	}
 	BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 	if (machine != null) {
@@ -77,9 +77,9 @@ public class TileCoalGenerator extends GenericTileTicking {
 		}
 	    }
 	    if (update) {
-		world.setBlockState(pos,
+		level.setBlock(worldPosition,
 			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
-				.getDefaultState().with(BlockGenericMachine.FACING, getBlockState().get(BlockGenericMachine.FACING)),
+				.defaultBlockState().setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)),
 			3);
 	    }
 	}
@@ -100,40 +100,41 @@ public class TileCoalGenerator extends GenericTileTicking {
     protected void tickClient(ComponentTickable tickable) {
 	if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
 	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    if (world.rand.nextInt(10) == 0) {
-		world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS,
-			0.5F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.6F, false);
+	    if (level.random.nextInt(10) == 0) {
+		level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
+			SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F,
+			false);
 	    }
 
-	    if (world.rand.nextInt(10) == 0) {
-		for (int i = 0; i < world.rand.nextInt(1) + 1; ++i) {
-		    world.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, dir.getXOffset(), 0.0,
-			    dir.getZOffset());
+	    if (level.random.nextInt(10) == 0) {
+		for (int i = 0; i < level.random.nextInt(1) + 1; ++i) {
+		    level.addParticle(ParticleTypes.LAVA, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
+			    dir.getStepX(), 0.0, dir.getStepZ());
 		}
 	    }
 	}
     }
 
-    protected void createPacket(CompoundNBT nbt) {
+    protected void createPacket(CompoundTag nbt) {
 	nbt.putDouble("clientHeat", heat.get());
 	nbt.putDouble("clientBurnTime", burnTime);
     }
 
-    protected void readPacket(CompoundNBT nbt) {
+    protected void readPacket(CompoundTag nbt) {
 	clientHeat = nbt.getDouble("clientHeat");
 	clientBurnTime = nbt.getDouble("clientBurnTime");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
 	compound.putDouble("heat", heat.get());
 	compound.putInt("burnTime", burnTime);
-	return super.write(compound);
+	return super.save(compound);
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-	super.read(state, compound);
+    public void load(BlockState state, CompoundTag compound) {
+	super.load(state, compound);
 	heat.set(compound.getDouble("heat"));
 	burnTime = compound.getInt("burnTime");
     }

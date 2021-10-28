@@ -6,30 +6,30 @@ import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.tile.GenericTile;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.FurnaceResultSlot;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.FurnaceResultSlot;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
 
-    public ContainerO2OProcessor(int id, PlayerInventory playerinv) {
-	this(id, playerinv, new Inventory(5), new IntArray(3));
+    public ContainerO2OProcessor(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
     }
 
-    public ContainerO2OProcessor(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+    public ContainerO2OProcessor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 	super(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), id, playerinv, inventory, inventorydata);
     }
 
-    public ContainerO2OProcessor(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
+    public ContainerO2OProcessor(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 	super(type, id, playerinv, inventory, inventorydata);
     }
 
     @Override
-    public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
+    public void addInventorySlots(Container inv, Inventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 34));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 34));
 	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),

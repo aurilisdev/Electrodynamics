@@ -4,47 +4,47 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.math.Quaternion;
 
 import electrodynamics.common.block.BlockGenericMachine;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class UtilitiesRendering {
 
     @Deprecated
     public static void renderStar(float time, int starFrags, float r, float g, float b, float a, boolean star) {
-	GlStateManager.pushMatrix();
-	Tessellator tessellator = Tessellator.getInstance();
-	BufferBuilder bufferBuilder = tessellator.getBuffer();
-	GlStateManager.disableTexture();
-	GlStateManager.shadeModel(GL11.GL_SMOOTH);
-	GlStateManager.enableBlend();
+	GlStateManager._pushMatrix();
+	Tesselator tessellator = Tesselator.getInstance();
+	BufferBuilder bufferBuilder = tessellator.getBuilder();
+	GlStateManager._disableTexture();
+	GlStateManager._shadeModel(GL11.GL_SMOOTH);
+	GlStateManager._enableBlend();
 	if (star) {
-	    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+	    GlStateManager._blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 	} else {
-	    GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_DST_COLOR);
+	    GlStateManager._blendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_DST_COLOR);
 	}
-	GlStateManager.disableAlphaTest();
-	GlStateManager.enableCull();
-	GlStateManager.enableDepthTest();
+	GlStateManager._disableAlphaTest();
+	GlStateManager._enableCull();
+	GlStateManager._enableDepthTest();
 
-	GlStateManager.pushMatrix();
+	GlStateManager._pushMatrix();
 	try {
 	    float par2 = time * 3 % 180;
 	    float var41 = (5.0F + par2) / 200.0F;
@@ -62,50 +62,52 @@ public class UtilitiesRendering {
 		GL11.glRotatef(rand.nextFloat() * 360.0F + var41 * 90.0F, 0.0F, 0.0F, 1.0F);
 		final float f2 = rand.nextFloat() * 20 + 5 + var51 * 10;
 		final float f3 = rand.nextFloat() * 2 + 1 + var51 * 2 + (star ? 0 : 10);
-		bufferBuilder.begin(6, DefaultVertexFormats.POSITION_COLOR);
-		bufferBuilder.pos(0, 0, 0).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		bufferBuilder.pos(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		bufferBuilder.pos(0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		bufferBuilder.pos(0, f2, 1 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		bufferBuilder.pos(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
-		tessellator.draw();
+		bufferBuilder.begin(6, DefaultVertexFormat.POSITION_COLOR);
+		bufferBuilder.vertex(0, 0, 0).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
+			.endVertex();
+		bufferBuilder.vertex(0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+		bufferBuilder.vertex(0, f2, 1 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
+		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
+			.endVertex();
+		tessellator.end();
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	GlStateManager.popMatrix();
-	GlStateManager.disableDepthTest();
-	GlStateManager.disableBlend();
-	GlStateManager.shadeModel(GL11.GL_FLAT);
-	GlStateManager.color4f(1, 1, 1, 1);
-	GlStateManager.enableTexture();
-	GlStateManager.enableAlphaTest();
-	GlStateManager.popMatrix();
+	GlStateManager._popMatrix();
+	GlStateManager._disableDepthTest();
+	GlStateManager._disableBlend();
+	GlStateManager._shadeModel(GL11.GL_FLAT);
+	GlStateManager._color4f(1, 1, 1, 1);
+	GlStateManager._enableTexture();
+	GlStateManager._enableAlphaTest();
+	GlStateManager._popMatrix();
     }
 
-    public static void renderModel(IBakedModel model, TileEntity tile, RenderType type, MatrixStack stack, IRenderTypeBuffer buffer,
+    public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer,
 	    int combinedLightIn, int combinedOverlayIn) {
-	Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn,
+	Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn,
 		combinedOverlayIn, model);
     }
 
-    public static void prepareRotationalTileModel(TileEntity tile, MatrixStack stack) {
+    public static void prepareRotationalTileModel(BlockEntity tile, PoseStack stack) {
 	BlockState state = tile.getBlockState();
 	stack.translate(0.5, 7.0 / 16.0, 0.5);
 	if (state.hasProperty(BlockGenericMachine.FACING)) {
-	    Direction facing = state.get(BlockGenericMachine.FACING);
+	    Direction facing = state.getValue(BlockGenericMachine.FACING);
 	    if (facing == Direction.NORTH) {
-		stack.rotate(new Quaternion(0, 90, 0, true));
+		stack.mulPose(new Quaternion(0, 90, 0, true));
 	    } else if (facing == Direction.SOUTH) {
-		stack.rotate(new Quaternion(0, 270, 0, true));
+		stack.mulPose(new Quaternion(0, 270, 0, true));
 	    } else if (facing == Direction.WEST) {
-		stack.rotate(new Quaternion(0, 180, 0, true));
+		stack.mulPose(new Quaternion(0, 180, 0, true));
 	    }
 	}
     }
 
     public static void bindTexture(ResourceLocation resource) {
-	Minecraft.getInstance().textureManager.bindTexture(resource);
+	Minecraft.getInstance().textureManager.bind(resource);
     }
 
     public static float getRed(int color) {

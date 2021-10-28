@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
@@ -12,65 +12,65 @@ import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GenericScreen<T extends GenericContainer<? extends TileEntity>> extends ContainerScreen<T> implements IScreenWrapper {
+public class GenericScreen<T extends GenericContainer<? extends BlockEntity>> extends AbstractContainerScreen<T> implements IScreenWrapper {
 
     protected ResourceLocation defaultResource = new ResourceLocation(References.ID + ":textures/screen/component/base.png");
     protected Set<IGuiComponent> components = new HashSet<>();
     protected int playerInvOffset = 0;
 
-    public GenericScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public GenericScreen(T screenContainer, Inventory inv, Component titleIn) {
 	super(screenContainer, inv, titleIn);
 	initializeComponents();
     }
 
     protected void initializeComponents() {
-	for (Slot slot : container.inventorySlots) {
+	for (Slot slot : menu.slots) {
 	    components.add(createScreenSlot(slot));
 	}
     }
 
     protected ScreenComponentSlot createScreenSlot(Slot slot) {
-	return new ScreenComponentSlot(this, slot.xPos - 1, slot.yPos - 1);
+	return new ScreenComponentSlot(this, slot.x - 1, slot.y - 1);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 	this.renderBackground(matrixStack);
 	super.render(matrixStack, mouseX, mouseY, partialTicks);
-	renderHoveredTooltip(matrixStack, mouseX, mouseY);
+	renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int x, int y) {
-	super.drawGuiContainerForegroundLayer(stack, x, y);
-	int xAxis = x - (width - xSize) / 2;
-	int yAxis = y - (height - ySize) / 2;
+    protected void renderLabels(PoseStack stack, int x, int y) {
+	super.renderLabels(stack, x, y);
+	int xAxis = x - (width - imageWidth) / 2;
+	int yAxis = y - (height - imageHeight) / 2;
 	for (IGuiComponent component : components) {
 	    component.renderForeground(stack, xAxis, yAxis);
 	}
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTick, int x, int y) {
+    protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
 	UtilitiesRendering.bindTexture(defaultResource);
-	int guiWidth = (width - xSize) / 2;
-	int guiHeight = (height - ySize) / 2;
-	blit(stack, guiWidth, guiHeight, 0, 248, xSize, 4);
-	blit(stack, guiWidth, guiHeight + 4, 0, 0, xSize, ySize - 8);
-	blit(stack, guiWidth, guiHeight + ySize - 4, 0, 252, xSize, 4);
+	int guiWidth = (width - imageWidth) / 2;
+	int guiHeight = (height - imageHeight) / 2;
+	blit(stack, guiWidth, guiHeight, 0, 248, imageWidth, 4);
+	blit(stack, guiWidth, guiHeight + 4, 0, 0, imageWidth, imageHeight - 8);
+	blit(stack, guiWidth, guiHeight + imageHeight - 4, 0, 252, imageWidth, 4);
 	int xAxis = x - guiWidth;
 	int yAxis = y - guiHeight;
 	for (IGuiComponent component : components) {
@@ -80,8 +80,8 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
-	double xAxis = x - (width - xSize) / 2.0;
-	double yAxis = y - (height - ySize) / 2.0;
+	double xAxis = x - (width - imageWidth) / 2.0;
+	double yAxis = y - (height - imageHeight) / 2.0;
 
 	for (IGuiComponent component : components) {
 	    component.preMouseClicked(xAxis, yAxis, button);
@@ -97,8 +97,8 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-	double xAxis = mouseX - (width - xSize) / 2.0;
-	double yAxis = mouseY - (height - ySize) / 2.0;
+	double xAxis = mouseX - (width - imageWidth) / 2.0;
+	double yAxis = mouseY - (height - imageHeight) / 2.0;
 
 	for (IGuiComponent component : components) {
 	    component.mouseClicked(xAxis, yAxis, button);
@@ -110,8 +110,8 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
 	boolean ret = super.mouseReleased(mouseX, mouseY, button);
 
-	double xAxis = mouseX - (width - xSize) / 2.0;
-	double yAxis = mouseY - (height - ySize) / 2.0;
+	double xAxis = mouseX - (width - imageWidth) / 2.0;
+	double yAxis = mouseY - (height - imageHeight) / 2.0;
 
 	for (IGuiComponent component : components) {
 	    component.mouseReleased(xAxis, yAxis, button);
@@ -128,35 +128,35 @@ public class GenericScreen<T extends GenericContainer<? extends TileEntity>> ext
     }
 
     public int getXPos() {
-	return (width - xSize) / 2;
+	return (width - imageWidth) / 2;
     }
 
     public int getYPos() {
-	return (height - ySize) / 2;
+	return (height - imageHeight) / 2;
     }
 
     @Override
-    public void drawTexturedRect(MatrixStack stack, int x, int y, int u, int v, int w, int h) {
+    public void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h) {
 	blit(stack, x, y, u, v, w, h);
     }
 
     @Override
-    public void drawTexturedRectFromIcon(MatrixStack stack, int x, int y, TextureAtlasSprite icon, int w, int h) {
-	blit(stack, x, y, (int) (icon.getMinU() * icon.getWidth()), (int) (icon.getMinV() * icon.getHeight()), w, h);
+    public void drawTexturedRectFromIcon(PoseStack stack, int x, int y, TextureAtlasSprite icon, int w, int h) {
+	blit(stack, x, y, (int) (icon.getU0() * icon.getWidth()), (int) (icon.getV0() * icon.getHeight()), w, h);
     }
 
     @Override
-    public void displayTooltip(MatrixStack stack, ITextComponent text, int xAxis, int yAxis) {
+    public void displayTooltip(PoseStack stack, Component text, int xAxis, int yAxis) {
 	this.renderTooltip(stack, text, xAxis, yAxis);
     }
 
     @Override
-    public void displayTooltips(MatrixStack stack, List<? extends ITextProperties> tooltips, int xAxis, int yAxis) {
+    public void displayTooltips(PoseStack stack, List<? extends FormattedText> tooltips, int xAxis, int yAxis) {
 	super.renderWrappedToolTip(stack, tooltips, xAxis, yAxis, font);
     }
 
     @Override
-    public FontRenderer getFontRenderer() {
+    public Font getFontRenderer() {
 	return font;
     }
 

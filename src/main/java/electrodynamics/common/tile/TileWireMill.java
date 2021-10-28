@@ -21,9 +21,9 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 
 public class TileWireMill extends GenericTileTicking {
     public TileWireMill() {
@@ -75,12 +75,13 @@ public class TileWireMill extends GenericTileTicking {
 			? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
 			: getProcessor(0).operatingTicks > 0;
 	if (has) {
-	    if (world.rand.nextDouble() < 0.15) {
-		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.5 + 0.5,
-			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    if (level.random.nextDouble() < 0.15) {
+		level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+			worldPosition.getY() + level.random.nextDouble() * 0.5 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D,
+			0.0D);
 	    }
 	    if (tickable.getTicks() % 200 == 0) {
-		SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundCategory.BLOCKS, 1, 1, pos);
+		SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 	    }
 	}
     }

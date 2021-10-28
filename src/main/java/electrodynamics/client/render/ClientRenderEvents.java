@@ -1,14 +1,14 @@
 package electrodynamics.client.render;
 
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -22,8 +22,8 @@ public class ClientRenderEvents {
     public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 
 	if (event.getType().equals(ElementType.ALL)) {
-	    ItemStack gunStackMainHand = Minecraft.getInstance().player.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-	    ItemStack gunStackOffHand = Minecraft.getInstance().player.getItemStackFromSlot(EquipmentSlotType.OFFHAND);
+	    ItemStack gunStackMainHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.MAINHAND);
+	    ItemStack gunStackOffHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.OFFHAND);
 
 	    if (gunStackMainHand.getItem() instanceof ItemRailgun) {
 		renderHeatToolTip(event, gunStackMainHand);
@@ -39,7 +39,7 @@ public class ClientRenderEvents {
 	double temperature = railgun.getTemperatureStored(stack);
 	String correction = "";
 
-	event.getMatrixStack().push();
+	event.getMatrixStack().pushPose();
 
 	if (temperature < 10) {
 	    correction = "00";
@@ -49,23 +49,23 @@ public class ClientRenderEvents {
 	    correction = "";
 	}
 
-	ITextComponent currTempText = new TranslationTextComponent("tooltip.electrodynamics.railguntemp",
-		new StringTextComponent(temperature + correction + " C")).mergeStyle(TextFormatting.YELLOW);
-	ITextComponent maxTempText = new TranslationTextComponent("tooltip.electrodynamics.railgunmaxtemp",
-		new StringTextComponent(railgun.getMaxTemp() + " C")).mergeStyle(TextFormatting.YELLOW);
+	Component currTempText = new TranslatableComponent("tooltip.electrodynamics.railguntemp", new TextComponent(temperature + correction + " C"))
+		.withStyle(ChatFormatting.YELLOW);
+	Component maxTempText = new TranslatableComponent("tooltip.electrodynamics.railgunmaxtemp", new TextComponent(railgun.getMaxTemp() + " C"))
+		.withStyle(ChatFormatting.YELLOW);
 
-	AbstractGui.drawCenteredString(event.getMatrixStack(), minecraft.fontRenderer, currTempText, 55, 2, 0);
-	AbstractGui.drawCenteredString(event.getMatrixStack(), minecraft.fontRenderer, maxTempText, 48, 11, 0);
+	GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, currTempText, 55, 2, 0);
+	GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, maxTempText, 48, 11, 0);
 
 	if (temperature >= railgun.getOverheatTemp()) {
-	    ITextComponent overheatWarn = new TranslationTextComponent("tooltip.electrodynamics.railgunoverheat").mergeStyle(TextFormatting.RED,
-		    TextFormatting.BOLD);
-	    AbstractGui.drawCenteredString(event.getMatrixStack(), minecraft.fontRenderer, overheatWarn, 70, 20, 0);
+	    Component overheatWarn = new TranslatableComponent("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED,
+		    ChatFormatting.BOLD);
+	    GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, overheatWarn, 70, 20, 0);
 	}
 
-	minecraft.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+	minecraft.getTextureManager().bind(GuiComponent.GUI_ICONS_LOCATION);
 
-	event.getMatrixStack().pop();
+	event.getMatrixStack().popPose();
     }
 
 }

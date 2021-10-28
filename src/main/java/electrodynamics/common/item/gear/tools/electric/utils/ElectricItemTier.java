@@ -1,11 +1,11 @@
 package electrodynamics.common.item.gear.tools.electric.utils;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.crafting.Ingredient;
 
-public enum ElectricItemTier implements IItemTier {
-    DRILL(3, 0, ItemTier.GOLD.getEfficiency() * 3.5f, ItemTier.IRON.getAttackDamage() * 1.6f, 5);
+public enum ElectricItemTier implements Tier {
+    DRILL(3, 0, Tiers.GOLD.getSpeed() * 3.5f, Tiers.IRON.getAttackDamageBonus() * 1.6f, 5);
 
     private final int harvestLevel;
     private final float efficency;
@@ -20,32 +20,32 @@ public enum ElectricItemTier implements IItemTier {
     }
 
     @Override
-    public int getMaxUses() {
+    public int getUses() {
 	return 0;
     }
 
     @Override
-    public float getEfficiency() {
+    public float getSpeed() {
 	return efficency;
     }
 
     @Override
-    public float getAttackDamage() {
+    public float getAttackDamageBonus() {
 	return attackDammage;
     }
 
     @Override
-    public int getHarvestLevel() {
+    public int getLevel() {
 	return harvestLevel;
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
 	return enchantability;
     }
 
     @Override
-    public Ingredient getRepairMaterial() {
+    public Ingredient getRepairIngredient() {
 	return Ingredient.EMPTY;
     }
 

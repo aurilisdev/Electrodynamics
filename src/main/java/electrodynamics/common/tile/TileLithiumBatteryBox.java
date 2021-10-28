@@ -14,8 +14,8 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 
 public class TileLithiumBatteryBox extends TileBatteryBox {
 
@@ -30,7 +30,7 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
+	    output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 	}
 	if (tickable.getTicks() % 40 == 0) {
 	    output.update();

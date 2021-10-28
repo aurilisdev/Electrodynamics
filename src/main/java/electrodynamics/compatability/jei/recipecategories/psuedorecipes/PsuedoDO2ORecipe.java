@@ -1,10 +1,10 @@
 package electrodynamics.compatability.jei.recipecategories.psuedorecipes;
 
 import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class PsuedoDO2ORecipe extends DO2ORecipe {
 
@@ -14,18 +14,18 @@ public class PsuedoDO2ORecipe extends DO2ORecipe {
 
     public PsuedoDO2ORecipe(ItemStack input1, ItemStack input2, ItemStack output) {
 	super(null, null, null, null);
-	INPUT_1 = Ingredient.fromStacks(input1);
-	INPUT_2 = Ingredient.fromStacks(input2);
+	INPUT_1 = Ingredient.of(input1);
+	INPUT_2 = Ingredient.of(input2);
 	OUTPUT = output;
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
 	return null;
     }
 
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
 	return null;
     }
 

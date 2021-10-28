@@ -1,8 +1,8 @@
 package electrodynamics.api.capability.ceramicplate;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -21,15 +21,15 @@ public class CapabilityCeramicPlate {
     public static class PlateStorage implements Capability.IStorage<ICapabilityCeramicPlateHolder> {
 
 	@Override
-	public INBT writeNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side) {
-	    CompoundNBT nbt = new CompoundNBT();
+	public Tag writeNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side) {
+	    CompoundTag nbt = new CompoundTag();
 	    nbt.putInt(PLATES_KEY, instance.getPlateCount());
 	    return nbt;
 	}
 
 	@Override
-	public void readNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side, INBT nbt) {
-	    int plateCount = ((CompoundNBT) nbt).getInt(PLATES_KEY);
+	public void readNBT(Capability<ICapabilityCeramicPlateHolder> capability, ICapabilityCeramicPlateHolder instance, Direction side, Tag nbt) {
+	    int plateCount = ((CompoundTag) nbt).getInt(PLATES_KEY);
 	    instance.setPlateCount(plateCount);
 	}
 

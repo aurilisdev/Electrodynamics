@@ -2,9 +2,9 @@ package electrodynamics.api.screen.component;
 
 import java.util.List;
 
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.FormattedText;
 
 @FunctionalInterface
 public interface TextPropertySupplier {
-    List<? extends ITextProperties> getInfo();
+    List<? extends FormattedText> getInfo();
 }

@@ -6,15 +6,15 @@ import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 public class BlockItemDescriptable extends BlockItem {
     private static HashMap<Block, HashSet<String>> descriptionMappings = new HashMap<>();
@@ -35,22 +35,22 @@ public class BlockItemDescriptable extends BlockItem {
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-	super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	HashSet<String> gotten = descriptionMappings.get(block);
 	if (gotten != null) {
 	    for (String s : gotten) {
 		boolean translate = s.contains("|translate|");
 		if (translate) {
-		    tooltip.add(new TranslationTextComponent(s.replace("|translate|", "")).mergeStyle(TextFormatting.GRAY));
+		    tooltip.add(new TranslatableComponent(s.replace("|translate|", "")).withStyle(ChatFormatting.GRAY));
 		} else {
-		    tooltip.add(new StringTextComponent(s).mergeStyle(TextFormatting.GRAY));
+		    tooltip.add(new TextComponent(s).withStyle(ChatFormatting.GRAY));
 		}
 	    }
 	}
 	double joules = stack.getOrCreateTag().getDouble("joules");
 	if (joules > 0) {
-	    tooltip.add(new StringTextComponent("Stored: " + ChatFormatter.getElectricDisplay(joules, ElectricUnit.JOULES, 2, false)));
+	    tooltip.add(new TextComponent("Stored: " + ChatFormatter.getElectricDisplay(joules, ElectricUnit.JOULES, 2, false)));
 	}
     }
 

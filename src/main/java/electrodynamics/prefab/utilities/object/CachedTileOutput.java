@@ -1,8 +1,8 @@
 package electrodynamics.prefab.utilities.object;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * @author aurilisdev Used so you don't check tileentities all the time. Don't
@@ -10,11 +10,11 @@ import net.minecraft.world.World;
  *         in that version.
  */
 public class CachedTileOutput {
-    private World world;
+    private Level world;
     private BlockPos pos;
-    private TileEntity cache;
+    private BlockEntity cache;
 
-    public CachedTileOutput(World world, BlockPos pos) {
+    public CachedTileOutput(Level world, BlockPos pos) {
 	this.world = world;
 	this.pos = pos;
 
@@ -22,7 +22,7 @@ public class CachedTileOutput {
 
     public <T> T getSafe() {
 	if (cache == null) {
-	    cache = world.getTileEntity(pos);
+	    cache = world.getBlockEntity(pos);
 	}
 	if (cache != null && cache.isRemoved()) {
 	    cache = null;

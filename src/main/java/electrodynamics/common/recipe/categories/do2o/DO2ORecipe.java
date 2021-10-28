@@ -3,10 +3,10 @@ package electrodynamics.common.recipe.categories.do2o;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class DO2ORecipe extends ElectrodynamicsRecipe {
@@ -42,18 +42,18 @@ public abstract class DO2ORecipe extends ElectrodynamicsRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(RecipeWrapper inv) {
+    public ItemStack assemble(RecipeWrapper inv) {
 	return OUTPUT;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
 	return OUTPUT;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, INPUT_1, INPUT_2);
+	return NonNullList.of(null, INPUT_1, INPUT_2);
     }
 
 }

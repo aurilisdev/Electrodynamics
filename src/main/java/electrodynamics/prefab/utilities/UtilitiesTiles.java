@@ -1,6 +1,6 @@
 package electrodynamics.prefab.utilities;
 
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 public class UtilitiesTiles {
     public static final int[][] RELATIVE_MATRIX = { { 3, 2, 1, 0, 5, 4 }, { 4, 5, 0, 1, 2, 3 }, { 0, 1, 3, 2, 4, 5 }, { 0, 1, 2, 3, 5, 4 },
@@ -10,7 +10,7 @@ public class UtilitiesTiles {
 	if (main == null || relative == null) {
 	    return Direction.UP;
 	}
-	return Direction.byIndex(RELATIVE_MATRIX[main.ordinal()][relative.ordinal()]);
+	return Direction.from3DDataValue(RELATIVE_MATRIX[main.ordinal()][relative.ordinal()]);
     }
 
 }

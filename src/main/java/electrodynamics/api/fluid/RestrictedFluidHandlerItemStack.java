@@ -2,8 +2,8 @@ package electrodynamics.api.fluid;
 
 import java.util.ArrayList;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
@@ -19,7 +19,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
 	for (Fluid fluid : WHITELISTED_FLUIDS) {
-	    if (fluid.isEquivalentTo(stack.getFluid())) {
+	    if (fluid.isSame(stack.getFluid())) {
 		return true;
 	    }
 	}
@@ -29,7 +29,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
 	for (Fluid stack : WHITELISTED_FLUIDS) {
-	    if (stack.isEquivalentTo(fluid.getFluid())) {
+	    if (stack.isSame(fluid.getFluid())) {
 		return true;
 	    }
 	}

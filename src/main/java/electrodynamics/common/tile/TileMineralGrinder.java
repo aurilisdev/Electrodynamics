@@ -22,12 +22,12 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 public class TileMineralGrinder extends GenericTileTicking {
     public long clientRunningTicks = 0;
@@ -83,12 +83,13 @@ public class TileMineralGrinder extends GenericTileTicking {
 			? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
 			: getProcessor(0).operatingTicks > 0;
 	if (has) {
-	    if (world.rand.nextDouble() < 0.15) {
-		world.addParticle(ParticleTypes.SMOKE, pos.getX() + world.rand.nextDouble(), pos.getY() + world.rand.nextDouble() * 0.2 + 0.8,
-			pos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+	    if (level.random.nextDouble() < 0.15) {
+		level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+			worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D,
+			0.0D);
 	    }
 	    if (tickable.getTicks() % 200 == 0) {
-		SoundAPI.playSound(SoundRegister.SOUND_MINERALGRINDER.get(), SoundCategory.BLOCKS, 0.5f, 1, pos);
+		SoundAPI.playSound(SoundRegister.SOUND_MINERALGRINDER.get(), SoundSource.BLOCKS, 0.5f, 1, worldPosition);
 	    }
 	    int amount = getType() == DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get() ? 2
 		    : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 1;
@@ -97,10 +98,10 @@ public class TileMineralGrinder extends GenericTileTicking {
 		if (stack.getItem() instanceof BlockItem) {
 		    BlockItem it = (BlockItem) stack.getItem();
 		    Block block = it.getBlock();
-		    double d4 = world.rand.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
-		    double d6 = world.rand.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
-		    ParticleAPI.addGrindedParticle(world, pos.getX() + d4, pos.getY() + 0.8, pos.getZ() + d6, 0.0D, 5D, 0.0D, block.getDefaultState(),
-			    pos);
+		    double d4 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
+		    double d6 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
+		    ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4, worldPosition.getY() + 0.8, worldPosition.getZ() + d6, 0.0D, 5D,
+			    0.0D, block.defaultBlockState(), worldPosition);
 		}
 	    }
 	    clientRunningTicks++;

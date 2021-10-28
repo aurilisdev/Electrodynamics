@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -17,15 +17,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 
-public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<FurnaceRecipe> {
+public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
@@ -106,13 +106,13 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
     }
 
     @Override
-    public Class<? extends FurnaceRecipe> getRecipeClass() {
-	return FurnaceRecipe.class;
+    public Class<? extends SmeltingRecipe> getRecipeClass() {
+	return SmeltingRecipe.class;
     }
 
     @Override
     public String getTitle() {
-	return new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP).getString();
+	return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP).getString();
     }
 
     @Override
@@ -126,16 +126,16 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
     }
 
     @Override
-    public void setIngredients(FurnaceRecipe recipe, IIngredients ingredients) {
+    public void setIngredients(SmeltingRecipe recipe, IIngredients ingredients) {
 	NonNullList<Ingredient> inputs = NonNullList.create();
 	inputs.addAll(recipe.getIngredients());
 
 	ingredients.setInputIngredients(inputs);
-	ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+	ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FurnaceRecipe recipe, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout recipeLayout, SmeltingRecipe recipe, IIngredients ingredients) {
 
 	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
@@ -147,25 +147,25 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Furnac
     }
 
     @Override
-    public void draw(FurnaceRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void draw(SmeltingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 	IDrawableAnimated arrow = getArrow(recipe);
 	arrow.draw(matrixStack, PROCESSING_ARROW_OFFSET[0], PROCESSING_ARROW_OFFSET[1]);
 
 	drawSmeltTime(recipe, matrixStack, TEXT_Y_HEIGHT);
     }
 
-    protected IDrawableAnimated getArrow(FurnaceRecipe recipe) {
+    protected IDrawableAnimated getArrow(SmeltingRecipe recipe) {
 	return CACHED_ARROWS.getUnchecked(SMELT_TIME);
     }
 
-    protected void drawSmeltTime(FurnaceRecipe recipe, MatrixStack matrixStack, int y) {
+    protected void drawSmeltTime(SmeltingRecipe recipe, PoseStack matrixStack, int y) {
 
 	int smeltTimeSeconds = SMELT_TIME / 20;
-	TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category." + RECIPE_GROUP + ".info.power", smeltTimeSeconds);
+	TranslatableComponent timeString = new TranslatableComponent("gui.jei.category." + RECIPE_GROUP + ".info.power", smeltTimeSeconds);
 	Minecraft minecraft = Minecraft.getInstance();
-	FontRenderer fontRenderer = minecraft.fontRenderer;
-	int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-	fontRenderer.func_243248_b(matrixStack, timeString, BACKGROUND.getWidth() - stringWidth, y, 0xFF808080);
+	Font fontRenderer = minecraft.font;
+	int stringWidth = fontRenderer.width(timeString);
+	fontRenderer.draw(matrixStack, timeString, BACKGROUND.getWidth() - stringWidth, y, 0xFF808080);
 
     }
 

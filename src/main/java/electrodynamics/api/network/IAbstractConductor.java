@@ -1,7 +1,7 @@
 package electrodynamics.api.network;
 
 import electrodynamics.prefab.network.AbstractNetwork;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IAbstractConductor {
 
@@ -11,7 +11,7 @@ public interface IAbstractConductor {
 
     void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
 
-    TileEntity[] getAdjacentConnections();
+    BlockEntity[] getAdjacentConnections();
 
     Object getConductorType();
 

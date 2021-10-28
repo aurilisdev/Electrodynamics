@@ -1,20 +1,20 @@
 package electrodynamics.common.item.gear.armor;
 
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
-public interface ICustomArmor extends IArmorMaterial {
+public interface ICustomArmor extends ArmorMaterial {
 
     @Override
-    default int getEnchantability() {
+    default int getEnchantmentValue() {
 	return 0;
     }
 
     @Override
-    default Ingredient getRepairMaterial() {
-	return Ingredient.fromStacks(new ItemStack(Items.BEDROCK));
+    default Ingredient getRepairIngredient() {
+	return Ingredient.of(new ItemStack(Items.BEDROCK));
     }
 
 }

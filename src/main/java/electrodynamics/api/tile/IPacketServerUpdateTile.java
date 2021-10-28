@@ -1,7 +1,7 @@
 package electrodynamics.api.tile;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IPacketServerUpdateTile {
-    void readCustomUpdate(CompoundNBT nbt);
+    void readCustomUpdate(CompoundTag nbt);
 }

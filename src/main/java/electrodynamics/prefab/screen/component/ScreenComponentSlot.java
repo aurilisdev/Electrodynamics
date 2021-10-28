@@ -2,15 +2,15 @@ package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextSupplier;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,11 +29,11 @@ public class ScreenComponentSlot extends ScreenComponent {
     }
 
     public ScreenComponentSlot(final IScreenWrapper gui, final int x, final int y, Slot slot) {
-	this(EnumSlotType.NORMAL, gui, x, y, () -> slot.getStack().isEmpty() ? new StringTextComponent("") : slot.getStack().getDisplayName());
+	this(EnumSlotType.NORMAL, gui, x, y, () -> slot.getItem().isEmpty() ? new TextComponent("") : slot.getItem().getHoverName());
     }
 
     public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y, Slot slot) {
-	this(type, gui, x, y, () -> slot.getStack().getDisplayName());
+	this(type, gui, x, y, () -> slot.getItem().getHoverName());
     }
 
     public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y, final TextSupplier tooltip) {
@@ -47,14 +47,14 @@ public class ScreenComponentSlot extends ScreenComponent {
     }
 
     @Override
-    public void renderBackground(MatrixStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
+    public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
 	UtilitiesRendering.bindTexture(resource);
 	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, type.getTextureX(), type.getTextureY(), type.getWidth(),
 		type.getHeight());
     }
 
     @Override
-    public void renderForeground(MatrixStack stack, final int xAxis, final int yAxis) {
+    public void renderForeground(PoseStack stack, final int xAxis, final int yAxis) {
 	if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, type.width, type.height) && tooltip != null
 		&& !tooltip.getText().getString().isEmpty()) {
 	    gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);

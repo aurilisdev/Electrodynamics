@@ -13,23 +13,23 @@ import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.utilities.UtilitiesElectricity;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockMachine extends BlockGenericMachine implements IMultiblockNode {
     public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
@@ -39,13 +39,13 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	for (int i = -radius; i <= radius; i++) {
 	    for (int j = -radius; j <= radius; j++) {
 		if (i == 0 && j == 0) {
-		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), VoxelShapes.fullCube()));
+		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.block()));
 		} else {
-		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), VoxelShapes.create(0, 13.0 / 16.0, 0, 1, 1, 1)));
+		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.box(0, 13.0 / 16.0, 0, 1, 1, 1)));
 		}
 	    }
 	}
-	windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), VoxelShapes.fullCube()));
+	windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), Shapes.block()));
     }
 
     public final SubtypeMachine machine;
@@ -56,9 +56,9 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     @Deprecated
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
-	    TileTransformer tile = (TileTransformer) worldIn.getTileEntity(pos);
+	    TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
 	    if (tile != null && tile.lastTransfer.getJoules() > 0) {
 		UtilitiesElectricity.electrecuteEntity(entityIn, tile.lastTransfer);
 	    }
@@ -67,19 +67,19 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Deprecated
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
     }
 
     @Override
     @Deprecated
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 	return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
 		: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 	if (machine.showInItemGroup) {
 	    items.add(new ItemStack(this));
 	}
@@ -87,7 +87,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     @Deprecated
-    public BlockRenderType getRenderType(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
 	return machine.getRenderType();
     }
 
@@ -112,7 +112,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	    addstack = getMachine(machine);
 	}
 
-	TileEntity tile = builder.get(LootParameters.BLOCK_ENTITY);
+	BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 	tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
 	    double joules = el.getJoulesStored();
 	    if (joules > 0) {
@@ -123,7 +123,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+    public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
 
 	switch (machine) {
 	case coalgeneratorrunning:
@@ -142,9 +142,9 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     @Deprecated
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	TileEntity tile = worldIn.getTileEntity(pos);
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	super.setPlacedBy(worldIn, pos, state, placer, stack);
+	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (hasMultiBlock() && tile instanceof IMultiblockTileNode) {
 	    IMultiblockTileNode multi = (IMultiblockTileNode) tile;
 	    multi.onNodePlaced(worldIn, pos, state, placer, stack);
@@ -153,27 +153,27 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Deprecated
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
 	if (hasMultiBlock()) {
-	    TileEntity tile = worldIn.getTileEntity(pos);
+	    BlockEntity tile = worldIn.getBlockEntity(pos);
 	    if (tile instanceof IMultiblockTileNode) {
 		IMultiblockTileNode multi = (IMultiblockTileNode) tile;
 		multi.onNodeReplaced(worldIn, pos, !update);
 	    }
 	}
 	if (update) {
-	    super.onReplaced(state, worldIn, pos, newState, isMoving);
+	    super.onRemove(state, worldIn, pos, newState, isMoving);
 	} else {
-	    worldIn.markBlockRangeForRenderUpdate(pos, state, newState);
+	    worldIn.setBlocksDirty(pos, state, newState);
 	}
     }
 
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 	if (machine == SubtypeMachine.advancedsolarpanel) {
 	    TileAdvancedSolarPanel solar = (TileAdvancedSolarPanel) machine.createTileEntity();
-	    solar.currentRotation.set(((World) world).getDayTime() / 24000.0 * Math.PI * 2 - Math.PI / 2.0);
+	    solar.currentRotation.set(((Level) world).getDayTime() / 24000.0 * Math.PI * 2 - Math.PI / 2.0);
 	    return solar;
 	}
 	return machine.createTileEntity();

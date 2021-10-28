@@ -16,10 +16,10 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -40,7 +40,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0, 10000000);
     }
 
-    public TileBatteryBox(TileEntityType<?> type, double output, double max) {
+    public TileBatteryBox(BlockEntityType<?> type, double output, double max) {
 	super(type);
 	powerOutput = output;
 	maxJoules = max;
@@ -60,7 +60,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(facing.getOpposite()));
+	    output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 	}
 	if (tickable.getTicks() % 40 == 0) {
 	    output.update();
@@ -95,14 +95,14 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);
     }
 
-    protected void createPacket(CompoundNBT nbt) {
+    protected void createPacket(CompoundTag nbt) {
 	nbt.putDouble("clientMaxJoulesStored", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
 	nbt.putDouble("clientJoules", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
 	nbt.putDouble("clientVoltage", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	nbt.putDouble("currentCapacityMultiplier", currentCapacityMultiplier);
     }
 
-    protected void readPacket(CompoundNBT nbt) {
+    protected void readPacket(CompoundTag nbt) {
 	clientJoules = nbt.getDouble("clientJoules");
 	clientVoltage = nbt.getDouble("clientVoltage");
 	clientMaxJoulesStored = nbt.getDouble("clientMaxJoulesStored");

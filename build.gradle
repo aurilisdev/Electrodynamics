@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.ajoberstar:gradle-git:0.6.1'
     }
 }
@@ -19,13 +19,14 @@ apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 libsDirName = "../output"
 distsDirName = "../output"
 
 def	version_minor="5"
 def	version_revision='0'
-def	minecraft_version='1.16.5'
+def	minecraft_version='1.17.1'
 def	version_build='0'
 def	version_major='0'
 
@@ -33,11 +34,11 @@ version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revi
 group = 'electrodynamics' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Electrodynamics'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.16' // Need this here so eclipse task generates correctly.
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'official', version: '1.17.1' 
     
     runs {
         client {
@@ -91,13 +92,10 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.0.42'
-    /*
-	Compiles against source code as well as JAR at runtime. Recommend to keep it
-	*/
-  	compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.0.101:api")
-  	runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.0.101")
-  	
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.103'
+
+  	compileOnly fg.deobf("mezz.jei:jei-1.17.1:8.1.0.26:api")
+  	runtimeOnly fg.deobf("mezz.jei:jei-1.17.1:8.1.0.26")
 
 }
 

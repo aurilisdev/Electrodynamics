@@ -10,34 +10,33 @@ import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolType;
 
-public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
+public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
     private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON,
 	    Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON);
-    private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANTS,
-	    Material.TALL_PLANTS, Material.BAMBOO, Material.GOURD);
+    private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT,
+	    Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
     private final ElectricItemProperties properties;
 
     public ItemElectricChainsaw(ElectricItemProperties properties) {
-	super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON,
-		properties.maxDamage(0).addToolType(ToolType.AXE, ElectricItemTier.DRILL.getHarvestLevel()));
+	super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON, properties.durability(0).addToolType(ToolType.AXE, ElectricItemTier.DRILL.getLevel()));
 	this.properties = properties;
     }
 
@@ -47,8 +46,8 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-	if (isInGroup(group)) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+	if (allowdedIn(group)) {
 	    ItemStack charged = new ItemStack(this);
 	    IItemElectric.setEnergyStored(charged, properties.capacity);
 	    items.add(charged);
@@ -62,19 +61,19 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
     public float getDestroySpeed(ItemStack stack, BlockState state) {
 	Material material = state.getMaterial();
 	return getJoulesStored(stack) > properties.extract.getJoules()
-		? EFFECTIVE_ON_MATERIALS.contains(material) ? efficiency : super.getDestroySpeed(stack, state)
+		? EFFECTIVE_ON_MATERIALS.contains(material) ? speed : super.getDestroySpeed(stack, state)
 		: 0;
     }
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
 	return false;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 	extractPower(stack, properties.extract.getJoules(), false);
-	return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
     }
 
     @Override
@@ -88,14 +87,14 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
     }
 
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-	super.addInformation(stack, worldIn, tooltip, flagIn);
-	tooltip.add(new TranslationTextComponent("tooltip.item.electric.info").mergeStyle(TextFormatting.GRAY)
-		.append(new StringTextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
-	tooltip.add(new TranslationTextComponent("tooltip.item.electric.voltage",
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
+		.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
+	tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
 		ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
 			+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
-				.mergeStyle(TextFormatting.RED));
+				.withStyle(ChatFormatting.RED));
     }
 
     @Override

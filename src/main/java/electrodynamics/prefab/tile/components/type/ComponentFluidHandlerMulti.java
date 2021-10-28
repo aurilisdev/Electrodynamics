@@ -13,14 +13,14 @@ import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -29,7 +29,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     private HashMap<Fluid, FluidTank> inputFluids = new HashMap<>();
     private HashMap<Fluid, FluidTank> outputFluids = new HashMap<>();
 
-    private IRecipeType<?> recipeType;
+    private RecipeType<?> recipeType;
     private Class<? extends ElectrodynamicsRecipe> recipeClass;
     private int tankCapacity;
     private boolean hasInput;
@@ -40,27 +40,27 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-	ListNBT inputList = nbt.getList("inputList", 10);
-	for (INBT tag : inputList) {
-	    CompoundNBT compound = (CompoundNBT) tag;
+    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+	ListTag inputList = nbt.getList("inputList", 10);
+	for (Tag tag : inputList) {
+	    CompoundTag compound = (CompoundTag) tag;
 	    FluidTank tank = new FluidTank(compound.getInt("cap")).readFromNBT(compound);
 	    addFluidTank(tank.getFluid(), compound.getInt("cap"), true);
 	}
 
-	ListNBT outputList = nbt.getList("outputList", 10);
-	for (INBT tag : outputList) {
-	    CompoundNBT compound = (CompoundNBT) tag;
+	ListTag outputList = nbt.getList("outputList", 10);
+	for (Tag tag : outputList) {
+	    CompoundTag compound = (CompoundTag) tag;
 	    FluidTank tank = new FluidTank(compound.getInt("cap")).readFromNBT(compound);
 	    addFluidTank(tank.getFluid(), compound.getInt("cap"), false);
 	}
     }
 
     @Override
-    public void saveToNBT(CompoundNBT nbt) {
-	ListNBT inputList = new ListNBT();
+    public void saveToNBT(CompoundTag nbt) {
+	ListTag inputList = new ListTag();
 	for (FluidTank tank : inputFluids.values()) {
-	    CompoundNBT tag = new CompoundNBT();
+	    CompoundTag tag = new CompoundTag();
 	    tag.putString("FluidName", tank.getFluid().getRawFluid().getRegistryName().toString());
 	    tag.putInt("Amount", tank.getFluid().getAmount());
 
@@ -73,9 +73,9 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 	nbt.put("inputList", inputList);
 
-	ListNBT outputList = new ListNBT();
+	ListTag outputList = new ListTag();
 	for (FluidTank tank : outputFluids.values()) {
-	    CompoundNBT tag = new CompoundNBT();
+	    CompoundTag tag = new CompoundTag();
 	    tag.putString("FluidName", tank.getFluid().getRawFluid().getRegistryName().toString());
 	    tag.putInt("Amount", tank.getFluid().getAmount());
 
@@ -195,7 +195,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 	for (Fluid fluid : getValidInputFluids()) {
 	    FluidTank temp = getTankFromFluid(fluid, true);
-	    if (!temp.getFluid().getFluid().isEquivalentTo(stack.getFluid()) && temp.getFluidAmount() > 0) {
+	    if (!temp.getFluid().getFluid().isSame(stack.getFluid()) && temp.getFluidAmount() > 0) {
 		return false;
 	    }
 	}
@@ -234,8 +234,8 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     @Override
     public void addFluids() {
 	if (recipeType != null) {
-	    Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, getHolder().getWorld());
-	    for (IRecipe<?> iRecipe : recipes) {
+	    Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, getHolder().getLevel());
+	    for (Recipe<?> iRecipe : recipes) {
 		if (hasInput) {
 		    List<Ingredient> ingredients = recipeClass.cast(iRecipe).getIngredients();
 		    Fluid fluid = ((FluidIngredient) recipeClass.cast(iRecipe).getIngredients().get(0 + ingredients.size() - 1)).getFluidStack()
@@ -251,7 +251,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
     }
 
-    public <T extends ElectrodynamicsRecipe> ComponentFluidHandlerMulti setAddFluidsValues(Class<T> recipeClass, IRecipeType<?> recipeType,
+    public <T extends ElectrodynamicsRecipe> ComponentFluidHandlerMulti setAddFluidsValues(Class<T> recipeClass, RecipeType<?> recipeType,
 	    int capacity, boolean hasInput, boolean hasOutput) {
 	this.recipeClass = recipeClass;
 	this.recipeType = recipeType;

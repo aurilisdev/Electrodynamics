@@ -11,8 +11,8 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 
 public class TileMultimeterBlock extends GenericTileTicking {
     public double voltage = 0.0;
@@ -33,7 +33,7 @@ public class TileMultimeterBlock extends GenericTileTicking {
 	if (tickable.getTicks() % (joules == 0 ? 20 : 2) == 0) {
 	    Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    if (input == null) {
-		input = new CachedTileOutput(world, pos.offset(facing));
+		input = new CachedTileOutput(level, worldPosition.relative(facing));
 	    }
 	    if (input.getSafe() instanceof IConductor) {
 		IConductor cond = input.getSafe();
@@ -51,14 +51,14 @@ public class TileMultimeterBlock extends GenericTileTicking {
 	}
     }
 
-    protected void createPacket(CompoundNBT nbt) {
+    protected void createPacket(CompoundTag nbt) {
 	nbt.putDouble("joules", joules);
 	nbt.putDouble("voltage", voltage);
 	nbt.putDouble("resistance", resistance);
 	nbt.putDouble("loss", loss);
     }
 
-    protected void readPacket(CompoundNBT nbt) {
+    protected void readPacket(CompoundTag nbt) {
 	joules = nbt.getDouble("joules");
 	voltage = nbt.getDouble("voltage");
 	resistance = nbt.getDouble("resistance");

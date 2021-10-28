@@ -8,10 +8,10 @@ import javax.annotation.Nullable;
 
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -26,8 +26,8 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     }
 
     @Override
-    public void saveToNBT(CompoundNBT nbt) {
-	CompoundNBT tag = new CompoundNBT();
+    public void saveToNBT(CompoundTag nbt) {
+	CompoundTag tag = new CompoundTag();
 	tag.putString("FluidName", fluidTank.getFluid().getRawFluid().getRegistryName().toString());
 	tag.putInt("Amount", fluidTank.getFluid().getAmount());
 	if (fluidTank.getFluid().getTag() != null) {
@@ -38,8 +38,8 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-	CompoundNBT compound = nbt.getCompound("fluidtank");
+    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+	CompoundTag compound = nbt.getCompound("fluidtank");
 	int cap = compound.getInt("cap");
 	FluidStack stack = FluidStack.loadFluidStackFromNBT(compound);
 	FluidTank tank = new FluidTank(cap);
@@ -65,7 +65,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
 	return getValidInputFluids().contains(stack.getFluid())
-		&& (fluidTank.getFluid().getFluid().isEquivalentTo(Fluids.EMPTY) || fluidTank.getFluid().getFluid().isEquivalentTo(stack.getFluid()));
+		&& (fluidTank.getFluid().getFluid().isSame(Fluids.EMPTY) || fluidTank.getFluid().getFluid().isSame(stack.getFluid()));
     }
 
     @Override

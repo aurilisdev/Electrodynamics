@@ -1,15 +1,16 @@
 package electrodynamics.prefab.utilities.object;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import com.mojang.math.Vector3f;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public final class Location {
     protected double x;
@@ -56,12 +57,12 @@ public final class Location {
     }
 
     public Location(Vector3f vec) {
-	x = vec.getX();
-	y = vec.getY();
-	z = vec.getZ();
+	x = vec.x();
+	y = vec.y();
+	z = vec.z();
     }
 
-    public Location(Vector3d vec) {
+    public Location(Vec3 vec) {
 	x = vec.x;
 	y = vec.y;
 	z = vec.z;
@@ -142,33 +143,33 @@ public final class Location {
 	return new BlockPos(x, y, z);
     }
 
-    public BlockState getBlockState(IBlockReader reader) {
+    public BlockState getBlockState(BlockGetter reader) {
 	return reader.getBlockState(toBlockPos());
     }
 
-    public Block getBlock(IBlockReader reader) {
+    public Block getBlock(BlockGetter reader) {
 	return getBlockState(reader).getBlock();
     }
 
-    public TileEntity getTile(IBlockReader reader) {
-	return reader.getTileEntity(toBlockPos());
+    public BlockEntity getTile(BlockGetter reader) {
+	return reader.getBlockEntity(toBlockPos());
     }
 
-    public Location setBlockState(World world, BlockState state) {
-	world.setBlockState(toBlockPos(), state);
+    public Location setBlockState(Level world, BlockState state) {
+	world.setBlockAndUpdate(toBlockPos(), state);
 	return this;
     }
 
-    public Location setBlock(World world, Block block) {
-	return setBlockState(world, block.getDefaultState());
+    public Location setBlock(Level world, Block block) {
+	return setBlockState(world, block.defaultBlockState());
     }
 
-    public Location setAir(World world) {
+    public Location setAir(Level world) {
 	return setBlock(world, Blocks.AIR);
     }
 
-    public Location setAirFast(World world) {
-	world.setBlockState(toBlockPos(), Blocks.AIR.getDefaultState(), 2 | 16);
+    public Location setAirFast(Level world) {
+	world.setBlock(toBlockPos(), Blocks.AIR.defaultBlockState(), 2 | 16);
 	return this;
     }
 
@@ -203,11 +204,11 @@ public final class Location {
 	return "[" + intX() + ", " + intY() + ", " + intZ() + "]";
     }
 
-    public static Location readFromNBT(CompoundNBT nbt, String name) {
+    public static Location readFromNBT(CompoundTag nbt, String name) {
 	return new Location(nbt.getDouble(name + "X"), nbt.getDouble(name + "Y"), nbt.getDouble(name + "Z"));
     }
 
-    public void writeToNBT(CompoundNBT nbt, String name) {
+    public void writeToNBT(CompoundTag nbt, String name) {
 	nbt.putDouble(name + "X", x);
 	nbt.putDouble(name + "Y", y);
 	nbt.putDouble(name + "Z", z);

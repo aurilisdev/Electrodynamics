@@ -1,20 +1,20 @@
 package electrodynamics.common.fluid;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Item;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidAttributes;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 public abstract class FluidNonPlaceable extends Fluid {
 
@@ -41,22 +41,22 @@ public abstract class FluidNonPlaceable extends Fluid {
     }
 
     @Override
-    public Item getFilledBucket() {
+    public Item getBucket() {
 	return itemSupplier.get().get();
     }
 
     @Override
-    protected boolean canDisplace(FluidState fluidState, IBlockReader blockReader, BlockPos pos, Fluid fluid, Direction direction) {
+    protected boolean canBeReplacedWith(FluidState fluidState, BlockGetter blockReader, BlockPos pos, Fluid fluid, Direction direction) {
 	return false;
     }
 
     @Override
-    protected Vector3d getFlow(IBlockReader blockReader, BlockPos pos, FluidState fluidState) {
-	return Vector3d.ZERO;
+    protected Vec3 getFlow(BlockGetter blockReader, BlockPos pos, FluidState fluidState) {
+	return Vec3.ZERO;
     }
 
     @Override
-    public int getTickRate(IWorldReader p_205569_1_) {
+    public int getTickDelay(LevelReader p_205569_1_) {
 	return 0;
     }
 
@@ -66,18 +66,18 @@ public abstract class FluidNonPlaceable extends Fluid {
     }
 
     @Override
-    public float getActualHeight(FluidState p_215662_1_, IBlockReader p_215662_2_, BlockPos p_215662_3_) {
+    public float getHeight(FluidState p_215662_1_, BlockGetter p_215662_2_, BlockPos p_215662_3_) {
 	return 0;
     }
 
     @Override
-    public float getHeight(FluidState p_223407_1_) {
+    public float getOwnHeight(FluidState p_223407_1_) {
 	return 0;
     }
 
     @Override
-    protected BlockState getBlockState(FluidState state) {
-	return Blocks.AIR.getDefaultState();
+    protected BlockState createLegacyBlock(FluidState state) {
+	return Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -86,7 +86,7 @@ public abstract class FluidNonPlaceable extends Fluid {
     }
 
     @Override
-    public int getLevel(FluidState state) {
+    public int getAmount(FluidState state) {
 	return 0;
     }
 
@@ -101,8 +101,8 @@ public abstract class FluidNonPlaceable extends Fluid {
     }
 
     @Override
-    public VoxelShape func_215664_b(FluidState p_215664_1_, IBlockReader p_215664_2_, BlockPos p_215664_3_) {
-	return VoxelShapes.fullCube();
+    public VoxelShape getShape(FluidState p_215664_1_, BlockGetter p_215664_2_, BlockPos p_215664_3_) {
+	return Shapes.block();
     }
 
 }

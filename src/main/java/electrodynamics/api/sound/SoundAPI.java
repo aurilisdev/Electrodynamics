@@ -1,12 +1,12 @@
 package electrodynamics.api.sound;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
 public class SoundAPI {
-    public static void playSound(SoundEvent soundEvent, SoundCategory category, float volumeIn, float pitchIn, BlockPos pos) {
-	Minecraft.getInstance().getSoundHandler().play(new DistanceSound(soundEvent, category, volumeIn, pitchIn, pos));
+    public static void playSound(SoundEvent soundEvent, SoundSource category, float volumeIn, float pitchIn, BlockPos pos) {
+	Minecraft.getInstance().getSoundManager().play(new DistanceSound(soundEvent, category, volumeIn, pitchIn, pos));
     }
 }

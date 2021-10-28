@@ -1,13 +1,13 @@
 package electrodynamics.common.item.gear.tools;
 
 import electrodynamics.api.IWrenchItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ItemWrench extends Item implements IWrenchItem {
 
@@ -16,17 +16,17 @@ public class ItemWrench extends Item implements IWrenchItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-	return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+	return InteractionResultHolder.success(playerIn.getItemInHand(handIn));
     }
 
     @Override
-    public boolean onRotate(ItemStack stack, BlockPos pos, PlayerEntity player) {
+    public boolean onRotate(ItemStack stack, BlockPos pos, Player player) {
 	return true;
     }
 
     @Override
-    public boolean onPickup(ItemStack stack, BlockPos pos, PlayerEntity player) {
+    public boolean onPickup(ItemStack stack, BlockPos pos, Player player) {
 	return true;
     }
 }

@@ -15,14 +15,14 @@ import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -61,25 +61,25 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	}
     }
 
-    private void writeGuiPacket(CompoundNBT nbt) {
+    private void writeGuiPacket(CompoundTag nbt) {
 	nbt.putDouble("voltage", voltage);
 	nbt.putDouble("maxJoules", maxJoules);
 	nbt.putDouble("joules", joules);
     }
 
-    private void readGuiPacket(CompoundNBT nbt) {
+    private void readGuiPacket(CompoundTag nbt) {
 	voltage = nbt.getDouble("voltage");
 	maxJoules = nbt.getDouble("maxJoules");
 	joules = nbt.getDouble("joules");
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundNBT nbt) {
+    public void loadFromNBT(BlockState state, CompoundTag nbt) {
 	joules = nbt.getDouble("joules");
     }
 
     @Override
-    public void saveToNBT(CompoundNBT nbt) {
+    public void saveToNBT(CompoundTag nbt) {
 	nbt.putDouble("joules", joules);
     }
 
@@ -208,7 +208,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     public ComponentElectrodynamic drainElectricItem(int slot) {
 	if (holder.hasComponent(ComponentType.Inventory)) {
 	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
-	    ItemStack stack = inventory.getStackInSlot(slot);
+	    ItemStack stack = inventory.getItem(slot);
 	    if (stack.getItem() instanceof ItemElectric) {
 		IItemElectric el = (IItemElectric) stack.getItem();
 		functionReceivePower.apply(el.extractPower(stack, maxJoules - joules, false), false);
@@ -220,7 +220,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     public ComponentElectrodynamic fillElectricItem(int slot) {
 	if (holder.hasComponent(ComponentType.Inventory)) {
 	    ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
-	    ItemStack stack = inventory.getStackInSlot(slot);
+	    ItemStack stack = inventory.getItem(slot);
 	    if (stack.getItem() instanceof ItemElectric) {
 		IItemElectric el = (IItemElectric) stack.getItem();
 		functionExtractPower.apply(el.receivePower(stack, TransferPack.joulesVoltage(joules, voltage), false), false);
@@ -241,10 +241,11 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 
     @Override
     public void overVoltage(TransferPack transfer) {
-	World world = holder.getWorld();
-	BlockPos pos = holder.getPos();
-	world.setBlockState(pos, Blocks.AIR.getDefaultState());
-	world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), Mode.DESTROY);
+	Level world = holder.getLevel();
+	BlockPos pos = holder.getBlockPos();
+	world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+	world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
+		BlockInteraction.DESTROY);
     }
 
     @Override

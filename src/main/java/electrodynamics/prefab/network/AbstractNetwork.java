@@ -14,9 +14,9 @@ import electrodynamics.api.network.AbstractNetworkFinder;
 import electrodynamics.api.network.IAbstractConductor;
 import electrodynamics.api.network.ITickableNetwork;
 import electrodynamics.common.network.NetworkRegistry;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> implements ITickableNetwork {
     public HashSet<C> conductorSet = new HashSet<>();
@@ -34,17 +34,17 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	acceptorInputMap.clear();
 	while (it.hasNext()) {
 	    C conductor = it.next();
-	    if (conductor == null || ((TileEntity) conductor).isRemoved()) {
+	    if (conductor == null || ((BlockEntity) conductor).isRemoved()) {
 		it.remove();
 	    } else {
 		conductor.setNetwork(this);
 	    }
 	}
 	for (C conductor : conductorSet) {
-	    TileEntity tileEntity = (TileEntity) conductor;
+	    BlockEntity tileEntity = (BlockEntity) conductor;
 	    for (Direction direction : Direction.values()) {
-		TileEntity acceptor = tileEntity.getWorld()
-			.getTileEntity(new BlockPos(tileEntity.getPos()).add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset()));
+		BlockEntity acceptor = tileEntity.getLevel().getBlockEntity(
+			new BlockPos(tileEntity.getBlockPos()).offset(direction.getStepX(), direction.getStepY(), direction.getStepZ()));
 		if (acceptor != null && !isConductor(acceptor)) {
 		    if (isAcceptor(acceptor, direction)) {
 			if (canConnect(acceptor, direction)) {
@@ -86,35 +86,35 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
     }
 
     public void split(@Nonnull C splitPoint) {
-	if (splitPoint instanceof TileEntity) {
+	if (splitPoint instanceof BlockEntity) {
 	    removeFromNetwork(splitPoint);
-	    TileEntity[] connectedTiles = new TileEntity[6];
+	    BlockEntity[] connectedTiles = new BlockEntity[6];
 	    boolean[] dealtWith = { false, false, false, false, false, false };
 	    for (Direction direction : Direction.values()) {
-		BlockPos ex = ((TileEntity) splitPoint).getPos().add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
-		if (((TileEntity) splitPoint).getWorld().isBlockLoaded(ex)) {
-		    TileEntity sideTile = ((TileEntity) splitPoint).getWorld().getTileEntity(ex);
+		BlockPos ex = ((BlockEntity) splitPoint).getBlockPos().offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
+		if (((BlockEntity) splitPoint).getLevel().hasChunkAt(ex)) {
+		    BlockEntity sideTile = ((BlockEntity) splitPoint).getLevel().getBlockEntity(ex);
 		    if (sideTile != null) {
 			connectedTiles[Arrays.asList(Direction.values()).indexOf(direction)] = sideTile;
 		    }
 		}
 	    }
 	    for (int countOne = 0; countOne < connectedTiles.length; countOne++) {
-		TileEntity connectedBlockA = connectedTiles[countOne];
+		BlockEntity connectedBlockA = connectedTiles[countOne];
 		if (connectedBlockA != null) {
 		    if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
-			AbstractNetworkFinder finder = new AbstractNetworkFinder(((TileEntity) splitPoint).getWorld(), connectedBlockA.getPos(), this,
-				((TileEntity) splitPoint).getPos());
-			List<TileEntity> partNetwork = finder.exploreNetwork();
+			AbstractNetworkFinder finder = new AbstractNetworkFinder(((BlockEntity) splitPoint).getLevel(), connectedBlockA.getBlockPos(),
+				this, ((BlockEntity) splitPoint).getBlockPos());
+			List<BlockEntity> partNetwork = finder.exploreNetwork();
 			for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
-			    TileEntity connectedBlockB = connectedTiles[countTwo];
+			    BlockEntity connectedBlockB = connectedTiles[countTwo];
 			    if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
 				dealtWith[countTwo] = true;
 			    }
 			}
 			AbstractNetwork<C, T, A, P> newNetwork = createInstance();
 
-			for (TileEntity tile : finder.iteratedTiles) {
+			for (BlockEntity tile : finder.iteratedTiles) {
 			    if (tile != splitPoint) {
 				newNetwork.conductorSet.add((C) tile);
 			    }
@@ -164,15 +164,15 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	return networkMaxTransfer;
     }
 
-    public P emit(P transfer, ArrayList<TileEntity> ignored, boolean debug) {
+    public P emit(P transfer, ArrayList<BlockEntity> ignored, boolean debug) {
 	return null;
     }
 
-    public abstract boolean isConductor(TileEntity tile);
+    public abstract boolean isConductor(BlockEntity tile);
 
-    public abstract boolean isAcceptor(TileEntity acceptor, Direction orientation);
+    public abstract boolean isAcceptor(BlockEntity acceptor, Direction orientation);
 
-    public abstract boolean canConnect(TileEntity acceptor, Direction orientation);
+    public abstract boolean canConnect(BlockEntity acceptor, Direction orientation);
 
     public abstract AbstractNetwork<C, T, A, P> createInstance();
 

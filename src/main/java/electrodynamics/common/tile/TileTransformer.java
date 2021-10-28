@@ -11,8 +11,8 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 
 public class TileTransformer extends GenericTile {
     public CachedTileOutput output;
@@ -32,10 +32,10 @@ public class TileTransformer extends GenericTile {
 	    return TransferPack.EMPTY;
 	}
 	if (output == null) {
-	    output = new CachedTileOutput(world, pos.offset(facing));
+	    output = new CachedTileOutput(level, worldPosition.relative(facing));
 	}
 	boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
-	double resultVoltage = MathHelper.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 61440.0);
+	double resultVoltage = Mth.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 61440.0);
 	locked = true;
 	TransferPack returner = ElectricityUtilities.receivePower(output.getSafe(), facing.getOpposite(),
 		TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
