@@ -24,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -31,8 +32,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     public ElectricNetwork electricNetwork;
 
-    protected GenericTileWire(BlockEntityType<?> tileEntityTypeIn) {
-	super(tileEntityTypeIn);
+    protected GenericTileWire(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+	super(tileEntityTypeIn, pos, state);
 	for (Direction dir : Direction.values()) {
 	    handler.add(new IElectrodynamic() {
 		@Override
@@ -191,7 +192,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     }
 
     @Override
-    protected void invalidateCaps() {
+    public void invalidateCaps() {
 	super.invalidateCaps();
 	if (!level.isClientSide && electricNetwork != null) {
 	    getNetwork().split(this);

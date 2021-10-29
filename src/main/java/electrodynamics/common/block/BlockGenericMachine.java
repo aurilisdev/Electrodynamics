@@ -49,7 +49,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public abstract class BlockGenericMachine extends BaseEntityBlock implements IWrenchable {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    public BlockGenericMachine() {
+    protected BlockGenericMachine() {
 	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion());
 	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }

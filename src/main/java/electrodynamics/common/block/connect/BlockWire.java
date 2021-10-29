@@ -29,6 +29,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -46,7 +47,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlockWire extends Block implements SimpleWaterloggedBlock {
+public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
 	p.put(Direction.NORTH, EnumConnectType.NORTH);
 	p.put(Direction.EAST, EnumConnectType.EAST);
@@ -122,7 +123,7 @@ public class BlockWire extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
@@ -185,7 +186,7 @@ public class BlockWire extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 	TileWire tile = (TileWire) worldIn.getBlockEntity(pos);
 	if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
@@ -212,29 +213,29 @@ public class BlockWire extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean isSignalSource(BlockState state) {
 	return ((BlockWire) state.getBlock()).wire.logistical;
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	return blockState.getSignal(blockAccess, pos, side);
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
-	if (tile instanceof TileLogisticalWire) {
-	    return ((TileLogisticalWire) tile).isPowered ? 15 : 0;
+	if (tile instanceof TileLogisticalWire w) {
+	    return w.isPowered ? 15 : 0;
 	}
 	return 0;
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
 	    BlockPos facingPos) {
 	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
@@ -251,14 +252,14 @@ public class BlockWire extends Block implements SimpleWaterloggedBlock {
 	}
     }
 
-    @Deprecated
     @Override
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 	super.onPlace(state, worldIn, pos, oldState, isMoving);
 	if (!worldIn.isClientSide) {
 	    BlockEntity tile = worldIn.getBlockEntity(pos);
-	    if (tile instanceof IConductor) {
-		((IConductor) tile).refreshNetwork();
+	    if (tile instanceof IConductor c) {
+		c.refreshNetwork();
 	    }
 	}
     }
@@ -268,19 +269,14 @@ public class BlockWire extends Block implements SimpleWaterloggedBlock {
 	super.onNeighborChange(state, world, pos, neighbor);
 	if (!world.isClientSide()) {
 	    BlockEntity tile = world.getBlockEntity(pos);
-	    if (tile instanceof IConductor) {
-		((IConductor) tile).refreshNetworkIfChange();
+	    if (tile instanceof IConductor c) {
+		c.refreshNetworkIfChange();
 	    }
 	}
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-	return true;
-    }
-
-    @Override
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-	return ((BlockWire) state.getBlock()).wire.logistical ? new TileLogisticalWire() : new TileWire();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+	return ((BlockWire) state.getBlock()).wire.logistical ? new TileLogisticalWire(pos, state) : new TileWire(pos, state);
     }
 }

@@ -3,13 +3,14 @@ package electrodynamics.common.tile.network;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class TileLogisticalWire extends TileWire implements TickableBlockEntity {
+public class TileLogisticalWire extends TileWire {
     public boolean isPowered = false;
 
-    public TileLogisticalWire() {
-	super(DeferredRegisters.TILE_LOGISTICALWIRE.get());
+    public TileLogisticalWire(BlockPos pos, BlockState state) {
+	super(DeferredRegisters.TILE_LOGISTICALWIRE.get(), pos, state);
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
     }
 

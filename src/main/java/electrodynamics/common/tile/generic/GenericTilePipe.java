@@ -20,6 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -46,8 +47,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	return fluidNetwork;
     }
 
-    protected GenericTilePipe(BlockEntityType<?> tileEntityTypeIn) {
-	super(tileEntityTypeIn);
+    protected GenericTilePipe(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+	super(tileEntityTypeIn, pos, state);
 	for (Direction dir : Direction.values()) {
 	    handler.add(new IFluidHandler() {
 
@@ -99,8 +100,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	HashSet<IPipe> set = new HashSet<>();
 	for (Direction dir : Direction.values()) {
 	    BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-	    if (facing instanceof IPipe) {
-		set.add((IPipe) facing);
+	    if (facing instanceof IPipe p) {
+		set.add(p);
 	    }
 	}
 	return set;
@@ -117,8 +118,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	    HashSet<IPipe> adjacentCables = getConnectedConductors();
 	    HashSet<FluidNetwork> connectedNets = new HashSet<>();
 	    for (IPipe wire : adjacentCables) {
-		if (wire.getNetwork(false) != null && wire.getNetwork() instanceof FluidNetwork) {
-		    connectedNets.add((FluidNetwork) wire.getNetwork());
+		if (wire.getNetwork(false) != null && wire.getNetwork() instanceof FluidNetwork f) {
+		    connectedNets.add(f);
 		}
 	    }
 	    if (connectedNets.isEmpty()) {
@@ -136,9 +137,9 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
     @Override
     public void setNetwork(AbstractNetwork<?, ?, ?, ?> network) {
-	if (fluidNetwork != network && network instanceof FluidNetwork) {
+	if (fluidNetwork != network && network instanceof FluidNetwork f) {
 	    removeFromNetwork();
-	    fluidNetwork = (FluidNetwork) network;
+	    fluidNetwork = f;
 	}
     }
 
@@ -149,8 +150,8 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	    ArrayList<FluidNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
 		BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-		if (facing instanceof IPipe && ((IPipe) facing).getNetwork() instanceof FluidNetwork) {
-		    foundNetworks.add((FluidNetwork) ((IPipe) facing).getNetwork());
+		if (facing instanceof IPipe p && p.getNetwork()instanceof FluidNetwork n) {
+		    foundNetworks.add(n);
 		}
 	    }
 	    if (!foundNetworks.isEmpty()) {

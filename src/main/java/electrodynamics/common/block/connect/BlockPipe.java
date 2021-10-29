@@ -25,6 +25,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -42,7 +43,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlockPipe extends Block implements SimpleWaterloggedBlock {
+public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
     public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
 	p.put(Direction.NORTH, EnumConnectType.NORTH);
@@ -93,13 +94,13 @@ public class BlockPipe extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public FluidState getFluidState(BlockState state) {
 	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(pipe)));
     }
@@ -118,7 +119,7 @@ public class BlockPipe extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
@@ -194,14 +195,14 @@ public class BlockPipe extends Block implements SimpleWaterloggedBlock {
 	worldIn.setBlockAndUpdate(pos, acc);
     }
 
-    @Deprecated
     @Override
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 	super.onPlace(state, worldIn, pos, oldState, isMoving);
 	if (!worldIn.isClientSide) {
 	    BlockEntity tile = worldIn.getBlockEntity(pos);
-	    if (tile instanceof IPipe) {
-		((IPipe) tile).refreshNetwork();
+	    if (tile instanceof IPipe p) {
+		p.refreshNetwork();
 	    }
 	}
     }
@@ -211,14 +212,14 @@ public class BlockPipe extends Block implements SimpleWaterloggedBlock {
 	super.onNeighborChange(state, world, pos, neighbor);
 	if (!world.isClientSide()) {
 	    BlockEntity tile = world.getBlockEntity(pos);
-	    if (tile instanceof IPipe) {
-		((IPipe) tile).refreshNetworkIfChange();
+	    if (tile instanceof IPipe p) {
+		p.refreshNetworkIfChange();
 	    }
 	}
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
 	    BlockPos facingPos) {
 	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
@@ -234,14 +235,10 @@ public class BlockPipe extends Block implements SimpleWaterloggedBlock {
 	    return stateIn.setValue(property, EnumConnectType.NONE);
 	}
     }
-    
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-	return true;
-    }
 
     @Override
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-	return new TilePipe();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+	return new TilePipe(pos, state);
     }
+
 }

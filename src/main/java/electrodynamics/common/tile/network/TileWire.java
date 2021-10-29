@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.generic.GenericTileWire;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,12 +12,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileWire extends GenericTileWire {
     public double transmit = 0;
 
-    public TileWire() {
-	super(DeferredRegisters.TILE_WIRE.get());
+    public TileWire(BlockPos pos, BlockState state) {
+	super(DeferredRegisters.TILE_WIRE.get(), pos, state);
     }
 
-    public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType) {
-	super(tileEntityType);
+    public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType, BlockPos pos, BlockState state) {
+	super(tileEntityType, pos, state);
     }
 
     public SubtypeWire wire = null;
@@ -36,8 +37,8 @@ public class TileWire extends GenericTileWire {
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-	super.load(state, compound);
+    public void load(CompoundTag compound) {
+	super.load(compound);
 	wire = SubtypeWire.values()[compound.getInt("ord")];
     }
 
