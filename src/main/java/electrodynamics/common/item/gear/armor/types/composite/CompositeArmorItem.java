@@ -99,7 +99,7 @@ public class CompositeArmorItem extends ArmorItem {
 	    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
 	}
     }
-
+    
     @Override
     @OnlyIn(Dist.CLIENT)
     public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defaultM) {

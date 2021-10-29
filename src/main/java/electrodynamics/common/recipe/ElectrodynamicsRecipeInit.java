@@ -23,6 +23,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -91,14 +92,14 @@ public class ElectrodynamicsRecipeInit {
     /* Functional Methods */
 
     public static <T extends RecipeType<?>> T registerType(ResourceLocation recipeTypeId) {
-	return (T) Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new RecipeType<>());
+	return (T) Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new CustomRecipeType<>());
     }
 
-    private static class RecipeType<T extends Recipe<?>> implements RecipeType<T> {
-	@Override
-	public String toString() {
-	    return Registry.RECIPE_TYPE.getKey(this).toString();
-	}
+    private static class CustomRecipeType<T extends Recipe<?>> implements RecipeType<T> {
+		@Override
+		public String toString() {
+		    return Registry.RECIPE_TYPE.getKey(this).toString();
+		}
     }
 
 }

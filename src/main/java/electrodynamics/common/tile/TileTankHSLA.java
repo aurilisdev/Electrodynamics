@@ -5,6 +5,8 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.TileGenericTank;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -18,8 +20,8 @@ public class TileTankHSLA extends TileGenericTank {
 	ForgeRegistries.FLUIDS.getValues().forEach(h -> fluids.add(h));
     }
 
-    public TileTankHSLA() {
-	super(DeferredRegisters.TILE_TANKHSLA.get(), capacity, fluids, name);
+    public TileTankHSLA(BlockPos pos, BlockState state) {
+	super(DeferredRegisters.TILE_TANKHSLA.get(), capacity, fluids, name, pos, state);
     }
 
 }

@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -66,7 +67,7 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		}
 		level.playSound(null, p_230299_1_.getBlockPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
 	    }
-	    remove();
+	    this.remove(Entity.RemovalReason.DISCARDED);
 	}
     }
 

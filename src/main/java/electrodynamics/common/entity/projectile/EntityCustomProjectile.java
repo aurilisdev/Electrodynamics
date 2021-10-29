@@ -1,6 +1,7 @@
 package electrodynamics.common.entity.projectile;
 
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -32,12 +33,12 @@ public abstract class EntityCustomProjectile extends ThrowableItemProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-	remove();
+    	this.remove(Entity.RemovalReason.DISCARDED);
     }
 
     @Override
     public void onHitEntity(EntityHitResult p_213868_1_) {
-	remove();
+    	this.remove(Entity.RemovalReason.DISCARDED);
     }
 
     @Override
