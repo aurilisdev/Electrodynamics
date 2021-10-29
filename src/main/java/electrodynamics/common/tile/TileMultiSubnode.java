@@ -19,8 +19,8 @@ public class TileMultiSubnode extends GenericTile {
     public Location nodePos;
     public VoxelShape shapeCache;
 
-    public TileMultiSubnode() {
-	super(DeferredRegisters.TILE_MULTI.get());
+    public TileMultiSubnode(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_MULTI.get(), worldPosition, blockState);
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
     }
 
@@ -33,14 +33,14 @@ public class TileMultiSubnode extends GenericTile {
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-	super.load(state, compound);
+    public void load(CompoundTag compound) {
+	super.load(compound);
 	nodePos = Location.readFromNBT(compound, "node");
 	Scheduler.schedule(20, this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler)::sendCustomPacket);
     }
 
     protected void readCustomPacket(CompoundTag tag) {
-	load(getBlockState(), tag);
+	load(tag);
     }
 
     protected void writeCustomPacket(CompoundTag nbt) {
@@ -53,8 +53,7 @@ public class TileMultiSubnode extends GenericTile {
 	}
 	if (nodePos != null) {
 	    BlockEntity tile = nodePos.getTile(level);
-	    if (tile instanceof IMultiblockTileNode) {
-		IMultiblockTileNode node = (IMultiblockTileNode) tile;
+	    if (tile instanceof IMultiblockTileNode node) {
 		BlockPos tp = tile.getBlockPos();
 		BlockPos offset = new BlockPos(worldPosition.getX() - tp.getX(), worldPosition.getY() - tp.getY(), worldPosition.getZ() - tp.getZ());
 		for (Subnode sub : node.getSubNodes()) {

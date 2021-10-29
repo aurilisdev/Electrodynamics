@@ -13,10 +13,12 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,8 +26,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class TileElectricPump extends GenericTileTicking {
     private boolean isGenerating;
 
-    public TileElectricPump() {
-	super(DeferredRegisters.TILE_ELECTRICPUMP.get());
+    public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
 	addComponent(new ComponentElectrodynamic(this).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).input(Direction.UP));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));

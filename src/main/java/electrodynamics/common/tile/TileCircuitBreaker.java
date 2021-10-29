@@ -12,8 +12,10 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileCircuitBreaker extends GenericTile {
@@ -22,8 +24,8 @@ public class TileCircuitBreaker extends GenericTile {
     public double lastTransfer = 0;
     public boolean locked = false;
 
-    public TileCircuitBreaker() {
-	super(DeferredRegisters.TILE_CIRCUITBREAKER.get());
+    public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(
 		new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));

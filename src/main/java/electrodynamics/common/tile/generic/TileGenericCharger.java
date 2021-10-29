@@ -12,6 +12,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -20,11 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class TileGenericCharger extends GenericTileTicking {
 
-    protected TileGenericCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName) {
-	super(typeIn);
+    protected TileGenericCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition,
+	    BlockState blockState) {
+	super(typeIn, worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler().guiPacketReader(this::loadFromNBT).guiPacketWriter(this::saveToNBT));
 	addComponent(new ComponentTickable().tickCommon(this::tickCommon));
@@ -40,9 +43,8 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 	ComponentInventory inventory = getComponent(ComponentType.Inventory);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	ItemStack itemInput = inventory.getItem(0);
-	if (!itemInput.isEmpty() && electro.getJoulesStored() == electro.getMaxJoulesStored() && itemInput.getItem() instanceof IItemElectric) {
-
-	    IItemElectric electricItem = (IItemElectric) itemInput.getItem();
+	if (!itemInput.isEmpty() && electro.getJoulesStored() == electro.getMaxJoulesStored()
+		&& itemInput.getItem()instanceof IItemElectric electricItem) {
 	    double recieveVoltage = electricItem.getElectricProperties().receive.getVoltage();
 	    double machineVoltage = electro.getVoltage();
 
@@ -77,7 +79,7 @@ public abstract class TileGenericCharger extends GenericTileTicking {
 
     }
 
-    // to simulate undervolting a chargable object
+    // to simulate undervolting a chargeable object
     private static float getRationalFunctionValue(float x) {
 	if (x >= 100.0F) {
 	    return 0.0F;

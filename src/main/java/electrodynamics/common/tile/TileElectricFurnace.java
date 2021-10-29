@@ -21,6 +21,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
@@ -28,19 +29,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileElectricFurnace extends GenericTileTicking {
 
     protected Recipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;
 
-    public TileElectricFurnace() {
-	this(0);
+    public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
+	this(0, worldPosition, blockState);
     }
 
-    public TileElectricFurnace(int extra) {
+    public TileElectricFurnace(int extra, BlockPos worldPosition, BlockState blockState) {
 	super(extra == 1 ? DeferredRegisters.TILE_ELECTRICFURNACEDOUBLE.get()
-		: extra == 2 ? DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICFURNACE.get());
+		: extra == 2 ? DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICFURNACE.get(), worldPosition,
+		blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));

@@ -16,9 +16,11 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,8 +30,8 @@ public class TileAdvancedSolarPanel extends GenericTileTicking implements IMulti
     protected CachedTileOutput output;
     private boolean generating = false;
 
-    public TileAdvancedSolarPanel() {
-	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get());
+    public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
     }

@@ -14,13 +14,16 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileLithiumBatteryBox extends TileBatteryBox {
 
-    public TileLithiumBatteryBox() {
-	super(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * CapabilityElectrodynamic.DEFAULT_VOLTAGE) / 20.0, 40000000);
+    public TileLithiumBatteryBox(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * CapabilityElectrodynamic.DEFAULT_VOLTAGE) / 20.0, 40000000, worldPosition,
+		blockState);
 	forceComponent(new ComponentContainerProvider("container.lithiumbatterybox")
 		.createMenu((id, player) -> new ContainerLithiumBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
@@ -45,8 +48,7 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 	currentCapacityMultiplier = 1;
 	int currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
 		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
 		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
 	    }

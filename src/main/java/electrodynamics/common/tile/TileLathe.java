@@ -20,16 +20,18 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileLathe extends GenericTileTicking {
 
     public long clientRunningTicks = 0;
 
-    public TileLathe() {
-	super(DeferredRegisters.TILE_LATHE.get());
+    public TileLathe(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_LATHE.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));

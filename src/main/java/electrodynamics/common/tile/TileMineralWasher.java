@@ -1,5 +1,7 @@
 package electrodynamics.common.tile;
 
+import com.mojang.math.Vector3f;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
@@ -18,16 +20,18 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class TileMineralWasher extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
 
-    public TileMineralWasher() {
-	super(DeferredRegisters.TILE_MINERALWASHER.get());
+    public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -63,8 +67,9 @@ public class TileMineralWasher extends GenericTileTicking {
 		double x = 0.5 + level.random.nextDouble() * 0.4 - 0.2;
 		double y = 0.5 + level.random.nextDouble() * 0.3 - 0.15;
 		double z = 0.5 + level.random.nextDouble() * 0.4 - 0.2;
-		level.addParticle(new DustParticleOptions(1f, 1f, 0, 1), worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z,
-			level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1);
+		level.addParticle(new DustParticleOptions(new Vector3f(1f, 1f, 0), 1), worldPosition.getX() + x, worldPosition.getY() + y,
+			worldPosition.getZ() + z, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1,
+			level.random.nextDouble() * 0.2 - 0.1);
 	    }
 	}
     }

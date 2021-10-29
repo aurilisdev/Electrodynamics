@@ -10,15 +10,17 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
 public class TileThermoelectricGenerator extends GenericTileTicking {
     protected CachedTileOutput output;
     protected boolean hasHeat = false;
 
-    public TileThermoelectricGenerator() {
-	super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get());
+    public TileThermoelectricGenerator(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.UP));

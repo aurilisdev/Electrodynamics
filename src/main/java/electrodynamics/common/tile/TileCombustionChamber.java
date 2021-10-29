@@ -14,10 +14,12 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileCombustionChamber extends GenericTileTicking {
@@ -27,8 +29,8 @@ public class TileCombustionChamber extends GenericTileTicking {
     private int burnTime;
     private CachedTileOutput output;
 
-    public TileCombustionChamber() {
-	super(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get());
+    public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)

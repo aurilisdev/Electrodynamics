@@ -16,10 +16,12 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -36,12 +38,12 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
     protected double receiveLimitLeft;
     protected CachedTileOutput output;
 
-    public TileBatteryBox() {
-	this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0, 10000000);
+    public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
+	this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
     }
 
-    public TileBatteryBox(BlockEntityType<?> type, double output, double max) {
-	super(type);
+    public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {
+	super(type, worldPosition, blockState);
 	powerOutput = output;
 	maxJoules = max;
 	clientMaxJoulesStored = max;
@@ -75,8 +77,7 @@ public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage
 	currentCapacityMultiplier = 1;
 	int currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-		ItemProcessorUpgrade upgrade = (ItemProcessorUpgrade) stack.getItem();
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
 		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
 		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
 	    }

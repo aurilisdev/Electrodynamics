@@ -11,16 +11,18 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileTransformer extends GenericTile {
     public CachedTileOutput output;
     public TransferPack lastTransfer = TransferPack.EMPTY;
     public boolean locked = false;
 
-    public TileTransformer() {
-	super(DeferredRegisters.TILE_TRANSFORMER.get());
+    public TileTransformer(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_TRANSFORMER.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(
 		new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));

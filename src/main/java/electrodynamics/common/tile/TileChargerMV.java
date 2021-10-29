@@ -2,11 +2,13 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.TileGenericCharger;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileChargerMV extends TileGenericCharger {
 
-    public TileChargerMV() {
-	super(DeferredRegisters.TILE_CHARGERMV.get(), 2, "mv");
+    public TileChargerMV(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_CHARGERMV.get(), 2, "mv", worldPosition, blockState);
     }
 
 }

@@ -18,10 +18,12 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class TileWindmill extends GenericTileTicking implements IMultiblockTileNode {
@@ -32,8 +34,8 @@ public class TileWindmill extends GenericTileTicking implements IMultiblockTileN
     public double generating;
     public double rotationSpeed;
 
-    public TileWindmill() {
-	super(DeferredRegisters.TILE_WINDMILL.get());
+    public TileWindmill(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_WINDMILL.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));

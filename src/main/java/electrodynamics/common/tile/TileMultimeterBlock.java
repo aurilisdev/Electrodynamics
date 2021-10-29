@@ -11,8 +11,10 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileMultimeterBlock extends GenericTileTicking {
     public double voltage = 0.0;
@@ -21,8 +23,8 @@ public class TileMultimeterBlock extends GenericTileTicking {
     public double loss = 0;
     public CachedTileOutput input;
 
-    public TileMultimeterBlock() {
-	super(DeferredRegisters.TILE_MULTIMETERBLOCK.get());
+    public TileMultimeterBlock(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).customPacketReader(this::readPacket));
@@ -37,8 +39,7 @@ public class TileMultimeterBlock extends GenericTileTicking {
 	    }
 	    if (input.getSafe() instanceof IConductor) {
 		IConductor cond = input.getSafe();
-		if (cond.getAbstractNetwork() instanceof ElectricNetwork) {
-		    ElectricNetwork net = (ElectricNetwork) cond.getAbstractNetwork();
+		if (cond.getAbstractNetwork()instanceof ElectricNetwork net) {
 		    joules = net.getActiveTransmitted();
 		    voltage = net.getActiveVoltage();
 		    resistance = net.getResistance();

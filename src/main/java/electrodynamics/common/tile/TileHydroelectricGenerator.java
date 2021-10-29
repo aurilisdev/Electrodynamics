@@ -31,8 +31,8 @@ public class TileHydroelectricGenerator extends GenericTileTicking {
     public double savedTickRotation;
     public double rotationSpeed;
 
-    public TileHydroelectricGenerator() {
-	super(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get());
+    public TileHydroelectricGenerator(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));

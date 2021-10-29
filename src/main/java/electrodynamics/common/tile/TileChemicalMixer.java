@@ -18,16 +18,18 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class TileChemicalMixer extends GenericTileTicking {
     public static final int MAX_TANK_CAPACITY = 5000;
     public long clientTicks = 0;
 
-    public TileChemicalMixer() {
-	super(DeferredRegisters.TILE_CHEMICALMIXER.get());
+    public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());

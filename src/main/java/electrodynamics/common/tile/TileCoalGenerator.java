@@ -38,8 +38,8 @@ public class TileCoalGenerator extends GenericTileTicking {
     public double clientHeat;
     public double clientBurnTime;
 
-    public TileCoalGenerator() {
-	super(DeferredRegisters.TILE_COALGENERATOR.get());
+    public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_COALGENERATOR.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
@@ -133,8 +133,8 @@ public class TileCoalGenerator extends GenericTileTicking {
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-	super.load(state, compound);
+    public void load(CompoundTag compound) {
+	super.load(compound);
 	heat.set(compound.getDouble("heat"));
 	burnTime = compound.getInt("burnTime");
     }

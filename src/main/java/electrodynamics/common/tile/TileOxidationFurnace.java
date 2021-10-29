@@ -21,14 +21,16 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TileOxidationFurnace extends GenericTileTicking {
 
-    public TileOxidationFurnace() {
-	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get());
+    public TileOxidationFurnace(BlockPos worldPosition, BlockState blockState) {
+	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
