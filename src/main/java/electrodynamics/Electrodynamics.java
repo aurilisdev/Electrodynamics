@@ -35,6 +35,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -69,9 +70,14 @@ public class Electrodynamics {
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
-	CapabilityElectrodynamic.register(); // TODO: Move to the upcoming RegisterCapabilitiesEvent when it is implemented.
-	CapabilityCeramicPlate.register();
+	
 	NetworkHandler.init();
+    }
+    
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+    	CapabilityElectrodynamic.register(event); 
+    	CapabilityCeramicPlate.register(event);
     }
 
     @SubscribeEvent

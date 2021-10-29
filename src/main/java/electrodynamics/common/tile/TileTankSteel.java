@@ -5,6 +5,8 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.TileGenericTank;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -20,8 +22,8 @@ public class TileTankSteel extends TileGenericTank {
 	fluids.add(DeferredRegisters.fluidEthanol);
     }
 
-    public TileTankSteel() {
-	super(DeferredRegisters.TILE_TANKSTEEL.get(), capacity, fluids, name);
+    public TileTankSteel(BlockPos pos, BlockState state) {
+	super(DeferredRegisters.TILE_TANKSTEEL.get(), capacity, fluids, name, pos, state);
     }
 
 }

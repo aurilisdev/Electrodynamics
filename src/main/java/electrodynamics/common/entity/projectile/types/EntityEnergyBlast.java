@@ -3,6 +3,7 @@ package electrodynamics.common.entity.projectile.types;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -36,10 +37,10 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 		level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(),
 			4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
 	    }
-	    remove();
+	    this.remove(Entity.RemovalReason.DISCARDED);
 	}
 	if (tickCount > 100) {
-	    remove();
+		this.remove(Entity.RemovalReason.DISCARDED);
 	}
     }
 
@@ -47,7 +48,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
     public void tick() {
 	super.tick();
 	if (isInWater() || isInLava()) {
-	    remove();
+		this.remove(Entity.RemovalReason.DISCARDED);
 	}
     }
 

@@ -5,6 +5,8 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.TileGenericTank;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -20,7 +22,7 @@ public class TileTankReinforced extends TileGenericTank {
 	DeferredRegisters.FLUIDS.getEntries().forEach(h -> fluids.add(h.get()));
     }
 
-    public TileTankReinforced() {
-	super(DeferredRegisters.TILE_TANKREINFORCED.get(), capacity, fluids, name);
+    public TileTankReinforced(BlockPos pos, BlockState state) {
+	super(DeferredRegisters.TILE_TANKREINFORCED.get(), capacity, fluids, name, pos, state);
     }
 }

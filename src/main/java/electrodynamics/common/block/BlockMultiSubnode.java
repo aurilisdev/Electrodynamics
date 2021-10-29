@@ -28,7 +28,7 @@ public class BlockMultiSubnode extends Block implements IMultiblockSubnode {
 
     public BlockMultiSubnode() {
 	super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor(BlockMultiSubnode::isntSolid)
-		.harvestTool(BlockTags.PICKAXE).noOcclusion());
+		.noOcclusion());
     }
 
     private static boolean isntSolid(BlockState state, BlockGetter reader, BlockPos pos) {

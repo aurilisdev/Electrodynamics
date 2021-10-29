@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
@@ -30,8 +31,8 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileGenericTank extends GenericTileTicking {
 
-    public TileGenericTank(BlockEntityType<?> tile, int capacity, List<Fluid> validFluids, String name) {
-	super(tile);
+    public TileGenericTank(BlockEntityType<?> tile, int capacity, List<Fluid> validFluids, String name, BlockPos pos, BlockState state) {
+	super(tile, pos, state);
 	addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -103,7 +104,7 @@ public class TileGenericTank extends GenericTileTicking {
 	BlockPos pos = getBlockPos();
 	BlockPos below = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
 
-	if (level.getBlockState(below).hasTileEntity()) {
+	if (level.getBlockState(below).hasBlockEntity()) {
 	    BlockEntity tile = level.getBlockEntity(below);
 	    if (tile instanceof TileGenericTank) {
 		TileGenericTank tankBelow = (TileGenericTank) tile;
