@@ -58,7 +58,7 @@ public class PsuedoRecipes {
     }
 
     public static void addElectrodynamicsFluids() {
-	ELECTRODYNAMICS_FLUIDS.add(Fluids.WATER.getFluid());
+	ELECTRODYNAMICS_FLUIDS.add(Fluids.WATER);
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.fluidSulfuricAcid);
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(SubtypeMineralFluid.iron));
 	ELECTRODYNAMICS_FLUIDS.add(electrodynamics.DeferredRegisters.SUBTYPEMINERALFLUID_MAPPINGS.get(SubtypeMineralFluid.gold));
@@ -74,7 +74,7 @@ public class PsuedoRecipes {
 
     public static void addElectrodynamicsItems() {
 	/* ORES : 0 */
-	Item[] ores = { Blocks.IRON_ORE.getBlock().asItem(), Blocks.GOLD_ORE.getBlock().asItem(),
+	Item[] ores = { Blocks.IRON_ORE.asItem(), Blocks.GOLD_ORE.asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.copper).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.tin).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.lead).asItem(),

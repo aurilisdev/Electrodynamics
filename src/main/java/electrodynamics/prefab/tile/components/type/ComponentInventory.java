@@ -22,7 +22,6 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -117,7 +116,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+    public void loadFromNBT(CompoundTag nbt) {
 	ContainerHelper.loadAllItems(nbt, items);
     }
 
@@ -128,7 +127,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     protected void loadNBT(CompoundTag nbt) {
 	items.clear();
-	loadFromNBT(holder.getBlockState(), nbt);
+	loadFromNBT(nbt);
     }
 
     protected void saveNBT(CompoundTag nbt) {

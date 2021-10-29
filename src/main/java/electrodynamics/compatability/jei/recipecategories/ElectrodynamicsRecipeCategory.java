@@ -4,6 +4,7 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -49,8 +50,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
     }
 
     @Override
-    public String getTitle() {
-	return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP).getString();
+    public Component getTitle() {
+	return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class ComponentContainerProvider implements Component, MenuProvider {
     }
 
     @Override
-    public Component getDisplayName() {
+    public net.minecraft.network.chat.Component getDisplayName() {
 	return new TranslatableComponent(name);
     }
 

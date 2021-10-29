@@ -59,7 +59,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
     }
 
     private void readGuiPacket(CompoundTag nbt) {
-	loadFromNBT(null, nbt);
+	loadFromNBT(nbt);
     }
 
     public AbstractFluidHandler<A> universalInput() {

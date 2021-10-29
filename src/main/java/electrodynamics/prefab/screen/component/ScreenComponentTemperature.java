@@ -5,8 +5,8 @@ import java.util.List;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -17,7 +17,7 @@ public class ScreenComponentTemperature extends ScreenComponentInfo {
     }
 
     @Override
-    protected List<? extends FormattedText> getInfo(List<? extends FormattedText> list) {
+    protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
 	return list;
     }
 }

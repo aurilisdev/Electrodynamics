@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -74,7 +73,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+    public void loadFromNBT(CompoundTag nbt) {
 	joules = nbt.getDouble("joules");
     }
 

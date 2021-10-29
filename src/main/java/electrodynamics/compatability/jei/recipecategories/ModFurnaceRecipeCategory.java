@@ -19,6 +19,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -111,8 +112,8 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
     }
 
     @Override
-    public String getTitle() {
-	return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP).getString();
+    public Component getTitle() {
+	return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP);
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -107,7 +106,7 @@ public class UtilitiesRendering {
     }
 
     public static void bindTexture(ResourceLocation resource) {
-	Minecraft.getInstance().textureManager.bind(resource);
+	Minecraft.getInstance().textureManager.bindForSetup(resource);
     }
 
     public static float getRed(int color) {
@@ -131,6 +130,6 @@ public class UtilitiesRendering {
     }
 
     public static void color(int color) {
-	RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+	GL11.glColor4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
     }
 }

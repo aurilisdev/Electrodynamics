@@ -19,7 +19,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -40,7 +39,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+    public void loadFromNBT(CompoundTag nbt) {
 	ListTag inputList = nbt.getList("inputList", 10);
 	for (Tag tag : inputList) {
 	    CompoundTag compound = (CompoundTag) tag;

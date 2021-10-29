@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,7 +37,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     }
 
     @Override
-    public void loadFromNBT(BlockState state, CompoundTag nbt) {
+    public void loadFromNBT(CompoundTag nbt) {
 	CompoundTag compound = nbt.getCompound("fluidtank");
 	int cap = compound.getInt("cap");
 	FluidStack stack = FluidStack.loadFluidStackFromNBT(compound);
