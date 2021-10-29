@@ -30,9 +30,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -70,14 +73,14 @@ public class Electrodynamics {
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
-	
+
 	NetworkHandler.init();
     }
-    
+
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-    	CapabilityElectrodynamic.register(event); 
-    	CapabilityCeramicPlate.register(event);
+	CapabilityElectrodynamic.register(event);
+	CapabilityCeramicPlate.register(event);
     }
 
     @SubscribeEvent
@@ -92,20 +95,22 @@ public class Electrodynamics {
     }
 
     @SubscribeEvent
-    @Deprecated
+    @Deprecated(since = "1.16.3", forRemoval = true)
     public static void onLoadEvent(FMLLoadCompleteEvent event) {
 	for (SubtypeOre ore : SubtypeOre.values()) {
 	    if (OreConfig.oresToSpawn.contains(ore.name())) {
 		OreConfiguration feature = new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE,
 			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState(), ore.veinSize);
-		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(), Feature.ORE
-			.configured(feature).range(ore.maxY).count((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)).squared());
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
+			Feature.ORE.configured(feature)
+				.range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(ore.maxY))))
+				.count((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)).squared());
 	    }
 	}
 	setupGen();
     }
 
-    @Deprecated
+    @Deprecated(since = "1.16.3", forRemoval = true)
     public static void setupGen() {
 	for (SubtypeOre ore : SubtypeOre.values()) {
 	    if (OreConfig.oresToSpawn.contains(ore.name())) {
