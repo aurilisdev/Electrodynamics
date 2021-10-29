@@ -17,18 +17,18 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 public class BlockCustomGlass extends Block {
 
     public BlockCustomGlass(float hardness, float resistance) {
-	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(hardness, resistance)
-		.isRedstoneConductor(BlockCustomGlass::isntSolid).noOcclusion());
+	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance)
+	//TODO add a better condition if wanted?
+		.isRedstoneConductor( (p_152653_, p_152654_, p_152655_) -> {return false;} ).noOcclusion());
     }
 
     public BlockCustomGlass(SubtypeGlass glass) {
-	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(glass.hardness, glass.resistance)
-		.isRedstoneConductor(BlockCustomGlass::isntSolid).noOcclusion());
+	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
+		.isRedstoneConductor( (p_152653_, p_152654_, p_152655_) -> {return false;} ).noOcclusion());
     }
 
     @Override

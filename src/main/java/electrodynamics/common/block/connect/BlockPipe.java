@@ -234,7 +234,7 @@ public class BlockPipe extends Block implements SimpleWaterloggedBlock {
 	    return stateIn.setValue(property, EnumConnectType.NONE);
 	}
     }
-
+    
     @Override
     public boolean hasTileEntity(BlockState state) {
 	return true;

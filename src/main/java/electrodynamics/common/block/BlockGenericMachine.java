@@ -43,7 +43,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -51,7 +50,7 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public BlockGenericMachine() {
-	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).noOcclusion());
+	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion());
 	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
@@ -214,5 +213,5 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	    Containers.dropContents(world, pos, generic.<ComponentInventory>getComponent(ComponentType.Inventory));
 	}
 	world.destroyBlock(pos, true, player);
-    }new
+    }
 }
