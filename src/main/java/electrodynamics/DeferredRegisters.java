@@ -141,7 +141,7 @@ public class DeferredRegisters {
     public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
-    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, References.ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, References.ID);
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, References.ID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
@@ -323,7 +323,7 @@ public class DeferredRegisters {
     // Split from items to tiles
 
     public static final RegistryObject<BlockEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
-	    () -> new BlockEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),
+	    () -> new BlockEntityType<TileCoalGenerator>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
     public static final RegistryObject<BlockEntityType<TileSolarPanel>> TILE_SOLARPANEL = TILES.register(SubtypeMachine.solarpanel.tag(),
 	    () -> new BlockEntityType<>(TileSolarPanel::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel)), null));
@@ -496,11 +496,11 @@ public class DeferredRegisters {
     }
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry, ISubtype en) {
-	if (entry instanceof Block) {
-	    SUBTYPEBLOCK_MAPPINGS.put(en, (Block) entry);
-	} else if (entry instanceof Item) {
-	    SUBTYPEITEM_MAPPINGS.put(en, (Item) entry);
-	    ITEMSUBTYPE_MAPPINGS.put((Item) entry, en);
+	if (entry instanceof Block bl) {
+	    SUBTYPEBLOCK_MAPPINGS.put(en, bl);
+	} else if (entry instanceof Item it) {
+	    SUBTYPEITEM_MAPPINGS.put(en, it);
+	    ITEMSUBTYPE_MAPPINGS.put(it, en);
 	}
 	return supplier(entry);
     }

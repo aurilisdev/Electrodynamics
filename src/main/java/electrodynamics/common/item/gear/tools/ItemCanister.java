@@ -101,7 +101,7 @@ public class ItemCanister extends Item {
 
     public void useCanister(Level world, Player player, InteractionHand hand) {
 	ItemStack stack = player.getItemInHand(hand);
-	HitResult trace = getPlayerPOVHitResult(world, player, Fluid.ANY);
+	HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
 	if (!world.isClientSide && trace.getType() != Type.MISS && trace.getType() != Type.ENTITY) {
 	    BlockHitResult blockTrace = (BlockHitResult) trace;
 	    BlockPos pos = blockTrace.getBlockPos();

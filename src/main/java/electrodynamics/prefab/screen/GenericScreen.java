@@ -16,8 +16,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -151,8 +151,8 @@ public class GenericScreen<T extends GenericContainer<? extends BlockEntity>> ex
     }
 
     @Override
-    public void displayTooltips(PoseStack stack, List<? extends FormattedText> tooltips, int xAxis, int yAxis) {
-	super.renderWrappedToolTip(stack, tooltips, xAxis, yAxis, font);
+    public void displayTooltips(PoseStack stack, List<? extends FormattedCharSequence> tooltips, int xAxis, int yAxis) {
+	super.renderTooltip(stack, tooltips, xAxis, yAxis, font);
     }
 
     @Override

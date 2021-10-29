@@ -76,7 +76,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 	return this;
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = false, since = "*")
     public GenericTile forceComponent(Component component) {
 	component.holder(this);
 	components[component.getType().ordinal()] = component;
@@ -84,17 +84,17 @@ public class GenericTile extends BlockEntity implements Nameable {
     }
 
     @Override
-    public void load( CompoundTag compound) {
+    public void load(CompoundTag compound) {
 	for (Component component : components) {
 	    if (component != null) {
 		component.holder(this);
-		component.loadFromNBT( compound);
+		component.loadFromNBT(compound);
 	    }
 	}
 	for (ComponentProcessor pr : processors) {
 	    if (pr != null) {
 		pr.holder(this);
-		pr.loadFromNBT( compound);
+		pr.loadFromNBT(compound);
 	    }
 	}
     }
@@ -116,8 +116,8 @@ public class GenericTile extends BlockEntity implements Nameable {
 	return super.save(compound);
     }
 
-    protected GenericTile(BlockEntityType<?> tileEntityTypeIn) {
-	super(tileEntityTypeIn);
+    protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+	super(tileEntityTypeIn, worldPos, blockState);
     }
 
     @Override
@@ -144,20 +144,14 @@ public class GenericTile extends BlockEntity implements Nameable {
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC) {
-	    if (components[ComponentType.Electrodynamic.ordinal()] != null) {
-		return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
-	    }
+	if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
+	    return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
 	}
-	if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	    if (components[ComponentType.FluidHandler.ordinal()] != null) {
-		return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
-	    }
+	if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && components[ComponentType.FluidHandler.ordinal()] != null) {
+	    return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
 	}
-	if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-	    if (components[ComponentType.Inventory.ordinal()] != null) {
-		return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
-	    }
+	if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && components[ComponentType.Inventory.ordinal()] != null) {
+	    return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
 	}
 	return super.getCapability(cap, side);
     }
@@ -190,11 +184,6 @@ public class GenericTile extends BlockEntity implements Nameable {
     @Override
     public BlockPos getBlockPos() {
 	return worldPosition;
-    }
-
-    @Override
-    public double getViewDistance() {
-	return 256;
     }
 
     @Nullable

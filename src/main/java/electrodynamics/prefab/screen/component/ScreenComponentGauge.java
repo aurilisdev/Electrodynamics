@@ -2,7 +2,8 @@ package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
@@ -56,7 +57,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 		    GuiComponent.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
 		}
 	    }
-	    GlStateManager._color4f(1, 1, 1, 1);
+	    GL11.glColor4f(1, 1, 1, 1);
 	}
 
 	UtilitiesRendering.bindTexture(resource);

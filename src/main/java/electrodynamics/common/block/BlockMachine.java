@@ -10,7 +10,6 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
-import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.utilities.UtilitiesElectricity;
 import net.minecraft.core.BlockPos;
@@ -32,6 +31,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockMachine extends BlockGenericMachine implements IMultiblockNode {
+
     public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
     public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
     static {
@@ -55,7 +55,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 	    TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
@@ -65,14 +65,14 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	}
     }
 
-    @Deprecated
     @Override
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 	return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
 		: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
@@ -86,13 +86,13 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public RenderShape getRenderShape(BlockState state) {
 	return machine.getRenderType();
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	ItemStack addstack;
 	switch (machine) {
@@ -123,7 +123,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
 
 	switch (machine) {
 	case coalgeneratorrunning:
@@ -135,30 +135,28 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	case energizedalloyerrunning:
 	    return 10;
 	default:
-	    return super.getLightValue(state, world, pos);
+	    return super.getLightEmission(state, world, pos);
 	}
 
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.setPlacedBy(worldIn, pos, state, placer, stack);
 	BlockEntity tile = worldIn.getBlockEntity(pos);
-	if (hasMultiBlock() && tile instanceof IMultiblockTileNode) {
-	    IMultiblockTileNode multi = (IMultiblockTileNode) tile;
+	if (hasMultiBlock() && tile instanceof IMultiblockTileNode multi) {
 	    multi.onNodePlaced(worldIn, pos, state, placer, stack);
 	}
     }
 
-    @Deprecated
     @Override
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
 	if (hasMultiBlock()) {
 	    BlockEntity tile = worldIn.getBlockEntity(pos);
-	    if (tile instanceof IMultiblockTileNode) {
-		IMultiblockTileNode multi = (IMultiblockTileNode) tile;
+	    if (tile instanceof IMultiblockTileNode multi) {
 		multi.onNodeReplaced(worldIn, pos, !update);
 	    }
 	}
@@ -170,12 +168,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-	if (machine == SubtypeMachine.advancedsolarpanel) {
-	    TileAdvancedSolarPanel solar = (TileAdvancedSolarPanel) machine.createTileEntity();
-	    solar.currentRotation.set(((Level) world).getDayTime() / 24000.0 * Math.PI * 2 - Math.PI / 2.0);
-	    return solar;
-	}
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return machine.createTileEntity();
     }
 
