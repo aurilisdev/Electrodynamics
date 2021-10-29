@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializable<CompoundTag> {
 
+	public static final String PLATES_KEY = "plates";
     private final CapabilityCeramicPlateHolderDefault plateHolder = new CapabilityCeramicPlateHolderDefault();
     private final LazyOptional<ICapabilityCeramicPlateHolder> lazyOptional = LazyOptional.of(() -> plateHolder);
 
@@ -26,17 +27,19 @@ public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializ
 
     @Override
     public CompoundTag serializeNBT() {
-	if (CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY == null) {
-	    return new CompoundTag();
-	}
-	return (CompoundTag) CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY.writeNBT(plateHolder, null);
+    	if(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
+    		CompoundTag nbt = new CompoundTag();
+        	nbt.putInt(PLATES_KEY,plateHolder.getPlateCount());
+    		return nbt;
+    	}
+    	return new CompoundTag();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-	if (CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
-	    CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY.readNBT(plateHolder, null, nbt);
-	}
+    	if(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
+    		plateHolder.setPlateCount(nbt.getInt(PLATES_KEY));
+    	}
     }
 
 }
