@@ -16,6 +16,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DiggerItem;
@@ -26,18 +27,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.ToolType;
 
 public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON,
-	    Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON);
+	
+	//private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON,
+	//    Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON);
     private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT,
 	    Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
     private final ElectricItemProperties properties;
-
+    
+    
     public ItemElectricChainsaw(ElectricItemProperties properties) {
-	super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON, properties.durability(0).addToolType(ToolType.AXE, ElectricItemTier.DRILL.getLevel()));
-	this.properties = properties;
+    	//super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON, properties.durability(0).addToolType(ToolType.AXE, ElectricItemTier.DRILL.getLevel()));
+    	super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties.durability(0));
+    	this.properties = properties;
     }
 
     @Override
@@ -60,6 +63,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
 	Material material = state.getMaterial();
+	//TODO rework this to work with the BlockTags class?
 	return getJoulesStored(stack) > properties.extract.getJoules()
 		? EFFECTIVE_ON_MATERIALS.contains(material) ? speed : super.getDestroySpeed(stack, state)
 		: 0;
