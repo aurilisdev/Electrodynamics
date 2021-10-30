@@ -107,7 +107,7 @@ public class RenderCompositeArmor extends HumanoidModel<LivingEntity> {
 	LEFT_SHOE.texOffs(79, 38).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, 0.0F, false);
 	LEFT_SHOE.texOffs(78, 44).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, 0.0F, false);
 	LEFT_SHOE.texOffs(47, 34).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, 0.0F, false);
-
+	
 	head.addChild(HEAD);
 	body.addChild(CHEST);
 	rightArm.addChild(RIGHT_ARM);

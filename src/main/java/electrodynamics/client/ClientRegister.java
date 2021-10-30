@@ -44,14 +44,15 @@ import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
@@ -64,46 +65,46 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void onModelEvent(ModelRegistryEvent event) {
-	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
-	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
-	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX2);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX3);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX4);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX5);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX6);
-	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX7);
-	ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
-	ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEHANDLE);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEHANDLE);
-	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
-	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERDOUBLEBASE);
-	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERTRIPLEBASE);
-	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
-	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
-	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
-	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
-	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
-	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
-	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERSULFURICACID);
-	ModelLoader.addSpecialModel(MODEL_RODSTEEL);
-	ModelLoader.addSpecialModel(MODEL_RODSTAINLESSSTEEL);
-	ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
-	ModelLoader.addSpecialModel(MODEL_LATHE);
-	ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
+		ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
+		ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
+		ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX2);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX3);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX4);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX5);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX6);
+		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX7);
+		ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
+		ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
+		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
+		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
+		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEBASE);
+		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEHANDLE);
+		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEBASE);
+		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEHANDLE);
+		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
+		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
+		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERDOUBLEBASE);
+		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERTRIPLEBASE);
+		ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
+		ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
+		ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
+		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
+		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
+		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
+		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERSULFURICACID);
+		ModelLoader.addSpecialModel(MODEL_RODSTEEL);
+		ModelLoader.addSpecialModel(MODEL_RODSTAINLESSSTEEL);
+		ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
+		ModelLoader.addSpecialModel(MODEL_LATHE);
+		ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(BLOCK_LOC + "advancedsolarpaneltop");
@@ -153,78 +154,88 @@ public class ClientRegister {
     public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
     public static void setup() {
-	ClientRegistry.ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), RenderLithiumBatteryBox::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_WINDMILL.get(), RenderWindmill::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get(), RenderMineralCrusherDouble::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get(), RenderMineralCrusherTriple::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get(), RenderMineralGrinderDouble::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get(), RenderMineralGrinderTriple::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), RenderFermentationPlant::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_LATHE.get(), RenderLathe::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
-	ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
-
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
-	RenderingRegistry.registerEntityRenderingHandler(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
-
-	MenuScreens.register(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACETRIPLE.get(), ScreenElectricFurnaceTriple::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSORDOUBLE.get(), ScreenO2OProcessorDouble::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSORTRIPLE.get(), ScreenO2OProcessorTriple::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_LITHIUMBATTERYBOX.get(), ScreenLithiumBatteryBox::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
-	MenuScreens.register(DeferredRegisters.CONTAINER_TANK.get(), ScreenTankGeneric::new);
-
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),
-		ClientRegister::shouldMultilayerRender);
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber),
-		ClientRegister::shouldMultilayerRender);
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher),
-		ClientRegister::shouldMultilayerRender);
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
-		ClientRegister::shouldMultilayerRender);
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker),
-		ClientRegister::shouldMultilayerRender);
-	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.multi, RenderType.cutout());
-	ItemProperties
-		.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"),
-			(stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
-				&& ((ItemElectricDrill) stack.getItem())
-					.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules()
-						? 1
-						: 0);
-	ItemProperties
-		.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"),
-			(stack, world, entity,
-				call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
-					&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
-						stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), RenderLithiumBatteryBox::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_WINDMILL.get(), RenderWindmill::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get(), RenderMineralCrusherDouble::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get(), RenderMineralCrusherTriple::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get(), RenderMineralGrinderDouble::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get(), RenderMineralGrinderTriple::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), RenderFermentationPlant::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_LATHE.get(), RenderLathe::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
+		ClientRegistry.bindTileEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
+	
+		MenuScreens.register(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACETRIPLE.get(), ScreenElectricFurnaceTriple::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSORDOUBLE.get(), ScreenO2OProcessorDouble::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSORTRIPLE.get(), ScreenO2OProcessorTriple::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_LITHIUMBATTERYBOX.get(), ScreenLithiumBatteryBox::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_TANK.get(), ScreenTankGeneric::new);
+	
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),
+			ClientRegister::shouldMultilayerRender);
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber),
+			ClientRegister::shouldMultilayerRender);
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher),
+			ClientRegister::shouldMultilayerRender);
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
+			ClientRegister::shouldMultilayerRender);
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker),
+			ClientRegister::shouldMultilayerRender);
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.multi, RenderType.cutout());
+		ItemProperties
+			.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"),
+				(stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+					&& ((ItemElectricDrill) stack.getItem())
+						.getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules()
+							? 1
 							: 0);
+		ItemProperties
+			.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"),
+				(stack, world, entity,
+					call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+						&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
+							stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
+								: 0);
+    }
+    
+    //TODO the block entities get handled through here as well; not quite sure how tho
+    //     was looking into the BlockEntityRendererProvider class
+    
+    //idk how you want to handle this so I just put this here 
+    @SubscribeEvent
+    public static void registerEntities(EntityRenderersEvent.RegisterRenderers event) {
+    	event.registerEntityRenderer(DeferredRegisters.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
+    	event.registerEntityRenderer(DeferredRegisters.ENTITY_METALROD.get(), RenderMetalRod::new);
+    	
+    	//event.registerBlockEntityRenderer(null, null);
+    	
     }
 
     public static boolean shouldMultilayerRender(RenderType type) {
-	return type == RenderType.translucent() || type == RenderType.solid();
+    	return type == RenderType.translucent() || type == RenderType.solid();
     }
 
 }
