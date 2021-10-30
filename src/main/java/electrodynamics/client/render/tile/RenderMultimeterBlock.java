@@ -13,10 +13,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
 
 public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeterBlock> {
+    public RenderMultimeterBlock(BlockEntityRendererProvider.Context context) {
+    }
 
     @Override
     public void render(TileMultimeterBlock tilemultimeter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,

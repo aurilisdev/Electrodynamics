@@ -13,11 +13,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderChargerGeneric implements BlockEntityRenderer<TileGenericCharger> {
+    public RenderChargerGeneric(BlockEntityRendererProvider.Context context) {
+    }
 
     @Override
     public void render(TileGenericCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
