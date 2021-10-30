@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.common.block.BlockGenericMachine;
@@ -28,22 +29,22 @@ public class UtilitiesRendering {
 
     @Deprecated
     public static void renderStar(float time, int starFrags, float r, float g, float b, float a, boolean star) {
-	GlStateManager._pushMatrix();
+	GL11.glPushMatrix();
 	Tesselator tessellator = Tesselator.getInstance();
 	BufferBuilder bufferBuilder = tessellator.getBuilder();
 	GlStateManager._disableTexture();
-	GlStateManager._shadeModel(GL11.GL_SMOOTH);
+	GL11.glShadeModel(GL11.GL_SMOOTH);
 	GlStateManager._enableBlend();
 	if (star) {
 	    GlStateManager._blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 	} else {
 	    GlStateManager._blendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_DST_COLOR);
 	}
-	GlStateManager._disableAlphaTest();
+	GL11.glDisable(GL11.GL_ALPHA_TEST);
 	GlStateManager._enableCull();
 	GlStateManager._enableDepthTest();
 
-	GlStateManager._pushMatrix();
+	GL11.glPushMatrix();
 	try {
 	    float par2 = time * 3 % 180;
 	    float var41 = (5.0F + par2) / 200.0F;
@@ -61,7 +62,7 @@ public class UtilitiesRendering {
 		GL11.glRotatef(rand.nextFloat() * 360.0F + var41 * 90.0F, 0.0F, 0.0F, 1.0F);
 		final float f2 = rand.nextFloat() * 20 + 5 + var51 * 10;
 		final float f3 = rand.nextFloat() * 2 + 1 + var51 * 2 + (star ? 0 : 10);
-		bufferBuilder.begin(6, DefaultVertexFormat.POSITION_COLOR);
+		bufferBuilder.begin(Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 		bufferBuilder.vertex(0, 0, 0).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
 		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
 			.endVertex();
@@ -74,14 +75,14 @@ public class UtilitiesRendering {
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	GlStateManager._popMatrix();
+	GL11.glPopMatrix();
 	GlStateManager._disableDepthTest();
 	GlStateManager._disableBlend();
-	GlStateManager._shadeModel(GL11.GL_FLAT);
-	GlStateManager._color4f(1, 1, 1, 1);
+	GL11.glShadeModel(GL11.GL_FLAT);
+	GL11.glColor4f(1, 1, 1, 1);
 	GlStateManager._enableTexture();
-	GlStateManager._enableAlphaTest();
-	GlStateManager._popMatrix();
+	GL11.glEnable(GL11.GL_ALPHA_TEST);
+	GL11.glPopMatrix();
     }
 
     public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer,

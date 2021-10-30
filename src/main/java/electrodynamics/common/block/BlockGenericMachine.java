@@ -34,6 +34,8 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -214,4 +216,11 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	}
 	world.destroyBlock(pos, true, player);
     }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
+	return getTickMethod(lvl, state, type);
+    }
+
+    public abstract <T extends BlockEntity> BlockEntityTicker<T> getTickMethod(Level lvl, BlockState state, BlockEntityType<T> type);
 }
