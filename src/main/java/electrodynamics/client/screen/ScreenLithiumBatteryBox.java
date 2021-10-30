@@ -17,9 +17,9 @@ import electrodynamics.prefab.screen.component.ScreenComponentSlot;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,25 +32,25 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 	components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
-    private List<? extends FormattedText> getElectricInformation() {
-	ArrayList<FormattedText> list = new ArrayList<>();
+    private List<? extends FormattedCharSequence> getElectricInformation() {
+	ArrayList<FormattedCharSequence> list = new ArrayList<>();
 	TileLithiumBatteryBox box = menu.getHostFromIntArray();
 	if (box != null) {
 	    list.add(new TranslatableComponent("gui.lithiumbatterybox.current",
 		    new TextComponent(ChatFormatter
 			    .getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE))
-				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.lithiumbatterybox.transfer",
 		    new TextComponent(
 			    ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
-				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.lithiumbatterybox.voltage",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
-			    .withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.lithiumbatterybox.stored",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
 			    + ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
-				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	}
 	return list;
     }

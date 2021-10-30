@@ -1,7 +1,6 @@
 package electrodynamics.client.screen;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
@@ -19,9 +18,9 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
@@ -71,18 +70,18 @@ public class ScreenO2OProcessorTriple extends GenericScreen<ContainerO2OProcesso
 	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
     }
 
-    private List<? extends FormattedText> getEnergyInformation() {
-	ArrayList<FormattedText> list = new ArrayList<>();
+    private ArrayList<FormattedCharSequence> getEnergyInformation() {
+	ArrayList<FormattedCharSequence> list = new ArrayList<>();
 	GenericTile box = menu.getHostFromIntArray();
 	if (box != null) {
 	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
 	    list.add(new TranslatableComponent("gui.o2oprocessor.usage",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(
 			    box.getProcessor(0).getUsage() * 20 + box.getProcessor(1).getUsage() * 20 + box.getProcessor(2).getUsage() * 20,
-			    ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			    ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.o2oprocessor.voltage",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	}
 	return list;
     }

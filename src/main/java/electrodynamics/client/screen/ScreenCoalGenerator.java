@@ -18,9 +18,9 @@ import electrodynamics.prefab.screen.component.ScreenComponentTemperature;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -41,24 +41,25 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
-    private List<? extends FormattedText> getTemperatureInformation() {
-	ArrayList<FormattedText> list = new ArrayList<>();
+    private List<FormattedCharSequence> getTemperatureInformation() {
+	ArrayList<FormattedCharSequence> list = new ArrayList<>();
 	TileCoalGenerator box = menu.getHostFromIntArray();
 	if (box != null) {
 	    list.add(new TranslatableComponent("gui.coalgenerator.timeleft",
-		    new TextComponent(box.clientBurnTime / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		    new TextComponent(box.clientBurnTime / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY)
+			    .getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.coalgenerator.temperature",
 		    new TextComponent(ChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C").withStyle(ChatFormatting.GRAY))
-			    .withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.coalgenerator.heat",
 		    new TextComponent(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%")
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	}
 	return list;
     }
 
-    private List<? extends FormattedText> getEnergyInformation() {
-	ArrayList<FormattedText> list = new ArrayList<>();
+    private List<? extends FormattedCharSequence> getEnergyInformation() {
+	ArrayList<FormattedCharSequence> list = new ArrayList<>();
 	TileCoalGenerator box = menu.getHostFromIntArray();
 	if (box != null) {
 	    TransferPack output = TransferPack.ampsVoltage(
@@ -66,13 +67,13 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		    Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	    list.add(new TranslatableComponent("gui.coalgenerator.current",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)).withStyle(ChatFormatting.GRAY))
-			    .withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.coalgenerator.output",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
-			    .withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	    list.add(new TranslatableComponent("gui.coalgenerator.voltage",
 		    new TextComponent(ChatFormatter.getElectricDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE))
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 	}
 	return list;
     }
