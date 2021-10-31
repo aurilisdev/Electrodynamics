@@ -1,5 +1,6 @@
 package electrodynamics.common.item.gear.tools.electric;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DiggerItem;
@@ -25,10 +27,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.ToolType;
 
 public class ItemElectricDrill extends DiggerItem implements IItemElectric {
-    private static final Set<Block> EFFECTIVE_ON = Set.of(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL,
+    /*
+	private static final Set<Block> EFFECTIVE_ON = Set.of(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL,
 	    Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.POWERED_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.NETHER_GOLD_ORE, Blocks.ICE,
 	    Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE,
 	    Blocks.BLUE_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.CHISELED_SANDSTONE, Blocks.CUT_SANDSTONE,
@@ -66,13 +68,21 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	    Blocks.GREEN_SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX, Blocks.LIGHT_GRAY_SHULKER_BOX, Blocks.LIME_SHULKER_BOX,
 	    Blocks.MAGENTA_SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX, Blocks.PINK_SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX, Blocks.RED_SHULKER_BOX,
 	    Blocks.WHITE_SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.PISTON_HEAD);
-
+	*/
     private final ElectricItemProperties properties;
-
+    
+    private static Set<Block> blocks; 
+    
+    static {
+    	blocks = new HashSet<>(BlockTags.MINEABLE_WITH_PICKAXE.getValues());
+        blocks.addAll(BlockTags.MINEABLE_WITH_SHOVEL.getValues());
+    }
+    
     public ItemElectricDrill(ElectricItemProperties properties) {
-	super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON, properties.durability(0)
-		.addToolType(ToolType.PICKAXE, ElectricItemTier.DRILL.getLevel()).addToolType(ToolType.SHOVEL, ElectricItemTier.DRILL.getLevel()));
-	this.properties = properties;
+		//super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON, properties.durability(0)
+		//	.addToolType(ToolType.PICKAXE, ElectricItemTier.DRILL.getLevel()).addToolType(ToolType.SHOVEL, ElectricItemTier.DRILL.getLevel()));
+    	super(4, -2.4f, ElectricItemTier.DRILL, Tag.fromSet(blocks) , properties.durability(0));
+    	this.properties = properties;
     }
 
     @Override
@@ -97,6 +107,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	return false;
     }
 
+    /*
     @Override
     public boolean isCorrectToolForDrops(BlockState blockIn) {
 	int i = getTier().getLevel();
@@ -107,6 +118,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL || blockIn.is(Blocks.SNOW)
 		|| blockIn.is(Blocks.SNOW_BLOCK);
     }
+    */
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
@@ -119,8 +131,8 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-	extractPower(stack, properties.extract.getJoules() * (PICK_EFFECTIVE_ON.contains(state.getBlock()) ? 1.5 : 1), false);
-	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+    	extractPower(stack, properties.extract.getJoules() * (blocks.contains(state.getBlock()) ? 1.5 : 1), false);
+		return super.mineBlock(stack, worldIn, state, pos, entityLiving);
     }
 
     @Override

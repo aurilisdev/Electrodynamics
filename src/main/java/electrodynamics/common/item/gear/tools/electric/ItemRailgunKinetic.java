@@ -68,7 +68,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		    projectile.setItem(ammoStack);
 		    projectile.setNoGravity(true);
 		    projectile.setOwner(playerIn);
-		    projectile.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0f, 20f, 1.0F);
+		    projectile.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0f, 20f, 1.0F);
 		    if (!worldIn.isClientSide) {
 			worldIn.addFreshEntity(projectile);
 		    }

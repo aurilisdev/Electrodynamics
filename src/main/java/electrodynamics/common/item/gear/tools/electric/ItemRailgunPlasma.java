@@ -43,7 +43,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		EntityCustomProjectile projectile = new EntityEnergyBlast(playerIn, worldIn);
 		projectile.setNoGravity(true);
 		projectile.setOwner(playerIn);
-		projectile.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0F, 5f, 1.0F);
+		projectile.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0F, 5f, 1.0F);
 		worldIn.addFreshEntity(projectile);
 
 		railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
