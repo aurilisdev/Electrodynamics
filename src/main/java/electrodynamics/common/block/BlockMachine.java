@@ -172,7 +172,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-	return machine.createTileEntity();
+	return machine.createTileEntity(pos, state);
     }
 
     @Override

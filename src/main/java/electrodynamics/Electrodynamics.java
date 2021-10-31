@@ -70,7 +70,7 @@ public class Electrodynamics {
 	DeferredRegisters.FLUIDS.register(bus);
 	DeferredRegisters.ENTITIES.register(bus);
     }
-
+//TODO: ERROR  Parsing error loading custom advancement electrodynamics:adv9: Advancement criteria cannot be empty
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
 

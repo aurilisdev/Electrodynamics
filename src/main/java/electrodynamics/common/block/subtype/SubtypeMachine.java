@@ -1,5 +1,7 @@
 package electrodynamics.common.block.subtype;
 
+import java.lang.reflect.InvocationTargetException;
+
 import electrodynamics.api.ISubtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
@@ -42,6 +44,7 @@ import electrodynamics.common.tile.TileWireMill;
 import electrodynamics.common.tile.TileWireMillDouble;
 import electrodynamics.common.tile.TileWireMillTriple;
 import electrodynamics.prefab.tile.GenericTileTicking;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -186,11 +189,12 @@ public enum SubtypeMachine implements ISubtype {
 	return true;
     }
 
-    public BlockEntity createTileEntity() {
+    public BlockEntity createTileEntity(BlockPos pos, BlockState state) {
 	if (tileclass != null) {
 	    try {
-		return tileclass.newInstance();
-	    } catch (InstantiationException | IllegalAccessException e) {
+		return tileclass.getConstructor(BlockPos.class, BlockState.class).newInstance(pos, state);
+	    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+		    | SecurityException e) {
 		e.printStackTrace();
 	    }
 	}
