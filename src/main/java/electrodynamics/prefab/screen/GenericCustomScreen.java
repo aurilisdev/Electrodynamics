@@ -1,7 +1,6 @@
 package electrodynamics.prefab.screen;
 
-import org.lwjgl.opengl.GL11;
-
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -24,7 +23,7 @@ public abstract class GenericCustomScreen<T extends AbstractContainerMenu> exten
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	RenderSystem.setShaderColor(1, 1, 1, 1);
 	minecraft.getTextureManager().bindForSetup(getScreenBackground());
 	blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
