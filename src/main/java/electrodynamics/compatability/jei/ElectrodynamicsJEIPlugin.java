@@ -159,8 +159,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Electric Furnace
 	// still broken; just cleaning up
-	Set<SmeltingRecipe> electricFurnaceRecipes = ImmutableSet
-		.copyOf(recipeManager.getAllRecipesFor((RecipeType<SmeltingRecipe>) Registry.RECIPE_TYPE.get(VanillaRecipeCategoryUid.FURNACE)));
+	Set<SmeltingRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.SMELTING));
 	registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
 
 	// Wire Mill
