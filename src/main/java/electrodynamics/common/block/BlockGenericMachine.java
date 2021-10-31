@@ -195,10 +195,12 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.setPlacedBy(worldIn, pos, state, placer, stack);
-	BlockEntity tile = worldIn.getBlockEntity(pos);
+	worldIn.getBlockEntity(pos);
 	if (stack.hasTag()) {
-	//    tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
-	//	    .ifPresent(el -> el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"))); TODO: HERE THE TILE IS NULL. FIND CORRECT METHOD FOR 1.17
+	    // tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
+	    // .ifPresent(el ->
+	    // el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"))); TODO: HERE
+	    // THE TILE IS NULL. FIND CORRECT METHOD FOR 1.17
 	}
     }
 

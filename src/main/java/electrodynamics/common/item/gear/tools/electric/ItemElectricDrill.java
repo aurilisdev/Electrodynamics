@@ -139,7 +139,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	    ItemStack charged = new ItemStack(this);
 	    IItemElectric.setEnergyStored(charged, properties.capacity);
 	    items.add(charged);
-	    
+
 	    ItemStack empty = new ItemStack(this);
 	    IItemElectric.setEnergyStored(empty, 0);
 	    items.add(empty);
