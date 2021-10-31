@@ -96,10 +96,10 @@ public class ElectrodynamicsRecipeInit {
     }
 
     private static class CustomRecipeType<T extends Recipe<?>> implements RecipeType<T> {
-		@Override
-		public String toString() {
-		    return Registry.RECIPE_TYPE.getKey(this).toString();
-		}
+	@Override
+	public String toString() {
+	    return Registry.RECIPE_TYPE.getKey(this).toString();
+	}
     }
 
 }

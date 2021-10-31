@@ -35,7 +35,7 @@ public class TileMineralCrusher extends GenericTileTicking {
     public long clientRunningTicks = 0;
 
     public TileMineralCrusher(BlockPos pos, BlockState state) {
-    	this(0, pos, state);
+	this(0, pos, state);
     }
 
     public TileMineralCrusher(int extra, BlockPos pos, BlockState state) {

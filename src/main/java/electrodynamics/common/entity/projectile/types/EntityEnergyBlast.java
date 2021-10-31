@@ -37,10 +37,10 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 		level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(),
 			4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
 	    }
-	    this.remove(Entity.RemovalReason.DISCARDED);
+	    remove(Entity.RemovalReason.DISCARDED);
 	}
 	if (tickCount > 100) {
-		this.remove(Entity.RemovalReason.DISCARDED);
+	    remove(Entity.RemovalReason.DISCARDED);
 	}
     }
 
@@ -48,7 +48,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
     public void tick() {
 	super.tick();
 	if (isInWater() || isInLava()) {
-		this.remove(Entity.RemovalReason.DISCARDED);
+	    remove(Entity.RemovalReason.DISCARDED);
 	}
     }
 

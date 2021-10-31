@@ -16,6 +16,7 @@ import net.minecraft.client.resources.model.BakedModel;
 public class RenderMineralGrinderTriple implements BlockEntityRenderer<TileMineralGrinder> {
     public RenderMineralGrinderTriple(BlockEntityRendererProvider.Context context) {
     }
+
     @Override
     public void render(TileMineralGrinder tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {

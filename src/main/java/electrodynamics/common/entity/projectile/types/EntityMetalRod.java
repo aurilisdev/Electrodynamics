@@ -67,7 +67,7 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		}
 		level.playSound(null, p_230299_1_.getBlockPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
 	    }
-	    this.remove(Entity.RemovalReason.DISCARDED);
+	    remove(Entity.RemovalReason.DISCARDED);
 	}
     }
 

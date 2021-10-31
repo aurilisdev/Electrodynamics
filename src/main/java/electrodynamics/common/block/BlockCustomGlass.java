@@ -22,13 +22,17 @@ public class BlockCustomGlass extends Block {
 
     public BlockCustomGlass(float hardness, float resistance) {
 	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance)
-	//TODO add a better condition if wanted?
-		.isRedstoneConductor( (p_152653_, p_152654_, p_152655_) -> {return false;} ).noOcclusion());
+		// TODO add a better condition if wanted?
+		.isRedstoneConductor((p_152653_, p_152654_, p_152655_) -> {
+		    return false;
+		}).noOcclusion());
     }
 
     public BlockCustomGlass(SubtypeGlass glass) {
 	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
-		.isRedstoneConductor( (p_152653_, p_152654_, p_152655_) -> {return false;} ).noOcclusion());
+		.isRedstoneConductor((p_152653_, p_152654_, p_152655_) -> {
+		    return false;
+		}).noOcclusion());
     }
 
     @Override

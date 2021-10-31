@@ -33,12 +33,12 @@ public abstract class EntityCustomProjectile extends ThrowableItemProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-    	this.remove(Entity.RemovalReason.DISCARDED);
+	remove(Entity.RemovalReason.DISCARDED);
     }
 
     @Override
     public void onHitEntity(EntityHitResult p_213868_1_) {
-    	this.remove(Entity.RemovalReason.DISCARDED);
+	remove(Entity.RemovalReason.DISCARDED);
     }
 
     @Override

@@ -66,8 +66,8 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 
     @Override
     protected ScreenComponentSlot createScreenSlot(Slot slot) {
-	return new ScreenComponentSlot(slot instanceof SlotRestricted res && res
-		.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
+	return new ScreenComponentSlot(slot instanceof SlotRestricted res
+		&& res.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
 			? EnumSlotType.SPEED
 			: slot instanceof SlotRestricted ? EnumSlotType.LIQUID : EnumSlotType.NORMAL,
 		this, slot.x - 1, slot.y - 1);

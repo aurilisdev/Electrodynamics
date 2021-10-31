@@ -14,7 +14,7 @@ public class CapabilityTemperatureHolderProvider implements ICapabilitySerializa
     public static final String TEMPERATURE_KEY = "plates";
 
     public void invalidate() {
-    	lazyOptional.invalidate();
+	lazyOptional.invalidate();
     }
 
     @Override
@@ -28,17 +28,17 @@ public class CapabilityTemperatureHolderProvider implements ICapabilitySerializa
 
     @Override
     public CompoundTag serializeNBT() {
-		if (CapabilityTemperature.TEMPERATURE != null) {
-		    CompoundTag nbt = new CompoundTag();
-		    nbt.putInt(TEMPERATURE_KEY, temperatureHolder.getTemperature());
-		}
-		return new CompoundTag();
+	if (CapabilityTemperature.TEMPERATURE != null) {
+	    CompoundTag nbt = new CompoundTag();
+	    nbt.putInt(TEMPERATURE_KEY, temperatureHolder.getTemperature());
+	}
+	return new CompoundTag();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-		if (CapabilityTemperature.TEMPERATURE != null) {
-		    temperatureHolder.setTemperature(nbt.getInt(TEMPERATURE_KEY));
-		}
+	if (CapabilityTemperature.TEMPERATURE != null) {
+	    temperatureHolder.setTemperature(nbt.getInt(TEMPERATURE_KEY));
+	}
     }
 }

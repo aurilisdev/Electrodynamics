@@ -118,7 +118,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	    HashSet<IPipe> adjacentCables = getConnectedConductors();
 	    HashSet<FluidNetwork> connectedNets = new HashSet<>();
 	    for (IPipe wire : adjacentCables) {
-		if (wire.getNetwork(false) != null && wire.getNetwork() instanceof FluidNetwork f) {
+		if (wire.getNetwork(false) != null && wire.getNetwork()instanceof FluidNetwork f) {
 		    connectedNets.add(f);
 		}
 	    }
