@@ -7,9 +7,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
 import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlateHolderProvider;
-import electrodynamics.client.render.model.armor.types.RenderCompositeArmor;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +17,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -28,8 +25,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class CompositeArmorItem extends ArmorItem {
@@ -100,38 +95,38 @@ public class CompositeArmorItem extends ArmorItem {
 	}
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defaultM) {
-
-	if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {
-
-	    RenderCompositeArmor model = armorSlot == EquipmentSlot.LEGS ? new RenderCompositeArmor(0.5f) : new RenderCompositeArmor(1f);
-
-	    model.HEAD.visible = armorSlot == EquipmentSlot.HEAD;
-
-	    model.CHEST.visible = armorSlot == EquipmentSlot.CHEST;
-	    model.RIGHT_ARM.visible = armorSlot == EquipmentSlot.CHEST;
-	    model.LEFT_ARM.visible = armorSlot == EquipmentSlot.CHEST;
-
-	    model.RIGHT_LEG.visible = armorSlot == EquipmentSlot.LEGS;
-	    model.LEFT_LEG.visible = armorSlot == EquipmentSlot.LEGS;
-
-	    model.RIGHT_SHOE.visible = armorSlot == EquipmentSlot.FEET;
-	    model.LEFT_SHOE.visible = armorSlot == EquipmentSlot.FEET;
-
-	    model.young = defaultM.young;
-	    model.riding = defaultM.riding;
-	    model.crouching = defaultM.crouching;
-
-	    model.rightArmPose = defaultM.rightArmPose;
-	    model.leftArmPose = defaultM.leftArmPose;
-
-	    return (A) model;
-
-	}
-	return null;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defaultM) {
+//
+//	if (itemStack != ItemStack.EMPTY && itemStack.getItem() instanceof ArmorItem) {
+//
+//	    RenderCompositeArmor model = armorSlot == EquipmentSlot.LEGS ? new RenderCompositeArmor(0.5f) : new RenderCompositeArmor(1f);
+//
+//	    model.HEAD.visible = armorSlot == EquipmentSlot.HEAD;
+//
+//	    model.CHEST.visible = armorSlot == EquipmentSlot.CHEST;
+//	    model.RIGHT_ARM.visible = armorSlot == EquipmentSlot.CHEST;
+//	    model.LEFT_ARM.visible = armorSlot == EquipmentSlot.CHEST;
+//
+//	    model.RIGHT_LEG.visible = armorSlot == EquipmentSlot.LEGS;
+//	    model.LEFT_LEG.visible = armorSlot == EquipmentSlot.LEGS;
+//
+//	    model.RIGHT_SHOE.visible = armorSlot == EquipmentSlot.FEET;
+//	    model.LEFT_SHOE.visible = armorSlot == EquipmentSlot.FEET;
+//
+//	    model.young = defaultM.young;
+//	    model.riding = defaultM.riding;
+//	    model.crouching = defaultM.crouching;
+//
+//	    model.rightArmPose = defaultM.rightArmPose;
+//	    model.leftArmPose = defaultM.leftArmPose;
+//
+//	    return (A) model;
+//
+//	}
+//	return null;
+//    }
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {

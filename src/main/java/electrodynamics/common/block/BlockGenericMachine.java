@@ -197,8 +197,8 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	super.setPlacedBy(worldIn, pos, state, placer, stack);
 	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (stack.hasTag()) {
-	    tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
-		    .ifPresent(el -> el.setJoulesStored(stack.getOrCreateTag().getDouble("joules")));
+	//    tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
+	//	    .ifPresent(el -> el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"))); TODO: HERE THE TILE IS NULL. FIND CORRECT METHOD FOR 1.17
 	}
     }
 

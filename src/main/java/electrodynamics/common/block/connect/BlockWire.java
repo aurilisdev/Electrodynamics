@@ -34,6 +34,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -101,6 +103,15 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     @Deprecated
     public FluidState getFluidState(BlockState state) {
 	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
+	return wire.logistical ? this::tick : null;
+    }
+
+    public <T extends BlockEntity> void tick(Level lvl, BlockPos pos, BlockState state, T t) {
+	((TileLogisticalWire) t).tick();
     }
 
     @Override

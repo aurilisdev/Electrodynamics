@@ -41,6 +41,7 @@ import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.common.tile.TileWireMill;
 import electrodynamics.common.tile.TileWireMillDouble;
 import electrodynamics.common.tile.TileWireMillTriple;
+import electrodynamics.prefab.tile.GenericTileTicking;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -135,12 +136,14 @@ public enum SubtypeMachine implements ISubtype {
 
     public final Class<? extends BlockEntity> tileclass;
     public final boolean showInItemGroup;
+    public final boolean genericTicker;
     private RenderShape type = RenderShape.MODEL;
     private VoxelShape customShape = null;
 
     SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass) {
 	this.showInItemGroup = showInItemGroup;
 	this.tileclass = tileclass;
+	genericTicker = GenericTileTicking.class.isAssignableFrom(tileclass);
     }
 
     SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel) {
@@ -162,9 +165,9 @@ public enum SubtypeMachine implements ISubtype {
     public static boolean shouldBreakOnReplaced(BlockState before, BlockState after) {
 	Block bb = before.getBlock();
 	Block ba = after.getBlock();
-	if (bb instanceof BlockMachine && ba instanceof BlockMachine) {
-	    SubtypeMachine mb = ((BlockMachine) bb).machine;
-	    SubtypeMachine ma = ((BlockMachine) ba).machine;
+	if (bb instanceof BlockMachine tb && ba instanceof BlockMachine ta) {
+	    SubtypeMachine mb = tb.machine;
+	    SubtypeMachine ma = ta.machine;
 
 	    if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
 		    || mb == electricfurnacedouble && ma == electricfurnacedoublerunning
@@ -211,5 +214,9 @@ public enum SubtypeMachine implements ISubtype {
 
     public VoxelShape getCustomShape() {
 	return customShape;
+    }
+
+    public boolean isGenericTicker() {
+	return genericTicker;
     }
 }

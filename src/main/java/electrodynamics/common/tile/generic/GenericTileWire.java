@@ -81,8 +81,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
 	for (Direction dir : Direction.values()) {
 	    BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
-	    if (facing instanceof IConductor) {
-		set.add((IConductor) facing);
+	    if (facing instanceof IConductor cond) {
+		set.add(cond);
 	    }
 	}
 	return set;

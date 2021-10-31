@@ -17,7 +17,6 @@ public class TileLogisticalWire extends TileWire {
     /**
      * Copied from {@link #GenericTileTicking.tick}
      */
-    @Override
     public void tick() {
 	if (hasComponent(ComponentType.Tickable)) {
 	    ComponentTickable tickable = getComponent(ComponentType.Tickable);

@@ -1,5 +1,6 @@
 package electrodynamics.common.item.gear.tools.electric;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -108,9 +108,9 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 
     private static Set<Block> blocks;
 
-    static {
-	blocks = new HashSet<>(BlockTags.MINEABLE_WITH_PICKAXE.getValues());
-	blocks.addAll(BlockTags.MINEABLE_WITH_SHOVEL.getValues());
+    public static Collection<?> add(Collection a, Collection b) {
+	a.addAll(b);
+	return a;
     }
 
     public ItemElectricDrill(ElectricItemProperties properties) {
@@ -119,7 +119,12 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	// .addToolType(ToolType.PICKAXE,
 	// ElectricItemTier.DRILL.getLevel()).addToolType(ToolType.SHOVEL,
 	// ElectricItemTier.DRILL.getLevel()));
-	super(4, -2.4f, ElectricItemTier.DRILL, Tag.fromSet(blocks), properties.durability(0));
+	// TODO: DONT USE EMPTY HASHSET
+	super(4, -2.4f, ElectricItemTier.DRILL, Tag.<Block>fromSet(new HashSet<>()), properties.durability(0));
+	if (blocks == null) {
+	    blocks = new HashSet<>();
+	    // blocks.addAll(BlockTags.MINEABLE_WITH_SHOVEL.getValues());
+	}
 	this.properties = properties;
     }
 
@@ -134,6 +139,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	    ItemStack charged = new ItemStack(this);
 	    IItemElectric.setEnergyStored(charged, properties.capacity);
 	    items.add(charged);
+	    
 	    ItemStack empty = new ItemStack(this);
 	    IItemElectric.setEnergyStored(empty, 0);
 	    items.add(empty);
