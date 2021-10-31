@@ -34,7 +34,7 @@ version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revi
 group = 'electrodynamics' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Electrodynamics'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.16' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {

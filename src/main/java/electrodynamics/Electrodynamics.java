@@ -136,6 +136,7 @@ public class Electrodynamics {
 	features.add(() -> configuredFeature);
 	biomeFeatures.set(decoration.ordinal(), features);
 
-	ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(), biomeFeatures, "features");
+	//TODO fix this somehow
+	//ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(), biomeFeatures, "features");
     }
 }
