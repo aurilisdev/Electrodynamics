@@ -27,7 +27,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 	matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 	float scale = 0.015f * ((entityIn.tickCount + partialTicks) / 5.0f);
 	matrixStackIn.scale(scale, scale, scale);
-	UtilitiesRendering.renderStar(matrixStackIn, entityIn.tickCount + partialTicks, 100, 0.62f, 0.19f, 0.63f,
+	UtilitiesRendering.renderStar(matrixStackIn, bufferIn, entityIn.tickCount + partialTicks, 100, 0.62f, 0.19f, 0.63f,
 		0.3f / ((entityIn.tickCount + partialTicks) / 40.0f + 1), true);
 	matrixStackIn.popPose();
     }

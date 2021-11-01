@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class UtilitiesRendering {
 
-    public static void renderStar(PoseStack stack, float time, int starFrags, float r, float g, float b, float a, boolean star) {
+    public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a, boolean star) {
 	stack.pushPose();
 	// TODO: Doesnt render anymore, but doesnt crash either
 	Tesselator tessellator = Tesselator.getInstance();
