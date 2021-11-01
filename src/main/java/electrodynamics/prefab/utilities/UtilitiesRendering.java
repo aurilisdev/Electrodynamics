@@ -29,11 +29,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class UtilitiesRendering {
 
-    public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a, boolean star) {
+    public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a,
+	    boolean star) {
 	stack.pushPose();
 	// TODO: Doesnt render anymore, but doesnt crash either
 	Tesselator tessellator = Tesselator.getInstance();
 	BufferBuilder bufferBuilder = tessellator.getBuilder();
+	bufferIn.getBuffer(RenderType.solid());
 	GlStateManager._disableTexture();
 	GlStateManager._enableBlend();
 	if (star) {
@@ -63,6 +65,9 @@ public class UtilitiesRendering {
 		final float f2 = rand.nextFloat() * 20 + 5 + var51 * 10;
 		final float f3 = rand.nextFloat() * 2 + 1 + var51 * 2 + (star ? 0 : 10);
 		bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+		// TODO: HERE THE BUFFER BUILDER DOESNT RENDER IN THE CORRECT POSITION. ONLY
+		// DOES
+		// IT IN THE TOP LEFT
 		bufferBuilder.vertex(0, 0, 0).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
 		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
 			.endVertex();
@@ -70,7 +75,7 @@ public class UtilitiesRendering {
 		bufferBuilder.vertex(0, f2, 1 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
 		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
 			.endVertex();
-		tessellator.end();
+		bufferBuilder.end();
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();

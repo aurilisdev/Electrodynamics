@@ -22,6 +22,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
     public void render(EntityEnergyBlast entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 	    int packedLightIn) {
 	matrixStackIn.pushPose();
+	matrixStackIn.translate(entityIn.getX(), entityIn.getY(), entityIn.getX());
 	matrixStackIn.mulPoseMatrix(matrixStackIn.last().pose());
 	matrixStackIn.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 	matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
