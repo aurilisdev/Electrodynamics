@@ -24,7 +24,7 @@ public abstract class GenericCustomScreen<T extends AbstractContainerMenu> exten
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
 	RenderSystem.setShaderColor(1, 1, 1, 1);
-	minecraft.getTextureManager().bindForSetup(getScreenBackground());
+	RenderSystem.setShaderTexture(0, getScreenBackground());
 	blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
 

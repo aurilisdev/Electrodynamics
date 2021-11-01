@@ -37,8 +37,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	    TileGenericCharger charger = menu.getHostFromIntArray();
 	    if (charger != null) {
 		ItemStack chargingItem = menu.getSlot(0).getItem();
-		if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
-		    IItemElectric electricItem = (IItemElectric) chargingItem.getItem();
+		if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 		    return electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity;
 		}
 	    }
@@ -53,7 +52,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	super.renderLabels(matrixStack, mouseX, mouseY);
 	List<? extends Component> screenOverlays = getChargerInfo();
 
-	if (screenOverlays.size() > 0) {
+	if (!screenOverlays.isEmpty()) {
 	    font.draw(matrixStack, screenOverlays.get(0), inventoryLabelX, 33f, 0);
 	    font.draw(matrixStack, screenOverlays.get(1), inventoryLabelX, 43f, 0);
 	} else {

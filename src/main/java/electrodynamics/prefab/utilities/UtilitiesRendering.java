@@ -105,7 +105,7 @@ public class UtilitiesRendering {
     }
 
     public static void bindTexture(ResourceLocation resource) {
-	Minecraft.getInstance().textureManager.bindForSetup(resource);
+	RenderSystem.setShaderTexture(0, resource);
     }
 
     public static float getRed(int color) {
