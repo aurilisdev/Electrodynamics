@@ -89,5 +89,4 @@ public class Electrodynamics {
 	}
 	ClientRegister.setup();
     }
-
 }
