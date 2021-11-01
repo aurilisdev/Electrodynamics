@@ -106,8 +106,7 @@ public class TileGenericTank extends GenericTileTicking {
 
 	if (level.getBlockState(below).hasBlockEntity()) {
 	    BlockEntity tile = level.getBlockEntity(below);
-	    if (tile instanceof TileGenericTank) {
-		TileGenericTank tankBelow = (TileGenericTank) tile;
+	    if (tile instanceof TileGenericTank tankBelow) {
 		ComponentFluidHandlerSimple belowHandler = tankBelow.getComponent(ComponentType.FluidHandler);
 		ComponentFluidHandlerSimple thisHandler = getComponent(ComponentType.FluidHandler);
 		FluidTank belowTank = belowHandler.getTankFromFluid(null, true);

@@ -31,17 +31,16 @@ public class UtilitiesRendering {
 
     public static void renderStar(PoseStack stack, float time, int starFrags, float r, float g, float b, float a, boolean star) {
 	stack.pushPose();
+	// TODO: Doesnt render anymore, but doesnt crash either
 	Tesselator tessellator = Tesselator.getInstance();
 	BufferBuilder bufferBuilder = tessellator.getBuilder();
 	GlStateManager._disableTexture();
-	GL11.glShadeModel(GL11.GL_SMOOTH);
 	GlStateManager._enableBlend();
 	if (star) {
 	    GlStateManager._blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 	} else {
 	    GlStateManager._blendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_DST_COLOR);
 	}
-	GL11.glDisable(GL11.GL_ALPHA_TEST);
 	GlStateManager._enableCull();
 	GlStateManager._enableDepthTest();
 
@@ -63,7 +62,7 @@ public class UtilitiesRendering {
 		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0.0F, 0.0F, rand.nextFloat() + var41)));
 		final float f2 = rand.nextFloat() * 20 + 5 + var51 * 10;
 		final float f3 = rand.nextFloat() * 2 + 1 + var51 * 2 + (star ? 0 : 10);
-		bufferBuilder.begin(Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+		bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		bufferBuilder.vertex(0, 0, 0).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
 		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
 			.endVertex();
@@ -79,10 +78,8 @@ public class UtilitiesRendering {
 	stack.popPose();
 	GlStateManager._disableDepthTest();
 	GlStateManager._disableBlend();
-	GL11.glShadeModel(GL11.GL_FLAT);
 	RenderSystem.setShaderColor(1, 1, 1, 1);
 	GlStateManager._enableTexture();
-	GL11.glEnable(GL11.GL_ALPHA_TEST);
 	stack.popPose();
     }
 
