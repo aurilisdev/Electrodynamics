@@ -9,8 +9,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 
 public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
@@ -27,15 +27,14 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 	matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 	float scale = 0.015f * ((entityIn.tickCount + partialTicks) / 5.0f);
 	matrixStackIn.scale(scale, scale, scale);
-	UtilitiesRendering.renderStar(entityIn.tickCount + partialTicks, 100, 0.62f, 0.19f, 0.63f,
+	UtilitiesRendering.renderStar(matrixStackIn,entityIn.tickCount + partialTicks, 100, 0.62f, 0.19f, 0.63f,
 		0.3f / ((entityIn.tickCount + partialTicks) / 40.0f + 1), true);
-
 	matrixStackIn.popPose();
     }
 
     @Override
     public ResourceLocation getTextureLocation(EntityEnergyBlast entity) {
-	return TextureAtlas.LOCATION_BLOCKS;
+	return InventoryMenu.BLOCK_ATLAS;
     }
 
 }

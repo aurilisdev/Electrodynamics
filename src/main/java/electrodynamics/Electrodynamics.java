@@ -1,14 +1,7 @@
 package electrodynamics;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.function.Supplier;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.common.collect.Lists;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
@@ -25,13 +18,8 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
@@ -46,9 +34,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 @Mod(References.ID)
@@ -70,10 +56,20 @@ public class Electrodynamics {
 	DeferredRegisters.FLUIDS.register(bus);
 	DeferredRegisters.ENTITIES.register(bus);
     }
+
 //TODO: ERROR  Parsing error loading custom advancement electrodynamics:adv9: Advancement criteria cannot be empty
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
-
+	for (SubtypeOre ore : SubtypeOre.values()) {
+	    if (OreConfig.oresToSpawn.contains(ore.name())) {
+		OreConfiguration feature = new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState(), ore.veinSize);
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
+			Feature.ORE.configured(feature)
+				.range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(ore.maxY))))
+				.count((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)).squared());
+	    }
+	}
 	NetworkHandler.init();
     }
 
@@ -92,51 +88,5 @@ public class Electrodynamics {
 	    }
 	}
 	ClientRegister.setup();
-    }
-
-    @SubscribeEvent
-    @Deprecated(since = "1.16.3", forRemoval = true)
-    public static void onLoadEvent(FMLLoadCompleteEvent event) {
-	for (SubtypeOre ore : SubtypeOre.values()) {
-	    if (OreConfig.oresToSpawn.contains(ore.name())) {
-		OreConfiguration feature = new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE,
-			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState(), ore.veinSize);
-		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
-			Feature.ORE.configured(feature)
-				.range(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(ore.maxY))))
-				.count((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)).squared());
-	    }
-	}
-	setupGen();
-    }
-
-    @Deprecated(since = "1.16.3", forRemoval = true)
-    public static void setupGen() {
-	for (SubtypeOre ore : SubtypeOre.values()) {
-	    if (OreConfig.oresToSpawn.contains(ore.name())) {
-		for (Entry<ResourceKey<Biome>, Biome> biome : BuiltinRegistries.BIOME.entrySet()) {
-		    if (!biome.getValue().getBiomeCategory().equals(Biome.BiomeCategory.NETHER)
-			    && !biome.getValue().getBiomeCategory().equals(Biome.BiomeCategory.THEEND)) {
-			addFeatureToBiome(biome.getValue(), GenerationStep.Decoration.UNDERGROUND_ORES,
-				BuiltinRegistries.CONFIGURED_FEATURE.get(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
-		    }
-		}
-	    }
-	}
-    }
-
-    public static void addFeatureToBiome(Biome biome, GenerationStep.Decoration decoration, ConfiguredFeature<?, ?> configuredFeature) {
-	List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(biome.getGenerationSettings().features());
-
-	while (biomeFeatures.size() <= decoration.ordinal()) {
-	    biomeFeatures.add(Lists.newArrayList());
-	}
-
-	List<Supplier<ConfiguredFeature<?, ?>>> features = new ArrayList<>(biomeFeatures.get(decoration.ordinal()));
-	features.add(() -> configuredFeature);
-	biomeFeatures.set(decoration.ordinal(), features);
-
-	//TODO fix this somehow
-	ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(), biomeFeatures, "features");
     }
 }

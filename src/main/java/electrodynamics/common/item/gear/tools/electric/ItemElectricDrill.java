@@ -108,6 +108,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 
     private static Set<Block> blocks;
 
+    @SuppressWarnings("rawtypes")
     public static Collection<?> add(Collection a, Collection b) {
 	a.addAll(b);
 	return a;
@@ -139,7 +140,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 	    ItemStack charged = new ItemStack(this);
 	    IItemElectric.setEnergyStored(charged, properties.capacity);
 	    items.add(charged);
-	    
+
 	    ItemStack empty = new ItemStack(this);
 	    IItemElectric.setEnergyStored(empty, 0);
 	    items.add(empty);

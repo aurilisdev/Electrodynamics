@@ -5,12 +5,14 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 
 import electrodynamics.common.block.BlockGenericMachine;
 import net.minecraft.client.Minecraft;
@@ -27,9 +29,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class UtilitiesRendering {
 
-    @Deprecated
-    public static void renderStar(float time, int starFrags, float r, float g, float b, float a, boolean star) {
-	GL11.glPushMatrix();
+    public static void renderStar(PoseStack stack, float time, int starFrags, float r, float g, float b, float a, boolean star) {
+	stack.pushPose();
 	Tesselator tessellator = Tesselator.getInstance();
 	BufferBuilder bufferBuilder = tessellator.getBuilder();
 	GlStateManager._disableTexture();
@@ -44,7 +45,7 @@ public class UtilitiesRendering {
 	GlStateManager._enableCull();
 	GlStateManager._enableDepthTest();
 
-	GL11.glPushMatrix();
+	stack.pushPose();
 	try {
 	    float par2 = time * 3 % 180;
 	    float var41 = (5.0F + par2) / 200.0F;
@@ -54,12 +55,12 @@ public class UtilitiesRendering {
 	    }
 	    Random rand = new Random(432L);
 	    for (int i1 = 0; i1 < starFrags; i1++) {
-		GL11.glRotatef(rand.nextFloat() * 360.0F, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(rand.nextFloat() * 360.0F, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(rand.nextFloat() * 360.0F, 0.0F, 0.0F, 1.0F);
-		GL11.glRotatef(rand.nextFloat() * 360.0F, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(rand.nextFloat() * 360.0F, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(rand.nextFloat() * 360.0F + var41 * 90.0F, 0.0F, 0.0F, 1.0F);
+		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(rand.nextFloat(), 0.0F, 0.0F)));
+		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0.0F, rand.nextFloat(), 0.0F)));
+		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0.0F, 0.0F, rand.nextFloat())));
+		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(rand.nextFloat(), 0.0F, 0.0F)));
+		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0.0F, rand.nextFloat(), 0.0F)));
+		stack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0.0F, 0.0F, rand.nextFloat() + var41)));
 		final float f2 = rand.nextFloat() * 20 + 5 + var51 * 10;
 		final float f3 = rand.nextFloat() * 2 + 1 + var51 * 2 + (star ? 0 : 10);
 		bufferBuilder.begin(Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
@@ -75,14 +76,14 @@ public class UtilitiesRendering {
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	GL11.glPopMatrix();
+	stack.popPose();
 	GlStateManager._disableDepthTest();
 	GlStateManager._disableBlend();
 	GL11.glShadeModel(GL11.GL_FLAT);
-	GL11.glColor4f(1, 1, 1, 1);
+	RenderSystem.setShaderColor(1, 1, 1, 1);
 	GlStateManager._enableTexture();
 	GL11.glEnable(GL11.GL_ALPHA_TEST);
-	GL11.glPopMatrix();
+	stack.popPose();
     }
 
     public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer,
