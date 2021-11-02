@@ -31,6 +31,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -90,6 +91,11 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
 	cubeeast = Block.box(sm, sm, sm, 16, lg, lg);
 	WIRESET.add(this);
 	registerDefaultState(stateDefinition.any().setValue(BlockStateProperties.WATERLOGGED, false));
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState p_49232_) {
+	return RenderShape.MODEL;
     }
 
     @Nullable

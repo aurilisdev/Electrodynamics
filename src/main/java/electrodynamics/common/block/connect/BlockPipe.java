@@ -27,6 +27,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -97,6 +98,11 @@ public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock
     @Deprecated(since = "since overriden method is", forRemoval = false)
     public FluidState getFluidState(BlockState state) {
 	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState p_49232_) {
+	return RenderShape.MODEL;
     }
 
     @Override
