@@ -7,6 +7,7 @@ import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -77,6 +79,11 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	    Containers.dropContents(worldIn, pos, generic.<ComponentInventory>getComponent(ComponentType.Inventory));
 	}
 	super.onRemove(state, worldIn, pos, newState, isMoving);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+	return RenderShape.MODEL;
     }
 
     @Override
@@ -221,8 +228,18 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
-	return getTickMethod(lvl, state, type);
+	BlockEntityTicker<T> t = getTickMethod(lvl, state, type);
+	return t == null ? this::tick : t;
     }
 
-    public abstract <T extends BlockEntity> BlockEntityTicker<T> getTickMethod(Level lvl, BlockState state, BlockEntityType<T> type);
+    public <T extends BlockEntity> void tick(Level lvl, BlockPos pos, BlockState state, T t) {
+	if(t instanceof GenericTileTicking tick)
+	{
+	    tick.tick();
+	}
+    }
+
+    public <T extends BlockEntity> BlockEntityTicker<T> getTickMethod(Level lvl, BlockState state, BlockEntityType<T> type) {
+	return null;
+    }
 }

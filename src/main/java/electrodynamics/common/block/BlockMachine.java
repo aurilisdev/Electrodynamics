@@ -11,7 +11,6 @@ import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileTransformer;
-import electrodynamics.prefab.tile.GenericTileTicking;
 import electrodynamics.prefab.utilities.UtilitiesElectricity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -173,15 +170,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return machine.createTileEntity(pos, state);
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTickMethod(Level lvl, BlockState state, BlockEntityType<T> type) {
-	return machine.isGenericTicker() ? this::tick : null;
-    }
-
-    public <T extends BlockEntity> void tick(Level lvl, BlockPos pos, BlockState state, T t) {
-	((GenericTileTicking) t).tick();
     }
 
     @Override
