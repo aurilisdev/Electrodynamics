@@ -3,7 +3,7 @@
 	"ingredient": {
 		"item": "electrodynamics:dustcopper"
 	},
-	"result": "electrodynamics:ingotcopper",
+	"result": "minecraft:copper_ingot",
 	"experience": 0.0,
 	"cookingtime": 200
 }

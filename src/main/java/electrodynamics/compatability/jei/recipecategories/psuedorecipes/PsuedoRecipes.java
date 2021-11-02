@@ -75,7 +75,6 @@ public class PsuedoRecipes {
     public static void addElectrodynamicsItems() {
 	/* ORES : 0 */
 	Item[] ores = { Blocks.IRON_ORE.asItem(), Blocks.GOLD_ORE.asItem(),
-		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.copper).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.tin).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.lead).asItem(),
 		electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.silver).asItem(),
