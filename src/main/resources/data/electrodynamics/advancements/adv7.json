@@ -1,5 +1,6 @@
 {
-    "__comment": "pyro206",
+    "parent": "electrodynamics:root",
+    "__comment": "aurilisdev",
     "display": {
         "title": {
             "text": "Power!!",
@@ -38,6 +39,5 @@
         [
             "inv change"
         ]
-    ],
-    "parent": "electrodynamics:root"
+    ]
 }

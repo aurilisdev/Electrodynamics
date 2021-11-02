@@ -94,7 +94,8 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_49232_) {
+    @Deprecated(since = "since overriden method is", forRemoval = false)
+    public RenderShape getRenderShape(BlockState state) {
 	return RenderShape.MODEL;
     }
 
@@ -106,13 +107,13 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public FluidState getFluidState(BlockState state) {
 	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
 	return wire.logistical ? this::tick : null;
     }
 
@@ -121,7 +122,7 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(wire)));
     }

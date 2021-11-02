@@ -1,5 +1,6 @@
 {
-    "__comment": "pyro206",
+    "parent": "electrodynamics:root",
+    "__comment": "aurilisdev",
     "display": {
         "title": {
             "text": "EcoFriendly",
@@ -18,6 +19,25 @@
         "announce_to_chat": true,
         "hidden": false
     },
-    "criteria": {},
-    "parent": "electrodynamics:root"
+    "criteria": {
+        "invchange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "electrodynamics:hydroelectricgenerator",
+                        "count": {
+                            "min": 1,
+                            "max": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "invchange"
+        ]
+    ]
 }

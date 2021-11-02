@@ -1,5 +1,6 @@
 {
-    "__comment": "pyro206",
+    "parent": "electrodynamics:root",
+    "__comment": "aurilisdev",
     "display": {
         "title": {
             "text": "Blub! Blub! Blub!",
@@ -38,6 +39,5 @@
         [
             "invchange"
         ]
-    ],
-    "parent": "electrodynamics:root"
+    ]
 }

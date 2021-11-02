@@ -1,5 +1,6 @@
 {
-    "__comment": "pyro206",
+    "parent": "electrodynamics:root",
+    "__comment": "aurilisdev",
     "display": {
         "title": {
             "text": "Industrialization",
@@ -42,6 +43,5 @@
         [
             "invchange"
         ]
-    ],
-    "parent": "electrodynamics:root"
+    ]
 }
