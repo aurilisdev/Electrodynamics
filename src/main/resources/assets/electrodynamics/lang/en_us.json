@@ -383,7 +383,7 @@
 	"info.jei.block.solarpanel": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 1.2 kW\n    Maximum Current: 10.0 A",
 	"info.jei.block.advancedsolarpanel": "Output:\n    Maximum Voltage: 240V\n    Maximum Power: 4.08 kW\n    Maximum Current: 20.0 A",
 	"info.jei.block.thermoelectricgenerator": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 500 W\n    Maximum Current: 4.12 A\n\nHeat Source: Lava",
-	"info.jei.block.combustionchamber": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 350 W\n    Maximum Current: 2.2 A\n\nFuel Source: Ethanol",
+	"info.jei.block.combustionchamber": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 7.0 kW\n    Maximum Current: 2.2 A\n\nFuel Source: Ethanol",
 	"info.jei.block.hydroelectricgenerator": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 720 W\n    Maximum Current: 6 A",
 	"info.jei.block.windmill": "Output:\n    Maximum Voltage: 120V\n    Maximum Power: 1.2 kW\n    Maximum Current: 10.0 A\n\nIdeal Height: Y = 135",
 	"info.jei.block.tanksteel": "Valid Fluids:\n    Water\n    Lava\n    Ethanol",
