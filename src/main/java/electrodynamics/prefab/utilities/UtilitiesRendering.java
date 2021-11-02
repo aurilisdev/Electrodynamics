@@ -134,6 +134,6 @@ public class UtilitiesRendering {
     }
 
     public static void color(int color) {
-	GL11.glColor4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+	RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
     }
 }
