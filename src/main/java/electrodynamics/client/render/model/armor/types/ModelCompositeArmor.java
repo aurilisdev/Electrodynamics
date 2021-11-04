@@ -28,8 +28,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
     private final ModelPart leftArm;
     private final ModelPart rightLeg;
     private final ModelPart leftLeg;
-    private final ModelPart rightshoe;
-    private final ModelPart leftshoe;
+    private final ModelPart rightShoe;
+    private final ModelPart leftShoe;
     
     private static final String HAT = "hat";
     private static final String HEAD = "head";
@@ -38,8 +38,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
     private static final String LEFT_ARM = "left_arm";//leftArm
     private static final String RIGHT_LEG = "right_leg";//rightLeg
     private static final String LEFT_LEG = "left_leg";//leftLeg
-    //rightshoe
-    //leftshoe
+    private static final String RIGHT_SHOE = "right_shoe";//rightshoe
+    private static final String LEFT_SHOE = "left_shoe";//leftshoe
     
 
     public ModelCompositeArmor(ModelPart root, EquipmentSlot slot) {
@@ -52,8 +52,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 		this.leftArm = root.getChild(LEFT_ARM);
 		this.rightLeg = root.getChild(RIGHT_LEG);
 		this.leftLeg = root.getChild(LEFT_LEG);
-		this.rightshoe = root.getChild(RIGHT_LEG);
-		this.leftshoe = root.getChild(LEFT_LEG);
+		this.rightShoe = root.getChild(RIGHT_SHOE);
+		this.leftShoe = root.getChild(LEFT_SHOE);
 		
 		//always invisible because it's a dummy
 		this.hat.visible = false;
@@ -67,8 +67,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = false;
 			this.rightLeg.visible = false;
 			this.leftLeg.visible = false;
-			this.rightshoe.visible = false;
-			this.leftshoe.visible = false;
+			this.rightShoe.visible = false;
+			this.leftShoe.visible = false;
 			break;
 		case CHEST:
 			this.head.visible = false;
@@ -77,8 +77,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = true;
 			this.rightLeg.visible = false;
 			this.leftLeg.visible = false;
-			this.rightshoe.visible = false;
-			this.leftshoe.visible = false;
+			this.rightShoe.visible = false;
+			this.leftShoe.visible = false;
 			break;
 		case LEGS:
 			this.head.visible = false;
@@ -87,8 +87,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = false;
 			this.rightLeg.visible = true;
 			this.leftLeg.visible = true;
-			this.rightshoe.visible = false;
-			this.leftshoe.visible = false;
+			this.rightShoe.visible = false;
+			this.leftShoe.visible = false;
 			break;
 		case FEET:
 			this.head.visible = false;
@@ -97,8 +97,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = false;
 			this.rightLeg.visible = false;
 			this.leftLeg.visible = false;
-			this.rightshoe.visible = true;
-			this.leftshoe.visible = true;
+			this.rightShoe.visible = true;
+			this.leftShoe.visible = true;
 			break;
 		default:
 			break;
@@ -189,8 +189,11 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(1.9F, 12.0F, 0.0F));
 	
+		PartDefinition rLeg = partdefinition.getChild(RIGHT_LEG);
+		PartDefinition lLeg = partdefinition.getChild(LEFT_LEG);
+		
 		//right shoe
-		partdefinition.addOrReplaceChild(LEFT_LEG,
+		rLeg.addOrReplaceChild(RIGHT_SHOE,
 			CubeListBuilder.create()
 				.texOffs(57, 3).addBox(2.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
 				.texOffs(66, 7).addBox(-2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
@@ -198,9 +201,9 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(55, 41).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
 				.texOffs(30, 47).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(-1.9F, 17.0F, 0.0F));
-	
+		
 		//left shoe
-		partdefinition.addOrReplaceChild(RIGHT_LEG,
+		lLeg.addOrReplaceChild(LEFT_SHOE,
 			CubeListBuilder.create()
 				.texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
 				.texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
@@ -208,7 +211,7 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
 				.texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(1.9F, 17.0F, 0.0F));
-	
+		
 		return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
@@ -233,9 +236,9 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
 			leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 		}
-		if(rightshoe.visible) {
-			rightshoe.render(poseStack, buffer, packedLight, packedOverlay);
-			leftshoe.render(poseStack, buffer, packedLight, packedOverlay);
+		if(rightShoe.visible) {
+			rightShoe.render(poseStack, buffer, packedLight, packedOverlay);
+			leftShoe.render(poseStack, buffer, packedLight, packedOverlay);
 		}
 		
     }
