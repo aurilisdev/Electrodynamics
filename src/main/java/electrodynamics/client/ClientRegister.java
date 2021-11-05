@@ -63,8 +63,13 @@ public class ClientRegister {
 
     private static final String BLOCK_LOC = References.ID + ":block/";
    
-    public static LayerDefinition COMPOSITE_ARMOR_LAYER = ModelCompositeArmor.createBodyLayer();
+    //sometimes I fucking hate this game
+    public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
+    public static LayerDefinition COMPOSITE_ARMOR_LAYER_BOOTS = ModelCompositeArmor.createBodyLayer(2, false);
+    public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_NOCHEST = ModelCompositeArmor.createBodyLayer(3, true);
     
+    public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
+    public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
     
     @SubscribeEvent
     public static void onModelEvent(ModelRegistryEvent event) {

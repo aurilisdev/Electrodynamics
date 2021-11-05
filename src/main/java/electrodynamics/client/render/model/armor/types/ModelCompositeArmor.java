@@ -1,3 +1,6 @@
+/*
+ * Don't delete any of the commented out stuff please!
+ */
 package electrodynamics.client.render.model.armor.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -40,10 +43,10 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
     private static final String LEFT_LEG = "left_leg";//leftLeg
     
     /*Subpart Stringsr*/
-    private static final String RLEG = "rightleg";
-    private static final String LLEG = "leftleg";
-    private static final String RSHOE = "rightshoe";
-    private static final String LSHOE = "leftshoe";
+    //private static final String RLEG = "rightleg";
+    //private static final String LLEG = "leftleg";
+    //private static final String RSHOE = "rightshoe";
+    //private static final String LSHOE = "leftshoe";
    
 
     public ModelCompositeArmor(ModelPart root, EquipmentSlot slot) {
@@ -69,10 +72,12 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = false;
 			this.rightLeg.visible = false;
 			this.leftLeg.visible = false;
+			/*
 			this.rightLeg.getChild(RLEG).visible = false;
 			this.rightLeg.getChild(RSHOE).visible = false;
 			this.leftLeg.getChild(LLEG).visible = false;
 			this.leftLeg.getChild(LSHOE).visible = false;
+			*/
 			break;
 		case CHEST:
 			this.head.visible = false;
@@ -81,23 +86,28 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = true;
 			this.rightLeg.visible = false;
 			this.leftLeg.visible = false;
+			/*
 			this.rightLeg.getChild(RLEG).visible = false;
 			this.rightLeg.getChild(RSHOE).visible = false;
 			this.leftLeg.getChild(LLEG).visible = false;
 			this.leftLeg.getChild(LSHOE).visible = false;
+			*/
 			break;
-		case LEGS:
+		case LEGS, FEET:
 			this.head.visible = false;
 			this.chest.visible = false;
 			this.rightArm.visible = false;
 			this.leftArm.visible = false;
-			this.rightLeg.visible = false;
-			this.leftLeg.visible = false;
+			this.rightLeg.visible = true;
+			this.leftLeg.visible = true;
+			/*
 			this.rightLeg.getChild(RLEG).visible = true;
 			this.rightLeg.getChild(RSHOE).visible = false;
 			this.leftLeg.getChild(LLEG).visible = true;
 			this.leftLeg.getChild(LSHOE).visible = false;
+			*/
 			break;
+		/*
 		case FEET:
 			this.head.visible = false;
 			this.chest.visible = false;
@@ -105,17 +115,21 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			this.leftArm.visible = false;
 			this.rightLeg.visible = false;
 			this.leftLeg.visible = false;
+			/*
 			this.rightLeg.getChild(RLEG).visible = false;
 			this.rightLeg.getChild(RSHOE).visible = true;
 			this.leftLeg.getChild(LLEG).visible = false;
 			this.leftLeg.getChild(LSHOE).visible = true;
+			*
 			break;
+		*/
 		default:
 			break;
 		}
     }
 
-    public static LayerDefinition createBodyLayer() {
+    //had to jury rig it for now
+    public static LayerDefinition createBodyLayer(int modelType, boolean noChestplate) {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition part = mesh.getRoot();
 	
@@ -139,26 +153,32 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(0, 10).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
 				.texOffs(44, 3).addBox(-4.0F, -1.0F, -5.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
 				.texOffs(44, 0).addBox(-5.0F, -2.0F, -5.0F, 10.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(71, 69).addBox(-4.0F, -8.0F, -5.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)),
+				.texOffs(71, 69).addBox(-4.0F, -8.0F, -5.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 85).addBox(-4.0F, 0.0F, -4.0F, 8.0F, 0.0F, 8.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(0.0F, 0.0F, 0.0F));
 	
-		//chest
-		part.addOrReplaceChild(CHEST,
-			CubeListBuilder.create()
-				.texOffs(38, 21).addBox(-4.0F, 0.5F, -3.0F, 8.0F, 11.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(38, 8).addBox(-4.0F, 0.5F, 2.0F, 8.0F, 11.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(73, 6).addBox(-4.0F, 0.5F, -4.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(11, 10).addBox(-3.0F, 1.5F, -4.0F, 6.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(0, 0).addBox(-1.0F, 1.5F, -5.0F, 2.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(80, 59).addBox(-1.0F, 7.5F, -4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(57, 23).addBox(-4.0F, 0.5F, 3.0F, 8.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(79, 9).addBox(-2.0F, 4F, 3.0F, 4.0F, 5.0F, 2.0F, new CubeDeformation(0.0F))
-				.texOffs(0, 41).addBox(-4.0F, 0F, -2.0F, 8.0F, 12.0F, 0.0F, new CubeDeformation(0.0F))
-				.texOffs(51, 55).addBox(-4.0F, 0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-				.texOffs(42, 55).addBox(4.0F, 0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-				.texOffs(38, 34).addBox(-4.0F, 0F, 2.0F, 8.0F, 12.0F, 0.0F, new CubeDeformation(0.0F)),
-			PartPose.offset(0.0F, 24.0F, 0.0F));
-	
+		if(noChestplate) {
+			part.addOrReplaceChild(CHEST, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+		} else {
+			//chest
+			part.addOrReplaceChild(CHEST,
+				CubeListBuilder.create()
+					.texOffs(38, 21).addBox(-4.0F, 0.5F, -3.0F, 8.0F, 11.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(38, 8).addBox(-4.0F, 0.5F, 2.0F, 8.0F, 11.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(73, 6).addBox(-4.0F, 0.5F, -4.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(11, 10).addBox(-3.0F, 1.5F, -4.0F, 6.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 0).addBox(-1.0F, 1.5F, -5.0F, 2.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(80, 59).addBox(-1.0F, 7.5F, -4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(57, 23).addBox(-4.0F, 0.5F, 3.0F, 8.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(79, 9).addBox(-2.0F, 4F, 3.0F, 4.0F, 5.0F, 2.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 41).addBox(-4.0F, 0F, -2.0F, 8.0F, 12.0F, 0.0F, new CubeDeformation(0.0F))
+					.texOffs(51, 55).addBox(-4.0F, 0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(42, 55).addBox(4.0F, 0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(38, 34).addBox(-4.0F, 0F, 2.0F, 8.0F, 12.0F, 0.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 95).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 101).addBox(-4.0F, 12.0F, -2.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(0.0F, 24.0F, 0.0F));
+		}
 		//right arm
 		part.addOrReplaceChild(RIGHT_ARM,
 			CubeListBuilder.create()
@@ -179,7 +199,90 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(57, 28).addBox(-1.0F, -3.0F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(5.0F, 2.0F, 0.0F));
 		
-		PartDefinition combinedRight = part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		
+		switch(modelType) {
+		case 1:
+			//right leg only
+			part.addOrReplaceChild(RIGHT_LEG,
+					CubeListBuilder.create()
+					.texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 107).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(-1.9F, 12.0F, 0.0F));
+			//left leg only
+			part.addOrReplaceChild(LEFT_LEG,
+					CubeListBuilder.create()
+					.texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(33, 71).addBox(-1.8F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 113).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(1.9F, 12.0F, 0.0F));
+			break;
+		case 2:
+			//right shoe only
+			part.addOrReplaceChild(RIGHT_LEG,
+					CubeListBuilder.create()
+					.texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+					.texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(1.9F, 17.0F, 0.0F));
+			part.addOrReplaceChild(LEFT_LEG,
+					CubeListBuilder.create()
+					.texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(66, 7).addBox(-1.8F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(11, 27).addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+					.texOffs(55, 41).addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(30, 47).addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(-1.9F, 17.0F, 0.0F));
+			break;
+		case 3:
+			//right leg combined
+			part.addOrReplaceChild(RIGHT_LEG, 
+					CubeListBuilder.create()
+					.texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 107).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+					.texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(-1.9F, 12.0F, 0.0F));
+			//left leg combined
+			part.addOrReplaceChild(LEFT_LEG, 
+					CubeListBuilder.create()
+					.texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(33, 71).addBox(-1.8F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(0, 113).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F))
+					.texOffs(30, 47).addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(55, 41).addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+					.texOffs(11, 27).addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+					.texOffs(66, 7).addBox(-1.8F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F))
+					.texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)), 
+				PartPose.offset(1.9F, 12.0F, 0.0F));
+			break;
+		default:
+			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+		}
+		
+		
+		/*
+		
+		//PartDefinition combinedRight = part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 		
 		//right leg
 		combinedRight.addOrReplaceChild(RLEG,
@@ -201,7 +304,7 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(1.9F, 17.0F, 0.0F));
 		
-		PartDefinition combinedLeft = part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		//PartDefinition combinedLeft = part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 		
 		//left leg
 		combinedLeft.addOrReplaceChild(LLEG,
@@ -223,12 +326,14 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 				.texOffs(30, 47).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
 			PartPose.offset(-1.9F, 17.0F, 0.0F));
 		
+		*/
 		return LayerDefinition.create(mesh, 128, 128);
     }
 
     @Override
     public void setupAnim(Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     	super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    	/*
     	leftLeg.getAllParts().forEach(c -> {
     		c.copyFrom(leftLeg);
     		c.loadPose(leftLeg.storePose());
@@ -237,6 +342,7 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
     		c.copyFrom(rightLeg);
     		c.loadPose(rightLeg.storePose());
     	});
+    	*/
     }
 
     @Override
@@ -251,6 +357,11 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			rightArm.render(poseStack, buffer, packedLight, packedOverlay);
 			leftArm.render(poseStack, buffer, packedLight, packedOverlay);
 		}
+		if(rightLeg.visible) {
+			rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+			leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
+		}
+		/*
 		if(rightLeg.getChild(RLEG).visible) {
 			rightLeg.getChild(RLEG).render(poseStack, buffer, packedLight, packedOverlay);
 			leftLeg.getChild(LLEG).render(poseStack, buffer, packedLight, packedOverlay);
@@ -259,6 +370,6 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			rightLeg.getChild(RSHOE).render(poseStack, buffer, packedLight, packedOverlay);
 			leftLeg.getChild(LSHOE).render(poseStack, buffer, packedLight, packedOverlay);
 		}
-		
+		*/
     }
 }
