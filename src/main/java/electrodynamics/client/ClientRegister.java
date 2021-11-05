@@ -62,57 +62,57 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientRegister {
 
     private static final String BLOCK_LOC = References.ID + ":block/";
-   
-    //sometimes I fucking hate this game
+
+    // sometimes I fucking hate this game
     public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
     public static LayerDefinition COMPOSITE_ARMOR_LAYER_BOOTS = ModelCompositeArmor.createBodyLayer(2, false);
     public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_NOCHEST = ModelCompositeArmor.createBodyLayer(3, true);
-    
+
     public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
     public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
-    
+
     @SubscribeEvent
     public static void onModelEvent(ModelRegistryEvent event) {
-		ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
-		ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
-		ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX2);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX3);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX4);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX5);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX6);
-		ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX7);
-		ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
-		ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
-		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
-		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
-		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEBASE);
-		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEHANDLE);
-		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEBASE);
-		ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEHANDLE);
-		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
-		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
-		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERDOUBLEBASE);
-		ModelLoader.addSpecialModel(MODEL_MINERALGRINDERTRIPLEBASE);
-		ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
-		ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
-		ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
-		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
-		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
-		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
-		ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERSULFURICACID);
-		ModelLoader.addSpecialModel(MODEL_RODSTEEL);
-		ModelLoader.addSpecialModel(MODEL_RODSTAINLESSSTEEL);
-		ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
-		ModelLoader.addSpecialModel(MODEL_LATHE);
-		ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
+	ModelLoader.addSpecialModel(MODEL_ADVSOLARTOP);
+	ModelLoader.addSpecialModel(MODEL_ADVSOLARBASE);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX2);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX3);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX4);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX5);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX6);
+	ModelLoader.addSpecialModel(MODEL_BATTERYBOX7);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX2);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX3);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX4);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX5);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX6);
+	ModelLoader.addSpecialModel(MODEL_LITHIUMBATTERYBOX7);
+	ModelLoader.addSpecialModel(MODEL_HYDROELECTRICGENERATORBLADES);
+	ModelLoader.addSpecialModel(MODEL_WINDMILLBLADES);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERHANDLE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERDOUBLEHANDLE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALCRUSHERTRIPLEHANDLE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERWHEEL);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERDOUBLEBASE);
+	ModelLoader.addSpecialModel(MODEL_MINERALGRINDERTRIPLEBASE);
+	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
+	ModelLoader.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
+	ModelLoader.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBASE);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERWATER);
+	ModelLoader.addSpecialModel(MODEL_CHEMICALMIXERSULFURICACID);
+	ModelLoader.addSpecialModel(MODEL_RODSTEEL);
+	ModelLoader.addSpecialModel(MODEL_RODSTAINLESSSTEEL);
+	ModelLoader.addSpecialModel(MODEL_RODHSLASTEEL);
+	ModelLoader.addSpecialModel(MODEL_LATHE);
+	ModelLoader.addSpecialModel(MODEL_LATHESHAFT);
     }
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(BLOCK_LOC + "advancedsolarpaneltop");

@@ -233,8 +233,7 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     }
 
     public <T extends BlockEntity> void tick(Level lvl, BlockPos pos, BlockState state, T t) {
-	if(t instanceof GenericTileTicking tick)
-	{
+	if (t instanceof GenericTileTicking tick) {
 	    tick.tick();
 	}
     }
