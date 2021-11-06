@@ -20,7 +20,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -197,18 +196,6 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	    }
 	});
 	return Arrays.asList(stack);
-    }
-
-    @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-	super.setPlacedBy(worldIn, pos, state, placer, stack);
-	worldIn.getBlockEntity(pos);
-	if (stack.hasTag()) {
-	    // tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
-	    // .ifPresent(el ->
-	    // el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"))); TODO: HERE
-	    // THE TILE IS NULL. FIND CORRECT METHOD FOR 1.17
-	}
     }
 
     @Override
