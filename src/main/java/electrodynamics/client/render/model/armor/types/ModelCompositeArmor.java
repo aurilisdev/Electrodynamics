@@ -1,5 +1,5 @@
 /*
- * Don't delete any of the commented out stuff please!
+  * Don't delete any of the commented out stuff please!
  */
 package electrodynamics.client.render.model.armor.types;
 
@@ -147,7 +147,7 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			.addBox(-4.0F, -1.0F, -5.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(44, 0)
 			.addBox(-5.0F, -2.0F, -5.0F, 10.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 69)
 			.addBox(-4.0F, -8.0F, -5.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 85)
-			.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 0.0F, 8.0F, new CubeDeformation(0.0F)),
+			.addBox(-4.0F, 0.05F, -4.0F, 8.0F, 0.1F, 8.0F, new CubeDeformation(0.0F)),
 		PartPose.offset(0.0F, 0.0F, 0.0F));
 
 	if (noChestplate) {
@@ -167,8 +167,8 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			    .addBox(-4.0F, 0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 55)
 			    .addBox(4.0F, 0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(38, 34)
 			    .addBox(-4.0F, 0F, 2.0F, 8.0F, 12.0F, 0.0F, new CubeDeformation(0.0F)).texOffs(0, 95)
-			    .addBox(-4.0F, 0.0F, -2.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(0, 101)
-			    .addBox(-4.0F, 12.0F, -2.0F, 8.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)),
+			    .addBox(-4.0F, -0.05F, -2.0F, 8.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(0, 101)
+			    .addBox(-4.0F, 12.0F, -2.0F, 8.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)),
 		    PartPose.offset(0.0F, 24.0F, 0.0F));
 	}
 	// right arm
@@ -198,16 +198,16 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			    .addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(71, 55)
 			    .addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(51, 79)
 			    .addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 107)
-			    .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)),
+			    .addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)),
 		    PartPose.offset(-1.9F, 12.0F, 0.0F));
 	    // left leg only
 	    part.addOrReplaceChild(LEFT_LEG,
 		    CubeListBuilder.create().texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 73)
 			    .addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(33, 71)
-			    .addBox(-1.8F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55)
+			    .addBox(-2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55)
 			    .addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 79)
 			    .addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 113)
-			    .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)),
+			    .addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)),
 		    PartPose.offset(1.9F, 12.0F, 0.0F));
 	    break;
 	case 2:
@@ -219,9 +219,10 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			    .addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(45, 48)
 			    .addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
 		    PartPose.offset(1.9F, 17.0F, 0.0F));
+	    //left shoe only
 	    part.addOrReplaceChild(LEFT_LEG,
 		    CubeListBuilder.create().texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(66, 7)
-			    .addBox(-1.8F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(11, 27)
+			    .addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(11, 27)
 			    .addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(55, 41)
 			    .addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(30, 47)
 			    .addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
@@ -235,7 +236,7 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			    .addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(71, 55)
 			    .addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(51, 79)
 			    .addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 107)
-			    .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(70, 22)
+			    .addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(70, 22)
 			    .addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 13)
 			    .addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(76, 54)
 			    .addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(42, 72)
@@ -246,14 +247,14 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 	    part.addOrReplaceChild(LEFT_LEG,
 		    CubeListBuilder.create().texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 73)
 			    .addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(33, 71)
-			    .addBox(-1.8F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55)
+			    .addBox(-2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55)
 			    .addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 79)
 			    .addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 113)
-			    .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(30, 47)
+			    .addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(30, 47)
 			    .addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(55, 41)
 			    .addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(11, 27)
 			    .addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(66, 7)
-			    .addBox(-1.8F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 3)
+			    .addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 3)
 			    .addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)),
 		    PartPose.offset(1.9F, 12.0F, 0.0F));
 	    break;
