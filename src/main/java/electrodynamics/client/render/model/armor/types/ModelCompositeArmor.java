@@ -219,7 +219,7 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 			    .addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(45, 48)
 			    .addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)),
 		    PartPose.offset(1.9F, 17.0F, 0.0F));
-	    //left shoe only
+	    // left shoe only
 	    part.addOrReplaceChild(LEFT_LEG,
 		    CubeListBuilder.create().texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(66, 7)
 			    .addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(11, 27)
