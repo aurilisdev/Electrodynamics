@@ -1,25 +1,26 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import electrodynamics.prefab.item.ItemMultiDigger;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
-public class ItemElectricDrill extends DiggerItem implements IItemElectric {
+public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric {
     /*
      * private static final Set<Block> EFFECTIVE_ON = Set.of(Blocks.ACTIVATOR_RAIL,
      * Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL,
@@ -115,17 +116,8 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
     }
 
     public ItemElectricDrill(ElectricItemProperties properties) {
-	// super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON,
-	// properties.durability(0)
-	// .addToolType(ToolType.PICKAXE,
-	// ElectricItemTier.DRILL.getLevel()).addToolType(ToolType.SHOVEL,
-	// ElectricItemTier.DRILL.getLevel()));
-	// TODO: DONT USE EMPTY HASHSET
-	super(4, -2.4f, ElectricItemTier.DRILL, Tag.<Block>fromSet(new HashSet<>()), properties.durability(0));
-	if (blocks == null) {
-	    blocks = new HashSet<>();
-	    // blocks.addAll(BlockTags.MINEABLE_WITH_SHOVEL.getValues());
-	}
+	super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_SHOVEL),
+		properties.durability(0));
 	this.properties = properties;
     }
 
@@ -173,7 +165,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-	extractPower(stack, properties.extract.getJoules() * (blocks.contains(state.getBlock()) ? 1.5 : 1), false);
+	extractPower(stack, properties.extract.getJoules() , false);
 	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
     }
 
