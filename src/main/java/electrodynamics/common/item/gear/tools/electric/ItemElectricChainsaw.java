@@ -28,18 +28,11 @@ import net.minecraft.world.level.material.Material;
 
 public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
-    // private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.LADDER,
-    // Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON,
-    // Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON,
-    // Blocks.ACACIA_BUTTON, Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON);
     private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT,
 	    Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
     private final ElectricItemProperties properties;
 
     public ItemElectricChainsaw(ElectricItemProperties properties) {
-	// super(4, -2.4f, ElectricItemTier.DRILL, EFFECTIVE_ON,
-	// properties.durability(0).addToolType(ToolType.AXE,
-	// ElectricItemTier.DRILL.getLevel()));
 	super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties.durability(0));
 	this.properties = properties;
     }
@@ -63,10 +56,8 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-	Material material = state.getMaterial();
-	// TODO rework this to work with the BlockTags class?
 	return getJoulesStored(stack) > properties.extract.getJoules()
-		? EFFECTIVE_ON_MATERIALS.contains(material) ? speed : super.getDestroySpeed(stack, state)
+		? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state)
 		: 0;
     }
 

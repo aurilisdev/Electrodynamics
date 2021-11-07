@@ -81,6 +81,7 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     }
 
     @Override
+    @Deprecated(since = "since overriden method is", forRemoval = false)
     public RenderShape getRenderShape(BlockState state) {
 	return RenderShape.MODEL;
     }
