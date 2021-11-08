@@ -244,7 +244,7 @@ public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-	return new TilePipe(pos, state);
+    	return new TilePipe(pos, state);
     }
 
 }

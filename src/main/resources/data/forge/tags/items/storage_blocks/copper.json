@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:resourceblockcopper"
+    "minecraft:copper_block"
   ]
 }
