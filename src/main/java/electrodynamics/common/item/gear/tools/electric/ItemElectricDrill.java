@@ -1,6 +1,5 @@
 package electrodynamics.common.item.gear.tools.electric;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.Sets;
@@ -30,14 +29,8 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 
     private final ElectricItemProperties properties;
 
-    @SuppressWarnings("rawtypes")
-    public static Collection<?> add(Collection a, Collection b) {
-	a.addAll(b);
-	return a;
-    }
-
     public ItemElectricDrill(ElectricItemProperties properties) {
-	super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_SHOVEL),
+	super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE),
 		properties.durability(0));
 	this.properties = properties;
     }
