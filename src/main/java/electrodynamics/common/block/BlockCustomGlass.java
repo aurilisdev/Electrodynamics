@@ -31,27 +31,23 @@ public class BlockCustomGlass extends Block {
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(this));
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
 	return Shapes.empty();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 	return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 	return 1.0F;
     }

@@ -88,7 +88,7 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(forRemoval = false, since = "This is only if you need to force the internal joules count and is overriden in classes where you can do this.")
     public void setJoulesStored(double joules) {
 	joules(joules);
     }

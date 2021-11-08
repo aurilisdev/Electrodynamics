@@ -29,7 +29,8 @@ public class ItemMultiDigger extends DiggerItem {
 	return false;
     }
 
-    @Deprecated(forRemoval = true) // FORGE: Use stack sensitive variant below
+    @Deprecated(forRemoval = true)
+    // FORGE: Use stack sensitive variant below
     // ONLY ADDED CAUSE IT EXISTS IN THE DiggerItem.class!!!
     @Override
     public boolean isCorrectToolForDrops(BlockState state) {

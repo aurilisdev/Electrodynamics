@@ -76,7 +76,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 	return this;
     }
 
-    @Deprecated(forRemoval = false, since = "*")
+    @Deprecated(forRemoval = false, since = "Try not using this method.")
     public GenericTile forceComponent(Component component) {
 	component.holder(this);
 	components[component.getType().ordinal()] = component;

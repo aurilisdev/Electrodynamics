@@ -35,7 +35,6 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
     }
 
     @Override
-    @Deprecated
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode subnode) {
@@ -45,27 +44,23 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public RenderShape getRenderShape(BlockState state) {
 	return RenderShape.INVISIBLE;
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
 	return Shapes.empty();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 	return true;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 	return 1.0f;
     }
@@ -76,7 +71,6 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
@@ -86,13 +80,11 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean isSignalSource(BlockState state) {
 	return true;
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
@@ -103,7 +95,6 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
@@ -114,7 +105,6 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
     }
 
     @Override
-    @Deprecated(since = "Default MC")
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
