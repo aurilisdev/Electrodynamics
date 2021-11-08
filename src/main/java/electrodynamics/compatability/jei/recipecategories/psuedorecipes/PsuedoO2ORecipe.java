@@ -8,13 +8,13 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class PsuedoO2ORecipe extends O2ORecipe {
 
-    public Ingredient INPUT;
-    public ItemStack OUTPUT;
+    public Ingredient ingredient;
+    public ItemStack outputItemStack;
 
     public PsuedoO2ORecipe(ItemStack input, ItemStack output) {
 	super(null, null, null);
-	INPUT = Ingredient.of(input);
-	OUTPUT = output;
+	ingredient = Ingredient.of(input);
+	outputItemStack = output;
     }
 
     @Override

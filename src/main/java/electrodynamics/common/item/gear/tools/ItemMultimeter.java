@@ -20,8 +20,7 @@ public class ItemMultimeter extends Item {
     public InteractionResult useOn(UseOnContext context) {
 	if (!context.getLevel().isClientSide) {
 	    BlockEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
-	    if (tile instanceof TileWire) {
-		TileWire wire = (TileWire) tile;
+	    if (tile instanceof TileWire wire) {
 		ElectricNetwork net = wire.getNetwork();
 		String finalString = ChatFormatter
 			.getElectricDisplay(net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() / net.getActiveVoltage() * 20,

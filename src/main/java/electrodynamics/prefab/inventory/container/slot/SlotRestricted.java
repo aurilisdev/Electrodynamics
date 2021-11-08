@@ -34,9 +34,7 @@ public class SlotRestricted extends GenericSlot {
 	if (super.mayPlace(stack)) {
 	    if (validCapabilities != null) {
 		for (Capability<?> cap : validCapabilities) {
-		    if (stack.getCapability(cap).map(m -> {
-			return true;
-		    }).orElse(false)) {
+		    if (stack.getCapability(cap).map(m -> true).orElse(false)) {
 			return true;
 		    }
 		}

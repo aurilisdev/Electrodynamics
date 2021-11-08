@@ -97,8 +97,7 @@ public class TileMineralGrinder extends GenericTileTicking {
 		    : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 1;
 	    for (int i = 0; i < amount; i++) {
 		ItemStack stack = getProcessor(i).getInput();
-		if (stack.getItem() instanceof BlockItem) {
-		    BlockItem it = (BlockItem) stack.getItem();
+		if (stack.getItem()instanceof BlockItem it) {
 		    Block block = it.getBlock();
 		    double d4 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
 		    double d6 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;

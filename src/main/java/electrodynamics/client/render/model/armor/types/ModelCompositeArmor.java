@@ -20,18 +20,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 
-public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidModel<Type> {
+public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T> {
 
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(References.ID, "composite_armor"), "main");
 
     /* Humanoid Model Parts */
-    private final ModelPart hat;
-    private final ModelPart head;
-    private final ModelPart chest;
-    private final ModelPart rightArm;
-    private final ModelPart leftArm;
-    private final ModelPart rightLeg;
-    private final ModelPart leftLeg;
+    private final ModelPart parentHat;
+    private final ModelPart parentHead;
+    private final ModelPart parentChest;
+    private final ModelPart parentRightArm;
+    private final ModelPart parentLeftArm;
+    private final ModelPart parentRightLeg;
+    private final ModelPart parentLeftLeg;
 
     /* Humanoid Model Strings */
     private static final String HAT = "hat";
@@ -51,26 +51,26 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
     public ModelCompositeArmor(ModelPart root, EquipmentSlot slot) {
 	super(root);
 
-	this.hat = root.getChild(HAT);
-	this.head = root.getChild(HEAD);
-	this.chest = root.getChild(CHEST);
-	this.rightArm = root.getChild(RIGHT_ARM);
-	this.leftArm = root.getChild(LEFT_ARM);
-	this.rightLeg = root.getChild(RIGHT_LEG);
-	this.leftLeg = root.getChild(LEFT_LEG);
+	this.parentHat = root.getChild(HAT);
+	this.parentHead = root.getChild(HEAD);
+	this.parentChest = root.getChild(CHEST);
+	this.parentRightArm = root.getChild(RIGHT_ARM);
+	this.parentLeftArm = root.getChild(LEFT_ARM);
+	this.parentRightLeg = root.getChild(RIGHT_LEG);
+	this.parentLeftLeg = root.getChild(LEFT_LEG);
 
 	// always invisible because it's a dummy
-	this.hat.visible = false;
+	this.parentHat.visible = false;
 
 	switch (slot) {
 
 	case HEAD:
-	    this.head.visible = true;
-	    this.chest.visible = false;
-	    this.rightArm.visible = false;
-	    this.leftArm.visible = false;
-	    this.rightLeg.visible = false;
-	    this.leftLeg.visible = false;
+	    this.parentHead.visible = true;
+	    this.parentChest.visible = false;
+	    this.parentRightArm.visible = false;
+	    this.parentLeftArm.visible = false;
+	    this.parentRightLeg.visible = false;
+	    this.parentLeftLeg.visible = false;
 	    /*
 	     * this.rightLeg.getChild(RLEG).visible = false;
 	     * this.rightLeg.getChild(RSHOE).visible = false;
@@ -79,12 +79,12 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 	     */
 	    break;
 	case CHEST:
-	    this.head.visible = false;
-	    this.chest.visible = true;
-	    this.rightArm.visible = true;
-	    this.leftArm.visible = true;
-	    this.rightLeg.visible = false;
-	    this.leftLeg.visible = false;
+	    this.parentHead.visible = false;
+	    this.parentChest.visible = true;
+	    this.parentRightArm.visible = true;
+	    this.parentLeftArm.visible = true;
+	    this.parentRightLeg.visible = false;
+	    this.parentLeftLeg.visible = false;
 	    /*
 	     * this.rightLeg.getChild(RLEG).visible = false;
 	     * this.rightLeg.getChild(RSHOE).visible = false;
@@ -93,12 +93,12 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 	     */
 	    break;
 	case LEGS, FEET:
-	    this.head.visible = false;
-	    this.chest.visible = false;
-	    this.rightArm.visible = false;
-	    this.leftArm.visible = false;
-	    this.rightLeg.visible = true;
-	    this.leftLeg.visible = true;
+	    this.parentHead.visible = false;
+	    this.parentChest.visible = false;
+	    this.parentRightArm.visible = false;
+	    this.parentLeftArm.visible = false;
+	    this.parentRightLeg.visible = true;
+	    this.parentLeftLeg.visible = true;
 	    /*
 	     * this.rightLeg.getChild(RLEG).visible = true;
 	     * this.rightLeg.getChild(RSHOE).visible = false;
@@ -311,31 +311,31 @@ public class ModelCompositeArmor<Type extends LivingEntity> extends HumanoidMode
 	return LayerDefinition.create(mesh, 128, 128);
     }
 
-    @Override
-    public void setupAnim(Type entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-	super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-	/*
-	 * leftLeg.getAllParts().forEach(c -> { c.copyFrom(leftLeg);
-	 * c.loadPose(leftLeg.storePose()); }); rightLeg.getAllParts().forEach(c -> {
-	 * c.copyFrom(rightLeg); c.loadPose(rightLeg.storePose()); });
-	 */
-    }
+//    @Override
+//    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+//	super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+//	/*
+//	 * leftLeg.getAllParts().forEach(c -> { c.copyFrom(leftLeg);
+//	 * c.loadPose(leftLeg.storePose()); }); rightLeg.getAllParts().forEach(c -> {
+//	 * c.copyFrom(rightLeg); c.loadPose(rightLeg.storePose()); });
+//	 */
+//    }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue,
 	    float alpha) {
 
-	if (head.visible) {
-	    head.render(poseStack, buffer, packedLight, packedOverlay);
+	if (parentHead.visible) {
+	    parentHead.render(poseStack, buffer, packedLight, packedOverlay);
 	}
-	if (chest.visible) {
-	    chest.render(poseStack, buffer, packedLight, packedOverlay);
-	    rightArm.render(poseStack, buffer, packedLight, packedOverlay);
-	    leftArm.render(poseStack, buffer, packedLight, packedOverlay);
+	if (parentChest.visible) {
+	    parentChest.render(poseStack, buffer, packedLight, packedOverlay);
+	    parentRightArm.render(poseStack, buffer, packedLight, packedOverlay);
+	    parentLeftArm.render(poseStack, buffer, packedLight, packedOverlay);
 	}
-	if (rightLeg.visible) {
-	    rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-	    leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
+	if (parentRightLeg.visible) {
+	    parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+	    parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 	/*
 	 * if(rightLeg.getChild(RLEG).visible) {

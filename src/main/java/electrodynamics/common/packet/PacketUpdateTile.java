@@ -51,15 +51,13 @@ public class PacketUpdateTile {
 	    ClientLevel world = Minecraft.getInstance().level;
 	    if (world != null) {
 		BlockEntity tile = world.getBlockEntity(message.pos);
-		if (tile instanceof IUpdateableTile) {
-		    IUpdateableTile updateable = (IUpdateableTile) tile;
+		if (tile instanceof IUpdateableTile updateable) {
 		    if (message.isGUI) {
 			updateable.readGUIPacket(message.updateTag);
 		    } else {
 			updateable.readCustomPacket(message.updateTag);
 		    }
-		} else if (tile instanceof GenericTile) {
-		    GenericTile generic = (GenericTile) tile;
+		} else if (tile instanceof GenericTile generic) {
 		    if (generic.hasComponent(ComponentType.PacketHandler)) {
 			ComponentPacketHandler handler = generic.getComponent(ComponentType.PacketHandler);
 			if (message.isGUI) {

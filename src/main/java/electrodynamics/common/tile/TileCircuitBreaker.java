@@ -56,8 +56,7 @@ public class TileCircuitBreaker extends GenericTile {
 
     protected boolean checkDirection(boolean facing, TransferPack transfer, boolean debug) {
 	BlockEntity tile = facing ? output.getSafe() : output2.getSafe();
-	if (tile instanceof GenericTileWire) {
-	    GenericTileWire wire = (GenericTileWire) tile;
+	if (tile instanceof GenericTileWire wire) {
 	    if (wire.electricNetwork != null) {
 		if (wire.electricNetwork.getNetworkMaxTransfer() <= transfer.getAmps() && !debug) {
 		    return true;

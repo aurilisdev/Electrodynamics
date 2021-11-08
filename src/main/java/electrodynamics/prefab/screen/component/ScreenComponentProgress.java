@@ -65,8 +65,6 @@ public class ScreenComponentProgress extends ScreenComponent {
 	    if (!left) {
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
 			(int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
-	    } else {
-
 	    }
 	}
     }

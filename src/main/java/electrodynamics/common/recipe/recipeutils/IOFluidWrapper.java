@@ -2,20 +2,20 @@ package electrodynamics.common.recipe.recipeutils;
 
 public class IOFluidWrapper {
 
-    private FluidIngredient FLUID;
-    private boolean IS_INPUT;
+    private FluidIngredient fluidIngredient;
+    private boolean input;
 
     public IOFluidWrapper(FluidIngredient fluid, boolean isInput) {
-	FLUID = fluid;
-	IS_INPUT = isInput;
+	fluidIngredient = fluid;
+	input = isInput;
     }
 
     public FluidIngredient getFluidIngredient() {
-	return FLUID;
+	return fluidIngredient;
     }
 
     public boolean getIsInput() {
-	return IS_INPUT;
+	return input;
     }
 
 }

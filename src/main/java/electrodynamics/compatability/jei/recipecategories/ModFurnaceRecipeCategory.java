@@ -31,28 +31,26 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
 
-    private int[] GUI_BACKGROUND_COORDS;
-    private int[] PROCESSING_ARROW_COORDS;
-    private int[] INPUT_ITEM_OFFSET;
-    private int[] OUTPUT_ITEM_OFFSET;
-    private int[] PROCESSING_ARROW_OFFSET;
+    private int[] guiBackgroundCoords;
+    private int[] processingArrowCoords;
+    private int[] inputItemOffset;
+    private int[] outputItemOffset;
+    private int[] processingArrowOffset;
 
-    private int SMELT_TIME;
-    private int TEXT_Y_HEIGHT;
+    private int smeltTime;
+    private int textYHeight;
 
-    private String MOD_ID = "";
-    private String RECIPE_GROUP = "";
-    private ResourceLocation GUI_TEXTURE;
+    private String modId = "";
+    private String recipeGroup = "";
+    private ResourceLocation guiTexture;
 
-    private IDrawable BACKGROUND;
-    private IDrawable ICON;
+    private IDrawable background;
+    private IDrawable icon;
 
-    private LoadingCache<Integer, IDrawableAnimated> CACHED_ARROWS;
-    private StartDirection START_DIRECTION;
+    private LoadingCache<Integer, IDrawableAnimated> cachedArrows;
+    private StartDirection startDirection;
 
-    private ItemStack INPUT_MACHINE;
-
-    public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
+    protected ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    ArrayList<int[]> inputCoordinates, int smeltTime, StartDirection arrowStartDirection, int textYHeight) {
 	/*
 	 * INPUT COORDIANTES Layout
@@ -76,31 +74,30 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 	 * array has following structure[xStart,yStart]
 	 */
 
-	MOD_ID = modID;
-	RECIPE_GROUP = recipeGroup;
-	GUI_TEXTURE = new ResourceLocation(MOD_ID, guiTexture);
-	INPUT_MACHINE = inputMachine;
+	modId = modID;
+	this.recipeGroup = recipeGroup;
+	this.guiTexture = new ResourceLocation(modId, guiTexture);
 
-	SMELT_TIME = smeltTime;
+	this.smeltTime = smeltTime;
 
-	GUI_BACKGROUND_COORDS = inputCoordinates.get(0);
-	PROCESSING_ARROW_COORDS = inputCoordinates.get(1);
-	INPUT_ITEM_OFFSET = inputCoordinates.get(2);
-	OUTPUT_ITEM_OFFSET = inputCoordinates.get(3);
-	PROCESSING_ARROW_OFFSET = inputCoordinates.get(4);
+	guiBackgroundCoords = inputCoordinates.get(0);
+	processingArrowCoords = inputCoordinates.get(1);
+	inputItemOffset = inputCoordinates.get(2);
+	outputItemOffset = inputCoordinates.get(3);
+	processingArrowOffset = inputCoordinates.get(4);
 
-	START_DIRECTION = arrowStartDirection;
-	TEXT_Y_HEIGHT = textYHeight;
+	startDirection = arrowStartDirection;
+	this.textYHeight = textYHeight;
 
-	ICON = guiHelper.createDrawableIngredient(INPUT_MACHINE);
-	BACKGROUND = guiHelper.createDrawable(GUI_TEXTURE, GUI_BACKGROUND_COORDS[0], GUI_BACKGROUND_COORDS[1], GUI_BACKGROUND_COORDS[2],
-		GUI_BACKGROUND_COORDS[3]);
+	icon = guiHelper.createDrawableIngredient(inputMachine);
+	background = guiHelper.createDrawable(this.guiTexture, guiBackgroundCoords[0], guiBackgroundCoords[1], guiBackgroundCoords[2],
+		guiBackgroundCoords[3]);
 
-	CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
+	cachedArrows = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
 	    @Override
 	    public IDrawableAnimated load(Integer cookTime) {
-		return guiHelper.drawableBuilder(GUI_TEXTURE, PROCESSING_ARROW_COORDS[0], PROCESSING_ARROW_COORDS[1], PROCESSING_ARROW_COORDS[2],
-			PROCESSING_ARROW_COORDS[3]).buildAnimated(cookTime, START_DIRECTION, false);
+		return guiHelper.drawableBuilder(ModFurnaceRecipeCategory.this.guiTexture, processingArrowCoords[0], processingArrowCoords[1],
+			processingArrowCoords[2], processingArrowCoords[3]).buildAnimated(cookTime, startDirection, false);
 	    }
 	});
 
@@ -113,17 +110,17 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 
     @Override
     public Component getTitle() {
-	return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP);
+	return new TranslatableComponent("gui.jei.category." + recipeGroup);
     }
 
     @Override
     public IDrawable getBackground() {
-	return BACKGROUND;
+	return background;
     }
 
     @Override
     public IDrawable getIcon() {
-	return ICON;
+	return icon;
     }
 
     @Override
@@ -140,8 +137,8 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 
 	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-	guiItemStacks.init(INPUT_SLOT, true, INPUT_ITEM_OFFSET[0], INPUT_ITEM_OFFSET[1]);
-	guiItemStacks.init(OUTPUT_SLOT, false, OUTPUT_ITEM_OFFSET[0], OUTPUT_ITEM_OFFSET[1]);
+	guiItemStacks.init(INPUT_SLOT, true, inputItemOffset[0], inputItemOffset[1]);
+	guiItemStacks.init(OUTPUT_SLOT, false, outputItemOffset[0], outputItemOffset[1]);
 
 	guiItemStacks.set(ingredients);
 
@@ -149,24 +146,24 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 
     @Override
     public void draw(SmeltingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-	IDrawableAnimated arrow = getArrow(recipe);
-	arrow.draw(matrixStack, PROCESSING_ARROW_OFFSET[0], PROCESSING_ARROW_OFFSET[1]);
+	IDrawableAnimated arrow = getArrow();
+	arrow.draw(matrixStack, processingArrowOffset[0], processingArrowOffset[1]);
 
-	drawSmeltTime(recipe, matrixStack, TEXT_Y_HEIGHT);
+	drawSmeltTime(matrixStack, textYHeight);
     }
 
-    protected IDrawableAnimated getArrow(SmeltingRecipe recipe) {
-	return CACHED_ARROWS.getUnchecked(SMELT_TIME);
+    protected IDrawableAnimated getArrow() {
+	return cachedArrows.getUnchecked(smeltTime);
     }
 
-    protected void drawSmeltTime(SmeltingRecipe recipe, PoseStack matrixStack, int y) {
+    protected void drawSmeltTime(PoseStack matrixStack, int y) {
 
-	int smeltTimeSeconds = SMELT_TIME / 20;
-	TranslatableComponent timeString = new TranslatableComponent("gui.jei.category." + RECIPE_GROUP + ".info.power", smeltTimeSeconds);
+	int smeltTimeSeconds = smeltTime / 20;
+	TranslatableComponent timeString = new TranslatableComponent("gui.jei.category." + recipeGroup + ".info.power", smeltTimeSeconds);
 	Minecraft minecraft = Minecraft.getInstance();
 	Font fontRenderer = minecraft.font;
-	int stringWidth = fontRenderer.width(timeString);
-	fontRenderer.draw(matrixStack, timeString, BACKGROUND.getWidth() - stringWidth, y, 0xFF808080);
+	float stringWidth = fontRenderer.width(timeString);
+	fontRenderer.draw(matrixStack, timeString, background.getWidth() - stringWidth, y, 0xFF808080);
 
     }
 

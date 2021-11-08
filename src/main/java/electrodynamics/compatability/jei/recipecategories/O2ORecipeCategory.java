@@ -27,15 +27,15 @@ public abstract class O2ORecipeCategory extends ElectrodynamicsRecipeCategory<O2
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
 
-    private int[] PROCESSING_ARROW_COORDS;
-    private int[] INPUT_OFFSET;
-    private int[] OUTPUT_OFFSET;
-    private int[] PROCESSING_ARROW_OFFSET;
+    private int[] processingArrowCoords;
+    private int[] processingArrowOffset;
+    private int[] inputOffset;
+    private int[] outputOffset;
 
-    private LoadingCache<Integer, IDrawableAnimated> CACHED_ARROWS;
-    private StartDirection START_DIRECTION;
+    private LoadingCache<Integer, IDrawableAnimated> cachedArrows;
+    private StartDirection startDirection;
 
-    public O2ORecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
+    protected O2ORecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, String guiTexture, ItemStack inputMachine,
 	    ArrayList<int[]> inputCoordinates, int smeltTime, int textYHeight, IDrawableAnimated.StartDirection arrowStartDirection) {
 
 	/*
@@ -62,18 +62,18 @@ public abstract class O2ORecipeCategory extends ElectrodynamicsRecipeCategory<O2
 
 	super(guiHelper, modID, recipeGroup, guiTexture, inputMachine, inputCoordinates.get(0), O2ORecipe.class, textYHeight, smeltTime);
 
-	PROCESSING_ARROW_COORDS = inputCoordinates.get(1);
-	INPUT_OFFSET = inputCoordinates.get(2);
-	OUTPUT_OFFSET = inputCoordinates.get(3);
-	PROCESSING_ARROW_OFFSET = inputCoordinates.get(4);
+	processingArrowCoords = inputCoordinates.get(1);
+	inputOffset = inputCoordinates.get(2);
+	outputOffset = inputCoordinates.get(3);
+	processingArrowOffset = inputCoordinates.get(4);
 
-	START_DIRECTION = arrowStartDirection;
+	startDirection = arrowStartDirection;
 
-	CACHED_ARROWS = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
+	cachedArrows = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<Integer, IDrawableAnimated>() {
 	    @Override
 	    public IDrawableAnimated load(Integer cookTime) {
-		return guiHelper.drawableBuilder(getGuiTexture(), PROCESSING_ARROW_COORDS[0], PROCESSING_ARROW_COORDS[1], PROCESSING_ARROW_COORDS[2],
-			PROCESSING_ARROW_COORDS[3]).buildAnimated(cookTime, START_DIRECTION, false);
+		return guiHelper.drawableBuilder(getGuiTexture(), processingArrowCoords[0], processingArrowCoords[1], processingArrowCoords[2],
+			processingArrowCoords[3]).buildAnimated(cookTime, startDirection, false);
 	    }
 	});
 
@@ -92,8 +92,8 @@ public abstract class O2ORecipeCategory extends ElectrodynamicsRecipeCategory<O2
 
 	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-	guiItemStacks.init(INPUT_SLOT, true, INPUT_OFFSET[0], INPUT_OFFSET[1]);
-	guiItemStacks.init(OUTPUT_SLOT, false, OUTPUT_OFFSET[0], OUTPUT_OFFSET[1]);
+	guiItemStacks.init(INPUT_SLOT, true, inputOffset[0], inputOffset[1]);
+	guiItemStacks.init(OUTPUT_SLOT, false, outputOffset[0], outputOffset[1]);
 
 	guiItemStacks.set(ingredients);
 
@@ -101,25 +101,23 @@ public abstract class O2ORecipeCategory extends ElectrodynamicsRecipeCategory<O2
 
     @Override
     public void draw(O2ORecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-	IDrawableAnimated arrow = getArrow(recipe);
-	arrow.draw(matrixStack, PROCESSING_ARROW_OFFSET[0], PROCESSING_ARROW_OFFSET[1]);
+	IDrawableAnimated arrow = getArrow();
+	arrow.draw(matrixStack, processingArrowOffset[0], processingArrowOffset[1]);
 
-	drawSmeltTime(recipe, matrixStack, getYHeight());
+	drawSmeltTime(matrixStack, getYHeight());
     }
 
-    protected IDrawableAnimated getArrow(O2ORecipe recipe) {
-	return CACHED_ARROWS.getUnchecked(getArrowSmeltTime());
+    protected IDrawableAnimated getArrow() {
+	return cachedArrows.getUnchecked(getArrowSmeltTime());
     }
 
-    protected void drawSmeltTime(O2ORecipe recipe, PoseStack matrixStack, int y) {
-
+    protected void drawSmeltTime(PoseStack matrixStack, int y) {
 	int smeltTimeSeconds = getArrowSmeltTime() / 20;
 	TranslatableComponent timeString = new TranslatableComponent("gui.jei.category." + getRecipeGroup() + ".info.power", smeltTimeSeconds);
 	Minecraft minecraft = Minecraft.getInstance();
 	Font fontRenderer = minecraft.font;
-	int stringWidth = fontRenderer.width(timeString);
+	float stringWidth = fontRenderer.width(timeString);
 	fontRenderer.draw(matrixStack, timeString, getBackground().getWidth() - stringWidth, y, 0xFF808080);
-
     }
 
 }

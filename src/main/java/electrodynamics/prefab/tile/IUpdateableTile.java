@@ -28,8 +28,8 @@ public interface IUpdateableTile {
 	BlockEntity source = getTile();
 	Level world = source.getLevel();
 	BlockPos pos = source.getBlockPos();
-	if (world instanceof ServerLevel) {
-	    ((ServerLevel) world).getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+	if (world instanceof ServerLevel s) {
+	    s.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
 		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
@@ -39,8 +39,8 @@ public interface IUpdateableTile {
 	BlockEntity source = getTile();
 	Level world = source.getLevel();
 	BlockPos pos = source.getBlockPos();
-	if (world instanceof ServerLevel) {
-	    ((ServerLevel) world).getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+	if (world instanceof ServerLevel s) {
+	    s.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
 		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
