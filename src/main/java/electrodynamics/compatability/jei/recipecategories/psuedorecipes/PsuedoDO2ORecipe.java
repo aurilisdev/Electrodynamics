@@ -8,15 +8,15 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class PsuedoDO2ORecipe extends DO2ORecipe {
 
-    public Ingredient INPUT_1;
-    public Ingredient INPUT_2;
-    public ItemStack OUTPUT;
+    public Ingredient ingredient1;
+    public Ingredient ingredient2;
+    public ItemStack output;
 
     public PsuedoDO2ORecipe(ItemStack input1, ItemStack input2, ItemStack output) {
 	super(null, null, null, null);
-	INPUT_1 = Ingredient.of(input1);
-	INPUT_2 = Ingredient.of(input2);
-	OUTPUT = output;
+	ingredient1 = Ingredient.of(input1);
+	ingredient2 = Ingredient.of(input2);
+	this.output = output;
     }
 
     @Override

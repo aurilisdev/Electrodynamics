@@ -94,7 +94,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public RenderShape getRenderShape(BlockState state) {
 	return RenderShape.MODEL;
     }
@@ -107,7 +106,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public FluidState getFluidState(BlockState state) {
 	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
@@ -122,7 +120,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(wire)));
     }
@@ -141,7 +138,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
@@ -204,7 +200,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 	TileWire tile = (TileWire) worldIn.getBlockEntity(pos);
 	if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
@@ -231,19 +226,16 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean isSignalSource(BlockState state) {
 	return ((BlockWire) state.getBlock()).wire.logistical;
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	return blockState.getSignal(blockAccess, pos, side);
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
 	if (tile instanceof TileLogisticalWire w) {
@@ -253,7 +245,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
 	    BlockPos facingPos) {
 	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
@@ -271,7 +262,6 @@ public class BlockWire extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 	super.onPlace(state, worldIn, pos, oldState, isMoving);
 	if (!worldIn.isClientSide) {

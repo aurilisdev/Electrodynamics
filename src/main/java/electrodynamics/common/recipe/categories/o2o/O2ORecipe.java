@@ -10,44 +10,37 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class O2ORecipe extends ElectrodynamicsRecipe {
+    private CountableIngredient countableIngredient;
+    private ItemStack output;
 
-    private CountableIngredient INPUT;
-    private ItemStack OUTPUT;
-
-    public O2ORecipe(ResourceLocation id, CountableIngredient input, ItemStack output) {
+    protected O2ORecipe(ResourceLocation id, CountableIngredient input, ItemStack output) {
 	super(id);
-	INPUT = input;
-	OUTPUT = output;
+	countableIngredient = input;
+	this.output = output;
     }
 
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
-	if (INPUT.testStack(pr.getInput())) {
-	    return true;
-	}
-	return false;
+	return countableIngredient.testStack(pr.getInput());
     }
 
     public boolean matchesRecipe(ItemStack stack) {
-	if (INPUT.testStack(stack)) {
-	    return true;
-	}
-	return false;
+	return countableIngredient.testStack(stack);
     }
 
     @Override
     public ItemStack assemble(RecipeWrapper inv) {
-	return OUTPUT;
+	return output;
     }
 
     @Override
     public ItemStack getResultItem() {
-	return OUTPUT;
+	return output;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.of(null, INPUT);
+	return NonNullList.of(null, countableIngredient);
     }
 
 }

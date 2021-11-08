@@ -20,7 +20,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -59,19 +58,16 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public BlockState rotate(BlockState state, Rotation rotation) {
 	return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public BlockState mirror(BlockState state, Mirror rotation) {
 	return state.rotate(rotation.getRotation(state.getValue(FACING)));
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	BlockEntity tile = worldIn.getBlockEntity(pos);
 	if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING)) && tile instanceof GenericTile generic
@@ -92,20 +88,17 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 	return 1;
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 	if (worldIn.isClientSide) {
 	    return InteractionResult.SUCCESS;
 	}
 	BlockEntity tile = worldIn.getBlockEntity(pos);
 	ItemStack stack = player.getItemInHand(handIn);
-	// allows you to right-click a canister on a machine and drain/fill it
 	if (CapabilityUtils.hasFluidItemCap(stack)) {
 	    if (tile instanceof GenericTile generic && generic.hasComponent(ComponentType.FluidHandler)) {
 		AbstractFluidHandler<?> tank = generic.getComponent(ComponentType.FluidHandler);
@@ -186,7 +179,6 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	ItemStack stack = new ItemStack(this);
 	BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
@@ -197,18 +189,6 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	    }
 	});
 	return Arrays.asList(stack);
-    }
-
-    @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-	super.setPlacedBy(worldIn, pos, state, placer, stack);
-	worldIn.getBlockEntity(pos);
-	if (stack.hasTag()) {
-	    // tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC)
-	    // .ifPresent(el ->
-	    // el.setJoulesStored(stack.getOrCreateTag().getDouble("joules"))); TODO: HERE
-	    // THE TILE IS NULL. FIND CORRECT METHOD FOR 1.17
-	}
     }
 
     @Override

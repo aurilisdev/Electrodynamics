@@ -11,13 +11,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class Item2FluidRecipe extends ElectrodynamicsRecipe implements IFluidRecipe {
 
-    private CountableIngredient ITEM_INPUT;
-    private FluidStack FLUID_OUTPUT;
+    private CountableIngredient input;
+    private FluidStack output;
 
-    public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient itemInput, FluidStack fluidOutput) {
+    protected Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient itemInput, FluidStack fluidOutput) {
 	super(recipeID);
-	ITEM_INPUT = itemInput;
-	FLUID_OUTPUT = fluidOutput;
+	input = itemInput;
+	output = fluidOutput;
     }
 
     @Override
@@ -27,12 +27,12 @@ public abstract class Item2FluidRecipe extends ElectrodynamicsRecipe implements 
 
     @Override
     public FluidStack getFluidRecipeOutput() {
-	return FLUID_OUTPUT;
+	return output;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.of(null, ITEM_INPUT);
+	return NonNullList.of(null, input);
     }
 
 }

@@ -55,7 +55,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 	    TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
@@ -66,13 +65,11 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 	return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
 		: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
@@ -86,13 +83,11 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public RenderShape getRenderShape(BlockState state) {
 	return machine.getRenderType();
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	ItemStack addstack;
 	switch (machine) {
@@ -141,7 +136,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 	super.setPlacedBy(worldIn, pos, state, placer, stack);
 	BlockEntity tile = worldIn.getBlockEntity(pos);
@@ -151,7 +145,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 	boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
 	if (hasMultiBlock()) {

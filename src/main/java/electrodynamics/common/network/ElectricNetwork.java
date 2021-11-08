@@ -31,7 +31,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
     }
 
     @Override
-    @Deprecated
     public double getVoltage() {
 	return -1;
     }

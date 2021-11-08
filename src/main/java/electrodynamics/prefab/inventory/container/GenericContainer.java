@@ -50,11 +50,7 @@ public abstract class GenericContainer<T extends BlockEntity> extends AbstractCo
 	    addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
 	}
 
-	if (inventory instanceof BlockEntity) {
-	    tile = (BlockEntity) inventory;
-	} else {
-	    tile = null;
-	}
+	tile = inventory instanceof BlockEntity bl ? bl : null;
 
 	addDataSlots(inventorydata);
     }

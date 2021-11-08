@@ -9,16 +9,16 @@ import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapEmpty {
 
-    private ArrayList<Fluid> WHITELISTED_FLUIDS;
+    private ArrayList<Fluid> whitelistedFluids;
 
     public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity, ArrayList<Fluid> whitelistedFluids) {
 	super(container, emptyContainer, capacity);
-	WHITELISTED_FLUIDS = whitelistedFluids;
+	this.whitelistedFluids = whitelistedFluids;
     }
 
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
-	for (Fluid fluid : WHITELISTED_FLUIDS) {
+	for (Fluid fluid : whitelistedFluids) {
 	    if (fluid.isSame(stack.getFluid())) {
 		return true;
 	    }
@@ -28,7 +28,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
-	for (Fluid stack : WHITELISTED_FLUIDS) {
+	for (Fluid stack : whitelistedFluids) {
 	    if (stack.isSame(fluid.getFluid())) {
 		return true;
 	    }
@@ -45,7 +45,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
     }
 
     public ArrayList<Fluid> getWhitelistedFluids() {
-	return WHITELISTED_FLUIDS;
+	return whitelistedFluids;
     }
 
 }

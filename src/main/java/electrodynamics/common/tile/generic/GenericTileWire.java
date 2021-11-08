@@ -94,8 +94,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	    HashSet<IConductor> adjacentCables = getConnectedConductors();
 	    HashSet<ElectricNetwork> connectedNets = new HashSet<>();
 	    for (IConductor wire : adjacentCables) {
-		if (wire.getNetwork(false) != null && wire.getNetwork() instanceof ElectricNetwork) {
-		    connectedNets.add((ElectricNetwork) wire.getNetwork());
+		if (wire.getNetwork(false) != null && wire.getNetwork()instanceof ElectricNetwork el) {
+		    connectedNets.add(el);
 		}
 	    }
 	    if (connectedNets.isEmpty()) {
@@ -113,9 +113,9 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
     @Override
     public void setNetwork(AbstractNetwork<?, ?, ?, ?> network) {
-	if (electricNetwork != network && network instanceof ElectricNetwork) {
+	if (electricNetwork != network && network instanceof ElectricNetwork el) {
 	    removeFromNetwork();
-	    electricNetwork = (ElectricNetwork) network;
+	    electricNetwork = el;
 	}
     }
 
@@ -126,8 +126,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	    ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 	    for (Direction dir : Direction.values()) {
 		BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
-		if (facing instanceof IConductor && ((IConductor) facing).getNetwork() instanceof ElectricNetwork) {
-		    foundNetworks.add((ElectricNetwork) ((IConductor) facing).getNetwork());
+		if (facing instanceof IConductor c && c.getNetwork()instanceof ElectricNetwork el) {
+		    foundNetworks.add(el);
 		}
 	    }
 	    if (!foundNetworks.isEmpty()) {

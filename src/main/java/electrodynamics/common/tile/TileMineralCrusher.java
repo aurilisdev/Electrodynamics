@@ -117,17 +117,14 @@ public class TileMineralCrusher extends GenericTileTicking {
 			: getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
 		for (int in = 0; in < amount; in++) {
 		    ItemStack stack = getProcessor(in).getInput();
-		    if (stack.getItem() instanceof BlockItem) {
-			if (stack.getItem() instanceof BlockItem) {
-			    BlockItem it = (BlockItem) stack.getItem();
-			    Block block = it.getBlock();
-			    for (int i = 0; i < 5; i++) {
-				double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-				double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-				ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2,
-					worldPosition.getY() + 0.4, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D,
-					block.defaultBlockState(), worldPosition);
-			    }
+		    if (stack.getItem()instanceof BlockItem it) {
+			Block block = it.getBlock();
+			for (int i = 0; i < 5; i++) {
+			    double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+			    double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+			    ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.4,
+				    worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D, block.defaultBlockState(),
+				    worldPosition);
 			}
 		    }
 		}

@@ -95,18 +95,16 @@ public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public FluidState getFluidState(BlockState state) {
 	return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_49232_) {
+    public RenderShape getRenderShape(BlockState state) {
 	return RenderShape.MODEL;
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(pipe)));
     }
@@ -125,7 +123,6 @@ public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
@@ -202,7 +199,6 @@ public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 	super.onPlace(state, worldIn, pos, oldState, isMoving);
 	if (!worldIn.isClientSide) {
@@ -225,7 +221,6 @@ public class BlockPipe extends BaseEntityBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
 	    BlockPos facingPos) {
 	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {

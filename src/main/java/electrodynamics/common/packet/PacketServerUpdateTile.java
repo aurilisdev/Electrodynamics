@@ -25,8 +25,8 @@ public class PacketServerUpdateTile {
 	    ServerLevel world = context.get().getSender().getLevel();
 	    if (world != null) {
 		BlockEntity tile = world.getBlockEntity(message.target);
-		if (tile instanceof IPacketServerUpdateTile) {
-		    ((IPacketServerUpdateTile) tile).readCustomUpdate(message.nbt);
+		if (tile instanceof IPacketServerUpdateTile serv) {
+		    serv.readCustomUpdate(message.nbt);
 		}
 	    }
 	});

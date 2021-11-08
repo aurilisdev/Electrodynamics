@@ -23,17 +23,17 @@ public abstract class FluidNonPlaceable extends Fluid {
     private String fluidName;
     private int color = 0;
 
-    public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
+    protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
 	this.itemSupplier = itemSupplier;
     }
 
-    public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
+    protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
 	this.itemSupplier = itemSupplier;
 	this.modID = modID;
 	this.fluidName = fluidName;
     }
 
-    public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName, int color) {
+    protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName, int color) {
 	this.itemSupplier = itemSupplier;
 	this.modID = modID;
 	this.fluidName = fluidName;
@@ -56,7 +56,7 @@ public abstract class FluidNonPlaceable extends Fluid {
     }
 
     @Override
-    public int getTickDelay(LevelReader p_205569_1_) {
+    public int getTickDelay(LevelReader levelReader) {
 	return 0;
     }
 
@@ -66,12 +66,12 @@ public abstract class FluidNonPlaceable extends Fluid {
     }
 
     @Override
-    public float getHeight(FluidState p_215662_1_, BlockGetter p_215662_2_, BlockPos p_215662_3_) {
+    public float getHeight(FluidState fluidState, BlockGetter blockGetter, BlockPos pos) {
 	return 0;
     }
 
     @Override
-    public float getOwnHeight(FluidState p_223407_1_) {
+    public float getOwnHeight(FluidState state) {
 	return 0;
     }
 

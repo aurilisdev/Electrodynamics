@@ -17,14 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemCeramic extends Item {
+    public SubtypeCeramic subtype;
 
     public ItemCeramic(SubtypeCeramic subtype) {
 	super(new Item.Properties().stacksTo(64).tab(References.CORETAB));
+	this.subtype = subtype;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-
 	if (ItemStack.tagMatches(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
 	    List<ItemStack> armorPieces = new ArrayList<>();
 	    playerIn.getArmorSlots().forEach(armorPieces::add);

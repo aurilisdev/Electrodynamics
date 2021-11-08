@@ -21,42 +21,33 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockCustomGlass extends Block {
 
     public BlockCustomGlass(float hardness, float resistance) {
-	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance)
-		// TODO add a better condition if wanted?
-		.isRedstoneConductor((p_152653_, p_152654_, p_152655_) -> {
-		    return false;
-		}).noOcclusion());
+	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false)
+		.noOcclusion());
     }
 
     public BlockCustomGlass(SubtypeGlass glass) {
 	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
-		.isRedstoneConductor((p_152653_, p_152654_, p_152655_) -> {
-		    return false;
-		}).noOcclusion());
+		.isRedstoneConductor((x, y, z) -> false).noOcclusion());
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 	return Arrays.asList(new ItemStack(this));
     }
 
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
 	return Shapes.empty();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 	return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    @Deprecated(since = "since overriden method is", forRemoval = false)
     public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 	return 1.0F;
     }

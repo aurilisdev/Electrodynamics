@@ -30,18 +30,18 @@ public class InteractionHandler {
 	    Block block = state.getBlock();
 	    ItemStack stack = event.getItemStack();
 	    Item item = stack.getItem();
-	    if (block instanceof IWrenchable && item instanceof IWrenchItem) {
+	    if (block instanceof IWrenchable wrenchable && item instanceof IWrenchItem wrench) {
 		if (player.isShiftKeyDown()) {
-		    if (((IWrenchItem) item).onPickup(stack, event.getPos(), player)) {
-			((IWrenchable) block).onPickup(stack, event.getPos(), player);
+		    if (wrench.onPickup(stack, event.getPos(), player)) {
+			wrenchable.onPickup(stack, event.getPos(), player);
 		    }
 		} else {
-		    if (((IWrenchItem) item).onRotate(stack, event.getPos(), player)) {
-			((IWrenchable) block).onRotate(stack, event.getPos(), player);
+		    if (wrench.onRotate(stack, event.getPos(), player)) {
+			wrenchable.onRotate(stack, event.getPos(), player);
 		    }
 		}
-	    } else if (block instanceof BlockWire) {
-		SubtypeWire wire = ((BlockWire) block).wire;
+	    } else if (block instanceof BlockWire wireBlock) {
+		SubtypeWire wire = wireBlock.wire;
 		if (item == Items.SHEARS) {
 		    if (wire.ceramic) {
 			player.level.setBlockAndUpdate(event.getPos(),

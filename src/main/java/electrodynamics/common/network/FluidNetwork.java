@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
+
 import electrodynamics.api.network.pipe.IPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.prefab.network.AbstractNetwork;
@@ -53,7 +55,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
     @Override
     public FluidStack emit(FluidStack transfer, ArrayList<BlockEntity> ignored, boolean debug) {
 	if (transfer.getAmount() > 0) {
-	    Set<BlockEntity> availableAcceptors = getFluidAcceptors(transfer);
+	    Set<BlockEntity> availableAcceptors = Sets.newHashSet(acceptorSet);
 	    FluidStack joulesSent = new FluidStack(transfer.getFluid(), 0);
 	    availableAcceptors.removeAll(ignored);
 	    if (!availableAcceptors.isEmpty()) {
@@ -73,12 +75,6 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
 	    return joulesSent;
 	}
 	return FluidStack.EMPTY;
-    }
-
-    public Set<BlockEntity> getFluidAcceptors(FluidStack compare) {
-	Set<BlockEntity> toReturn = new HashSet<>();
-	toReturn.addAll(acceptorSet);
-	return toReturn;
     }
 
     private boolean checkForOverload(int attemptSend) {

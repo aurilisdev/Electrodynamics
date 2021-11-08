@@ -54,7 +54,7 @@ public class FluidUtilities {
 	return 0;
     }
 
-    public static boolean canInputFluid(BlockEntity acceptor, Direction direction, FluidStack stack) {
+    public static boolean canInputFluid(BlockEntity acceptor, Direction direction) {
 	return isFluidReceiver(acceptor, direction);
     }
 

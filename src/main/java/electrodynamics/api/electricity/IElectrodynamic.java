@@ -49,15 +49,13 @@ public interface IElectrodynamic {
     }
 
     default void overVoltage(TransferPack transfer) {
-	if (this instanceof BlockEntity) {
-	    BlockEntity tile = (BlockEntity) this;
+	if (this instanceof BlockEntity tile) {
 	    Level world = tile.getLevel();
 	    BlockPos pos = tile.getBlockPos();
 	    world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 	    world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
 		    BlockInteraction.DESTROY);
-	} else if (this instanceof ComponentElectrodynamic) {
-	    ComponentElectrodynamic electro = (ComponentElectrodynamic) this;
+	} else if (this instanceof ComponentElectrodynamic electro) {
 	    BlockEntity tile = electro.getHolder();
 	    if (tile != null) {
 		Level world = tile.getLevel();

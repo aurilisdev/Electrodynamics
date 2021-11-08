@@ -1,7 +1,6 @@
 package electrodynamics.common.block;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,7 +24,7 @@ public class ToolTypeConverter {
 		String name = file.getName();
 		name = name.substring(0, name.indexOf(json));
 		name = "\"" + References.ID + ":" + name + "\"";
-		if (!(i + 1 == blockDir.listFiles().length)) {
+		if (i + 1 != blockDir.listFiles().length) {
 		    name = name + ",";
 		}
 		System.out.println(name);
@@ -34,8 +33,6 @@ public class ToolTypeConverter {
 	    }
 	    blockWriter.close();
 
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}

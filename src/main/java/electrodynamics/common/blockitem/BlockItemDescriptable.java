@@ -6,15 +6,22 @@ import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.common.block.BlockGenericMachine;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BlockItemDescriptable extends BlockItem {
     private static HashMap<Block, HashSet<String>> descriptionMappings = new HashMap<>();
@@ -32,6 +39,21 @@ public class BlockItemDescriptable extends BlockItem {
     public BlockItemDescriptable(Block block, Properties builder) {
 	super(block, builder);
 	this.block = block;
+    }
+
+    @Override
+    public InteractionResult place(BlockPlaceContext p) {
+	ItemStack stack = p.getItemInHand();
+	double joules = stack.getOrCreateTag().getDouble("joules");
+	InteractionResult result = super.place(p);
+	if (block instanceof BlockGenericMachine) {
+	    BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos());
+	    if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) {
+		ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic);
+		electrodynamic.setJoulesStored(joules);
+	    }
+	}
+	return result;
     }
 
     @Override
