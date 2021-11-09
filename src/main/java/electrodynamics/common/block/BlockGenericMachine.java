@@ -208,17 +208,11 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
-	BlockEntityTicker<T> t = getTickMethod(lvl, state, type);
-	return t == null ? this::tick : t;
+	return (l, pos, s, tile) -> {
+	    if (tile instanceof GenericTileTicking generic) {
+		generic.tick();
+	    }
+	};
     }
 
-    public <T extends BlockEntity> void tick(Level lvl, BlockPos pos, BlockState state, T t) {
-	if (t instanceof GenericTileTicking tick) {
-	    tick.tick();
-	}
-    }
-
-    public <T extends BlockEntity> BlockEntityTicker<T> getTickMethod(Level lvl, BlockState state, BlockEntityType<T> type) {
-	return null;
-    }
 }
