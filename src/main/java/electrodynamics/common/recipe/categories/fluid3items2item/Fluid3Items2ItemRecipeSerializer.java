@@ -58,11 +58,15 @@ public class Fluid3Items2ItemRecipeSerializer<T extends Fluid3Items2ItemRecipe> 
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer, T recipe) {
-	CountableIngredient itemInput = (CountableIngredient) recipe.getIngredients().get(0);
-	FluidIngredient fluidInput = (FluidIngredient) recipe.getIngredients().get(1);
-	itemInput.writeStack(buffer);
-	fluidInput.writeStack(buffer);
-	buffer.writeItem(recipe.getResultItem());
+    	CountableIngredient itemInput1 = (CountableIngredient) recipe.getIngredients().get(0);
+    	CountableIngredient itemInput2 = (CountableIngredient) recipe.getIngredients().get(1);
+    	CountableIngredient itemInput3 = (CountableIngredient) recipe.getIngredients().get(2);
+    	FluidIngredient fluidInput = (FluidIngredient) recipe.getIngredients().get(3);
+    	itemInput1.writeStack(buffer);
+    	itemInput2.writeStack(buffer);
+    	itemInput3.writeStack(buffer);
+    	fluidInput.writeStack(buffer);
+    	buffer.writeItem(recipe.getResultItem());
     }
 
 }
