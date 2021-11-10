@@ -1,42 +1,39 @@
 {
-    "parent": "electrodynamics:root",
-    "__comment": "aurilisdev",
-    "display": {
-        "title": {
-            "text": "Don't Touch",
-            "color": "dark_red"
-        },
-        "description": {
-            "text": "Make a upgrade transformer ",
-            "color": "gray"
-        },
-        "icon": {
-            "item": "electrodynamics:upgradetransformer"
-        },
-        "frame": "task",
-        "show_toast": true,
-        "announce_to_chat": true,
-        "hidden": false
-    },
-    "criteria": {
-        "invchange": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "electrodynamics:upgradetransformer",
-                        "count": {
-                            "min": 1,
-                            "max": 1
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    "requirements": [
-        [
-            "invchange"
-        ]
-    ]
+	"__comment": "aurilisdev",
+	"display": {
+		"title": {
+			"text": "Don't Touch",
+			"color": "dark_red"
+		},
+		"description": {
+			"text": "Make a upgrade transformer ",
+			"color": "gray"
+		},
+		"icon": {
+			"item": "electrodynamics:upgradetransformer"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"parent": "electrodynamics:root",
+	"criteria": {
+		"requirement": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": [ 
+							"electrodynamics:upgradetransformer"
+						],
+						"count": {
+							"min": 1,
+							"max": 9999
+						}
+					}
+				]
+			}
+		}
+	}
 }
