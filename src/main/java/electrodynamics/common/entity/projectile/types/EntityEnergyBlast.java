@@ -1,8 +1,11 @@
 package electrodynamics.common.entity.projectile.types;
 
+import com.mojang.math.Vector3f;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,6 +52,9 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	super.tick();
 	if (isInWater() || isInLava()) {
 	    remove(Entity.RemovalReason.DISCARDED);
+	}
+	if (level.isClientSide) {
+	    level.addParticle(new DustParticleOptions(new Vector3f(0.8f, 0, 0.8f), 5), getX(), getY(), getZ(), 0, 0, 0);
 	}
     }
 
