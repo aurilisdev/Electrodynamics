@@ -121,7 +121,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 		: Direction.UP, lastDirection);
 	boolean canFill = inputDirections.contains(lastDirection)
 		|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-	return canFill && isFluidValid(0, resource) ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
+	return canFill && isFluidValid(0, resource) && resource != null ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
     }
 
     @Override
@@ -131,7 +131,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 		: Direction.UP, lastDirection);
 	boolean canDrain = outputDirections.contains(lastDirection)
 		|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
-	return canDrain ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
+	return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
     }
 
     public abstract AbstractFluidHandler<A> addFluidTank(Fluid fluid, int capacity, boolean isInput);
