@@ -1,42 +1,39 @@
 {
-    "parent": "electrodynamics:root",
-    "__comment": "aurilisdev",
-    "display": {
-        "title": {
-            "text": "Is it hot in here",
-            "color": "red",
-            "bold": true
-        },
-        "description": {
-            "text": "Description"
-        },
-        "icon": {
-            "item": "electrodynamics:electricfurnace"
-        },
-        "frame": "task",
-        "show_toast": true,
-        "announce_to_chat": true,
-        "hidden": false
-    },
-    "criteria": {
-        "invchange": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "electrodynamics:electricfurnace",
-                        "count": {
-                            "min": 1,
-                            "max": 1
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    "requirements": [
-        [
-            "invchange"
-        ]
-    ]
+	"__comment": "aurilisdev",
+	"display": {
+		"title": {
+			"text": "Is it hot in here",
+			"color": "red",
+			"bold": true
+		},
+		"description": {
+			"text": "Description"
+		},
+		"icon": {
+			"item": "electrodynamics:electricfurnace"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"parent": "electrodynamics:root",
+	"criteria": {
+		"requirement": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": [ 
+							"electrodynamics:electricfurnace"
+						],
+						"count": {
+							"min": 1,
+							"max": 9999
+						}
+					}
+				]
+			}
+		}
+	}
 }
