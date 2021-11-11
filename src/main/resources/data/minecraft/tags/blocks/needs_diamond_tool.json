@@ -1,0 +1,14 @@
+{
+	"replace": false,
+	"values": [
+		"electrodynamics:orechromite",
+		"electrodynamics:orerutile",
+		"electrodynamics:orethorianite",
+		"electrodynamics:oreuraninite",
+		
+		"electrodynamics:resourceblockchromium",
+		"electrodynamics:resourceblocktitanium",
+		"electrodynamics:resourceblocktitaniumcarbide",
+		"electrodynamics:resourceblockhslasteel"
+	]
+}

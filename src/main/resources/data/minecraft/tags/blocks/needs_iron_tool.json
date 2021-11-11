@@ -1,0 +1,18 @@
+{
+	"replace": false,
+	"values": [
+		"electrodynamics:orealuminum",
+		"electrodynamics:orelead",
+		"electrodynamics:orelepidolite",
+		"electrodynamics:oremonazite",
+		"electrodynamics:oresilver",
+		"electrodynamics:orevanadinite",
+		
+		"electrodynamics:resourceblockaluminum",
+		"electrodynamics:resourceblocklead",
+		"electrodynamics:resourceblocksilver",
+		"electrodynamics:resourceblocksteel",
+		"electrodynamics:resourceblockstainlesssteel",
+		"electrodynamics:resourceblockvanadiumsteel"
+	]
+}
