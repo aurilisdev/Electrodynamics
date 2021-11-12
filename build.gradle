@@ -27,7 +27,7 @@ distsDirName = "../output"
 def	version_minor="5"
 def	version_revision='0'
 def	minecraft_version='1.17.1'
-def	version_build='1'
+def	version_build='2'
 def	version_major='0'
 
 version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revision+'-'+version_build
@@ -172,7 +172,6 @@ task pushTag(type: GitPush, dependsOn: createTag) {
 tasks.curseforge.dependsOn jar
 tasks.curseforge.dependsOn pushTag
 
-/*
 curseforge {
   apiKey = System.getenv("CURSEFORGE_KEY")
   project {
@@ -186,4 +185,3 @@ curseforge {
     }
   }
 }
-*/
