@@ -53,7 +53,7 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     protected BlockGenericMachine() {
-	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion());
+	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
