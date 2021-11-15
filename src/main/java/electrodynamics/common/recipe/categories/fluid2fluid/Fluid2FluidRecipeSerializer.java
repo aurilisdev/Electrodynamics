@@ -52,7 +52,7 @@ public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends El
     public void toNetwork(FriendlyByteBuf buffer, T recipe) {
 	FluidIngredient fluidInput = (FluidIngredient) recipe.getIngredients().get(0);
 	FluidIngredient fluidOutput = new FluidIngredient(recipe.getFluidRecipeOutput());
-	fluidInput.writeStack(buffer);
-	fluidOutput.writeStack(buffer);
+	fluidInput.write(buffer);
+	fluidOutput.write(buffer);
     }
 }

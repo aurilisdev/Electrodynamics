@@ -59,8 +59,8 @@ public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> ex
 	FluidIngredient fluidInput = (FluidIngredient) recipe.getIngredients().get(1);
 	FluidIngredient fluidOutput = new FluidIngredient(recipe.getFluidRecipeOutput());
 	itemInput.writeStack(buffer);
-	fluidInput.writeStack(buffer);
-	fluidOutput.writeStack(buffer);
+	fluidInput.write(buffer);
+	fluidOutput.write(buffer);
     }
 
 }

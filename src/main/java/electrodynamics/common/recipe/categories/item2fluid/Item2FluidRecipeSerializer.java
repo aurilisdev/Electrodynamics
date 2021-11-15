@@ -54,7 +54,7 @@ public class Item2FluidRecipeSerializer<T extends Item2FluidRecipe> extends Elec
 	CountableIngredient itemInput = (CountableIngredient) recipe.getIngredients().get(0);
 	FluidIngredient fluidOutput = new FluidIngredient(recipe.getFluidRecipeOutput());
 	itemInput.writeStack(buffer);
-	fluidOutput.writeStack(buffer);
+	fluidOutput.write(buffer);
     }
 
 }
