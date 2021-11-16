@@ -1,4 +1,4 @@
-package electrodynamics.common.block;
+package electrodynamics.prefab.block;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -29,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
@@ -40,10 +40,19 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public abstract class BlockGenericMachine extends GenericEntityBlockWaterloggable {
-    protected BlockGenericMachine() {
+public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
+
+    protected BlockEntitySupplier<BlockEntity> blockEntitySupplier;
+
+    public GenericMachineBlock(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
 	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+	this.blockEntitySupplier = blockEntitySupplier;
+    }
+
+    @Override
+    public final BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+	return blockEntitySupplier.create(pos, state);
     }
 
     @Override
