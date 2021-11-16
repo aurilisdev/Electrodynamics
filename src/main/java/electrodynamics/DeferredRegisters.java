@@ -70,6 +70,7 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileChargerHV;
