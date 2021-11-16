@@ -9,7 +9,7 @@ import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -26,7 +26,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileChemicalCrystallizer extends GenericTileTicking {
+public class TileChemicalCrystallizer extends GenericTile {
     public static final int MAX_TANK_CAPACITY = 5000;
 
     public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {

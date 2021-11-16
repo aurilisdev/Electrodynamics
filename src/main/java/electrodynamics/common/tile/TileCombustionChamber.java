@@ -5,7 +5,7 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -22,7 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileCombustionChamber extends GenericTileTicking {
+public class TileCombustionChamber extends GenericTile {
     public static final int TICKS_PER_MILLIBUCKET = 200;
     public static final int TANK_CAPACITY = 100;
     public boolean running = false;

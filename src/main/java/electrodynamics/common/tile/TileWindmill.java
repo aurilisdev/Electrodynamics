@@ -10,7 +10,7 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -26,7 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileWindmill extends GenericTileTicking implements IMultiblockTileNode {
+public class TileWindmill extends GenericTile implements IMultiblockTileNode {
     protected CachedTileOutput output;
     public boolean isGenerating = false;
     public boolean directionFlag = false;

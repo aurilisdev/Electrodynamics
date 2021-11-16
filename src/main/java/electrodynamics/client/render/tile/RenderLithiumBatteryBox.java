@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -48,7 +48,7 @@ public class RenderLithiumBatteryBox implements BlockEntityRenderer<TileLithiumB
 	    break;
 	}
 
-	switch (tileEntityIn.getBlockState().getValue(BlockGenericMachine.FACING)) {
+	switch (tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING)) {
 	case NORTH:
 	    matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
 	    matrixStackIn.translate(-1, 0, 0);

@@ -12,7 +12,7 @@ import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -31,7 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileMineralCrusher extends GenericTileTicking {
+public class TileMineralCrusher extends GenericTile {
     public long clientRunningTicks = 0;
 
     public TileMineralCrusher(BlockPos pos, BlockState state) {

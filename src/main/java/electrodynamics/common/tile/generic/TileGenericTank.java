@@ -4,7 +4,7 @@ import java.util.List;
 
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.common.inventory.container.ContainerTankGeneric;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -29,7 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileGenericTank extends GenericTileTicking {
+public class TileGenericTank extends GenericTile {
 
     public TileGenericTank(BlockEntityType<?> tile, int capacity, List<Fluid> validFluids, String name, BlockPos pos, BlockState state) {
 	super(tile, pos, state);

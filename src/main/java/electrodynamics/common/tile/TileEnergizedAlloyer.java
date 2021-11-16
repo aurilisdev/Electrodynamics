@@ -4,14 +4,14 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
-import electrodynamics.common.block.BlockGenericMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.do2o.specificmachines.EnergizedAlloyerRecipe;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -27,7 +27,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileEnergizedAlloyer extends GenericTileTicking {
+public class TileEnergizedAlloyer extends GenericTile {
 
     public TileEnergizedAlloyer(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_ENERGIZEDALLOYER.get(), worldPosition, blockState);
@@ -51,12 +51,12 @@ public class TileEnergizedAlloyer extends GenericTileTicking {
 	if (component.canProcessDO2ORecipe(component, EnergizedAlloyerRecipe.class, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE)) {
 	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)) {
 		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning).defaultBlockState()
-			.setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)), 2 | 16 | 32);
+			.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
 	    }
 	    return true;
 	} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)) {
 	    level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer).defaultBlockState()
-		    .setValue(BlockGenericMachine.FACING, getBlockState().getValue(BlockGenericMachine.FACING)), 2 | 16 | 32);
+		    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
 	}
 	return false;
     }

@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -41,11 +40,6 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	    return subnode.getShape();
 	}
 	return Shapes.block();
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-	return RenderShape.INVISIBLE;
     }
 
     @Override

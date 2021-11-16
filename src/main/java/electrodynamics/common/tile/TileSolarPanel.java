@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileSolarPanel extends GenericTileTicking {
+public class TileSolarPanel extends GenericTile {
     private CachedTileOutput output;
     private boolean generating;
 

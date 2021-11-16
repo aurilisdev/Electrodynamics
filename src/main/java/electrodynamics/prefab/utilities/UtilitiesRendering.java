@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 
-import electrodynamics.common.block.BlockGenericMachine;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -87,8 +87,8 @@ public class UtilitiesRendering {
     public static void prepareRotationalTileModel(BlockEntity tile, PoseStack stack) {
 	BlockState state = tile.getBlockState();
 	stack.translate(0.5, 7.0 / 16.0, 0.5);
-	if (state.hasProperty(BlockGenericMachine.FACING)) {
-	    Direction facing = state.getValue(BlockGenericMachine.FACING);
+	if (state.hasProperty(GenericEntityBlock.FACING)) {
+	    Direction facing = state.getValue(GenericEntityBlock.FACING);
 	    if (facing == Direction.NORTH) {
 		stack.mulPose(new Quaternion(0, 90, 0, true));
 	    } else if (facing == Direction.SOUTH) {

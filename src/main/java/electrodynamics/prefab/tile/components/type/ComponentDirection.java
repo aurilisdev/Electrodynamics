@@ -1,6 +1,6 @@
 package electrodynamics.prefab.tile.components.type;
 
-import electrodynamics.common.block.BlockGenericMachine;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -18,8 +18,8 @@ public class ComponentDirection implements Component {
 
     public Direction getDirection() {
 	if (System.currentTimeMillis() - last > 10000 || cachedDirection == null) {
-	    if (holder.getBlockState().hasProperty(BlockGenericMachine.FACING)) {
-		cachedDirection = holder.getBlockState().getValue(BlockGenericMachine.FACING);
+	    if (holder.getBlockState().hasProperty(GenericEntityBlock.FACING)) {
+		cachedDirection = holder.getBlockState().getValue(GenericEntityBlock.FACING);
 	    }
 	    last = System.currentTimeMillis();
 	}
