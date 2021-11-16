@@ -11,6 +11,7 @@ import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileTransformer;
+import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.utilities.UtilitiesElectricity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -30,7 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlockMachine extends BlockGenericMachine implements IMultiblockNode {
+public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
 
     public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
     public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
@@ -51,6 +52,7 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
     public final SubtypeMachine machine;
 
     public BlockMachine(SubtypeMachine machine) {
+	super(machine::createTileEntity);
 	this.machine = machine;
     }
 
@@ -158,11 +160,6 @@ public class BlockMachine extends BlockGenericMachine implements IMultiblockNode
 	} else {
 	    worldIn.setBlocksDirty(pos, state, newState);
 	}
-    }
-
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-	return machine.createTileEntity(pos, state);
     }
 
     @Override
