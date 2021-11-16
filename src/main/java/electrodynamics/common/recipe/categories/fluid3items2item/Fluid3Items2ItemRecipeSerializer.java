@@ -65,7 +65,7 @@ public class Fluid3Items2ItemRecipeSerializer<T extends Fluid3Items2ItemRecipe> 
 	itemInput1.writeStack(buffer);
 	itemInput2.writeStack(buffer);
 	itemInput3.writeStack(buffer);
-	fluidInput.writeStack(buffer);
+	fluidInput.write(buffer);
 	buffer.writeItem(recipe.getResultItem());
     }
 

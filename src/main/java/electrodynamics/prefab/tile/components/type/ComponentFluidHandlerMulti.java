@@ -16,10 +16,12 @@ import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -100,6 +102,26 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 	return this;
     }
+    
+    @Override
+	public ComponentFluidHandlerMulti addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
+    	if (isInput) {
+    	    for(Fluid fluid : tag.getValues()) {
+    	    	if (!getValidInputFluids().contains(fluid)) {
+    	    		inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+    	    		inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+        	    }	
+    	    }
+    	} else {
+    		for(Fluid fluid : tag.getValues()) {
+    			if (!getValidOutputFluids().contains(fluid)) {
+    	    		outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+    	    		outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+    			}
+    		}
+    	}
+		return this;
+	}
 
     // Use categorized methods
     @Override

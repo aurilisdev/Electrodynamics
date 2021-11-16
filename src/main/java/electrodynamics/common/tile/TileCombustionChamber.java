@@ -1,10 +1,13 @@
 package electrodynamics.common.tile;
 
+import java.util.List;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -20,6 +23,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileCombustionChamber extends GenericTile {
@@ -37,7 +41,7 @@ public class TileCombustionChamber extends GenericTile {
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 	addComponent(
-		new ComponentFluidHandlerMulti(this).addFluidTank(DeferredRegisters.fluidEthanol, TANK_CAPACITY, true).relativeInput(Direction.WEST));
+		new ComponentFluidHandlerMulti(this).addFluidTank(ElectrodynamicsTags.Fluids.ETHANOL, TANK_CAPACITY, true).relativeInput(Direction.WEST));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -54,12 +58,17 @@ public class TileCombustionChamber extends GenericTile {
 	if (burnTime <= 0) {
 	    boolean shouldSend = !running;
 	    running = false;
-	    FluidStack stack = tank.getStackFromFluid(DeferredRegisters.fluidEthanol, true);
-	    if (stack.getAmount() > 0) {
-		stack.setAmount(stack.getAmount() - 1);
-		running = true;
-		burnTime = TICKS_PER_MILLIBUCKET;
-		shouldSend = true;
+	    //can you think of a better name
+	    List<Fluid> ethanols = ElectrodynamicsTags.Fluids.ETHANOL.getValues();
+	    for(Fluid fluid : ethanols) {
+	    	FluidStack stack = tank.getStackFromFluid(fluid, true);
+		    if (stack.getAmount() > 0) {
+				stack.setAmount(stack.getAmount() - 1);
+				running = true;
+				burnTime = TICKS_PER_MILLIBUCKET;
+				shouldSend = true;
+				break;
+		    }
 	    }
 	    if (shouldSend) {
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();

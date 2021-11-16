@@ -23,21 +23,22 @@ public abstract class FluidNonPlaceable extends Fluid {
     private String fluidName;
     private int color = 0;
 
-    protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
-	this.itemSupplier = itemSupplier;
+    public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
+    	this.itemSupplier = itemSupplier;
     }
 
-    protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
-	this.itemSupplier = itemSupplier;
-	this.modID = modID;
-	this.fluidName = fluidName;
+    public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
+		this.itemSupplier = itemSupplier;
+		this.modID = modID;
+		this.fluidName = fluidName;
     }
 
-    protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName, int color) {
-	this.itemSupplier = itemSupplier;
-	this.modID = modID;
-	this.fluidName = fluidName;
-	this.color = color;
+    public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, 
+    		String fluidName, int color) {
+		this.itemSupplier = itemSupplier;
+		this.modID = modID;
+		this.fluidName = fluidName;
+		this.color = color;
     }
 
     @Override
@@ -102,7 +103,6 @@ public abstract class FluidNonPlaceable extends Fluid {
 
     @Override
     public VoxelShape getShape(FluidState p_215664_1_, BlockGetter p_215664_2_, BlockPos p_215664_3_) {
-	return Shapes.block();
+    	return Shapes.block();
     }
-
 }

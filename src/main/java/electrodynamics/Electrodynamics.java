@@ -13,6 +13,7 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -50,11 +51,11 @@ public class Electrodynamics {
 	SoundRegister.SOUNDS.register(bus);
 	DeferredRegisters.BLOCKS.register(bus);
 	DeferredRegisters.ITEMS.register(bus);
-	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	DeferredRegisters.TILES.register(bus);
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
 	DeferredRegisters.ENTITIES.register(bus);
+	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
     }
 
     // TODO: ERROR Parsing error loading custom advancement electrodynamics:adv9:
@@ -72,6 +73,7 @@ public class Electrodynamics {
 	    }
 	}
 	NetworkHandler.init();
+	ElectrodynamicsTags.init();
     }
 
     @SubscribeEvent

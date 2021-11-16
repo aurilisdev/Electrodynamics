@@ -11,6 +11,8 @@ import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -74,10 +76,15 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 
     @Override
     public ComponentFluidHandlerSimple addFluidTank(Fluid fluid, int capacity, boolean isInput) {
-	fluidTank = new FluidTank(capacity);
-	fluidTank.setFluid(new FluidStack(fluid, 0));
-	return this;
+		fluidTank = new FluidTank(capacity);
+		fluidTank.setFluid(new FluidStack(fluid, 0));
+		return this;
     }
+    
+    @Override
+	public ComponentFluidHandlerSimple addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
+		return this;
+	}
 
     @Override
     public FluidStack getFluidInTank(int tank, boolean isInput) {
@@ -142,8 +149,16 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     }
 
     public ComponentFluidHandlerSimple setValidFluids(List<Fluid> fluids) {
-	validFluids = fluids;
-	return this;
+		validFluids = fluids;
+		return this;
+    }
+    
+    public ComponentFluidHandlerSimple setValidFluidTags(List<Tags.IOptionalNamedTag<Fluid>> tags) {
+    	validFluids = new ArrayList<>();
+    	for(Tags.IOptionalNamedTag<Fluid> tag : tags) {
+    		validFluids.addAll(tag.getValues());
+    	}
+    	return this;
     }
 
     @Override
@@ -156,5 +171,4 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     public void addFluids() {
 	// not needed
     }
-
 }
