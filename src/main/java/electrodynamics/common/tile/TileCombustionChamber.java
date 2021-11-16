@@ -40,8 +40,8 @@ public class TileCombustionChamber extends GenericTile {
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-	addComponent(
-		new ComponentFluidHandlerMulti(this).addFluidTank(ElectrodynamicsTags.Fluids.ETHANOL, TANK_CAPACITY, true).relativeInput(Direction.WEST));
+	addComponent(new ComponentFluidHandlerMulti(this).addFluidTank(ElectrodynamicsTags.Fluids.ETHANOL, TANK_CAPACITY, true)
+		.relativeInput(Direction.WEST));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -58,17 +58,17 @@ public class TileCombustionChamber extends GenericTile {
 	if (burnTime <= 0) {
 	    boolean shouldSend = !running;
 	    running = false;
-	    //can you think of a better name
+	    // can you think of a better name
 	    List<Fluid> ethanols = ElectrodynamicsTags.Fluids.ETHANOL.getValues();
-	    for(Fluid fluid : ethanols) {
-	    	FluidStack stack = tank.getStackFromFluid(fluid, true);
-		    if (stack.getAmount() > 0) {
-				stack.setAmount(stack.getAmount() - 1);
-				running = true;
-				burnTime = TICKS_PER_MILLIBUCKET;
-				shouldSend = true;
-				break;
-		    }
+	    for (Fluid fluid : ethanols) {
+		FluidStack stack = tank.getStackFromFluid(fluid, true);
+		if (stack.getAmount() > 0) {
+		    stack.setAmount(stack.getAmount() - 1);
+		    running = true;
+		    burnTime = TICKS_PER_MILLIBUCKET;
+		    shouldSend = true;
+		    break;
+		}
 	    }
 	    if (shouldSend) {
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();

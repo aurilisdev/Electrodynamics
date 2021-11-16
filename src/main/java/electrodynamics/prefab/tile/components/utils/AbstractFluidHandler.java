@@ -136,7 +136,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
     }
 
     public abstract AbstractFluidHandler<A> addFluidTank(Fluid fluid, int capacity, boolean isInput);
-    
+
     public abstract AbstractFluidHandler<A> addFluidTank(Tags.IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput);
 
     public abstract AbstractFluidHandler<A> setFluidInTank(FluidStack stack, int tank, boolean isInput);

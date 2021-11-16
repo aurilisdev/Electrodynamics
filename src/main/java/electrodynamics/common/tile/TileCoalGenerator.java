@@ -26,6 +26,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileCoalGenerator extends GenericTile {
     public static final int COAL_BURN_TIME = 1000;
@@ -77,7 +78,8 @@ public class TileCoalGenerator extends GenericTile {
 	    if (update) {
 		level.setBlock(worldPosition,
 			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
-				.defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)),
+				.defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
 			3);
 	    }
 	}
