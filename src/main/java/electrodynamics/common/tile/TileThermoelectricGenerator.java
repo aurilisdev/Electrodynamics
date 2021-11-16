@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -15,7 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
-public class TileThermoelectricGenerator extends GenericTileTicking {
+public class TileThermoelectricGenerator extends GenericTile {
     protected CachedTileOutput output;
     protected boolean hasHeat = false;
 

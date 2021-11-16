@@ -9,7 +9,7 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -25,7 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TileAdvancedSolarPanel extends GenericTileTicking implements IMultiblockTileNode {
+public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTileNode {
     public TargetValue currentRotation = new TargetValue(0);
     protected CachedTileOutput output;
     private boolean generating = false;

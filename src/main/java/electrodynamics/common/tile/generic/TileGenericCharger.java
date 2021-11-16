@@ -3,7 +3,7 @@ package electrodynamics.common.tile.generic;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.ContainerChargerGeneric;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class TileGenericCharger extends GenericTileTicking {
+public abstract class TileGenericCharger extends GenericTile {
 
     protected TileGenericCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition,
 	    BlockState blockState) {

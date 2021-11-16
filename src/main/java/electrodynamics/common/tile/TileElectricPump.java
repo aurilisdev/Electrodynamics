@@ -5,7 +5,7 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileElectricPump extends GenericTileTicking {
+public class TileElectricPump extends GenericTile {
     private boolean isGenerating;
 
     public TileElectricPump(BlockPos worldPosition, BlockState blockState) {

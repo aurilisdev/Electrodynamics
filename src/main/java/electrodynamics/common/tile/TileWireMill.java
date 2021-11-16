@@ -11,7 +11,7 @@ import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -27,7 +27,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileWireMill extends GenericTileTicking {
+public class TileWireMill extends GenericTile {
     public TileWireMill(BlockPos worldPosition, BlockState blockState) {
 	this(0, worldPosition, blockState);
     }

@@ -7,7 +7,7 @@ import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -27,7 +27,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileCoalGenerator extends GenericTileTicking {
+public class TileCoalGenerator extends GenericTile {
     public static final int COAL_BURN_TIME = 1000;
     protected static final int[] SLOTS_INPUT = new int[] { 0 };
 

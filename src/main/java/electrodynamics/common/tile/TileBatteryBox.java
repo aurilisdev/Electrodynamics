@@ -6,7 +6,7 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -27,7 +27,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileBatteryBox extends GenericTileTicking implements IEnergyStorage {
+public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
     public final double powerOutput;
     public final double maxJoules;

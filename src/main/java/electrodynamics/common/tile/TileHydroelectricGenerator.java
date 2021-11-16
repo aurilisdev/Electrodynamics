@@ -5,7 +5,7 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 
-public class TileHydroelectricGenerator extends GenericTileTicking {
+public class TileHydroelectricGenerator extends GenericTile {
     protected CachedTileOutput output;
     public boolean isGenerating = false;
     public boolean directionFlag = false;

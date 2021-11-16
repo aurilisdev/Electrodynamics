@@ -11,7 +11,7 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.do2o.specificmachines.EnergizedAlloyerRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -27,7 +27,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileEnergizedAlloyer extends GenericTileTicking {
+public class TileEnergizedAlloyer extends GenericTile {
 
     public TileEnergizedAlloyer(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_ENERGIZEDALLOYER.get(), worldPosition, blockState);

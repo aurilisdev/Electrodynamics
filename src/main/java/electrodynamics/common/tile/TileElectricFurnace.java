@@ -11,7 +11,7 @@ import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple
 import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -31,7 +31,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileElectricFurnace extends GenericTileTicking {
+public class TileElectricFurnace extends GenericTile {
 
     protected Recipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;

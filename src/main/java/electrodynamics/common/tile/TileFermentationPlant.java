@@ -7,7 +7,7 @@ import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -24,7 +24,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileFermentationPlant extends GenericTileTicking {
+public class TileFermentationPlant extends GenericTile {
 
     public static final int MAX_TANK_CAPACITY = 5000;
 

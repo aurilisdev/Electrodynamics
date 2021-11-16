@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.network.ElectricNetwork;
-import electrodynamics.prefab.tile.GenericTileTicking;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -16,7 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileMultimeterBlock extends GenericTileTicking {
+public class TileMultimeterBlock extends GenericTile {
     public double voltage = 0.0;
     public double joules = 0;
     public double resistance = 0;
