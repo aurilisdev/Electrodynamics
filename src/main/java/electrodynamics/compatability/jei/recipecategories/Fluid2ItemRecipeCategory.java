@@ -171,7 +171,7 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 
     public NonNullList<FluidStack> getFluids(Fluid2ItemRecipe recipe) {
 	NonNullList<FluidStack> fluids = NonNullList.create();
-	fluids.add(((FluidIngredient) recipe.getIngredients().get(0)).getFluidStack());
+	fluids.addAll(((FluidIngredient) recipe.getIngredients().get(0)).getMatchingFluids());
 	return fluids;
     }
 

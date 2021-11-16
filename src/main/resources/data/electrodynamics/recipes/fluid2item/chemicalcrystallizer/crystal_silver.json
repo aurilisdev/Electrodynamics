@@ -2,7 +2,7 @@
 	"type" : "electrodynamics:chemical_crystallizer_recipe",
 	
 	"fluid_input":{
-		"fluid":"electrodynamics:fluidmineralsilver",
+		"tag":"forge:silver_mineral_fluid",
 		"amount": 200
 	},
 	"item_output":{

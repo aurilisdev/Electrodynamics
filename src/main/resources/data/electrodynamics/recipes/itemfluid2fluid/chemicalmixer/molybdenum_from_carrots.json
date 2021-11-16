@@ -5,7 +5,7 @@
 		"count": 6
 	},
 	"fluid_input": {
-		"tag": "forge:fluids/sulfuric_acid",
+		"tag": "forge:sulfuric_acid",
 		"amount": 100
 	},
 	"fluid_output": {
