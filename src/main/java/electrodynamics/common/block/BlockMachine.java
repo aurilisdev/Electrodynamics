@@ -91,24 +91,13 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	ItemStack addstack;
-	switch (machine) {
-	case coalgeneratorrunning:
-	    addstack = getMachine(SubtypeMachine.coalgenerator);
-	    break;
-	case electricfurnacerunning:
-	    addstack = getMachine(SubtypeMachine.electricfurnace);
-	    break;
-	case oxidationfurnacerunning:
-	    addstack = getMachine(SubtypeMachine.oxidationfurnace);
-	    break;
-	case energizedalloyerrunning:
-	    addstack = getMachine(SubtypeMachine.energizedalloyer);
-	    break;
-	default:
-	    addstack = getMachine(machine);
-	}
-
+	ItemStack addstack = switch (machine) {
+	case coalgeneratorrunning -> getMachine(SubtypeMachine.coalgenerator);
+	case electricfurnacerunning -> getMachine(SubtypeMachine.electricfurnace);
+	case oxidationfurnacerunning -> getMachine(SubtypeMachine.oxidationfurnace);
+	case energizedalloyerrunning -> getMachine(SubtypeMachine.energizedalloyer);
+	default -> getMachine(machine);
+	};
 	BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 	tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
 	    double joules = el.getJoulesStored();

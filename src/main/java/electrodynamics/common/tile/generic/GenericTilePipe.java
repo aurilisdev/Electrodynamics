@@ -124,11 +124,12 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 	    }
 	    if (connectedNets.isEmpty()) {
 		fluidNetwork = new FluidNetwork(Sets.newHashSet(this));
-	    } else if (connectedNets.size() == 1) {
-		fluidNetwork = (FluidNetwork) connectedNets.toArray()[0];
-		fluidNetwork.conductorSet.add(this);
 	    } else {
-		fluidNetwork = new FluidNetwork(connectedNets, false);
+		if (connectedNets.size() == 1) {
+		    fluidNetwork = (FluidNetwork) connectedNets.toArray()[0];
+		} else {
+		    fluidNetwork = new FluidNetwork(connectedNets, false);
+		}
 		fluidNetwork.conductorSet.add(this);
 	    }
 	}

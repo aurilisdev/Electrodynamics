@@ -71,10 +71,8 @@ public class TileCoalGenerator extends GenericTile {
 		if (burnTime > 0) {
 		    update = true;
 		}
-	    } else {
-		if (burnTime <= 0) {
-		    update = true;
-		}
+	    } else if (burnTime <= 0) {
+		update = true;
 	    }
 	    if (update) {
 		level.setBlock(worldPosition,

@@ -3,7 +3,15 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeMineralFluid implements ISubtype {
-    copper, tin, silver, lead, vanadium, iron, gold, lithium, molybdenum;
+    copper,
+    tin,
+    silver,
+    lead,
+    vanadium,
+    iron,
+    gold,
+    lithium,
+    molybdenum;
 
     @Override
     public String tag() {

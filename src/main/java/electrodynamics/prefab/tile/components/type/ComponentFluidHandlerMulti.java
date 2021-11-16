@@ -96,11 +96,9 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 		inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
 		inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
 	    }
-	} else {
-	    if (!getValidOutputFluids().contains(fluid)) {
-		outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
-		outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
-	    }
+	} else if (!getValidOutputFluids().contains(fluid)) {
+	    outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+	    outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
 	}
 	return this;
     }
@@ -133,12 +131,12 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 
     @Override
     public int getInputTanks() {
-	return inputFluids.values().size();
+	return inputFluids.size();
     }
 
     @Override
     public int getOutputTanks() {
-	return outputFluids.values().size();
+	return outputFluids.size();
     }
 
     // Use boolean method
@@ -240,16 +238,12 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 
     @Override
     public List<Fluid> getValidInputFluids() {
-	List<Fluid> valid = new ArrayList<>();
-	valid.addAll(inputFluids.keySet());
-	return valid;
+	return new ArrayList<>(inputFluids.keySet());
     }
 
     @Override
     public List<Fluid> getValidOutputFluids() {
-	List<Fluid> valid = new ArrayList<>();
-	valid.addAll(outputFluids.keySet());
-	return valid;
+	return new ArrayList<>(outputFluids.keySet());
     }
 
     @Override

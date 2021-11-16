@@ -40,7 +40,7 @@ public class TileFermentationPlant extends GenericTile {
 	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
 		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));
 	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
-		.type(ComponentProcessorType.ObjectToObject).canProcess(component -> canProcessFermPlan(component))
+		.type(ComponentProcessorType.ObjectToObject).canProcess(this::canProcessFermPlan)
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.fermentationplant")

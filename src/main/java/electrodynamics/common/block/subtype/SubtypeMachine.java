@@ -52,13 +52,17 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public enum SubtypeMachine implements ISubtype {
-    electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
+    electricfurnace(true, TileElectricFurnace.class),
+    electricfurnacerunning(false, TileElectricFurnace.class),
     // split
-    electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
+    electricfurnacedouble(true, TileElectricFurnaceDouble.class),
+    electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
     // split
-    electricfurnacetriple(true, TileElectricFurnaceTriple.class), electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
+    electricfurnacetriple(true, TileElectricFurnaceTriple.class),
+    electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
     // split
-    coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class),
+    coalgenerator(true, TileCoalGenerator.class),
+    coalgeneratorrunning(false, TileCoalGenerator.class),
     // split
     wiremill(true, TileWireMill.class),
     // split
@@ -82,7 +86,8 @@ public enum SubtypeMachine implements ISubtype {
     // split
     lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
     // split
-    oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
+    oxidationfurnace(true, TileOxidationFurnace.class),
+    oxidationfurnacerunning(false, TileOxidationFurnace.class),
     // split
     downgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
     // split

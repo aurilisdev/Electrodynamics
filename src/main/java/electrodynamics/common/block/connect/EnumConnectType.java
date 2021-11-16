@@ -4,7 +4,9 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public enum EnumConnectType implements StringRepresentable {
-    NONE, WIRE, INVENTORY;
+    NONE,
+    WIRE,
+    INVENTORY;
 
     public static final EnumProperty<EnumConnectType> DOWN = EnumProperty.create("down", EnumConnectType.class);
     public static final EnumProperty<EnumConnectType> UP = EnumProperty.create("up", EnumConnectType.class);

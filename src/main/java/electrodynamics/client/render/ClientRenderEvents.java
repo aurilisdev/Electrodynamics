@@ -21,7 +21,7 @@ public class ClientRenderEvents {
     @SubscribeEvent
     public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 
-	if (event.getType().equals(ElementType.ALL)) {
+	if (ElementType.ALL.equals(event.getType())) {
 	    ItemStack gunStackMainHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.MAINHAND);
 	    ItemStack gunStackOffHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.OFFHAND);
 

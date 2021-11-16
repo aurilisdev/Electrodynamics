@@ -23,30 +23,16 @@ public class RenderLithiumBatteryBox implements BlockEntityRenderer<TileLithiumB
 	    int combinedLightIn, int combinedOverlayIn) {
 	BakedModel ibakedmodel;
 	int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
-	switch (stored) {
-	default:
-	case 0:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX);
-	    break;
-	case 1:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX2);
-	    break;
-	case 2:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX3);
-	    break;
-	case 3:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX4);
-	    break;
-	case 4:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX5);
-	    break;
-	case 5:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX6);
-	    break;
-	case 6:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX7);
-	    break;
-	}
+	ibakedmodel = switch (stored) {
+	case 0 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX);
+	case 1 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX2);
+	case 2 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX3);
+	case 3 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX4);
+	case 4 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX5);
+	case 5 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX6);
+	case 6 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX7);
+	default -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX);
+	};
 
 	switch (tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING)) {
 	case NORTH:

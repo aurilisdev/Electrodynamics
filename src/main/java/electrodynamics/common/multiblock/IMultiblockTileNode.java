@@ -31,12 +31,10 @@ public interface IMultiblockTileNode {
 		if (subnode != null) {
 		    subnode.nodePos = new Location(pos);
 		}
-	    } else {
-		if (inBlock instanceof IMultiblockSubnode) {
-		    TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
-		    if (subnode != null && subnode.nodePos.toBlockPos().equals(pos)) {
-			world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
-		    }
+	    } else if (inBlock instanceof IMultiblockSubnode) {
+		TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
+		if (subnode != null && subnode.nodePos.toBlockPos().equals(pos)) {
+		    world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
 		}
 	    }
 	}

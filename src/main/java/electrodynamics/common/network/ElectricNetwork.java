@@ -126,9 +126,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
     }
 
     public Set<BlockEntity> getEnergyAcceptors() {
-	Set<BlockEntity> toReturn = new HashSet<>();
-	toReturn.addAll(acceptorSet);
-	return toReturn;
+	return new HashSet<>(acceptorSet);
     }
 
     private boolean checkForOverload() {

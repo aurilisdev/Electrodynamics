@@ -41,7 +41,7 @@ public class TileReinforcedAlloyer extends GenericTile {
 	addComponent(new ComponentContainerProvider("container.reinforcedalloyer")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
-	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(component -> canProcessReinfAlloy(component))
+	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(this::canProcessReinfAlloy)
 		.process(component -> component.processDO2ORecipe(component, ReinforcedAlloyerRecipe.class))
 		.requiredTicks(Constants.REINFORCEDALLOYER_REQUIRED_TICKS).usage(Constants.REINFORCEDALLOYER_USAGE_PER_TICK)
 		.type(ComponentProcessorType.DoubleObjectToObject));

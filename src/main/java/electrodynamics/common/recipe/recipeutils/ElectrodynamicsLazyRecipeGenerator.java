@@ -412,79 +412,64 @@ public class ElectrodynamicsLazyRecipeGenerator {
 
     public static String getO2ORecipe(String resourceName, String itemInput, boolean isTag, int inputCount, String itemOutput, int count) {
 
-	String o2ORecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"input\":{\n" + "        "
-		+ (isTag ? "\"tag\":\"" : "\"item\":\"") + itemInput + "\",\n" + "        \"count\":" + inputCount + "\n" + "    },\n"
-		+ "    \"output\":{\n" + "        \"item\":\"" + itemOutput + "\",\n" + "        \"count\":" + count + "\n" + "    }\n" + "}";
-
-	return o2ORecipe;
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"input\":{\n" + "        " + (isTag ? "\"tag\":\"" : "\"item\":\"")
+		+ itemInput + "\",\n" + "        \"count\":" + inputCount + "\n" + "    },\n" + "    \"output\":{\n" + "        \"item\":\""
+		+ itemOutput + "\",\n" + "        \"count\":" + count + "\n" + "    }\n" + "}";
     }
 
     public static String getDO2ORecipe(String resourceName, String itemInput1, boolean is1Tag, int input1Count, String itemInput2, boolean is2Tag,
 	    int input2Count, String itemOutput, int count) {
 
-	String dO2ORecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"input1\":{\n" + "        "
-		+ (is1Tag ? "\"tag\":\"" : "\"item\":\"") + itemInput1 + "\",\n" + "        \"count\":" + input1Count + "\n" + "    },\n"
-		+ "    \"input2\":{\n" + "        " + (is2Tag ? "\"tag\":\"" : "\"item\":\"") + itemInput2 + "\",\n" + "        \"count\":"
-		+ input2Count + "\n" + "    },\n" + "    \"output\":{\n" + "        \"item\":\"" + itemOutput + "\",\n" + "        \"count\":" + count
-		+ "\n" + "    }\n" + "}";
-
-	return dO2ORecipe;
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"input1\":{\n" + "        " + (is1Tag ? "\"tag\":\"" : "\"item\":\"")
+		+ itemInput1 + "\",\n" + "        \"count\":" + input1Count + "\n" + "    },\n" + "    \"input2\":{\n" + "        "
+		+ (is2Tag ? "\"tag\":\"" : "\"item\":\"") + itemInput2 + "\",\n" + "        \"count\":" + input2Count + "\n" + "    },\n"
+		+ "    \"output\":{\n" + "        \"item\":\"" + itemOutput + "\",\n" + "        \"count\":" + count + "\n" + "    }\n" + "}";
 
     }
 
     public static String getFluid2FluidRecipe(String resourceName, String fluidInput, int inputCount, String fluidOutput, int outputCount) {
 
-	String fluid2FluidRecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"fluid_input\":{\n" + "        \"fluid\":\""
-		+ fluidInput + "\",\n" + "        \"amount\":" + inputCount + "\n" + "    },\n" + "    \"fluid_output\":{\n" + "        \"fluid\":\""
-		+ fluidOutput + "\",\n" + "        \"amount\":" + outputCount + "\n" + "    }\n" + "}";
-
-	return fluid2FluidRecipe;
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"fluid_input\":{\n" + "        \"fluid\":\"" + fluidInput + "\",\n"
+		+ "        \"amount\":" + inputCount + "\n" + "    },\n" + "    \"fluid_output\":{\n" + "        \"fluid\":\"" + fluidOutput + "\",\n"
+		+ "        \"amount\":" + outputCount + "\n" + "    }\n" + "}";
 
     }
 
     public static String getItem2FluidRecipe(String resourceName, String itemInput, boolean isTag, String fluidOutput, int outputCount) {
 
-	String fluid2FluidRecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"item_input\":{\n" + "        "
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"item_input\":{\n" + "        "
 		+ (isTag ? "\"tag\":\"" : "\"item\":\"") + itemInput + "\"\n" + "    },\n" + "    \"fluid_output\":{\n" + "        \"fluid\":\""
 		+ fluidOutput + "\",\n" + "        \"amount\":" + outputCount + "\n" + "    }\n" + "}";
-
-	return fluid2FluidRecipe;
 
     }
 
     public static String getFluid2ItemRecipe(String resourceName, String fluidInput, int inputCount, String itemOutput, int outputCount) {
 
-	String fluid2ItemRecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"fluid_input\":{\n" + "        \"fluid\":\""
-		+ fluidInput + "\",\n" + "        \"amount\":" + inputCount + "\n" + "    },\n" + "    \"item_output\":{\n" + "        \"item\":\""
-		+ itemOutput + "\",\n" + "        \"count\":" + outputCount + "\n" + "    }\n" + "}";
-
-	return fluid2ItemRecipe;
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"fluid_input\":{\n" + "        \"fluid\":\"" + fluidInput + "\",\n"
+		+ "        \"amount\":" + inputCount + "\n" + "    },\n" + "    \"item_output\":{\n" + "        \"item\":\"" + itemOutput + "\",\n"
+		+ "        \"count\":" + outputCount + "\n" + "    }\n" + "}";
 
     }
 
     public static String getFluidItem2ItemRecipe(String resourceName, String itemInput, boolean isItemTag, int inputItemCount, String fluidInput,
 	    int inputFluidCount, String itemOutput, int outputCount) {
 
-	String fluidItem2ItemRecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"item_input\":{\n" + "        "
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"item_input\":{\n" + "        "
 		+ (isItemTag ? "\"tag\":\"" : "\"item\":\"") + itemInput + "\",\n" + "        \"count\":" + inputItemCount + "\n" + "    },\n"
 		+ "    \"fluid_input\":{\n" + "        \"fluid\":\"" + fluidInput + "\",\n" + "        \"amount\":" + inputFluidCount + "\n"
 		+ "    },\n" + "    \"item_output\":{\n" + "        \"item\":\"" + itemOutput + "\",\n" + "        \"count\":" + outputCount + "\n"
 		+ "    }\n" + "}";
-
-	return fluidItem2ItemRecipe;
 
     }
 
     public static String getFluidItem2FluidRecipe(String resourceName, String itemInput, boolean isItemTag, int inputItemCount, String fluidInput,
 	    int inputFluidCount, String fluidOutput, int outputCount) {
 
-	String fluidItem2FluidRecipe = "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"item_input\":{\n" + "        "
+	return "{\n" + "    \"type\":\"" + resourceName + "\",\n" + "\n" + "    \"item_input\":{\n" + "        "
 		+ (isItemTag ? "\"tag\":\"" : "\"item\":\"") + itemInput + "\",\n" + "        \"count\":" + inputItemCount + "\n" + "    },\n"
 		+ "    \"fluid_input\":{\n" + "        \"fluid\":\"" + fluidInput + "\",\n" + "        \"amount\":" + inputFluidCount + "\n"
 		+ "    },\n" + "    \"fluid_output\":{\n" + "        \"fluid\":\"" + fluidOutput + "\",\n" + "        \"amount\":" + outputCount
 		+ "\n" + "    }\n" + "}";
-
-	return fluidItem2FluidRecipe;
 
     }
 
