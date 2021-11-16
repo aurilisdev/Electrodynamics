@@ -31,10 +31,8 @@ public class PacketUpdateTile {
 	    if (component.getGuiPacketSupplier() != null) {
 		component.getGuiPacketSupplier().accept(base);
 	    }
-	} else {
-	    if (component.getCustomPacketSupplier() != null) {
-		component.getCustomPacketSupplier().accept(base);
-	    }
+	} else if (component.getCustomPacketSupplier() != null) {
+	    component.getCustomPacketSupplier().accept(base);
 	}
 	this.isGUI = isGUI;
     }
@@ -64,10 +62,8 @@ public class PacketUpdateTile {
 			    if (handler.getGuiPacketConsumer() != null) {
 				handler.getGuiPacketConsumer().accept(message.updateTag);
 			    }
-			} else {
-			    if (handler.getCustomPacketConsumer() != null) {
-				handler.getCustomPacketConsumer().accept(message.updateTag);
-			    }
+			} else if (handler.getCustomPacketConsumer() != null) {
+			    handler.getCustomPacketConsumer().accept(message.updateTag);
 			}
 		    }
 		}

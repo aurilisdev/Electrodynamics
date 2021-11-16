@@ -182,8 +182,7 @@ public final class Location {
 	temp = Double.doubleToLongBits(y);
 	result = prime * result + (int) (temp ^ temp >>> 32);
 	temp = Double.doubleToLongBits(z);
-	result = prime * result + (int) (temp ^ temp >>> 32);
-	return result;
+	return prime * result + (int) (temp ^ temp >>> 32);
     }
 
     @Override

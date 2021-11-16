@@ -58,36 +58,19 @@ public class TileHydroelectricGenerator extends GenericTile {
 	    BlockState onShift = level.getBlockState(shift);
 	    isGenerating = onShift.getFluidState().getType() == Fluids.FLOWING_WATER;
 	    if (isGenerating && onShift.getBlock() instanceof LiquidBlock) {
-		int amount = level.getBlockState(shift).getValue(LiquidBlock.LEVEL);
 		shift = worldPosition.relative(facing).relative(facing.getClockWise());
 		onShift = level.getBlockState(shift);
-		if (onShift.getBlock() instanceof LiquidBlock) {
-		    if (amount > onShift.getValue(LiquidBlock.LEVEL)) {
-			directionFlag = true;
-		    } else {
-			shift = worldPosition.relative(facing).relative(facing.getClockWise().getOpposite());
-			onShift = level.getBlockState(shift);
-			if (onShift.getBlock() instanceof LiquidBlock) {
-			    if (amount >= onShift.getValue(LiquidBlock.LEVEL)) {
-				directionFlag = false;
-			    } else {
-				isGenerating = false;
-			    }
-			} else {
-			    isGenerating = false;
-			}
-		    }
+		int amount = onShift.getValue(LiquidBlock.LEVEL);
+		if (onShift.getBlock() instanceof LiquidBlock && amount > onShift.getValue(LiquidBlock.LEVEL)) {
+		    directionFlag = true;
 		} else {
 		    shift = worldPosition.relative(facing).relative(facing.getClockWise().getOpposite());
 		    onShift = level.getBlockState(shift);
-		    if (onShift.getBlock() instanceof LiquidBlock) {
-			if (amount >= onShift.getValue(LiquidBlock.LEVEL)) {
-			    directionFlag = false;
-			} else {
-			    isGenerating = false;
-			}
+		    amount = onShift.getValue(LiquidBlock.LEVEL);
+		    if ((onShift.getBlock() instanceof LiquidBlock) && (amount >= onShift.getValue(LiquidBlock.LEVEL))) {
+		        directionFlag = false;
 		    } else {
-			isGenerating = false;
+		        isGenerating = false;
 		    }
 		}
 	    }

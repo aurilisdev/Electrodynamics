@@ -45,7 +45,6 @@ public class FluidIngredient extends Ingredient {
 	    }
 	} catch (Exception e) {
 	    ElectrodynamicsRecipe.LOGGER.info("Invalid Fluid Type or Fluid amount entered in JSON file");
-	    return null;
 	}
 	return null;
     }

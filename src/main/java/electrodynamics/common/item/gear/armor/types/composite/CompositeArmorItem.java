@@ -70,15 +70,13 @@ public class CompositeArmorItem extends ArmorItem {
 		    } else {
 			model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), slot);
 		    }
+		} else if (slot == EquipmentSlot.FEET) {
+		    model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), slot);
 		} else {
-		    if (slot == EquipmentSlot.FEET) {
-			model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), slot);
+		    if (hasChest) {
+			model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
 		    } else {
-			if (hasChest) {
-			    model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
-			} else {
-			    model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
-			}
+			model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
 		    }
 		}
 
@@ -94,7 +92,7 @@ public class CompositeArmorItem extends ArmorItem {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 	CompositeArmorItem item = (CompositeArmorItem) stack.getItem();
-	if (item.getSlot().equals(EquipmentSlot.CHEST)) {
+	if (EquipmentSlot.CHEST.equals(item.getSlot())) {
 	    return new CapabilityCeramicPlateHolderProvider();
 	}
 	return null;
@@ -126,7 +124,7 @@ public class CompositeArmorItem extends ArmorItem {
     @Override
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	if (getSlot().equals(EquipmentSlot.CHEST)) {
+	if (EquipmentSlot.CHEST.equals(getSlot())) {
 	    stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
 		Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getPlateCount() + ""))
 			.withStyle(ChatFormatting.AQUA);

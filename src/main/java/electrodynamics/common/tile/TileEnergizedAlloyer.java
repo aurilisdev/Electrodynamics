@@ -41,7 +41,7 @@ public class TileEnergizedAlloyer extends GenericTile {
 	addComponent(new ComponentContainerProvider("container.energizedalloyer")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
-	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(component -> canProcessEnergAlloy(component))
+	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).canProcess(this::canProcessEnergAlloy)
 		.process(component -> component.processDO2ORecipe(component, EnergizedAlloyerRecipe.class))
 		.requiredTicks(Constants.ENERGIZEDALLOYER_REQUIRED_TICKS).usage(Constants.ENERGIZEDALLOYER_USAGE_PER_TICK)
 		.type(ComponentProcessorType.DoubleObjectToObject));

@@ -94,22 +94,22 @@ public class BlockPipe extends GenericEntityBlockWaterloggable {
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 	VoxelShape shape = cube;
 	HashSet<Direction> checked = new HashSet<>();
-	if (!state.getValue(EnumConnectType.UP).equals(EnumConnectType.NONE)) {
+	if (!EnumConnectType.NONE.equals(state.getValue(EnumConnectType.UP))) {
 	    checked.add(Direction.UP);
 	}
-	if (!state.getValue(EnumConnectType.DOWN).equals(EnumConnectType.NONE)) {
+	if (!EnumConnectType.NONE.equals(state.getValue(EnumConnectType.DOWN))) {
 	    checked.add(Direction.DOWN);
 	}
-	if (!state.getValue(EnumConnectType.WEST).equals(EnumConnectType.NONE)) {
+	if (!EnumConnectType.NONE.equals(state.getValue(EnumConnectType.WEST))) {
 	    checked.add(Direction.WEST);
 	}
-	if (!state.getValue(EnumConnectType.EAST).equals(EnumConnectType.NONE)) {
+	if (!EnumConnectType.NONE.equals(state.getValue(EnumConnectType.EAST))) {
 	    checked.add(Direction.EAST);
 	}
-	if (!state.getValue(EnumConnectType.NORTH).equals(EnumConnectType.NONE)) {
+	if (!EnumConnectType.NONE.equals(state.getValue(EnumConnectType.NORTH))) {
 	    checked.add(Direction.NORTH);
 	}
-	if (!state.getValue(EnumConnectType.SOUTH).equals(EnumConnectType.NONE)) {
+	if (!EnumConnectType.NONE.equals(state.getValue(EnumConnectType.SOUTH))) {
 	    checked.add(Direction.SOUTH);
 	}
 	locked = true;

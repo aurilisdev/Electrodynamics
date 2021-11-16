@@ -48,10 +48,8 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	super.tick();
 	if (!level.isClientSide) {
 	    entityData.set(NUMBER, number);
-	} else {
-	    if (!entityData.isEmpty()) {
-		number = entityData.get(NUMBER);
-	    }
+	} else if (!entityData.isEmpty()) {
+	    number = entityData.get(NUMBER);
 	}
     }
 

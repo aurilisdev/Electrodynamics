@@ -23,30 +23,16 @@ public class RenderBatteryBox implements BlockEntityRenderer<TileBatteryBox> {
 	    int combinedOverlayIn) {
 	BakedModel ibakedmodel;
 	int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
-	switch (stored) {
-	default:
-	case 0:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX);
-	    break;
-	case 1:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX2);
-	    break;
-	case 2:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX3);
-	    break;
-	case 3:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX4);
-	    break;
-	case 4:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX5);
-	    break;
-	case 5:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX6);
-	    break;
-	case 6:
-	    ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX7);
-	    break;
-	}
+	ibakedmodel = switch (stored) {
+	case 0 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX);
+	case 1 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX2);
+	case 2 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX3);
+	case 3 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX4);
+	case 4 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX5);
+	case 5 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX6);
+	case 6 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX7);
+	default -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX);
+	};
 
 	switch (tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING)) {
 	case NORTH:

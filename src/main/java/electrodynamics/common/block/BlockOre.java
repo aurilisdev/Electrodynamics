@@ -27,24 +27,21 @@ public class BlockOre extends OreBlock {
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
 
 	Item oreItem;
-	int count;
-
-	// This makes it easier to follow and add on to
-	// Plus it gives you a little more wiggle room with drops!
-	switch (ore) {
-	case sulfur, niter, sylvite:
+	int count = switch (ore) {
+	case sulfur, niter, sylvite -> {
 	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(
 		    ore == SubtypeOre.sulfur ? SubtypeDust.sulfur : ore == SubtypeOre.sylvite ? SubtypeCrystal.potassiumchloride : SubtypeDust.niter);
-	    count = new Random().nextInt(2) + 1;
-	    break;
-	case halite:
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.halite);
-	    count = new Random().nextInt(3) + 1;
-	    break;
-	default:
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore);
-	    count = 1;
+	    yield new Random().nextInt(2) + 1;
 	}
+	case halite -> {
+	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.halite);
+	    yield new Random().nextInt(3) + 1;
+	}
+	default -> {
+	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore);
+	    yield 1;
+	}
+	};
 
 	return Arrays.asList(new ItemStack(oreItem, count));
 

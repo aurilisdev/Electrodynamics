@@ -38,13 +38,10 @@ public class ItemMultiDigger extends DiggerItem {
 	    return net.minecraftforge.common.TierSortingRegistry.isCorrectTierForDrops(getTier(), state) && checkState(state);
 	}
 	int i = getTier().getLevel();
-	if (i < 3 && state.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
+	if (i < 3 && state.is(BlockTags.NEEDS_DIAMOND_TOOL) || i < 2 && state.is(BlockTags.NEEDS_IRON_TOOL)) {
 	    return false;
-	} else if (i < 2 && state.is(BlockTags.NEEDS_IRON_TOOL)) {
-	    return false;
-	} else {
-	    return i >= 1 && state.is(BlockTags.NEEDS_STONE_TOOL) && checkState(state);
 	}
+	return i >= 1 && state.is(BlockTags.NEEDS_STONE_TOOL) && checkState(state);
     }
 
     // FORGE START
