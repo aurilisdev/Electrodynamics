@@ -6,9 +6,8 @@ import java.util.List;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.GenericTileTicking;
-import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
@@ -27,19 +26,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
@@ -49,22 +40,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public abstract class BlockGenericMachine extends BaseEntityBlock implements IWrenchable {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-
+public abstract class BlockGenericMachine extends GenericEntityBlockWaterloggable {
     protected BlockGenericMachine() {
 	super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
-	return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, Mirror rotation) {
-	return state.rotate(rotation.getRotation(state.getValue(FACING)));
     }
 
     @Override
@@ -75,11 +54,6 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	    Containers.dropContents(worldIn, pos, generic.<ComponentInventory>getComponent(ComponentType.Inventory));
 	}
 	super.onRemove(state, worldIn, pos, newState, isMoving);
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-	return RenderShape.MODEL;
     }
 
     @Override
@@ -175,6 +149,7 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+	super.createBlockStateDefinition(builder);
 	builder.add(FACING);
     }
 
@@ -189,30 +164,6 @@ public abstract class BlockGenericMachine extends BaseEntityBlock implements IWr
 	    }
 	});
 	return Arrays.asList(stack);
-    }
-
-    @Override
-    public void onRotate(ItemStack stack, BlockPos pos, Player player) {
-	player.level.setBlockAndUpdate(pos, rotate(player.level.getBlockState(pos), Rotation.CLOCKWISE_90));
-    }
-
-    @Override
-    public void onPickup(ItemStack stack, BlockPos pos, Player player) {
-	Level world = player.level;
-	BlockEntity tile = world.getBlockEntity(pos);
-	if (tile instanceof GenericTile generic && generic.hasComponent(ComponentType.Inventory)) {
-	    Containers.dropContents(world, pos, generic.<ComponentInventory>getComponent(ComponentType.Inventory));
-	}
-	world.destroyBlock(pos, true, player);
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
-	return (l, pos, s, tile) -> {
-	    if (tile instanceof GenericTileTicking generic) {
-		generic.tick();
-	    }
-	};
     }
 
 }

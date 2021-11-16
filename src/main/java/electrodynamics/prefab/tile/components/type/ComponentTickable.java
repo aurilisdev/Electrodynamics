@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
+import net.minecraft.world.level.Level;
 
 public class ComponentTickable implements Component {
     private GenericTile holder;
@@ -73,6 +74,15 @@ public class ComponentTickable implements Component {
 
     public long getTicks() {
 	return ticks;
+    }
+
+    public void performTick(Level level) {
+	tickCommon();
+	if (!level.isClientSide) {
+	    tickServer();
+	} else {
+	    tickClient();
+	}
     }
 
     @Override
