@@ -53,27 +53,27 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 		    	return true;
 		    }
 	    }
-	}
-	// next check specific fluids
-	for (Fluid fluid : fluids) {
-	    if (fluid.isSame(stack.getFluid())) {
-		return true;
-	    }
-	}
-	return false;
+	
+		// next check specific fluids
+		for (Fluid fluid : fluids) {
+		    if (fluid.isSame(stack.getFluid())) {
+			return true;
+		    }
+		}
+		return false;
     }
 
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
-	return isFluidValid(0, fluid);
+    	return isFluidValid(0, fluid);
     }
 
     @Override
     public int fill(FluidStack resource, FluidAction doFill) {
-	if (canFillFluidType(resource)) {
-	    return super.fill(resource, doFill);
-	}
-	return 0;
+		if (canFillFluidType(resource)) {
+		    return super.fill(resource, doFill);
+		}
+		return 0;
     }
 
     /**
