@@ -21,6 +21,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -103,6 +104,28 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 	return this;
     }
+    
+    @Override
+	public ComponentFluidHandlerMulti addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
+    	if (isInput) {
+    	    for(Fluid fluid : tag.getAllElements()) {
+    	    	if (!fluid.getRegistryName().toString().toLowerCase().contains("flow") && 
+    	    			!getValidInputFluids().contains(fluid)) {
+    	    		inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+    	    		inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+        	    }	
+    	    }
+    	} else {
+    		for(Fluid fluid : tag.getAllElements()) {
+    			if (!fluid.getRegistryName().toString().toLowerCase().contains("flow") && 
+    					!getValidOutputFluids().contains(fluid)) {
+    	    		outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+    	    		outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+    			}
+    		}
+    	}
+		return this;
+	}
 
     // Use categorized methods
     @Override
@@ -237,10 +260,13 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	    Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, getHolder().getWorld());
 	    for (IRecipe<?> iRecipe : recipes) {
 		if (hasInput) {
-		    List<Ingredient> ingredients = recipeClass.cast(iRecipe).getIngredients();
-		    Fluid fluid = ((FluidIngredient) recipeClass.cast(iRecipe).getIngredients().get(0 + ingredients.size() - 1)).getFluidStack()
-			    .getFluid();
-		    addFluidTank(fluid, tankCapacity, true);
+			List<Ingredient> ingredients = recipeClass.cast(iRecipe).getIngredients();
+		    List<FluidStack> fluids = ((FluidIngredient) recipeClass.cast(iRecipe).getIngredients().get(0 + ingredients.size() - 1)).getMatchingFluidStacks();
+		    for(FluidStack fluid : fluids) {
+		    	if(!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
+		    		addFluidTank(fluid.getFluid(), tankCapacity, true);
+		    	}
+		    }
 		}
 		if (hasOutput) {
 		    IFluidRecipe fRecipe = (IFluidRecipe) recipeClass.cast(iRecipe);

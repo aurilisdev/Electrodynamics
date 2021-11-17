@@ -5,7 +5,7 @@
 		"count": 5
 	},
 	"fluid_input": {
-		"fluid": "electrodynamics:fluidsulfuricacid",
+		"tag":"forge:sulfuric_acid",
 		"amount": 100
 	},
 	"fluid_output": {

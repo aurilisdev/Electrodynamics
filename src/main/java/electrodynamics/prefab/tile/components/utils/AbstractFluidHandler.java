@@ -14,6 +14,7 @@ import electrodynamics.prefab.utilities.UtilitiesTiles;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -135,6 +136,8 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
     }
 
     public abstract AbstractFluidHandler<A> addFluidTank(Fluid fluid, int capacity, boolean isInput);
+    
+    public abstract AbstractFluidHandler<A> addFluidTank(Tags.IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput);
 
     public abstract AbstractFluidHandler<A> setFluidInTank(FluidStack stack, int tank, boolean isInput);
 

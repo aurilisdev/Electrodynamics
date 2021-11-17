@@ -20,6 +20,7 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
@@ -72,6 +73,7 @@ public class Electrodynamics {
 	CapabilityElectrodynamic.register(); // TODO: Move to the upcoming RegisterCapabilitiesEvent when it is implemented.
 	CapabilityCeramicPlate.register();
 	NetworkHandler.init();
+	ElectrodynamicsTags.init();
     }
 
     @SubscribeEvent

@@ -12,6 +12,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -79,6 +81,11 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	fluidTank.setFluid(new FluidStack(fluid, 0));
 	return this;
     }
+    
+    @Override
+	public ComponentFluidHandlerSimple addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
+		return this;
+	}
 
     @Override
     public FluidStack getFluidInTank(int tank, boolean isInput) {
@@ -145,6 +152,18 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     public ComponentFluidHandlerSimple setValidFluids(List<Fluid> fluids) {
 	validFluids = fluids;
 	return this;
+    }
+    
+    public ComponentFluidHandlerSimple setValidFluidTags(List<Tags.IOptionalNamedTag<Fluid>> tags) {
+    	validFluids = new ArrayList<>();
+    	for(Tags.IOptionalNamedTag<Fluid> tag : tags) {
+    		for(Fluid fluid : tag.getAllElements()) {
+    			if(!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+    				validFluids.add(fluid);
+    			}
+    		}
+    	}
+    	return this;
     }
 
     @Override

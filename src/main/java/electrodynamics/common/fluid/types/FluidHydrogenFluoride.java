@@ -6,6 +6,8 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 
 public class FluidHydrogenFluoride extends FluidNonPlaceable {
 
+	public static final String FORGE_TAG = "hydrofluoric_acid";
+	
     public FluidHydrogenFluoride() {
 	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "hydrogenfluoride", -375879936);
     }

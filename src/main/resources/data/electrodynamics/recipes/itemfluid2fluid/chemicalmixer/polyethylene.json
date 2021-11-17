@@ -5,7 +5,7 @@
 		"count": 1
 	},
 	"fluid_input": {
-		"fluid": "electrodynamics:fluidethanol",
+		"tag":"forge:ethanol",
 		"amount": 1000
 	},
 	"fluid_output": {

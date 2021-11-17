@@ -23,7 +23,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -130,7 +129,7 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     @Override
     public void setIngredients(FluidItem2ItemRecipe recipe, IIngredients ingredients) {
 	ingredients.setInputLists(VanillaTypes.ITEM, getIngredients(recipe));
-	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
+	ingredients.setInputLists(VanillaTypes.FLUID, getFluids(recipe));
 	ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
     }
 
@@ -182,10 +181,16 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	fontRenderer.func_243248_b(matrixStack, outputString, getBackground().getWidth() - outputWidth, y + 8, 0xFF808080);
     }
 
-    public NonNullList<FluidStack> getFluids(FluidItem2ItemRecipe recipe) {
-	NonNullList<FluidStack> fluids = NonNullList.create();
-	fluids.add(((FluidIngredient) recipe.getIngredients().get(1)).getFluidStack());
-	return fluids;
+    public List<List<FluidStack>> getFluids(FluidItem2ItemRecipe recipe) {
+    	List<List<FluidStack>> ingredients = new ArrayList<>();
+		List<FluidStack> fluids = new ArrayList<>();
+		for(FluidStack fluid : ((FluidIngredient) recipe.getIngredients().get(1)).getMatchingFluidStacks()) {
+			if(!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
+				fluids.add(fluid);
+			}
+		}
+		ingredients.add(fluids);
+		return ingredients;
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2ItemRecipe recipe) {

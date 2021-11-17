@@ -9,6 +9,8 @@ import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidMineral extends FluidNonPlaceable {
 
+	public static final String FORGE_TAG = "_mineral_fluid";
+	
     public SubtypeMineralFluid mineral;
 
     public FluidMineral(SubtypeMineralFluid mineral) {

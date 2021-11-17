@@ -2,7 +2,7 @@
 	"type" : "electrodynamics:chemical_crystallizer_recipe",
 	
 	"fluid_input":{
-		"fluid":"electrodynamics:fluidmolybdenum",
+		"tag":"forge:molybdenum",
 		"amount": 250
 	},
 	"item_output":{

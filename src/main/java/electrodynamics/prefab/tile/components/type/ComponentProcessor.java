@@ -441,9 +441,9 @@ public class ComponentProcessor implements Component {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
 		} else {
-		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
+		    pr.getOutput().grow(locRecipe.getRecipeOutput().getCount());
 		}
-		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
+		pr.getInput().shrink(((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
 	    }
 	}
     }
@@ -455,11 +455,16 @@ public class ComponentProcessor implements Component {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
 		} else {
-		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
+		    pr.getOutput().grow(locRecipe.getRecipeOutput().getCount());
 		}
-		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
-		pr.getSecondInput()
-			.setCount(pr.getSecondInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(1)).getStackSize());
+		CountableIngredient ing = ((CountableIngredient) locRecipe.getIngredients().get(0));
+		if(ing.testStack(pr.getInput())) {
+			pr.getInput().shrink(ing.getStackSize());
+			pr.getSecondInput().shrink(((CountableIngredient) locRecipe.getIngredients().get(1)).getStackSize());
+		} else { 
+			pr.getInput().shrink(((CountableIngredient) locRecipe.getIngredients().get(1)).getStackSize());
+			pr.getSecondInput().shrink(ing.getStackSize());
+		}
 	    }
 	}
     }
@@ -475,7 +480,7 @@ public class ComponentProcessor implements Component {
 	    FluidTank outputFluidTank = fluid.getTankFromFluid(outputFluid.getFluid(), false);
 
 	    if (getOutputCap() >= outputFluid.getAmount() + outputFluidTank.getFluidAmount()) {
-		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
+	    	pr.getInput().shrink(((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
 		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		fluid.getStackFromFluid(outputFluid.getFluid(), false).grow(outputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
@@ -493,9 +498,9 @@ public class ComponentProcessor implements Component {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
 		} else {
-		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
+			pr.getOutput().grow(locRecipe.getRecipeOutput().getCount());
 		}
-		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
+		pr.getInput().shrink(((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
 		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	    }
@@ -512,12 +517,43 @@ public class ComponentProcessor implements Component {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
 		} else {
-		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
+			pr.getOutput().grow(locRecipe.getRecipeOutput().getCount());
 		}
-		pr.getInput().setCount(pr.getInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(0)).getStackSize());
-		pr.getSecondInput()
-			.setCount(pr.getSecondInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(1)).getStackSize());
-		pr.getThirdInput().setCount(pr.getThirdInput().getCount() - ((CountableIngredient) locRecipe.getIngredients().get(2)).getStackSize());
+		CountableIngredient ing1 = (CountableIngredient) locRecipe.getIngredients().get(0);
+		CountableIngredient ing2 = (CountableIngredient) locRecipe.getIngredients().get(1);
+		CountableIngredient ing3 = (CountableIngredient) locRecipe.getIngredients().get(2);
+		
+		//this will not be as nasty when I rework the recipe classes I promist
+		//this is a temp soluition that I also have to do for 1.16.5
+		
+		if(ing1.testStack(getInput())) {
+			pr.getInput().shrink(ing1.getStackSize());
+			if(ing2.testStack(pr.getSecondInput())) {
+				pr.getSecondInput().shrink(ing2.getStackSize());
+				pr.getThirdInput().shrink(ing3.getStackSize());
+			} else {
+				pr.getSecondInput().shrink(ing3.getStackSize());
+				pr.getThirdInput().shrink(ing2.getStackSize());
+			}
+		} else if (ing2.testStack(pr.getInput())){
+			pr.getInput().shrink(ing2.getStackSize());
+			if(ing2.testStack(pr.getSecondInput())) {
+				pr.getSecondInput().shrink(ing1.getStackSize());
+				pr.getThirdInput().shrink(ing3.getStackSize());
+			} else {
+				pr.getSecondInput().shrink(ing3.getStackSize());
+				pr.getThirdInput().shrink(ing1.getStackSize());
+			}
+		} else {
+			pr.getInput().shrink(ing3.getStackSize());
+			if(ing1.testStack(pr.getSecondInput())) {
+				pr.getSecondInput().shrink(ing1.getStackSize());
+				pr.getThirdInput().shrink(ing2.getStackSize());
+			} else {
+				pr.getSecondInput().shrink(ing2.getStackSize());
+				pr.getThirdInput().shrink(ing1.getStackSize());
+			}
+		}
 		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	    }
@@ -533,7 +569,7 @@ public class ComponentProcessor implements Component {
 		if (pr.getOutput().isEmpty()) {
 		    pr.output(locRecipe.getRecipeOutput().copy());
 		} else {
-		    pr.getOutput().setCount(pr.getOutput().getCount() + locRecipe.getRecipeOutput().getCount());
+		    pr.getOutput().grow(locRecipe.getRecipeOutput().getCount());
 		}
 		fluid.getStackFromFluid(inputFluid.getFluid(), true).shrink(inputFluid.getAmount());
 		pr.holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();

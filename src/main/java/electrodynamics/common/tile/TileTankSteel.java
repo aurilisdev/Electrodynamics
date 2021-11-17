@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.tile.generic.TileGenericTank;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -17,7 +18,7 @@ public class TileTankSteel extends TileGenericTank {
     static {
 	fluids.add(Fluids.WATER);
 	fluids.add(Fluids.LAVA);
-	fluids.add(DeferredRegisters.fluidEthanol);
+	fluids.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getAllElements());
     }
 
     public TileTankSteel() {
