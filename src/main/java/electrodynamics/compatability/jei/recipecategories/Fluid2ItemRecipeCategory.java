@@ -2,6 +2,7 @@ package electrodynamics.compatability.jei.recipecategories;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -20,7 +21,6 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -122,7 +122,7 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
     public void setIngredients(Fluid2ItemRecipe recipe, IIngredients ingredients) {
 	ItemStack bucket = getBucket(recipe);
 	ingredients.setInput(VanillaTypes.ITEM, bucket);
-	ingredients.setInputs(VanillaTypes.FLUID, getFluids(recipe));
+	ingredients.setInputLists(VanillaTypes.FLUID, getFluids(recipe));
 	ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
@@ -169,10 +169,16 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 	fontRenderer.draw(matrixStack, outputString, getBackground().getWidth() - outputWidth, y + 6, 0xFF808080);
     }
 
-    public NonNullList<FluidStack> getFluids(Fluid2ItemRecipe recipe) {
-	NonNullList<FluidStack> fluids = NonNullList.create();
-	fluids.addAll(((FluidIngredient) recipe.getIngredients().get(0)).getMatchingFluids());
-	return fluids;
+    public List<List<FluidStack>> getFluids(Fluid2ItemRecipe recipe) {
+    	List<List<FluidStack>> ingredients = new ArrayList<>();
+		List<FluidStack> fluids = new ArrayList<>();
+		for(FluidStack fluid : ((FluidIngredient) recipe.getIngredients().get(0)).getMatchingFluids()) {
+			if(!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
+				fluids.add(fluid);
+			}
+		}
+		ingredients.add(fluids);
+		return ingredients;
     }
 
     public ItemStack getBucket(Fluid2ItemRecipe recipe) {

@@ -38,6 +38,10 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
     	//check tags first
     	for(ResourceLocation loc : tags) {
     		for(Fluid fluid : FluidTags.getAllTags().getTag(loc).getValues()) {
+    			//filter out flowing fluids
+    			if(fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+    				return false;
+    			}
     			if (fluid.isSame(stack.getFluid())) {
     				return true;
     			}
@@ -80,7 +84,12 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
     	ArrayList<Fluid> valid = new ArrayList<>();
     	ArrayList<Fluid> unique = new ArrayList<>();
     	for(ResourceLocation loc : tags) {
-    		valid.addAll(FluidTags.getAllTags().getTag(loc).getValues());
+    		List<Fluid> fluids = FluidTags.getAllTags().getTag(loc).getValues();
+    		for(Fluid fluid : fluids) {
+    			if(!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+    				valid.add(fluid);
+    			}
+    		}
     	}
     	for(Fluid fluid : fluids) {
     		if(!valid.contains(fluid)) {

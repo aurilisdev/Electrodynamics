@@ -154,9 +154,12 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     }
     
     public ComponentFluidHandlerSimple setValidFluidTags(List<Tags.IOptionalNamedTag<Fluid>> tags) {
-    	validFluids = new ArrayList<>();
     	for(Tags.IOptionalNamedTag<Fluid> tag : tags) {
-    		validFluids.addAll(tag.getValues());
+    		for(Fluid fluid : tag.getValues()) {
+    			if(!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+    				validFluids.add(fluid);
+    			}
+    		}
     	}
     	return this;
     }
