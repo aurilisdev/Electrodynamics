@@ -103,24 +103,22 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     }
 
     @Override
-	public ComponentFluidHandlerMulti addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
-    	if (isInput) {
-    	    for(Fluid fluid : tag.getValues()) {
-    	    	if (!fluid.getRegistryName().toString().toLowerCase().contains("flow") &&
-    	    			!getValidInputFluids().contains(fluid)) {
-    	    		inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
-    	    		inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
-        	    }	
-    	    }
-    	} else {
-    		for(Fluid fluid : tag.getValues()) {
-    			if (!fluid.getRegistryName().toString().toLowerCase().contains("flow") &&
-    					!getValidOutputFluids().contains(fluid)) {
-    	    		outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
-    	    		outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
-    			}
-    		}
-    	}
+    public ComponentFluidHandlerMulti addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
+	if (isInput) {
+	    for (Fluid fluid : tag.getValues()) {
+		if (!fluid.getRegistryName().toString().toLowerCase().contains("flow") && !getValidInputFluids().contains(fluid)) {
+		    inputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+		    inputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+		}
+	    }
+	} else {
+	    for (Fluid fluid : tag.getValues()) {
+		if (!fluid.getRegistryName().toString().toLowerCase().contains("flow") && !getValidOutputFluids().contains(fluid)) {
+		    outputFluids.put(fluid, new FluidTank(capacity, test -> test.getFluid() == fluid));
+		    outputFluids.get(fluid).setFluid(new FluidStack(fluid, 0));
+		}
+	    }
+	}
 	return this;
     }
 
@@ -254,11 +252,12 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	    for (Recipe<?> iRecipe : recipes) {
 		if (hasInput) {
 		    List<Ingredient> ingredients = recipeClass.cast(iRecipe).getIngredients();
-		    List<FluidStack> fluids = ((FluidIngredient) recipeClass.cast(iRecipe).getIngredients().get(0 + ingredients.size() - 1)).getMatchingFluids();
-		    for(FluidStack fluid : fluids) {
-		    	if(!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
-		    		addFluidTank(fluid.getFluid(), tankCapacity, true);
-		    	}
+		    List<FluidStack> fluids = ((FluidIngredient) recipeClass.cast(iRecipe).getIngredients().get(0 + ingredients.size() - 1))
+			    .getMatchingFluids();
+		    for (FluidStack fluid : fluids) {
+			if (!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
+			    addFluidTank(fluid.getFluid(), tankCapacity, true);
+			}
 		    }
 		}
 		if (hasOutput) {

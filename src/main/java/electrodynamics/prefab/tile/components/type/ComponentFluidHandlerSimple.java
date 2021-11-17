@@ -154,14 +154,14 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
     }
 
     public ComponentFluidHandlerSimple setValidFluidTags(List<Tags.IOptionalNamedTag<Fluid>> tags) {
-    	for(Tags.IOptionalNamedTag<Fluid> tag : tags) {
-    		for(Fluid fluid : tag.getValues()) {
-    			if(!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
-    				validFluids.add(fluid);
-    			}
-    		}
-    	}
-    	return this;
+	for (Tags.IOptionalNamedTag<Fluid> tag : tags) {
+	    for (Fluid fluid : tag.getValues()) {
+		if (!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+		    validFluids.add(fluid);
+		}
+	    }
+	}
+	return this;
     }
 
     @Override

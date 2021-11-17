@@ -226,15 +226,15 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
     }
 
     public List<List<FluidStack>> getFluids(FluidItem2FluidRecipe recipe) {
-    	List<List<FluidStack>> ingredients = new ArrayList<>();
-		List<FluidStack> fluids = new ArrayList<>();
-		for(FluidStack fluid : ((FluidIngredient) recipe.getIngredients().get(1)).getMatchingFluids()) {
-			if(!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
-				fluids.add(fluid);
-			}
-		}
-		ingredients.add(fluids);
-		return ingredients;
+	List<List<FluidStack>> ingredients = new ArrayList<>();
+	List<FluidStack> fluids = new ArrayList<>();
+	for (FluidStack fluid : ((FluidIngredient) recipe.getIngredients().get(1)).getMatchingFluids()) {
+	    if (!fluid.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
+		fluids.add(fluid);
+	    }
+	}
+	ingredients.add(fluids);
+	return ingredients;
     }
 
     public List<List<ItemStack>> getIngredients(FluidItem2FluidRecipe recipe) {
