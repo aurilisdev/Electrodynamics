@@ -35,34 +35,45 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
-	// check tags first
-	for (ResourceLocation loc : tags) {
-	    for (Fluid fluid : FluidTags.getAllTags().getTag(loc).getValues()) {
-		if (fluid.isSame(stack.getFluid())) {
-		    return true;
+    	//check tags first
+    	for(ResourceLocation loc : tags) {
+    		for(Fluid fluid : FluidTags.getAllTags().getTag(loc).getValues()) {
+    			//filter out flowing fluids
+    			if(fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+    				return false;
+    			}
+    			if (fluid.isSame(stack.getFluid())) {
+    				return true;
+    			}
+    		}
+    	}
+    	//next check specific fluids
+		for (Fluid fluid : fluids) {
+		    if (fluid.isSame(stack.getFluid())) {
+		    	return true;
+		    }
+	    }
+	
+		// next check specific fluids
+		for (Fluid fluid : fluids) {
+		    if (fluid.isSame(stack.getFluid())) {
+			return true;
+		    }
 		}
-	    }
-	}
-	// next check specific fluids
-	for (Fluid fluid : fluids) {
-	    if (fluid.isSame(stack.getFluid())) {
-		return true;
-	    }
-	}
-	return false;
+		return false;
     }
 
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
-	return isFluidValid(0, fluid);
+    	return isFluidValid(0, fluid);
     }
 
     @Override
     public int fill(FluidStack resource, FluidAction doFill) {
-	if (canFillFluidType(resource)) {
-	    return super.fill(resource, doFill);
-	}
-	return 0;
+		if (canFillFluidType(resource)) {
+		    return super.fill(resource, doFill);
+		}
+		return 0;
     }
 
     /**
@@ -78,19 +89,24 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
     }
 
     public ArrayList<Fluid> getWhitelistedFluids() {
-	ArrayList<Fluid> valid = new ArrayList<>();
-	ArrayList<Fluid> unique = new ArrayList<>();
-	for (ResourceLocation loc : tags) {
-	    valid.addAll(FluidTags.getAllTags().getTag(loc).getValues());
-	}
-	for (Fluid fluid : fluids) {
-	    if (!valid.contains(fluid)) {
-		unique.add(fluid);
-	    }
-	}
-	valid.addAll(unique);
-
-	return valid;
+    	ArrayList<Fluid> valid = new ArrayList<>();
+    	ArrayList<Fluid> unique = new ArrayList<>();
+    	for(ResourceLocation loc : tags) {
+    		List<Fluid> fluids = FluidTags.getAllTags().getTag(loc).getValues();
+    		for(Fluid fluid : fluids) {
+    			if(!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+    				valid.add(fluid);
+    			}
+    		}
+    	}
+    	for(Fluid fluid : fluids) {
+    		if(!valid.contains(fluid)) {
+    			unique.add(fluid);
+    		}
+    	}
+    	valid.addAll(unique);
+    	
+    	return valid;
     }
 
     /**
