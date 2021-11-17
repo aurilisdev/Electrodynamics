@@ -101,7 +101,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 	return this;
     }
-    
+
     @Override
 	public ComponentFluidHandlerMulti addFluidTank(IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput) {
     	if (isInput) {
@@ -121,8 +121,8 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
     			}
     		}
     	}
-		return this;
-	}
+	return this;
+    }
 
     // Use categorized methods
     @Override

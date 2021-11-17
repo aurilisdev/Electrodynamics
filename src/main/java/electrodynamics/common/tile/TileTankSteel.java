@@ -18,9 +18,9 @@ public class TileTankSteel extends TileGenericTank {
     private static String name = "steel";
 
     static {
-		fluids.add(Fluids.WATER);
-		fluids.add(Fluids.LAVA);
-		fluids.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getValues());
+	fluids.add(Fluids.WATER);
+	fluids.add(Fluids.LAVA);
+	fluids.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getValues());
     }
 
     public TileTankSteel(BlockPos pos, BlockState state) {

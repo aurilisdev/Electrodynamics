@@ -72,12 +72,10 @@ public class CompositeArmorItem extends ArmorItem {
 		    }
 		} else if (slot == EquipmentSlot.FEET) {
 		    model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), slot);
+		} else if (hasChest) {
+		    model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
 		} else {
-		    if (hasChest) {
-			model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
-		    } else {
-			model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
-		    }
+		    model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
 		}
 
 		model.crouching = properties.crouching;

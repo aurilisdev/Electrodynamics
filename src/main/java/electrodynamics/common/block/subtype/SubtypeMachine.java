@@ -54,91 +54,50 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public enum SubtypeMachine implements ISubtype {
     electricfurnace(true, TileElectricFurnace.class),
     electricfurnacerunning(false, TileElectricFurnace.class),
-    // split
     electricfurnacedouble(true, TileElectricFurnaceDouble.class),
     electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
-    // split
     electricfurnacetriple(true, TileElectricFurnaceTriple.class),
     electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
-    // split
     coalgenerator(true, TileCoalGenerator.class),
     coalgeneratorrunning(false, TileCoalGenerator.class),
-    // split
     wiremill(true, TileWireMill.class),
-    // split
     wiremilldouble(true, TileWireMillDouble.class),
-    // split
     wiremilltriple(true, TileWireMillTriple.class),
-    // split
     mineralcrusher(true, TileMineralCrusher.class, true),
-    // split
     mineralcrusherdouble(true, TileMineralCrusherDouble.class, true),
-    // split
     mineralcrushertriple(true, TileMineralCrusherTriple.class, true),
-    // split
     mineralgrinder(true, TileMineralGrinder.class, true),
-    // split
     mineralgrinderdouble(true, TileMineralGrinderDouble.class, true),
-    // split
     mineralgrindertriple(true, TileMineralGrinderTriple.class, true),
-    // split
     batterybox(true, TileBatteryBox.class, true),
-    // split
     lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
-    // split
     oxidationfurnace(true, TileOxidationFurnace.class),
     oxidationfurnacerunning(false, TileOxidationFurnace.class),
-    // split
     downgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
-    // split
     upgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
-    // split
     solarpanel(true, TileSolarPanel.class, false, Shapes.box(0, 0, 0, 1, 9.0 / 16.0, 1)),
-    // split
     advancedsolarpanel(true, TileAdvancedSolarPanel.class),
-    // split
     electricpump(true, TileElectricPump.class),
-    // split
     thermoelectricgenerator(true, TileThermoelectricGenerator.class),
-    // split
     fermentationplant(true, TileFermentationPlant.class),
-    // split
     combustionchamber(true, TileCombustionChamber.class),
-    // split
     hydroelectricgenerator(true, TileHydroelectricGenerator.class),
-    // split
     windmill(true, TileWindmill.class),
-    // split
     mineralwasher(true, TileMineralWasher.class),
-    // split
     chemicalmixer(true, TileChemicalMixer.class, true),
-    // split
     chemicalcrystallizer(true, TileChemicalCrystallizer.class),
-    // split
     circuitbreaker(true, TileCircuitBreaker.class),
-    // split
     multimeterblock(true, TileMultimeterBlock.class),
-    // split
     energizedalloyer(true, TileEnergizedAlloyer.class),
-    // split
     energizedalloyerrunning(false, TileEnergizedAlloyer.class),
-    // split
     lathe(true, TileLathe.class, true),
-    // split
     reinforcedalloyer(true, TileReinforcedAlloyer.class),
-    // split
     reinforcedalloyerrunning(false, TileReinforcedAlloyer.class),
-    // split
     chargerlv(true, TileChargerLV.class),
-    // split
     chargermv(true, TileChargerMV.class),
-    // split
     chargerhv(true, TileChargerHV.class),
-    // split
     tanksteel(true, TileTankSteel.class),
-    // split
     tankreinforced(true, TileTankReinforced.class),
-    // split
     tankhsla(true, TileTankHSLA.class);
 
     public final Class<? extends BlockEntity> tileclass;

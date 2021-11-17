@@ -44,7 +44,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 	if (texture != null && scale > 0) {
 	    ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
 	    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(texture);
-	    sprite.atlas().bind();
+	    RenderSystem.setShaderTexture(0, sprite.atlas().getId());
 	    applyColor();
 	    for (int i = 0; i < 16; i += 16) {
 		for (int j = 0; j < scale; j += 16) {

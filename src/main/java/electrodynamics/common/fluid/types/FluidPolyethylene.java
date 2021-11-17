@@ -6,8 +6,8 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 
 public class FluidPolyethylene extends FluidNonPlaceable {
 
-	public static final String FORGE_TAG = "polyethylene";
-	
+    public static final String FORGE_TAG = "polyethylene";
+
     public FluidPolyethylene() {
 	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "polyethylene", -376664948);
     }

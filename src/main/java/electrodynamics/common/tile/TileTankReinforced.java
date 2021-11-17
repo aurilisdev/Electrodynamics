@@ -19,11 +19,11 @@ public class TileTankReinforced extends TileGenericTank {
     private static String name = "reinforced";
 
     static {
-		fluids.add(Fluids.WATER);
-		fluids.add(Fluids.LAVA);
-		ItemCanister.TAG_NAMES.forEach(h -> {
-			fluids.addAll(FluidTags.getAllTags().getTag(h).getValues());
-		});
+	fluids.add(Fluids.WATER);
+	fluids.add(Fluids.LAVA);
+	ItemCanister.TAG_NAMES.forEach(h -> {
+	    fluids.addAll(FluidTags.getAllTags().getTag(h).getValues());
+	});
     }
 
     public TileTankReinforced(BlockPos pos, BlockState state) {

@@ -26,6 +26,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileEnergizedAlloyer extends GenericTile {
 
@@ -50,13 +51,19 @@ public class TileEnergizedAlloyer extends GenericTile {
     protected boolean canProcessEnergAlloy(ComponentProcessor component) {
 	if (component.canProcessDO2ORecipe(component, EnergizedAlloyerRecipe.class, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE)) {
 	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)) {
-		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning).defaultBlockState()
-			.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning).defaultBlockState()
+				.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+			2 | 16 | 32);
 	    }
 	    return true;
 	} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)) {
-	    level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer).defaultBlockState()
-		    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
+	    level.setBlock(worldPosition,
+		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer).defaultBlockState()
+			    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+			    .setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+		    2 | 16 | 32);
 	}
 	return false;
     }

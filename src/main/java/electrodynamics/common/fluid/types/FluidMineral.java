@@ -8,14 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidMineral extends FluidNonPlaceable {
-	
-	public static final String FORGE_TAG = "_mineral_fluid";
-	
+
+    public static final String FORGE_TAG = "_mineral_fluid";
+
     public SubtypeMineralFluid mineral;
 
     public FluidMineral(SubtypeMineralFluid mineral) {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
-		this.mineral = mineral;
+	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
+	this.mineral = mineral;
     }
 
     @Override

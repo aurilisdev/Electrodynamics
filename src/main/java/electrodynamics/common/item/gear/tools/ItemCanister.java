@@ -43,7 +43,7 @@ public class ItemCanister extends Item {
 
     public static final int MAX_FLUID_CAPACITY = 5000;
     public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
-    
+
     public static List<ResourceLocation> TAG_NAMES = new ArrayList<>();
 
     public ItemCanister(Item.Properties itemProperty) {
@@ -55,18 +55,18 @@ public class ItemCanister extends Item {
 	if (allowdedIn(group)) {
 	    items.add(new ItemStack(this));
 	    if (!CapabilityUtils.isFluidItemNull()) {
-	    	for (Fluid liq : getWhitelistedFluids().getSecond()) {
-			    ItemStack temp = new ItemStack(this);
-			    //For init only; do not use anywhere else!
-			    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> {
-			    	((RestrictedFluidHandlerItemStack)h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY));
-			    });
-			    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> {
-			    	((RestrictedFluidHandlerItemStack)h).hasInitHappened(true);
-			    });
-			    items.add(temp);
-			   
-	    	}
+		for (Fluid liq : getWhitelistedFluids().getSecond()) {
+		    ItemStack temp = new ItemStack(this);
+		    // For init only; do not use anywhere else!
+		    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> {
+			((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY));
+		    });
+		    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> {
+			((RestrictedFluidHandlerItemStack) h).hasInitHappened(true);
+		    });
+		    items.add(temp);
+
+		}
 	    }
 	}
     }
@@ -134,18 +134,18 @@ public class ItemCanister extends Item {
     }
 
     public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
-    	List<Fluid> whitelisted = new ArrayList<>();
-		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-		    if (fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
-		    	whitelisted.add(fluid);
-		    }
-		}
-		whitelisted.add(Fluids.WATER);
-		return Pair.of(TAG_NAMES,whitelisted);
+	List<Fluid> whitelisted = new ArrayList<>();
+	for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
+	    if (fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+		whitelisted.add(fluid);
+	    }
+	}
+	whitelisted.add(Fluids.WATER);
+	return Pair.of(TAG_NAMES, whitelisted);
     }
-    
+
     public static void addTag(Tags.IOptionalNamedTag<Fluid> tag) {
-    	TAG_NAMES.add(tag.getName());
+	TAG_NAMES.add(tag.getName());
     }
 
 }
