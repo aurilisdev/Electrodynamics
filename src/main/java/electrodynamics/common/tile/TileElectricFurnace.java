@@ -30,6 +30,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileElectricFurnace extends GenericTile {
 
@@ -100,18 +101,22 @@ public class TileElectricFurnace extends GenericTile {
 	    if (timeSinceChange > 40) {
 		Block bl = getBlockState().getBlock();
 		if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace)) {
-		    level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)
-			    .defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)),
+		    level.setBlock(worldPosition,
+			    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning).defaultBlockState()
+				    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				    .setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
 			    2 | 16 | 32);
 		} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)) {
-		    level.setBlock(
-			    worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)
-				    .defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)),
+		    level.setBlock(worldPosition,
+			    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning).defaultBlockState()
+				    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				    .setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
 			    2 | 16 | 32);
 		} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)) {
-		    level.setBlock(
-			    worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)
-				    .defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)),
+		    level.setBlock(worldPosition,
+			    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning).defaultBlockState()
+				    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				    .setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
 			    2 | 16 | 32);
 		}
 		// TODO: This system should probably change to blockstate properties
@@ -141,14 +146,23 @@ public class TileElectricFurnace extends GenericTile {
 	    timeSinceChange = 0;
 	    Block bl = getBlockState().getBlock();
 	    if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacerunning)) {
-		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).defaultBlockState()
-			.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace).defaultBlockState()
+				.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+			2 | 16 | 32);
 	    } else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedoublerunning)) {
-		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble).defaultBlockState()
-			.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble).defaultBlockState()
+				.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+			2 | 16 | 32);
 	    } else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)) {
-		level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple).defaultBlockState()
-			.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)), 2 | 16 | 32);
+		level.setBlock(worldPosition,
+			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple).defaultBlockState()
+				.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+			2 | 16 | 32);
 	    }
 	    // TODO: This system should probably change to blockstate properties
 	}
