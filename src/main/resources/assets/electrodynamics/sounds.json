@@ -1,112 +1,112 @@
 {
 	"hum": {
 		"category": "blocks",
-		"subtitle": "Machine Hum",
+		"subtitle": "subtitles.electrodynamics.hum",
 		"sounds": [
 			"electrodynamics:hum"
 		]
 	},
 	"mineralcrusher": {
 		"category": "blocks",
-		"subtitle": "Machine Mineral Crusher",
+		"subtitle": "subtitles.electrodynamics.mineralcrusher",
 		"sounds": [
 			"electrodynamics:mineralcrusher"
 		]
 	},
 	"mineralgrinder": {
 		"category": "blocks",
-		"subtitle": "Machine Mineral Grinder",
+		"subtitle": "subtitles.electrodynamics.mineralgrinder",
 		"sounds": [
 			"electrodynamics:mineralgrinder"
 		]
 	},
 	"electricpump": {
 		"category": "blocks",
-		"subtitle": "Machine Electric Pump",
+		"subtitle": "subtitles.electrodynamics.electricpump",
 		"sounds": [
 			"electrodynamics:electricpump"
 		]
 	},
 	"hydroelectricgenerator": {
 		"category": "blocks",
-		"subtitle": "Machine Hydroelectric Generator",
+		"subtitle": "subtitles.electrodynamics.hydroelectricgenerator",
 		"sounds": [
 			"electrodynamics:hydroelectricgenerator"
 		]
 	},
 	"windmill": {
 		"category": "blocks",
-		"subtitle": "Machine Windmill",
+		"subtitle": "subtitles.electrodynamics.windmill",
 		"sounds": [
 			"electrodynamics:windmill"
 		]
 	},
 	"combustionchamber": {
 		"category": "blocks",
-		"subtitle": "Machine Combustion Chamber",
+		"subtitle": "subtitles.electrodynamics.combustionchamber",
 		"sounds": [
 			"electrodynamics:combustionchamber"
 		]
 	},
 	"ceramicplatebreaking":{
 		"category": "players",
-		"subtitle": "Ceramic Plates Breaks",
+		"subtitle": "subtitles.electrodynamics.ceramicplatebreaking",
 		"sounds": [
 			"electrodynamics:ceramicplatebreaking"
 		]
 	},
 	"ceramicplateadded":{
 		"category": "players",
-		"subtitle": "Ceramic Plate Added",
+		"subtitle": "subtitles.electrodynamics.ceramicplateadded",
 		"sounds": [
 			"electrodynamics:ceramicplateadded"
 		]
 	},
 	"railgunkinetic":{
 		"category": "players",
-		"subtitle": "Kinetic Railgun Fires",
+		"subtitle": "subtitles.electrodynamics.kineticrailgun",
 		"sounds": [
 			"electrodynamics:railgunkinetic"
 		]
 	},
 	"railgunkinetic_noammo":{
 		"category": "players",
-		"subtitle": "No Ammo Available",
+		"subtitle": "subtitles.electrodynamics.kineticrailgun.noammo",
 		"sounds": [
 			"electrodynamics:railgunkinetic_noammo"
 		]
 	},
 	"railgunplasma":{
 		"category": "players",
-		"subtitle": "Plasma Railgun Fires",
+		"subtitle": "subtitles.electrodynamics.plasmarailgun",
 		"sounds": [
 			"electrodynamics:railgunplasma"
 		]
 	},
 	"railgunplasma_nopower":{
 		"category": "players",
-		"subtitle": "Not Enough Power",
+		"subtitle": "subtitles.electrodynamics.plasmarailgun.nopower",
 		"sounds": [
 			"electrodynamics:railgunplasma_nopower"
 		]
 	},
 	"rodhittingground":{
 		"category": "blocks",
-		"subtitle": "Rail Impacts Ground",
+		"subtitle": "subtitles.electodynamics.rodhittingground",
 		"sounds": [
 			"electrodynamics:rodhittingground"
 		]
 	},
 	"latherunning":{
 		"category": "blocks",
-		"subtitle": "Lathe Running",
+		"subtitle": "subtitles.electrodynamics.latherunning",
 		"sounds": [
 			"electrodynamics:latherunning"
 		]
 	},
 	"equipheavyarmor":{
 		"category": "players",
-		"subtitle": "Heavy Armor Equiped",
+		"subtitle": "subtitles.electrodynamics.equipheavyarmor",
 		"sounds": [
 			"electrodynamics:equipheavyarmor"
 		]
