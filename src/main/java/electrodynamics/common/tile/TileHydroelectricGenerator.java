@@ -60,17 +60,21 @@ public class TileHydroelectricGenerator extends GenericTile {
 	    if (isGenerating && onShift.getBlock() instanceof LiquidBlock) {
 		shift = worldPosition.relative(facing).relative(facing.getClockWise());
 		onShift = level.getBlockState(shift);
-		int amount = onShift.getValue(LiquidBlock.LEVEL);
-		if (onShift.getBlock() instanceof LiquidBlock && amount > onShift.getValue(LiquidBlock.LEVEL)) {
-		    directionFlag = true;
-		} else {
-		    shift = worldPosition.relative(facing).relative(facing.getClockWise().getOpposite());
-		    onShift = level.getBlockState(shift);
-		    amount = onShift.getValue(LiquidBlock.LEVEL);
-		    if (onShift.getBlock() instanceof LiquidBlock && amount >= onShift.getValue(LiquidBlock.LEVEL)) {
-			directionFlag = false;
+		if (onShift.getBlock() instanceof LiquidBlock) {
+		    int amount = onShift.getValue(LiquidBlock.LEVEL);
+		    if (amount > onShift.getValue(LiquidBlock.LEVEL)) {
+			directionFlag = true;
 		    } else {
-			isGenerating = false;
+			shift = worldPosition.relative(facing).relative(facing.getClockWise().getOpposite());
+			onShift = level.getBlockState(shift);
+			if (onShift.getBlock() instanceof LiquidBlock) {
+			    amount = onShift.getValue(LiquidBlock.LEVEL);
+			    if (amount >= onShift.getValue(LiquidBlock.LEVEL)) {
+				directionFlag = false;
+			    } else {
+				isGenerating = false;
+			    }
+			}
 		    }
 		}
 	    }
