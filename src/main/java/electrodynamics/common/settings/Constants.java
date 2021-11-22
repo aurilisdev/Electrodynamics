@@ -20,8 +20,8 @@ public class Constants {
     public static double HYDROELECTRICGENERATOR_AMPERAGE = 6;
     @DoubleValue(def = 10)
     public static double WINDMILL_MAX_AMPERAGE = 10;
-    @DoubleValue(def = 10)
-    public static double SOLARPANEL_AMPERAGE = 10;
+    @DoubleValue(def = 7)
+    public static double SOLARPANEL_AMPERAGE = 7;
     @DoubleValue(def = 50.0)
     public static double ELECTRICPUMP_USAGE_PER_TICK = 50.0;
     @DoubleValue(def = 20.0)

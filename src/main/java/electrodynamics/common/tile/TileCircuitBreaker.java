@@ -48,7 +48,7 @@ public class TileCircuitBreaker extends GenericTile {
 	locked = false;
 	if (returner.getJoules() > 0) {
 	    returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY),
-		    returner.getVoltage());
+		    transfer.getVoltage());
 	}
 	lastTransfer = returner.getJoules();
 	return returner;

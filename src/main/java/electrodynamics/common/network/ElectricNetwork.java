@@ -162,21 +162,35 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
     }
 
     public void addProducer(BlockEntity tile, double d) {
-	currentProducers.add(tile);
+	if (!currentProducers.contains(tile)) {
+	    currentProducers.add(tile);
+	}
 	voltage = Math.max(voltage, d);
     }
 
     @Override
     public void tick() {
-	if ((int) voltage != 0 && voltage > 0) {
-	    double watts = transferBuffer * 20;
-	    double loss = Math.min(transferBuffer, watts * watts * resistance / (voltage * voltage) / 20.0);
-	    transferBuffer -= loss;
-	    energyLoss += loss;
-	    transmittedThisTick += loss;
-	    TransferPack send = TransferPack.joulesVoltage(transferBuffer, voltage);
-	    transferBuffer -= sendToReceivers(send, currentProducers, false).getJoules();
-	    checkForOverload();
+	if (transferBuffer > 0) {
+	    if ((int) voltage != 0 && voltage > 0) {
+		if (resistance > 0) {
+		    double bufferAsWatts = transferBuffer * 20; // buffer as watts
+		    double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4 * bufferAsWatts * resistance))
+			    / (2 * resistance);
+		    double maxPerTick = maxWatts / 20.0;
+		    // above is power as watts when powerSend + powerLossToWires = m
+		    TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
+		    double sent = sendToReceivers(send, currentProducers, false).getJoules();
+		    double sentAsWatts = sent * 20;
+		    double lossPerTick = sentAsWatts * sentAsWatts * resistance / (voltage * voltage) / 20.0;
+		    transferBuffer -= sent;
+		    transferBuffer -= lossPerTick;
+		    energyLoss += lossPerTick;
+		    transmittedThisTick += lossPerTick;
+		    checkForOverload();
+		} else {
+		    transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+		}
+	    }
 	}
 	super.tick();
 	lastVoltage = voltage;
@@ -197,7 +211,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		}
 	    }
 	}
-	transferBuffer = Math.max(0, Math.min(maxTransferBuffer, transferBuffer) * 0.75);
     }
 
     @Override

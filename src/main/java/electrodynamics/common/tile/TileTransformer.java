@@ -44,7 +44,7 @@ public class TileTransformer extends GenericTile {
 	locked = false;
 	if (returner.getJoules() > 0) {
 	    returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.TRANSFORMER_EFFICIENCY),
-		    resultVoltage);
+		    transfer.getVoltage());
 	}
 	lastTransfer = returner;
 	return returner;
