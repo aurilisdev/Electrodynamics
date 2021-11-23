@@ -37,7 +37,7 @@ public class NetworkRegistry {
 		while (it.hasNext()) {
 		    ITickableNetwork net = it.next();
 		    if (net.getSize() == 0) {
-			it.remove();
+			deregister(net);
 		    } else {
 			net.tick();
 		    }

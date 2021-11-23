@@ -131,13 +131,13 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		    foundNetworks.add(el);
 		}
 	    }
-	    if (!foundNetworks.isEmpty()) {
-		foundNetworks.get(0).conductorSet.add(this);
-		electricNetwork = foundNetworks.get(0);
+	    if (!foundNetworks.isEmpty() && getNetwork(false) == null) {
 		if (foundNetworks.size() > 1) {
+		    foundNetworks.get(0).conductorSet.add(this);
+		    electricNetwork = foundNetworks.get(0);
 		    foundNetworks.remove(0);
 		    for (ElectricNetwork network : foundNetworks) {
-			getNetwork().merge(network);
+			electricNetwork.merge(network);
 		    }
 		}
 	    }

@@ -32,7 +32,7 @@ public class AbstractNetworkFinder {
 	    iteratedTiles.add(curr);
 	}
 	for (Direction direction : Direction.values()) {
-	    BlockPos obj = new BlockPos(location).offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
+	    BlockPos obj = new BlockPos(location).offset(direction.getNormal());
 	    if (!(toIgnore.size() == 1 ? toIgnore.get(0) == obj : toIgnore.contains(obj))) {
 		if (worldObj.hasChunkAt(obj)) {
 		    BlockEntity tileEntity = worldObj.getBlockEntity(obj);

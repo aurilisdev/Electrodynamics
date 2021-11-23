@@ -43,8 +43,7 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	for (C conductor : conductorSet) {
 	    BlockEntity tileEntity = (BlockEntity) conductor;
 	    for (Direction direction : Direction.values()) {
-		BlockEntity acceptor = tileEntity.getLevel().getBlockEntity(
-			new BlockPos(tileEntity.getBlockPos()).offset(direction.getStepX(), direction.getStepY(), direction.getStepZ()));
+		BlockEntity acceptor = tileEntity.getLevel().getBlockEntity(new BlockPos(tileEntity.getBlockPos()).offset(direction.getNormal()));
 		if (acceptor != null && !isConductor(acceptor)) {
 		    if (isAcceptor(acceptor, direction)) {
 			if (canConnect(acceptor, direction)) {
@@ -86,14 +85,14 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
     }
 
     public void split(@Nonnull C splitPoint) {
-	if (splitPoint instanceof BlockEntity) {
+	if (splitPoint instanceof BlockEntity blockentity) {
 	    removeFromNetwork(splitPoint);
 	    BlockEntity[] connectedTiles = new BlockEntity[6];
 	    boolean[] dealtWith = { false, false, false, false, false, false };
 	    for (Direction direction : Direction.values()) {
-		BlockPos ex = ((BlockEntity) splitPoint).getBlockPos().offset(direction.getStepX(), direction.getStepY(), direction.getStepZ());
-		if (((BlockEntity) splitPoint).getLevel().hasChunkAt(ex)) {
-		    BlockEntity sideTile = ((BlockEntity) splitPoint).getLevel().getBlockEntity(ex);
+		BlockPos ex = blockentity.getBlockPos().offset(direction.getNormal());
+		if (blockentity.getLevel().hasChunkAt(ex)) {
+		    BlockEntity sideTile = blockentity.getLevel().getBlockEntity(ex);
 		    if (sideTile != null) {
 			connectedTiles[Arrays.asList(Direction.values()).indexOf(direction)] = sideTile;
 		    }
@@ -103,8 +102,8 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 		BlockEntity connectedBlockA = connectedTiles[countOne];
 		if (connectedBlockA != null) {
 		    if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
-			AbstractNetworkFinder finder = new AbstractNetworkFinder(((BlockEntity) splitPoint).getLevel(), connectedBlockA.getBlockPos(),
-				this, ((BlockEntity) splitPoint).getBlockPos());
+			AbstractNetworkFinder finder = new AbstractNetworkFinder(blockentity.getLevel(), connectedBlockA.getBlockPos(), this,
+				blockentity.getBlockPos());
 			List<BlockEntity> partNetwork = finder.exploreNetwork();
 			for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
 			    BlockEntity connectedBlockB = connectedTiles[countTwo];
@@ -146,6 +145,9 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 
     public void deregister() {
 	conductorSet.clear();
+	acceptorSet.clear();
+	acceptorInputMap.clear();
+	conductorTypeMap.clear();
 	NetworkRegistry.deregister(this);
     }
 

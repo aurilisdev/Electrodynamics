@@ -3,13 +3,16 @@ package electrodynamics.common.block.subtype;
 import electrodynamics.api.ISubtype;
 
 // Calculated using https://www.omnicalculator.com/physics/wire-resistance
+// Area is actually 0.125 = 15625mm^2
+// Length is 1 meter + 2 meters of wire - 2 * center length -> 3 - 2 * 0.125 = 2.75 meters per wire block. this is static and isnt calculated dynamically even though
+// wires are rarely connected in all directions.
 // Also manipulated uniformally
 public enum SubtypeWire implements ISubtype {
-    tin(0.02024 * 5.0, 60, false, false, false, false),
-    iron(0.017866 * 5.0, 100, false, false, false, false),
-    copper(0.0031464 * 5.0, 360, false, false, false, false),
-    silver(0.0029256 * 5.0, 600, false, false, false, false),
-    gold(0.00449 * 5.0, 1000, false, false, false, false),
+    tin(0.020064, 60, false, false, false, false), // Tin has 15% the conductivity of copper. Tin resistance = copper / 0.15
+    iron(0.01709, 100, false, false, false, false),
+    copper(0.0030096, 360, false, false, false, false), // annealed copper
+    silver(0.0027984, 600, false, false, false, false),
+    gold(0.004294, 1000, false, false, false, false),
     superconductive(0.0, Long.MAX_VALUE, false, false, false, false),
     // split between types
     insulatedtin(SubtypeWire.tin.resistance, 60, true, false, false, false),
@@ -19,11 +22,11 @@ public enum SubtypeWire implements ISubtype {
     insulatedgold(SubtypeWire.gold.resistance, 1000, true, false, false, false),
     insulatedsuperconductive(0.0, Long.MAX_VALUE, true, false, false, false),
     // split between types
-    highlyinsulatedtin(SubtypeWire.tin.resistance / 3.0, 180, true, false, false, true),
-    highlyinsulatediron(SubtypeWire.iron.resistance / 3.0, 300, true, false, false, true),
-    highlyinsulatedcopper(SubtypeWire.copper.resistance / 3.0, 1080, true, false, false, true),
-    highlyinsulatedsilver(SubtypeWire.silver.resistance / 3.0, 1800, true, false, false, true),
-    highlyinsulatedgold(SubtypeWire.gold.resistance / 3.0, 3000, true, false, false, true),
+    highlyinsulatedtin(SubtypeWire.tin.resistance / 4.0, 180, true, false, false, true),
+    highlyinsulatediron(SubtypeWire.iron.resistance / 4.0, 300, true, false, false, true),
+    highlyinsulatedcopper(SubtypeWire.copper.resistance / 4.0, 1080, true, false, false, true),
+    highlyinsulatedsilver(SubtypeWire.silver.resistance / 4.0, 1800, true, false, false, true),
+    highlyinsulatedgold(SubtypeWire.gold.resistance / 4.0, 3000, true, false, false, true),
     highlyinsulatedsuperconductive(0.0, Long.MAX_VALUE, true, false, false, true),
     // split between types
     ceramicinsulatedtin(SubtypeWire.tin.resistance, 60, true, false, true, false),

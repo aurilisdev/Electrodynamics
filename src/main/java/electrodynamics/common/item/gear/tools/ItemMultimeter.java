@@ -23,7 +23,7 @@ public class ItemMultimeter extends Item {
 	    if (tile instanceof TileWire wire) {
 		ElectricNetwork net = wire.getNetwork();
 		String finalString = ChatFormatter
-			.getElectricDisplay(net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() / net.getActiveVoltage() * 20,
+			.getElectricDisplay(net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() * 20 / net.getActiveVoltage(),
 				ElectricUnit.AMPERE)
 			.replace(" Amps", "") + " / " + ChatFormatter.getElectricDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
 		finalString += ChatFormatter.getElectricDisplay(net.getActiveVoltage(), ElectricUnit.VOLTAGE) + ", ";

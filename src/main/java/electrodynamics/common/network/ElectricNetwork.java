@@ -130,7 +130,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
     }
 
     private boolean checkForOverload() {
-	if (networkMaxTransfer - transmittedThisTick <= 0 && voltage > 0) {
+	if (networkMaxTransfer * voltage - transmittedThisTick <= 0 && voltage > 0) {
 	    HashSet<SubtypeWire> checkList = new HashSet<>();
 	    for (SubtypeWire type : SubtypeWire.values()) {
 		if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive
@@ -170,6 +170,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
     @Override
     public void tick() {
+	super.tick();
 	if (transferBuffer > 0) {
 	    if ((int) voltage != 0 && voltage > 0) {
 		if (resistance > 0) {
@@ -180,10 +181,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		    // above is power as watts when powerSend + powerLossToWires = m
 		    TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
 		    double sent = sendToReceivers(send, currentProducers, false).getJoules();
-		    double sentAsWatts = sent * 20;
-		    double lossPerTick = sentAsWatts * sentAsWatts * resistance / (voltage * voltage) / 20.0;
-		    transferBuffer -= sent;
-		    transferBuffer -= lossPerTick;
+		    double lossPerTick = send.getAmps() * send.getAmps() * resistance / 20.0;
+		    transferBuffer -= sent + lossPerTick;
 		    energyLoss += lossPerTick;
 		    transmittedThisTick += lossPerTick;
 		    checkForOverload();
@@ -192,7 +191,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		}
 	    }
 	}
-	super.tick();
 	lastVoltage = voltage;
 	voltage = 0;
 	lastEnergyLoss = energyLoss;
@@ -211,6 +209,17 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		}
 	    }
 	}
+	Iterator<IConductor> it = conductorSet.iterator();
+	while (it.hasNext()) {
+	    IConductor conductor = it.next();
+	    if (conductor instanceof BlockEntity entity && entity.isRemoved() || conductor.getNetwork() != this) {
+		it.remove();
+	    }
+	}
+	if (getSize() == 0) {
+	    deregister();
+	}
+	transferBuffer = Math.max(0, Math.min(maxTransferBuffer, transferBuffer) * 0.75);
     }
 
     @Override
