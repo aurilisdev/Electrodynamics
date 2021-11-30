@@ -13,11 +13,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class TileTankHSLA extends TileGenericTank {
 
     private static int capacity = 128000;
-    private static List<Fluid> fluids = new ArrayList<>();
+    private static Fluid[] fluids = new Fluid[0];
     private static String name = "hsla";
 
     static {
-	ForgeRegistries.FLUIDS.getValues().forEach(h -> fluids.add(h));
+    	List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
+    	fluids = new Fluid[list.size()];
+    	for(int i = 0; i < list.size(); i++) {
+    		fluids[i] = list.get(i);
+    	}
     }
 
     public TileTankHSLA(BlockPos pos, BlockState state) {

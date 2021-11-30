@@ -3,7 +3,6 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
-import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
@@ -16,7 +15,6 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +25,21 @@ import net.minecraft.world.phys.AABB;
 public class TileFermentationPlant extends GenericTile {
 
     public static final int MAX_TANK_CAPACITY = 5000;
+    
+    private static int inputSlots = 1;
+    private static int outputSize = 0;
+    private static int itemBiSize = 0;
+    private static int inputBucketSlots = 1;
+    private static int outputBucketSlots = 1;
+    private static int upgradeSlots = 3;
+    
+    private static int processorCount = 1;
+    private static int inputPerProc = 0;
+    
+    private static int invSize = 
+    	inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
+    
+    
 
     public TileFermentationPlant(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
@@ -36,11 +49,12 @@ public class TileFermentationPlant extends GenericTile {
 	addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
 		.maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
 	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST))
-		.setAddFluidsValues(FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE, MAX_TANK_CAPACITY, true, true));
-	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
-		.valid((slot, stack) -> slot < 3 || stack.getItem() instanceof ItemProcessorUpgrade));
-	addComponent(new ComponentProcessor(this).upgradeSlots(3, 4, 5).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
-		.type(ComponentProcessorType.ObjectToObject).canProcess(this::canProcessFermPlan)
+		.setAddFluidsValues(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE, MAX_TANK_CAPACITY, true, true));
+	addComponent(new ComponentInventory(this).size(invSize).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
+		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
+		.valid(getPredicate(inputSlots, outputSize, itemBiSize,inputBucketSlots + outputBucketSlots, upgradeSlots, invSize)));
+	addComponent(new ComponentProcessor(this).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
+		.canProcess(this::canProcessFermPlan).setProcessorNumber(0)
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.fermentationplant")
@@ -69,7 +83,7 @@ public class TileFermentationPlant extends GenericTile {
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
 
-	return processor.outputToPipe(processor).consumeBucket(1).dispenseBucket(2).canProcessFluidItem2FluidRecipe(processor,
+	return processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
 		FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 

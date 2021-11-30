@@ -40,7 +40,7 @@ public class TileCombustionChamber extends GenericTile {
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 		.guiPacketWriter(this::writeNBT));
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-	addComponent(new ComponentFluidHandlerMulti(this).addFluidTank(ElectrodynamicsTags.Fluids.ETHANOL, TANK_CAPACITY, true)
+	addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, ElectrodynamicsTags.Fluids.ETHANOL)
 		.relativeInput(Direction.WEST));
     }
 
@@ -61,7 +61,7 @@ public class TileCombustionChamber extends GenericTile {
 	    // can you think of a better name
 	    List<Fluid> ethanols = ElectrodynamicsTags.Fluids.ETHANOL.getValues();
 	    for (Fluid fluid : ethanols) {
-		FluidStack stack = tank.getStackFromFluid(fluid, true);
+		FluidStack stack = tank.getTankFromFluid(fluid, true).getFluid();
 		if (stack.getAmount() > 0) {
 		    stack.setAmount(stack.getAmount() - 1);
 		    running = true;

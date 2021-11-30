@@ -29,10 +29,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenFermentationPlant extends GenericScreen<ContainerFermentationPlant> {
@@ -62,26 +60,14 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 	components.add(new ScreenComponentFluid(() -> {
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Fluid fluid : handler.getValidInputFluids()) {
-		    FluidTank tank = handler.getTankFromFluid(fluid, true);
-		    if (tank.getFluidAmount() > 0) {
-			return tank;
-		    }
-		}
+	    	return ((AbstractFluidHandler<?>)boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
 	    }
 	    return null;
 	}, this, 21, 18));
 	components.add(new ScreenComponentFluid(() -> {
 	    TileFermentationPlant boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Fluid fluid : handler.getValidOutputFluids()) {
-		    FluidTank tank = handler.getTankFromFluid(fluid, false);
-		    if (tank.getFluidAmount() > 0) {
-			return tank;
-		    }
-		}
+	    	return ((AbstractFluidHandler<?>)boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
 	    }
 	    return null;
 	}, this, 127, 18));

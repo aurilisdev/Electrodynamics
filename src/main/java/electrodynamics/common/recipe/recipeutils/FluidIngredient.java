@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import electrodynamics.Electrodynamics;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
@@ -97,7 +97,7 @@ public class FluidIngredient extends Ingredient {
 		return new FluidIngredient(resourceLocation, amount);
 	    }
 	} catch (Exception e) {
-	    ElectrodynamicsRecipe.LOGGER.info("Invalid Fluid Type or Fluid amount entered in JSON file");
+	    Electrodynamics.LOGGER.info("Invalid Fluid Type or Fluid amount entered in JSON file");
 	}
 
 	return null;
@@ -106,7 +106,7 @@ public class FluidIngredient extends Ingredient {
     public boolean testFluid(@Nullable FluidStack t) {
 	if (t != null) {
 	    for (FluidStack stack : FLUID_STACKS) {
-		if (t.getAmount() <= stack.getAmount()) {
+		if (t.getAmount() >= stack.getAmount()) {
 		    if (t.getFluid().isSame(stack.getFluid())) {
 			return true;
 		    }
@@ -117,19 +117,35 @@ public class FluidIngredient extends Ingredient {
     }
 
     public static FluidIngredient read(FriendlyByteBuf input) {
-	List<FluidStack> stacks = new ArrayList<>();
-	int count = input.readInt();
-	for (int i = 0; i < count; i++) {
-	    stacks.add(input.readFluidStack());
-	}
-	return new FluidIngredient(stacks);
+		List<FluidStack> stacks = new ArrayList<>();
+		int count = input.readInt();
+		for (int i = 0; i < count; i++) {
+		    stacks.add(input.readFluidStack());
+		}
+		return new FluidIngredient(stacks);
+    }
+    
+    public static FluidIngredient[] readList(FriendlyByteBuf buffer) {
+    	int length = buffer.readInt();
+    	FluidIngredient[] ings = new FluidIngredient[length];
+    	for(int i = 0; i < length; i++) {
+    		ings[i] = read(buffer);
+    	}
+    	return ings;
     }
 
     public void write(FriendlyByteBuf output) {
-	output.writeInt(FLUID_STACKS.size());
-	for (FluidStack stack : FLUID_STACKS) {
-	    output.writeFluidStack(stack);
-	}
+		output.writeInt(FLUID_STACKS.size());
+		for (FluidStack stack : FLUID_STACKS) {
+		    output.writeFluidStack(stack);
+		}
+    }
+    
+    public static void writeList(FriendlyByteBuf buffer, List<FluidIngredient> list) {
+    	buffer.writeInt(list.size());
+    	for(FluidIngredient ing : list) {
+    		ing.write(buffer);
+    	}
     }
 
     public List<FluidStack> getMatchingFluids() {

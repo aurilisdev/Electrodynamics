@@ -28,10 +28,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
@@ -42,25 +40,36 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 	    if (furnace != null) {
 		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
 		if (processor.operatingTicks > 0) {
-		    return processor.operatingTicks / processor.requiredTicks;
+		    return Math.min(1.0, processor.operatingTicks / (processor.requiredTicks / 2.0));
 		}
 	    }
 	    return 0;
-	}, this, 46, 31));
-	components.add(new ScreenComponentProgress(() -> 0, this, 46, 51).left());
+	}, this, 42, 30));
+	components.add(new ScreenComponentProgress(() -> {
+	    GenericTile furnace = container.getHostFromIntArray();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > processor.requiredTicks / 2.0) {
+		    return Math.min(1.0, (processor.operatingTicks - processor.requiredTicks / 2.0) / (processor.requiredTicks / 2.0));
+		}
+	    }
+	    return 0;
+	}, this, 98, 30));
+	components.add(new ScreenComponentProgress(() -> 0, this, 42, 50).left());
 	components.add(new ScreenComponentFluid(() -> {
 	    TileMineralWasher boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Fluid fluid : handler.getValidInputFluids()) {
-		    FluidTank tank = handler.getTankFromFluid(fluid, true);
-		    if (tank.getFluidAmount() > 0) {
-			return tank;
-		    }
-		}
+	    	return ((AbstractFluidHandler<?>)boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
 	    }
 	    return null;
 	}, this, 21, 18));
+	components.add(new ScreenComponentFluid(() -> {
+	    TileMineralWasher boiler = container.getHostFromIntArray();
+	    if (boiler != null) {
+	    	return ((AbstractFluidHandler<?>)boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+	    }
+	    return null;
+	}, this, 127, 18));
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 

@@ -1,11 +1,15 @@
 {
 	"type" : "electrodynamics:chemical_crystallizer_recipe",
 	
-	"fluid_input":{
-		"tag":"forge:copper_mineral_fluid",
-		"amount": 200
+	"fluidinputs":{
+		"count" : 1, 
+		"0":{
+			"tag":"forge:copper_mineral_fluid",
+			"amount": 200
+		}
 	},
-	"item_output":{
+	
+	"output":{
 		"item":"electrodynamics:crystalcopper",
 		"count": 1
 	}

@@ -20,23 +20,22 @@ import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
-import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
-import electrodynamics.compatability.jei.recipecategories.psuedorecipes.PsuedoRecipes;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalCrystallizerRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ChemicalMixerRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ElectricFurnaceRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.EnergizedAlloyerRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.FermentationPlantRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.LatheRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralCrusherRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralGrinderRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.MineralWasherRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.OxidationFurnaceRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.ReinforcedAlloyerRecipeCategory;
-import electrodynamics.compatability.jei.recipecategories.specificmachines.electrodynamics.WireMillRecipeCategory;
+import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
+import electrodynamics.compatability.jei.recipecategories.fluid2item.ChemicalCrystallizerRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.fluiditem2fluid.ChemicalMixerRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.fluiditem2fluid.FermentationPlantRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.fluiditem2fluid.MineralWasherRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.EnergizedAlloyerRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.LatheRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.MineralCrusherRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.MineralGrinderRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.OxidationFurnaceRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.ReinforcedAlloyerRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
+import electrodynamics.compatability.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
+import electrodynamics.compatability.jei.utils.InfoItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -93,12 +92,10 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	// 1X
 	registration.addRecipeCatalyst(MineralCrusherRecipeCategory.INPUT_MACHINE, MineralCrusherRecipeCategory.UID);
 	// 2X
-	registration.addRecipeCatalyst(
-		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)),
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)),
 		MineralCrusherRecipeCategory.UID);
 	// 3X
-	registration.addRecipeCatalyst(
-		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)),
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)),
 		MineralCrusherRecipeCategory.UID);
 
 	/* Mineral Grinder */
@@ -106,12 +103,10 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	// 1X
 	registration.addRecipeCatalyst(MineralGrinderRecipeCategory.INPUT_MACHINE, MineralGrinderRecipeCategory.UID);
 	// 2X
-	registration.addRecipeCatalyst(
-		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)),
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)),
 		MineralGrinderRecipeCategory.UID);
 	// 3X
-	registration.addRecipeCatalyst(
-		new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
+	registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
 		MineralGrinderRecipeCategory.UID);
 
 	/* Oxidation Furnace */
@@ -150,40 +145,39 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-	PsuedoRecipes.addElectrodynamicsRecipes();
+	InfoItems.addInfoItems();
 	Minecraft mc = Minecraft.getInstance();
 	ClientLevel world = Objects.requireNonNull(mc.level);
 	RecipeManager recipeManager = world.getRecipeManager();
 
 	// Electric Furnace
-	// still broken; just cleaning up
 	Set<SmeltingRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.SMELTING));
 	registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
 
 	// Wire Mill
-	Set<O2ORecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE));
+	Set<Item2ItemRecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE));
 	registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
 
 	// Mineral Crusher
-	Set<O2ORecipe> mineralCrusherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
+	Set<Item2ItemRecipe> mineralCrusherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
 	registration.addRecipes(mineralCrusherRecipes, MineralCrusherRecipeCategory.UID);
 
 	// Mineral Grinder
-	Set<O2ORecipe> mineralGrinderRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
+	Set<Item2ItemRecipe> mineralGrinderRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
 	registration.addRecipes(mineralGrinderRecipes, MineralGrinderRecipeCategory.UID);
 
 	// Oxidation Furnace
-	Set<DO2ORecipe> oxidationFurnaceRecipes = ImmutableSet
+	Set<Item2ItemRecipe> oxidationFurnaceRecipes = ImmutableSet
 		.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
 	registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
 
 	// Energized Alloyer
-	Set<DO2ORecipe> energizedAlloyerRecipes = ImmutableSet
+	Set<Item2ItemRecipe> energizedAlloyerRecipes = ImmutableSet
 		.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE));
 	registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
 
 	// Lathe
-	Set<O2ORecipe> latheRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.LATHE_TYPE));
+	Set<Item2ItemRecipe> latheRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.LATHE_TYPE));
 	registration.addRecipes(latheRecipes, LatheRecipeCategory.UID);
 
 	// Mineral Washer
@@ -207,7 +201,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
 
 	// Reinforced Alloyer
-	Set<DO2ORecipe> reinforcedAlloyerRecipes = ImmutableSet
+	Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet
 		.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE));
 	registration.addRecipes(reinforcedAlloyerRecipes, ReinforcedAlloyerRecipeCategory.UID);
 
@@ -322,32 +316,20 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     }
 
     private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
-	/*
-	 * Machines currently with tabs:
-	 * 
-	 * Coal Generator Upgrade Transformer Downgrade Transformer Solar Panel Advanced
-	 * Solar Panel Thermoelectric Generator Combustion Chamber Hydroelectric
-	 * Generator Wind Generator Mineral Washer Chemical Mixer Chemical Crystalizer
-	 * 
-	 */
-	ArrayList<ItemStack> edMachines = PsuedoRecipes.ELECTRODYNAMICS_MACHINES;
-	String temp;
-
-	for (ItemStack itemStack : edMachines) {
-	    temp = itemStack.getItem().toString();
-	    registration.addIngredientInfo(itemStack, VanillaTypes.ITEM, new TranslatableComponent("info.jei.block." + temp));
-	}
-
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
-		new TranslatableComponent("info.jei.item.compositearmor"));
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
-		new TranslatableComponent("info.jei.item.compositearmor"));
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
-		new TranslatableComponent("info.jei.item.compositearmor"));
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
-		new TranslatableComponent("info.jei.item.compositearmor"));
-	// ince JEI 7.6.4, use {@link #addIngredientInfo(Object, IIngredientType,
-	// ITextComponent...)} instead.
+		String temp;
+		for (ItemStack item : InfoItems.ITEMS) {
+		    temp = item.getItem().toString();
+		    registration.addIngredientInfo(item, VanillaTypes.ITEM, new TranslatableComponent("info.jei.block." + temp));
+		}
+	
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
+			new TranslatableComponent("info.jei.item.compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
+			new TranslatableComponent("info.jei.item.compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
+			new TranslatableComponent("info.jei.item.compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
+			new TranslatableComponent("info.jei.item.compositearmor"));
 
     }
 

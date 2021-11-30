@@ -1,11 +1,14 @@
 {
 	"type" : "electrodynamics:chemical_crystallizer_recipe",
 	
-	"fluid_input":{
-		"tag":"forge:lithium_mineral_fluid",
-		"amount": 200
+	"fluidinputs":{
+		"count" : 1,
+		"0":{
+			"tag":"forge:lithium_mineral_fluid",
+			"amount": 200
+		} 
 	},
-	"item_output":{
+	"output":{
 		"item":"electrodynamics:crystallithium",
 		"count": 1
 	}

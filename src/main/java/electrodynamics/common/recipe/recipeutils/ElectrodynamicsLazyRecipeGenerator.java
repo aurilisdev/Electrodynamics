@@ -13,12 +13,12 @@ import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
-import electrodynamics.common.recipe.categories.do2o.specificmachines.OxidationFurnaceRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
-import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralCrusherRecipe;
-import electrodynamics.common.recipe.categories.o2o.specificmachines.MineralGrinderRecipe;
-import electrodynamics.common.recipe.categories.o2o.specificmachines.WireMillRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralCrusherRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralGrinderRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
 
 public class ElectrodynamicsLazyRecipeGenerator {
 

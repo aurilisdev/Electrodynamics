@@ -32,7 +32,7 @@ public class TileElectricPump extends GenericTile {
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 	addComponent(new ComponentPacketHandler().customPacketWriter(this::writeNBT).customPacketReader(this::readNBT));
-	addComponent(new ComponentFluidHandlerMulti(this).addFluidTank(Fluids.WATER, 0, false).relativeInput(Direction.EAST));
+	addComponent(new ComponentFluidHandlerMulti(this).setManualFluids(1, false, 0, Fluids.WATER).relativeInput(Direction.EAST));
     }
 
     protected CachedTileOutput output;

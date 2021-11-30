@@ -1,0 +1,14 @@
+{
+	"type": "electrodynamics:mineral_crusher_recipe",
+	"iteminputs" : {
+		"count" : 1,
+		"0": {
+			"tag": "forge:gravel",
+			"count": 1
+		}
+	},
+	"output": {
+		"item": "minecraft:flint",
+		"count": 1
+	}
+}

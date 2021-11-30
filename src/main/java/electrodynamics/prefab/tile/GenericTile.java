@@ -1,21 +1,16 @@
 package electrodynamics.prefab.tile;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiPredicate;
 
-import javax.annotation.Nullable;
-
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
+import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
-import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
-import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
-import electrodynamics.common.recipe.categories.fluid3items2item.Fluid3Items2ItemRecipe;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
-import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRecipe;
-import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
+import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
@@ -28,16 +23,12 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GenericTile extends BlockEntity implements Nameable {
@@ -185,127 +176,24 @@ public class GenericTile extends BlockEntity implements Nameable {
     public BlockPos getBlockPos() {
 	return worldPosition;
     }
-
-    @Nullable
-    public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
-	for (Recipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
+    
+    protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize,
+    	int bucketSize, int procSize, int invSize){
+    	return (x, y) -> (x < inputSize)
+			|| ((x >= (inputSize + outputSize + itemBiSize))  &&  (x < (invSize - procSize)) && CapabilityUtils.hasFluidItemCap(y))
+				|| (x >= (invSize - procSize) && y.getItem() instanceof ItemProcessorUpgrade);
     }
-
-    public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
-	ItemStack[] stack = new ItemStack[] { pr.getInput(), pr.getSecondInput() };
-	if (stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true) || stack[1] == null
-		|| stack[1].equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
-	for (Recipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends FluidItem2FluidRecipe> T getFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
-	}
-
-	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
-	for (Recipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
-	}
-
-	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
-	for (Recipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends Fluid3Items2ItemRecipe> T getFluid3Items2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
-	}
-
-	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
-	for (Recipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
-	}
-	Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().level);
-	for (Recipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
+    
+    protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize,
+        int bucketSize, int procSize, int invSize, int... ints){
+        
+    	List<Integer> list = new ArrayList<>();
+    	for(int i : ints) {
+    		list.add(i);
+    	}
+		return (x, y) -> (list.contains(x))
+	    		|| ((x >= (inputSize + outputSize + itemBiSize))  &&  (x < (invSize - procSize)) && CapabilityUtils.hasFluidItemCap(y))
+				|| ((x >= (invSize - procSize)) && y.getItem() instanceof ItemProcessorUpgrade);
     }
 
 }

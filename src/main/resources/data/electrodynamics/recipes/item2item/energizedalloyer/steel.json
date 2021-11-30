@@ -1,0 +1,18 @@
+{
+    "type":"electrodynamics:energized_alloyer_recipe",
+	"iteminputs" : {
+		"count" : 2,
+		"0":{
+	        "tag":"forge:ingots/iron",
+	        "count":2
+	    },
+	    "1":{
+	        "tag":"forge:coal_coke",
+	        "count":1
+	    }
+	},
+    "output":{
+        "item":"electrodynamics:ingotsteel",
+        "count":2
+    }
+}

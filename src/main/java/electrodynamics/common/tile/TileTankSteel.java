@@ -14,13 +14,18 @@ import net.minecraft.world.level.material.Fluids;
 public class TileTankSteel extends TileGenericTank {
 
     private static int capacity = 8000;
-    private static List<Fluid> fluids = new ArrayList<>();
+    private static Fluid[] fluids = new Fluid[0];
     private static String name = "steel";
 
     static {
-	fluids.add(Fluids.WATER);
-	fluids.add(Fluids.LAVA);
-	fluids.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getValues());
+    	List<Fluid> list = new ArrayList<>();
+		list.add(Fluids.WATER);
+		list.add(Fluids.LAVA);
+		list.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getValues());
+		fluids = new Fluid[list.size()];
+		for(int i = 0; i < list.size(); i++) {
+			fluids[i] = list.get(i);
+		}
     }
 
     public TileTankSteel(BlockPos pos, BlockState state) {
