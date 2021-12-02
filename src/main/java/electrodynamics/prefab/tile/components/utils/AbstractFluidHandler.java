@@ -1,7 +1,6 @@
 package electrodynamics.prefab.tile.components.utils;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.UtilitiesTiles;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
@@ -32,6 +32,11 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
     public HashSet<Direction> inputDirections = new HashSet<>();
     public Direction lastDirection = null;
 
+    protected RecipeType<?> recipeType;
+    protected int tankCapacity;
+    protected boolean hasInput;
+    protected boolean hasOutput;
+    
     protected AbstractFluidHandler(GenericTile tile) {
 	holder(tile);
 	if (holder.hasComponent(ComponentType.PacketHandler)) {
@@ -117,51 +122,61 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-	Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-		? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-		: Direction.UP, lastDirection);
-	boolean canFill = inputDirections.contains(lastDirection)
-		|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-	return canFill && isFluidValid(0, resource) && resource != null ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
+		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
+			? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+			: Direction.UP, lastDirection);
+		boolean canFill = inputDirections.contains(lastDirection)
+			|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
+		return canFill && getValidInputFluids().contains(resource.getFluid()) && resource != null ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
     }
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-	Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-		? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-		: Direction.UP, lastDirection);
-	boolean canDrain = outputDirections.contains(lastDirection)
-		|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
-	return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
+		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
+			? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+			: Direction.UP, lastDirection);
+		boolean canDrain = outputDirections.contains(lastDirection)
+			|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
+		return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
     }
 
-    public abstract AbstractFluidHandler<A> addFluidTank(Fluid fluid, int capacity, boolean isInput);
+    protected abstract void addFluidTank(Fluid fluid, boolean isInput);
 
-    public abstract AbstractFluidHandler<A> addFluidTank(Tags.IOptionalNamedTag<Fluid> tag, int capacity, boolean isInput);
+    protected abstract void setFluidInTank(FluidStack stack, int tank, boolean isInput);
 
-    public abstract AbstractFluidHandler<A> setFluidInTank(FluidStack stack, int tank, boolean isInput);
-
+    public abstract AbstractFluidHandler<A> setManualFluids(int tankCount, boolean isInput, int capacity, Fluid...fluids);
+    
+    public abstract AbstractFluidHandler<A> setManualFluidTags(int tankCount, boolean isInput, int capacity, Tags.IOptionalNamedTag<Fluid>...tags);
+    
     public abstract FluidStack getFluidInTank(int tank, boolean isInput);
-
-    public abstract FluidStack getStackFromFluid(Fluid fluid, boolean isInput);
 
     public abstract FluidTank getTankFromFluid(Fluid fluid, boolean isInput);
 
-    public abstract Collection<FluidTank> getInputFluidTanks();
-
-    public abstract Collection<FluidTank> getOutputFluidTanks();
+    public abstract FluidTank[] getInputTanks();
+    
+    public abstract FluidTank[] getOutputTanks();
 
     public abstract List<Fluid> getValidInputFluids();
 
     public abstract List<Fluid> getValidOutputFluids();
+    
+    protected abstract void addValidFluid(Fluid fluid, boolean isInput);
 
-    public abstract int getInputTanks();
+    public abstract int getInputTankCount();
 
-    public abstract int getOutputTanks();
+    public abstract int getOutputTankCount();
 
     public abstract void addFluidToTank(FluidStack fluid, boolean isInput);
 
     public abstract void drainFluidFromTank(FluidStack fluid, boolean isInput);
+    
+    public AbstractFluidHandler<A> setAddFluidsValues(RecipeType<?> recipeType, int capacity, boolean hasInput, boolean hasOutput){
+    	this.hasInput = hasInput;
+    	this.hasOutput = hasOutput;
+    	this.recipeType = recipeType;
+    	this.tankCapacity = capacity;
+    	return this;
+    }
 
     public abstract void addFluids();
 

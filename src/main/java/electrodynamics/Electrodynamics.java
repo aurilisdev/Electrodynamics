@@ -1,5 +1,7 @@
 package electrodynamics;
 
+import java.util.Random;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,6 +45,8 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 public class Electrodynamics {
 
     public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
+    
+    public static final Random RANDOM = new Random();
 
     public Electrodynamics() {
 	ConfigurationHandler.registerConfig(Constants.class);
@@ -55,6 +59,7 @@ public class Electrodynamics {
 	DeferredRegisters.CONTAINERS.register(bus);
 	DeferredRegisters.FLUIDS.register(bus);
 	DeferredRegisters.ENTITIES.register(bus);
+	Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
 	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
     }
 

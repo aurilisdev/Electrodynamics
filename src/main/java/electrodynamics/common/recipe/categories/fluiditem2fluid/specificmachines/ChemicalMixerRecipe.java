@@ -16,7 +16,7 @@ public class ChemicalMixerRecipe extends FluidItem2FluidRecipe {
     public static final String MOD_ID = electrodynamics.api.References.ID;
     public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    public ChemicalMixerRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid, FluidStack outputFluid) {
+    public ChemicalMixerRecipe(ResourceLocation recipeID, CountableIngredient[] inputItem, FluidIngredient[] inputFluid, FluidStack outputFluid) {
 	super(recipeID, inputItem, inputFluid, outputFluid);
     }
 

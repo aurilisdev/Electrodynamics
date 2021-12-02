@@ -6,6 +6,8 @@ import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileLathe;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -39,7 +41,7 @@ public class RenderLathe implements BlockEntityRenderer<TileLathe> {
 	lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHESHAFT);
 	UtilitiesRendering.renderModel(lathe, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	matrixStackIn.popPose();
-	ItemStack stack = tileEntityIn.getProcessor(0).getInput();
+	ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputContents().get(0).get(0);
 	if (!stack.isEmpty()) {
 	    matrixStackIn.pushPose();
 	    matrixStackIn.translate(0.5f, 0.78f, 0.5f);

@@ -1,0 +1,21 @@
+{
+	"type": "electrodynamics:chemical_mixer_recipe",
+	"iteminputs":{
+		"count" : 1,
+		"0": {
+			"tag": "forge:oxide/trisulfur",
+			"count": 1
+		}
+	},
+	"fluidinputs":{
+		"count" : 1,
+		"0": {
+			"fluid": "minecraft:water",
+			"amount": 1000
+		}
+	},
+	"output": {
+		"fluid": "electrodynamics:fluidsulfuricacid",
+		"amount": 2500
+	}
+}

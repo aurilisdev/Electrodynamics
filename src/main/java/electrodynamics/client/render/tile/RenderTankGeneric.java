@@ -23,12 +23,14 @@ public class RenderTankGeneric implements BlockEntityRenderer<TileGenericTank> {
     public void render(TileGenericTank tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 
-	AbstractFluidHandler<?> tank = tileEntityIn.getComponent(ComponentType.FluidHandler);
-	FluidTank fluidTank = tank.getTankFromFluid(null, true);
+    /*
+	//AbstractFluidHandler<?> tank = tileEntityIn.getComponent(ComponentType.FluidHandler);
+	//FluidTank fluidTank = tank.getTankFromFluid(null, true);
 	if (!fluidTank.getFluid().getFluid().isSame(Fluids.EMPTY)) {
 	    // float fluidRatio = (float) fluidTank.getFluidAmount() / (float)
 	    // fluidTank.getCapacity();
 	}
+	*/
     }
 
 }

@@ -1,0 +1,18 @@
+{
+    "type":"electrodynamics:oxidation_furnace_recipe",
+	"iteminputs" : {
+		"count" : 2,
+		"0":{
+	        "tag":"forge:dusts/saltpeter",
+	        "count":1
+	    },
+	    "1":{
+	        "tag":"forge:ores/aluminum",
+	        "count":1
+	    }
+	},
+    "output":{
+        "item":"electrodynamics:ingotaluminum",
+        "count":1
+    }
+}

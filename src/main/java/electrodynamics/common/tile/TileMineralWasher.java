@@ -5,7 +5,6 @@ import com.mojang.math.Vector3f;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
-import electrodynamics.common.item.ItemProcessorUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
@@ -18,7 +17,6 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentProcessorType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,25 +28,40 @@ import net.minecraft.world.phys.AABB;
 public class TileMineralWasher extends GenericTile {
     public static final int MAX_TANK_CAPACITY = 5000;
 
+    private static int inputSlots = 1;
+    private static int outputSize = 0;
+    private static int itemBiSize = 0;
+    private static int inputBucketSlots = 1;
+    private static int outputBucketSlots = 1;
+    private static int upgradeSlots = 3;
+    
+    private static int processorCount = 1;
+    private static int inputPerProc = 1;
+    
+    private static int invSize = 
+    	inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
+
+    
     public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
-	super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
-	addComponent(new ComponentTickable().tickClient(this::tickClient));
-	addComponent(new ComponentDirection());
-	addComponent(new ComponentPacketHandler());
-	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
-		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
-	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
-		.setAddFluidsValues(FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, MAX_TANK_CAPACITY, true, true));
-	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values())
-		.valid((slot, stack) -> slot < 2 || stack.getItem() instanceof ItemProcessorUpgrade).shouldSendInfo());
-	addComponent(new ComponentProcessor(this).upgradeSlots(2, 3, 4).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
-		.type(ComponentProcessorType.ObjectToObject)
-		.canProcess(component -> component.outputToPipe(component).consumeBucket(1).canProcessFluidItem2FluidRecipe(component,
-			FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
-		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
-		.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
-	addComponent(new ComponentContainerProvider("container.mineralwasher")
-		.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
+		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentDirection());
+		addComponent(new ComponentPacketHandler());
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
+			.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
+		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
+			.setAddFluidsValues(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, MAX_TANK_CAPACITY, true, true));
+		addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.values())
+			.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
+			.valid(getPredicate(inputSlots, outputSize, itemBiSize,inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
+			.shouldSendInfo());
+		addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
+			.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
+				FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
+			.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
+			.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
+		addComponent(new ComponentContainerProvider("container.mineralwasher")
+			.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     @Override

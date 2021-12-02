@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -46,6 +47,28 @@ public class ComponentInventory implements Component, WorldlyContainer {
     protected Function<Direction, Collection<Integer>> getSlotsFunction;
     protected boolean shouldSendInfo;
 
+    /* IMPORTANT DEFINITIONS:
+     * 
+     * SLOT ORDER:
+     * 1. Item Input Slots
+     * 2. Item Output Slot
+     * 3. Item Biproduct Slots
+     * 4. Bucket Input Slots
+     * 5. Bucket Output Slots
+     * 6. Upgrade Slots
+     * 
+     */
+    
+    private int inputSlotCount = 0;
+    private int outputSlotCount = 0;
+    private int upgradeSlotCount = 0;
+    private int itemBiproductSlotCount = 0;
+    private int inputBucketSlotCount = 0;
+    private int outputBucketSlotCount = 0;
+    
+    private int processorCount = 0;
+    private int inputPerProc = 0;
+    
     public ComponentInventory(GenericTile holder) {
 	holder(holder);
     }
@@ -283,4 +306,134 @@ public class ComponentInventory implements Component, WorldlyContainer {
     public void setChanged() {
 	holder.setChanged();
     }
+    
+    // I opted for more inputs to make things easier to understand when making a new machine
+    public ComponentInventory slotSizes(int inputSize, int outputSize, int itemBiSize, int upgradeSlots, 
+    	int inBucketSlots, int outBucketSlots, int procCount, int inputPerProc) {
+    	
+    	this.inputSlotCount = inputSize;
+    	this.outputSlotCount = outputSize;
+    	this.upgradeSlotCount = upgradeSlots;
+    	this.itemBiproductSlotCount = itemBiSize;
+    	this.inputBucketSlotCount = inBucketSlots;
+    	this.outputBucketSlotCount = outBucketSlots;
+    	
+    	this.processorCount = procCount;
+    	this.inputPerProc = inputPerProc;
+    	
+    	return this;
+    }
+    
+    /*
+     * Utility methods so you don't have to think as much
+     */
+    
+    public int getInputStartIndex() {
+    	return 0;
+    }
+    
+    public int getOutputStartIndex() {
+    	return inputSlotCount;
+    }
+    
+    public int getItemBiproductStartIndex() {
+    	return getOutputStartIndex() + outputSlotCount;
+    }
+    
+    public int getInputBucketStartIndex() {
+    	return getItemBiproductStartIndex() + itemBiproductSlotCount;
+    }
+    
+    public int getOutputBucketStartIndex() {
+    	return getInputBucketStartIndex() + inputBucketSlotCount;
+    }
+    
+    public int getUpgradeSlotStartIndex() {
+    	return getOutputBucketStartIndex() + outputBucketSlotCount;
+    }
+    
+    public List<List<ItemStack>> getInputContents(){
+    	List<List<ItemStack>> combinedList = new ArrayList<>();
+    	if(processorCount == 0) {
+    		List<ItemStack> newList = new ArrayList<>();
+    		for(int i = 0; i < inputSlotCount; i++) {
+    			newList.add(getItem(i));
+    		}
+    		combinedList.add(newList);
+        	
+        	return combinedList;
+    	}
+    	for(int i = 0; i < processorCount; i++) {
+    		List<ItemStack> newList = new ArrayList<>();
+    		for(int j = 0; j < inputPerProc; j++) {
+    			newList.add(getItem(j + i * (inputPerProc + 1)));
+    		}
+    		combinedList.add(newList);
+    	}
+    	return combinedList;
+    }
+    
+    public List<ItemStack> getOutputContents() {
+    	if(processorCount == 0) {
+    		List<ItemStack> list = new ArrayList<>();
+        	for(int i = 0; i < outputSlotCount; i++) {
+        		list.add(getItem(getOutputStartIndex() + i));
+        	}
+        	return list;
+    	}
+    	List<ItemStack> list = new ArrayList<>();
+    	for(int i = 0; i < processorCount; i++) {
+    		list.add(getItem(((inputPerProc + 1) * (i + 1))-1));
+    	}
+    	return list;
+    }
+    
+    public List<ItemStack> getItemBiContents(){
+    	List<ItemStack> list = new ArrayList<>();
+    	for(int i = 0; i < itemBiproductSlotCount; i ++) {
+    		list.add(getItem(getItemBiproductStartIndex() + i));
+    	}
+    	return list;
+    }
+    
+    public List<ItemStack> getInputBucketContents(){
+    	List<ItemStack> list = new ArrayList<>();
+    	for(int i = 0; i < inputBucketSlotCount; i ++) {
+    		list.add(getItem(getInputBucketStartIndex() + i));
+    	}
+    	return list;
+    }
+    
+    public List<ItemStack> getOutputBucketContents(){
+    	List<ItemStack> list = new ArrayList<>();
+    	for(int i = 0; i < outputBucketSlotCount; i ++) {
+    		list.add(getItem(getOutputBucketStartIndex() + i));
+    	}
+    	return list;
+    }
+    
+    public List<ItemStack> getUpgradeContents(){
+    	List<ItemStack> list = new ArrayList<>();
+    	for(int i = 0; i < upgradeSlotCount; i ++) {
+    		list.add(getItem(getUpgradeSlotStartIndex() + i));
+    	}
+    	return list;
+    }
+    
+    //you're making me break out a sheet of paper for this!
+    public List<Integer> getOutputSlots(){
+    	if(processorCount == 0) {
+    		List<Integer> list = new ArrayList<>();
+        	for(int i = 0; i < outputSlotCount; i++) {
+        		list.add(getOutputStartIndex() + i);
+        	}
+        	return list;
+    	}
+    	List<Integer> list = new ArrayList<>();
+    	for(int i = 0; i < processorCount; i++) {
+    		list.add(((inputPerProc + 1) * (i + 1))-1);
+    	}
+    	return list;
+    }
+    
 }

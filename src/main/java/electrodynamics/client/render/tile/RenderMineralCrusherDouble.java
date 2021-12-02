@@ -7,6 +7,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.UtilitiesRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -37,7 +38,8 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALCRUSHERDOUBLEHANDLE);
 	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	matrixStackIn.popPose();
-	ItemStack stack = tileEntityIn.getProcessor(0).getInput();
+	ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);
+	ItemStack stack = inv.getInputContents().get(0).get(0);
 	if (!stack.isEmpty()) {
 	    Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    matrixStackIn.pushPose();
@@ -55,7 +57,7 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 		    bufferIn, 0);
 	    matrixStackIn.popPose();
 	}
-	stack = tileEntityIn.getProcessor(1).getInput();
+	stack = inv.getInputContents().get(1).get(0);
 	if (!stack.isEmpty()) {
 	    Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	    matrixStackIn.pushPose();

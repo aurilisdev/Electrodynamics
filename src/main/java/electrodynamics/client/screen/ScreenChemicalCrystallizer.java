@@ -29,10 +29,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalCrystallizer> {
@@ -53,13 +51,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 	components.add(new ScreenComponentFluid(() -> {
 	    TileChemicalCrystallizer boiler = container.getHostFromIntArray();
 	    if (boiler != null) {
-		AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
-		for (Fluid fluid : handler.getValidInputFluids()) {
-		    FluidTank tank = handler.getTankFromFluid(fluid, true);
-		    if (tank.getFluidAmount() > 0) {
-			return tank;
-		    }
-		}
+	    	return ((AbstractFluidHandler<?>)boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
 	    }
 	    return null;
 	}, this, 21, 18));

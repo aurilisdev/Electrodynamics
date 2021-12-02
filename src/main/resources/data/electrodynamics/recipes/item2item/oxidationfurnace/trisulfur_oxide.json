@@ -1,0 +1,18 @@
+{
+	"type": "electrodynamics:oxidation_furnace_recipe",
+	"iteminputs" : {
+		"count" : 2,
+		"0": {
+			"tag": "forge:oxide/vanadium",
+			"count": 1
+		},
+		"1": {
+			"tag": "forge:oxide/disulfur",
+			"count": 1
+		}
+	},
+	"output": {
+		"item": "electrodynamics:oxidetrisulfur",
+		"count": 1
+	}
+}

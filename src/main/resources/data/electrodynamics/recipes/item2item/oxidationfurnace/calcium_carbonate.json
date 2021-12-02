@@ -1,0 +1,18 @@
+{
+    "type":"electrodynamics:oxidation_furnace_recipe",
+	"iteminputs" : {
+		"count" : 2,
+		"0":{
+	        "tag":"forge:oxide/sodiumcarbonate",
+	        "count":1
+	    },
+	    "1":{
+	        "item":"minecraft:bone_meal",
+	        "count":1
+	    }
+	},
+    "output":{
+        "item":"electrodynamics:oxidecalciumcarbonate",
+        "count":1
+    }
+}

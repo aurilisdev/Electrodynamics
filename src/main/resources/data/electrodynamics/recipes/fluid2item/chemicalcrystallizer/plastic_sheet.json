@@ -1,11 +1,14 @@
 {
 	"type" : "electrodynamics:chemical_crystallizer_recipe",
 	
-	"fluid_input":{
-		"tag":"forge:polyethylene",
-		"amount": 500
+	"fluidinputs":{
+		"count" : 1,
+		"0":{
+			"tag":"forge:polyethylene",
+			"amount": 500
+		}	
 	},
-	"item_output":{
+	"output":{
 		"item":"electrodynamics:sheetplastic",
 		"count": 1
 	}

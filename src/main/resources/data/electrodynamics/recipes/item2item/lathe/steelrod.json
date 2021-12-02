@@ -1,0 +1,14 @@
+{
+    "type":"electrodynamics:lathe_recipe",
+	"iteminputs" : {
+		"count" : 1,
+		"0":{
+	        "tag":"forge:ingots/steel",
+	        "count":2
+	    }
+	},
+    "output":{
+        "item":"electrodynamics:rodsteel",
+        "count":1
+    }
+}

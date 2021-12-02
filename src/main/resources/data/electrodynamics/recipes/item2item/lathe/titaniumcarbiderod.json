@@ -1,0 +1,14 @@
+{
+    "type":"electrodynamics:lathe_recipe",
+	"iteminputs" : {
+		"count" : 1,
+		"0":{
+	        "tag":"forge:ingots/titaniumcarbide",
+	        "count":2
+	    }
+	},
+    "output":{
+        "item":"electrodynamics:rodtitaniumcarbide",
+        "count":1
+    }
+}

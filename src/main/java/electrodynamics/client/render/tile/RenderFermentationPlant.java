@@ -25,7 +25,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 	    int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.pushPose();
 	float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-		.getStackFromFluid(DeferredRegisters.fluidEthanol, false).getAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
+		.getTankFromFluid(DeferredRegisters.fluidEthanol, false).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 	matrixStackIn.translate(0, 1.0 / 16.0 - 2.5 / 16.0 * (1 - prog), 0);
 	BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTETHANOL);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
@@ -39,7 +39,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 	matrixStackIn.translate(0, 1.0 / 16.0, 0);
 	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTWATER);
 	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-	prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true).getAmount()
+	prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(Fluids.WATER, true).getFluidAmount()
 		/ (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 	if (prog > 0) {
 	    matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
