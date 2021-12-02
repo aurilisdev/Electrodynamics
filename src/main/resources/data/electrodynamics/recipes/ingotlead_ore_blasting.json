@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:blasting",
 	"ingredient": {
-		"item": "electrodynamics:orelead"
+		"tag": "forge:ores/lead"
 	},
 	"result": "electrodynamics:ingotlead",
 	"experience": 0.7,

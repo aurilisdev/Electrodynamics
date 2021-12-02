@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:blasting",
 	"ingredient": {
-		"item": "minecraft:iron_ingot"
+		"tag": "forge:ingots/iron"
 	},
 	"result": "electrodynamics:ingotsteel",
 	"experience": 0.0,
