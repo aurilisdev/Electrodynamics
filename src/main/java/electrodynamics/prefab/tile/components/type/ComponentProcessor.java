@@ -255,19 +255,22 @@ public class ComponentProcessor implements Component {
     public <T extends Item2ItemRecipe> boolean canProcessItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		if(electro.getJoulesStored() < pr.getUsage()) {
-			//Electrodynamics.LOGGER.info("not enough power");
 			return false;
 		}
-		Item2ItemRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
-		if(locRecipe == null) {
-			//Electrodynamics.LOGGER.info("no recipe");
-			return false;
+		Item2ItemRecipe locRecipe;
+		if(!checkExistingRecipe(pr)) {
+			locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+			if(locRecipe == null) {
+				return false;
+			}
+		} else {
+			locRecipe = (T) recipe;
 		}
+		
 		setRecipe(locRecipe);
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		int locCap = inv.getOutputContents().get(getProcessorNumber()).isEmpty() ? 64 : inv.getOutputContents().get(pr.getProcessorNumber()).getMaxStackSize();
 		if(locCap < inv.getOutputContents().get(pr.getProcessorNumber()).getCount() + locRecipe.getResultItem().getCount()) {
-			//Electrodynamics.LOGGER.info("no room");
 			return false;
 		}
 		if(locRecipe.hasItemBiproducts()) {
@@ -292,8 +295,13 @@ public class ComponentProcessor implements Component {
 			return false;
 		}
 		Fluid2ItemRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
-		if(locRecipe == null) {
-			return false;
+		if(!checkExistingRecipe(pr)) {
+			locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+			if(locRecipe == null) {
+				return false;
+			}
+		} else {
+			locRecipe = (T) recipe;
 		}
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		int locCap = inv.getOutputContents().get(getProcessorNumber()).isEmpty() ? 64 : inv.getOutputContents().get(pr.getProcessorNumber()).getMaxStackSize();
@@ -322,8 +330,13 @@ public class ComponentProcessor implements Component {
 			return false;
 		}
 		Fluid2FluidRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
-		if(locRecipe == null) {
-			return false;
+		if(!checkExistingRecipe(pr)) {
+			locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+			if(locRecipe == null) {
+				return false;
+			}
+		} else {
+			locRecipe = (T) recipe;
 		}
 		setRecipe(locRecipe);
 		AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
@@ -353,8 +366,13 @@ public class ComponentProcessor implements Component {
 			return false;
 		}
 		Item2FluidRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
-		if(locRecipe == null) {
-			return false;
+		if(!checkExistingRecipe(pr)) {
+			locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+			if(locRecipe == null) {
+				return false;
+			}
+		} else {
+			locRecipe = (T) recipe;
 		}
 		setRecipe(locRecipe);
 		AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
@@ -383,19 +401,21 @@ public class ComponentProcessor implements Component {
     	
     	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		if(electro.getJoulesStored() < pr.getUsage()) {
-			//Electrodynamics.LOGGER.info("Not enough power");
 			return false;
 		}
 		FluidItem2FluidRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
-		if(locRecipe == null) {
-			//Electrodynamics.LOGGER.info("No recipe found");
-			return false;
+		if(!checkExistingRecipe(pr)) {
+			locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+			if(locRecipe == null) {
+				return false;
+			}
+		} else {
+			locRecipe = (T) recipe;
 		}
 		setRecipe(locRecipe);
 		AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if(amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
-			//Electrodynamics.LOGGER.info("No room");
 			return false;
 		}
 		if(locRecipe.hasItemBiproducts()) {
@@ -495,7 +515,6 @@ public class ComponentProcessor implements Component {
 	    			outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
 	    		}
 	    	} 
-		    //Electrodynamics.LOGGER.info(recipe.getResultItem());
 	    	if(inv.getOutputContents().get(getProcessorNumber()).isEmpty()) {
 	    		inv.setItem(inv.getOutputSlots().get(getProcessorNumber()), locRecipe.getResultItem().copy());
 	    	} else {
@@ -669,6 +688,13 @@ public class ComponentProcessor implements Component {
     		}
     	}
     	return true;
+    }
+    
+    private boolean checkExistingRecipe(ComponentProcessor pr) {
+    	if(recipe != null) {
+    		return recipe.matchesRecipe(pr);
+    	}
+    	return false;
     }
 
 }

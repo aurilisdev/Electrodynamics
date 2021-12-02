@@ -3,6 +3,7 @@ package electrodynamics.compatability.jei.recipecategories.item2item.specificmac
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.compatability.jei.ElectrodynamicsJEIPlugin;
 import electrodynamics.compatability.jei.recipecategories.item2item.Item2ItemRecipeCategory;
 import electrodynamics.compatability.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
 import electrodynamics.compatability.jei.utils.gui.backgroud.BackgroundWrapper;
@@ -36,6 +37,7 @@ public class LatheRecipeCategory extends Item2ItemRecipeCategory {
     
     public LatheRecipeCategory(IGuiHelper guiHelper) {
     	super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
+    	ElectrodynamicsJEIPlugin.addO2OClickArea(UID);
     	setInputSlots(guiHelper, INPUT_SLOT);
     	setOutputSlots(guiHelper, OUTPUT_SLOT);
     	setAnimatedArrows(guiHelper, ANIM_ARROW);

@@ -70,7 +70,7 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
     	drawInputSlots(matrixStack);
     	drawOutputSlots(matrixStack);
     	drawStaticArrows(matrixStack);
-    	drawInputSlots(matrixStack);
+    	drawFluidInputs(matrixStack);
     	if(recipe.hasFluidBiproducts()) {
     		drawFluidOutputs(matrixStack);
     	}
