@@ -64,8 +64,6 @@ public class Electrodynamics {
 	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
     }
 
-    // TODO: ERROR Parsing error loading custom advancement electrodynamics:adv9:
-    // Advancement criteria cannot be empty
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
 	for (SubtypeOre ore : SubtypeOre.values()) {
