@@ -21,11 +21,10 @@ public class BlockOre extends OreBlock {
     public BlockOre(SubtypeOre subtype) {
 	super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance));
 	ore = subtype;
-    }
+    }	
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-
 	Item oreItem;
 	int count = switch (ore) {
 	case sulfur, niter, sylvite -> {

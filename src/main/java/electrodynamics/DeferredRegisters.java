@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
 import electrodynamics.common.block.BlockCustomGlass;
+import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
@@ -17,6 +18,7 @@ import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -156,6 +158,9 @@ public class DeferredRegisters {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
 	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
 	}
+	for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
+	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockDeepslateOre(subtype), subtype)));
+	}
 	for (SubtypeMachine subtype : SubtypeMachine.values()) {
 	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
 	}
@@ -199,6 +204,7 @@ public class DeferredRegisters {
 
     static {
 	registerSubtypeBlockItem(SubtypeOre.values());
+	registerSubtypeBlockItem(SubtypeOreDeepslate.values());
 	registerSubtypeBlockItem(SubtypeMachine.values());
 	registerSubtypeBlockItem(SubtypeGlass.values());
 	registerSubtypeBlockItem(SubtypeResourceBlock.values());
