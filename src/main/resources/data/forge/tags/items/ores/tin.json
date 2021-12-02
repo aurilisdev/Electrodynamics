@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:oretin"
+    "electrodynamics:oretin",
+    "electrodynamics:deepslateoretin"
   ]
 }

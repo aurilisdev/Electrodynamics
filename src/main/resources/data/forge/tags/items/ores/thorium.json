@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:orethorianite"
+    "electrodynamics:orethorianite",
+    "electrodynamics:deepslateorethorianite"
   ]
 }

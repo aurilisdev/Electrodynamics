@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:orelead"
+    "electrodynamics:orelead",
+    "electrodynamics:deepslateorelead"
   ]
 }

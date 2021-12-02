@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:orechromite"
+    "electrodynamics:orechromite",
+    "electrodynamics:deepslateorechromite"
   ]
 }

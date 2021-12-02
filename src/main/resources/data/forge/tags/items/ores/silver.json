@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:oresilver"
+    "electrodynamics:oresilver",
+    "electrodynamics:deepslateoresilver"
   ]
 }

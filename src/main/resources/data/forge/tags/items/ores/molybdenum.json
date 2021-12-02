@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrodynamics:oremolybdenum"
+    "electrodynamics:oremolybdenum",
+    "electrodynamics:deepslateoremolybdenum"
   ]
 }
