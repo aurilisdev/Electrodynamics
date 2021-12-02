@@ -36,52 +36,52 @@ public class TileMineralGrinder extends GenericTile {
     private static int inputBucketSlots = 0;
     private static int outputBucketSlots = 0;
     private static int upgradeSlots = 3;
-    
+
     private static int inputPerProc = 1;
-    
+
     private static int knownInvSize = inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-    
-    
+
     public TileMineralGrinder(BlockPos pos, BlockState state) {
-    	this(0, pos, state);
+	this(0, pos, state);
     }
 
     public TileMineralGrinder(int extra, BlockPos pos, BlockState state) {
-		super(extra == 1 ? DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get()
-			: extra == 2 ? DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() : DeferredRegisters.TILE_MINERALGRINDER.get(), pos, state);
-		
-		int processorCount = extra + 1;
-		int inputCount = inputPerProc * (extra + 1);
-		int outputCount = 1 * (extra + 1);
-		int invSize = knownInvSize  + inputCount + outputCount;
-		
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
-			.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra))
-			.maxJoules(Constants.MINERALGRINDER_USAGE_PER_TICK * 20 * (extra + 1)));
-		
-		int[] ints = new int[extra + 1];
-		for(int i = 0; i <= extra; i++) {
-			ints[i] = i * 2;
-		}
-		
-		addComponent(new ComponentInventory(this).size(invSize)
-			.slotSizes(inputCount, outputCount, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-			.valid(getPredicateMulti(inputCount, outputCount, itemBiSize,inputBucketSlots + outputBucketSlots, upgradeSlots, invSize, ints))
-			.setMachineSlots(extra).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0
-			? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-			: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-				: extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
-		
-		for(int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this).setProcessorNumber(i)
-				.canProcess(component -> component.canProcessItem2ItemRecipe(component, MineralGrinderRecipe.class,ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE))
-			    .process(component -> component.processItem2ItemRecipe(component, MineralGrinderRecipe.class))
-			    .requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS).usage(Constants.MINERALGRINDER_USAGE_PER_TICK));
-		}
+	super(extra == 1 ? DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get()
+		: extra == 2 ? DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() : DeferredRegisters.TILE_MINERALGRINDER.get(), pos, state);
+
+	int processorCount = extra + 1;
+	int inputCount = inputPerProc * (extra + 1);
+	int outputCount = 1 * (extra + 1);
+	int invSize = knownInvSize + inputCount + outputCount;
+
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentPacketHandler());
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
+		.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra))
+		.maxJoules(Constants.MINERALGRINDER_USAGE_PER_TICK * 20 * (extra + 1)));
+
+	int[] ints = new int[extra + 1];
+	for (int i = 0; i <= extra; i++) {
+	    ints[i] = i * 2;
+	}
+
+	addComponent(new ComponentInventory(this).size(invSize)
+		.slotSizes(inputCount, outputCount, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
+		.valid(getPredicateMulti(inputCount, outputCount, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize, ints))
+		.setMachineSlots(extra).shouldSendInfo());
+	addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0
+		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
+		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
+			: extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+
+	for (int i = 0; i <= extra; i++) {
+	    addProcessor(new ComponentProcessor(this).setProcessorNumber(i)
+		    .canProcess(component -> component.canProcessItem2ItemRecipe(component, MineralGrinderRecipe.class,
+			    ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE))
+		    .process(component -> component.processItem2ItemRecipe(component, MineralGrinderRecipe.class))
+		    .requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS).usage(Constants.MINERALGRINDER_USAGE_PER_TICK));
+	}
     }
 
     protected void tickClient(ComponentTickable tickable) {
@@ -102,8 +102,8 @@ public class TileMineralGrinder extends GenericTile {
 	    int amount = getType() == DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get() ? 2
 		    : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 1;
 	    for (int i = 0; i < amount; i++) {
-	    	ComponentInventory inv = getComponent(ComponentType.Inventory);
-	    	ItemStack stack = inv.getInputContents().get(getProcessor(i).getProcessorNumber()).get(0);
+		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		ItemStack stack = inv.getInputContents().get(getProcessor(i).getProcessorNumber()).get(0);
 		if (stack.getItem()instanceof BlockItem it) {
 		    Block block = it.getBlock();
 		    double d4 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;

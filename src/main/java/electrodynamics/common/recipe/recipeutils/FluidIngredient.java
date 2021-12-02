@@ -117,35 +117,35 @@ public class FluidIngredient extends Ingredient {
     }
 
     public static FluidIngredient read(FriendlyByteBuf input) {
-		List<FluidStack> stacks = new ArrayList<>();
-		int count = input.readInt();
-		for (int i = 0; i < count; i++) {
-		    stacks.add(input.readFluidStack());
-		}
-		return new FluidIngredient(stacks);
+	List<FluidStack> stacks = new ArrayList<>();
+	int count = input.readInt();
+	for (int i = 0; i < count; i++) {
+	    stacks.add(input.readFluidStack());
+	}
+	return new FluidIngredient(stacks);
     }
-    
+
     public static FluidIngredient[] readList(FriendlyByteBuf buffer) {
-    	int length = buffer.readInt();
-    	FluidIngredient[] ings = new FluidIngredient[length];
-    	for(int i = 0; i < length; i++) {
-    		ings[i] = read(buffer);
-    	}
-    	return ings;
+	int length = buffer.readInt();
+	FluidIngredient[] ings = new FluidIngredient[length];
+	for (int i = 0; i < length; i++) {
+	    ings[i] = read(buffer);
+	}
+	return ings;
     }
 
     public void write(FriendlyByteBuf output) {
-		output.writeInt(FLUID_STACKS.size());
-		for (FluidStack stack : FLUID_STACKS) {
-		    output.writeFluidStack(stack);
-		}
+	output.writeInt(FLUID_STACKS.size());
+	for (FluidStack stack : FLUID_STACKS) {
+	    output.writeFluidStack(stack);
+	}
     }
-    
+
     public static void writeList(FriendlyByteBuf buffer, List<FluidIngredient> list) {
-    	buffer.writeInt(list.size());
-    	for(FluidIngredient ing : list) {
-    		ing.write(buffer);
-    	}
+	buffer.writeInt(list.size());
+	for (FluidIngredient ing : list) {
+	    ing.write(buffer);
+	}
     }
 
     public List<FluidStack> getMatchingFluids() {

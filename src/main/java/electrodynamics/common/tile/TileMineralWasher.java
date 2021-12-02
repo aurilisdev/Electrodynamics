@@ -34,34 +34,32 @@ public class TileMineralWasher extends GenericTile {
     private static int inputBucketSlots = 1;
     private static int outputBucketSlots = 1;
     private static int upgradeSlots = 3;
-    
+
     private static int processorCount = 1;
     private static int inputPerProc = 1;
-    
-    private static int invSize = 
-    	inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
 
-    
+    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
+
     public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
-			.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
-		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
-			.setAddFluidsValues(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, MAX_TANK_CAPACITY, true, true));
-		addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.values())
-			.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-			.valid(getPredicate(inputSlots, outputSize, itemBiSize,inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
-			.shouldSendInfo());
-		addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
-			.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
-				FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
-			.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
-			.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
-		addComponent(new ComponentContainerProvider("container.mineralwasher")
-			.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
+	addComponent(new ComponentTickable().tickClient(this::tickClient));
+	addComponent(new ComponentDirection());
+	addComponent(new ComponentPacketHandler());
+	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 4)
+		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
+	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
+		.setAddFluidsValues(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, MAX_TANK_CAPACITY, true, true));
+	addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.values())
+		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
+		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
+		.shouldSendInfo());
+	addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
+		.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
+			FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
+		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
+		.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
+	addComponent(new ComponentContainerProvider("container.mineralwasher")
+		.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
     @Override

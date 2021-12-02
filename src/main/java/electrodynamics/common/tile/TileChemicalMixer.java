@@ -32,13 +32,12 @@ public class TileChemicalMixer extends GenericTile {
     private static int inputBucketSlots = 1;
     private static int outputBucketSlots = 1;
     private static int upgradeSlots = 3;
-    
+
     private static int processorCount = 1;
     private static int inputPerProc = 1;
-    
-    private static int invSize = 
-    	inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-    
+
+    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
+
     public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
@@ -48,12 +47,13 @@ public class TileChemicalMixer extends GenericTile {
 		.maxJoules(Constants.CHEMICALMIXER_USAGE_PER_TICK * 10));
 	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST))
 		.setAddFluidsValues(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE, MAX_TANK_CAPACITY, true, true));
-	addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.EAST, Direction.UP).relativeSlotFaces(1, Direction.DOWN)
+	addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.EAST, Direction.UP)
+		.relativeSlotFaces(1, Direction.DOWN)
 		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
-		.slotSizes(inputSlots, outputSize , itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc));
+		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc));
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-		.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket()
-			.canProcessFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE))
+		.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
+			FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE))
 		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.usage(Constants.CHEMICALMIXER_USAGE_PER_TICK).requiredTicks(Constants.CHEMICALMIXER_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.chemicalmixer")

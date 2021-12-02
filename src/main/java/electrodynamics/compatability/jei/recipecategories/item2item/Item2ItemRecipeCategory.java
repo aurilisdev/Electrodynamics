@@ -22,81 +22,82 @@ import net.minecraft.world.item.ItemStack;
 
 public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<Item2ItemRecipe> {
 
-	/* DOCUMENTATION NOTES:
-	 * 
-	 * > Output items supercede buckets in position
-	 * > All biproducts will be included with the outputSlots field 
-	 * > All fluid bucket output slots will be incled with the outputSlots field
-	 */
-    
-    public Item2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine,
-	    BackgroundWrapper bWrap, int animTime) {
-		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, Item2ItemRecipe.class, animTime);
+    /*
+     * DOCUMENTATION NOTES:
+     * 
+     * > Output items supercede buckets in position > All biproducts will be
+     * included with the outputSlots field > All fluid bucket output slots will be
+     * incled with the outputSlots field
+     */
+
+    protected Item2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap,
+	    int animTime) {
+	super(guiHelper, modID, recipeGroup, inputMachine, bWrap, Item2ItemRecipe.class, animTime);
     }
 
     @Override
     public void setIngredients(Item2ItemRecipe recipe, IIngredients ingredients) {
-		List<List<ItemStack>> inputs = new ArrayList<>();
-		for(CountableIngredient ing : recipe.getCountedIngredients()) {
-			inputs.add(ing.fetchCountedStacks());
-		}
-		ingredients.setInputLists(VanillaTypes.ITEM, inputs);
-		
-		ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
-		
-		if(recipe.hasFluidBiproducts()) {
-			ingredients.setOutputs(VanillaTypes.FLUID, Arrays.asList(recipe.getFullFluidBiStacks()));
-		}
-		
+	List<List<ItemStack>> inputs = new ArrayList<>();
+	for (CountableIngredient ing : recipe.getCountedIngredients()) {
+	    inputs.add(ing.fetchCountedStacks());
+	}
+	ingredients.setInputLists(VanillaTypes.ITEM, inputs);
+
+	ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
+
+	if (recipe.hasFluidBiproducts()) {
+	    ingredients.setOutputs(VanillaTypes.FLUID, Arrays.asList(recipe.getFullFluidBiStacks()));
+	}
+
     }
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, Item2ItemRecipe recipe, IIngredients ingredients) {
 
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-		setItemInputs(guiItemStacks);
-		setItemOutputs(guiItemStacks);
-		guiItemStacks.set(ingredients);
-		
-		if(recipe.hasFluidBiproducts()) {
-			IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-			setFluidOutputs(guiFluidStacks, recipe, 1, null);
-			guiFluidStacks.set(ingredients);
-		}
+	IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	setItemInputs(guiItemStacks);
+	setItemOutputs(guiItemStacks);
+	guiItemStacks.set(ingredients);
+
+	if (recipe.hasFluidBiproducts()) {
+	    IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+	    setFluidOutputs(guiFluidStacks, recipe, 1, null);
+	    guiFluidStacks.set(ingredients);
+	}
 
     }
 
     @Override
     public void draw(Item2ItemRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-		
-    	drawInputSlots(matrixStack);
-    	drawOutputSlots(matrixStack);
-    	drawStaticArrows(matrixStack);
-    	if(recipe.hasFluidBiproducts()) {
-    		drawFluidOutputs(matrixStack);
-    	}
-    	drawAnimatedArrows(matrixStack);
-    	
-		addDescriptions(matrixStack);
+
+	drawInputSlots(matrixStack);
+	drawOutputSlots(matrixStack);
+	drawStaticArrows(matrixStack);
+	if (recipe.hasFluidBiproducts()) {
+	    drawFluidOutputs(matrixStack);
+	}
+	drawAnimatedArrows(matrixStack);
+
+	addDescriptions(matrixStack);
     }
 
-    private List<ItemStack> getItemOutputs(Item2ItemRecipe recipe){
-    	List<ItemStack> outputs = new ArrayList<>();
-		outputs.add(recipe.getResultItem());
-		
-		if(recipe.hasItemBiproducts()) {
-			outputs.addAll(Arrays.asList(recipe.getFullItemBiStacks()));
-		}
-		
-		if(recipe.hasFluidBiproducts()) {
-			for(ProbableFluid fluid : recipe.getFluidBiproducts()) {
-				ItemStack canister = new ItemStack(fluid.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fill(canister, fluid.getFullStack());
-				outputs.add(canister);
-			}
-		}
-		
-		return outputs;
+    private static List<ItemStack> getItemOutputs(Item2ItemRecipe recipe) {
+	List<ItemStack> outputs = new ArrayList<>();
+	outputs.add(recipe.getResultItem());
+
+	if (recipe.hasItemBiproducts()) {
+	    outputs.addAll(Arrays.asList(recipe.getFullItemBiStacks()));
+	}
+
+	if (recipe.hasFluidBiproducts()) {
+	    for (ProbableFluid fluid : recipe.getFluidBiproducts()) {
+		ItemStack canister = new ItemStack(fluid.getFullStack().getFluid().getBucket(), 1);
+		CapabilityUtils.fill(canister, fluid.getFullStack());
+		outputs.add(canister);
+	    }
+	}
+
+	return outputs;
     }
-    
+
 }

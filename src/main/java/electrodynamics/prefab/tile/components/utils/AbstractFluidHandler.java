@@ -36,7 +36,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
     protected int tankCapacity;
     protected boolean hasInput;
     protected boolean hasOutput;
-    
+
     protected AbstractFluidHandler(GenericTile tile) {
 	holder(tile);
 	if (holder.hasComponent(ComponentType.PacketHandler)) {
@@ -122,44 +122,46 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-			? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-			: Direction.UP, lastDirection);
-		boolean canFill = inputDirections.contains(lastDirection)
-			|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-		return canFill && getValidInputFluids().contains(resource.getFluid()) && resource != null ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
+	Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
+		? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+		: Direction.UP, lastDirection);
+	boolean canFill = inputDirections.contains(lastDirection)
+		|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
+	return canFill && resource != null && getValidInputFluids().contains(resource.getFluid())
+		? getTankFromFluid(resource.getFluid(), true).fill(resource, action)
+		: 0;
     }
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-			? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-			: Direction.UP, lastDirection);
-		boolean canDrain = outputDirections.contains(lastDirection)
-			|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
-		return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
+	Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
+		? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
+		: Direction.UP, lastDirection);
+	boolean canDrain = outputDirections.contains(lastDirection)
+		|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
+	return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
     }
 
     protected abstract void addFluidTank(Fluid fluid, boolean isInput);
 
     protected abstract void setFluidInTank(FluidStack stack, int tank, boolean isInput);
 
-    public abstract AbstractFluidHandler<A> setManualFluids(int tankCount, boolean isInput, int capacity, Fluid...fluids);
-    
-    public abstract AbstractFluidHandler<A> setManualFluidTags(int tankCount, boolean isInput, int capacity, Tags.IOptionalNamedTag<Fluid>...tags);
-    
+    public abstract AbstractFluidHandler<A> setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids);
+
+    public abstract AbstractFluidHandler<A> setManualFluidTags(int tankCount, boolean isInput, int capacity, Tags.IOptionalNamedTag<Fluid>... tags);
+
     public abstract FluidStack getFluidInTank(int tank, boolean isInput);
 
     public abstract FluidTank getTankFromFluid(Fluid fluid, boolean isInput);
 
     public abstract FluidTank[] getInputTanks();
-    
+
     public abstract FluidTank[] getOutputTanks();
 
     public abstract List<Fluid> getValidInputFluids();
 
     public abstract List<Fluid> getValidOutputFluids();
-    
+
     protected abstract void addValidFluid(Fluid fluid, boolean isInput);
 
     public abstract int getInputTankCount();
@@ -169,13 +171,13 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
     public abstract void addFluidToTank(FluidStack fluid, boolean isInput);
 
     public abstract void drainFluidFromTank(FluidStack fluid, boolean isInput);
-    
-    public AbstractFluidHandler<A> setAddFluidsValues(RecipeType<?> recipeType, int capacity, boolean hasInput, boolean hasOutput){
-    	this.hasInput = hasInput;
-    	this.hasOutput = hasOutput;
-    	this.recipeType = recipeType;
-    	this.tankCapacity = capacity;
-    	return this;
+
+    public AbstractFluidHandler<A> setAddFluidsValues(RecipeType<?> recipeType, int capacity, boolean hasInput, boolean hasOutput) {
+	this.hasInput = hasInput;
+	this.hasOutput = hasOutput;
+	this.recipeType = recipeType;
+	this.tankCapacity = capacity;
+	return this;
     }
 
     public abstract void addFluids();

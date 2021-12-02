@@ -17,11 +17,11 @@ public class TileTankHSLA extends TileGenericTank {
     private static String name = "hsla";
 
     static {
-    	List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
-    	fluids = new Fluid[list.size()];
-    	for(int i = 0; i < list.size(); i++) {
-    		fluids[i] = list.get(i);
-    	}
+	List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
+	fluids = new Fluid[list.size()];
+	for (int i = 0; i < list.size(); i++) {
+	    fluids[i] = list.get(i);
+	}
     }
 
     public TileTankHSLA(BlockPos pos, BlockState state) {

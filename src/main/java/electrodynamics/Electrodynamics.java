@@ -45,7 +45,7 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 public class Electrodynamics {
 
     public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
-    
+
     public static final Random RANDOM = new Random();
 
     public Electrodynamics() {

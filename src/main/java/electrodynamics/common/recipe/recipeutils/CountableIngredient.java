@@ -48,30 +48,30 @@ public class CountableIngredient extends Ingredient {
     }
 
     public static CountableIngredient read(FriendlyByteBuf buffer) {
-		Ingredient ingredient = Ingredient.fromNetwork(buffer);
-		int stackSize = buffer.readInt();
-		return new CountableIngredient(ingredient, stackSize);
+	Ingredient ingredient = Ingredient.fromNetwork(buffer);
+	int stackSize = buffer.readInt();
+	return new CountableIngredient(ingredient, stackSize);
     }
-    
+
     public static CountableIngredient[] readList(FriendlyByteBuf buffer) {
-    	int length = buffer.readInt();
-    	CountableIngredient[] ings = new CountableIngredient[length];
-    	for(int i = 0; i < length; i++) {
-    		ings[i] = read(buffer);
-    	}
-    	return ings;
+	int length = buffer.readInt();
+	CountableIngredient[] ings = new CountableIngredient[length];
+	for (int i = 0; i < length; i++) {
+	    ings[i] = read(buffer);
+	}
+	return ings;
     }
 
     public void writeStack(FriendlyByteBuf buffer) {
-		INGREDIENT.toNetwork(buffer);
-		buffer.writeInt(STACK_SIZE);
+	INGREDIENT.toNetwork(buffer);
+	buffer.writeInt(STACK_SIZE);
     }
-    
+
     public static void writeList(FriendlyByteBuf buffer, List<CountableIngredient> list) {
-    	buffer.writeInt(list.size());
-    	for(CountableIngredient ing : list) {
-    		ing.writeStack(buffer);
-    	}
+	buffer.writeInt(list.size());
+	for (CountableIngredient ing : list) {
+	    ing.writeStack(buffer);
+	}
     }
 
     public ArrayList<ItemStack> fetchCountedStacks() {

@@ -18,14 +18,14 @@ public class TileTankSteel extends TileGenericTank {
     private static String name = "steel";
 
     static {
-    	List<Fluid> list = new ArrayList<>();
-		list.add(Fluids.WATER);
-		list.add(Fluids.LAVA);
-		list.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getValues());
-		fluids = new Fluid[list.size()];
-		for(int i = 0; i < list.size(); i++) {
-			fluids[i] = list.get(i);
-		}
+	List<Fluid> list = new ArrayList<>();
+	list.add(Fluids.WATER);
+	list.add(Fluids.LAVA);
+	list.addAll(ElectrodynamicsTags.Fluids.ETHANOL.getValues());
+	fluids = new Fluid[list.size()];
+	for (int i = 0; i < list.size(); i++) {
+	    fluids[i] = list.get(i);
+	}
     }
 
     public TileTankSteel(BlockPos pos, BlockState state) {

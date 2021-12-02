@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
@@ -176,24 +175,22 @@ public class GenericTile extends BlockEntity implements Nameable {
     public BlockPos getBlockPos() {
 	return worldPosition;
     }
-    
-    protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize,
-    	int bucketSize, int procSize, int invSize){
-    	return (x, y) -> (x < inputSize)
-			|| ((x >= (inputSize + outputSize + itemBiSize))  &&  (x < (invSize - procSize)) && CapabilityUtils.hasFluidItemCap(y))
-				|| (x >= (invSize - procSize) && y.getItem() instanceof ItemProcessorUpgrade);
+
+    protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
+	    int invSize) {
+	return (x, y) -> x < inputSize || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
+		|| x >= invSize - procSize && y.getItem() instanceof ItemProcessorUpgrade;
     }
-    
-    protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize,
-        int bucketSize, int procSize, int invSize, int... ints){
-        
-    	List<Integer> list = new ArrayList<>();
-    	for(int i : ints) {
-    		list.add(i);
-    	}
-		return (x, y) -> (list.contains(x))
-	    		|| ((x >= (inputSize + outputSize + itemBiSize))  &&  (x < (invSize - procSize)) && CapabilityUtils.hasFluidItemCap(y))
-				|| ((x >= (invSize - procSize)) && y.getItem() instanceof ItemProcessorUpgrade);
+
+    protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
+	    int invSize, int... ints) {
+
+	List<Integer> list = new ArrayList<>();
+	for (int i : ints) {
+	    list.add(i);
+	}
+	return (x, y) -> list.contains(x) || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
+		|| x >= invSize - procSize && y.getItem() instanceof ItemProcessorUpgrade;
     }
 
 }

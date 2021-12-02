@@ -34,14 +34,12 @@ public class TileLathe extends GenericTile {
     private static int inputBucketSlots = 0;
     private static int outputBucketSlots = 0;
     private static int upgradeSlots = 3;
-    
+
     private static int processorCount = 1;
     private static int inputPerProc = 1;
-    
-    private static int invSize = 
-    	inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-    
-    
+
+    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
+
     public TileLathe(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_LATHE.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
@@ -51,7 +49,7 @@ public class TileLathe extends GenericTile {
 		.maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
 	addComponent(new ComponentInventory(this).size(invSize)
 		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize,inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
+		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
 		.shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.lathe")
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));

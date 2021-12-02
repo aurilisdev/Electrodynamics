@@ -20,7 +20,7 @@ public class ScreenTankGeneric extends GenericScreen<ContainerTankGeneric> {
 	components.add(new ScreenComponentFluid(() -> {
 	    TileGenericTank boiler = menu.getHostFromIntArray();
 	    if (boiler != null) {
-	    	return ((AbstractFluidHandler<?>)boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+		return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
 	    }
 	    return null;
 	}, this, 81, 18));

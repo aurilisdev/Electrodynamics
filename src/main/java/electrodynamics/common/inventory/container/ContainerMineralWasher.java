@@ -30,18 +30,18 @@ public class ContainerMineralWasher extends GenericContainer<TileMineralWasher> 
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-    	addSlot(new GenericSlot(inv, nextIndex(), 74, 31));
-    	addSlot(new SlotRestricted(inv, nextIndex(), 74, 51, 0, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY));
-    	addSlot(new SlotRestricted(inv, nextIndex(), 108, 51, 0, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY));
-    	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14,
-    		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-    		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-    	addSlot(new SlotRestricted(inv, nextIndex(), 153, 34,
-    		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-    		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-    	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54,
-    		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-    		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-        
+	addSlot(new GenericSlot(inv, nextIndex(), 74, 31));
+	addSlot(new SlotRestricted(inv, nextIndex(), 74, 51, 0, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY));
+	addSlot(new SlotRestricted(inv, nextIndex(), 108, 51, 0, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY));
+	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14,
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
+	addSlot(new SlotRestricted(inv, nextIndex(), 153, 34,
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
+	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54,
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
+		electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
+
     }
 }

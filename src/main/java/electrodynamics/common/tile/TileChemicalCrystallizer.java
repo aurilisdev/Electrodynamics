@@ -33,13 +33,12 @@ public class TileChemicalCrystallizer extends GenericTile {
     private static int inputBucketSlots = 1;
     private static int outputBucketSlots = 0;
     private static int upgradeSlots = 3;
-    
+
     private static int processorCount = 1;
     private static int inputPerProc = 0;
-    
-    private static int invSize = 
-    	inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-    
+
+    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
+
     public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_CHEMICALCRYSTALLIZER.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
@@ -51,7 +50,8 @@ public class TileChemicalCrystallizer extends GenericTile {
 		.setAddFluidsValues(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE, MAX_TANK_CAPACITY, true, false));
 	addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.values())
 		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize,inputBucketSlots + outputBucketSlots, upgradeSlots, invSize)).shouldSendInfo());
+		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
+		.shouldSendInfo());
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0)
 		.canProcess(component -> component.consumeBucket().canProcessFluid2ItemRecipe(component, Fluid2ItemRecipe.class,
 			ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE))

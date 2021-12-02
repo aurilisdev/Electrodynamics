@@ -15,22 +15,22 @@ public class PsuedoItem2ItemRecipe extends Item2ItemRecipe {
     public ItemStack OUTPUT;
 
     public PsuedoItem2ItemRecipe(List<ItemStack> inputs, ItemStack output) {
-		super(null, null, null);
-		INPUTS = new ArrayList<>();
-		for(ItemStack stack : inputs) {
-			INPUTS.add(Ingredient.of(stack));
-		}
-		OUTPUT = output;
+	super(null, null, null);
+	INPUTS = new ArrayList<>();
+	for (ItemStack stack : inputs) {
+	    INPUTS.add(Ingredient.of(stack));
+	}
+	OUTPUT = output;
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-    	return null;
+	return null;
     }
 
     @Override
     public RecipeType<?> getType() {
-    	return null;
+	return null;
     }
 
 }
