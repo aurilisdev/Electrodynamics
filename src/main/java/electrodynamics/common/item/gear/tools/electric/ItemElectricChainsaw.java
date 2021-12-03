@@ -74,7 +74,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-	return (int) Math.round(13.0f - 13.0f * getJoulesStored(stack) / properties.capacity);
+	return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
     }
 
     @Override
