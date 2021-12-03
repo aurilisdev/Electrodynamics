@@ -37,7 +37,6 @@ public class ItemElectric extends Item implements IItemElectric {
 	}
     }
 
-
     @Override
     public int getBarWidth(ItemStack stack) {
 	return (int) Math.round(13.0f - 13.0f * getJoulesStored(stack) / properties.capacity);
