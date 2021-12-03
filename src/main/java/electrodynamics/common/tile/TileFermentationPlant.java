@@ -34,7 +34,7 @@ public class TileFermentationPlant extends GenericTile {
     private static int upgradeSlots = 3;
 
     private static int processorCount = 1;
-    private static int inputPerProc = 0;
+    private static int inputPerProc = 1;
 
     private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
 
