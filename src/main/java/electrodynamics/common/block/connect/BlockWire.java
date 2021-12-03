@@ -8,12 +8,14 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TileWire;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
+import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.UtilitiesElectricity;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.Util;
@@ -91,6 +93,11 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	return true;
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 	return true;
     }
 
@@ -230,6 +237,22 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
     }
 
     @Override
+    public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	return wire.insulated
+		? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0
+			: 150
+		: 0;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	return wire.insulated
+		? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0
+			: 400
+		: 0;
+    }
+
+    @Override
     public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
 	super.onNeighborChange(state, world, pos, neighbor);
 	if (!world.isClientSide()) {
@@ -238,6 +261,13 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 		c.refreshNetworkIfChange();
 	    }
 	}
+    }
+
+    @Override
+    public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
+	super.onCaughtFire(state, world, pos, face, igniter);
+	Scheduler.schedule(5, () -> world.setBlock(pos,
+		DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
     }
 
     @Override
