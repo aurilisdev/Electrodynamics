@@ -34,7 +34,7 @@ public class TileFermentationPlant extends GenericTile {
     private static int upgradeSlots = 3;
 
     private static int processorCount = 1;
-    private static int inputPerProc = 0;
+    private static int inputPerProc = 1;
 
     private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
 
@@ -78,7 +78,6 @@ public class TileFermentationPlant extends GenericTile {
     }
 
     protected boolean canProcessFermPlan(ComponentProcessor processor) {
-
 	return processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
 		FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
