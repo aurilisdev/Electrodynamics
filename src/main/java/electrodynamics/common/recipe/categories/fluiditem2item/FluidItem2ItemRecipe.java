@@ -1,6 +1,6 @@
 package electrodynamics.common.recipe.categories.fluiditem2item;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
@@ -22,49 +22,49 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 
-    private CountableIngredient[] INPUT_ITEMS;
-    private FluidIngredient[] INPUT_FLUIDS;
-    private ItemStack ITEM_OUTPUT;
+    private CountableIngredient[] ingredients;
+    private FluidIngredient[] fluidIngredients;
+    private ItemStack outputItemStack;
 
-    public FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput) {
+    protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput) {
 	super(recipeID);
-	INPUT_ITEMS = itemInputs;
-	INPUT_FLUIDS = fluidInputs;
-	ITEM_OUTPUT = itemOutput;
+	ingredients = itemInputs;
+	fluidIngredients = fluidInputs;
+	outputItemStack = itemOutput;
     }
 
-    public FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
+    protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
 	    ProbableItem[] itemBiproducts) {
 	super(recipeID, itemBiproducts);
-	INPUT_ITEMS = inputItems;
-	INPUT_FLUIDS = inputFluids;
-	ITEM_OUTPUT = itemOutput;
+	ingredients = inputItems;
+	fluidIngredients = inputFluids;
+	outputItemStack = itemOutput;
     }
 
-    public FluidItem2ItemRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
+    protected FluidItem2ItemRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
 	    ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
 	super(fluidBiproducts, recipeID);
-	INPUT_ITEMS = inputItems;
-	INPUT_FLUIDS = inputFluids;
-	ITEM_OUTPUT = itemOutput;
+	ingredients = inputItems;
+	fluidIngredients = inputFluids;
+	outputItemStack = itemOutput;
     }
 
-    public FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
+    protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
 	    ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
 	super(recipeID, itemBiproducts, fluidBiproducts);
-	INPUT_ITEMS = inputItems;
-	INPUT_FLUIDS = inputFluids;
-	ITEM_OUTPUT = itemOutput;
+	ingredients = inputItems;
+	fluidIngredients = inputFluids;
+	outputItemStack = itemOutput;
     }
 
     @Override
     public boolean matchesRecipe(ComponentProcessor pr) {
 	Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(),
 		((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
-	if (itemPair.getSecond()) {
+	if (Boolean.TRUE.equals(itemPair.getSecond())) {
 	    Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(),
 		    ((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
-	    if (fluidPair.getSecond()) {
+	    if (Boolean.TRUE.equals(fluidPair.getSecond())) {
 		setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
 		setFluidArrangement(fluidPair.getFirst());
 		return true;
@@ -75,21 +75,21 @@ public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 
     @Override
     public ItemStack assemble(RecipeWrapper inv) {
-	return ITEM_OUTPUT;
+	return outputItemStack;
     }
 
     @Override
     public ItemStack getResultItem() {
-	return ITEM_OUTPUT;
+	return outputItemStack;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
 	NonNullList<Ingredient> list = NonNullList.create();
-	for (Ingredient ing : INPUT_ITEMS) {
+	for (Ingredient ing : ingredients) {
 	    list.add(ing);
 	}
-	for (Ingredient ing : INPUT_FLUIDS) {
+	for (Ingredient ing : fluidIngredients) {
 	    list.add(ing);
 	}
 	return list;
@@ -97,19 +97,11 @@ public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 
     @Override
     public List<FluidIngredient> getFluidIngredients() {
-	List<FluidIngredient> list = new ArrayList<>();
-	for (FluidIngredient ing : INPUT_FLUIDS) {
-	    list.add(ing);
-	}
-	return list;
+	return Arrays.asList(fluidIngredients);
     }
 
     public List<CountableIngredient> getCountedIngredients() {
-	List<CountableIngredient> list = new ArrayList<>();
-	for (CountableIngredient ing : INPUT_ITEMS) {
-	    list.add(ing);
-	}
-	return list;
+	return Arrays.asList(ingredients);
     }
 
 }

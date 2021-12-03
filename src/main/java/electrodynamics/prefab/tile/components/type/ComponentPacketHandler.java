@@ -83,8 +83,8 @@ public class ComponentPacketHandler implements Component {
 	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), false, new CompoundTag());
 	Level world = holder.getLevel();
 	BlockPos pos = holder.getBlockPos();
-	if (world instanceof ServerLevel) {
-	    ((ServerLevel) world).getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+	if (world instanceof ServerLevel level) {
+	    level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
 		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }
@@ -93,8 +93,8 @@ public class ComponentPacketHandler implements Component {
 	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), true, new CompoundTag());
 	Level world = holder.getLevel();
 	BlockPos pos = holder.getBlockPos();
-	if (world instanceof ServerLevel) {
-	    ((ServerLevel) world).getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+	if (world instanceof ServerLevel level) {
+	    level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
 		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 	}
     }

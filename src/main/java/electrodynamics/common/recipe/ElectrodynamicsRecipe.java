@@ -44,41 +44,41 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
     private int itemBiCount;
     private int fluidBiCount;
 
-    private ProbableItem[] ITEM_BIPRODUCTS;
-    private ProbableFluid[] FLUID_BIPRODUCTS;
+    private ProbableItem[] itemBiProducts;
+    private ProbableFluid[] fluidBiProducts;
 
-    private HashMap<Integer, List<Integer>> ITEM_ARRANGEMENT = new HashMap<>();
-    private List<Integer> FLUID_ARRANGEMENT;
+    private HashMap<Integer, List<Integer>> itemArrangements = new HashMap<>();
+    private List<Integer> fluidArrangement;
 
-    public ElectrodynamicsRecipe(ResourceLocation recipeID) {
+    protected ElectrodynamicsRecipe(ResourceLocation recipeID) {
 	id = recipeID;
 	hasItemBi = false;
 	hasFluidBi = false;
     }
 
-    public ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts) {
+    protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts) {
 	id = recipeID;
 	hasItemBi = true;
-	ITEM_BIPRODUCTS = itemBiproducts;
+	itemBiProducts = itemBiproducts;
 	itemBiCount = itemBiproducts.length;
 	hasFluidBi = false;
     }
 
-    public ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
+    protected ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
 	id = recipeID;
 	hasItemBi = false;
 	hasFluidBi = true;
-	FLUID_BIPRODUCTS = fluidBiproducts;
+	fluidBiProducts = fluidBiproducts;
 	fluidBiCount = fluidBiproducts.length;
     }
 
-    public ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+    protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
 	id = recipeID;
 	hasItemBi = true;
-	ITEM_BIPRODUCTS = itemBiproducts;
+	itemBiProducts = itemBiproducts;
 	itemBiCount = itemBiproducts.length;
 	hasFluidBi = true;
-	FLUID_BIPRODUCTS = fluidBiproducts;
+	fluidBiProducts = fluidBiproducts;
 	fluidBiCount = fluidBiproducts.length;
     }
 
@@ -118,20 +118,20 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	if (!hasItemBiproducts()) {
 	    throw new UnsupportedOperationException("This recipe has no Item Biproducts. Do not get the list!");
 	}
-	return ITEM_BIPRODUCTS;
+	return itemBiProducts;
     }
 
     public ProbableFluid[] getFluidBiproducts() {
 	if (!hasFluidBiproducts()) {
 	    throw new UnsupportedOperationException("This recipe has no Fluid Biproducts. Do not get the list!");
 	}
-	return FLUID_BIPRODUCTS;
+	return fluidBiProducts;
     }
 
     public ItemStack[] getFullItemBiStacks() {
 	ItemStack[] items = new ItemStack[itemBiCount];
 	for (int i = 0; i < itemBiCount; i++) {
-	    items[i] = ITEM_BIPRODUCTS[i].getFullStack();
+	    items[i] = itemBiProducts[i].getFullStack();
 	}
 	return items;
     }
@@ -139,7 +139,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
     public FluidStack[] getFullFluidBiStacks() {
 	FluidStack[] fluids = new FluidStack[fluidBiCount];
 	for (int i = 0; i < fluidBiCount; i++) {
-	    fluids[i] = FLUID_BIPRODUCTS[i].getFullStack();
+	    fluids[i] = fluidBiProducts[i].getFullStack();
 	}
 	return fluids;
     }
@@ -159,19 +159,19 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
     }
 
     public void setItemArrangement(Integer procNumber, List<Integer> arrangement) {
-	ITEM_ARRANGEMENT.put(procNumber, arrangement);
+	itemArrangements.put(procNumber, arrangement);
     }
 
     public List<Integer> getItemArrangment(Integer procNumber) {
-	return ITEM_ARRANGEMENT.get(procNumber);
+	return itemArrangements.get(procNumber);
     }
 
     public void setFluidArrangement(List<Integer> arrangement) {
-	FLUID_ARRANGEMENT = arrangement;
+	fluidArrangement = arrangement;
     }
 
     public List<Integer> getFluidArrangement() {
-	return FLUID_ARRANGEMENT;
+	return fluidArrangement;
     }
 
     public static Set<Recipe<?>> findRecipesbyType(RecipeType<?> typeIn, Level world) {

@@ -177,13 +177,13 @@ public class GenericTile extends BlockEntity implements Nameable {
 	return worldPosition;
     }
 
-    protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
+    protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize, int procSize,
 	    int invSize) {
 	return (x, y) -> x < inputSize || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
 		|| x >= invSize - procSize && y.getItem() instanceof ItemProcessorUpgrade;
     }
 
-    protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
+    protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize, int procSize,
 	    int invSize, int... ints) {
 
 	List<Integer> list = new ArrayList<>();

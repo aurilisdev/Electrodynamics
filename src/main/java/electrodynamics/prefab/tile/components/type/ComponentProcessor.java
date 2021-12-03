@@ -78,8 +78,8 @@ public class ComponentProcessor implements Component {
 	}
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	for (ItemStack stack : inv.getUpgradeContents()) {
-	    if (!stack.isEmpty() && stack.getItem() instanceof ItemProcessorUpgrade) {
-		calculatedOperatingSpeed *= ((ItemProcessorUpgrade) stack.getItem()).subtype.speedMultiplier;
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
+		calculatedOperatingSpeed *= upgrade.subtype.speedMultiplier;
 	    }
 	}
 	if (calculatedOperatingSpeed > 0 && calculatedOperatingSpeed != operatingSpeed) {
@@ -252,7 +252,7 @@ public class ComponentProcessor implements Component {
     }
 
     // Instead of checking all at once, we check one at a time; more efficient
-    public <T extends Item2ItemRecipe> boolean canProcessItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
+    public <T extends Item2ItemRecipe> boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	if (electro.getJoulesStored() < pr.getUsage()) {
 	    return false;
@@ -290,12 +290,12 @@ public class ComponentProcessor implements Component {
 	return true;
     }
 
-    public <T extends Fluid2ItemRecipe> boolean canProcessFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
+    public <T extends Fluid2ItemRecipe> boolean canProcessFluid2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	if (electro.getJoulesStored() < pr.getUsage()) {
 	    return false;
 	}
-	Fluid2ItemRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+	Fluid2ItemRecipe locRecipe;
 	if (!checkExistingRecipe(pr)) {
 	    locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
 	    if (locRecipe == null) {
@@ -326,12 +326,12 @@ public class ComponentProcessor implements Component {
 	return true;
     }
 
-    public <T extends Fluid2FluidRecipe> boolean canProcessFluid2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
+    public <T extends Fluid2FluidRecipe> boolean canProcessFluid2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	if (electro.getJoulesStored() < pr.getUsage()) {
 	    return false;
 	}
-	Fluid2FluidRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+	Fluid2FluidRecipe locRecipe;
 	if (!checkExistingRecipe(pr)) {
 	    locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
 	    if (locRecipe == null) {
@@ -362,12 +362,12 @@ public class ComponentProcessor implements Component {
 	return true;
     }
 
-    public <T extends Item2FluidRecipe> boolean canProcessItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, RecipeType<?> typeIn) {
+    public <T extends Item2FluidRecipe> boolean canProcessItem2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	if (electro.getJoulesStored() < pr.getUsage()) {
 	    return false;
 	}
-	Item2FluidRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+	Item2FluidRecipe locRecipe;
 	if (!checkExistingRecipe(pr)) {
 	    locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
 	    if (locRecipe == null) {
@@ -398,14 +398,12 @@ public class ComponentProcessor implements Component {
 	return true;
     }
 
-    public <T extends FluidItem2FluidRecipe> boolean canProcessFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass,
-	    RecipeType<?> typeIn) {
-
+    public <T extends FluidItem2FluidRecipe> boolean canProcessFluidItem2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	if (electro.getJoulesStored() < pr.getUsage()) {
 	    return false;
 	}
-	FluidItem2FluidRecipe locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
+	FluidItem2FluidRecipe locRecipe;
 	if (!checkExistingRecipe(pr)) {
 	    locRecipe = (T) ElectrodynamicsRecipe.getRecipe(pr, typeIn);
 	    if (locRecipe == null) {
@@ -436,8 +434,7 @@ public class ComponentProcessor implements Component {
 	return true;
     }
 
-    public <T extends FluidItem2ItemRecipe> boolean canProcessFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass,
-	    RecipeType<?> typeIn) {
+    public <T extends FluidItem2ItemRecipe> boolean canProcessFluidItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 	ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 	if (electro.getJoulesStored() < pr.getUsage()) {
 	    return false;
@@ -486,7 +483,7 @@ public class ComponentProcessor implements Component {
      * 
      */
 
-    public <T extends Item2ItemRecipe> void processItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
+    public <T extends Item2ItemRecipe> void processItem2ItemRecipe(ComponentProcessor pr) {
 	if (getRecipe() != null) {
 	    ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	    T locRecipe = (T) getRecipe();
@@ -525,7 +522,7 @@ public class ComponentProcessor implements Component {
 	}
     }
 
-    public <T extends FluidItem2FluidRecipe> void processFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass) {
+    public <T extends FluidItem2FluidRecipe> void processFluidItem2FluidRecipe(ComponentProcessor pr) {
 	if (getRecipe() != null) {
 	    T locRecipe = (T) getRecipe();
 	    ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
@@ -569,7 +566,7 @@ public class ComponentProcessor implements Component {
 	}
     }
 
-    public <T extends FluidItem2ItemRecipe> void processFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
+    public <T extends FluidItem2ItemRecipe> void processFluidItem2ItemRecipe(ComponentProcessor pr) {
 	if (getRecipe() != null) {
 	    T locRecipe = (T) getRecipe();
 
@@ -617,10 +614,9 @@ public class ComponentProcessor implements Component {
 	}
     }
 
-    public <T extends Fluid2ItemRecipe> void processFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass) {
+    public <T extends Fluid2ItemRecipe> void processFluid2ItemRecipe() {
 	if (getRecipe() != null) {
 	    T locRecipe = (T) getRecipe();
-
 	    ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	    AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
 

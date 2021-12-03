@@ -13,19 +13,19 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class AbstractFluidRecipe extends ElectrodynamicsRecipe {
 
-    public AbstractFluidRecipe(ResourceLocation recipeID) {
+    protected AbstractFluidRecipe(ResourceLocation recipeID) {
 	super(recipeID);
     }
 
-    public AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts) {
+    protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts) {
 	super(recipeID, itemBiproducts);
     }
 
-    public AbstractFluidRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
+    protected AbstractFluidRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
 	super(fluidBiproducts, recipeID);
     }
 
-    public AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+    protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
 	super(recipeID, itemBiproducts, fluidBiproducts);
     }
 

@@ -24,17 +24,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class FluidIngredient extends Ingredient {
 
     @Nonnull
-    private List<FluidStack> FLUID_STACKS;
+    private List<FluidStack> fluidStacks;
 
     public FluidIngredient(FluidStack fluidStack) {
 	super(Stream.empty());
-	FLUID_STACKS = new ArrayList<>();
-	FLUID_STACKS.add(fluidStack);
+	fluidStacks = new ArrayList<>();
+	fluidStacks.add(fluidStack);
     }
 
     public FluidIngredient(List<FluidStack> fluidStack) {
 	super(Stream.empty());
-	FLUID_STACKS = fluidStack;
+	fluidStacks = fluidStack;
     }
 
     /**
@@ -51,16 +51,16 @@ public class FluidIngredient extends Ingredient {
 	super(Stream.empty());
 	if (isTag) {
 	    List<Fluid> fluids = FluidTags.getAllTags().getTag(resourceLocation).getValues();
-	    FLUID_STACKS = new ArrayList<>();
+	    fluidStacks = new ArrayList<>();
 	    for (Fluid fluid : fluids) {
-		FLUID_STACKS.add(new FluidStack(fluid, amount));
+		fluidStacks.add(new FluidStack(fluid, amount));
 	    }
 	} else {
 	    List<FluidStack> fluids = new ArrayList<>();
 	    fluids.add(new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount));
-	    FLUID_STACKS = fluids;
+	    fluidStacks = fluids;
 	}
-	if (FLUID_STACKS.isEmpty()) {
+	if (fluidStacks.isEmpty()) {
 	    throw new UnsupportedOperationException("No fluids returned from tag " + resourceLocation);
 	}
     }
@@ -74,11 +74,11 @@ public class FluidIngredient extends Ingredient {
     private FluidIngredient(ResourceLocation resource, int amount) {
 	super(Stream.empty());
 	List<Fluid> fluids = SerializationTags.getInstance().getOrEmpty(ForgeRegistries.Keys.FLUIDS).getTag(resource).getValues();
-	FLUID_STACKS = new ArrayList<>();
+	fluidStacks = new ArrayList<>();
 	for (Fluid fluid : fluids) {
-	    FLUID_STACKS.add(new FluidStack(fluid, amount));
+	    fluidStacks.add(new FluidStack(fluid, amount));
 	}
-	if (FLUID_STACKS.isEmpty()) {
+	if (fluidStacks.isEmpty()) {
 	    throw new UnsupportedOperationException("No fluids returned from tag " + resource);
 	}
     }
@@ -105,7 +105,7 @@ public class FluidIngredient extends Ingredient {
 
     public boolean testFluid(@Nullable FluidStack t) {
 	if (t != null) {
-	    for (FluidStack stack : FLUID_STACKS) {
+	    for (FluidStack stack : fluidStacks) {
 		if (t.getAmount() >= stack.getAmount()) {
 		    if (t.getFluid().isSame(stack.getFluid())) {
 			return true;
@@ -135,8 +135,8 @@ public class FluidIngredient extends Ingredient {
     }
 
     public void write(FriendlyByteBuf output) {
-	output.writeInt(FLUID_STACKS.size());
-	for (FluidStack stack : FLUID_STACKS) {
+	output.writeInt(fluidStacks.size());
+	for (FluidStack stack : fluidStacks) {
 	    output.writeFluidStack(stack);
 	}
     }
@@ -149,11 +149,11 @@ public class FluidIngredient extends Ingredient {
     }
 
     public List<FluidStack> getMatchingFluids() {
-	return FLUID_STACKS;
+	return fluidStacks;
     }
 
     public FluidStack getFluidStack() {
-	return FLUID_STACKS.get(0);
+	return fluidStacks.get(0);
     }
 
 }
