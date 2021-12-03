@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:smelting",
 	"ingredient": {
-		"item": "electrodynamics:oretin"
+		"tag": "forge:ores/tin"
 	},
 	"result": "electrodynamics:ingottin",
 	"experience": 0.7,

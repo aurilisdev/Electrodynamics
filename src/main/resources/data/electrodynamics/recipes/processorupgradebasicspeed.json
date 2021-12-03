@@ -10,7 +10,7 @@
 			"tag": "forge:plates/steel"
 		},
 		"b": {
-			"item": "electrodynamics:gearbronze"
+			"tag": "forge:gears/bronze"
 		},
 		"m": {
 			"item": "electrodynamics:wireinsulatedgold"

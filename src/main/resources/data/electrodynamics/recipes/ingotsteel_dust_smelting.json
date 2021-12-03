@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:blasting",
 	"ingredient": {
-		"item": "electrodynamics:duststeel"
+		"tag": "forge:dusts/steel"
 	},
 	"result": "electrodynamics:ingotsteel",
 	"experience": 0.0,

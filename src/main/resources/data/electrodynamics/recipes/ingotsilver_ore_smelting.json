@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:smelting",
 	"ingredient": {
-		"item": "electrodynamics:oresilver"
+		"tag": "forge:ores/silver"
 	},
 	"result": "electrodynamics:ingotsilver",
 	"experience": 1.0,

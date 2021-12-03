@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:smelting",
 	"ingredient": {
-		"item": "electrodynamics:dustmolybdenum"
+		"tag": "forge:dusts/molybdenum"
 	},
 	"result": "electrodynamics:ingotmolybdenum",
 	"experience": 0.0,
