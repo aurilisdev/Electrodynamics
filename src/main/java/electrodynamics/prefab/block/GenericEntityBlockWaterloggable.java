@@ -38,7 +38,7 @@ public abstract class GenericEntityBlockWaterloggable extends GenericEntityBlock
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos,
 	    BlockPos facingPos) {
 	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
-	    worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+	    worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 	}
 	return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }

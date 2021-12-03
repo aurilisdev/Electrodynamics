@@ -74,12 +74,12 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-	return 1.0 - getJoulesStored(stack) / properties.capacity;
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0f - 13.0f * getJoulesStored(stack) / properties.capacity);
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
 	return getJoulesStored(stack) < properties.capacity;
     }
 

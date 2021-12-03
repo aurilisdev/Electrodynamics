@@ -205,7 +205,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
 	    BlockPos facingPos) {
 	if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
-	    world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+	    world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 	}
 	EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(facing);
 	BlockEntity tile = world.getBlockEntity(facingPos);

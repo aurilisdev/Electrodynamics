@@ -92,17 +92,17 @@ public class ItemCanister extends Item {
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
-	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
-		.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0 - stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
+	    return (double) cap.getFluidInTank(0).getAmount() / (double) cap.getTankCapacity(0);
+	}).orElse(1.0));
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-	return 1.0 - stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-	    return (double) cap.getFluidInTank(0).getAmount() / (double) cap.getTankCapacity(0);
-	}).orElse(1.0);
+    public boolean isBarVisible(ItemStack stack) {
+	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+		.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
     }
 
     @Override

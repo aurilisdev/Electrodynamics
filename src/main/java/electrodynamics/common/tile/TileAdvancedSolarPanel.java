@@ -50,7 +50,7 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 	    mod *= (1.0f - level.getThunderLevel(1f) * 5.0F / 16.0f) * 0.8f + 0.2f;
 	    Biome b = level.getBiomeManager().getBiome(getBlockPos());
 	    TransferPack pack = TransferPack.ampsVoltage(
-		    Constants.ADVANCEDSOLARPANEL_AMPERAGE * (b.getTemperature(getBlockPos()) / 2.0) * mod
+		    Constants.ADVANCEDSOLARPANEL_AMPERAGE * (b.getBaseTemperature() / 2.0) * mod
 			    * (level.isRaining() || level.isThundering() ? 0.7f : 1),
 		    this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP, pack, false);
