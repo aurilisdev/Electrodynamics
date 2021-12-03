@@ -126,10 +126,10 @@ public class TileCoalGenerator extends GenericTile {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound) {
 	compound.putDouble("heat", heat.get());
 	compound.putInt("burnTime", burnTime);
-	return super.save(compound);
+	super.saveAdditional(compound);
     }
 
     @Override
