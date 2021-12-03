@@ -58,12 +58,9 @@ public class ItemCanister extends Item {
 		for (Fluid liq : getWhitelistedFluids().getSecond()) {
 		    ItemStack temp = new ItemStack(this);
 		    // For init only; do not use anywhere else!
-		    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> {
-			((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY));
-		    });
-		    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> {
-			((RestrictedFluidHandlerItemStack) h).hasInitHappened(true);
-		    });
+		    temp.getCapability(CapabilityUtils.getFluidItemCap())
+			    .ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
+		    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 		    items.add(temp);
 
 		}
@@ -95,8 +92,8 @@ public class ItemCanister extends Item {
     public int getBarWidth(ItemStack stack) {
 	return (int) Math.round(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
 	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-	    return (double) cap.getFluidInTank(0).getAmount() / (double) cap.getTankCapacity(0);
-	}).orElse(1.0));
+	    return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
+	}).orElse(13.0));
     }
 
     @Override
