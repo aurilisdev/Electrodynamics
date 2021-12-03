@@ -7,6 +7,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
+import electrodynamics.common.settings.OreConfig;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -42,10 +43,9 @@ public class OreGeneration {
 		    OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
 	    ConfiguredFeature<?, ?> feature = FeatureUtils.register(ore.tag(),
 		    Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
-	    PlacedFeature placed = PlacementUtils.register(ore.tag(),
-		    feature.placed(List.of(CountPlacement.of(ore.veinsPerChunk), InSquarePlacement.spread(),
-			    HeightRangePlacement.uniform(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)),
-			    BiomeFilter.biome())));
+	    PlacedFeature placed = PlacementUtils.register(ore.tag(), feature.placed(List.of(
+		    CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(),
+		    HeightRangePlacement.uniform(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
 	    FEATURES.add(placed);
 	}
 
