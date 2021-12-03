@@ -8,7 +8,6 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -66,15 +65,15 @@ public class TileWireMill extends GenericTile {
 		.setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.wiremill" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
+		: extra == 1 ? new ContainerO2OProcessorDouble(id, player,
+			getComponent(ComponentType.Inventory), getCoordsArray())
 			: extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 	for (int i = 0; i <= extra; i++) {
 	    addProcessor(new ComponentProcessor(this).setProcessorNumber(i)
-		    .canProcess(component -> component.canProcessItem2ItemRecipe(component, WireMillRecipe.class,
-			    ElectrodynamicsRecipeInit.WIRE_MILL_TYPE))
-		    .process(component -> component.processItem2ItemRecipe(component, WireMillRecipe.class))
-		    .requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK));
+		    .canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE))
+		    .process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.WIREMILL_REQUIRED_TICKS)
+		    .usage(Constants.WIREMILL_USAGE_PER_TICK));
 	}
     }
 

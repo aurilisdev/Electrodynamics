@@ -7,7 +7,6 @@ import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
@@ -54,12 +53,12 @@ public class TileReinforcedAlloyer extends GenericTile {
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessReinfAlloy)
-		.process(component -> component.processItem2ItemRecipe(component, ReinforcedAlloyerRecipe.class))
-		.requiredTicks(Constants.REINFORCEDALLOYER_REQUIRED_TICKS).usage(Constants.REINFORCEDALLOYER_USAGE_PER_TICK));
+		.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.REINFORCEDALLOYER_REQUIRED_TICKS)
+		.usage(Constants.REINFORCEDALLOYER_USAGE_PER_TICK));
     }
 
     protected boolean canProcessReinfAlloy(ComponentProcessor component) {
-	if (component.canProcessItem2ItemRecipe(component, ReinforcedAlloyerRecipe.class, ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE)) {
+	if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE)) {
 	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer)) {
 		level.setBlock(worldPosition,
 			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyerrunning).defaultBlockState()

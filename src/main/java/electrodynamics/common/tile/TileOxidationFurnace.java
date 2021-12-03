@@ -7,7 +7,6 @@ import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
@@ -54,12 +53,12 @@ public class TileOxidationFurnace extends GenericTile {
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessOxideFurn)
-		.process(component -> component.processItem2ItemRecipe(component, OxidationFurnaceRecipe.class))
-		.requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS).usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK));
+		.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
+		.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK));
     }
 
     protected boolean canProcessOxideFurn(ComponentProcessor component) {
-	if (component.canProcessItem2ItemRecipe(component, OxidationFurnaceRecipe.class, ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE)) {
+	if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE)) {
 	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace)) {
 		level.setBlock(worldPosition,
 			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning).defaultBlockState()
