@@ -50,9 +50,10 @@ public class TileFermentationPlant extends GenericTile {
 		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
 		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize)));
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-		.canProcess(processor -> processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE))
-		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
-		.usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK).requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
+		.canProcess(processor -> processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
+			ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE))
+		.process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
+		.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.fermentationplant")
 		.createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

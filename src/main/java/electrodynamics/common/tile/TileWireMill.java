@@ -65,8 +65,7 @@ public class TileWireMill extends GenericTile {
 		.setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.wiremill" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-		: extra == 1 ? new ContainerO2OProcessorDouble(id, player,
-			getComponent(ComponentType.Inventory), getCoordsArray())
+		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 			: extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 	for (int i = 0; i <= extra; i++) {

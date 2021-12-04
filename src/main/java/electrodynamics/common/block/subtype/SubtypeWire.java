@@ -1,7 +1,8 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.ISubtype;
 import java.util.Objects;
+
+import electrodynamics.api.ISubtype;
 
 // Calculated using https://www.omnicalculator.com/physics/wire-resistance
 // Area is actually 0.125 = 15625mm^2
