@@ -4,7 +4,6 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -77,5 +76,4 @@ public class TileFermentationPlant extends GenericTile {
 	    level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
 	}
     }
-
 }

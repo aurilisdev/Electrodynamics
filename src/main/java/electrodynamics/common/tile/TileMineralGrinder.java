@@ -9,7 +9,6 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralGrinderRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -77,10 +76,9 @@ public class TileMineralGrinder extends GenericTile {
 
 	for (int i = 0; i <= extra; i++) {
 	    addProcessor(new ComponentProcessor(this).setProcessorNumber(i)
-		    .canProcess(component -> component.canProcessItem2ItemRecipe(component, MineralGrinderRecipe.class,
-			    ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE))
-		    .process(component -> component.processItem2ItemRecipe(component, MineralGrinderRecipe.class))
-		    .requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS).usage(Constants.MINERALGRINDER_USAGE_PER_TICK));
+		    .canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE))
+		    .process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS)
+		    .usage(Constants.MINERALGRINDER_USAGE_PER_TICK));
 	}
     }
 

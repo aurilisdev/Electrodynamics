@@ -31,9 +31,9 @@ public class TileWire extends GenericTileWire {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound) {
 	compound.putInt("ord", getWireType().ordinal());
-	return super.save(compound);
+	super.saveAdditional(compound);
     }
 
     @Override

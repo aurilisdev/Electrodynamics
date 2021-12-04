@@ -25,11 +25,11 @@ public class TileMultiSubnode extends GenericTile {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound) {
 	if (nodePos != null) {
 	    nodePos.writeToNBT(compound, "node");
 	}
-	return super.save(compound);
+	super.saveAdditional(compound);
     }
 
     @Override

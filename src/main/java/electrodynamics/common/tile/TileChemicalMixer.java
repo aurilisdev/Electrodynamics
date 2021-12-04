@@ -4,7 +4,6 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -53,9 +52,9 @@ public class TileChemicalMixer extends GenericTile {
 		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc));
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0)
 		.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
-			FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE))
-		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
-		.usage(Constants.CHEMICALMIXER_USAGE_PER_TICK).requiredTicks(Constants.CHEMICALMIXER_REQUIRED_TICKS));
+			ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE))
+		.process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.CHEMICALMIXER_USAGE_PER_TICK)
+		.requiredTicks(Constants.CHEMICALMIXER_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.chemicalmixer")
 		.createMenu((id, player) -> new ContainerChemicalMixer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

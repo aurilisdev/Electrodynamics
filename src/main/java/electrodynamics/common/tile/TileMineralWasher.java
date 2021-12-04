@@ -6,7 +6,6 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -55,9 +54,8 @@ public class TileMineralWasher extends GenericTile {
 		.shouldSendInfo());
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
 		.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
-			FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
-		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
-		.requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
+			ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
+		.process(component -> component.processFluidItem2FluidRecipe(component)).requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.mineralwasher")
 		.createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }

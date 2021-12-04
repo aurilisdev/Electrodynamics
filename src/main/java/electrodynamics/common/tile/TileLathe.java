@@ -7,7 +7,6 @@ import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -54,8 +53,8 @@ public class TileLathe extends GenericTile {
 	addComponent(new ComponentContainerProvider("container.lathe")
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	addProcessor(new ComponentProcessor(this).setProcessorNumber(0)
-		.canProcess(component -> component.canProcessItem2ItemRecipe(component, LatheRecipe.class, ElectrodynamicsRecipeInit.LATHE_TYPE))
-		.process(component -> component.processItem2ItemRecipe(component, LatheRecipe.class)).requiredTicks(Constants.LATHE_REQUIRED_TICKS)
+		.canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.LATHE_TYPE))
+		.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.LATHE_REQUIRED_TICKS)
 		.usage(Constants.LATHE_USAGE_PER_TICK));
     }
 

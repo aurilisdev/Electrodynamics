@@ -90,7 +90,7 @@ public class GenericTile extends BlockEntity implements Nameable {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound) {
 	for (Component component : components) {
 	    if (component != null) {
 		component.holder(this);
@@ -103,7 +103,8 @@ public class GenericTile extends BlockEntity implements Nameable {
 		pr.saveToNBT(compound);
 	    }
 	}
-	return super.save(compound);
+	super.save(compound); // TODO: Maybe this should be removed? not sure as save changed to
+			      // saveAdditional in 1.18
     }
 
     protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {

@@ -1,6 +1,7 @@
 package electrodynamics.common.block.subtype;
 
 import electrodynamics.api.ISubtype;
+import java.util.Objects;
 
 // Calculated using https://www.omnicalculator.com/physics/wire-resistance
 // Area is actually 0.125 = 15625mm^2
@@ -58,6 +59,16 @@ public enum SubtypeWire implements ISubtype {
 	this.logistical = logistical;
 	this.ceramic = ceramic;
 	this.highlyinsulated = highlyinsulated;
+    }
+
+    public static SubtypeWire getUninsulatedWire(SubtypeWire type) {
+	String wanted = type.name().replace("logistics", "").replace("ceramic", "").replace("highly", "").replace("insulated", "");
+	for (SubtypeWire wire : values()) {
+	    if (Objects.equals(wire.name(), wanted)) {
+		return wire;
+	    }
+	}
+	return type;
     }
 
     @Override

@@ -6,7 +6,6 @@ import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -53,10 +52,10 @@ public class TileChemicalCrystallizer extends GenericTile {
 		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
 		.shouldSendInfo());
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-		.canProcess(component -> component.consumeBucket().canProcessFluid2ItemRecipe(component, Fluid2ItemRecipe.class,
+		.canProcess(component -> component.consumeBucket().canProcessFluid2ItemRecipe(component,
 			ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE))
-		.process(component -> component.processFluid2ItemRecipe(component, Fluid2ItemRecipe.class))
-		.requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK));
+		.process(ComponentProcessor::processFluid2ItemRecipe).requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS)
+		.usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK));
 	addComponent(new ComponentContainerProvider("container.chemicalcrystallizer")
 		.createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
