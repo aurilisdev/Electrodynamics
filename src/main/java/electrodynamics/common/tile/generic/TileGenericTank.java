@@ -31,7 +31,7 @@ public class TileGenericTank extends GenericTile {
 
     public TileGenericTank(BlockEntityType<?> tile, int capacity, Fluid[] validFluids, String name, BlockPos pos, BlockState state) {
 	super(tile, pos, state);
-	addComponent(new ComponentTickable().tickCommon(this::tickCommon));
+	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP)
@@ -41,7 +41,7 @@ public class TileGenericTank extends GenericTile {
 		.createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
 
-    public void tickCommon(ComponentTickable tick) {
+    public void tickServer(ComponentTickable tick) {
 	ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
 	ComponentInventory inv = getComponent(ComponentType.Inventory);
 	ComponentDirection direction = getComponent(ComponentType.Direction);
@@ -51,19 +51,19 @@ public class TileGenericTank extends GenericTile {
 	ItemStack output = inv.getItem(1);
 	// try to drain slot 0
 	if (!input.isEmpty() && CapabilityUtils.hasFluidItemCap(input)) {
-	    boolean isInputBucket = input.getItem() instanceof BucketItem;
-	    FluidStack stack = CapabilityUtils.simDrain(input, Integer.MAX_VALUE);
-	    FluidTank tank = handler.getTankFromFluid(stack.getFluid(), true);
-	    int room = tank.getCapacity() - tank.getFluidAmount();
-	    if (room > 0 && handler.isFluidValid(0, stack) && !isInputBucket) {
-		handler.addFluidToTank(stack, true);
-		CapabilityUtils.drain(input, stack);
-	    } else if (room >= 1000 && handler.isFluidValid(0, stack) && isInputBucket) {
-		handler.addFluidToTank(stack, true);
-		inv.setItem(0, new ItemStack(Items.BUCKET, 1));
+		FluidTank tank = handler.getInputTanks()[0];
+		FluidStack containerFluid = CapabilityUtils.simDrain(input, Integer.MAX_VALUE);
+		if (handler.getValidInputFluids().contains(containerFluid.getFluid()) && tank.isFluidValid(containerFluid)) {
+		    int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
+		    FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
+		    CapabilityUtils.drain(input, drained);
+		    tank.fill(drained, FluidAction.EXECUTE);
+		    if (input.getItem() instanceof BucketItem) {
+		    	inv.setItem(0, new ItemStack(Items.BUCKET, 1));
+		    }
 	    }
 	}
-	// try to empty to slot 1
+	// try to fill to slot 1
 	if (!output.isEmpty() && CapabilityUtils.hasFluidItemCap(output)) {
 	    boolean isBucket = output.getItem() instanceof BucketItem;
 	    FluidStack tankFluid = handler.getFluidInTank(0);
@@ -83,23 +83,31 @@ public class TileGenericTank extends GenericTile {
 	}
 	// try to output to pipe
 	if (faceTile != null) {
-	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+		boolean electroPipe = faceTile instanceof GenericTilePipe ? true : false;
+		LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
 		    direction.getDirection().getClockWise().getOpposite().getOpposite());
 	    if (cap.isPresent()) {
 		IFluidHandler fHandler = cap.resolve().get();
-		boolean hasOutput = false;
+		boolean outputFluid = false;
 		for (FluidTank tank : handler.getOutputTanks()) {
-		    if (hasOutput) {
-			break;
+			if (outputFluid) {
+		    	break;
 		    }
 		    FluidStack tankFluid = tank.getFluid();
-		    int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
-		    FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-		    fHandler.fill(taken, FluidAction.EXECUTE);
-		    tank.drain(taken, FluidAction.EXECUTE);
-		    if (amtAccepted > 0) {
-			hasOutput = true;
-		    }
+		    if(electroPipe) { 
+		    	if(tank.getFluidAmount() > 0) {
+		    		fHandler.fill(tankFluid, FluidAction.EXECUTE);
+			    	tank.drain(tankFluid, FluidAction.EXECUTE);
+		    	}
+		    } else {
+		    	int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
+			    FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
+			    fHandler.fill(taken, FluidAction.EXECUTE);
+			    tank.drain(taken, FluidAction.EXECUTE);
+			    if (amtAccepted > 0) {
+			    	outputFluid = true;
+			    }
+		    } 
 		}
 	    }
 	}
