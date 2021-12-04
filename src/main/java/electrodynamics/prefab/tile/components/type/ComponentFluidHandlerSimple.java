@@ -25,24 +25,24 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 
     @Override
     public void saveToNBT(CompoundTag nbt) {
-		CompoundTag tag = new CompoundTag();
-		tag.putString("FluidName", fluidTank.getFluid().getRawFluid().getRegistryName().toString());
-		tag.putInt("Amount", fluidTank.getFluid().getAmount());
-		if (fluidTank.getFluid().getTag() != null) {
-		    tag.put("Tag", fluidTank.getFluid().getTag());
-		}
-		tag.putInt("cap", fluidTank.getCapacity());
-		nbt.put("fluidtank", tag);
+	CompoundTag tag = new CompoundTag();
+	tag.putString("FluidName", fluidTank.getFluid().getRawFluid().getRegistryName().toString());
+	tag.putInt("Amount", fluidTank.getFluid().getAmount());
+	if (fluidTank.getFluid().getTag() != null) {
+	    tag.put("Tag", fluidTank.getFluid().getTag());
+	}
+	tag.putInt("cap", fluidTank.getCapacity());
+	nbt.put("fluidtank", tag);
     }
 
     @Override
     public void loadFromNBT(CompoundTag nbt) {
-		CompoundTag compound = nbt.getCompound("fluidtank");
-		int cap = compound.getInt("cap");
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(compound);
-		FluidTank tank = new FluidTank(cap);
-		tank.setFluid(stack);
-		fluidTank = tank;
+	CompoundTag compound = nbt.getCompound("fluidtank");
+	int cap = compound.getInt("cap");
+	FluidStack stack = FluidStack.loadFluidStackFromNBT(compound);
+	FluidTank tank = new FluidTank(cap);
+	tank.setFluid(stack);
+	fluidTank = tank;
     }
 
     @Override
@@ -62,10 +62,10 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
-    	if(validFluids.contains(stack.getFluid())){
-    		return fluidTank.isFluidValid(stack);
-    	}
-    	return false;
+	if (validFluids.contains(stack.getFluid())) {
+	    return fluidTank.isFluidValid(stack);
+	}
+	return false;
     }
 
     @Override
@@ -88,14 +88,14 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 
     @Override
     public ComponentFluidHandlerSimple setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids) {
-    	tankCapacity = capacity;
-		for (Fluid fluid : fluids) {
-		    addValidFluid(fluid, isInput);
-		}
-		if (fluidTank == null) {
-		    fluidTank = new FluidTank(capacity);
-		}
-		return this;
+	tankCapacity = capacity;
+	for (Fluid fluid : fluids) {
+	    addValidFluid(fluid, isInput);
+	}
+	if (fluidTank == null) {
+	    fluidTank = new FluidTank(capacity);
+	}
+	return this;
     }
 
     @Override
