@@ -45,7 +45,7 @@ public class OreGeneration {
 		    Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
 	    PlacedFeature placed = PlacementUtils.register(ore.tag(), feature.placed(List.of(
 		    CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(),
-		    HeightRangePlacement.uniform(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
+		    HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
 	    FEATURES.add(placed);
 	}
 
