@@ -34,7 +34,7 @@ public class TileFermentationPlant extends GenericTile {
     private static int upgradeSlots = 3;
 
     private static int processorCount = 1;
-    private static int inputPerProc = 0;
+    private static int inputPerProc = 1;
 
     private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
 
@@ -50,8 +50,9 @@ public class TileFermentationPlant extends GenericTile {
 	addComponent(new ComponentInventory(this).size(invSize).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP)
 		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
 		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize)));
-	addComponent(new ComponentProcessor(this).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK).canProcess(this::canProcessFermPlan)
-		.setProcessorNumber(0).process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
+	addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
+		.canProcess(processor -> processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE))
+		.process(component -> component.processFluidItem2FluidRecipe(component, FluidItem2FluidRecipe.class))
 		.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
 	addComponent(new ComponentContainerProvider("container.fermentationplant")
 		.createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
@@ -75,12 +76,6 @@ public class TileFermentationPlant extends GenericTile {
 	    double z = worldPosition.getZ() + 0.55 + dir.getStepZ() * 0.2;
 	    level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
 	}
-    }
-
-    protected boolean canProcessFermPlan(ComponentProcessor processor) {
-
-	return processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
-		FluidItem2FluidRecipe.class, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE);
     }
 
 }
