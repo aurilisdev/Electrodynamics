@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;

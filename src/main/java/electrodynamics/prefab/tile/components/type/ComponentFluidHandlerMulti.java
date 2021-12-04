@@ -204,20 +204,30 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 
     @Override
     public FluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
-	if (isInput) {
-	    for (FluidTank tank : inputTanks) {
-		if (tank.getFluid().getFluid().isSame(fluid)) {
-		    return tank;
+		if (isInput) {
+		    for (FluidTank tank : inputTanks) {
+				if (tank.getFluid().getFluid().isSame(fluid)) {
+				    return tank;
+				}
+		    }
+		    for(FluidTank tank : inputTanks) {
+		    	if(tank.isEmpty()) {
+		    		return tank;
+		    	}
+		    }
+		} else {
+		    for (FluidTank tank : outputTanks) {
+				if (tank.getFluid().getFluid().isSame(fluid)) {
+				    return tank;
+				}
+		    }
+		    for(FluidTank tank : outputTanks) {
+		    	if(tank.isEmpty()) {
+		    		return tank;
+		    	}
+		    }
 		}
-	    }
-	} else {
-	    for (FluidTank tank : outputTanks) {
-		if (tank.getFluid().getFluid().isSame(fluid)) {
-		    return tank;
-		}
-	    }
-	}
-	return new FluidTank(0);
+		return new FluidTank(0);
     }
 
     @Override
