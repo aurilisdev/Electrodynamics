@@ -56,6 +56,7 @@ import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
 import electrodynamics.common.item.gear.tools.ItemWrench;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
@@ -293,6 +294,10 @@ public class DeferredRegisters {
 			    .receive(TransferPack.joulesVoltage(1000, 240)).tab(References.CORETAB).stacksTo(1))));
     public static final RegistryObject<Item> ITEM_ELECTRICCHAINSAW = ITEMS.register("electricchainsaw",
 	    supplier(new ItemElectricChainsaw(
+		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
+			    .receive(TransferPack.joulesVoltage(1000, 240)).tab(References.CORETAB).stacksTo(1))));
+    public static final RegistryObject<Item> ITEM_ELECTRICBATON = ITEMS.register("electricbaton",
+	    supplier(new ItemElectricBaton(
 		    (ElectricItemProperties) new ElectricItemProperties().capacity(1000000).extract(TransferPack.joulesVoltage(1000, 240))
 			    .receive(TransferPack.joulesVoltage(1000, 240)).tab(References.CORETAB).stacksTo(1))));
     public static final RegistryObject<Item> ITEM_KINETICRAILGUN = ITEMS.register("railgunkinetic",
