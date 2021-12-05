@@ -2,30 +2,6 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.api.item.IItemElectric;
-import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 
 public class ItemElectricBaton extends SwordItem implements IItemElectric {
 
