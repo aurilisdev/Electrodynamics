@@ -12,6 +12,7 @@ import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
@@ -38,7 +39,10 @@ public class TileThermoelectricGenerator extends GenericTile {
 	}
 	if (hasHeat && output.valid()) {
 	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP,
-		    TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE, electro.getVoltage()), false);
+		    TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE
+			    * level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getValue(LiquidBlock.LEVEL) / 16.0,
+			    electro.getVoltage()),
+		    false);
 	}
     }
 }

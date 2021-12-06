@@ -5,11 +5,13 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.inventory.container.ContainerCombustionChamber;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
@@ -31,6 +33,7 @@ public class TileCombustionChamber extends GenericTile {
     public static final int TANK_CAPACITY = 100;
     public boolean running = false;
     private int burnTime;
+    public int clientAmount = 0;
     private CachedTileOutput output;
 
     public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {
@@ -42,6 +45,8 @@ public class TileCombustionChamber extends GenericTile {
 	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 	addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, ElectrodynamicsTags.Fluids.ETHANOL)
 		.relativeInput(Direction.WEST));
+	addComponent(new ComponentContainerProvider("container.combustionchamber")
+		.createMenu((id, player) -> new ContainerCombustionChamber(id, player, null, getCoordsArray())));
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -95,9 +100,20 @@ public class TileCombustionChamber extends GenericTile {
 
     protected void writeNBT(CompoundTag nbt) {
 	nbt.putBoolean("running", running);
+	List<Fluid> ethanols = ElectrodynamicsTags.Fluids.ETHANOL.getValues();
+	ComponentFluidHandlerMulti tank = getComponent(ComponentType.FluidHandler);
+	for (Fluid fluid : ethanols) {
+	    FluidStack stack = tank.getTankFromFluid(fluid, true).getFluid();
+	    if (stack.getAmount() > 0) {
+		clientAmount = stack.getAmount();
+		break;
+	    }
+	}
+	nbt.putInt("clientAmount", clientAmount);
     }
 
     protected void readNBT(CompoundTag nbt) {
 	running = nbt.getBoolean("running");
+	clientAmount = nbt.getInt("clientAmount");
     }
 }

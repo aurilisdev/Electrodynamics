@@ -78,6 +78,6 @@ public class BlockItemDescriptable extends BlockItem {
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-	return stack.hasTag() && stack.getOrCreateTag().getDouble("joules") > 0 ? 1 : super.getItemStackLimit(stack);
+	return stack.hasTag() && stack.getTag().getDouble("joules") > 0 ? 1 : super.getItemStackLimit(stack);
     }
 }
