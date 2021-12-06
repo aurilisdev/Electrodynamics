@@ -28,6 +28,7 @@ import electrodynamics.client.screen.ScreenChargerGeneric;
 import electrodynamics.client.screen.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.ScreenChemicalMixer;
 import electrodynamics.client.screen.ScreenCoalGenerator;
+import electrodynamics.client.screen.ScreenCombustionChamber;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
 import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
@@ -179,6 +180,7 @@ public class ClientRegister {
 	MenuScreens.register(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
 	MenuScreens.register(DeferredRegisters.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
 	MenuScreens.register(DeferredRegisters.CONTAINER_TANK.get(), ScreenTankGeneric::new);
+	MenuScreens.register(DeferredRegisters.CONTAINER_COMBUSTION_CHAMBER.get(), ScreenCombustionChamber::new);
 
 	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());

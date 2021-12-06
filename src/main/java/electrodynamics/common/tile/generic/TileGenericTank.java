@@ -83,7 +83,7 @@ public class TileGenericTank extends GenericTile {
 	}
 	// try to output to pipe
 	if (faceTile != null) {
-	    boolean electroPipe = (faceTile instanceof GenericTilePipe);
+	    boolean electroPipe = faceTile instanceof GenericTilePipe;
 	    LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
 		    direction.getDirection().getClockWise().getOpposite().getOpposite());
 	    if (cap.isPresent()) {

@@ -17,7 +17,7 @@ public class ContainerCombustionChamber extends GenericContainer<TileCombustionC
     }
 
     public ContainerCombustionChamber(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(DeferredRegisters.CONTAINER_FERMENTATIONPLANT.get(), id, playerinv, inventory, inventorydata);
+	super(DeferredRegisters.CONTAINER_COMBUSTION_CHAMBER.get(), id, playerinv, new SimpleContainer(), inventorydata);
     }
 
     public ContainerCombustionChamber(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

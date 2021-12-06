@@ -19,8 +19,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ScreenComponentGauge extends ScreenComponent {
-    private static int WIDTH = 14;
-    protected static int HEIGHT = 49;
+    public static int WIDTH = 14;
+    public static int HEIGHT = 49;
 
     protected ScreenComponentGauge(IScreenWrapper gui, int x, int y) {
 	super(new ResourceLocation(References.ID + ":textures/screen/component/fluid.png"), gui, x, y);

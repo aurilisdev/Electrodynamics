@@ -259,31 +259,32 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	    @Nullable FluidStack recipeOutput) {
 	int offset = inSlots.length + outSlots.length + fluidInputs.length;
 	GenericFluidGaugeWrapper wrap;
-	FluidStack stack;
-	if (indexOffset == 1) {
-	    wrap = fluidOutputs[0];
-	    stack = recipeOutput;
-
-	    int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
-	    int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
-
-	    guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
-		    true, null);
-	    offset++;
-	}
-
-	if (recipe.hasFluidBiproducts()) {
-	    ProbableFluid[] stacks = recipe.getFluidBiproducts();
-	    for (int i = 0; i < recipe.getFluidBiproductCount(); i++) {
-		wrap = fluidOutputs[i + indexOffset];
-		stack = stacks[i].getFullStack();
+	FluidStack stack = recipeOutput;
+	if (stack != null) {
+	    if (indexOffset == 1) {
+		wrap = fluidOutputs[0];
 
 		int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
-		int leftStartY = wrap.getYPos() - leftHeightOffset + 1;
+		int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
 
-		guiFluidStacks.init(i + offset - indexOffset, false, wrap.getXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset,
-			stack.getAmount(), true, null);
+		guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
+			true, null);
+		offset++;
+	    }
 
+	    if (recipe.hasFluidBiproducts()) {
+		ProbableFluid[] stacks = recipe.getFluidBiproducts();
+		for (int i = 0; i < recipe.getFluidBiproductCount(); i++) {
+		    wrap = fluidOutputs[i + indexOffset];
+		    stack = stacks[i].getFullStack();
+
+		    int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
+		    int leftStartY = wrap.getYPos() - leftHeightOffset + 1;
+
+		    guiFluidStacks.init(i + offset - indexOffset, false, wrap.getXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset,
+			    stack.getAmount(), true, null);
+
+		}
 	    }
 	}
     }
