@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration.TargetBlockState;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
@@ -38,8 +39,7 @@ public class OreGeneration {
 	    BlockState oreDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState();
 	    BlockState oreDeepslateDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.values()[ore.ordinal()])
 		    .defaultBlockState();
-	    List<OreConfiguration.TargetBlockState> targetBlockStates = List.of(
-		    OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault),
+	    List<TargetBlockState> targetBlockStates = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault),
 		    OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
 	    ConfiguredFeature<?, ?> feature = FeatureUtils.register(ore.tag(),
 		    Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
@@ -48,7 +48,6 @@ public class OreGeneration {
 		    HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
 	    FEATURES.add(placed);
 	}
-
     }
 
     @SubscribeEvent

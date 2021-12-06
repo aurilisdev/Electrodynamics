@@ -240,13 +240,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 	if (holder.hasComponent(ComponentType.Direction)) {
 	    Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
-	    Stream<Integer> stRel = relativeDirectionMappings.containsKey(
-		    UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
-			    ? relativeDirectionMappings
-				    .get(UtilitiesTiles.getRelativeSide(
-					    holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
-				    .stream()
-			    : null;
+	    Direction relativeDirection = UtilitiesTiles
+		    .getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
+	    Stream<Integer> stRel = relativeDirectionMappings.containsKey(relativeDirection)
+		    ? relativeDirectionMappings.get(relativeDirection).stream()
+		    : null;
 	    return ArrayUtils.addAll(st == null ? new int[0] : st.mapToInt(i -> i).toArray(),
 		    stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
 

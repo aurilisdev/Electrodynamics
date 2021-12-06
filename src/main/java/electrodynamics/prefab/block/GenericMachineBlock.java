@@ -95,7 +95,9 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		    if (amtTaken == 1000) {
 			CapabilityUtils.drain(stack, taken);
 			tank.fill(taken, FluidAction.EXECUTE);
-			player.setItemInHand(handIn, new ItemStack(Items.BUCKET, 1));
+			if (!player.isCreative()) {
+			    player.setItemInHand(handIn, new ItemStack(Items.BUCKET, 1));
+			}
 			worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
 			return InteractionResult.FAIL;
 		    } else if (amtTaken > 0 && !isBucket) {
