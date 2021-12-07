@@ -33,6 +33,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
     public final double maxJoules;
     public double clientMaxJoulesStored;
     public double currentCapacityMultiplier = 1;
+    public double currentVoltageMultiplier = 1;
     public double clientVoltage = 120.0;
     public double clientJoules = 0;
     protected double receiveLimitLeft;
@@ -75,11 +76,10 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		    .getJoules());
 	}
 	currentCapacityMultiplier = 1;
-	int currentVoltageMultiplier = 1;
+	currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
-		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
+		upgrade.subtype.applyUpgrade.accept(this);
 	    }
 	}
 	electro.maxJoules(maxJoules * currentCapacityMultiplier);

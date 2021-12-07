@@ -49,8 +49,7 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 	int currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
-		currentCapacityMultiplier *= upgrade.subtype.capacityMultiplier;
-		currentVoltageMultiplier = Math.max(currentVoltageMultiplier, upgrade.subtype.capacityMultiplier == 2.25 ? 4 : 2);
+		upgrade.subtype.applyUpgrade.accept(this);
 	    }
 	}
 	electro.maxJoules(maxJoules * currentCapacityMultiplier);

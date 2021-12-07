@@ -22,13 +22,15 @@ public class ItemProcessorUpgrade extends Item {
     @Override
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	if (subtype.capacityMultiplier != 1.0) {
-	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgrade", subtype.capacityMultiplier).withStyle(ChatFormatting.GRAY));
-	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgradevoltage", (subtype.capacityMultiplier == 2.25 ? 4 : 2) + "x")
+	if (subtype == SubtypeProcessorUpgrade.advancedcapacity || subtype == SubtypeProcessorUpgrade.basiccapacity) {
+	    double capacityMultiplier = subtype == SubtypeProcessorUpgrade.advancedcapacity ? 2.25 : 1.5;
+	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
+	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x")
 		    .withStyle(ChatFormatting.RED));
 	}
-	if (subtype.speedMultiplier != 1.0) {
-	    tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", subtype.speedMultiplier).withStyle(ChatFormatting.GRAY));
+	if (subtype == SubtypeProcessorUpgrade.advancedspeed || subtype == SubtypeProcessorUpgrade.basicspeed) {
+	    double speedMultiplier = subtype == SubtypeProcessorUpgrade.advancedspeed ? 2.25 : 1.5;
+	    tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
 	}
     }
 }

@@ -73,18 +73,15 @@ public class ComponentProcessor implements Component {
     }
 
     private void tickServer(ComponentTickable tickable) {
-	double calculatedOperatingSpeed = 1;
+	operatingSpeed = 1;
 	if (holder.hasComponent(ComponentType.PacketHandler) && holder.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks() % 20 == 0) {
 	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	for (ItemStack stack : inv.getUpgradeContents()) {
 	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
-		calculatedOperatingSpeed *= upgrade.subtype.speedMultiplier;
+		upgrade.subtype.applyUpgrade.accept(holder);
 	    }
-	}
-	if (calculatedOperatingSpeed > 0 && calculatedOperatingSpeed != operatingSpeed) {
-	    operatingSpeed = calculatedOperatingSpeed;
 	}
 	if (holder.hasComponent(ComponentType.Electrodynamic)) {
 	    ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -192,7 +189,6 @@ public class ComponentProcessor implements Component {
     }
 
     public ComponentProcessor dispenseBucket() {
-
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
 	FluidTank[] tanks = handler.getOutputTanks();
