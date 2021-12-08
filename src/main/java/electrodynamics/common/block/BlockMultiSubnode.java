@@ -25,21 +25,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSubnode {
 
     public BlockMultiSubnode() {
-	super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor(BlockMultiSubnode::isntSolid)
+	super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor((a, b, c) -> false)
 		.noOcclusion());
-    }
-
-    private static boolean isntSolid(BlockState state, BlockGetter reader, BlockPos pos) {
-	return false;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-	BlockEntity tile = worldIn.getBlockEntity(pos);
-	if (tile instanceof TileMultiSubnode subnode) {
-	    return subnode.getShape();
-	}
-	return Shapes.block();
+	return worldIn.getBlockEntity(pos)instanceof TileMultiSubnode subnode ? subnode.getShape() : Shapes.block();
     }
 
     @Override
