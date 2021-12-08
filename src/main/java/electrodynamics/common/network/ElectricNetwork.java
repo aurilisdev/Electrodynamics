@@ -219,7 +219,6 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	if (getSize() == 0) {
 	    deregister();
 	}
-	transferBuffer = Math.max(0, Math.min(maxTransferBuffer, transferBuffer) * 0.75);
     }
 
     @Override
