@@ -1,40 +1,39 @@
 package electrodynamics.common.item.subtype;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 
 public enum SubtypeProcessorUpgrade implements ISubtype {
-    basiccapacity(holder -> {
+    basiccapacity((holder, processor) -> {
 	if (holder instanceof TileBatteryBox box) {
 	    box.currentCapacityMultiplier *= 1.5;
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 2);
 	}
     }),
-    basicspeed(processor -> {
-	if (processor.getComponent(ComponentType.Processor)instanceof ComponentProcessor component) {
-	    component.operatingSpeed *= 1.5;
+    basicspeed((holder, processor) -> {
+	if (processor != null) {
+	    processor.operatingSpeed *= 1.5;
 	}
     }),
-    advancedcapacity(holder -> {
+    advancedcapacity((holder, processor) -> {
 	if (holder instanceof TileBatteryBox box) {
 	    box.currentCapacityMultiplier *= 2.25;
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 4);
 	}
     }),
-    advancedspeed(processor -> {
-	if (processor.getComponent(ComponentType.Processor)instanceof ComponentProcessor component) {
-	    component.operatingSpeed *= 2.25;
+    advancedspeed((holder, processor) -> {
+	if (processor != null) {
+	    processor.operatingSpeed *= 2.25;
 	}
     });
 
-    public final Consumer<GenericTile> applyUpgrade;
+    public final BiConsumer<GenericTile, ComponentProcessor> applyUpgrade;
 
-    SubtypeProcessorUpgrade(Consumer<GenericTile> applyUpgrade) {
+    SubtypeProcessorUpgrade(BiConsumer<GenericTile, ComponentProcessor> applyUpgrade) {
 	this.applyUpgrade = applyUpgrade;
     }
 
