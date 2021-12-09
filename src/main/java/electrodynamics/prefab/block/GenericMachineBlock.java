@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -112,7 +113,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		    FluidStack tankFluid = tank.getFluid();
 		    int amtTaken = CapabilityUtils.simFill(stack, tankFluid);
 		    FluidStack taken = new FluidStack(tankFluid.getFluid(), amtTaken);
-		    if (isBucket && amtTaken == 1000) {
+		    if (isBucket && amtTaken == 1000 && (tankFluid.getFluid().isSame(Fluids.WATER) || tankFluid.getFluid().isSame(Fluids.LAVA))) {
 			player.setItemInHand(handIn, new ItemStack(taken.getFluid().getBucket(), 1));
 			tank.drain(taken, FluidAction.EXECUTE);
 			worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
