@@ -15,7 +15,7 @@ public class ItemProcessorUpgrade extends Item {
     public final SubtypeProcessorUpgrade subtype;
 
     public ItemProcessorUpgrade(Properties properties, SubtypeProcessorUpgrade subtype) {
-	super(properties.stacksTo(1));
+	super(properties.stacksTo(subtype.maxSize));
 	this.subtype = subtype;
     }
 

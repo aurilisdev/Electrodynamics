@@ -79,7 +79,9 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
-		upgrade.subtype.applyUpgrade.accept(this, null);
+		for (int i = 0; i < stack.getCount(); i++) {
+		    upgrade.subtype.applyUpgrade.accept(this, null);
+		}
 	    }
 	}
 	electro.maxJoules(maxJoules * currentCapacityMultiplier);

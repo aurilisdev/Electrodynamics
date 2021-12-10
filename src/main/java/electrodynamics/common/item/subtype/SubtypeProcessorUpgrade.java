@@ -10,31 +10,33 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 public enum SubtypeProcessorUpgrade implements ISubtype {
     basiccapacity((holder, processor) -> {
 	if (holder instanceof TileBatteryBox box) {
-	    box.currentCapacityMultiplier *= 1.5;
+	    box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(2.25, 3));
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 2);
 	}
-    }),
+    }, 3),
     basicspeed((holder, processor) -> {
 	if (processor != null) {
-	    processor.operatingSpeed *= 1.5;
+	    processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(2.25, 3));
 	}
-    }),
+    }, 3),
     advancedcapacity((holder, processor) -> {
 	if (holder instanceof TileBatteryBox box) {
-	    box.currentCapacityMultiplier *= 2.25;
+	    box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 2.25, Math.pow(2.25, 3));
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 4);
 	}
-    }),
+    }, 3),
     advancedspeed((holder, processor) -> {
 	if (processor != null) {
-	    processor.operatingSpeed *= 2.25;
+	    processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
 	}
-    });
+    }, 3);
 
     public final BiConsumer<GenericTile, ComponentProcessor> applyUpgrade;
+    public final int maxSize;
 
-    SubtypeProcessorUpgrade(BiConsumer<GenericTile, ComponentProcessor> applyUpgrade) {
+    SubtypeProcessorUpgrade(BiConsumer<GenericTile, ComponentProcessor> applyUpgrade, int maxSize) {
 	this.applyUpgrade = applyUpgrade;
+	this.maxSize = maxSize;
     }
 
     @Override
