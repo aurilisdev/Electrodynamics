@@ -2,8 +2,8 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Toasty",
-			"color": "gray",
+			"text": "Electrodynamics",
+			"color": "blue",
 			"bold": true,
 			"italic": true,
 			"underlined": false,
@@ -23,9 +23,8 @@
 		"hidden": false,
 		"background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
 	},
-	"parent": "minecraft:story/smelt_iron",
 	"criteria": {
-		"requirement": {
+		"getthecoalgenerator": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
@@ -41,5 +40,10 @@
 				]
 			}
 		}
-	}
+	},
+	"requirements": [
+    [
+      "getthecoalgenerator"
+    ]
+  ]
 }

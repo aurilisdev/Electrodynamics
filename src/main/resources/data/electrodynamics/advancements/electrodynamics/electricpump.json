@@ -2,22 +2,23 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Don't Touch",
-			"color": "dark_red"
+			"text": "Blub! Blub! Blub!",
+			"color": "dark_aqua",
+			"bold": true
 		},
 		"description": {
-			"text": "Make a upgrade transformer ",
+			"text": "You made a electric pump",
 			"color": "gray"
 		},
 		"icon": {
-			"item": "electrodynamics:upgradetransformer"
+			"item": "electrodynamics:electricpump"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
@@ -25,7 +26,7 @@
 				"items": [
 					{
 						"items": [ 
-							"electrodynamics:upgradetransformer"
+							"electrodynamics:electricpump"
 						],
 						"count": {
 							"min": 1,

@@ -2,23 +2,23 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Blub! Blub! Blub!",
-			"color": "dark_aqua",
+			"text": "EcoFriendly",
+			"color": "green",
 			"bold": true
 		},
 		"description": {
-			"text": "You made a electric pump",
-			"color": "gray"
+			"text": "Make a Hydroelectricgenerator",
+			"color": "dark_aqua"
 		},
 		"icon": {
-			"item": "electrodynamics:electricpump"
+			"item": "electrodynamics:hydroelectricgenerator"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
@@ -26,7 +26,7 @@
 				"items": [
 					{
 						"items": [ 
-							"electrodynamics:electricpump"
+							"electrodynamics:hydroelectricgenerator"
 						],
 						"count": {
 							"min": 1,

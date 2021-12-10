@@ -2,23 +2,22 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Power!!",
-			"color": "dark_green",
+			"text": "Is it hot in here",
+			"color": "red",
 			"bold": true
 		},
 		"description": {
-			"text": "Make a battery box",
-			"color": "gray"
+			"text": "Make an electric furnace"
 		},
 		"icon": {
-			"item": "electrodynamics:batterybox"
+			"item": "electrodynamics:electricfurnace"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
@@ -26,7 +25,7 @@
 				"items": [
 					{
 						"items": [ 
-							"electrodynamics:batterybox"
+							"electrodynamics:electricfurnace"
 						],
 						"count": {
 							"min": 1,

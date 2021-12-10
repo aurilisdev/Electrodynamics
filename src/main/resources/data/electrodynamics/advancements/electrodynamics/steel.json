@@ -2,30 +2,35 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Ore Processing",
-			"color": "gray",
-			"bold": true
+			"text": "Industrialization",
+			"color": "dark_blue",
+			"bold": true,
+			"italic": true,
+			"underlined": true,
+			"strikethrough": false,
+			"obfuscated": false
 		},
 		"description": {
-			"text": "Description"
+			"text": "Make steel for the first time",
+			"color": "gray"
 		},
 		"icon": {
-			"item": "minecraft:iron_ore"
+			"item": "electrodynamics:ingotsteel"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"items": [ 
-							"electrodynamics:mineralgrinder"
+						"items": [
+							"electrodynamics:ingotsteel"
 						],
 						"count": {
 							"min": 1,
