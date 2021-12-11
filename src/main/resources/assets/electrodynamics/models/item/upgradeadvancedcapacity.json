@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "electrodynamics:item/processorupgrade/processorupgradeadvancedspeed"
+		"layer0": "electrodynamics:item/upgrade/upgradeadvancedcapacity"
 	},
 	"display": {
 		"gui": {

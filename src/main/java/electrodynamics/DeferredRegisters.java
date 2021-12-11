@@ -50,7 +50,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.inventory.container.ContainerTankGeneric;
 import electrodynamics.common.item.ItemCeramic;
-import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
 import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
@@ -72,7 +72,7 @@ import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
-import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
@@ -227,9 +227,9 @@ public class DeferredRegisters {
 	registerSubtypeItem(SubtypePlate.values());
 	registerSubtypeItem(SubtypeCircuit.values());
 	registerSubtypeItem(SubtypeRod.values());
-	for (SubtypeProcessorUpgrade subtype : SubtypeProcessorUpgrade.values()) {
+	for (SubtypeItemUpgrade subtype : SubtypeItemUpgrade.values()) {
 	    SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(),
-		    supplier(new ItemProcessorUpgrade(new Item.Properties().tab(References.CORETAB), subtype), subtype)));
+		    supplier(new ItemUpgrade(new Item.Properties().tab(References.CORETAB), subtype), subtype)));
 	}
 	for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));

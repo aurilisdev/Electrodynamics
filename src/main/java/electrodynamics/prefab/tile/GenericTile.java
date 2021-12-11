@@ -7,7 +7,7 @@ import java.util.function.BiPredicate;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentName;
@@ -180,7 +180,7 @@ public class GenericTile extends BlockEntity implements Nameable {
     protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
 	    int invSize) {
 	return (x, y) -> x < inputSize || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
-		|| x >= invSize - procSize && y.getItem() instanceof ItemProcessorUpgrade;
+		|| x >= invSize - procSize && y.getItem() instanceof ItemUpgrade;
     }
 
     protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
@@ -191,7 +191,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 	    list.add(i);
 	}
 	return (x, y) -> list.contains(x) || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
-		|| x >= invSize - procSize && y.getItem() instanceof ItemProcessorUpgrade;
+		|| x >= invSize - procSize && y.getItem() instanceof ItemUpgrade;
     }
 
 }

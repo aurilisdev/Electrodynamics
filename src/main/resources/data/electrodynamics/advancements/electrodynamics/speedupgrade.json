@@ -11,7 +11,7 @@
 			"color": "gray"
 		},
 		"icon": {
-			"item": "electrodynamics:processorupgradebasicspeed"
+			"item": "electrodynamics:upgradebasicspeed"
 		},
 		"frame": "task",
 		"show_toast": true,
@@ -26,7 +26,7 @@
 				"items": [
 					{
 						"items": [
-							"electrodynamics:processorupgradebasicspeed"
+							"electrodynamics:upgradebasicspeed"
 						],
 						"count": {
 							"min": 1,
