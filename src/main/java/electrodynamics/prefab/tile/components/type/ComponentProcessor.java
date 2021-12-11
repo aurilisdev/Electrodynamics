@@ -79,8 +79,10 @@ public class ComponentProcessor implements Component {
 	}
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	for (ItemStack stack : inv.getUpgradeContents()) {
-	    if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
-		upgrade.subtype.applyUpgrade.accept(holder, this);
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
+		for (int i = 0; i < stack.getCount(); i++) {
+		    upgrade.subtype.applyUpgrade.accept(holder, this);
+		}
 	    }
 	}
 	if (holder.hasComponent(ComponentType.Electrodynamic)) {

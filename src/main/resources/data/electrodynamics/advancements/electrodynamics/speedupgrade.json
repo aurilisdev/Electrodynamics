@@ -2,31 +2,31 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "EcoFriendly",
-			"color": "green",
+			"text": "Zoom",
+			"color": "gold",
 			"bold": true
 		},
 		"description": {
-			"text": "Make a Hydroelectricgenerator",
-			"color": "dark_aqua"
+			"text": "Make a speed upgrade",
+			"color": "gray"
 		},
 		"icon": {
-			"item": "electrodynamics:hydroelectricgenerator"
+			"item": "electrodynamics:processorupgradebasicspeed"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"items": [ 
-							"electrodynamics:hydroelectricgenerator"
+						"items": [
+							"electrodynamics:processorupgradebasicspeed"
 						],
 						"count": {
 							"min": 1,

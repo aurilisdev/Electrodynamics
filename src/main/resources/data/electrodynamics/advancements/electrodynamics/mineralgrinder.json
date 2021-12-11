@@ -2,35 +2,30 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Industrialization",
-			"color": "dark_blue",
-			"bold": true,
-			"italic": true,
-			"underlined": true,
-			"strikethrough": false,
-			"obfuscated": false
+			"text": "Ore Processing",
+			"color": "gray",
+			"bold": true
 		},
 		"description": {
-			"text": "Make steel for the first time",
-			"color": "gray"
+			"text": "Create a mineral grinder"
 		},
 		"icon": {
-			"item": "electrodynamics:ingotsteel"
+			"item": "electrodynamics:mineralgrinder"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"items": [
-							"electrodynamics:ingotsteel"
+						"items": [ 
+							"electrodynamics:mineralgrinder"
 						],
 						"count": {
 							"min": 1,

@@ -2,22 +2,22 @@
 	"__comment": "aurilisdev",
 	"display": {
 		"title": {
-			"text": "Is it hot in here",
-			"color": "red",
-			"bold": true
+			"text": "Don't Touch",
+			"color": "dark_red"
 		},
 		"description": {
-			"text": "Description"
+			"text": "Make a upgrade transformer",
+			"color": "gray"
 		},
 		"icon": {
-			"item": "electrodynamics:electricfurnace"
+			"item": "electrodynamics:upgradetransformer"
 		},
 		"frame": "task",
 		"show_toast": true,
 		"announce_to_chat": true,
 		"hidden": false
 	},
-	"parent": "electrodynamics:root",
+	"parent": "electrodynamics:electrodynamics/root",
 	"criteria": {
 		"requirement": {
 			"trigger": "minecraft:inventory_changed",
@@ -25,7 +25,7 @@
 				"items": [
 					{
 						"items": [ 
-							"electrodynamics:electricfurnace"
+							"electrodynamics:upgradetransformer"
 						],
 						"count": {
 							"min": 1,
