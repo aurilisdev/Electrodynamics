@@ -23,9 +23,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class TileGenericCharger extends GenericTile {
+public abstract class GenericTileCharger extends GenericTile {
 
-    protected TileGenericCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition,
+    protected GenericTileCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition,
 	    BlockState blockState) {
 	super(typeIn, worldPosition, blockState);
 	addComponent(new ComponentDirection());
@@ -33,7 +33,7 @@ public abstract class TileGenericCharger extends GenericTile {
 	addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
 		.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(1000.0 * voltageMultiplier));
-	addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> slot < 1));
+	addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> slot < 1));
 	addComponent(new ComponentContainerProvider("container.charger" + containerName)
 		.createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

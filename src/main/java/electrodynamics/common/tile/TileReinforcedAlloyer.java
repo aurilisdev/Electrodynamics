@@ -26,29 +26,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileReinforcedAlloyer extends GenericTile {
-
-    private static int inputSlots = 2;
-    private static int outputSize = 1;
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 0;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int processorCount = 1;
-    private static int inputPerProc = 2;
-
-    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileReinforcedAlloyer(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_REINFORCEDALLOYER.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 8));
-	addComponent(new ComponentInventory(this).size(invSize).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
-		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST)
-		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize)));
+	addComponent(new ComponentInventory(this).size(3).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
+		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).upgrades(3).processors(1).processorInputs(2)
+		.valid(machineValidator()));
 	addComponent(new ComponentContainerProvider("container.reinforcedalloyer")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

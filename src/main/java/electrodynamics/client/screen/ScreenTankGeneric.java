@@ -1,7 +1,7 @@
 package electrodynamics.client.screen;
 
 import electrodynamics.common.inventory.container.ContainerTankGeneric;
-import electrodynamics.common.tile.generic.TileGenericTank;
+import electrodynamics.common.tile.generic.GenericTileTank;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
@@ -18,7 +18,7 @@ public class ScreenTankGeneric extends GenericScreen<ContainerTankGeneric> {
 	components.add(new ScreenComponentProgress(() -> 0, this, 52, 33));
 	components.add(new ScreenComponentProgress(() -> 0, this, 102, 33));
 	components.add(new ScreenComponentFluid(() -> {
-	    TileGenericTank boiler = menu.getHostFromIntArray();
+	    GenericTileTank boiler = menu.getHostFromIntArray();
 	    if (boiler != null) {
 		return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
 	    }

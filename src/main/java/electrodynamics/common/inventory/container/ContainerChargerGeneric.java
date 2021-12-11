@@ -1,7 +1,7 @@
 package electrodynamics.common.inventory.container;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.tile.generic.TileGenericCharger;
+import electrodynamics.common.tile.generic.GenericTileCharger;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 
-public class ContainerChargerGeneric extends GenericContainer<TileGenericCharger> {
+public class ContainerChargerGeneric extends GenericContainer<GenericTileCharger> {
 
     public ContainerChargerGeneric(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));

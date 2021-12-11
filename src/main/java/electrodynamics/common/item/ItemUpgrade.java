@@ -58,11 +58,12 @@ public class ItemUpgrade extends Item {
 	}
 	if (subtype == SubtypeItemUpgrade.itemoutput) {
 	    tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
-	    if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false)) {
+	    if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean)
+		    .orElse(false)) {
 		tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 	    }
-	    List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getDirections)
-		    .orElse(new ArrayList<>());
+	    List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+		    .map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
 	    if (!dirs.isEmpty()) {
 		tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.YELLOW));
 		for (Direction dir : dirs) {

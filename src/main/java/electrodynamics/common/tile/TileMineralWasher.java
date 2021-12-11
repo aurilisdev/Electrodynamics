@@ -27,18 +27,6 @@ import net.minecraft.world.phys.AABB;
 public class TileMineralWasher extends GenericTile {
     public static final int MAX_TANK_CAPACITY = 5000;
 
-    private static int inputSlots = 1;
-    private static int outputSize = 0;
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 1;
-    private static int outputBucketSlots = 1;
-    private static int upgradeSlots = 3;
-
-    private static int processorCount = 1;
-    private static int inputPerProc = 1;
-
-    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
@@ -48,10 +36,8 @@ public class TileMineralWasher extends GenericTile {
 		.maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
 	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
 		.setAddFluidsValues(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE, MAX_TANK_CAPACITY, true, true));
-	addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.values())
-		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
-		.shouldSendInfo());
+	addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.values()).inputs(1).bucketInputs(1).bucketOutputs(1)
+		.upgrades(3).processors(1).processorInputs(1).valid(machineValidator()).shouldSendInfo());
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
 		.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
 			ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))

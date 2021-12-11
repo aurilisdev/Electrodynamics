@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.tile.generic.TileGenericTank;
+import electrodynamics.common.tile.generic.GenericTileTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class TileTankHSLA extends TileGenericTank {
+public class TileTankHSLA extends GenericTileTank {
 
     private static int capacity = 128000;
     private static Fluid[] fluids = new Fluid[0];

@@ -26,18 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileChemicalCrystallizer extends GenericTile {
     public static final int MAX_TANK_CAPACITY = 5000;
 
-    private static int inputSlots = 0;
-    private static int outputSize = 1;
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 1;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int processorCount = 1;
-    private static int inputPerProc = 0;
-
-    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_CHEMICALCRYSTALLIZER.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
@@ -47,10 +35,8 @@ public class TileChemicalCrystallizer extends GenericTile {
 		.maxJoules(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK * 10));
 	addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
 		.setAddFluidsValues(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE, MAX_TANK_CAPACITY, true, false));
-	addComponent(new ComponentInventory(this).size(invSize).relativeSlotFaces(0, Direction.values())
-		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
-		.shouldSendInfo());
+	addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values()).outputs(1).bucketInputs(1).upgrades(3)
+		.processors(1).valid(machineValidator()).shouldSendInfo());
 	addComponent(new ComponentProcessor(this).setProcessorNumber(0)
 		.canProcess(component -> component.consumeBucket().canProcessFluid2ItemRecipe(component,
 			ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE))

@@ -10,7 +10,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.ContainerChargerGeneric;
-import electrodynamics.common.tile.generic.TileGenericCharger;
+import electrodynamics.common.tile.generic.GenericTileCharger;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentCharge;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
@@ -34,7 +34,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	super(screenContainer, inv, titleIn);
 
 	components.add(new ScreenComponentCharge(() -> {
-	    TileGenericCharger charger = menu.getHostFromIntArray();
+	    GenericTileCharger charger = menu.getHostFromIntArray();
 	    if (charger != null) {
 		ItemStack chargingItem = menu.getSlot(0).getItem();
 		if (!chargingItem.isEmpty() && chargingItem.getItem()instanceof IItemElectric electricItem) {
@@ -63,7 +63,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 
     private List<? extends Component> getChargerInfo() {
 	ArrayList<Component> list = new ArrayList<>();
-	TileGenericCharger charger = menu.getHostFromIntArray();
+	GenericTileCharger charger = menu.getHostFromIntArray();
 	if (charger != null) {
 
 	    ItemStack chargingItem = menu.getSlot(0).getItem();

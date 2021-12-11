@@ -5,7 +5,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.common.tile.generic.TileGenericCharger;
+import electrodynamics.common.tile.generic.GenericTileCharger;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -18,12 +18,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderChargerGeneric implements BlockEntityRenderer<TileGenericCharger> {
+public class RenderChargerGeneric implements BlockEntityRenderer<GenericTileCharger> {
     public RenderChargerGeneric(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(TileGenericCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
+    public void render(GenericTileCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 	    int combinedOverlayIn) {
 	Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);

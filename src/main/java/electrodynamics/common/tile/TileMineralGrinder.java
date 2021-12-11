@@ -31,15 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileMineralGrinder extends GenericTile {
     public long clientRunningTicks = 0;
 
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 0;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int inputPerProc = 1;
-
-    private static int knownInvSize = inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileMineralGrinder(BlockPos pos, BlockState state) {
 	this(0, pos, state);
     }
@@ -48,10 +39,11 @@ public class TileMineralGrinder extends GenericTile {
 	super(extra == 1 ? DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get()
 		: extra == 2 ? DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() : DeferredRegisters.TILE_MINERALGRINDER.get(), pos, state);
 
+	int processorInputs = 1;
 	int processorCount = extra + 1;
-	int inputCount = inputPerProc * (extra + 1);
+	int inputCount = processorInputs * (extra + 1);
 	int outputCount = 1 * (extra + 1);
-	int invSize = knownInvSize + inputCount + outputCount;
+	int invSize = 3 + inputCount + outputCount;
 
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -65,10 +57,8 @@ public class TileMineralGrinder extends GenericTile {
 	    ints[i] = i * 2;
 	}
 
-	addComponent(new ComponentInventory(this).size(invSize)
-		.slotSizes(inputCount, outputCount, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicateMulti(inputCount, outputCount, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize, ints))
-		.setMachineSlots(extra).shouldSendInfo());
+	addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount)
+		.processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
