@@ -1,10 +1,10 @@
 package electrodynamics.common.inventory.container;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.inventory.container.slot.UpgradeSlot;
 import electrodynamics.prefab.tile.GenericTile;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -32,11 +32,8 @@ public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
     public void addInventorySlots(Container inv, Inventory playerinv) {
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 34));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 34));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 34, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
     }
 }

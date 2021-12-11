@@ -1,11 +1,11 @@
 package electrodynamics.common.inventory.container;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.inventory.container.slot.UpgradeSlot;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -36,11 +36,8 @@ public class ContainerElectricFurnaceTriple extends GenericContainer<TileElectri
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 44));
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 64));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 64));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 34, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedspeed)));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
     }
 }

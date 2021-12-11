@@ -1,10 +1,11 @@
 package electrodynamics.common.inventory.container;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.inventory.container.slot.UpgradeSlot;
 import electrodynamics.prefab.item.ItemElectric;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -24,12 +25,9 @@ public class ContainerBatteryBox extends GenericContainer<TileBatteryBox> {
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 14, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basiccapacity),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedcapacity)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 34, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basiccapacity),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedcapacity)));
-	addSlot(new SlotRestricted(inv, nextIndex(), 153, 54, DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basiccapacity),
-		DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.advancedcapacity)));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
 	addSlot(new SlotRestricted(inv, nextIndex(), 133, 14, false, ItemElectric.class));
     }
 

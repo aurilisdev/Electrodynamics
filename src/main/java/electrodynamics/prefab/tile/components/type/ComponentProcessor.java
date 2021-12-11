@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
@@ -79,7 +79,7 @@ public class ComponentProcessor implements Component {
 	}
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	for (ItemStack stack : inv.getUpgradeContents()) {
-	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
 		upgrade.subtype.applyUpgrade.accept(holder, this);
 	    }
 	}

@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerLithiumBatteryBox;
-import electrodynamics.common.item.ItemProcessorUpgrade;
+import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -48,7 +48,7 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 	currentCapacityMultiplier = 1;
 	int currentVoltageMultiplier = 1;
 	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
 		upgrade.subtype.applyUpgrade.accept(this, null);
 	    }
 	}

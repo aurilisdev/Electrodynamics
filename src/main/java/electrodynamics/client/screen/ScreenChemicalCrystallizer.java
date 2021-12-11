@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
-import electrodynamics.common.item.subtype.SubtypeProcessorUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -61,7 +61,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
     @Override
     protected ScreenComponentSlot createScreenSlot(Slot slot) {
 	return new ScreenComponentSlot(slot instanceof SlotRestricted res
-		&& res.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeProcessorUpgrade.basicspeed)))
+		&& res.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.basicspeed)))
 			? EnumSlotType.SPEED
 			: EnumSlotType.NORMAL,
 		this, slot.x - 1, slot.y - 1);
