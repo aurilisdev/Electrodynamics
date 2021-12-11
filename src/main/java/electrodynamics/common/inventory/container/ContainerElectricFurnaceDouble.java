@@ -33,8 +33,11 @@ public class ContainerElectricFurnaceDouble extends GenericContainer<TileElectri
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 24));
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 44));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 44));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
     }
 }

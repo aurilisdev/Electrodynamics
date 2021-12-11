@@ -13,7 +13,7 @@ public class CapabilityCeramicPlate {
     });
 
     public static void register(RegisterCapabilitiesEvent event) {
-    	event.register(ICapabilityCeramicPlateHolder.class);
+	event.register(ICapabilityCeramicPlateHolder.class);
     }
 
 }

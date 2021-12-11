@@ -7,37 +7,37 @@ import net.minecraft.core.Direction;
 
 public class CapabilityDirStorageDefault implements ICapabilityDirStorage {
 
-	private List<Direction> directions = new ArrayList<>();
-	private boolean bool = false;
-	
-	@Override
-	public void addDirection(Direction dir) {
-		directions.add(dir);
-	}
+    private List<Direction> directions = new ArrayList<>();
+    private boolean bool = false;
 
-	@Override
-	public void removeDirection(Direction dir) {
-		directions.remove(dir);
-	}
+    @Override
+    public void addDirection(Direction dir) {
+	directions.add(dir);
+    }
 
-	@Override
-	public void removeAllDirs() {
-		directions.clear();
-	}
+    @Override
+    public void removeDirection(Direction dir) {
+	directions.remove(dir);
+    }
 
-	@Override
-	public List<Direction> getDirections() {
-		return directions;
-	}
+    @Override
+    public void removeAllDirs() {
+	directions.clear();
+    }
 
-	@Override
-	public void setBoolean(boolean bool) {
-		this.bool = bool;
-	}
+    @Override
+    public List<Direction> getDirections() {
+	return directions;
+    }
 
-	@Override
-	public boolean getBoolean() {
-		return bool;
-	}
+    @Override
+    public void setBoolean(boolean bool) {
+	this.bool = bool;
+    }
+
+    @Override
+    public boolean getBoolean() {
+	return bool;
+    }
 
 }

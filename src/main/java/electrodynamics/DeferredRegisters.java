@@ -69,10 +69,10 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
@@ -228,8 +228,8 @@ public class DeferredRegisters {
 	registerSubtypeItem(SubtypeCircuit.values());
 	registerSubtypeItem(SubtypeRod.values());
 	for (SubtypeItemUpgrade subtype : SubtypeItemUpgrade.values()) {
-	    SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(),
-		    supplier(new ItemUpgrade(new Item.Properties().tab(References.CORETAB), subtype), subtype)));
+	    SUBTYPEITEMREGISTER_MAPPINGS.put(subtype,
+		    ITEMS.register(subtype.tag(), supplier(new ItemUpgrade(new Item.Properties().tab(References.CORETAB), subtype), subtype)));
 	}
 	for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
 	    ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));

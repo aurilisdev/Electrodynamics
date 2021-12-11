@@ -2,26 +2,26 @@ package electrodynamics.api.capability.temperature;
 
 public class CapabilityTemperatureHolderDefault implements ICapabilityTemperature {
 
-    private int TEMPERATURE;
+    private int temperature;
 
     @Override
     public void setTemperature(int temp) {
-	TEMPERATURE = temp;
+	temperature = temp;
     }
 
     @Override
     public int getTemperature() {
-	return TEMPERATURE;
+	return temperature;
     }
 
     @Override
     public void increaseTemperature(int amount) {
-	TEMPERATURE += amount;
+	temperature += amount;
     }
 
     @Override
     public void decreaseTemperature(int amount) {
-	TEMPERATURE -= amount;
+	temperature -= amount;
     }
 
 }
