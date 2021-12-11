@@ -79,9 +79,9 @@ public class ComponentProcessor implements Component {
 	}
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 	for (ItemStack stack : inv.getUpgradeContents()) {
-	    if (!stack.isEmpty() && stack.getItem()instanceof ItemProcessorUpgrade upgrade) {
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
 		for (int i = 0; i < stack.getCount(); i++) {
-		    upgrade.subtype.applyUpgrade.accept(holder, this);
+		    upgrade.subtype.applyUpgrade.accept(holder, this, stack);
 		}
 	    }
 	}

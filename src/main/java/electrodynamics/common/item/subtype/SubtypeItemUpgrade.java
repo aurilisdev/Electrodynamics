@@ -1,8 +1,12 @@
 package electrodynamics.common.item.subtype;
 
-import java.util.function.BiConsumer;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
+import electrodynamics.api.capability.dirstorage.CapabilityDirStorage;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.tile.GenericTile;
@@ -17,113 +21,61 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public enum SubtypeItemUpgrade implements ISubtype {
-    basiccapacity((holder, processor) -> {
+    basiccapacity((holder, processor, upgrade) -> {
 	if (holder instanceof TileBatteryBox box) {
-	    box.currentCapacityMultiplier *= 1.5;
+		box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(2.25, 3));
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 2);
 	}
-    }),
-    basicspeed((holder, processor) -> {
+    }, 2),
+    basicspeed((holder, processor, upgrade) -> {
 	if (processor != null) {
-	    processor.operatingSpeed *= 1.5;
+		processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(2.25, 3));
 	}
-    }),
-    advancedcapacity((holder, processor) -> {
+    }, 3),
+    advancedcapacity((holder, processor, upgrade) -> {
 	if (holder instanceof TileBatteryBox box) {
-	    box.currentCapacityMultiplier *= 2.25;
+		box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 2.25, Math.pow(2.25, 3));
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 4);
 	}
-    }),
-    advancedspeed((holder, processor) -> {
+    }, 4),
+    advancedspeed((holder, processor, upgrade) -> {
 	if (processor != null) {
-	    processor.operatingSpeed *= 2.25;
+		processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
 	}
-    }),
-    itemoutput((holder, processor) -> {
+    }, 3),
+    itemoutput((holder, processor, upgrade) -> {
     	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-    	for(Direction dir : Direction.values()) {
-    		BlockPos pos = holder.getBlockPos().relative(dir);
-    		BlockState state = holder.getLevel().getBlockState(pos);
-    		if(state.hasBlockEntity()) {
-    			BlockEntity entity = holder.getLevel().getBlockEntity(holder.getBlockPos().relative(dir));
-    			if(entity instanceof Container container) {
-        			for(ItemStack stack : inv.getOutputContents()) {
-    					for(int i = 0; i < container.getContainerSize(); i++) {
-    						if(!stack.isEmpty()) {
-    							if(container.canPlaceItem(i, stack)) {
-    								ItemStack contained = container.getItem(i);
-    								int room = container.getMaxStackSize() - contained.getCount();
-    								int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
-    								
-    								if(contained.isEmpty()) {
-    									container.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
-    									stack.shrink(amtAccepted);
-    								} else {
-    									if(ItemUtils.testItems(stack.getItem(), contained.getItem())) {
-    										contained.grow(amtAccepted);
-    										stack.shrink(amtAccepted);
-    									}
-    								}
-	    							container.setChanged();
-	    						}
-	    					}
-    					}
-        			}
-        		} else {
-	    			if(entity != null && entity instanceof GenericTile tile) {
-	    				ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
-	    				if(otherInv != null) {
-	    					for(ItemStack stack : inv.getOutputContents()) {
-		    					for(int i : otherInv.getSlotsForFace(dir.getOpposite())) {
-			    					if(otherInv.canPlaceItem(i, stack)) {
-			    						ItemStack contained = otherInv.getItem(i);
-			    						int room = otherInv.getMaxStackSize() - contained.getCount();
-	    								int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
-	    								
-	    								if(contained.isEmpty()) {
-	    									otherInv.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
-	    									stack.shrink(amtAccepted);
-	    								} else {
-	    									if(ItemUtils.testItems(stack.getItem(), contained.getItem())) {
-	    										contained.grow(amtAccepted);
-	    										stack.shrink(amtAccepted);
-	    									}
-	    								}
-	    								otherInv.setChanged();
-			    					}
-			    				}
-		    				}
-	    				}
-	    				
-	    			}
-        			/*if(entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()).map(m -> {return true;}).orElse(false)) {
-	    				Electrodynamics.LOGGER.info("has cap");
-	    				IItemHandler hand = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()).resolve().get();
-	    				ItemStack newStack;
-	    				for(ItemStack stack : inv.getOutputContents()) {
-	    					for(int i = 0; i < hand.getSlots(); i++) {
-	    						newStack = hand.insertItem(i, stack, true);
-	    						if(newStack.getCount() > 0 ) {
-	    							hand.insertItem(i, newStack, false);
-	    							stack.shrink(newStack.getCount());
-	    						}
-	    					}
-	    				}
-	    			}
-	    			*/
-        		}
+    	if(CapabilityDirStorage.DIR_STORAGE_CAPABILITY != null) {
+    		List<Direction> dirs = upgrade.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getDirections()).orElse(new ArrayList<>());
+    		boolean isSmart = upgrade.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+    		if(isSmart) {
+    			List<ItemStack> combinedItems = new ArrayList<>();
+    			combinedItems.addAll(inv.getOutputContents());
+    			combinedItems.addAll(inv.getItemBiContents());
+    			ItemStack stack;
+    			Direction dir = Direction.DOWN;
+    			for(int i = 0; i < combinedItems.size(); i++) {
+    				stack = combinedItems.get(i);
+    				if(i < dirs.size()) {
+    					dir = dirs.get(i);
+    				}
+    				smartMode(getBlockEntity(holder, dir), stack, dir);
+    			}
+    		} else {
+    			for(Direction dir : dirs) {
+        			defaultMode(getBlockEntity(holder, dir), inv, dir);
+    	    	}
     		}
     	}
-    })
-    
-    
-    ;
+    }, 1);
 	
 
-    public final BiConsumer<GenericTile, ComponentProcessor> applyUpgrade;
-
-    SubtypeItemUpgrade(BiConsumer<GenericTile, ComponentProcessor> applyUpgrade) {
-	this.applyUpgrade = applyUpgrade;
+    public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
+    public final int maxSize;
+    
+    SubtypeItemUpgrade(TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade, int maxSize) {
+    	this.applyUpgrade = applyUpgrade;
+    	this.maxSize = maxSize;
     }
 
     @Override
@@ -139,5 +91,89 @@ public enum SubtypeItemUpgrade implements ISubtype {
     @Override
     public boolean isItem() {
 	return true;
+    }
+    
+    private static void smartMode(BlockEntity entity, ItemStack stack, Direction dir) {
+    	if(entity instanceof Container container) {
+			attemptContainerInsert(stack, container);
+		} else {
+			if(entity != null && entity instanceof GenericTile tile) {
+				ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
+				if(otherInv != null) {
+    				attemptCompInvInsert(stack, otherInv, dir);
+				}
+			}
+		}
+    }
+    
+    private static void defaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
+		if(entity instanceof Container container) {
+			for(ItemStack stack : inv.getOutputContents()) {
+				attemptContainerInsert(stack, container);
+			}
+		} else {
+			if(entity != null && entity instanceof GenericTile tile) {
+				ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
+				if(otherInv != null) {
+					for(ItemStack stack : inv.getOutputContents()) {
+    					attemptCompInvInsert(stack, otherInv, dir);
+    				}
+				}
+				
+			}
+		}
+	}
+    
+    private static void attemptContainerInsert(ItemStack stack, Container container) {
+    	for(int i = 0; i < container.getContainerSize(); i++) {
+			if(!stack.isEmpty()) {
+				if(container.canPlaceItem(i, stack)) {
+					ItemStack contained = container.getItem(i);
+					int room = container.getMaxStackSize() - contained.getCount();
+					int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
+					
+					if(contained.isEmpty()) {
+						container.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
+						stack.shrink(amtAccepted);
+					} else {
+						if(ItemUtils.testItems(stack.getItem(), contained.getItem())) {
+							contained.grow(amtAccepted);
+							stack.shrink(amtAccepted);
+						}
+					}
+					container.setChanged();
+				}
+			}
+		}
+    }
+    
+    private static void attemptCompInvInsert(ItemStack stack, ComponentInventory otherInv, Direction dir) {
+    	for(int i : otherInv.getSlotsForFace(dir.getOpposite())) {
+			if(otherInv.canPlaceItem(i, stack)) {
+				ItemStack contained = otherInv.getItem(i);
+				int room = otherInv.getMaxStackSize() - contained.getCount();
+				int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
+				
+				if(contained.isEmpty()) {
+					otherInv.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
+					stack.shrink(amtAccepted);
+				} else {
+					if(ItemUtils.testItems(stack.getItem(), contained.getItem())) {
+						contained.grow(amtAccepted);
+						stack.shrink(amtAccepted);
+					}
+				}
+				otherInv.setChanged();
+			}
+		}
+    }
+    
+    private static BlockEntity getBlockEntity(GenericTile holder, Direction dir) {
+    	BlockPos pos = holder.getBlockPos().relative(dir);
+		BlockState state = holder.getLevel().getBlockState(pos);
+		if(state.hasBlockEntity()) {
+			return holder.getLevel().getBlockEntity(holder.getBlockPos().relative(dir));
+		}
+		return null;
     }
 }
