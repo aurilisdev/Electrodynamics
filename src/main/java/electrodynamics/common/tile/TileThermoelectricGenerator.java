@@ -13,6 +13,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 public class TileThermoelectricGenerator extends GenericTile {
@@ -33,7 +34,8 @@ public class TileThermoelectricGenerator extends GenericTile {
 	ComponentDirection direction = getComponent(ComponentType.Direction);
 	ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 	if (tickable.getTicks() % 60 == 0) {
-	    hasHeat = level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getType() == Fluids.LAVA;
+	    Fluid fluid = level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getType();
+	    hasHeat = fluid == Fluids.LAVA || fluid == Fluids.FLOWING_LAVA;
 	    output.update();
 	}
 	if (hasHeat && output.valid()) {
