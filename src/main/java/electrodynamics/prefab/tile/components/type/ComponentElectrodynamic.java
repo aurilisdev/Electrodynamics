@@ -6,8 +6,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.tile.GenericTile;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class ComponentElectrodynamic implements Component, IElectrodynamic {
+public class ComponentElectrodynamic implements Component, ICapabilityElectrodynamic {
     private GenericTile holder;
 
     @Override
@@ -37,8 +37,8 @@ public class ComponentElectrodynamic implements Component, IElectrodynamic {
 	return holder;
     }
 
-    protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = IElectrodynamic.super::receivePower;
-    protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = IElectrodynamic.super::extractPower;
+    protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = ICapabilityElectrodynamic.super::receivePower;
+    protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = ICapabilityElectrodynamic.super::extractPower;
     protected Consumer<Double> setJoules = null;
     protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
     protected HashSet<Direction> relativeInputDirections = new HashSet<>();

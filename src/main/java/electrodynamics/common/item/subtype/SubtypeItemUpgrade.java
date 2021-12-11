@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorage;
-import electrodynamics.api.capability.dirstorage.ICapabilityDirStorage;
+import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
+import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.tile.GenericTile;
@@ -46,10 +46,11 @@ public enum SubtypeItemUpgrade implements ISubtype {
     }, 3),
     itemoutput((holder, processor, upgrade) -> {
 	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	if (CapabilityDirStorage.DIR_STORAGE_CAPABILITY != null) {
-	    List<Direction> dirs = upgrade.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirStorage::getDirections)
-		    .orElse(new ArrayList<>());
-	    boolean isSmart = upgrade.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirStorage::getBoolean).orElse(false);
+	if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+	    List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+		    .map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
+	    boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+		    .map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
 	    if (isSmart) {
 		List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 		combinedItems.addAll(inv.getItemBiContents());

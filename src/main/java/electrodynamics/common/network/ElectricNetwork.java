@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.network.AbstractNetwork;
@@ -16,7 +16,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements IElectrodynamic {
+public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements ICapabilityElectrodynamic {
     private double resistance;
     private double energyLoss;
     private double voltage = 0.0;

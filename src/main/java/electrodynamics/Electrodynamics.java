@@ -6,9 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorage;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlateStorage;
+import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.packet.NetworkHandler;
@@ -67,8 +67,8 @@ public class Electrodynamics {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 	CapabilityElectrodynamic.register(event);
-	CapabilityCeramicPlate.register(event);
-	CapabilityDirStorage.register(event);
+	CapabilityCeramicPlateStorage.register(event);
+	CapabilityDirectionalStorage.register(event);
     }
 
     @SubscribeEvent

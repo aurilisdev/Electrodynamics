@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorage;
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorageProvider;
-import electrodynamics.api.capability.dirstorage.ICapabilityDirStorage;
+import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
+import electrodynamics.api.capability.dirstorage.DirectionalStorageSerializer;
+import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -38,7 +38,7 @@ public class ItemUpgrade extends Item {
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
 	if (type == SubtypeItemUpgrade.itemoutput) {
-	    return new CapabilityDirStorageProvider();
+	    return new DirectionalStorageSerializer();
 	}
 	return super.initCapabilities(stack, nbt);
     }
@@ -58,10 +58,10 @@ public class ItemUpgrade extends Item {
 	}
 	if (subtype == SubtypeItemUpgrade.itemoutput) {
 	    tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
-	    if (stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirStorage::getBoolean).orElse(false)) {
+	    if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false)) {
 		tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 	    }
-	    List<Direction> dirs = stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirStorage::getDirections)
+	    List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getDirections)
 		    .orElse(new ArrayList<>());
 	    if (!dirs.isEmpty()) {
 		tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.YELLOW));
@@ -77,15 +77,15 @@ public class ItemUpgrade extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 	if (!world.isClientSide) {
-	    if (CapabilityDirStorage.DIR_STORAGE_CAPABILITY != null) {
+	    if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
 		ItemStack handStack = player.getItemInHand(hand);
 		if (player.isShiftKeyDown()) {
 		    Vec3 look = player.getLookAngle();
 		    Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-		    handStack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
+		    handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
 		    return InteractionResultHolder.pass(player.getItemInHand(hand));
 		}
-		handStack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
+		handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
 	    }
 	}
 	return super.use(world, player, hand);
@@ -95,11 +95,11 @@ public class ItemUpgrade extends Item {
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 	if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
 	    if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-		entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY)
-			.ifPresent(ICapabilityDirStorage::removeAllDirs);
+		entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+			.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
 	    } else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-		entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY)
-			.ifPresent(ICapabilityDirStorage::removeAllDirs);
+		entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+			.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
 	    }
 	}
 	return super.onEntitySwing(stack, entity);
@@ -107,6 +107,6 @@ public class ItemUpgrade extends Item {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-	return stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirStorage::getBoolean).orElse(false);
+	return stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
     }
 }

@@ -6,7 +6,7 @@ import java.util.function.BiPredicate;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -103,8 +103,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 		pr.saveToNBT(compound);
 	    }
 	}
-	super.save(compound); // TODO: Maybe this should be removed? not sure as save changed to
-			      // saveAdditional in 1.18
+	super.save(compound); // Just because it existed in 1.17. Might not need this but doesnt hurt i think.
     }
 
     protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {

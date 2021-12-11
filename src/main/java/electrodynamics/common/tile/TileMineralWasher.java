@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;

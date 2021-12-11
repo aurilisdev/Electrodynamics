@@ -51,10 +51,10 @@ public class CapabilityUtils {
 
     public static boolean canFillItemStack(ItemStack stack, FluidStack fluid) {
 	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    if (m instanceof FluidHandlerItemStack) {
-		return ((FluidHandlerItemStack) m).canFillFluidType(fluid);
-	    } else if (m instanceof FluidHandlerItemStackSimple) {
-		return ((FluidHandlerItemStackSimple) m).canFillFluidType(fluid);
+	    if (m instanceof FluidHandlerItemStack f) {
+		return f.canFillFluidType(fluid);
+	    } else if (m instanceof FluidHandlerItemStackSimple f) {
+		return f.canFillFluidType(fluid);
 	    } else {
 		return false;
 	    }
@@ -63,10 +63,10 @@ public class CapabilityUtils {
 
     public static FluidStack getItemStackFluid(ItemStack stack, int tank) {
 	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    if (m instanceof FluidHandlerItemStack) {
-		return ((FluidHandlerItemStack) m).getFluidInTank(tank);
-	    } else if (m instanceof FluidHandlerItemStackSimple) {
-		return ((FluidHandlerItemStackSimple) m).getFluidInTank(tank);
+	    if (m instanceof FluidHandlerItemStack f) {
+		return f.getFluidInTank(tank);
+	    } else if (m instanceof FluidHandlerItemStackSimple f) {
+		return f.getFluidInTank(tank);
 	    } else {
 		return FluidStack.EMPTY;
 	    }
@@ -75,10 +75,10 @@ public class CapabilityUtils {
 
     public static int getItemStackCapacity(ItemStack stack, int tank) {
 	return stack.getCapability(getFluidItemCap()).map(m -> {
-	    if (m instanceof FluidHandlerItemStack) {
-		return ((FluidHandlerItemStack) m).getTankCapacity(tank);
-	    } else if (m instanceof FluidHandlerItemStackSimple) {
-		return ((FluidHandlerItemStackSimple) m).getTankCapacity(tank);
+	    if (m instanceof FluidHandlerItemStack f) {
+		return f.getTankCapacity(tank);
+	    } else if (m instanceof FluidHandlerItemStackSimple f) {
+		return f.getTankCapacity(tank);
 	    } else {
 		return 0;
 	    }

@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.network.ElectricityUtilities;
@@ -35,7 +35,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
     protected GenericTileWire(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 	super(tileEntityTypeIn, pos, state);
 	for (Direction dir : Direction.values()) {
-	    handler.add(new IElectrodynamic() {
+	    handler.add(new ICapabilityElectrodynamic() {
 		@Override
 		public double getMaxJoulesStored() {
 		    return 0;
@@ -60,7 +60,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
     }
 
-    private ArrayList<IElectrodynamic> handler = new ArrayList<>();
+    private ArrayList<ICapabilityElectrodynamic> handler = new ArrayList<>();
 
     @Override
     @Nonnull

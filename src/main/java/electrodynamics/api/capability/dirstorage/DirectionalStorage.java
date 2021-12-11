@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.core.Direction;
 
-public class CapabilityDirStorageDefault implements ICapabilityDirStorage {
+public class DirectionalStorage implements ICapabilityDirectionalStorage {
 
     private List<Direction> directions = new ArrayList<>();
     private boolean bool = false;

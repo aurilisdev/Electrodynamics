@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
+import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlateStorage;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -32,7 +32,7 @@ public class ItemCeramic extends Item {
 
 	    ItemStack chestplate = armorPieces.get(2);
 	    if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-		chestplate.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
+		chestplate.getCapability(CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
 		    if (h.getPlateCount() < 2) {
 			playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
 			h.increasePlateCount(1);

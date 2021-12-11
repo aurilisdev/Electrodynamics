@@ -1,6 +1,6 @@
 package electrodynamics.api.capability.temperature;
 
-public class CapabilityTemperatureHolderDefault implements ICapabilityTemperature {
+public class TemperatureStorage implements ICapabilityTemperature {
 
     private int temperature;
 

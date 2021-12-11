@@ -1,4 +1,4 @@
-package electrodynamics.api.electricity;
+package electrodynamics.api.capability.electrodynamic;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -9,10 +9,10 @@ public class CapabilityElectrodynamic {
 
     public static final double DEFAULT_VOLTAGE = 120.0;
 
-    public static Capability<IElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
+    public static Capability<ICapabilityElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
     });
 
     public static void register(RegisterCapabilitiesEvent event) {
-	event.register(IElectrodynamic.class);
+	event.register(ICapabilityElectrodynamic.class);
     }
 }

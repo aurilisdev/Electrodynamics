@@ -1,7 +1,7 @@
 package electrodynamics.common.network;
 
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -42,9 +42,9 @@ public class ElectricityUtilities {
 
     public static TransferPack receivePower(BlockEntity tile, Direction direction, TransferPack transfer, boolean debug) {
 	if (isElectricReceiver(tile, direction)) {
-	    LazyOptional<IElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
+	    LazyOptional<ICapabilityElectrodynamic> cap = tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC, direction);
 	    if (cap.isPresent()) {
-		IElectrodynamic handler = cap.resolve().get();
+		ICapabilityElectrodynamic handler = cap.resolve().get();
 		return handler.receivePower(transfer, debug);
 	    }
 	    LazyOptional<IEnergyStorage> cap2 = tile.getCapability(CapabilityEnergy.ENERGY, direction);

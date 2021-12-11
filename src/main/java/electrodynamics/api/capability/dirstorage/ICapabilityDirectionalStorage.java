@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.core.Direction;
 
-public interface ICapabilityDirStorage {
+public interface ICapabilityDirectionalStorage {
 
     void addDirection(Direction dir);
 

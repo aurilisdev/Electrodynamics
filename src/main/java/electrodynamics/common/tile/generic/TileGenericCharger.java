@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.generic;
 
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.ContainerChargerGeneric;
 import electrodynamics.prefab.tile.GenericTile;

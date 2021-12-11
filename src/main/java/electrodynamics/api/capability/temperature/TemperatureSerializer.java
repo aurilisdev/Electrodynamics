@@ -6,9 +6,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class CapabilityTemperatureHolderProvider implements ICapabilitySerializable<CompoundTag> {
+public class TemperatureSerializer implements ICapabilitySerializable<CompoundTag> {
 
-    private final CapabilityTemperatureHolderDefault temperatureHolder = new CapabilityTemperatureHolderDefault();
+    private final TemperatureStorage temperatureHolder = new TemperatureStorage();
     private final LazyOptional<ICapabilityTemperature> lazyOptional = LazyOptional.of(() -> temperatureHolder);
 
     public static final String TEMPERATURE_KEY = "plates";
