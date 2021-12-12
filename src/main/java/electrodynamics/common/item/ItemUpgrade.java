@@ -70,14 +70,16 @@ public class ItemUpgrade extends Item {
 				return m.getDirections();
 			}).orElse(new ArrayList<>());
 			if(dirs.size() > 0) {
-				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.YELLOW));
-				for(Direction dir : dirs) {
-					tooltip.add(new TextComponent(StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.YELLOW));
+				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
+				for(int i = 0; i < dirs.size(); i++) {
+					Direction dir = dirs.get(i);
+					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.BLUE));
 				}
-				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.RED));
+				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.GRAY));
 			} else {
-				tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.YELLOW));
+				tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.GRAY));
 			}
+			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
 		} 
     }
 

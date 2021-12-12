@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.util.TriConsumer;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
 import electrodynamics.api.item.ItemUtils;
@@ -46,30 +45,35 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	}
     }, 3),
     
+    //the only way to optimize this one further is to increase the tick delay. Currently, it's set to every 4 ticks
     iteminput((holder, processor, upgrade) -> {
     	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-    	boolean isEmpty = inv.areInputsEmpty();
-    	if((isEmpty || !isEmpty && inv.hasInputRoom()) && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
-    		List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getDirections()).orElse(new ArrayList<>());
-    		boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
-    		if(isSmart) {
-    			int slot;
-    			Direction dir = Direction.DOWN;
-    			for(int i = 0; i < inv.getInputSlots().size(); i++) {
-    				slot = inv.getInputSlots().get(i);
-    				if(i < dirs.size()) {
-    					dir = dirs.get(i);
-    				}
-    				inputSmartMode(getBlockEntity(holder, dir), inv, slot, dir);
-    			}
-    		} else {
-    			for(Direction dir : dirs) {
-        			inputDefaultMode(getBlockEntity(holder, dir), inv, dir);
-    	    	}
+    	if(inv.hasInputRoom() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+    		int tickNumber = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getInt()).orElse(0);
+    		if(tickNumber >= 4) {
+    			upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
+    			List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getDirections()).orElse(new ArrayList<>());
+        		boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+        		if(isSmart) {
+        			int slot;
+        			Direction dir = Direction.DOWN;
+        			for(int i = 0; i < inv.getInputSlots().size(); i++) {
+        				slot = inv.getInputSlots().get(i);
+        				if(i < dirs.size()) {
+        					dir = dirs.get(i);
+        				}
+        				inputSmartMode(getBlockEntity(holder, dir), inv, slot, dir);
+        			}
+        		} else {
+        			for(Direction dir : dirs) {
+            			inputDefaultMode(getBlockEntity(holder, dir), inv, dir);
+        	    	}
+        		}
     		}
+    		upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
     	}
     }, 1),
-    
+    //I can't really optimize this one any more than it is
     itemoutput((holder, processor, upgrade) -> {
     	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
     	if(!inv.areOutputsEmpty() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
