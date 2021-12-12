@@ -414,6 +414,23 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 	return list;
     }
+    
+    public List<Integer> getInputSlots(){
+    	if (processorCount == 0) {
+    	    List<Integer> list = new ArrayList<>();
+    	    for (int i = 0; i < outputSlotCount; i++) {
+    	    	list.add(getInputStartIndex() + i);
+    	    }
+    	    return list;
+    	}
+    	List<Integer> list = new ArrayList<>();
+    	for (int i = 0; i < processorCount; i++) {
+    	    for (int j = 0; j < inputPerProc; j++) {
+    	    	list.add(j + i * (inputPerProc + 1));
+    	    }
+    	}
+    	return list;
+    }
 
     // you're making me break out a sheet of paper for this!
     public List<Integer> getOutputSlots() {

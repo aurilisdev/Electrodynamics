@@ -36,7 +36,7 @@ public class ItemUpgrade extends Item {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
     	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
-    	if(type == SubtypeItemUpgrade.itemoutput) {
+    	if(type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
     		return new CapabilityDirStorageProvider();
     	}
     	return super.initCapabilities(stack, nbt);
@@ -55,8 +55,13 @@ public class ItemUpgrade extends Item {
 		    double speedMultiplier = subtype == SubtypeItemUpgrade.advancedspeed ? 2.25 : 1.5;
 		    tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
 		}
-		if(subtype == SubtypeItemUpgrade.itemoutput) {
-			tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
+		if(subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
+			
+			if(subtype == SubtypeItemUpgrade.itemoutput) {
+				tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
+			} else {
+				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
+			}
 			if(stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false)){
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
