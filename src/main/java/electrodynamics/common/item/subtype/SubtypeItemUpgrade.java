@@ -7,7 +7,6 @@ import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
-import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.tile.GenericTile;
@@ -17,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,31 +44,60 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	    processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
 	}
     }, 3),
+    
+    //the only way to optimize this one further is to increase the tick delay. Currently, it's set to every 4 ticks
+    iteminput((holder, processor, upgrade) -> {
+    	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+    	if(inv.hasInputRoom() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+    		int tickNumber = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getInt()).orElse(0);
+    		if(tickNumber >= 4) {
+    			upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
+    			List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getDirections()).orElse(new ArrayList<>());
+        		boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+        		if(isSmart) {
+        			int slot;
+        			Direction dir = Direction.DOWN;
+        			for(int i = 0; i < inv.getInputSlots().size(); i++) {
+        				slot = inv.getInputSlots().get(i);
+        				if(i < dirs.size()) {
+        					dir = dirs.get(i);
+        				}
+        				inputSmartMode(getBlockEntity(holder, dir), inv, slot, dir);
+        			}
+        		} else {
+        			for(Direction dir : dirs) {
+            			inputDefaultMode(getBlockEntity(holder, dir), inv, dir);
+        	    	}
+        		}
+    		}
+    		upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
+    	}
+    }, 1),
+    //I can't really optimize this one any more than it is
     itemoutput((holder, processor, upgrade) -> {
-	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-	if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
-	    List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-		    .map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
-	    boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-		    .map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
-	    if (isSmart) {
-		List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
-		combinedItems.addAll(inv.getItemBiContents());
-		ItemStack stack;
-		Direction dir = Direction.DOWN;
-		for (int i = 0; i < combinedItems.size(); i++) {
-		    stack = combinedItems.get(i);
-		    if (i < dirs.size()) {
-			dir = dirs.get(i);
-		    }
-		    smartMode(getBlockEntity(holder, dir), stack, dir);
-		}
-	    } else {
-		for (Direction dir : dirs) {
-		    defaultMode(getBlockEntity(holder, dir), inv, dir);
-		}
-	    }
-	}
+    	ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+    	if(!inv.areOutputsEmpty() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+    		List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getDirections()).orElse(new ArrayList<>());
+    		boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+    		if(isSmart) {
+    			List<ItemStack> combinedItems = new ArrayList<>();
+    			combinedItems.addAll(inv.getOutputContents());
+    			combinedItems.addAll(inv.getItemBiContents());
+    			ItemStack stack;
+    			Direction dir = Direction.DOWN;
+    			for(int i = 0; i < combinedItems.size(); i++) {
+    				stack = combinedItems.get(i);
+    				if(i < dirs.size()) {
+    					dir = dirs.get(i);
+    				}
+    				outputSmartMode(getBlockEntity(holder, dir), stack, dir);
+    			}
+    		} else {
+    			for(Direction dir : dirs) {
+        			outputDefaultMode(getBlockEntity(holder, dir), inv, dir);
+    	    	}
+    		}
+    	}
     }, 1);
 
     public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
@@ -93,74 +122,169 @@ public enum SubtypeItemUpgrade implements ISubtype {
     public boolean isItem() {
 	return true;
     }
-
-    private static void smartMode(BlockEntity entity, ItemStack stack, Direction dir) {
-	if (entity instanceof Container container) {
-	    attemptContainerInsert(stack, container);
-	} else if (entity != null && entity instanceof GenericTile tile) {
-	    ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
-	    if (otherInv != null) {
-		attemptCompInvInsert(stack, otherInv, dir);
-	    }
-	}
-    }
-
-    private static void defaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
-	if (entity instanceof Container container) {
-	    for (ItemStack stack : inv.getOutputContents()) {
-		attemptContainerInsert(stack, container);
-	    }
-	} else if (entity != null && entity instanceof GenericTile tile) {
-	    ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
-	    if (otherInv != null) {
-		for (ItemStack stack : inv.getOutputContents()) {
-		    attemptCompInvInsert(stack, otherInv, dir);
+    
+    private static void inputSmartMode(BlockEntity entity, ComponentInventory inv, int slot, Direction dir) {
+    	if(entity instanceof Container container) {
+			attemptContainerExtract(inv, slot, container, dir);
+		} else if(entity != null && entity instanceof GenericTile tile) {
+			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
+			if(otherInv != null) {
+				takeItemFromCompInv(inv, slot, otherInv, dir);
+			}
 		}
-	    }
-
-	}
     }
-
-    private static void attemptContainerInsert(ItemStack stack, Container container) {
-	for (int i = 0; i < container.getContainerSize(); i++) {
-	    if (!stack.isEmpty()) {
-		if (container.canPlaceItem(i, stack)) {
-		    ItemStack contained = container.getItem(i);
-		    int room = container.getMaxStackSize() - contained.getCount();
-		    int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
-
-		    if (contained.isEmpty()) {
-			container.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
-			stack.shrink(amtAccepted);
-		    } else if (ItemUtils.testItems(stack.getItem(), contained.getItem())) {
-			contained.grow(amtAccepted);
-			stack.shrink(amtAccepted);
-		    }
-		    container.setChanged();
+    
+    private static void inputDefaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
+    	if(entity instanceof Container container) {
+    		for(int slot : inv.getInputSlots()) {
+    			attemptContainerExtract(inv, slot, container, dir);
+    		}
+    	} else if(entity != null && entity instanceof GenericTile tile) {
+			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
+			for(int slot : inv.getInputSlots()) {
+				takeItemFromCompInv(inv, slot, otherInv, dir);
+			}
+    	}
+    }
+    
+    private static void outputSmartMode(BlockEntity entity, ItemStack stack, Direction dir) {
+    	if(entity instanceof Container container) {
+			attemptContainerInsert(stack, container, dir);
+		} else if(entity != null && entity instanceof GenericTile tile) {
+			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
+			if(otherInv != null) {
+				addItemToCompInv(stack, otherInv, dir);
+			}
+			
 		}
-	    }
-	}
     }
-
-    private static void attemptCompInvInsert(ItemStack stack, ComponentInventory otherInv, Direction dir) {
-	for (int i : otherInv.getSlotsForFace(dir.getOpposite())) {
-	    if (otherInv.canPlaceItem(i, stack)) {
-		ItemStack contained = otherInv.getItem(i);
-		int room = otherInv.getMaxStackSize() - contained.getCount();
-		int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
-
-		if (contained.isEmpty()) {
-		    otherInv.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
-		    stack.shrink(amtAccepted);
-		} else if (ItemUtils.testItems(stack.getItem(), contained.getItem())) {
-		    contained.grow(amtAccepted);
-		    stack.shrink(amtAccepted);
+    
+    private static void outputDefaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
+		if(entity instanceof Container container) {
+			for(ItemStack stack : inv.getOutputContents()) {
+				attemptContainerInsert(stack, container, dir);
+			}
+		} else if(entity != null && entity instanceof GenericTile tile) {
+			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
+			if(otherInv != null) {
+				for(ItemStack stack : inv.getOutputContents()) {
+					addItemToCompInv(stack, otherInv, dir);
+				}
+			}
 		}
-		otherInv.setChanged();
-	    }
 	}
-    }
 
+	
+    
+    private static void attemptContainerInsert(ItemStack stack, Container container, Direction dir) {
+    	if(container instanceof WorldlyContainer worldly) {
+    		for(int slot :  worldly.getSlotsForFace(dir)) {
+    			addItemToContainer(stack, container, slot);
+    		}
+    	} else {
+    		for(int i = 0; i < container.getContainerSize(); i++) {
+    			addItemToContainer(stack, container, i);
+    		}
+    	}
+    }
+    
+    private static void attemptContainerExtract(ComponentInventory inv, int slot, Container container, Direction dir) {
+    	if(container instanceof WorldlyContainer worldly) {
+    		for(int containerSlot : worldly.getSlotsForFace(dir)) {
+        		takeItemFromContainer(inv, slot, container, container.getItem(containerSlot));
+        	}
+    	} else {
+    		for(int i = 0; i < container.getContainerSize(); i++) {
+        		takeItemFromContainer(inv, slot, container, container.getItem(i));
+        	}
+    	}
+    }
+    
+    private static void takeItemFromContainer(ComponentInventory inv, int slot, Container container, ItemStack containerItem) {
+		if(inv.canPlaceItem(slot, containerItem)) {
+			ItemStack invItem = inv.getItem(slot);
+			if(invItem.isEmpty() && !containerItem.isEmpty()) {
+				int room = inv.getMaxStackSize();
+				int amtAccepted = room >= containerItem.getCount() ? containerItem.getCount() : room;
+				inv.setItem(slot, new ItemStack(containerItem.getItem(), amtAccepted).copy());
+				containerItem.shrink(amtAccepted);
+				container.setChanged();
+			} else if(!containerItem.isEmpty() && ItemUtils.testItems(invItem.getItem(), containerItem.getItem()) && inv.getMaxStackSize() >= invItem.getMaxStackSize()) {
+				int room = invItem.getMaxStackSize() - invItem.getCount();
+				int amtAccepted = room >= containerItem.getCount() ? containerItem.getCount() : room;
+				invItem.grow(amtAccepted);
+				containerItem.shrink(amtAccepted);
+				container.setChanged();
+			}
+		}
+		
+    }
+    
+    public static void addItemToContainer(ItemStack stack, Container container, int slot) {
+    	if(!stack.isEmpty()) {
+			if(container.canPlaceItem(slot, stack)) {
+				ItemStack contained = container.getItem(slot);
+				int room = container.getMaxStackSize() - contained.getCount();
+				int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
+				if(contained.isEmpty()) {
+					container.setItem(slot, new ItemStack(stack.getItem(), amtAccepted).copy());
+					stack.shrink(amtAccepted);
+					container.setChanged();
+				} else if(ItemUtils.testItems(stack.getItem(), contained.getItem())) {
+					contained.grow(amtAccepted);
+					stack.shrink(amtAccepted);
+					container.setChanged();
+				}		
+			}
+		}
+	}
+	
+    
+    
+    private static void addItemToCompInv(ItemStack stack, ComponentInventory otherInv, Direction dir) {
+    	for(int i : otherInv.getSlotsForFace(dir.getOpposite())) {
+			if(otherInv.canPlaceItem(i, stack)) {
+				ItemStack contained = otherInv.getItem(i);
+				int room = otherInv.getMaxStackSize() - contained.getCount();
+				int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
+				if(contained.isEmpty()) {
+					otherInv.setItem(i, new ItemStack(stack.getItem(), amtAccepted).copy());
+					stack.shrink(amtAccepted);
+					otherInv.setChanged();
+				} else if(ItemUtils.testItems(stack.getItem(), contained.getItem())) {
+					contained.grow(amtAccepted);
+					stack.shrink(amtAccepted);
+					otherInv.setChanged();
+				}
+				
+			}
+		}
+    }
+    
+    private static void takeItemFromCompInv(ComponentInventory inv, int slot, ComponentInventory otherInv, Direction dir) {
+    	List<ItemStack> combinedOutputs = new ArrayList<>();
+    	combinedOutputs.addAll(otherInv.getOutputContents());
+    	combinedOutputs.addAll(otherInv.getItemBiContents());
+    	ItemStack invItem = inv.getItem(slot);
+		for(ItemStack stack : combinedOutputs) {
+			if(inv.canPlaceItem(slot, stack)) {
+				invItem = inv.getItem(slot);
+				int room = inv.getMaxStackSize() - invItem.getCount();
+				int amtAccepted = room >= stack.getCount() ? stack.getCount() : room;
+				if(invItem.isEmpty()) {
+					inv.setItem(slot, new ItemStack(stack.getItem(), amtAccepted).copy());
+					stack.shrink(amtAccepted);
+					otherInv.setChanged();
+				} else if (ItemUtils.testItems(stack.getItem(), invItem.getItem())) {
+					invItem.grow(amtAccepted);
+					stack.shrink(amtAccepted);
+					otherInv.setChanged();
+				}
+			}
+		}
+    	
+    }
+    
     private static BlockEntity getBlockEntity(GenericTile holder, Direction dir) {
 	BlockPos pos = holder.getBlockPos().relative(dir);
 	BlockState state = holder.getLevel().getBlockState(pos);

@@ -133,7 +133,8 @@ public class ItemCanister extends Item {
     public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 	List<Fluid> whitelisted = new ArrayList<>();
 	for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-	    if (fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+		
+	    if (fluid.getBucket() != null && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
 		whitelisted.add(fluid);
 	    }
 	}

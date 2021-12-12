@@ -9,6 +9,7 @@ public class DirectionalStorage implements ICapabilityDirectionalStorage {
 
     private List<Direction> directions = new ArrayList<>();
     private boolean bool = false;
+    private int num = 0;
 
     @Override
     public void addDirection(Direction dir) {
@@ -39,5 +40,15 @@ public class DirectionalStorage implements ICapabilityDirectionalStorage {
     public boolean getBoolean() {
 	return bool;
     }
+
+	@Override
+	public void setInt(int number) {
+		num = number;
+	}
+
+	@Override
+	public int getInt() {
+		return num;
+	}
 
 }

@@ -20,6 +20,7 @@ import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
@@ -311,7 +312,10 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		new TranslatableComponent("info.jei.item.compositearmor"));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
 		new TranslatableComponent("info.jei.item.compositearmor"));
-
+	registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), 
+		VanillaTypes.ITEM, new TranslatableComponent("info.jei.item.upgradeiteminput"));
+	registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), 
+			VanillaTypes.ITEM, new TranslatableComponent("info.jei.item.upgradeitemoutput"));
     }
 
     public static void addO2OClickArea(ResourceLocation loc) {

@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"apa",
+		"pcp",
+		"apa"
+	],
+	"key": {
+		"a": {
+			"tag": "forge:plates/aluminum"
+		},
+		"p": {
+			"item": "minecraft:sticky_piston"
+		},
+		"c": {
+			"tag": "forge:circuits/basic"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:upgradeiteminput",
+		"count": 1
+	}
+}

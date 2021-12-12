@@ -32,6 +32,7 @@ public class DirectionalStorageSerializer implements ICapabilitySerializable<Com
 	    }
 	    nbt.put("dirList", dirList);
 	    nbt.putBoolean(CapabilityDirectionalStorage.BOOL_KEY, dirStorage.getBoolean());
+	    nbt.putInt(CapabilityDirectionalStorage.NUM_KEY, dirStorage.getInt());
 	    return nbt;
 	}
 	return new CompoundTag();
@@ -46,6 +47,7 @@ public class DirectionalStorageSerializer implements ICapabilitySerializable<Com
 		dirStorage.addDirection(Direction.valueOf(compound.getString(CapabilityDirectionalStorage.DIR_KEY).toUpperCase()));
 	    }
 	    dirStorage.setBoolean(nbt.getBoolean(CapabilityDirectionalStorage.BOOL_KEY));
+	    dirStorage.setInt(nbt.getInt(CapabilityDirectionalStorage.NUM_KEY));
 	}
     }
 

@@ -36,43 +36,51 @@ public class ItemUpgrade extends Item {
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
-	if (type == SubtypeItemUpgrade.itemoutput) {
-	    return new DirectionalStorageSerializer();
-	}
-	return super.initCapabilities(stack, nbt);
+    	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
+    	if(type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
+    		return new DirectionalStorageSerializer();
+    	}
+    	return super.initCapabilities(stack, nbt);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	if (subtype == SubtypeItemUpgrade.advancedcapacity || subtype == SubtypeItemUpgrade.basiccapacity) {
-	    double capacityMultiplier = subtype == SubtypeItemUpgrade.advancedcapacity ? 2.25 : 1.5;
-	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
-	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x")
-		    .withStyle(ChatFormatting.RED));
-	}
-	if (subtype == SubtypeItemUpgrade.advancedspeed || subtype == SubtypeItemUpgrade.basicspeed) {
-	    double speedMultiplier = subtype == SubtypeItemUpgrade.advancedspeed ? 2.25 : 1.5;
-	    tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
-	}
-	if (subtype == SubtypeItemUpgrade.itemoutput) {
-	    tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
-	    if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean)
-		    .orElse(false)) {
-		tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
-	    }
-	    List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-		    .map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
-	    if (!dirs.isEmpty()) {
-		tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.YELLOW));
-		for (Direction dir : dirs) {
-		    tooltip.add(new TextComponent(StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.YELLOW));
+    	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		if (subtype == SubtypeItemUpgrade.advancedcapacity || subtype == SubtypeItemUpgrade.basiccapacity) {
+		    double capacityMultiplier = subtype == SubtypeItemUpgrade.advancedcapacity ? 2.25 : 1.5;
+		    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
+		    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x")
+			    .withStyle(ChatFormatting.RED));
 		}
-	    } else {
-		tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.YELLOW));
-	    }
-	}
+		if (subtype == SubtypeItemUpgrade.advancedspeed || subtype == SubtypeItemUpgrade.basicspeed) {
+		    double speedMultiplier = subtype == SubtypeItemUpgrade.advancedspeed ? 2.25 : 1.5;
+		    tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
+		}
+		if(subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
+			
+			if(subtype == SubtypeItemUpgrade.itemoutput) {
+				tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
+			} else {
+				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
+			}
+			if(stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false)){
+				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
+			}
+			List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> {
+				return m.getDirections();
+			}).orElse(new ArrayList<>());
+			if(dirs.size() > 0) {
+				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
+				for(int i = 0; i < dirs.size(); i++) {
+					Direction dir = dirs.get(i);
+					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.BLUE));
+				}
+				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.GRAY));
+			} else {
+				tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.GRAY));
+			}
+			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
+		} 
     }
 
     @Override
