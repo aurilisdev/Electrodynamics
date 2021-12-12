@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
@@ -27,28 +27,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileOxidationFurnace extends GenericTile {
 
-    private static int inputSlots = 2;
-    private static int outputSize = 1;
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 0;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int processorCount = 1;
-    private static int inputPerProc = 2;
-
-    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileOxidationFurnace(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-	addComponent(new ComponentInventory(this).size(invSize).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
-		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST)
-		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize)));
+	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
+		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).upgrades(3).processorInputs(2).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider("container.oxidationfurnace")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

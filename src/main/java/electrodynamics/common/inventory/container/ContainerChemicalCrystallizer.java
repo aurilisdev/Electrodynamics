@@ -33,8 +33,11 @@ public class ContainerChemicalCrystallizer extends GenericContainer<TileChemical
     public void addInventorySlots(Container inv, Inventory playerinv) {
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 82, 31));
 	addSlot(new SlotRestricted(inv, nextIndex(), 82, 51, 0, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 150, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 150, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 150, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 150, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 150, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 150, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
     }
 }

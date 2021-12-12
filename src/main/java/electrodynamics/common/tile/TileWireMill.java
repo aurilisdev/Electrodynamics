@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
@@ -25,16 +25,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileWireMill extends GenericTile {
-
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 1;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int inputPerProc = 1;
-
-    private static int knownInvSize = inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileWireMill(BlockPos worldPosition, BlockState blockState) {
 	this(0, worldPosition, blockState);
     }
@@ -42,11 +32,11 @@ public class TileWireMill extends GenericTile {
     public TileWireMill(int extra, BlockPos worldPosition, BlockState blockState) {
 	super(extra == 1 ? DeferredRegisters.TILE_WIREMILLDOUBLE.get()
 		: extra == 2 ? DeferredRegisters.TILE_WIREMILLTRIPLE.get() : DeferredRegisters.TILE_WIREMILL.get(), worldPosition, blockState);
-
+	int processorInputs = 1;
 	int processorCount = extra + 1;
-	int inputCount = inputPerProc * (extra + 1);
+	int inputCount = processorInputs * (extra + 1);
 	int outputCount = 1 * (extra + 1);
-	int invSize = knownInvSize + inputCount + outputCount;
+	int invSize = 3 + inputCount + outputCount;
 
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -59,10 +49,8 @@ public class TileWireMill extends GenericTile {
 	    ints[i] = i * 2;
 	}
 
-	addComponent(new ComponentInventory(this).size(invSize)
-		.slotSizes(inputCount, outputCount, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicateMulti(inputCount, outputCount, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize, ints))
-		.setMachineSlots(extra).shouldSendInfo());
+	addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount)
+		.processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.wiremill" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())

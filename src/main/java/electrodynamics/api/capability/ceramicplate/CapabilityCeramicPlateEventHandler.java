@@ -12,26 +12,25 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber
-public class CapabilityCeramicPlateHandler {
+public class CapabilityCeramicPlateEventHandler {
 
     private static final float LETHAL_DAMAGE_AMOUNT = 18.0f;
 
     @SubscribeEvent
     public static void takeDamageWithArmor(LivingHurtEvent event) {
-
-	ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
+	ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
 		new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
 		new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
 
 	List<ItemStack> armorPieces = new ArrayList<>();
 	event.getEntityLiving().getArmorSlots().forEach(armorPieces::add);
 
-	if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), ARMOR_PIECES[3])
-		&& ItemStack.isSameIgnoreDurability(armorPieces.get(1), ARMOR_PIECES[2])
-		&& ItemStack.isSameIgnoreDurability(armorPieces.get(2), ARMOR_PIECES[1])
-		&& ItemStack.isSameIgnoreDurability(armorPieces.get(3), ARMOR_PIECES[0])) {
+	if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3])
+		&& ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2])
+		&& ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1])
+		&& ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
 	    ItemStack stack = armorPieces.get(2);
-	    stack.getCapability(CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
+	    stack.getCapability(CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
 		if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getPlateCount() > 0) {
 
 		    event.setAmount((float) Math.sqrt(event.getAmount()));

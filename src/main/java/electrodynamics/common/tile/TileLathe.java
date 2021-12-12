@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
@@ -27,18 +27,6 @@ public class TileLathe extends GenericTile {
 
     public long clientRunningTicks = 0;
 
-    private static int inputSlots = 1;
-    private static int outputSize = 1;
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 0;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int processorCount = 1;
-    private static int inputPerProc = 1;
-
-    private static int invSize = inputSlots + outputSize + inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileLathe(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_LATHE.get(), worldPosition, blockState);
 	addComponent(new ComponentDirection());
@@ -46,9 +34,7 @@ public class TileLathe extends GenericTile {
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
 		.maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
-	addComponent(new ComponentInventory(this).size(invSize)
-		.slotSizes(inputSlots, outputSize, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicate(inputSlots, outputSize, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize))
+	addComponent(new ComponentInventory(this).size(5).inputs(1).outputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator())
 		.shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.lathe")
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));

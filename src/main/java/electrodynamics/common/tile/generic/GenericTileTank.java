@@ -27,16 +27,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileGenericTank extends GenericTile {
+public class GenericTileTank extends GenericTile {
 
-    public TileGenericTank(BlockEntityType<?> tile, int capacity, Fluid[] validFluids, String name, BlockPos pos, BlockState state) {
+    public GenericTileTank(BlockEntityType<?> tile, int capacity, Fluid[] validFluids, String name, BlockPos pos, BlockState state) {
 	super(tile, pos, state);
 	addComponent(new ComponentTickable().tickServer(this::tickServer));
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP)
 		.relativeOutput(Direction.WEST, Direction.DOWN).setManualFluids(1, true, capacity, validFluids));
-	addComponent(new ComponentInventory(this).size(2).valid((slot, stack) -> CapabilityUtils.hasFluidItemCap(stack)));
+	addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 	addComponent(new ComponentContainerProvider("container.tank" + name)
 		.createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
     }
@@ -118,7 +118,7 @@ public class TileGenericTank extends GenericTile {
 
 	if (level.getBlockState(below).hasBlockEntity()) {
 	    BlockEntity tile = level.getBlockEntity(below);
-	    if (tile instanceof TileGenericTank tankBelow) {
+	    if (tile instanceof GenericTileTank tankBelow) {
 		ComponentFluidHandlerSimple belowHandler = tankBelow.getComponent(ComponentType.FluidHandler);
 		ComponentFluidHandlerSimple thisHandler = getComponent(ComponentType.FluidHandler);
 		FluidTank belowTank = belowHandler.getTankFromFluid(FluidStack.EMPTY.getFluid(), true);

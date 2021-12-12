@@ -2,14 +2,14 @@ package electrodynamics.prefab.tile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiPredicate;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -103,8 +104,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 		pr.saveToNBT(compound);
 	    }
 	}
-	super.save(compound); // TODO: Maybe this should be removed? not sure as save changed to
-			      // saveAdditional in 1.18
+	super.save(compound); // Just because it existed in 1.17. Might not need this but doesnt hurt i think.
     }
 
     protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
@@ -177,21 +177,20 @@ public class GenericTile extends BlockEntity implements Nameable {
 	return worldPosition;
     }
 
-    protected static BiPredicate<Integer, ItemStack> getPredicate(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
-	    int invSize) {
-	return (x, y) -> x < inputSize || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
-		|| x >= invSize - procSize && y.getItem() instanceof ItemUpgrade;
+    protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
+	return (x, y, i) -> x < i.inputs()
+		|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
+		|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
     }
 
-    protected static BiPredicate<Integer, ItemStack> getPredicateMulti(int inputSize, int outputSize, int itemBiSize, int bucketSize, int procSize,
-	    int invSize, int... ints) {
-
+    protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator(int[] ints) {
 	List<Integer> list = new ArrayList<>();
 	for (int i : ints) {
 	    list.add(i);
 	}
-	return (x, y) -> list.contains(x) || x >= inputSize + outputSize + itemBiSize && x < invSize - procSize && CapabilityUtils.hasFluidItemCap(y)
-		|| x >= invSize - procSize && y.getItem() instanceof ItemUpgrade;
+	return (x, y, i) -> list.contains(x)
+		|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
+		|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
     }
 
 }

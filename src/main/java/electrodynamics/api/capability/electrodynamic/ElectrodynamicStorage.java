@@ -1,6 +1,6 @@
-package electrodynamics.api.electricity;
+package electrodynamics.api.capability.electrodynamic;
 
-public class ElectrodynamicStorage implements IElectrodynamic {
+public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
     private double max;
     private double joules;
 

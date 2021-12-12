@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorage;
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorageProvider;
+import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
+import electrodynamics.api.capability.dirstorage.DirectionalStorageSerializer;
+import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -27,12 +28,12 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemUpgrade extends Item {
     public final SubtypeItemUpgrade subtype;
-    
+
     public ItemUpgrade(Properties properties, SubtypeItemUpgrade subtype) {
-    	super(properties.stacksTo(subtype.maxSize));
-		this.subtype = subtype;
+	super(properties.stacksTo(subtype.maxSize));
+	this.subtype = subtype;
     }
-    
+
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
     	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
@@ -41,7 +42,7 @@ public class ItemUpgrade extends Item {
     	}
     	return super.initCapabilities(stack, nbt);
     }
-    
+
     @Override
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
     	super.appendHoverText(stack, worldIn, tooltip, flagIn);
@@ -77,42 +78,45 @@ public class ItemUpgrade extends Item {
 				tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.YELLOW));
 			}
 		}
+	    } else {
+		tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.YELLOW));
+	    }
+	}
     }
-    
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-    	if(!world.isClientSide) {
-    		if(CapabilityDirStorage.DIR_STORAGE_CAPABILITY != null) {
-    			ItemStack handStack = player.getItemInHand(hand);
-    			if(player.isShiftKeyDown()) {
-    				Vec3 look = player.getLookAngle();
-    				Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-    				handStack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
-    				return InteractionResultHolder.pass(player.getItemInHand(hand));
-    			} else {
-    				handStack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
-    			}
-    		}
-    	}
-    	return super.use(world, player, hand);
+	if (!world.isClientSide) {
+	    if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+		ItemStack handStack = player.getItemInHand(hand);
+		if (player.isShiftKeyDown()) {
+		    Vec3 look = player.getLookAngle();
+		    Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
+		    handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
+		    return InteractionResultHolder.pass(player.getItemInHand(hand));
+		}
+		handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
+	    }
+	}
+	return super.use(world, player, hand);
     }
-    
+
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-    	if(!entity.level.isClientSide && entity.isShiftKeyDown()) {
-    		if(!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-    			entity.getItemInHand(InteractionHand.MAIN_HAND)
-    				.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.removeAllDirs());
-    		} else if(!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-    			entity.getItemInHand(InteractionHand.OFF_HAND)
-    				.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.removeAllDirs());
-    		}
-    	}
-    	return super.onEntitySwing(stack, entity);
+	if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
+	    if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+		entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+			.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
+	    } else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
+		entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+			.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
+	    }
+	}
+	return super.onEntitySwing(stack, entity);
     }
-    
+
     @Override
     public boolean isFoil(ItemStack stack) {
-    	return stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+	return stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
     }
 }

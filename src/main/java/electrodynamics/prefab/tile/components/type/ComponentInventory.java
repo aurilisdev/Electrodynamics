@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
@@ -38,7 +38,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     protected static final int[] SLOTS_EMPTY = new int[] {};
     protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
-    protected BiPredicate<Integer, ItemStack> itemValidPredicate = (x, y) -> true;
+    protected TriPredicate<Integer, ItemStack, ComponentInventory> itemValidTest = (x, y, i) -> true;
     protected HashSet<Player> viewing = new HashSet<>();
     protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
     protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
@@ -55,15 +55,15 @@ public class ComponentInventory implements Component, WorldlyContainer {
      * 
      */
 
-    private int inputSlotCount = 0;
-    private int outputSlotCount = 0;
-    private int upgradeSlotCount = 0;
-    private int itemBiproductSlotCount = 0;
-    private int inputBucketSlotCount = 0;
-    private int outputBucketSlotCount = 0;
+    private int inputs = 0;
+    private int outputs = 0;
+    private int upgrades = 0;
+    private int biproducts = 0;
+    private int bucketInputs = 0;
+    private int bucketOutputs = 0;
 
-    private int processorCount = 0;
-    private int inputPerProc = 0;
+    private int processors = 0;
+    private int processorInputs = 0;
 
     public ComponentInventory(GenericTile holder) {
 	holder(holder);
@@ -129,8 +129,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		.relativeFaceSlots(Direction.DOWN, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1);
     }
 
-    public ComponentInventory valid(BiPredicate<Integer, ItemStack> itemValidPredicate) {
-	this.itemValidPredicate = itemValidPredicate;
+    public ComponentInventory valid(TriPredicate<Integer, ItemStack, ComponentInventory> itemValidPredicate) {
+	itemValidTest = itemValidPredicate;
 	return this;
     }
 
@@ -255,7 +255,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     @Override
     public boolean canPlaceItem(int index, ItemStack stack) {
-	return itemValidPredicate.test(index, stack);
+	return itemValidTest.test(index, stack, this);
     }
 
     @Override
@@ -301,22 +301,76 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	holder.setChanged();
     }
 
-    // I opted for more inputs to make things easier to understand when making a new
-    // machine
-    public ComponentInventory slotSizes(int inputSize, int outputSize, int itemBiSize, int upgradeSlots, int inBucketSlots, int outBucketSlots,
-	    int procCount, int inputPerProc) {
-
-	inputSlotCount = inputSize;
-	outputSlotCount = outputSize;
-	upgradeSlotCount = upgradeSlots;
-	itemBiproductSlotCount = itemBiSize;
-	inputBucketSlotCount = inBucketSlots;
-	outputBucketSlotCount = outBucketSlots;
-
-	processorCount = procCount;
-	this.inputPerProc = inputPerProc;
-
+    public ComponentInventory inputs(int par) {
+	inputs = par;
 	return this;
+    }
+
+    public int inputs() {
+	return inputs;
+    }
+
+    public ComponentInventory outputs(int par) {
+	outputs = par;
+	return this;
+    }
+
+    public int outputs() {
+	return outputs;
+    }
+
+    public ComponentInventory upgrades(int par) {
+	upgrades = par;
+	return this;
+    }
+
+    public int upgrades() {
+	return upgrades;
+    }
+
+    public ComponentInventory biproducts(int par) {
+	biproducts = par;
+	return this;
+    }
+
+    public int biproducts() {
+	return biproducts;
+    }
+
+    public ComponentInventory bucketInputs(int par) {
+	bucketInputs = par;
+	return this;
+    }
+
+    public int bucketInputs() {
+	return bucketInputs;
+    }
+
+    public ComponentInventory bucketOutputs(int par) {
+	bucketOutputs = par;
+	return this;
+    }
+
+    public int bucketOutputs() {
+	return bucketOutputs;
+    }
+
+    public ComponentInventory processors(int par) {
+	processors = par;
+	return this;
+    }
+
+    public int processors() {
+	return processors;
+    }
+
+    public ComponentInventory processorInputs(int par) {
+	processorInputs = par;
+	return this;
+    }
+
+    public int processorInputs() {
+	return processorInputs;
     }
 
     /*
@@ -328,40 +382,40 @@ public class ComponentInventory implements Component, WorldlyContainer {
     }
 
     public int getOutputStartIndex() {
-	return inputSlotCount;
+	return inputs;
     }
 
     public int getItemBiproductStartIndex() {
-	return getOutputStartIndex() + outputSlotCount;
+	return getOutputStartIndex() + outputs;
     }
 
     public int getInputBucketStartIndex() {
-	return getItemBiproductStartIndex() + itemBiproductSlotCount;
+	return getItemBiproductStartIndex() + biproducts;
     }
 
     public int getOutputBucketStartIndex() {
-	return getInputBucketStartIndex() + inputBucketSlotCount;
+	return getInputBucketStartIndex() + bucketInputs;
     }
 
     public int getUpgradeSlotStartIndex() {
-	return getOutputBucketStartIndex() + outputBucketSlotCount;
+	return getOutputBucketStartIndex() + bucketOutputs;
     }
 
     public List<List<ItemStack>> getInputContents() {
 	List<List<ItemStack>> combinedList = new ArrayList<>();
-	if (processorCount == 0) {
+	if (processors == 0) {
 	    List<ItemStack> newList = new ArrayList<>();
-	    for (int i = 0; i < inputSlotCount; i++) {
+	    for (int i = 0; i < inputs; i++) {
 		newList.add(getItem(i));
 	    }
 	    combinedList.add(newList);
 
 	    return combinedList;
 	}
-	for (int i = 0; i < processorCount; i++) {
+	for (int i = 0; i < processors; i++) {
 	    List<ItemStack> newList = new ArrayList<>();
-	    for (int j = 0; j < inputPerProc; j++) {
-		newList.add(getItem(j + i * (inputPerProc + 1)));
+	    for (int j = 0; j < processorInputs; j++) {
+		newList.add(getItem(j + i * (processorInputs + 1)));
 	    }
 	    combinedList.add(newList);
 	}
@@ -369,23 +423,23 @@ public class ComponentInventory implements Component, WorldlyContainer {
     }
 
     public List<ItemStack> getOutputContents() {
-	if (processorCount == 0) {
+	if (processors == 0) {
 	    List<ItemStack> list = new ArrayList<>();
-	    for (int i = 0; i < outputSlotCount; i++) {
+	    for (int i = 0; i < outputs; i++) {
 		list.add(getItem(getOutputStartIndex() + i));
 	    }
 	    return list;
 	}
 	List<ItemStack> list = new ArrayList<>();
-	for (int i = 0; i < processorCount; i++) {
-	    list.add(getItem((inputPerProc + 1) * (i + 1) - 1));
+	for (int i = 0; i < processors; i++) {
+	    list.add(getItem((processorInputs + 1) * (i + 1) - 1));
 	}
 	return list;
     }
 
     public List<ItemStack> getItemBiContents() {
 	List<ItemStack> list = new ArrayList<>();
-	for (int i = 0; i < itemBiproductSlotCount; i++) {
+	for (int i = 0; i < biproducts; i++) {
 	    list.add(getItem(getItemBiproductStartIndex() + i));
 	}
 	return list;
@@ -393,7 +447,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     public List<ItemStack> getInputBucketContents() {
 	List<ItemStack> list = new ArrayList<>();
-	for (int i = 0; i < inputBucketSlotCount; i++) {
+	for (int i = 0; i < bucketInputs; i++) {
 	    list.add(getItem(getInputBucketStartIndex() + i));
 	}
 	return list;
@@ -401,7 +455,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     public List<ItemStack> getOutputBucketContents() {
 	List<ItemStack> list = new ArrayList<>();
-	for (int i = 0; i < outputBucketSlotCount; i++) {
+	for (int i = 0; i < bucketOutputs; i++) {
 	    list.add(getItem(getOutputBucketStartIndex() + i));
 	}
 	return list;
@@ -409,7 +463,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     public List<ItemStack> getUpgradeContents() {
 	List<ItemStack> list = new ArrayList<>();
-	for (int i = 0; i < upgradeSlotCount; i++) {
+	for (int i = 0; i < upgrades; i++) {
 	    list.add(getItem(getUpgradeSlotStartIndex() + i));
 	}
 	return list;
@@ -434,16 +488,16 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
     // you're making me break out a sheet of paper for this!
     public List<Integer> getOutputSlots() {
-	if (processorCount == 0) {
+	if (processors == 0) {
 	    List<Integer> list = new ArrayList<>();
-	    for (int i = 0; i < outputSlotCount; i++) {
+	    for (int i = 0; i < outputs; i++) {
 		list.add(getOutputStartIndex() + i);
 	    }
 	    return list;
 	}
 	List<Integer> list = new ArrayList<>();
-	for (int i = 0; i < processorCount; i++) {
-	    list.add((inputPerProc + 1) * (i + 1) - 1);
+	for (int i = 0; i < processors; i++) {
+	    list.add((processorInputs + 1) * (i + 1) - 1);
 	}
 	return list;
     }

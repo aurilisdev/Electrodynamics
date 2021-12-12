@@ -6,11 +6,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializable<CompoundTag> {
+public class CeramicPlateStorageSerializer implements ICapabilitySerializable<CompoundTag> {
 
     public static final String PLATES_KEY = "plates";
-    private final CapabilityCeramicPlateHolderDefault plateHolder = new CapabilityCeramicPlateHolderDefault();
-    private final LazyOptional<ICapabilityCeramicPlateHolder> lazyOptional = LazyOptional.of(() -> plateHolder);
+    private final CeramicPlateStorage plateHolder = new CeramicPlateStorage();
+    private final LazyOptional<ICapabilityCeramicPlateStorage> lazyOptional = LazyOptional.of(() -> plateHolder);
 
     public void invalidate() {
 	lazyOptional.invalidate();
@@ -18,7 +18,7 @@ public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializ
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	if (cap == CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY) {
+	if (cap == CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY) {
 	    return lazyOptional.cast();
 	}
 	return LazyOptional.empty();
@@ -27,7 +27,7 @@ public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializ
 
     @Override
     public CompoundTag serializeNBT() {
-	if (CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
+	if (CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
 	    CompoundTag nbt = new CompoundTag();
 	    nbt.putInt(PLATES_KEY, plateHolder.getPlateCount());
 	    return nbt;
@@ -37,7 +37,7 @@ public class CapabilityCeramicPlateHolderProvider implements ICapabilitySerializ
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-	if (CapabilityCeramicPlate.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
+	if (CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY != null) {
 	    plateHolder.setPlateCount(nbt.getInt(PLATES_KEY));
 	}
     }

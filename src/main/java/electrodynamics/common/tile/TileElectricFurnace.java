@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
@@ -35,15 +35,6 @@ public class TileElectricFurnace extends GenericTile {
     protected Recipe<?> cachedRecipe = null;
     protected long timeSinceChange = 0;
 
-    private static int itemBiSize = 0;
-    private static int inputBucketSlots = 0;
-    private static int outputBucketSlots = 0;
-    private static int upgradeSlots = 3;
-
-    private static int inputPerProc = 1;
-
-    private static int knownInvSize = inputBucketSlots + outputBucketSlots + upgradeSlots + itemBiSize;
-
     public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
 	this(0, worldPosition, blockState);
     }
@@ -53,10 +44,11 @@ public class TileElectricFurnace extends GenericTile {
 		: extra == 2 ? DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICFURNACE.get(), worldPosition,
 		blockState);
 
+	int processorInputs = 1;
 	int processorCount = extra + 1;
-	int inputCount = inputPerProc * (extra + 1);
+	int inputCount = processorInputs * (extra + 1);
 	int outputCount = 1 * (extra + 1);
-	int invSize = knownInvSize + inputCount + outputCount;
+	int invSize = 3 + inputCount + outputCount;
 
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -70,10 +62,8 @@ public class TileElectricFurnace extends GenericTile {
 	    ints[i] = i * 2;
 	}
 
-	addComponent(new ComponentInventory(this).size(invSize)
-		.slotSizes(inputCount, outputCount, itemBiSize, upgradeSlots, inputBucketSlots, outputBucketSlots, processorCount, inputPerProc)
-		.valid(getPredicateMulti(inputCount, outputCount, itemBiSize, inputBucketSlots + outputBucketSlots, upgradeSlots, invSize, ints))
-		.setMachineSlots(extra).shouldSendInfo());
+	addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount)
+		.processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.electricfurnace" + extra).createMenu((id,
 		player) -> (extra == 0 ? new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 			: extra == 1 ? new ContainerElectricFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())

@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;

@@ -31,24 +31,24 @@ public class SlotRestricted extends GenericSlot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-		if (super.mayPlace(stack)) {
-		    if (validCapabilities != null) {
-			for (Capability<?> cap : validCapabilities) {
-			    if (stack.getCapability(cap).map(m -> true).orElse(false)) {
-				return true;
-			    }
-			}
+	if (super.mayPlace(stack)) {
+	    if (validCapabilities != null) {
+		for (Capability<?> cap : validCapabilities) {
+		    if (stack.getCapability(cap).map(m -> true).orElse(false)) {
+			return true;
 		    }
-		    if (classes != null) {
-			for (Class<?> cl : classes) {
-			    if (cl.isInstance(stack.getItem())) {
-				return true;
-			    }
-			}
-		    }
-	
-		    return whitelist != null && whitelist.contains(stack.getItem());
 		}
-		return false;
+	    }
+	    if (classes != null) {
+		for (Class<?> cl : classes) {
+		    if (cl.isInstance(stack.getItem())) {
+			return true;
+		    }
+		}
+	    }
+
+	    return whitelist != null && whitelist.contains(stack.getItem());
+	}
+	return false;
     }
 }

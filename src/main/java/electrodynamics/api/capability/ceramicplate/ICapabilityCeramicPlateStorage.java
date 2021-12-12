@@ -1,6 +1,6 @@
 package electrodynamics.api.capability.ceramicplate;
 
-public interface ICapabilityCeramicPlateHolder {
+public interface ICapabilityCeramicPlateStorage {
 
     void increasePlateCount(int count);
 

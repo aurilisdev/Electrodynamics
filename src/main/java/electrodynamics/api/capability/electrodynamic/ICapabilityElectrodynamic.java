@@ -1,4 +1,4 @@
-package electrodynamics.api.electricity;
+package electrodynamics.api.capability.electrodynamic;
 
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public interface IElectrodynamic {
+public interface ICapabilityElectrodynamic {
     default void setJoulesStored(double joules) {
     }
 

@@ -1,4 +1,5 @@
 package electrodynamics.common.inventory.container;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.GenericContainer;
@@ -12,10 +13,9 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.FurnaceResultSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.item.crafting.RecipeType;
 
 public class ContainerDO2OProcessor extends GenericContainer<GenericTile> {
-	
+
     public ContainerDO2OProcessor(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
     }
@@ -27,15 +27,17 @@ public class ContainerDO2OProcessor extends GenericContainer<GenericTile> {
     public ContainerDO2OProcessor(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 	super(type, id, playerinv, inventory, inventorydata);
     }
-    
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-    	addSlot(new GenericSlot(inv, nextIndex(), 56, 19));
-		addSlot(new GenericSlot(inv, nextIndex(), 56, 49));
-		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 34));
-		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+	addSlot(new GenericSlot(inv, nextIndex(), 56, 19));
+	addSlot(new GenericSlot(inv, nextIndex(), 56, 49));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 34));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
+	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		SubtypeItemUpgrade.itemoutput));
     }
 }

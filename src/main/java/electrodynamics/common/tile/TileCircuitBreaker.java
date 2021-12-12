@@ -1,8 +1,8 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.api.electricity.IElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileWire;
@@ -62,7 +62,7 @@ public class TileCircuitBreaker extends GenericTile {
 		    return true;
 		}
 		for (BlockEntity acceptor : wire.electricNetwork.getEnergyAcceptors()) {
-		    LazyOptional<IElectrodynamic> el = acceptor.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC);
+		    LazyOptional<ICapabilityElectrodynamic> el = acceptor.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC);
 		    if (el.isPresent() && !(acceptor instanceof TileCircuitBreaker) && el.resolve().get().getVoltage() < transfer.getVoltage()) {
 			return true;
 		    }

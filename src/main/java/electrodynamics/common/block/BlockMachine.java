@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;

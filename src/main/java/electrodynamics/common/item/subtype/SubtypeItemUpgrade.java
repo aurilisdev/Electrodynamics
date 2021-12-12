@@ -6,7 +6,8 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.capability.dirstorage.CapabilityDirStorage;
+import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
+import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.tile.GenericTile;
@@ -24,24 +25,24 @@ import net.minecraft.world.level.block.state.BlockState;
 public enum SubtypeItemUpgrade implements ISubtype {
     basiccapacity((holder, processor, upgrade) -> {
 	if (holder instanceof TileBatteryBox box) {
-		box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(2.25, 3));
+	    box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(2.25, 3));
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 2);
 	}
     }, 2),
     basicspeed((holder, processor, upgrade) -> {
 	if (processor != null) {
-		processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(2.25, 3));
+	    processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(2.25, 3));
 	}
     }, 3),
     advancedcapacity((holder, processor, upgrade) -> {
 	if (holder instanceof TileBatteryBox box) {
-		box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 2.25, Math.pow(2.25, 3));
+	    box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 2.25, Math.pow(2.25, 3));
 	    box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 4);
 	}
     }, 4),
     advancedspeed((holder, processor, upgrade) -> {
 	if (processor != null) {
-		processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
+	    processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
 	}
     }, 3),
     
@@ -93,14 +94,13 @@ public enum SubtypeItemUpgrade implements ISubtype {
     		}
     	}
     }, 1);
-	
 
     public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
     public final int maxSize;
-    
+
     SubtypeItemUpgrade(TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade, int maxSize) {
-    	this.applyUpgrade = applyUpgrade;
-    	this.maxSize = maxSize;
+	this.applyUpgrade = applyUpgrade;
+	this.maxSize = maxSize;
     }
 
     @Override
@@ -164,6 +164,8 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				}
 			}
 		}
+	    }
+
 	}
     
     private static void attemptContainerInsert(ItemStack stack, Container container, Direction dir) {
@@ -229,6 +231,8 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				container.setChanged();
 			}
 		}
+	    }
+	}
     }
     
     private static void addItemCompInv(ItemStack stack, ComponentInventory otherInv, Direction dir) {
@@ -247,6 +251,9 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				otherInv.setChanged();
 			}
 		}
+		otherInv.setChanged();
+	    }
+	}
     }
     
     private static void takeItemCompInv(ComponentInventory inv, ComponentInventory otherInv, Direction dir) {
@@ -274,11 +281,11 @@ public enum SubtypeItemUpgrade implements ISubtype {
     }
     
     private static BlockEntity getBlockEntity(GenericTile holder, Direction dir) {
-    	BlockPos pos = holder.getBlockPos().relative(dir);
-		BlockState state = holder.getLevel().getBlockState(pos);
-		if(state.hasBlockEntity()) {
-			return holder.getLevel().getBlockEntity(holder.getBlockPos().relative(dir));
-		}
-		return null;
+	BlockPos pos = holder.getBlockPos().relative(dir);
+	BlockState state = holder.getLevel().getBlockState(pos);
+	if (state.hasBlockEntity()) {
+	    return holder.getLevel().getBlockEntity(holder.getBlockPos().relative(dir));
+	}
+	return null;
     }
 }
