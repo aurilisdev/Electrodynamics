@@ -38,10 +38,10 @@ public class ContainerO2OProcessorTriple extends GenericContainer<GenericTile> {
 	addSlot(new GenericSlot(inv, nextIndex(), 56, 64));
 	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 64));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-		SubtypeItemUpgrade.itemoutput));
+		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-		SubtypeItemUpgrade.itemoutput));
+		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-		SubtypeItemUpgrade.itemoutput));
+		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
     }
 }

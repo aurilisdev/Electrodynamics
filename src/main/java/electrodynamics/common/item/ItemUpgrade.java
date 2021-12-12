@@ -38,7 +38,7 @@ public class ItemUpgrade extends Item {
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
     	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
     	if(type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
-    		return new CapabilityDirStorageProvider();
+    		return new DirectionalStorageSerializer();
     	}
     	return super.initCapabilities(stack, nbt);
     }
@@ -63,10 +63,10 @@ public class ItemUpgrade extends Item {
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
-			if(stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false)){
+			if(stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false)){
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
-			List<Direction> dirs = stack.getCapability(CapabilityDirStorage.DIR_STORAGE_CAPABILITY).map(m -> {
+			List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(m -> {
 				return m.getDirections();
 			}).orElse(new ArrayList<>());
 			if(dirs.size() > 0) {
@@ -74,14 +74,11 @@ public class ItemUpgrade extends Item {
 				for(Direction dir : dirs) {
 					tooltip.add(new TextComponent(StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.YELLOW));
 				}
+				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.RED));
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.YELLOW));
 			}
-		}
-	    } else {
-		tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.YELLOW));
-	    }
-	}
+		} 
     }
 
     @Override
