@@ -25,8 +25,8 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 def	version_minor="5"
-def	version_revision='2'
-def	minecraft_version='1.18'
+def	version_revision='4'
+def	minecraft_version='1.18.1'
 def	version_build='0'
 def	version_major='0'
 
@@ -38,7 +38,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18' 
+    mappings channel: 'official', version: '1.18.1' 
     
     runs {
         client {
@@ -92,9 +92,9 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18-38.0.14'
-	compileOnly fg.deobf("mezz.jei:jei-1.18:9.0.0.40:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18:9.0.0.40")
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
+	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
 }
 
 
