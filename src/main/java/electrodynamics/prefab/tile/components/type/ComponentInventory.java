@@ -468,22 +468,22 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 	return list;
     }
-    
-    public List<Integer> getInputSlots(){
-    	if (processors == 0) {
-    	    List<Integer> list = new ArrayList<>();
-    	    for (int i = 0; i < inputs; i++) {
-    	    	list.add(getInputStartIndex() + i);
-    	    }
-    	    return list;
-    	}
-    	List<Integer> list = new ArrayList<>();
-    	for (int i = 0; i < processors; i++) {
-    	    for (int j = 0; j < processorInputs; j++) {
-    	    	list.add(j + i * (processorInputs + 1));
-    	    }
-    	}
-    	return list;
+
+    public List<Integer> getInputSlots() {
+	if (processors == 0) {
+	    List<Integer> list = new ArrayList<>();
+	    for (int i = 0; i < inputs; i++) {
+		list.add(getInputStartIndex() + i);
+	    }
+	    return list;
+	}
+	List<Integer> list = new ArrayList<>();
+	for (int i = 0; i < processors; i++) {
+	    for (int j = 0; j < processorInputs; j++) {
+		list.add(j + i * (processorInputs + 1));
+	    }
+	}
+	return list;
     }
 
     // you're making me break out a sheet of paper for this!
@@ -501,43 +501,42 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 	return list;
     }
-    
+
     public boolean areOutputsEmpty() {
-    	for(ItemStack stack : getOutputContents()) {
-    		if(!stack.isEmpty()) {
-    			return false;
-    		}
-    	}
-    	for(ItemStack stack : getItemBiContents()) {
-    		if(!stack.isEmpty()) {
-    			return false;
-    		}
-    	}
-    	return true;
-    }
-    
-    //specialized case of hasInputRoom()
-    public boolean areInputsEmpty() {
-    	for(List<ItemStack> stacks : getInputContents()) {
-    		for(ItemStack stack : stacks) {
-    			if(stack.isEmpty()) {
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
+	for (ItemStack stack : getOutputContents()) {
+	    if (!stack.isEmpty()) {
+		return false;
+	    }
+	}
+	for (ItemStack stack : getItemBiContents()) {
+	    if (!stack.isEmpty()) {
+		return false;
+	    }
+	}
+	return true;
     }
 
-    
+    // specialized case of hasInputRoom()
+    public boolean areInputsEmpty() {
+	for (List<ItemStack> stacks : getInputContents()) {
+	    for (ItemStack stack : stacks) {
+		if (stack.isEmpty()) {
+		    return true;
+		}
+	    }
+	}
+	return false;
+    }
+
     public boolean hasInputRoom() {
-    	for(List<ItemStack> stacks : getInputContents()) {
-    		for(ItemStack stack : stacks) {
-    			if(stack.getMaxStackSize() > stack.getCount()) {
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
+	for (List<ItemStack> stacks : getInputContents()) {
+	    for (ItemStack stack : stacks) {
+		if (stack.getMaxStackSize() > stack.getCount()) {
+		    return true;
+		}
+	    }
+	}
+	return false;
     }
 
 }

@@ -312,10 +312,10 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		new TranslatableComponent("info.jei.item.compositearmor"));
 	registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
 		new TranslatableComponent("info.jei.item.compositearmor"));
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), 
-		VanillaTypes.ITEM, new TranslatableComponent("info.jei.item.upgradeiteminput"));
-	registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), 
-			VanillaTypes.ITEM, new TranslatableComponent("info.jei.item.upgradeitemoutput"));
+	registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM,
+		new TranslatableComponent("info.jei.item.upgradeiteminput"));
+	registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM,
+		new TranslatableComponent("info.jei.item.upgradeitemoutput"));
     }
 
     public static void addO2OClickArea(ResourceLocation loc) {

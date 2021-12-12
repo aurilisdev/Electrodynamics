@@ -41,14 +41,14 @@ public class DirectionalStorage implements ICapabilityDirectionalStorage {
 	return bool;
     }
 
-	@Override
-	public void setInt(int number) {
-		num = number;
-	}
+    @Override
+    public void setInt(int number) {
+	num = number;
+    }
 
-	@Override
-	public int getInt() {
-		return num;
-	}
+    @Override
+    public int getInt() {
+	return num;
+    }
 
 }

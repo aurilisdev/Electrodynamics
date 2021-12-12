@@ -17,9 +17,9 @@ public interface ICapabilityDirectionalStorage {
     void setBoolean(boolean bool);
 
     boolean getBoolean();
-    
+
     void setInt(int number);
-    
+
     int getInt();
 
 }
