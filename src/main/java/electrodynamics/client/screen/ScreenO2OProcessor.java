@@ -39,7 +39,7 @@ public class ScreenO2OProcessor extends GenericScreen<ContainerO2OProcessor> {
 		}
 	    }
 	    return 0;
-	}, this, 84, 34));
+	}, this, 84 - ContainerO2OProcessor.startXOffset, 34));
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 

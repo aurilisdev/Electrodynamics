@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -39,7 +40,7 @@ public class ScreenO2OProcessorDouble extends GenericScreen<ContainerO2OProcesso
 		}
 	    }
 	    return 0;
-	}, this, 84, 24));
+	}, this, 84 - ContainerO2OProcessor.startXOffset, 24));
 	components.add(new ScreenComponentProgress(() -> {
 	    GenericTile furnace = container.getHostFromIntArray();
 	    if (furnace != null) {
@@ -49,7 +50,7 @@ public class ScreenO2OProcessorDouble extends GenericScreen<ContainerO2OProcesso
 		}
 	    }
 	    return 0;
-	}, this, 84, 44));
+	}, this, 84 - ContainerO2OProcessor.startXOffset, 44));
 	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
     }
 
