@@ -15,9 +15,10 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
+    public static final int startXOffset = 36;
 
     public ContainerO2OProcessor(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
+	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
     }
 
     public ContainerO2OProcessor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
@@ -30,8 +31,9 @@ public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new GenericSlot(inv, nextIndex(), 56, 34));
-	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 34));
+	addSlot(new GenericSlot(inv, nextIndex(), 56 - startXOffset, 34));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset, 34));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset + 20, 34));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
 		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,

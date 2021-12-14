@@ -17,7 +17,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 public class ContainerO2OProcessorDouble extends GenericContainer<GenericTile> {
 
     public ContainerO2OProcessorDouble(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(3));
+	this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
     }
 
     public ContainerO2OProcessorDouble(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
@@ -30,10 +30,12 @@ public class ContainerO2OProcessorDouble extends GenericContainer<GenericTile> {
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new GenericSlot(inv, nextIndex(), 56, 24));
-	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 24));
-	addSlot(new GenericSlot(inv, nextIndex(), 56, 44));
-	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 44));
+	addSlot(new GenericSlot(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 24));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 24));
+	addSlot(new GenericSlot(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 44));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 44));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 24));
+	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 44));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
 		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
 	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
