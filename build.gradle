@@ -1,14 +1,18 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
         classpath 'org.ajoberstar:gradle-git:0.6.1'
     }
 }
+
+
 import org.ajoberstar.gradle.git.tasks.GitTag
 import org.ajoberstar.gradle.git.tasks.GitPush
 
@@ -16,7 +20,8 @@ plugins {
     id "com.matthewprenger.cursegradle" version '1.4.0'
 }
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'org.spongepowered.mixin'
+
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
@@ -36,6 +41,8 @@ archivesBaseName = 'Electrodynamics'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+
+
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     mappings channel: 'official', version: '1.18.1' 
@@ -47,6 +54,8 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
             property 'forge.logging.console.level', 'debug'
+
+			property 'mixin.debug.export', 'true'
 
             mods {
                 electrodynamics {
@@ -63,7 +72,9 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
+			
+			property 'mixin.debug.export', 'true'
+            
             mods {
                 electrodynamics {
                     source sourceSets.main
@@ -90,11 +101,15 @@ minecraft {
         }
     }
 }
-
+mixin {
+    add sourceSets.main, "electrodynamics.mixins.json"
+}
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
 	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
+    
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
 
@@ -108,7 +123,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"aurilisdev",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "electrodynamics.mixins.json"
         ])
     }
 }
