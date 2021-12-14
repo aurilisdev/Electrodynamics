@@ -4,7 +4,7 @@
 	"fluidinputs":{
 		"count" : 1,
 		"0":{
-			"tag":"forge:lead_mineral_fluid",
+			"tag":"forge:lead_sulfate",
 			"amount": 200
 		} 
 	},

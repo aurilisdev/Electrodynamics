@@ -7,21 +7,21 @@ import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 
-public class FluidMineral extends FluidNonPlaceable {
+public class FluidSulfate extends FluidNonPlaceable {
 
-    public static final String FORGE_TAG = "_mineral_fluid";
+    public static final String FORGE_TAG = "_sulfate";
 
     public SubtypeMineralFluid mineral;
 
-    public FluidMineral(SubtypeMineralFluid mineral) {
+    public FluidSulfate(SubtypeMineralFluid mineral) {
 	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
 	this.mineral = mineral;
     }
 
     @Override
     protected FluidAttributes createAttributes() {
-	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/mineral"), new ResourceLocation(References.ID + ":fluid/mineral"))
-		.translationKey("fluid.electrodynamics.mineral" + mineral.name()).color(-1383766208).build(this);
+	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"), new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"))
+		.translationKey("fluid.electrodynamics.sulfate" + mineral.name()).build(this);
     }
 
 }

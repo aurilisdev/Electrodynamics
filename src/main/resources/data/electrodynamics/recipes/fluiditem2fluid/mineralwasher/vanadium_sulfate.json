@@ -3,19 +3,19 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:ores/copper",
+			"tag": "forge:ores/vanadium",
 			"count": 1
 		}
 	},
 	"fluidinputs":{
 		"count" : 1,
 		"0": {
-			"fluid": "electrodynamics:fluidsulfuricacid",
+			"tag":"forge:sulfuric_acid",
 			"amount": 1000
 		}
 	},
 	"output": {
-		"fluid": "electrodynamics:fluidmineralcopper",
+		"fluid": "electrodynamics:fluidsulfatevanadium",
 		"amount": 1000
 	}
 }

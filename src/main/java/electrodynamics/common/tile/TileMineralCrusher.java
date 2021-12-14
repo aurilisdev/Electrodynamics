@@ -43,7 +43,8 @@ public class TileMineralCrusher extends GenericTile {
 	int processorCount = extra + 1;
 	int inputCount = processorInputs * (extra + 1);
 	int outputCount = 1 * (extra + 1);
-	int invSize = 3 + inputCount + outputCount;
+	int biproductCount = 1 * (extra + 1);
+	int invSize = 3 + inputCount + outputCount + biproductCount;
 
 	addComponent(new ComponentDirection());
 	addComponent(new ComponentPacketHandler());
@@ -56,8 +57,9 @@ public class TileMineralCrusher extends GenericTile {
 	    ints[i] = i * 2;
 	}
 
-	addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount)
-		.processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
+	addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).biproducts(biproductCount)
+		.upgrades(3).processors(processorCount).processorInputs(processorInputs).valid(machineValidator(ints))
+		.setMachineSlots(extra).shouldSendInfo());
 	addComponent(new ComponentContainerProvider("container.mineralcrusher" + extra).createMenu((id, player) -> (extra == 0
 		? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 		: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())

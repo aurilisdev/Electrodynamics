@@ -13,7 +13,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public class ComponentContainerProvider implements Component, MenuProvider {
     protected GenericTile holder = null;
-
+    
     @Override
     public void holder(GenericTile holder) {
 	this.holder = holder;
@@ -56,4 +56,5 @@ public class ComponentContainerProvider implements Component, MenuProvider {
     public ComponentType getType() {
 	return ComponentType.ContainerProvider;
     }
+    
 }

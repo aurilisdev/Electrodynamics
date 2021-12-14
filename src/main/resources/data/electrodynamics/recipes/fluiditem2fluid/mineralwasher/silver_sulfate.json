@@ -3,7 +3,7 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:ores/lithium",
+			"tag": "forge:ores/silver",
 			"count": 1
 		}
 	},
@@ -15,7 +15,7 @@
 		}
 	},
 	"output": {
-		"fluid": "electrodynamics:fluidminerallithium",
+		"fluid": "electrodynamics:fluidsulfatesilver",
 		"amount": 1000
 	}
 }

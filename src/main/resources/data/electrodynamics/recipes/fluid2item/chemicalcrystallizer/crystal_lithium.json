@@ -4,7 +4,7 @@
 	"fluidinputs":{
 		"count" : 1,
 		"0":{
-			"tag":"forge:lithium_mineral_fluid",
+			"tag":"forge:lithium_sulfate",
 			"amount": 200
 		} 
 	},

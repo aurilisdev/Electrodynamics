@@ -3,7 +3,7 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:ores/tin",
+			"tag": "forge:ores/iron",
 			"count": 1
 		}
 	},
@@ -15,7 +15,7 @@
 		}
 	},
 	"output": {
-		"fluid": "electrodynamics:fluidmineraltin",
+		"fluid": "electrodynamics:fluidsulfateiron",
 		"amount": 1000
 	}
 }

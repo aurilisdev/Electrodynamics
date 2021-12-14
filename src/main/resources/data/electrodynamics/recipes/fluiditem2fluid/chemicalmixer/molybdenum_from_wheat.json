@@ -15,7 +15,7 @@
 		}
 	},
 	"output": {
-		"fluid": "electrodynamics:fluidmolybdenum",
+		"fluid": "electrodynamics:fluidsulfatemolybdenum",
 		"amount": 250
 	}
 }

@@ -28,9 +28,10 @@ import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.fluid.types.FluidEthanol;
 import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
-import electrodynamics.common.fluid.types.FluidMineral;
-import electrodynamics.common.fluid.types.FluidMolybdenum;
+//import electrodynamics.common.fluid.types.FluidMineral;
+//import electrodynamics.common.fluid.types.FluidMolybdenum;
 import electrodynamics.common.fluid.types.FluidPolyethylene;
+import electrodynamics.common.fluid.types.FluidSulfate;
 import electrodynamics.common.fluid.types.FluidSulfuricAcid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.ContainerChargerGeneric;
@@ -141,8 +142,8 @@ public class DeferredRegisters {
     public static final HashMap<ISubtype, Block> SUBTYPEBLOCK_MAPPINGS = new HashMap<>();
     public static final HashMap<ISubtype, RegistryObject<Item>> SUBTYPEITEMREGISTER_MAPPINGS = new HashMap<>();
     public static final HashMap<ISubtype, RegistryObject<Block>> SUBTYPEBLOCKREGISTER_MAPPINGS = new HashMap<>();
-    public static HashMap<ISubtype, FluidMineral> SUBTYPEMINERALFLUID_MAPPINGS = new HashMap<>();
-    public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
+    //public static HashMap<ISubtype, FluidMineral> SUBTYPEMINERALFLUID_MAPPINGS = new HashMap<>();
+    //public static HashMap<FluidMineral, ISubtype> MINERALFLUIDSUBTYPE_MAPPINGS = new HashMap<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, References.ID);
     public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, References.ID);
@@ -154,7 +155,7 @@ public class DeferredRegisters {
     public static FluidSulfuricAcid fluidSulfuricAcid;
     public static FluidHydrogenFluoride fluidHydrogenFluoride;
     public static FluidPolyethylene fluidPolyethylene;
-    public static FluidMolybdenum fluidMolybdenum;
+   // public static FluidMolybdenum fluidMolybdenum;
 
     static {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -183,12 +184,12 @@ public class DeferredRegisters {
 	FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
 	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
 	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
-	    FluidMineral fluid = new FluidMineral(mineral);
-	    SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
-	    MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
-	    FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
+	    FluidSulfate fluid = new FluidSulfate(mineral);
+	    //SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
+	    //MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
+	    FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
 	}
-	FLUIDS.register("fluidmolybdenum", supplier(fluidMolybdenum = new FluidMolybdenum()));
+	//FLUIDS.register("fluidmolybdenum", supplier(fluidMolybdenum = new FluidMolybdenum()));
     }
 
     private static void registerSubtypeItem(ISubtype[] array) {

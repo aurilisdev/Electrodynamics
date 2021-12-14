@@ -3,19 +3,19 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:ores/molybdenum",
+			"tag": "forge:ores/copper",
 			"count": 1
 		}
 	},
 	"fluidinputs":{
 		"count" : 1,
 		"0": {
-			"tag":"forge:sulfuric_acid",
+			"fluid": "electrodynamics:fluidsulfuricacid",
 			"amount": 1000
 		}
 	},
 	"output": {
-		"fluid": "electrodynamics:fluidmineralmolybdenum",
+		"fluid": "electrodynamics:fluidsulfatecopper",
 		"amount": 1000
 	}
 }
