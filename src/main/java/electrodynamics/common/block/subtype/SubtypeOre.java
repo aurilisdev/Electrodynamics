@@ -11,7 +11,7 @@ public enum SubtypeOre implements ISubtype {
     thorianite(3, 15, 8, -32, 32, 10f, 6.5f), // min + max + perChunk based on thorianite
     monazite(2, 5, 8, 0, 32, 6f, 4.5f), // not changed
     vanadinite(2, 12, 8, -32, 32, 6f, 4.5f), // doubled depth + amount
-    sulfur(1, 11, 13, -28, 28, 6f, 4.5f), // increased depth + amount
+    sulfur(1, 4, 13, -28, 28, 6f, 4.5f), // increased depth + amount - amonut because of proper sulfur gen
     niter(1, 6, 13, 0, 28, 6f, 4.5f), // not changed
     aluminum(2, 5, 5, 16, 48, 4f, 4.4f), // increased height
     chromite(3, 5, 8, -10, 32, 10f, 6.5f), // increased depth + amount

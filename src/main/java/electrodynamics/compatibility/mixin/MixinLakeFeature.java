@@ -7,25 +7,26 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 import com.mojang.serialization.Codec;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
+import electrodynamics.common.settings.OreConfig;
+import electrodynamics.common.world.OreGeneration;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
+import net.minecraft.world.level.levelgen.feature.LakeFeature.Configuration;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 
 @Mixin(LakeFeature.class)
-public class MixinLakeFeature extends LakeFeature {
+public class MixinLakeFeature extends Feature<LakeFeature.Configuration> {
     private static final BlockState AIR = Blocks.CAVE_AIR.defaultBlockState();
 
     public MixinLakeFeature(Codec<Configuration> conf) {
@@ -43,7 +44,8 @@ public class MixinLakeFeature extends LakeFeature {
 	WorldGenLevel worldgenlevel = context.level();
 	Random random = context.random();
 	LakeFeature.Configuration configuration = context.config();
-	boolean isLava = configuration.fluid().getState(random, blockpos).getFluidState().getType() == Fluids.LAVA;
+	boolean createSulfur = configuration.fluid().getState(random, blockpos).getFluidState().getType() == Fluids.LAVA
+		&& OreConfig.oresToSpawn.contains(SubtypeOre.sulfur.name());
 	if (blockpos.getY() <= worldgenlevel.getMinBuildHeight() + 4) {
 	    return false;
 	}
@@ -76,7 +78,6 @@ public class MixinLakeFeature extends LakeFeature {
 		}
 	    }
 	}
-	System.out.println("created cave with " + isLava);
 	BlockState blockstate1 = configuration.fluid().getState(random, blockpos);
 
 	for (int k1 = 0; k1 < 16; ++k1) {
@@ -107,9 +108,9 @@ public class MixinLakeFeature extends LakeFeature {
 			BlockPos blockpos1 = blockpos.offset(l1, i3, i2);
 			if (MixinLakeFeature.canReplaceBlock(worldgenlevel.getBlockState(blockpos1))) {
 			    boolean flag1 = i3 >= 4;
-			    worldgenlevel.setBlock(blockpos1, flag1 ? AIR : blockstate1, 2); // sets block
-			    if (isLava) {
-				generateSulfurAround(random, blockpos1, worldgenlevel);
+			    worldgenlevel.setBlock(blockpos1, flag1 ? AIR : blockstate1, 2);
+			    if (createSulfur) {
+				OreGeneration.generateSulfurAround(random, blockpos1, worldgenlevel);
 			    }
 			    if (flag1) {
 				worldgenlevel.scheduleTick(blockpos1, AIR.getBlock(), 0);
@@ -135,8 +136,8 @@ public class MixinLakeFeature extends LakeFeature {
 			    if (blockstate.getMaterial().isSolid() && !blockstate.is(BlockTags.LAVA_POOL_STONE_CANNOT_REPLACE)) {
 				BlockPos blockpos3 = blockpos.offset(j2, l3, j3);
 				worldgenlevel.setBlock(blockpos3, blockstate2, 2);
-				if (isLava) {
-				    generateSulfurAround(random, blockpos3, worldgenlevel);
+				if (createSulfur) {
+				    OreGeneration.generateSulfurAround(random, blockpos3, worldgenlevel);
 				}
 				this.markAboveForPostProcessing(worldgenlevel, blockpos3);
 			    }
@@ -158,19 +159,5 @@ public class MixinLakeFeature extends LakeFeature {
 	    }
 	}
 	return true;
-    }
-
-    public void generateSulfurAround(Random rand, BlockPos pos, WorldGenLevel level) {
-	for (Direction direction : Direction.values()) {
-	    BlockPos offset = pos.offset(direction.getNormal());
-	    if (rand.nextFloat() < 0.3) {
-		if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
-		    level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.sulfur).defaultBlockState(), 3);
-		}
-		if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
-		    level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
-		}
-	    }
-	}
     }
 }

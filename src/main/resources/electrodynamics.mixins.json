@@ -3,10 +3,12 @@
   "package": "electrodynamics.compatibility.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "electrodynamics.refmap.json",
-  "mixins": [
+  "mixins": [],
+  "client": [
     "MixinLakeFeature"
   ],
-  "client": [],
-  "server": [],
+  "server": [
+    "MixinLakeFeature"
+  ],
   "minVersion": "0.8.4"
 }

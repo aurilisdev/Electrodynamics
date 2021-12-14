@@ -2,16 +2,21 @@ package electrodynamics.common.world;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.settings.OreConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome.BiomeCategory;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -56,6 +61,20 @@ public class OreGeneration {
 	if (event.getCategory() != BiomeCategory.NETHER && event.getCategory() != BiomeCategory.THEEND) {
 	    for (PlacedFeature feature : FEATURES) {
 		gen.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, feature);
+	    }
+	}
+    }
+
+    public static void generateSulfurAround(Random rand, BlockPos pos, WorldGenLevel level) {
+	for (Direction direction : Direction.values()) {
+	    BlockPos offset = pos.offset(direction.getNormal());
+	    if (rand.nextFloat() < 0.3) {
+		if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
+		    level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.sulfur).defaultBlockState(), 3);
+		}
+		if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
+		    level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
+		}
 	    }
 	}
     }
