@@ -8,6 +8,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
 import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
+import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.prefab.tile.GenericTile;
@@ -45,7 +46,6 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	    processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
 	}
     }, 3),
-
     // the only way to optimize this one further is to increase the tick delay.
     // Currently, it's set to every 4 ticks
     iteminput((holder, processor, upgrade) -> {
@@ -103,6 +103,11 @@ public enum SubtypeItemUpgrade implements ISubtype {
 		    outputDefaultMode(getBlockEntity(holder, dir), inv, dir);
 		}
 	    }
+	}
+    }, 1),
+    improvedsolarcell((holder, processor, upgrade) -> {
+	if (holder instanceof IElectricGenerator generator) {
+	    generator.setMultiplier(2.25);
 	}
     }, 1);
 

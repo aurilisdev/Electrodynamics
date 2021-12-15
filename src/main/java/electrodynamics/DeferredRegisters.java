@@ -48,6 +48,7 @@ import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
+import electrodynamics.common.inventory.container.ContainerSolarPanel;
 import electrodynamics.common.inventory.container.ContainerTankGeneric;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemUpgrade;
@@ -499,6 +500,8 @@ public class DeferredRegisters {
 	    () -> new MenuType<>(ContainerTankGeneric::new));
     public static final RegistryObject<MenuType<ContainerCombustionChamber>> CONTAINER_COMBUSTION_CHAMBER = CONTAINERS.register("combustionchamber",
 	    () -> new MenuType<>(ContainerCombustionChamber::new));
+    public static final RegistryObject<MenuType<ContainerSolarPanel>> CONTAINER_SOLARPANEL = CONTAINERS.register("solarpanel",
+	    () -> new MenuType<>(ContainerSolarPanel::new));
 
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder
 	    .<EntityMetalRod>of(EntityMetalRod::new, MobCategory.MISC).sized(0.25f, 0.25f).fireImmune().build(References.ID + ".metalrod"));
