@@ -79,7 +79,7 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	drawAnimatedArrows(matrixStack);
 
 	// was +8
-	addDescriptions(matrixStack);
+	addDescriptions(matrixStack, recipe);
     }
 
     private static List<List<FluidStack>> getFluidInputs(FluidItem2ItemRecipe recipe) {

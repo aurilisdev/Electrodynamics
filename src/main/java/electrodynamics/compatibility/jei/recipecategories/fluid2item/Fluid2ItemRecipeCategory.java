@@ -74,7 +74,7 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 	}
 	drawAnimatedArrows(matrixStack);
 
-	addDescriptions(matrixStack);
+	addDescriptions(matrixStack, recipe);
 
     }
 

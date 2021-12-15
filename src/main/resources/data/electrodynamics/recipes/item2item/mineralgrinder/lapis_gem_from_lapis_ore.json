@@ -10,5 +10,13 @@
     "output":{
         "item":"minecraft:lapis_lazuli",
         "count":9
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "minecraft:diamond", 
+			"count" : 1,
+			"chance" : 0.1
+		}
+	}
 }

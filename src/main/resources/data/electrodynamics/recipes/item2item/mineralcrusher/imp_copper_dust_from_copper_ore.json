@@ -10,5 +10,13 @@
 	"output": {
 		"item": "electrodynamics:impuredustcopper",
 		"count": 3
+	},
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "electrodynamics:impuredustgold", 
+			"count" : 1,
+			"chance" : 0.1
+		}
 	}
 }

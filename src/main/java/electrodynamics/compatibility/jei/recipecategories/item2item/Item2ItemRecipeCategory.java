@@ -78,7 +78,7 @@ public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCateg
 	}
 	drawAnimatedArrows(matrixStack);
 
-	addDescriptions(matrixStack);
+	addDescriptions(matrixStack, recipe);
     }
 
     private static List<ItemStack> getItemOutputs(Item2ItemRecipe recipe) {

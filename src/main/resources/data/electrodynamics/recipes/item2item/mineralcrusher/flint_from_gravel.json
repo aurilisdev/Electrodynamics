@@ -10,5 +10,13 @@
 	"output": {
 		"item": "minecraft:flint",
 		"count": 1
+	},
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "minecraft:sand", 
+			"count" : 1,
+			"chance" : 0.2
+		}
 	}
 }

@@ -20,13 +20,13 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory {
 
     private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
-    private static DefaultItemSlotWrapper INPUT_SLOT_1 = new DefaultItemSlotWrapper(22, 6);
-    private static DefaultItemSlotWrapper INPUT_SLOT_2 = new DefaultItemSlotWrapper(22, 35);
+    private static DefaultItemSlotWrapper INPUT_SLOT_1 = new DefaultItemSlotWrapper(22, 11);
+    private static DefaultItemSlotWrapper INPUT_SLOT_2 = new DefaultItemSlotWrapper(22, 30);
     private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(83, 16);
 
     private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 22);
 
-    private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(48, BACK_WRAP);
+    private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49);
 
     private static int ANIM_TIME = 50;
 

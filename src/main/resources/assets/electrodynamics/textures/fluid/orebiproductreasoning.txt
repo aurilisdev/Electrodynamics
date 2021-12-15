@@ -1,0 +1,9 @@
+casserite ore : commonly found in quartz veins, so quartz is a biproduct
+argentite : found in gold veins, so gold dust is a biproduct
+galena ore : silver is often found with lead, so silver is a biproduct
+vanadinite ore : has lead as part of it's makeup, so lead is a biproduct
+chromite ore : iron is part of it's makeup, so it's a biproduct
+rutile ore : iron is part of it's makeup, so it's a biproduct
+molybdenite ore : it's a sulfide ore, so sulfur is a biproduct
+gold ore : silver is also found with it, so silver is a biproduct
+

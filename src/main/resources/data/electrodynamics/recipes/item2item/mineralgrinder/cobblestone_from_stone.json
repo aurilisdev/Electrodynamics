@@ -10,5 +10,13 @@
     "output":{
         "item":"minecraft:cobblestone",
         "count":1
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "minecraft:gravel", 
+			"count" : 1,
+			"chance" : 0.4
+		}
+	}
 }

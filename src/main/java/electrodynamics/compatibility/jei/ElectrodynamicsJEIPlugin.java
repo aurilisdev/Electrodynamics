@@ -25,10 +25,10 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
-import electrodynamics.compatibility.jei.recipecategories.fluid2item.ChemicalCrystallizerRecipeCategory;
-import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.ChemicalMixerRecipeCategory;
-import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.FermentationPlantRecipeCategory;
-import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.MineralWasherRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.fluid2item.specificmachines.ChemicalCrystallizerRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.ChemicalMixerRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.FermentationPlantRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.MineralWasherRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.EnergizedAlloyerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.LatheRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.MineralCrusherRecipeCategory;
@@ -268,14 +268,14 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	/* O2O Machines */
 
-	registry.addRecipeClickArea(ScreenO2OProcessor.class, 85, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-	registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 85, 25, 22, 35,
+	registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
+	registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35,
 		O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-	registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 85, 25, 22, 55,
+	registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55,
 		O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
 
 	/* DO2O Machines */
-	registry.addRecipeClickArea(ScreenDO2OProcessor.class, 85, 35, 22, 15,
+	registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15,
 		DO2O_CLICK_AREAS.toArray(new ResourceLocation[DO2O_CLICK_AREAS.size()]));
 
 	/* Electric Furnace Click Area */

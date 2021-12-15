@@ -10,5 +10,13 @@
     "output":{
         "item":"electrodynamics:rodhslasteel",
         "count":1
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "electrodynamics:nuggethslasteel", 
+			"count" : 2,
+			"chance" : 1
+		}
+	}
 }

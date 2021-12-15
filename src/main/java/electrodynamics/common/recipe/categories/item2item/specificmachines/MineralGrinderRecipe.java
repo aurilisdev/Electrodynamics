@@ -3,6 +3,7 @@ package electrodynamics.common.recipe.categories.item2item.specificmachines;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
+import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +19,10 @@ public class MineralGrinderRecipe extends Item2ItemRecipe {
     public MineralGrinderRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output) {
 	super(id, input, output);
     }
+    
+    public MineralGrinderRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts) {
+    	super(id, input, output, itemBiproducts);
+    }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
@@ -26,8 +31,6 @@ public class MineralGrinderRecipe extends Item2ItemRecipe {
 
     @Override
     public RecipeType<?> getType() {
-	// LOGGER.info("Recipe Type " + MineralGrinderRecipe.class.toString() + ": " +
-	// Registry.RECIPE_TYPE.getOrDefault(RECIPE_ID));
 	return Registry.RECIPE_TYPE.get(RECIPE_ID);
     }
 

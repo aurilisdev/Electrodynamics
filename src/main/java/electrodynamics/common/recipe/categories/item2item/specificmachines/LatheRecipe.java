@@ -3,6 +3,7 @@ package electrodynamics.common.recipe.categories.item2item.specificmachines;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
+import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +18,10 @@ public class LatheRecipe extends Item2ItemRecipe {
 
     public LatheRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output) {
 	super(id, input, output);
+    }
+    
+    public LatheRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts) {
+    	super(id, input, output, itemBiproducts);
     }
 
     @Override

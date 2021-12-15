@@ -10,5 +10,13 @@
     "output":{
         "item":"electrodynamics:dustsulfur",
         "count":2
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "minecraft:coal", 
+			"count" : 1,
+			"chance" : 0.05
+		}
+	}
 }

@@ -10,5 +10,13 @@
     "output":{
         "item":"electrodynamics:impuredustvanadium",
         "count":3
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "electrodynamics:dustlead", 
+			"count" : 1,
+			"chance" : 0.2
+		}
+	}
 }

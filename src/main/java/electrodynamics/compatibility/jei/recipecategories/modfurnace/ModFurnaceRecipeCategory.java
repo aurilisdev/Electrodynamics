@@ -159,7 +159,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 	TranslatableComponent text;
 	for (GenericLabelWrapper wrap : LABELS) {
 	    text = new TranslatableComponent("gui.jei.category." + RECIPE_GROUP + ".info." + wrap.getName(), ANIMATION_LENGTH / 20);
-	    fontRenderer.draw(stack, text, wrap.getEndXPos() - fontRenderer.width(text), wrap.getYPos(), wrap.getColor());
+	    fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
 	}
     }
 
