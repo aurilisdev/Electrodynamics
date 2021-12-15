@@ -39,6 +39,7 @@ import electrodynamics.client.screen.ScreenMineralWasher;
 import electrodynamics.client.screen.ScreenO2OProcessor;
 import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
+import electrodynamics.client.screen.ScreenSolarPanel;
 import electrodynamics.client.screen.ScreenTankGeneric;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
@@ -181,6 +182,7 @@ public class ClientRegister {
 	MenuScreens.register(DeferredRegisters.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
 	MenuScreens.register(DeferredRegisters.CONTAINER_TANK.get(), ScreenTankGeneric::new);
 	MenuScreens.register(DeferredRegisters.CONTAINER_COMBUSTION_CHAMBER.get(), ScreenCombustionChamber::new);
+	MenuScreens.register(DeferredRegisters.CONTAINER_SOLARPANEL.get(), ScreenSolarPanel::new);
 
 	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 	ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());

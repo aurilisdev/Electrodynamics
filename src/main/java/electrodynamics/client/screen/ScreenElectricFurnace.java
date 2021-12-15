@@ -29,7 +29,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnace> {
-
     public ScreenElectricFurnace(ContainerElectricFurnace container, Inventory playerInventory, Component title) {
 	super(container, playerInventory, title);
 	components.add(new ScreenComponentProgress(() -> {
