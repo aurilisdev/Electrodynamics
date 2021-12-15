@@ -12,7 +12,7 @@ import net.minecraft.world.level.storage.loot.LootContext.Builder;
 public class BlockResource extends Block {
 
     public BlockResource(SubtypeResourceBlock subtype) {
-	super(Block.Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType()));
+	super(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType()));
     }
 
     @Override

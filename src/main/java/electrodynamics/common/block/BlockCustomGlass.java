@@ -26,7 +26,8 @@ public class BlockCustomGlass extends Block {
     }
 
     public BlockCustomGlass(SubtypeGlass glass) {
-	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
+	super(Properties
+		.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
 		.isRedstoneConductor((x, y, z) -> false).noOcclusion());
     }
 
