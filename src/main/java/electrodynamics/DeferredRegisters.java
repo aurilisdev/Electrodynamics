@@ -56,6 +56,7 @@ import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
 import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
+import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
 import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
@@ -236,21 +237,48 @@ public class DeferredRegisters {
 	ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 	ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
-		"|translate|tooltip.transformer.energyloss");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer),
-		"|translate|tooltip.transformer.energyloss");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
-		"|translate|tooltip.oxidationfurnace.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher), "|translate|tooltip.mineralcrusher.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning),
-		"|translate|tooltip.oxidationfurnacerunning.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),
-		"|translate|tooltip.advancedsolarpanel.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher), "|translate|tooltip.mineralwasher.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer), "|translate|tooltip.chemicalmixer.voltage");
-	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),
-		"|translate|tooltip.chemicalcrystallizer.voltage");
+	//machines
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), "|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble), "|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple), "|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), "|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilldouble), "|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilltriple), "|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusher), "|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble), "|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple), "|translate|tooltip.machine.voltage.960");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder), "|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble), "|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple), "|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),"|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher), "|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer), "|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer),"|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer),"|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.reinforcedalloyer),"|translate|tooltip.machine.voltage.960");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lathe),"|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerlv),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargermv),"|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv),"|translate|tooltip.machine.voltage.480");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump),"|translate|tooltip.machine.voltage.120");
+	
+	//generators
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.advancedsolarpanel),"|translate|tooltip.machine.voltage.240");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.thermoelectricgenerator),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.hydroelectricgenerator),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.windmill),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator),"|translate|tooltip.machine.voltage.120");
+	
+	//misc
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),"|translate|tooltip.transformer.energyloss");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer),"|translate|tooltip.transformer.energyloss");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lithiumbatterybox),"|translate|tooltip.machine.voltage.240");
+	
+	
 	boolean jeiLoaded = ModList.get().isLoaded("jei");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
 	if (jeiLoaded) {
@@ -316,9 +344,12 @@ public class DeferredRegisters {
 	    supplier(new Item(new Item.Properties().tab(References.CORETAB))));
     public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke",
 	    supplier(new Item(new Item.Properties().tab(References.CORETAB))));
-
+    public static final RegistryObject<Item> SLAG = ITEMS.register("slag",
+    	supplier(new Item(new Item.Properties().tab(References.CORETAB))));
     public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium",
 	    supplier(new Item(new Item.Properties().tab(References.CORETAB))));
+    public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", 
+    	supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
     public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet",
 	    supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.HEAD)));

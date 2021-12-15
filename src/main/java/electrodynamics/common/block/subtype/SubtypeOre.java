@@ -11,16 +11,16 @@ public enum SubtypeOre implements ISubtype {
     thorianite(3, 15, 8, -32, 32, 10f, 6.5f), // min + max + perChunk based on thorianite
     monazite(2, 5, 8, 0, 32, 6f, 4.5f), // not changed
     vanadinite(2, 12, 8, -32, 32, 6f, 4.5f), // doubled depth + amount
-    sulfur(1, 4, 13, -28, 28, 6f, 4.5f), // increased depth + amount - amonut because of proper sulfur gen
-    niter(1, 6, 13, 0, 28, 6f, 4.5f), // not changed
+    sulfur(1, 4, 13, -28, 28, 6f, 4.5f, 1, 2), // increased depth + amount - amonut because of proper sulfur gen
+    niter(1, 6, 13, 0, 28, 6f, 4.5f, 1, 2), // not changed
     aluminum(2, 5, 5, 16, 48, 4f, 4.4f), // increased height
     chromite(3, 5, 8, -10, 32, 10f, 6.5f), // increased depth + amount
     rutile(3, 5, 8, -48, -8, 10f, 6.5f), // min + max + perChunk based on diamond
-    halite(1, 9, 9, 32, 64, 3f, 5f), // nonchanged
+    halite(1, 9, 9, 32, 64, 3f, 5f, 0, 2), // nonchanged
     lepidolite(2, 3, 9, -32, 32, 4f, 8f), // increased depth
     molybdenum(1, 9, 4, 50, 60, 3f, 3f), // unchanged
     fluorite(1, 3, 4, -10, 30, 2f, 2f), // increased depth
-    sylvite(1, 5, 4, -20, 50, 2f, 2f); // increased depth + amount
+    sylvite(1, 5, 4, -20, 50, 2f, 2f, 3, 7); // increased depth + amount
 
     public final int harvestLevel;
     public final int veinsPerChunk;
@@ -29,8 +29,15 @@ public enum SubtypeOre implements ISubtype {
     public final int maxY;
     public final float hardness;
     public final float resistance;
+    public final int minXP;
+    public final int maxXP;
 
     SubtypeOre(int harvestLevel, int veinsPerChunk, int veinSize, int minY, int maxY, float hardness, float resistance) {
+    	this(harvestLevel, veinsPerChunk, veinSize, minY, maxY, hardness, resistance, 0, 0);
+    }
+    
+    SubtypeOre(int harvestLevel, int veinsPerChunk, int veinSize, int minY, int maxY, float hardness, float resistance,
+    	int minXP, int maxXP) {
 	this.harvestLevel = harvestLevel;
 	this.veinsPerChunk = veinsPerChunk;
 	this.veinSize = veinSize;
@@ -38,6 +45,8 @@ public enum SubtypeOre implements ISubtype {
 	this.maxY = maxY;
 	this.hardness = hardness;
 	this.resistance = resistance;
+	this.minXP = minXP;
+	this.maxXP = maxXP;
     }
 
     @Override

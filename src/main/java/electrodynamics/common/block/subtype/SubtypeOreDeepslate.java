@@ -18,9 +18,9 @@ public enum SubtypeOreDeepslate implements ISubtype {
     vanadinite(SubtypeOre.vanadinite.harvestLevel, SubtypeOre.vanadinite.veinsPerChunk, SubtypeOre.vanadinite.veinSize, SubtypeOre.vanadinite.minY,
 	    SubtypeOre.vanadinite.maxY, SubtypeOre.vanadinite.hardness, SubtypeOre.vanadinite.resistance),
     sulfur(SubtypeOre.sulfur.harvestLevel, SubtypeOre.sulfur.veinsPerChunk, SubtypeOre.sulfur.veinSize, SubtypeOre.sulfur.minY,
-	    SubtypeOre.sulfur.maxY, SubtypeOre.sulfur.hardness, SubtypeOre.sulfur.resistance),
+	    SubtypeOre.sulfur.maxY, SubtypeOre.sulfur.hardness, SubtypeOre.sulfur.resistance, SubtypeOre.sulfur.minXP, SubtypeOre.sulfur.maxXP),
     niter(SubtypeOre.niter.harvestLevel, SubtypeOre.niter.veinsPerChunk, SubtypeOre.niter.veinSize, SubtypeOre.niter.minY, SubtypeOre.niter.maxY,
-	    SubtypeOre.niter.hardness, SubtypeOre.niter.resistance),
+	    SubtypeOre.niter.hardness, SubtypeOre.niter.resistance, SubtypeOre.niter.minXP, SubtypeOre.niter.maxXP),
     aluminum(SubtypeOre.aluminum.harvestLevel, SubtypeOre.aluminum.veinsPerChunk, SubtypeOre.aluminum.veinSize, SubtypeOre.aluminum.minY,
 	    SubtypeOre.aluminum.maxY, SubtypeOre.aluminum.hardness, SubtypeOre.aluminum.resistance),
     chromite(SubtypeOre.chromite.harvestLevel, SubtypeOre.chromite.veinsPerChunk, SubtypeOre.chromite.veinSize, SubtypeOre.chromite.minY,
@@ -28,7 +28,7 @@ public enum SubtypeOreDeepslate implements ISubtype {
     rutile(SubtypeOre.rutile.harvestLevel, SubtypeOre.rutile.veinsPerChunk, SubtypeOre.rutile.veinSize, SubtypeOre.rutile.minY,
 	    SubtypeOre.rutile.maxY, SubtypeOre.rutile.hardness, SubtypeOre.rutile.resistance),
     halite(SubtypeOre.halite.harvestLevel, SubtypeOre.halite.veinsPerChunk, SubtypeOre.halite.veinSize, SubtypeOre.halite.minY,
-	    SubtypeOre.halite.maxY, SubtypeOre.halite.hardness, SubtypeOre.halite.resistance),
+	    SubtypeOre.halite.maxY, SubtypeOre.halite.hardness, SubtypeOre.halite.resistance, SubtypeOre.halite.minXP, SubtypeOre.halite.maxXP),
     lepidolite(SubtypeOre.lepidolite.harvestLevel, SubtypeOre.lepidolite.veinsPerChunk, SubtypeOre.lepidolite.veinSize, SubtypeOre.lepidolite.minY,
 	    SubtypeOre.lepidolite.maxY, SubtypeOre.lepidolite.hardness, SubtypeOre.lepidolite.resistance),
     molybdenum(SubtypeOre.molybdenum.harvestLevel, SubtypeOre.molybdenum.veinsPerChunk, SubtypeOre.molybdenum.veinSize, SubtypeOre.molybdenum.minY,
@@ -36,7 +36,7 @@ public enum SubtypeOreDeepslate implements ISubtype {
     fluorite(SubtypeOre.fluorite.harvestLevel, SubtypeOre.fluorite.veinsPerChunk, SubtypeOre.fluorite.veinSize, SubtypeOre.fluorite.minY,
 	    SubtypeOre.fluorite.maxY, SubtypeOre.fluorite.hardness, SubtypeOre.fluorite.resistance),
     sylvite(SubtypeOre.sylvite.harvestLevel, SubtypeOre.sylvite.veinsPerChunk, SubtypeOre.sylvite.veinSize, SubtypeOre.sylvite.minY,
-	    SubtypeOre.sylvite.maxY, SubtypeOre.sylvite.hardness, SubtypeOre.sylvite.resistance);
+	    SubtypeOre.sylvite.maxY, SubtypeOre.sylvite.hardness, SubtypeOre.sylvite.resistance, SubtypeOre.sylvite.minXP, SubtypeOre.sylvite.maxXP);
 
     public final int harvestLevel;
     public final int veinsPerChunk;
@@ -45,8 +45,13 @@ public enum SubtypeOreDeepslate implements ISubtype {
     public final int maxY;
     public final float hardness;
     public final float resistance;
+    public final int minXP;
+    public final int maxXP;
 
     SubtypeOreDeepslate(int harvestLevel, int veinsPerChunk, int veinSize, int minY, int maxY, float hardness, float resistance) {
+    	this(harvestLevel, veinsPerChunk, veinSize, minY, maxY, hardness, resistance, 0, 0);
+    }
+    SubtypeOreDeepslate(int harvestLevel, int veinsPerChunk, int veinSize, int minY, int maxY, float hardness, float resistance, int minXP, int maxXP) {
 	this.harvestLevel = harvestLevel;
 	this.veinsPerChunk = veinsPerChunk;
 	this.veinSize = veinSize;
@@ -54,6 +59,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	this.maxY = maxY;
 	this.hardness = hardness;
 	this.resistance = resistance;
+	this.minXP = minXP;
+	this.maxXP = maxXP;
     }
 
     @Override

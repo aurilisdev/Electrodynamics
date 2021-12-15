@@ -3,12 +3,12 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0":{
-	        "tag":"forge:ores/saltpeter",
+	        "tag":"forge:ores/potassiumchloride",
 	        "count":1
 	    }
 	},
     "output":{
-        "item":"electrodynamics:dustniter",
-        "count":2
+        "item":"electrodynamics:crystalpotassiumchloride",
+        "count":3
     }
 }
