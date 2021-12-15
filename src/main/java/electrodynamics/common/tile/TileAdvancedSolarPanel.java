@@ -17,6 +17,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
@@ -35,7 +36,7 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
     public TargetValue currentRotation = new TargetValue(0);
     protected CachedTileOutput output;
     private boolean generating = false;
-    private double multiplier;
+    private double multiplier = 1;
 
     @Override
     public double getMultiplier() {
@@ -49,12 +50,24 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 
     public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
 	super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
-	addComponent(new ComponentTickable().tickServer(this::tickServer));
+	addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
+	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-	addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values())
+	addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo()
 		.valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
 	addComponent(new ComponentContainerProvider("container.advancedsolarpanel")
 		.createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+    }
+
+    protected void tickCommon(ComponentTickable tickable) {
+	setMultiplier(1);
+	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
+	    if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
+		for (int i = 0; i < stack.getCount(); i++) {
+		    upgrade.subtype.applyUpgrade.accept(this, null, null);
+		}
+	    }
+	}
     }
 
     protected void tickServer(ComponentTickable tickable) {
@@ -65,24 +78,24 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 	    output.update();
 	    generating = level.canSeeSky(worldPosition.offset(0, 1, 0));
 	}
-	for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-	    if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
-		for (int i = 0; i < stack.getCount(); i++) {
-		    upgrade.subtype.applyUpgrade.accept(this, null, null);
-		}
-	    }
+	if (tickable.getTicks() % 50 == 0) {
+	    this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 	if (level.isDay() && generating && output.valid()) {
-	    float mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
-	    mod *= 1.0f - level.getRainLevel(1f) * 5.0f / 16.0f;
-	    mod *= (1.0f - level.getThunderLevel(1f) * 5.0F / 16.0f) * 0.8f + 0.2f;
-	    Biome b = level.getBiomeManager().getBiome(getBlockPos());
-	    TransferPack pack = TransferPack.ampsVoltage(
-		    multiplier * Constants.ADVANCEDSOLARPANEL_AMPERAGE * (b.getBaseTemperature() / 2.0) * mod
-			    * (level.isRaining() || level.isThundering() ? 0.7f : 1),
-		    this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
-	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP, pack, false);
+	    ElectricityUtilities.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
 	}
+    }
+
+    @Override
+    public TransferPack getProduced() {
+	float mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
+	mod *= 1.0f - level.getRainLevel(1f) * 5.0f / 16.0f;
+	mod *= (1.0f - level.getThunderLevel(1f) * 5.0F / 16.0f) * 0.8f + 0.2f;
+	Biome b = level.getBiomeManager().getBiome(getBlockPos());
+	return TransferPack.ampsVoltage(
+		getMultiplier() * Constants.ADVANCEDSOLARPANEL_AMPERAGE * (b.getBaseTemperature() / 2.0) * mod
+			* (level.isRaining() || level.isThundering() ? 0.7f : 1),
+		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
     }
 
     @Override

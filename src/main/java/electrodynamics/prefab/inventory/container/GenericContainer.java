@@ -88,11 +88,15 @@ public abstract class GenericContainer<T extends BlockEntity> extends AbstractCo
 
     @Nullable
     public T getHostFromIntArray() {
-	BlockPos block = new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2));
 	try {
-	    return (T) world.getBlockEntity(block);
+	    return (T) world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
 	} catch (Exception e) {
 	    return null;
 	}
+    }
+
+    @Nullable
+    public BlockEntity getUnsafeHost() {
+	return world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
     }
 }
