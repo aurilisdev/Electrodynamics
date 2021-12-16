@@ -33,8 +33,8 @@ public class TileOxidationFurnace extends GenericTile {
 	addComponent(new ComponentPacketHandler());
 	addComponent(new ComponentTickable().tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
-	addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
-		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).upgrades(3).processorInputs(2).valid(machineValidator()));
+	addComponent(new ComponentInventory(this).size(7).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
+		.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).biproducts(1).upgrades(3).processorInputs(2).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider("container.oxidationfurnace")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
+import electrodynamics.common.block.BlockConcrete;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockMachine;
@@ -15,6 +16,7 @@ import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.BlockResource;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
+import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -26,6 +28,8 @@ import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
+import electrodynamics.common.fluid.types.FluidConcrete;
+import electrodynamics.common.fluid.types.FluidClay;
 import electrodynamics.common.fluid.types.FluidEthanol;
 import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
 //import electrodynamics.common.fluid.types.FluidMineral;
@@ -52,6 +56,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.inventory.container.ContainerSolarPanel;
 import electrodynamics.common.inventory.container.ContainerTankGeneric;
 import electrodynamics.common.item.ItemCeramic;
+import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
@@ -132,7 +137,9 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -156,6 +163,8 @@ public class DeferredRegisters {
     public static FluidSulfuricAcid fluidSulfuricAcid;
     public static FluidHydrogenFluoride fluidHydrogenFluoride;
     public static FluidPolyethylene fluidPolyethylene;
+    public static FluidClay fluidClay;
+    public static FluidConcrete fluidCement;
 
     static {
 	for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -179,10 +188,17 @@ public class DeferredRegisters {
 	for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
 	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
 	}
+	for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
+		SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
+	}
+	
+	
 	FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
 	FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
 	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
+	FLUIDS.register("fluidclay", supplier(fluidClay = new FluidClay()));
+	FLUIDS.register("fluidconcrete", supplier(fluidCement = new FluidConcrete()));
 	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
 	    FluidSulfate fluid = new FluidSulfate(mineral);
 	    FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
@@ -208,6 +224,7 @@ public class DeferredRegisters {
 	registerSubtypeBlockItem(SubtypeMachine.values());
 	registerSubtypeBlockItem(SubtypeGlass.values());
 	registerSubtypeBlockItem(SubtypeResourceBlock.values());
+	registerSubtypeBlockItem(SubtypeConcrete.values());
 	for (SubtypeWire subtype : SubtypeWire.values()) {
 	    ITEMS.register(subtype.tag(), supplier(
 		    new BlockItemWire((BlockWire) SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().tab(References.CORETAB)), subtype));
@@ -237,7 +254,8 @@ public class DeferredRegisters {
 	ITEMS.register("compositeplating", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 	ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 	ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-
+	ITEMS.register("concretemix", supplier(new ItemDescriptable(new Item.Properties().stacksTo(64).tab(References.CORETAB), "tooltip.info.concretejoke")));
+	
 	//machines
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), "|translate|tooltip.machine.voltage.120");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble), "|translate|tooltip.machine.voltage.240");

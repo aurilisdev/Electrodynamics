@@ -3,6 +3,8 @@ package electrodynamics.common.tags;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.common.fluid.types.FluidClay;
+import electrodynamics.common.fluid.types.FluidConcrete;
 import electrodynamics.common.fluid.types.FluidEthanol;
 import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.types.FluidSulfate;
@@ -34,7 +36,6 @@ public class ElectrodynamicsTags {
 	public static final Tags.IOptionalNamedTag<Fluid> SULFURIC_ACID = forgeTag(FluidSulfuricAcid.FORGE_TAG);
 	public static final Tags.IOptionalNamedTag<Fluid> ETHANOL = forgeTag(FluidEthanol.FORGE_TAG);
 	public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN_FLUORIDE = forgeTag(FluidHydrogenFluoride.FORGE_TAG);
-	//public static final Tags.IOptionalNamedTag<Fluid> MOLYBDENUM = forgeTag(FluidMolybdenum.FORGE_TAG);
 	public static final Tags.IOptionalNamedTag<Fluid> POLYETHLYENE = forgeTag(FluidPolyethylene.FORGE_TAG);
 	public static final Tags.IOptionalNamedTag<Fluid> COPPER_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeMineralFluid.copper.name());
 	public static final Tags.IOptionalNamedTag<Fluid> TIN_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeMineralFluid.tin.name());
@@ -45,12 +46,13 @@ public class ElectrodynamicsTags {
 	public static final Tags.IOptionalNamedTag<Fluid> GOLD_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeMineralFluid.gold.name());
 	public static final Tags.IOptionalNamedTag<Fluid> LITHIUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeMineralFluid.lithium.name());
 	public static final Tags.IOptionalNamedTag<Fluid> MOLYBDENUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeMineralFluid.molybdenum.name());
-
+	public static final Tags.IOptionalNamedTag<Fluid> CLAY = forgeTag(FluidClay.FORGE_TAG);
+	public static final Tags.IOptionalNamedTag<Fluid> CONCRETE = forgeTag(FluidConcrete.FORGE_TAG);
+	
 	private static void init() {
 	    FLUID_TAGS.add(SULFURIC_ACID);
 	    FLUID_TAGS.add(ETHANOL);
 	    FLUID_TAGS.add(HYDROGEN_FLUORIDE);
-	    //FLUID_TAGS.add(MOLYBDENUM);
 	    FLUID_TAGS.add(POLYETHLYENE);
 	    FLUID_TAGS.add(COPPER_SULF);
 	    FLUID_TAGS.add(TIN_SULF);
@@ -61,11 +63,12 @@ public class ElectrodynamicsTags {
 	    FLUID_TAGS.add(GOLD_SULF);
 	    FLUID_TAGS.add(LITHIUM_SULF);
 	    FLUID_TAGS.add(MOLYBDENUM_SULF);
+	    FLUID_TAGS.add(CLAY);
+	    FLUID_TAGS.add(CONCRETE);
 
 	    ItemCanister.addTag(SULFURIC_ACID);
 	    ItemCanister.addTag(ETHANOL);
 	    ItemCanister.addTag(HYDROGEN_FLUORIDE);
-	    //ItemCanister.addTag(MOLYBDENUM);
 	    ItemCanister.addTag(POLYETHLYENE);
 	    ItemCanister.addTag(COPPER_SULF);
 	    ItemCanister.addTag(TIN_SULF);
@@ -76,6 +79,8 @@ public class ElectrodynamicsTags {
 	    ItemCanister.addTag(GOLD_SULF);
 	    ItemCanister.addTag(LITHIUM_SULF);
 	    ItemCanister.addTag(MOLYBDENUM_SULF);
+	    ItemCanister.addTag(CLAY);
+	    ItemCanister.addTag(CONCRETE);
 	}
 
 	private static Tags.IOptionalNamedTag<Fluid> forgeTag(String name) {
