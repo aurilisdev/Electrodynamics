@@ -47,6 +47,7 @@
 		"electrodynamics:thermoelectricgenerator",
 		"electrodynamics:upgradetransformer",
 		"electrodynamics:windmill",
+		"electrodynamics:cobblestonegenerator",
 		
 		"electrodynamics:orefluorite",
 		"electrodynamics:oresylvite",

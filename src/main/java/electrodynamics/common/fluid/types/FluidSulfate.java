@@ -3,7 +3,7 @@ package electrodynamics.common.fluid.types;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
-import electrodynamics.common.item.subtype.SubtypeMineralFluid;
+import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 
@@ -11,9 +11,9 @@ public class FluidSulfate extends FluidNonPlaceable {
 
     public static final String FORGE_TAG = "_sulfate";
 
-    public SubtypeMineralFluid mineral;
+    public SubtypeSulfateFluid mineral;
 
-    public FluidSulfate(SubtypeMineralFluid mineral) {
+    public FluidSulfate(SubtypeSulfateFluid mineral) {
 	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
 	this.mineral = mineral;
     }

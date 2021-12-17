@@ -32,16 +32,16 @@ import electrodynamics.common.fluid.types.FluidConcrete;
 import electrodynamics.common.fluid.types.FluidClay;
 import electrodynamics.common.fluid.types.FluidEthanol;
 import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
-//import electrodynamics.common.fluid.types.FluidMineral;
-//import electrodynamics.common.fluid.types.FluidMolybdenum;
 import electrodynamics.common.fluid.types.FluidPolyethylene;
 import electrodynamics.common.fluid.types.FluidSulfate;
 import electrodynamics.common.fluid.types.FluidSulfuricAcid;
+import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.inventory.container.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.ContainerChargerGeneric;
 import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
+import electrodynamics.common.inventory.container.ContainerCobblestoneGenerator;
 import electrodynamics.common.inventory.container.ContainerCombustionChamber;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
@@ -78,7 +78,6 @@ import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeMineralFluid;
 import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
@@ -92,6 +91,7 @@ import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
@@ -137,9 +137,7 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -199,7 +197,7 @@ public class DeferredRegisters {
 	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
 	FLUIDS.register("fluidclay", supplier(fluidClay = new FluidClay()));
 	FLUIDS.register("fluidconcrete", supplier(fluidCement = new FluidConcrete()));
-	for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
+	for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
 	    FluidSulfate fluid = new FluidSulfate(mineral);
 	    FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
 	}
@@ -281,6 +279,7 @@ public class DeferredRegisters {
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chargerhv),"|translate|tooltip.machine.voltage.480");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),"|translate|tooltip.machine.voltage.120");
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump),"|translate|tooltip.machine.voltage.120");
+	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator),"|translate|tooltip.machine.voltage.120");
 	
 	//generators
 	BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel),"|translate|tooltip.machine.voltage.120");
@@ -476,6 +475,8 @@ public class DeferredRegisters {
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new BlockEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
+    public static final RegistryObject<BlockEntityType<TileCobblestoneGenerator>> TILE_COBBLESTONEGENERATOR = TILES.register(SubtypeMachine.cobblestonegenerator.tag(),
+    	() -> new BlockEntityType<>(TileCobblestoneGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator)), null));
     public static final RegistryObject<BlockEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
 	    () -> new BlockEntityType<>(TileElectricPump::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump)), null));
     public static final RegistryObject<BlockEntityType<TileThermoelectricGenerator>> TILE_THERMOELECTRICGENERATOR = TILES
@@ -548,6 +549,8 @@ public class DeferredRegisters {
 	    () -> new MenuType<>(ContainerCombustionChamber::new));
     public static final RegistryObject<MenuType<ContainerSolarPanel>> CONTAINER_SOLARPANEL = CONTAINERS.register("solarpanel",
 	    () -> new MenuType<>(ContainerSolarPanel::new));
+    public static final RegistryObject<MenuType<ContainerCobblestoneGenerator>> CONTAINER_COBBLESTONEGENERATOR = CONTAINERS.register("cobblestonegenerator",
+    	() -> new MenuType<>(ContainerCobblestoneGenerator::new));
 
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder
 	    .<EntityMetalRod>of(EntityMetalRod::new, MobCategory.MISC).sized(0.25f, 0.25f).fireImmune().build(References.ID + ".metalrod"));

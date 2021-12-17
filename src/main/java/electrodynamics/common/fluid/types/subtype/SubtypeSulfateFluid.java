@@ -1,8 +1,8 @@
-package electrodynamics.common.item.subtype;
+package electrodynamics.common.fluid.types.subtype;
 
 import electrodynamics.api.ISubtype;
 
-public enum SubtypeMineralFluid implements ISubtype {
+public enum SubtypeSulfateFluid implements ISubtype {
     copper,
     tin,
     silver,

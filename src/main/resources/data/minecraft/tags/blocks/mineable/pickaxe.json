@@ -11,6 +11,7 @@
 		"electrodynamics:circuitbreaker",
 		"electrodynamics:coalgenerator",
 		"electrodynamics:coalgeneratorrunning",
+		"electrodynamics:cobblestonegenerator",
 		"electrodynamics:combustionchamber",
 		"electrodynamics:concreteregular",
 		"electrodynamics:concretetile",

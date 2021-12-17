@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sWs",
+		"LcW",
+		"sLs"
+	],
+	"key": {
+		"s": {
+			"tag": "forge:plates/steel"
+		},
+		"L": {
+			"item": "minecraft:water_bucket"
+		},
+		"W": {
+			"item": "minecraft:lava_bucket"
+		},
+		"c": {
+			"tag": "forge:circuits/basic"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:cobblestonegenerator",
+		"count": 1
+	}
+}
