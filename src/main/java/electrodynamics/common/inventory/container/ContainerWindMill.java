@@ -10,13 +10,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 
-public class ContainerWindMill extends GenericContainer<TileWindmill> {
+public class ContainerWindmill extends GenericContainer<TileWindmill> {
 
-	public ContainerWindMill(int id, Inventory playerinv) {
+	public ContainerWindmill(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
 	}
 
-	public ContainerWindMill(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	public ContainerWindmill(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(electrodynamics.DeferredRegisters.CONTAINER_WINDMILL.get(), id, playerinv, inventory, inventorydata);
 	}
 

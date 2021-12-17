@@ -41,7 +41,7 @@ import electrodynamics.client.screen.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.ScreenO2OProcessorTriple;
 import electrodynamics.client.screen.ScreenSolarPanel;
 import electrodynamics.client.screen.ScreenTankGeneric;
-import electrodynamics.client.screen.ScreenWindMill;
+import electrodynamics.client.screen.ScreenWindmill;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
@@ -184,7 +184,7 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_TANK.get(), ScreenTankGeneric::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_COMBUSTION_CHAMBER.get(), ScreenCombustionChamber::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_SOLARPANEL.get(), ScreenSolarPanel::new);
-		MenuScreens.register(DeferredRegisters.CONTAINER_WINDMILL.get(), ScreenWindMill::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_WINDMILL.get(), ScreenWindmill::new);
 
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());

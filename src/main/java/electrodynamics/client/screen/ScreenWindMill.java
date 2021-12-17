@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.common.inventory.container.ContainerWindMill;
+import electrodynamics.common.inventory.container.ContainerWindmill;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
@@ -23,9 +23,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenWindMill extends GenericScreen<ContainerWindMill> {
+public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 
-	public ScreenWindMill(ContainerWindMill container, Inventory playerInventory, Component title) {
+	public ScreenWindmill(ContainerWindmill container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
 		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}

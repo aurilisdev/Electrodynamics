@@ -50,7 +50,7 @@ import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
 import electrodynamics.common.inventory.container.ContainerSolarPanel;
 import electrodynamics.common.inventory.container.ContainerTankGeneric;
-import electrodynamics.common.inventory.container.ContainerWindMill;
+import electrodynamics.common.inventory.container.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
@@ -503,8 +503,8 @@ public class DeferredRegisters {
 	    () -> new MenuType<>(ContainerCombustionChamber::new));
     public static final RegistryObject<MenuType<ContainerSolarPanel>> CONTAINER_SOLARPANEL = CONTAINERS.register("solarpanel",
     	    () -> new MenuType<>(ContainerSolarPanel::new));
-    public static final RegistryObject<MenuType<ContainerWindMill>> CONTAINER_WINDMILL = CONTAINERS.register("windmill",
-    	    () -> new MenuType<>(ContainerWindMill::new));
+    public static final RegistryObject<MenuType<ContainerWindmill>> CONTAINER_WINDMILL = CONTAINERS.register("windmill",
+    	    () -> new MenuType<>(ContainerWindmill::new));
 
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder
 	    .<EntityMetalRod>of(EntityMetalRod::new, MobCategory.MISC).sized(0.25f, 0.25f).fireImmune().build(References.ID + ".metalrod"));

@@ -7,7 +7,7 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.inventory.container.ContainerSolarPanel;
+import electrodynamics.common.inventory.container.ContainerWindmill;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
@@ -50,7 +50,7 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo()
 				.valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
 		addComponent(new ComponentContainerProvider("container.windmill")
-				.createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+				.createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
 
@@ -127,6 +127,6 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(generating, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(generating * multiplier, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
 }
