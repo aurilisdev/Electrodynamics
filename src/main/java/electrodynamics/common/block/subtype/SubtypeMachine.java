@@ -15,13 +15,17 @@ import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.TileCreativeFluidSource;
+import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
+import electrodynamics.common.tile.TileFluidVoid;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileItemVoid;
 import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.common.tile.TileMineralCrusher;
@@ -100,8 +104,11 @@ public enum SubtypeMachine implements ISubtype {
     tanksteel(true, TileTankSteel.class),
     tankreinforced(true, TileTankReinforced.class),
     tankhsla(true, TileTankHSLA.class),
-    cobblestonegenerator(true, TileCobblestoneGenerator.class);
-    ;
+    cobblestonegenerator(true, TileCobblestoneGenerator.class),
+    creativepowersource(true, TileCreativePowerSource.class),
+	creativefluidsource(true, TileCreativeFluidSource.class),
+	itemvoid(true, TileItemVoid.class),
+	fluidvoid(true, TileFluidVoid.class);
 
     public final Class<? extends BlockEntity> tileclass;
     public final boolean showInItemGroup;

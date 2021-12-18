@@ -25,7 +25,8 @@ public class NetworkHandler {
 		PacketPlayerInformation::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 	CHANNEL.registerMessage(disc++, PacketServerUpdateTile.class, PacketServerUpdateTile::encode, PacketServerUpdateTile::decode,
 		PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-
+	CHANNEL.registerMessage(disc++, PacketPowerSetting.class, PacketPowerSetting::encode, PacketPowerSetting::decode,
+		PacketPowerSetting::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 
     public static String getPlayerInformation(String username) {

@@ -43,11 +43,14 @@ import electrodynamics.common.inventory.container.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.ContainerCobblestoneGenerator;
 import electrodynamics.common.inventory.container.ContainerCombustionChamber;
+import electrodynamics.common.inventory.container.ContainerCreativeFluidSource;
+import electrodynamics.common.inventory.container.ContainerCreativePowerSource;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple;
 import electrodynamics.common.inventory.container.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.ContainerItemVoid;
 import electrodynamics.common.inventory.container.ContainerLithiumBatteryBox;
 import electrodynamics.common.inventory.container.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.ContainerO2OProcessor;
@@ -93,13 +96,17 @@ import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.TileCreativeFluidSource;
+import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
+import electrodynamics.common.tile.TileFluidVoid;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
+import electrodynamics.common.tile.TileItemVoid;
 import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.common.tile.TileMineralCrusher;
@@ -475,6 +482,8 @@ public class DeferredRegisters {
 	    SubtypeMachine.oxidationfurnace.tag(),
 	    () -> new BlockEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace),
 		    SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnacerunning)), null));
+    public static final RegistryObject<BlockEntityType<TileCreativePowerSource>> TILE_CREATIVEPOWERSOURCE = TILES.register(SubtypeMachine.creativepowersource.tag(),
+    	() -> new BlockEntityType<>(TileCreativePowerSource::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativepowersource)), null));
     public static final RegistryObject<BlockEntityType<TileCobblestoneGenerator>> TILE_COBBLESTONEGENERATOR = TILES.register(SubtypeMachine.cobblestonegenerator.tag(),
     	() -> new BlockEntityType<>(TileCobblestoneGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator)), null));
     public static final RegistryObject<BlockEntityType<TileElectricPump>> TILE_ELECTRICPUMP = TILES.register(SubtypeMachine.electricpump.tag(),
@@ -513,6 +522,15 @@ public class DeferredRegisters {
 	    () -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
     public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile",
 	    () -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
+    public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES.register(SubtypeMachine.creativefluidsource.tag(),
+    	() -> new BlockEntityType<>(TileCreativeFluidSource::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
+    public static final RegistryObject<BlockEntityType<TileItemVoid>> TILE_ITEMVOID = TILES.register(SubtypeMachine.itemvoid.tag(),
+    	() -> new BlockEntityType<>(TileItemVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.itemvoid)), null));
+    public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(),
+    	() -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
+   
+    //Containers
+    
     public static final RegistryObject<MenuType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS
 	    .register(SubtypeMachine.coalgenerator.tag(), () -> new MenuType<>(ContainerCoalGenerator::new));
     public static final RegistryObject<MenuType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = CONTAINERS
@@ -551,7 +569,16 @@ public class DeferredRegisters {
 	    () -> new MenuType<>(ContainerSolarPanel::new));
     public static final RegistryObject<MenuType<ContainerCobblestoneGenerator>> CONTAINER_COBBLESTONEGENERATOR = CONTAINERS.register("cobblestonegenerator",
     	() -> new MenuType<>(ContainerCobblestoneGenerator::new));
+    public static final RegistryObject<MenuType<ContainerCreativePowerSource>> CONTAINER_CREATIVEPOWERSOURCE = CONTAINERS.register("creativepowersource",
+    	() -> new MenuType<>(ContainerCreativePowerSource::new));
+    public static final RegistryObject<MenuType<ContainerCreativeFluidSource>> CONTAINER_CREATIVEFLUIDSOURCE = CONTAINERS.register("creativefluidsource",
+    	() -> new MenuType<>(ContainerCreativeFluidSource::new));
+    public static final RegistryObject<MenuType<ContainerItemVoid>> CONTAINER_ITEMVOID = CONTAINERS.register("itemvoid",
+    	() -> new MenuType<>(ContainerItemVoid::new));
+    public static final RegistryObject<MenuType<ContainerFluidVoid>> 
 
+    //Entities
+    
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder
 	    .<EntityMetalRod>of(EntityMetalRod::new, MobCategory.MISC).sized(0.25f, 0.25f).fireImmune().build(References.ID + ".metalrod"));
     public static final RegistryObject<EntityType<EntityEnergyBlast>> ENTITY_ENERGYBLAST = ENTITIES.register("energyblast", () -> EntityType.Builder
