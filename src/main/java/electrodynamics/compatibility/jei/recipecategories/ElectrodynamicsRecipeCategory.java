@@ -103,27 +103,23 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public IDrawable getIcon() {
 		return ICON;
 	}
+	
+	public String getRecipeGroup() {
+		return RECIPE_GROUP;
+    }
 
     
     public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
-	Font fontRenderer = Minecraft.getInstance().font;
-	BaseComponent text;
-	for (GenericLabelWrapper wrap : LABELS) {
-		text = wrap.getComponent(this, recipe);
-	    fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
-	}
+		Font fontRenderer = Minecraft.getInstance().font;
+		BaseComponent text;
+		for (GenericLabelWrapper wrap : LABELS) {
+			text = wrap.getComponent(this, recipe);
+		    fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+		}
+    }
 
 	public int getAnimationTime() {
 		return ANIMATION_LENGTH;
-	}
-
-	public void addDescriptions(PoseStack stack) {
-		Font fontRenderer = Minecraft.getInstance().font;
-		TranslatableComponent text;
-		for (GenericLabelWrapper wrap : LABELS) {
-			text = new TranslatableComponent("gui.jei.category." + getRecipeGroup() + ".info." + wrap.getName(), getAnimationTime() / 20);
-			fontRenderer.draw(stack, text, wrap.getEndXPos() - fontRenderer.width(text), wrap.getYPos(), wrap.getColor());
-		}
 	}
 
     public void setLabels(GenericLabelWrapper... labels) {
@@ -139,6 +135,21 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
     	}
     	
     }
+    
+	public void setInputSlots(IGuiHelper guiHelper, GenericItemSlotWrapper... inputSlots) {
+		inSlots = inputSlots;
+		INPUT_SLOTS = CacheBuilder.newBuilder().maximumSize(inputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+			@Override
+			public List<IDrawableStatic> load(Integer time) {
+				List<IDrawableStatic> slots = new ArrayList<>();
+				for (ScreenObjectWrapper slot : inputSlots) {
+					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(),
+							slot.getLength(), slot.getWidth()).build());
+				}
+				return slots;
+			}
+		});
+	}
 
 	public void setOutputSlots(IGuiHelper guiHelper, GenericItemSlotWrapper... outputSlots) {
 		outSlots = outputSlots;
@@ -223,10 +234,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 				return arrows;
 			}
 		});
-	}
-
-	public void setLabels(GenericLabelWrapper... labels) {
-		LABELS = labels;
 	}
 
 	public void setItemInputs(IGuiItemStackGroup guiItemStacks) {

@@ -175,73 +175,40 @@ public class DeferredRegisters {
     public static FluidConcrete fluidCement;
 
 	static {
-		for (SubtypeOre subtype : SubtypeOre.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockOre(subtype), subtype)));
-		}
+
 		for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockDeepslateOre(subtype), subtype)));
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockDeepslateOre(subtype), subtype)));
 		}
 		for (SubtypeMachine subtype : SubtypeMachine.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
 		}
 		for (SubtypeWire subtype : SubtypeWire.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
 		}
 		for (SubtypePipe subtype : SubtypePipe.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
 		}
 		for (SubtypeGlass subtype : SubtypeGlass.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
 		}
 		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
+		    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
 		}
+		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
+		}
+		
+		
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
 		FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
 		FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
-		for (SubtypeMineralFluid mineral : SubtypeMineralFluid.values()) {
-			FluidMineral fluid = new FluidMineral(mineral);
-			SUBTYPEMINERALFLUID_MAPPINGS.put(mineral, fluid);
-			MINERALFLUIDSUBTYPE_MAPPINGS.put(fluid, mineral);
-			FLUIDS.register("fluidmineral" + mineral.name(), supplier(fluid));
+		FLUIDS.register("fluidclay", supplier(fluidClay = new FluidClay()));
+		FLUIDS.register("fluidconcrete", supplier(fluidCement = new FluidConcrete()));
+		for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
+		    FluidSulfate fluid = new FluidSulfate(mineral);
+		    FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
 		}
-		FLUIDS.register("fluidmolybdenum", supplier(fluidMolybdenum = new FluidMolybdenum()));
-	}
-
-	for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockDeepslateOre(subtype), subtype)));
-	}
-	for (SubtypeMachine subtype : SubtypeMachine.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
-	}
-	for (SubtypeWire subtype : SubtypeWire.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockWire(subtype), subtype)));
-	}
-	for (SubtypePipe subtype : SubtypePipe.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockPipe(subtype), subtype)));
-	}
-	for (SubtypeGlass subtype : SubtypeGlass.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockCustomGlass(subtype), subtype)));
-	}
-	for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
-	    SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockResource(subtype), subtype)));
-	}
-	for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
-		SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
-	}
-	
-	
-	FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
-	FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
-	FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
-	FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
-	FLUIDS.register("fluidclay", supplier(fluidClay = new FluidClay()));
-	FLUIDS.register("fluidconcrete", supplier(fluidCement = new FluidConcrete()));
-	for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
-	    FluidSulfate fluid = new FluidSulfate(mineral);
-	    FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
-	}
     }
 
 	private static void registerSubtypeItem(ISubtype[] array) {
@@ -258,8 +225,8 @@ public class DeferredRegisters {
 	}
 
     static {
-	registerSubtypeBlockItem(SubtypeOre.values());
-	registerSubtypeBlockItem(SubtypeOreDeepslate.values());
+	//registerSubtypeBlockItem(SubtypeOre.values());
+	//registerSubtypeBlockItem(SubtypeOreDeepslate.values());
 	registerSubtypeBlockItem(SubtypeMachine.values());
 	registerSubtypeBlockItem(SubtypeGlass.values());
 	registerSubtypeBlockItem(SubtypeResourceBlock.values());
@@ -554,13 +521,14 @@ public class DeferredRegisters {
 	    () -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
     public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile",
 	    () -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
+    /*
     public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES.register(SubtypeMachine.creativefluidsource.tag(),
     	() -> new BlockEntityType<>(TileCreativeFluidSource::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
     public static final RegistryObject<BlockEntityType<TileItemVoid>> TILE_ITEMVOID = TILES.register(SubtypeMachine.itemvoid.tag(),
     	() -> new BlockEntityType<>(TileItemVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.itemvoid)), null));
     public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(),
     	() -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
-   
+   */
     //Containers
     
     public static final RegistryObject<MenuType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS
@@ -607,12 +575,13 @@ public class DeferredRegisters {
     	() -> new MenuType<>(ContainerCobblestoneGenerator::new));
     public static final RegistryObject<MenuType<ContainerCreativePowerSource>> CONTAINER_CREATIVEPOWERSOURCE = CONTAINERS.register("creativepowersource",
     	() -> new MenuType<>(ContainerCreativePowerSource::new));
+    /*
     public static final RegistryObject<MenuType<ContainerCreativeFluidSource>> CONTAINER_CREATIVEFLUIDSOURCE = CONTAINERS.register("creativefluidsource",
     	() -> new MenuType<>(ContainerCreativeFluidSource::new));
     public static final RegistryObject<MenuType<ContainerItemVoid>> CONTAINER_ITEMVOID = CONTAINERS.register("itemvoid",
     	() -> new MenuType<>(ContainerItemVoid::new));
     public static final RegistryObject<MenuType<ContainerFluidVoid>> 
-
+	*/
     //Entities
     
     public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder

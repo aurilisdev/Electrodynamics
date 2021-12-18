@@ -47,18 +47,29 @@ public class ScreenComponentProgress extends ScreenComponent {
 	public Rectangle getBounds(final int guiWidth, final int guiHeight) {
 		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, isFlame ? WIDTHFLAME : WIDTHARROW, isFlame ? HEIGHTFLAME : HEIGHTARROW);
 	}
-	if (isFlame) {
-	    int scale = (int) (progressInfoHandler.getAsDouble() * HEIGHTFLAME);
-	    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + HEIGHTFLAME - scale, POSXFLAME, POSYFLAME + HEIGHTFLAME - scale,
-		    WIDTHFLAME, scale);
-	} else if (left) {
-		//TODO this should work and idk why it doesn't
-		int progress = (int) (progressInfoHandler.getAsDouble() * WIDTHARROW);
-		int xStart = POSXARROW + WIDTHARROW * 3 - progress;
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, xStart, POSYARROW, progress, HEIGHTARROW);
-	} else if (!left) {
-	    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
-		    (int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
+	
+	@Override
+	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
+		UtilitiesRendering.bindTexture(resource);
+		if (left) {
+			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW * 3, POSYARROW, WIDTHARROW, HEIGHTARROW);
+		} else {
+			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, isFlame ? POSXFLAME : POSXARROW,
+					isFlame ? POSYFLAME + HEIGHTFLAME : POSYARROW, isFlame ? WIDTHFLAME : WIDTHARROW, isFlame ? HEIGHTFLAME : HEIGHTARROW);
+		}
+		if (isFlame) {
+		    int scale = (int) (progressInfoHandler.getAsDouble() * HEIGHTFLAME);
+		    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + HEIGHTFLAME - scale, POSXFLAME, POSYFLAME + HEIGHTFLAME - scale,
+			    WIDTHFLAME, scale);
+		} else if (left) {
+			//TODO this should work and idk why it doesn't
+			int progress = (int) (progressInfoHandler.getAsDouble() * WIDTHARROW);
+			int xStart = POSXARROW + WIDTHARROW * 3 - progress;
+			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, xStart, POSYARROW, progress, HEIGHTARROW);
+		} else if (!left) {
+		    gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
+			    (int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
+		}
 	}
 
 }

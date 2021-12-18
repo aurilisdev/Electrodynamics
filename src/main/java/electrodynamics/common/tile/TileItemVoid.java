@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileItemVoid extends GenericTile {
 
 	public TileItemVoid(BlockPos worldPos, BlockState blockState) {
-		super(DeferredRegisters.TILE_ITEMVOID.get(), worldPos, blockState);
+		super(null, worldPos, blockState);
 	}
 
 }

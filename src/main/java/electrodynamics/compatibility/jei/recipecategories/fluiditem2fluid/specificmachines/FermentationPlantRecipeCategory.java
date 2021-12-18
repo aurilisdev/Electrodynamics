@@ -1,8 +1,9 @@
-package electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid;
+package electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.FluidItem2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
@@ -30,7 +31,7 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(10, 5, 5000);
 	private static DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(108, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(56, BACK_WRAP);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55);
 
 	private static int ANIM_TIME = 50;
 

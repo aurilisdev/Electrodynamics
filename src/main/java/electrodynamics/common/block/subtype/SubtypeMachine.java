@@ -81,8 +81,8 @@ public enum SubtypeMachine implements ISubtype {
 	reinforcedalloyerrunning(false, TileReinforcedAlloyer.class), chargerlv(true, TileChargerLV.class), chargermv(true, TileChargerMV.class),
 	chargerhv(true, TileChargerHV.class), tanksteel(true, TileTankSteel.class), tankreinforced(true, TileTankReinforced.class),
 	tankhsla(true, TileTankHSLA.class), cobblestonegenerator(true, TileCobblestoneGenerator.class),
-    creativepowersource(true, TileCreativePowerSource.class), creativefluidsource(true, TileCreativeFluidSource.class),
-	itemvoid(true, TileItemVoid.class), fluidvoid(true, TileFluidVoid.class);
+    creativepowersource(true, TileCreativePowerSource.class);//, creativefluidsource(true, TileCreativeFluidSource.class),
+	//itemvoid(true, TileItemVoid.class), fluidvoid(true, TileFluidVoid.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;

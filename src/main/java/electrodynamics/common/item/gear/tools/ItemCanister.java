@@ -138,6 +138,8 @@ public class ItemCanister extends Item {
 		    && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
 		whitelisted.add(fluid);
 	    }
+		}
+		return Pair.of(TAG_NAMES, whitelisted);
 	}
 
 	public static void addTag(Tags.IOptionalNamedTag<Fluid> tag) {

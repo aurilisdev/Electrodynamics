@@ -1,35 +1,40 @@
 package electrodynamics.compatibility.jei.utils.label;
 
-public class GenericLabelWrapper {
+import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
+import net.minecraft.network.chat.BaseComponent;
 
-	protected static final String POWER = "power";
+public abstract class GenericLabelWrapper {
 
-	private int COLOR;
-	private int Y_POS;
-	private int END_X_POS;
-	private String NAME;
+    protected static final String POWER = "power";
 
-	public GenericLabelWrapper(int color, int yPos, int endXPos, String name) {
-		COLOR = color;
-		Y_POS = yPos;
-		END_X_POS = endXPos;
-		NAME = name;
-	}
+    private int COLOR;
+    private int Y_POS;
+    private int X_POS;
+    private String NAME;
 
-	public int getColor() {
-		return COLOR;
-	}
+    public GenericLabelWrapper(int color, int yPos, int endXPos, String name) {
+	COLOR = color;
+	Y_POS = yPos;
+	X_POS = endXPos;
+	NAME = name;
+    }
 
-	public int getYPos() {
-		return Y_POS;
-	}
+    public int getColor() {
+	return COLOR;
+    }
 
-	public int getEndXPos() {
-		return END_X_POS;
-	}
+    public int getYPos() {
+	return Y_POS;
+    }
 
-	public String getName() {
-		return NAME;
-	}
+    public int getXPos() {
+	return X_POS;
+    }
 
+    public String getName() {
+	return NAME;
+    }
+
+    public abstract BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe);
 }
