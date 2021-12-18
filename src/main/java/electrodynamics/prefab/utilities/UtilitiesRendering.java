@@ -19,10 +19,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class UtilitiesRendering {
 
-    public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a,
-	    boolean star) {
+	public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a,
+			boolean star) {
 //	stack.pushPose();
-	// TODO: Doesnt render anymore, but doesnt crash either
+		// TODO: Doesnt render anymore, but doesnt crash either
 //	Tesselator tessellator = Tesselator.getInstance();
 //	BufferBuilder bufferBuilder = tessellator.getBuilder();
 //	bufferIn.getBuffer(RenderType.solid());
@@ -55,9 +55,9 @@ public class UtilitiesRendering {
 //		final float f2 = rand.nextFloat() * 20 + 5 + var51 * 10;
 //		final float f3 = rand.nextFloat() * 2 + 1 + var51 * 2 + (star ? 0 : 10);
 //		bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-	// TODO: HERE THE BUFFER BUILDER DOESNT RENDER IN THE CORRECT POSITION. ONLY
-	// DOES
-	// IT IN THE TOP LEFT
+		// TODO: HERE THE BUFFER BUILDER DOESNT RENDER IN THE CORRECT POSITION. ONLY
+		// DOES
+		// IT IN THE TOP LEFT
 //		bufferBuilder.vertex(0, 0, 0).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255)).endVertex();
 //		bufferBuilder.vertex(-0.866 * f3, f2, -0.5 * f3).color((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255))
 //			.endVertex();
@@ -76,54 +76,54 @@ public class UtilitiesRendering {
 //	RenderSystem.setShaderColor(1, 1, 1, 1);
 //	GlStateManager._enableTexture();
 //	stack.popPose();
-    }
-
-    public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer,
-	    int combinedLightIn, int combinedOverlayIn) {
-	Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn,
-		combinedOverlayIn, model);
-    }
-
-    public static void prepareRotationalTileModel(BlockEntity tile, PoseStack stack) {
-	BlockState state = tile.getBlockState();
-	stack.translate(0.5, 7.0 / 16.0, 0.5);
-	if (state.hasProperty(GenericEntityBlock.FACING)) {
-	    Direction facing = state.getValue(GenericEntityBlock.FACING);
-	    if (facing == Direction.NORTH) {
-		stack.mulPose(new Quaternion(0, 90, 0, true));
-	    } else if (facing == Direction.SOUTH) {
-		stack.mulPose(new Quaternion(0, 270, 0, true));
-	    } else if (facing == Direction.WEST) {
-		stack.mulPose(new Quaternion(0, 180, 0, true));
-	    }
 	}
-    }
 
-    public static void bindTexture(ResourceLocation resource) {
-	RenderSystem.setShaderTexture(0, resource);
-    }
+	public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer,
+			int combinedLightIn, int combinedOverlayIn) {
+		Minecraft.getInstance().getItemRenderer().render(new ItemStack(Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn,
+				combinedOverlayIn, model);
+	}
 
-    public static float getRed(int color) {
-	return (color >> 16 & 0xFF) / 255.0F;
-    }
+	public static void prepareRotationalTileModel(BlockEntity tile, PoseStack stack) {
+		BlockState state = tile.getBlockState();
+		stack.translate(0.5, 7.0 / 16.0, 0.5);
+		if (state.hasProperty(GenericEntityBlock.FACING)) {
+			Direction facing = state.getValue(GenericEntityBlock.FACING);
+			if (facing == Direction.NORTH) {
+				stack.mulPose(new Quaternion(0, 90, 0, true));
+			} else if (facing == Direction.SOUTH) {
+				stack.mulPose(new Quaternion(0, 270, 0, true));
+			} else if (facing == Direction.WEST) {
+				stack.mulPose(new Quaternion(0, 180, 0, true));
+			}
+		}
+	}
 
-    public static float getGreen(int color) {
-	return (color >> 8 & 0xFF) / 255.0F;
-    }
+	public static void bindTexture(ResourceLocation resource) {
+		RenderSystem.setShaderTexture(0, resource);
+	}
 
-    public static float getBlue(int color) {
-	return (color & 0xFF) / 255.0F;
-    }
+	public static float getRed(int color) {
+		return (color >> 16 & 0xFF) / 255.0F;
+	}
 
-    public static float getAlpha(int color) {
-	return (color >> 24 & 0xFF) / 255.0F;
-    }
+	public static float getGreen(int color) {
+		return (color >> 8 & 0xFF) / 255.0F;
+	}
 
-    public static float[] getColorArray(int color) {
-	return new float[] { getRed(color), getGreen(color), getBlue(color), getAlpha(color) };
-    }
+	public static float getBlue(int color) {
+		return (color & 0xFF) / 255.0F;
+	}
 
-    public static void color(int color) {
-	RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
-    }
+	public static float getAlpha(int color) {
+		return (color >> 24 & 0xFF) / 255.0F;
+	}
+
+	public static float[] getColorArray(int color) {
+		return new float[] { getRed(color), getGreen(color), getBlue(color), getAlpha(color) };
+	}
+
+	public static void color(int color) {
+		RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+	}
 }

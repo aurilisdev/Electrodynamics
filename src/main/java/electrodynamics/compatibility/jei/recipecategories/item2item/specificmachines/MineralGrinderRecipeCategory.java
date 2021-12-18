@@ -16,37 +16,37 @@ import net.minecraft.world.item.ItemStack;
 
 public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory {
 
-    // JEI Window Parameters
-    private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
+	// JEI Window Parameters
+	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
-    private static DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(22, 20);
-    private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(83, 16);
+	private static DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(22, 20);
+	private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(83, 16);
 
-    private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 23);
+	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 23);
 
-    private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(48, BACK_WRAP);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(48, BACK_WRAP);
 
-    private static int ANIM_TIME = 50;
+	private static int ANIM_TIME = 50;
 
-    private static String MOD_ID = References.ID;
-    private static String RECIPE_GROUP = "mineral_grinder";
+	private static String MOD_ID = References.ID;
+	private static String RECIPE_GROUP = "mineral_grinder";
 
-    public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinder));
 
-    public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    public MineralGrinderRecipeCategory(IGuiHelper guiHelper) {
-	super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
-	ElectrodynamicsJEIPlugin.addO2OClickArea(UID);
-	setInputSlots(guiHelper, INPUT_SLOT);
-	setOutputSlots(guiHelper, OUTPUT_SLOT);
-	setAnimatedArrows(guiHelper, ANIM_ARROW);
-	setLabels(POWER_LABEL);
-    }
+	public MineralGrinderRecipeCategory(IGuiHelper guiHelper) {
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
+		ElectrodynamicsJEIPlugin.addO2OClickArea(UID);
+		setInputSlots(guiHelper, INPUT_SLOT);
+		setOutputSlots(guiHelper, OUTPUT_SLOT);
+		setAnimatedArrows(guiHelper, ANIM_ARROW);
+		setLabels(POWER_LABEL);
+	}
 
-    @Override
-    public ResourceLocation getUid() {
-	return UID;
-    }
+	@Override
+	public ResourceLocation getUid() {
+		return UID;
+	}
 
 }

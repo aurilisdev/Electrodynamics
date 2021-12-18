@@ -17,32 +17,32 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class ItemCeramic extends Item {
-    public SubtypeCeramic subtype;
+	public SubtypeCeramic subtype;
 
-    public ItemCeramic(SubtypeCeramic subtype) {
-	super(new Item.Properties().stacksTo(64).tab(References.CORETAB));
-	this.subtype = subtype;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-	if (ItemStack.tagMatches(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
-	    List<ItemStack> armorPieces = new ArrayList<>();
-	    playerIn.getArmorSlots().forEach(armorPieces::add);
-
-	    ItemStack chestplate = armorPieces.get(2);
-	    if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-		chestplate.getCapability(CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
-		    if (h.getPlateCount() < 2) {
-			playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
-			h.increasePlateCount(1);
-			playerIn.getItemInHand(handIn).shrink(1);
-		    }
-		});
-	    }
+	public ItemCeramic(SubtypeCeramic subtype) {
+		super(new Item.Properties().stacksTo(64).tab(References.CORETAB));
+		this.subtype = subtype;
 	}
 
-	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
-    }
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		if (ItemStack.tagMatches(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
+			List<ItemStack> armorPieces = new ArrayList<>();
+			playerIn.getArmorSlots().forEach(armorPieces::add);
+
+			ItemStack chestplate = armorPieces.get(2);
+			if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+				chestplate.getCapability(CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
+					if (h.getPlateCount() < 2) {
+						playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
+						h.increasePlateCount(1);
+						playerIn.getItemInHand(handIn).shrink(1);
+					}
+				});
+			}
+		}
+
+		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
+	}
 
 }

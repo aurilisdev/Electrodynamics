@@ -48,7 +48,6 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 				.valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
 		addComponent(new ComponentContainerProvider("container.hydroelectricgenerator").createMenu(
 				(id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-
 	}
 
 	@Override
@@ -132,7 +131,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 
 	@Override
 	public void setMultiplier(double val) {
-		this.multiplier = val;
+		multiplier = val;
 	}
 
 	@Override

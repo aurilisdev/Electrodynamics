@@ -12,12 +12,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentElectricInfo extends ScreenComponentInfo {
-    public ScreenComponentElectricInfo(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
-	super(infoHandler, new ResourceLocation(References.ID + ":textures/screen/component/electric.png"), gui, x, y);
-    }
+	public ScreenComponentElectricInfo(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
+		super(infoHandler, new ResourceLocation(References.ID + ":textures/screen/component/electric.png"), gui, x, y);
+	}
 
-    @Override
-    protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
-	return list;
-    }
+	@Override
+	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
+		return list;
+	}
 }

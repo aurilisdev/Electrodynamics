@@ -11,22 +11,22 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class ChemicalCrystalizerRecipe extends Fluid2ItemRecipe {
 
-    public static final String RECIPE_GROUP = "chemical_crystallizer_recipe";
-    public static final String MOD_ID = electrodynamics.api.References.ID;
-    public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final String RECIPE_GROUP = "chemical_crystallizer_recipe";
+	public static final String MOD_ID = electrodynamics.api.References.ID;
+	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    public ChemicalCrystalizerRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInput, ItemStack itemOutput) {
-	super(recipeID, fluidInput, itemOutput);
-    }
+	public ChemicalCrystalizerRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInput, ItemStack itemOutput) {
+		super(recipeID, fluidInput, itemOutput);
+	}
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get();
-    }
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get();
+	}
 
-    @Override
-    public RecipeType<?> getType() {
-	return Registry.RECIPE_TYPE.get(RECIPE_ID);
-    }
+	@Override
+	public RecipeType<?> getType() {
+		return Registry.RECIPE_TYPE.get(RECIPE_ID);
+	}
 
 }

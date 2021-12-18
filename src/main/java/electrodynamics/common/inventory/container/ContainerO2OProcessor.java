@@ -15,30 +15,30 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerO2OProcessor extends GenericContainer<GenericTile> {
-    public static final int startXOffset = 36;
+	public static final int startXOffset = 36;
 
-    public ContainerO2OProcessor(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
-    }
+	public ContainerO2OProcessor(int id, Inventory playerinv) {
+		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
+	}
 
-    public ContainerO2OProcessor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), id, playerinv, inventory, inventorydata);
-    }
+	public ContainerO2OProcessor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), id, playerinv, inventory, inventorydata);
+	}
 
-    public ContainerO2OProcessor(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(type, id, playerinv, inventory, inventorydata);
-    }
+	public ContainerO2OProcessor(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(type, id, playerinv, inventory, inventorydata);
+	}
 
-    @Override
-    public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new GenericSlot(inv, nextIndex(), 56 - startXOffset, 34));
-	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset, 34));
-	addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset + 20, 34));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-		SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
-    }
+	@Override
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new GenericSlot(inv, nextIndex(), 56 - startXOffset, 34));
+		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset, 34));
+		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset + 20, 34));
+		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+	}
 }

@@ -20,42 +20,41 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockCustomGlass extends Block {
 
-    public BlockCustomGlass(float hardness, float resistance) {
-	super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false)
-		.noOcclusion());
-    }
+	public BlockCustomGlass(float hardness, float resistance) {
+		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false)
+				.noOcclusion());
+	}
 
-    public BlockCustomGlass(SubtypeGlass glass) {
-	super(Properties
-		.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
-		.isRedstoneConductor((x, y, z) -> false).noOcclusion());
-    }
+	public BlockCustomGlass(SubtypeGlass glass) {
+		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
+				.isRedstoneConductor((x, y, z) -> false).noOcclusion());
+	}
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	return Arrays.asList(new ItemStack(this));
-    }
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		return Arrays.asList(new ItemStack(this));
+	}
 
-    @Override
-    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
-	return Shapes.empty();
-    }
+	@Override
+	public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+		return Shapes.empty();
+	}
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-	return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
-    }
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+		return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
-	return 1.0F;
-    }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+		return 1.0F;
+	}
 
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-	return true;
-    }
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+		return true;
+	}
 
 }

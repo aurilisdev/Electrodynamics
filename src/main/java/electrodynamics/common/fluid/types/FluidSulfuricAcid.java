@@ -6,10 +6,10 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 
 public class FluidSulfuricAcid extends FluidNonPlaceable {
 
-    public static final String FORGE_TAG = "sulfuric_acid";
+	public static final String FORGE_TAG = "sulfuric_acid";
 
-    public FluidSulfuricAcid() {
-	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "sulfuricacid", -375879936);
-    }
+	public FluidSulfuricAcid() {
+		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "sulfuricacid", -375879936);
+	}
 
 }

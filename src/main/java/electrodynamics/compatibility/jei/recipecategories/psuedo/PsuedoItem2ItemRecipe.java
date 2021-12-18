@@ -11,26 +11,26 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class PsuedoItem2ItemRecipe extends Item2ItemRecipe {
 
-    public List<Ingredient> INPUTS;
-    public ItemStack OUTPUT;
+	public List<Ingredient> INPUTS;
+	public ItemStack OUTPUT;
 
-    public PsuedoItem2ItemRecipe(List<ItemStack> inputs, ItemStack output) {
-	super(null, null, null);
-	INPUTS = new ArrayList<>();
-	for (ItemStack stack : inputs) {
-	    INPUTS.add(Ingredient.of(stack));
+	public PsuedoItem2ItemRecipe(List<ItemStack> inputs, ItemStack output) {
+		super(null, null, null);
+		INPUTS = new ArrayList<>();
+		for (ItemStack stack : inputs) {
+			INPUTS.add(Ingredient.of(stack));
+		}
+		OUTPUT = output;
 	}
-	OUTPUT = output;
-    }
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-	return null;
-    }
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return null;
+	}
 
-    @Override
-    public RecipeType<?> getType() {
-	return null;
-    }
+	@Override
+	public RecipeType<?> getType() {
+		return null;
+	}
 
 }

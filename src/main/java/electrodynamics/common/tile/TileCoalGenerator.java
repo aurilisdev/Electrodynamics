@@ -29,114 +29,114 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileCoalGenerator extends GenericTile {
-    public static final int COAL_BURN_TIME = 1000;
-    protected static final int[] SLOTS_INPUT = new int[] { 0 };
+	public static final int COAL_BURN_TIME = 1000;
+	protected static final int[] SLOTS_INPUT = new int[] { 0 };
 
-    protected TransferPack currentOutput = TransferPack.EMPTY;
-    protected CachedTileOutput output;
-    protected TargetValue heat = new TargetValue(27);
-    protected int burnTime;
-    public double clientHeat;
-    public double clientBurnTime;
+	protected TransferPack currentOutput = TransferPack.EMPTY;
+	protected CachedTileOutput output;
+	protected TargetValue heat = new TargetValue(27);
+	protected int burnTime;
+	public double clientHeat;
+	public double clientBurnTime;
 
-    public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
-	super(DeferredRegisters.TILE_COALGENERATOR.get(), worldPosition, blockState);
-	addComponent(new ComponentDirection());
-	addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
-		.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
-	addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
-	addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
-	addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH)
-		.valid((index, stack, i) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL
-			|| stack.getItem() == Items.COAL_BLOCK));
-	addComponent(new ComponentContainerProvider("container.coalgenerator")
-		.createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-    }
+	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
+		super(DeferredRegisters.TILE_COALGENERATOR.get(), worldPosition, blockState);
+		addComponent(new ComponentDirection());
+		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
+				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
+		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
+		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH)
+				.valid((index, stack, i) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL
+						|| stack.getItem() == Items.COAL_BLOCK));
+		addComponent(new ComponentContainerProvider("container.coalgenerator")
+				.createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	}
 
-    protected void tickServer(ComponentTickable tickable) {
-	ComponentDirection direction = getComponent(ComponentType.Direction);
-	if (output == null) {
-	    output = new CachedTileOutput(level, new BlockPos(worldPosition).relative(direction.getDirection().getOpposite()));
+	protected void tickServer(ComponentTickable tickable) {
+		ComponentDirection direction = getComponent(ComponentType.Direction);
+		if (output == null) {
+			output = new CachedTileOutput(level, new BlockPos(worldPosition).relative(direction.getDirection().getOpposite()));
+		}
+		if (tickable.getTicks() % 20 == 0) {
+			output.update();
+		}
+		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		if (burnTime <= 0 && !inv.getItem(0).isEmpty()) {
+			burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
+			inv.removeItem(0, 1);
+		}
+		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
+		if (machine != null) {
+			boolean update = false;
+			if (machine.machine == SubtypeMachine.coalgenerator) {
+				if (burnTime > 0) {
+					update = true;
+				}
+			} else if (burnTime <= 0) {
+				update = true;
+			}
+			if (update) {
+				level.setBlock(worldPosition,
+						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
+								.defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+								.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+						3);
+			}
+		}
+		if (heat.get() > 27 && output.valid()) {
+			ElectricityUtilities.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
+		}
+		heat.rangeParameterize(27, 3000, burnTime > 0 ? 3000 : 27, heat.get(), 600).flush();
+		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
+				Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
-	if (tickable.getTicks() % 20 == 0) {
-	    output.update();
-	}
-	ComponentInventory inv = getComponent(ComponentType.Inventory);
-	if (burnTime <= 0 && !inv.getItem(0).isEmpty()) {
-	    burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
-	    inv.removeItem(0, 1);
-	}
-	BlockMachine machine = (BlockMachine) getBlockState().getBlock();
-	if (machine != null) {
-	    boolean update = false;
-	    if (machine.machine == SubtypeMachine.coalgenerator) {
+
+	protected void tickCommon(ComponentTickable tickable) {
 		if (burnTime > 0) {
-		    update = true;
+			--burnTime;
 		}
-	    } else if (burnTime <= 0) {
-		update = true;
-	    }
-	    if (update) {
-		level.setBlock(worldPosition,
-			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
-				.defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-			3);
-	    }
 	}
-	if (heat.get() > 27 && output.valid()) {
-	    ElectricityUtilities.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
-	}
-	heat.rangeParameterize(27, 3000, burnTime > 0 ? 3000 : 27, heat.get(), 600).flush();
-	currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
-		Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-    }
 
-    protected void tickCommon(ComponentTickable tickable) {
-	if (burnTime > 0) {
-	    --burnTime;
-	}
-    }
+	protected void tickClient(ComponentTickable tickable) {
+		if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
+			Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			if (level.random.nextInt(10) == 0) {
+				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
+						SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F,
+						false);
+			}
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
-	    Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    if (level.random.nextInt(10) == 0) {
-		level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
-			SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F,
-			false);
-	    }
-
-	    if (level.random.nextInt(10) == 0) {
-		for (int i = 0; i < level.random.nextInt(1) + 1; ++i) {
-		    level.addParticle(ParticleTypes.LAVA, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
-			    dir.getStepX(), 0.0, dir.getStepZ());
+			if (level.random.nextInt(10) == 0) {
+				for (int i = 0; i < level.random.nextInt(1) + 1; ++i) {
+					level.addParticle(ParticleTypes.LAVA, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
+							dir.getStepX(), 0.0, dir.getStepZ());
+				}
+			}
 		}
-	    }
 	}
-    }
 
-    protected void createPacket(CompoundTag nbt) {
-	nbt.putDouble("clientHeat", heat.get());
-	nbt.putDouble("clientBurnTime", burnTime);
-    }
+	protected void createPacket(CompoundTag nbt) {
+		nbt.putDouble("clientHeat", heat.get());
+		nbt.putDouble("clientBurnTime", burnTime);
+	}
 
-    protected void readPacket(CompoundTag nbt) {
-	clientHeat = nbt.getDouble("clientHeat");
-	clientBurnTime = nbt.getDouble("clientBurnTime");
-    }
+	protected void readPacket(CompoundTag nbt) {
+		clientHeat = nbt.getDouble("clientHeat");
+		clientBurnTime = nbt.getDouble("clientBurnTime");
+	}
 
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-	compound.putDouble("heat", heat.get());
-	compound.putInt("burnTime", burnTime);
-	super.saveAdditional(compound);
-    }
+	@Override
+	public void saveAdditional(CompoundTag compound) {
+		compound.putDouble("heat", heat.get());
+		compound.putInt("burnTime", burnTime);
+		super.saveAdditional(compound);
+	}
 
-    @Override
-    public void load(CompoundTag compound) {
-	super.load(compound);
-	heat.set(compound.getDouble("heat"));
-	burnTime = compound.getInt("burnTime");
-    }
+	@Override
+	public void load(CompoundTag compound) {
+		super.load(compound);
+		heat.set(compound.getDouble("heat"));
+		burnTime = compound.getInt("burnTime");
+	}
 }

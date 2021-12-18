@@ -35,52 +35,52 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalCrystallizer> {
 
-    public ScreenChemicalCrystallizer(ContainerChemicalCrystallizer container, Inventory playerInventory, Component title) {
-	super(container, playerInventory, title);
-	components.add(new ScreenComponentProgress(() -> {
-	    GenericTile furnace = container.getHostFromIntArray();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-		if (processor.operatingTicks > 0) {
-		    return processor.operatingTicks / processor.requiredTicks;
-		}
-	    }
-	    return 0;
-	}, this, 41, 31));
-	components.add(new ScreenComponentProgress(() -> 0, this, 41, 51).left());
-	components.add(new ScreenComponentFluid(() -> {
-	    TileChemicalCrystallizer boiler = container.getHostFromIntArray();
-	    if (boiler != null) {
-		return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
-	    }
-	    return null;
-	}, this, 21, 18));
-	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
-    }
-
-    @Override
-    protected ScreenComponentSlot createScreenSlot(Slot slot) {
-	return new ScreenComponentSlot(slot instanceof SlotRestricted res
-		&& res.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.basicspeed)))
-			? EnumSlotType.SPEED
-			: EnumSlotType.NORMAL,
-		this, slot.x - 1, slot.y - 1);
-    }
-
-    private List<? extends FormattedCharSequence> getEnergyInformation() {
-	ArrayList<FormattedCharSequence> list = new ArrayList<>();
-	GenericTile box = menu.getHostFromIntArray();
-	if (box != null) {
-	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-	    ComponentProcessor processor = box.getComponent(ComponentType.Processor);
-
-	    list.add(new TranslatableComponent("gui.chemicalcrystallizer.usage",
-		    new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-	    list.add(new TranslatableComponent("gui.chemicalcrystallizer.voltage",
-		    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+	public ScreenChemicalCrystallizer(ContainerChemicalCrystallizer container, Inventory playerInventory, Component title) {
+		super(container, playerInventory, title);
+		components.add(new ScreenComponentProgress(() -> {
+			GenericTile furnace = container.getHostFromIntArray();
+			if (furnace != null) {
+				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
+				if (processor.operatingTicks > 0) {
+					return processor.operatingTicks / processor.requiredTicks;
+				}
+			}
+			return 0;
+		}, this, 41, 31));
+		components.add(new ScreenComponentProgress(() -> 0, this, 41, 51).left());
+		components.add(new ScreenComponentFluid(() -> {
+			TileChemicalCrystallizer boiler = container.getHostFromIntArray();
+			if (boiler != null) {
+				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
+			}
+			return null;
+		}, this, 21, 18));
+		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
-	return list;
-    }
+
+	@Override
+	protected ScreenComponentSlot createScreenSlot(Slot slot) {
+		return new ScreenComponentSlot(slot instanceof SlotRestricted res
+				&& res.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.basicspeed)))
+						? EnumSlotType.SPEED
+						: EnumSlotType.NORMAL,
+				this, slot.x - 1, slot.y - 1);
+	}
+
+	private List<? extends FormattedCharSequence> getEnergyInformation() {
+		ArrayList<FormattedCharSequence> list = new ArrayList<>();
+		GenericTile box = menu.getHostFromIntArray();
+		if (box != null) {
+			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+			ComponentProcessor processor = box.getComponent(ComponentType.Processor);
+
+			list.add(new TranslatableComponent("gui.chemicalcrystallizer.usage",
+					new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.chemicalcrystallizer.voltage",
+					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		}
+		return list;
+	}
 }

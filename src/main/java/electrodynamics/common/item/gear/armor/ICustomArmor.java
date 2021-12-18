@@ -7,14 +7,14 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public interface ICustomArmor extends ArmorMaterial {
 
-    @Override
-    default int getEnchantmentValue() {
-	return 0;
-    }
+	@Override
+	default int getEnchantmentValue() {
+		return 0;
+	}
 
-    @Override
-    default Ingredient getRepairIngredient() {
-	return Ingredient.of(new ItemStack(Items.BEDROCK));
-    }
+	@Override
+	default Ingredient getRepairIngredient() {
+		return Ingredient.of(new ItemStack(Items.BEDROCK));
+	}
 
 }

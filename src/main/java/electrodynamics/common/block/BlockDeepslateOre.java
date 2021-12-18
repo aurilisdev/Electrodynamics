@@ -17,35 +17,35 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 
 public class BlockDeepslateOre extends OreBlock {
-    public SubtypeOreDeepslate ore;
+	public SubtypeOreDeepslate ore;
 
-    public BlockDeepslateOre(SubtypeOreDeepslate subtype) {
-	super(Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(subtype.hardness + 1.5f,
-		subtype.resistance + 1.5f));
-	ore = subtype;
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	Item oreItem;
-	int count = switch (ore) {
-	case sulfur, niter, sylvite -> {
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore == SubtypeOreDeepslate.sulfur ? SubtypeDust.sulfur
-		    : ore == SubtypeOreDeepslate.sylvite ? SubtypeCrystal.potassiumchloride : SubtypeDust.niter);
-	    yield new Random().nextInt(2) + 1;
+	public BlockDeepslateOre(SubtypeOreDeepslate subtype) {
+		super(Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(subtype.hardness + 1.5f,
+				subtype.resistance + 1.5f));
+		ore = subtype;
 	}
-	case halite -> {
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.halite);
-	    yield new Random().nextInt(3) + 1;
-	}
-	default -> {
-	    oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore);
-	    yield 1;
-	}
-	};
 
-	return Arrays.asList(new ItemStack(oreItem, count));
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		Item oreItem;
+		int count = switch (ore) {
+		case sulfur, niter, sylvite -> {
+			oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore == SubtypeOreDeepslate.sulfur ? SubtypeDust.sulfur
+					: ore == SubtypeOreDeepslate.sylvite ? SubtypeCrystal.potassiumchloride : SubtypeDust.niter);
+			yield new Random().nextInt(2) + 1;
+		}
+		case halite -> {
+			oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCrystal.halite);
+			yield new Random().nextInt(3) + 1;
+		}
+		default -> {
+			oreItem = DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(ore);
+			yield 1;
+		}
+		};
 
-    }
+		return Arrays.asList(new ItemStack(oreItem, count));
+
+	}
 
 }

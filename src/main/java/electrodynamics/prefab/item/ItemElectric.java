@@ -18,49 +18,49 @@ import net.minecraft.world.level.Level;
 
 public class ItemElectric extends Item implements IItemElectric {
 
-    private final ElectricItemProperties properties;
+	private final ElectricItemProperties properties;
 
-    public ItemElectric(ElectricItemProperties properties) {
-	super(properties);
-	this.properties = properties;
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-	if (allowdedIn(group)) {
-	    ItemStack charged = new ItemStack(this);
-	    IItemElectric.setEnergyStored(charged, properties.capacity);
-	    items.add(charged);
-	    ItemStack empty = new ItemStack(this);
-	    IItemElectric.setEnergyStored(empty, 0);
-	    items.add(empty);
+	public ItemElectric(ElectricItemProperties properties) {
+		super(properties);
+		this.properties = properties;
 	}
-    }
 
-    @Override
-    public int getBarWidth(ItemStack stack) {
-	return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
-    }
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if (allowdedIn(group)) {
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
+			ItemStack empty = new ItemStack(this);
+			IItemElectric.setEnergyStored(empty, 0);
+			items.add(empty);
+		}
+	}
 
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-	return getJoulesStored(stack) < properties.capacity;
-    }
+	@Override
+	public int getBarWidth(ItemStack stack) {
+		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+	}
 
-    @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
-		.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
-	tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
-		ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
-			+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
-				.withStyle(ChatFormatting.RED));
-    }
+	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return getJoulesStored(stack) < properties.capacity;
+	}
 
-    @Override
-    public ElectricItemProperties getElectricProperties() {
-	return properties;
-    }
+	@Override
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
+				.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
+		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
+				ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
+						+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
+								.withStyle(ChatFormatting.RED));
+	}
+
+	@Override
+	public ElectricItemProperties getElectricProperties() {
+		return properties;
+	}
 
 }

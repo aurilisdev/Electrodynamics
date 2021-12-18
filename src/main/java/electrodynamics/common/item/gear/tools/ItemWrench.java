@@ -11,22 +11,22 @@ import net.minecraft.world.level.Level;
 
 public class ItemWrench extends Item implements IWrenchItem {
 
-    public ItemWrench(Properties properties) {
-	super(properties);
-    }
+	public ItemWrench(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-	return InteractionResultHolder.success(playerIn.getItemInHand(handIn));
-    }
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		return InteractionResultHolder.success(playerIn.getItemInHand(handIn));
+	}
 
-    @Override
-    public boolean onRotate(ItemStack stack, BlockPos pos, Player player) {
-	return true;
-    }
+	@Override
+	public boolean onRotate(ItemStack stack, BlockPos pos, Player player) {
+		return true;
+	}
 
-    @Override
-    public boolean onPickup(ItemStack stack, BlockPos pos, Player player) {
-	return true;
-    }
+	@Override
+	public boolean onPickup(ItemStack stack, BlockPos pos, Player player) {
+		return true;
+	}
 }

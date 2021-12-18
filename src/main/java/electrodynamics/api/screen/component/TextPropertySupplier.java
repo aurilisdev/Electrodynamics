@@ -6,5 +6,5 @@ import net.minecraft.util.FormattedCharSequence;
 
 @FunctionalInterface
 public interface TextPropertySupplier {
-    List<? extends FormattedCharSequence> getInfo();
+	List<? extends FormattedCharSequence> getInfo();
 }

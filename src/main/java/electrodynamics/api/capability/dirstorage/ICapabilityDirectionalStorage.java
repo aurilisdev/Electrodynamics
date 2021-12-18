@@ -6,20 +6,20 @@ import net.minecraft.core.Direction;
 
 public interface ICapabilityDirectionalStorage {
 
-    void addDirection(Direction dir);
+	void addDirection(Direction dir);
 
-    void removeDirection(Direction dir);
+	void removeDirection(Direction dir);
 
-    void removeAllDirs();
+	void removeAllDirs();
 
-    List<Direction> getDirections();
+	List<Direction> getDirections();
 
-    void setBoolean(boolean bool);
+	void setBoolean(boolean bool);
 
-    boolean getBoolean();
+	boolean getBoolean();
 
-    void setInt(int number);
+	void setInt(int number);
 
-    int getInt();
+	int getInt();
 
 }

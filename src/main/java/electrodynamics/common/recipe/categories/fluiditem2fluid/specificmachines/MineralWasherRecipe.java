@@ -12,22 +12,22 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class MineralWasherRecipe extends FluidItem2FluidRecipe {
 
-    public static final String RECIPE_GROUP = "mineral_washer_recipe";
-    public static final String MOD_ID = electrodynamics.api.References.ID;
-    public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final String RECIPE_GROUP = "mineral_washer_recipe";
+	public static final String MOD_ID = electrodynamics.api.References.ID;
+	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    public MineralWasherRecipe(ResourceLocation recipeID, CountableIngredient[] inputItem, FluidIngredient[] inputFluid, FluidStack outputFluid) {
-	super(recipeID, inputItem, inputFluid, outputFluid);
-    }
+	public MineralWasherRecipe(ResourceLocation recipeID, CountableIngredient[] inputItem, FluidIngredient[] inputFluid, FluidStack outputFluid) {
+		super(recipeID, inputItem, inputFluid, outputFluid);
+	}
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipeInit.MINERAL_WASHER_SERIALIZER.get();
-    }
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return ElectrodynamicsRecipeInit.MINERAL_WASHER_SERIALIZER.get();
+	}
 
-    @Override
-    public RecipeType<?> getType() {
-	return Registry.RECIPE_TYPE.get(RECIPE_ID);
-    }
+	@Override
+	public RecipeType<?> getType() {
+		return Registry.RECIPE_TYPE.get(RECIPE_ID);
+	}
 
 }

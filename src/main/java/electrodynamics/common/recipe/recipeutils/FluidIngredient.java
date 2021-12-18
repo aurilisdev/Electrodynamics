@@ -23,137 +23,136 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class FluidIngredient extends Ingredient {
 
-    @Nonnull
-    private List<FluidStack> fluidStacks;
+	@Nonnull
+	private List<FluidStack> fluidStacks;
 
-    public FluidIngredient(FluidStack fluidStack) {
-	super(Stream.empty());
-	fluidStacks = new ArrayList<>();
-	fluidStacks.add(fluidStack);
-    }
-
-    public FluidIngredient(List<FluidStack> fluidStack) {
-	super(Stream.empty());
-	fluidStacks = fluidStack;
-    }
-
-    /**
-     * Call this one if you're trying to get a Tag once loaded on the server or are
-     * trying to get a specific fluid
-     * 
-     * DO NOT call this one if trying to load a fluid from a JSON file!
-     * 
-     * @param resourceLocation
-     * @param amount
-     * @param isTag
-     */
-    public FluidIngredient(ResourceLocation resourceLocation, int amount, boolean isTag) {
-	super(Stream.empty());
-	if (isTag) {
-	    List<Fluid> fluids = FluidTags.getAllTags().getTag(resourceLocation).getValues();
-	    fluidStacks = new ArrayList<>();
-	    for (Fluid fluid : fluids) {
-		fluidStacks.add(new FluidStack(fluid, amount));
-	    }
-	} else {
-	    List<FluidStack> fluids = new ArrayList<>();
-	    fluids.add(new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount));
-	    fluidStacks = fluids;
-	}
-	if (fluidStacks.isEmpty()) {
-	    throw new UnsupportedOperationException("No fluids returned from tag " + resourceLocation);
-	}
-    }
-
-    /**
-     * Specialized constructor for pre-server load JSON loading
-     * 
-     * @param resource
-     * @param amount
-     */
-    private FluidIngredient(ResourceLocation resource, int amount) {
-	super(Stream.empty());
-	List<Fluid> fluids = SerializationTags.getInstance().getOrEmpty(ForgeRegistries.Keys.FLUIDS).getTag(resource).getValues();
-	fluidStacks = new ArrayList<>();
-	for (Fluid fluid : fluids) {
-	    fluidStacks.add(new FluidStack(fluid, amount));
-	}
-	if (fluidStacks.isEmpty()) {
-	    throw new UnsupportedOperationException("No fluids returned from tag " + resource);
-	}
-    }
-
-    public static FluidIngredient deserialize(JsonObject jsonObject) {
-	Preconditions.checkArgument(jsonObject != null, "FluidStack can only be deserialized from a JsonObject");
-	try {
-	    if (GsonHelper.isValidNode(jsonObject, "fluid")) {
-		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "fluid"));
-		int amount = GsonHelper.getAsInt(jsonObject, "amount");
-		return new FluidIngredient(resourceLocation, amount, false);
-	    } else if (GsonHelper.isValidNode(jsonObject, "tag")) {
-		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
-		int amount = GsonHelper.getAsInt(jsonObject, "amount");
-		// special constructor call for JSONs
-		return new FluidIngredient(resourceLocation, amount);
-	    }
-	} catch (Exception e) {
-	    Electrodynamics.LOGGER.info("Invalid Fluid Type or Fluid amount entered in JSON file");
+	public FluidIngredient(FluidStack fluidStack) {
+		super(Stream.empty());
+		fluidStacks = new ArrayList<>();
+		fluidStacks.add(fluidStack);
 	}
 
-	return null;
-    }
+	public FluidIngredient(List<FluidStack> fluidStack) {
+		super(Stream.empty());
+		fluidStacks = fluidStack;
+	}
 
-    public boolean testFluid(@Nullable FluidStack t) {
-	if (t != null) {
-	    for (FluidStack stack : fluidStacks) {
-		if (t.getAmount() >= stack.getAmount()) {
-		    if (t.getFluid().isSame(stack.getFluid())) {
-			return true;
-		    }
+	/**
+	 * Call this one if you're trying to get a Tag once loaded on the server or are trying to get a specific fluid
+	 * 
+	 * DO NOT call this one if trying to load a fluid from a JSON file!
+	 * 
+	 * @param resourceLocation
+	 * @param amount
+	 * @param isTag
+	 */
+	public FluidIngredient(ResourceLocation resourceLocation, int amount, boolean isTag) {
+		super(Stream.empty());
+		if (isTag) {
+			List<Fluid> fluids = FluidTags.getAllTags().getTag(resourceLocation).getValues();
+			fluidStacks = new ArrayList<>();
+			for (Fluid fluid : fluids) {
+				fluidStacks.add(new FluidStack(fluid, amount));
+			}
+		} else {
+			List<FluidStack> fluids = new ArrayList<>();
+			fluids.add(new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount));
+			fluidStacks = fluids;
 		}
-	    }
+		if (fluidStacks.isEmpty()) {
+			throw new UnsupportedOperationException("No fluids returned from tag " + resourceLocation);
+		}
 	}
-	return false;
-    }
 
-    public static FluidIngredient read(FriendlyByteBuf input) {
-	List<FluidStack> stacks = new ArrayList<>();
-	int count = input.readInt();
-	for (int i = 0; i < count; i++) {
-	    stacks.add(input.readFluidStack());
+	/**
+	 * Specialized constructor for pre-server load JSON loading
+	 * 
+	 * @param resource
+	 * @param amount
+	 */
+	private FluidIngredient(ResourceLocation resource, int amount) {
+		super(Stream.empty());
+		List<Fluid> fluids = SerializationTags.getInstance().getOrEmpty(ForgeRegistries.Keys.FLUIDS).getTag(resource).getValues();
+		fluidStacks = new ArrayList<>();
+		for (Fluid fluid : fluids) {
+			fluidStacks.add(new FluidStack(fluid, amount));
+		}
+		if (fluidStacks.isEmpty()) {
+			throw new UnsupportedOperationException("No fluids returned from tag " + resource);
+		}
 	}
-	return new FluidIngredient(stacks);
-    }
 
-    public static FluidIngredient[] readList(FriendlyByteBuf buffer) {
-	int length = buffer.readInt();
-	FluidIngredient[] ings = new FluidIngredient[length];
-	for (int i = 0; i < length; i++) {
-	    ings[i] = read(buffer);
+	public static FluidIngredient deserialize(JsonObject jsonObject) {
+		Preconditions.checkArgument(jsonObject != null, "FluidStack can only be deserialized from a JsonObject");
+		try {
+			if (GsonHelper.isValidNode(jsonObject, "fluid")) {
+				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "fluid"));
+				int amount = GsonHelper.getAsInt(jsonObject, "amount");
+				return new FluidIngredient(resourceLocation, amount, false);
+			} else if (GsonHelper.isValidNode(jsonObject, "tag")) {
+				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
+				int amount = GsonHelper.getAsInt(jsonObject, "amount");
+				// special constructor call for JSONs
+				return new FluidIngredient(resourceLocation, amount);
+			}
+		} catch (Exception e) {
+			Electrodynamics.LOGGER.info("Invalid Fluid Type or Fluid amount entered in JSON file");
+		}
+
+		return null;
 	}
-	return ings;
-    }
 
-    public void write(FriendlyByteBuf output) {
-	output.writeInt(fluidStacks.size());
-	for (FluidStack stack : fluidStacks) {
-	    output.writeFluidStack(stack);
+	public boolean testFluid(@Nullable FluidStack t) {
+		if (t != null) {
+			for (FluidStack stack : fluidStacks) {
+				if (t.getAmount() >= stack.getAmount()) {
+					if (t.getFluid().isSame(stack.getFluid())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
-    }
 
-    public static void writeList(FriendlyByteBuf buffer, List<FluidIngredient> list) {
-	buffer.writeInt(list.size());
-	for (FluidIngredient ing : list) {
-	    ing.write(buffer);
+	public static FluidIngredient read(FriendlyByteBuf input) {
+		List<FluidStack> stacks = new ArrayList<>();
+		int count = input.readInt();
+		for (int i = 0; i < count; i++) {
+			stacks.add(input.readFluidStack());
+		}
+		return new FluidIngredient(stacks);
 	}
-    }
 
-    public List<FluidStack> getMatchingFluids() {
-	return fluidStacks;
-    }
+	public static FluidIngredient[] readList(FriendlyByteBuf buffer) {
+		int length = buffer.readInt();
+		FluidIngredient[] ings = new FluidIngredient[length];
+		for (int i = 0; i < length; i++) {
+			ings[i] = read(buffer);
+		}
+		return ings;
+	}
 
-    public FluidStack getFluidStack() {
-	return fluidStacks.get(0);
-    }
+	public void write(FriendlyByteBuf output) {
+		output.writeInt(fluidStacks.size());
+		for (FluidStack stack : fluidStacks) {
+			output.writeFluidStack(stack);
+		}
+	}
+
+	public static void writeList(FriendlyByteBuf buffer, List<FluidIngredient> list) {
+		buffer.writeInt(list.size());
+		for (FluidIngredient ing : list) {
+			ing.write(buffer);
+		}
+	}
+
+	public List<FluidStack> getMatchingFluids() {
+		return fluidStacks;
+	}
+
+	public FluidStack getFluidStack() {
+		return fluidStacks.get(0);
+	}
 
 }

@@ -27,76 +27,76 @@ import net.minecraft.world.level.material.Material;
 
 public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric {
 
-    private final ElectricItemProperties properties;
+	private final ElectricItemProperties properties;
 
-    public ItemElectricDrill(ElectricItemProperties properties) {
-	super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE),
-		properties.durability(0));
-	this.properties = properties;
-    }
-
-    @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-	return true;
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-	if (allowdedIn(group)) {
-	    ItemStack charged = new ItemStack(this);
-	    IItemElectric.setEnergyStored(charged, properties.capacity);
-	    items.add(charged);
-
-	    ItemStack empty = new ItemStack(this);
-	    IItemElectric.setEnergyStored(empty, 0);
-	    items.add(empty);
+	public ItemElectricDrill(ElectricItemProperties properties) {
+		super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE),
+				properties.durability(0));
+		this.properties = properties;
 	}
-    }
 
-    @Override
-    public boolean canBeDepleted() {
-	return false;
-    }
+	@Override
+	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+		return true;
+	}
 
-    @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-	Material material = state.getMaterial();
-	return getJoulesStored(stack) > properties.extract.getJoules()
-		? material != Material.METAL && material != Material.HEAVY_METAL && material != Material.STONE ? super.getDestroySpeed(stack, state)
-			: speed
-		: 0;
-    }
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if (allowdedIn(group)) {
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
 
-    @Override
-    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-	extractPower(stack, properties.extract.getJoules(), false);
-	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
-    }
+			ItemStack empty = new ItemStack(this);
+			IItemElectric.setEnergyStored(empty, 0);
+			items.add(empty);
+		}
+	}
 
-    @Override
-    public int getBarWidth(ItemStack stack) {
-	return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
-    }
+	@Override
+	public boolean canBeDepleted() {
+		return false;
+	}
 
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-	return getJoulesStored(stack) < properties.capacity;
-    }
+	@Override
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		Material material = state.getMaterial();
+		return getJoulesStored(stack) > properties.extract.getJoules()
+				? material != Material.METAL && material != Material.HEAVY_METAL && material != Material.STONE ? super.getDestroySpeed(stack, state)
+						: speed
+				: 0;
+	}
 
-    @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
-		.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
-	tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
-		ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
-			+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
-				.withStyle(ChatFormatting.RED));
-    }
+	@Override
+	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+		extractPower(stack, properties.extract.getJoules(), false);
+		return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+	}
 
-    @Override
-    public ElectricItemProperties getElectricProperties() {
-	return properties;
-    }
+	@Override
+	public int getBarWidth(ItemStack stack) {
+		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+	}
+
+	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return getJoulesStored(stack) < properties.capacity;
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
+				.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
+		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
+				ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
+						+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
+								.withStyle(ChatFormatting.RED));
+	}
+
+	@Override
+	public ElectricItemProperties getElectricProperties() {
+		return properties;
+	}
 
 }

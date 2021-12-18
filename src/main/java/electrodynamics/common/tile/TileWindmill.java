@@ -117,7 +117,7 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 
 	@Override
 	public void setMultiplier(double val) {
-		this.multiplier = val;
+		multiplier = val;
 	}
 
 	@Override
@@ -127,6 +127,7 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(generating * multiplier, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(generating * multiplier,
+				this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
 }

@@ -20,77 +20,76 @@ import net.minecraft.world.level.Level;
 
 public class ItemRailgunKinetic extends ItemRailgun {
 
-    public static final double JOULES_PER_SHOT = 100000.0;
-    private static final int OVERHEAT_TEMPERATURE = 400;
-    private static final int TEMPERATURE_PER_SHOT = 300;
-    private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
-    private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
+	public static final double JOULES_PER_SHOT = 100000.0;
+	private static final int OVERHEAT_TEMPERATURE = 400;
+	private static final int TEMPERATURE_PER_SHOT = 300;
+	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
+	private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 
-    public ItemRailgunKinetic(ElectricItemProperties properties) {
-	super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-	ItemStack gunStack;
-	ItemStack ammoStack;
-
-	if (handIn == InteractionHand.MAIN_HAND) {
-	    gunStack = playerIn.getMainHandItem();
-	    ammoStack = playerIn.getOffhandItem();
-	} else {
-	    gunStack = playerIn.getOffhandItem();
-	    ammoStack = playerIn.getMainHandItem();
+	public ItemRailgunKinetic(ElectricItemProperties properties) {
+		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
 	}
 
-	if (!worldIn.isClientSide) {
-	    ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		ItemStack gunStack;
+		ItemStack ammoStack;
 
-	    if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && !ammoStack.isEmpty()
-		    && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
-
-		EntityCustomProjectile projectile = null;
-		int i = 0;
-
-		for (Ingredient ammo : getRailgunAmmo()) {
-		    if (ammo.test(ammoStack)) {
-			projectile = new EntityMetalRod(playerIn, worldIn, i);
-			break;
-		    }
-		    i++;
-		}
-
-		if (projectile == null) {
-		    worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+		if (handIn == InteractionHand.MAIN_HAND) {
+			gunStack = playerIn.getMainHandItem();
+			ammoStack = playerIn.getOffhandItem();
 		} else {
-		    railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
-		    worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC.get(), SoundSource.PLAYERS, 1, 1);
-		    projectile.setItem(ammoStack);
-		    projectile.setNoGravity(true);
-		    projectile.setOwner(playerIn);
-		    projectile.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0f, 20f, 1.0F);
-		    if (!worldIn.isClientSide) {
-			worldIn.addFreshEntity(projectile);
-		    }
-		    railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
-		    ammoStack.shrink(1);
+			gunStack = playerIn.getOffhandItem();
+			ammoStack = playerIn.getMainHandItem();
 		}
-	    } else {
-		worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-	    }
-	}
-	return InteractionResultHolder.pass(gunStack);
-    }
 
-    /*
-     * Allows easy addition of ammo types in the future Uses the Ingredient of the
-     * item to allow cross-mod compatibility
-     */
-    public List<Ingredient> getRailgunAmmo() {
-	List<Ingredient> railgunAmmo = new ArrayList<>();
-	railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/steel"));
-	railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/stainlesssteel"));
-	railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/hslasteel"));
-	return railgunAmmo;
-    }
+		if (!worldIn.isClientSide) {
+			ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
+
+			if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && !ammoStack.isEmpty()
+					&& railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
+
+				EntityCustomProjectile projectile = null;
+				int i = 0;
+
+				for (Ingredient ammo : getRailgunAmmo()) {
+					if (ammo.test(ammoStack)) {
+						projectile = new EntityMetalRod(playerIn, worldIn, i);
+						break;
+					}
+					i++;
+				}
+
+				if (projectile == null) {
+					worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+				} else {
+					railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
+					worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC.get(), SoundSource.PLAYERS, 1, 1);
+					projectile.setItem(ammoStack);
+					projectile.setNoGravity(true);
+					projectile.setOwner(playerIn);
+					projectile.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0f, 20f, 1.0F);
+					if (!worldIn.isClientSide) {
+						worldIn.addFreshEntity(projectile);
+					}
+					railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
+					ammoStack.shrink(1);
+				}
+			} else {
+				worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			}
+		}
+		return InteractionResultHolder.pass(gunStack);
+	}
+
+	/*
+	 * Allows easy addition of ammo types in the future Uses the Ingredient of the item to allow cross-mod compatibility
+	 */
+	public List<Ingredient> getRailgunAmmo() {
+		List<Ingredient> railgunAmmo = new ArrayList<>();
+		railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/steel"));
+		railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/stainlesssteel"));
+		railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/hslasteel"));
+		return railgunAmmo;
+	}
 }

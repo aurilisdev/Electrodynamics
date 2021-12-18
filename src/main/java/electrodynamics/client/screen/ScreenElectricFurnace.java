@@ -29,50 +29,50 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnace> {
-    public ScreenElectricFurnace(ContainerElectricFurnace container, Inventory playerInventory, Component title) {
-	super(container, playerInventory, title);
-	components.add(new ScreenComponentProgress(() -> {
-	    TileElectricFurnace furnace = container.getHostFromIntArray();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getProcessor(0);
-		if (processor.operatingTicks > 0) {
-		    return processor.operatingTicks / processor.requiredTicks;
-		}
-	    }
-	    return 0;
-	}, this, 84, 34));
-	components.add(new ScreenComponentProgress(() -> {
-	    TileElectricFurnace furnace = container.getHostFromIntArray();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getProcessor(0);
-		if (processor.operatingTicks > 0) {
-		    return 1;
-		}
-	    }
-	    return 0;
-	}, this, 39, 36).flame());
-	components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
-    }
-
-    @Override
-    protected ScreenComponentSlot createScreenSlot(Slot slot) {
-	return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
-    }
-
-    private List<? extends FormattedCharSequence> getEnergyInformation() {
-	ArrayList<FormattedCharSequence> list = new ArrayList<>();
-	TileElectricFurnace box = menu.getHostFromIntArray();
-	if (box != null) {
-	    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-	    ComponentProcessor processor = box.getProcessor(0);
-
-	    list.add(new TranslatableComponent("gui.o2oprocessor.usage",
-		    new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-	    list.add(new TranslatableComponent("gui.o2oprocessor.voltage",
-		    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-			    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+	public ScreenElectricFurnace(ContainerElectricFurnace container, Inventory playerInventory, Component title) {
+		super(container, playerInventory, title);
+		components.add(new ScreenComponentProgress(() -> {
+			TileElectricFurnace furnace = container.getHostFromIntArray();
+			if (furnace != null) {
+				ComponentProcessor processor = furnace.getProcessor(0);
+				if (processor.operatingTicks > 0) {
+					return processor.operatingTicks / processor.requiredTicks;
+				}
+			}
+			return 0;
+		}, this, 84, 34));
+		components.add(new ScreenComponentProgress(() -> {
+			TileElectricFurnace furnace = container.getHostFromIntArray();
+			if (furnace != null) {
+				ComponentProcessor processor = furnace.getProcessor(0);
+				if (processor.operatingTicks > 0) {
+					return 1;
+				}
+			}
+			return 0;
+		}, this, 39, 36).flame());
+		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
-	return list;
-    }
+
+	@Override
+	protected ScreenComponentSlot createScreenSlot(Slot slot) {
+		return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
+	}
+
+	private List<? extends FormattedCharSequence> getEnergyInformation() {
+		ArrayList<FormattedCharSequence> list = new ArrayList<>();
+		TileElectricFurnace box = menu.getHostFromIntArray();
+		if (box != null) {
+			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+			ComponentProcessor processor = box.getProcessor(0);
+
+			list.add(new TranslatableComponent("gui.o2oprocessor.usage",
+					new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.o2oprocessor.voltage",
+					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		}
+		return list;
+	}
 }

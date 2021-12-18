@@ -13,19 +13,19 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerTankGeneric extends GenericContainer<GenericTileTank> {
 
-    public ContainerTankGeneric(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
-    }
+	public ContainerTankGeneric(int id, Inventory playerinv) {
+		this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
+	}
 
-    public ContainerTankGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(DeferredRegisters.CONTAINER_TANK.get(), id, playerinv, inventory, inventorydata);
-    }
+	public ContainerTankGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(DeferredRegisters.CONTAINER_TANK.get(), id, playerinv, inventory, inventorydata);
+	}
 
-    @Override
-    public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new SlotRestricted(inv, nextIndex(), 27, 34, 0, CapabilityUtils.getFluidItemCap()));
-	addSlot(new SlotRestricted(inv, nextIndex(), 133, 34, 0, CapabilityUtils.getFluidItemCap()));
+	@Override
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new SlotRestricted(inv, nextIndex(), 27, 34, 0, CapabilityUtils.getFluidItemCap()));
+		addSlot(new SlotRestricted(inv, nextIndex(), 133, 34, 0, CapabilityUtils.getFluidItemCap()));
 
-    }
+	}
 
 }

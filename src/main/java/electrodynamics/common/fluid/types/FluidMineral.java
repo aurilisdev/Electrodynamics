@@ -9,19 +9,19 @@ import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidMineral extends FluidNonPlaceable {
 
-    public static final String FORGE_TAG = "_mineral_fluid";
+	public static final String FORGE_TAG = "_mineral_fluid";
 
-    public SubtypeMineralFluid mineral;
+	public SubtypeMineralFluid mineral;
 
-    public FluidMineral(SubtypeMineralFluid mineral) {
-	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
-	this.mineral = mineral;
-    }
+	public FluidMineral(SubtypeMineralFluid mineral) {
+		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
+		this.mineral = mineral;
+	}
 
-    @Override
-    protected FluidAttributes createAttributes() {
-	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/mineral"), new ResourceLocation(References.ID + ":fluid/mineral"))
-		.translationKey("fluid.electrodynamics.mineral" + mineral.name()).color(-1383766208).build(this);
-    }
+	@Override
+	protected FluidAttributes createAttributes() {
+		return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/mineral"), new ResourceLocation(References.ID + ":fluid/mineral"))
+				.translationKey("fluid.electrodynamics.mineral" + mineral.name()).color(-1383766208).build(this);
+	}
 
 }

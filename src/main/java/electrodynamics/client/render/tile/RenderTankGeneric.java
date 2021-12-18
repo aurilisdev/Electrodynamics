@@ -9,23 +9,19 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
 public class RenderTankGeneric implements BlockEntityRenderer<GenericTileTank> {
 
-    // private static final float[] X_VERTS = {xMin, xMax};
-    // private static final float[] Z_VERTS = {zMin, zMax};
-    // private static float[] Y_VERTS = {yMin, 0};
-    public RenderTankGeneric(BlockEntityRendererProvider.Context context) {
-    }
+	// private static final float[] X_VERTS = {xMin, xMax};
+	// private static final float[] Z_VERTS = {zMin, zMax};
+	// private static float[] Y_VERTS = {yMin, 0};
+	public RenderTankGeneric(BlockEntityRendererProvider.Context context) {
+	}
 
-    @Override
-    public void render(GenericTileTank tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
-	    int combinedOverlayIn) {
+	@Override
+	public void render(GenericTileTank tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
+			int combinedOverlayIn) {
 
-	/*
-	 * //AbstractFluidHandler<?> tank =
-	 * tileEntityIn.getComponent(ComponentType.FluidHandler); //FluidTank fluidTank
-	 * = tank.getTankFromFluid(null, true); if
-	 * (!fluidTank.getFluid().getFluid().isSame(Fluids.EMPTY)) { // float fluidRatio
-	 * = (float) fluidTank.getFluidAmount() / (float) // fluidTank.getCapacity(); }
-	 */
-    }
+		/*
+		 * //AbstractFluidHandler<?> tank = tileEntityIn.getComponent(ComponentType.FluidHandler); //FluidTank fluidTank = tank.getTankFromFluid(null, true); if (!fluidTank.getFluid().getFluid().isSame(Fluids.EMPTY)) { // float fluidRatio = (float) fluidTank.getFluidAmount() / (float) // fluidTank.getCapacity(); }
+		 */
+	}
 
 }

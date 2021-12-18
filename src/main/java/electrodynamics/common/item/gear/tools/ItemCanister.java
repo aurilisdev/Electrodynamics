@@ -41,110 +41,110 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemCanister extends Item {
 
-    public static final int MAX_FLUID_CAPACITY = 5000;
-    public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
+	public static final int MAX_FLUID_CAPACITY = 5000;
+	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 
-    public static List<ResourceLocation> TAG_NAMES = new ArrayList<>();
+	public static List<ResourceLocation> TAG_NAMES = new ArrayList<>();
 
-    public ItemCanister(Item.Properties itemProperty) {
-	super(itemProperty);
-    }
+	public ItemCanister(Item.Properties itemProperty) {
+		super(itemProperty);
+	}
 
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-	if (allowdedIn(group)) {
-	    items.add(new ItemStack(this));
-	    if (!CapabilityUtils.isFluidItemNull()) {
-		for (Fluid liq : getWhitelistedFluids().getSecond()) {
-		    ItemStack temp = new ItemStack(this);
-		    // For init only; do not use anywhere else!
-		    temp.getCapability(CapabilityUtils.getFluidItemCap())
-			    .ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
-		    temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
-		    items.add(temp);
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if (allowdedIn(group)) {
+			items.add(new ItemStack(this));
+			if (!CapabilityUtils.isFluidItemNull()) {
+				for (Fluid liq : getWhitelistedFluids().getSecond()) {
+					ItemStack temp = new ItemStack(this);
+					// For init only; do not use anywhere else!
+					temp.getCapability(CapabilityUtils.getFluidItemCap())
+							.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
+					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
+					items.add(temp);
 
+				}
+			}
 		}
-	    }
 	}
-    }
 
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-	return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, getWhitelistedFluids());
-    }
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, getWhitelistedFluids());
+	}
 
-    @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-	if (!CapabilityUtils.isFluidItemNull()) {
-	    stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-		if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
-		    FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-		    tooltip.add(
-			    new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
-		    tooltip.add(new TextComponent(cap.getFluid().getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY));
+	@Override
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		if (!CapabilityUtils.isFluidItemNull()) {
+			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
+					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
+					tooltip.add(
+							new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(new TextComponent(cap.getFluid().getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY));
+				}
+			});
 		}
-	    });
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
-	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-    }
 
-    @Override
-    public int getBarWidth(ItemStack stack) {
-	return (int) Math.round(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
-	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-	    return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
-	}).orElse(13.0));
-    }
+	@Override
+	public int getBarWidth(ItemStack stack) {
+		return (int) Math.round(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
+			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
+		}).orElse(13.0));
+	}
 
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-	return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
-		.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
-    }
+	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+				.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
+	}
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-	useCanister(worldIn, playerIn, handIn);
-	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
-    }
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		useCanister(worldIn, playerIn, handIn);
+		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
+	}
 
-    public void useCanister(Level world, Player player, InteractionHand hand) {
-	ItemStack stack = player.getItemInHand(hand);
-	HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
-	if (!world.isClientSide && trace.getType() != Type.MISS && trace.getType() != Type.ENTITY) {
-	    BlockHitResult blockTrace = (BlockHitResult) trace;
-	    BlockPos pos = blockTrace.getBlockPos();
-	    BlockState state = world.getBlockState(pos);
-	    if (state.getFluidState().isSource() && !state.getFluidState().getType().isSame(Fluids.EMPTY)) {
-		FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
-		boolean validFluid = CapabilityUtils.canFillItemStack(stack, sourceFluid);
-		if (validFluid) {
-		    int amtFilled = CapabilityUtils.simFill(stack, sourceFluid);
-		    if (amtFilled >= 1000) {
-			CapabilityUtils.fill(stack, sourceFluid);
-			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
-		    }
+	public void useCanister(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
+		if (!world.isClientSide && trace.getType() != Type.MISS && trace.getType() != Type.ENTITY) {
+			BlockHitResult blockTrace = (BlockHitResult) trace;
+			BlockPos pos = blockTrace.getBlockPos();
+			BlockState state = world.getBlockState(pos);
+			if (state.getFluidState().isSource() && !state.getFluidState().getType().isSame(Fluids.EMPTY)) {
+				FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
+				boolean validFluid = CapabilityUtils.canFillItemStack(stack, sourceFluid);
+				if (validFluid) {
+					int amtFilled = CapabilityUtils.simFill(stack, sourceFluid);
+					if (amtFilled >= 1000) {
+						CapabilityUtils.fill(stack, sourceFluid);
+						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
+					}
+				}
+			}
 		}
-	    }
 	}
-    }
 
-    public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
-	List<Fluid> whitelisted = new ArrayList<>();
-	for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
+	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
+		List<Fluid> whitelisted = new ArrayList<>();
+		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
 
-	    if (fluid.getBucket() != null
-		    && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
-		whitelisted.add(fluid);
-	    }
+			if (fluid.getBucket() != null
+					&& fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+				whitelisted.add(fluid);
+			}
+		}
+		whitelisted.add(Fluids.WATER);
+		return Pair.of(TAG_NAMES, whitelisted);
 	}
-	whitelisted.add(Fluids.WATER);
-	return Pair.of(TAG_NAMES, whitelisted);
-    }
 
-    public static void addTag(Tags.IOptionalNamedTag<Fluid> tag) {
-	TAG_NAMES.add(tag.getName());
-    }
+	public static void addTag(Tags.IOptionalNamedTag<Fluid> tag) {
+		TAG_NAMES.add(tag.getName());
+	}
 
 }

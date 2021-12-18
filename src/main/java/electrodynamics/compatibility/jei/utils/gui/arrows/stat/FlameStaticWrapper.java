@@ -4,8 +4,8 @@ import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
 
 public class FlameStaticWrapper extends ScreenObjectWrapper {
 
-    public FlameStaticWrapper(int xStart, int yStart) {
-	super(ARROWS, xStart, yStart, 0, 30, 14, 13);
-    }
+	public FlameStaticWrapper(int xStart, int yStart) {
+		super(ARROWS, xStart, yStart, 0, 30, 14, 13);
+	}
 
 }

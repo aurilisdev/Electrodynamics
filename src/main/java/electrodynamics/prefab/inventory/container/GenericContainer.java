@@ -19,84 +19,84 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class GenericContainer<T extends BlockEntity> extends AbstractContainerMenu {
 
-    protected final Container inventory;
-    protected final ContainerData inventorydata;
-    protected final Level world;
-    protected final int slotCount;
-    protected final BlockEntity tile;
-    protected int playerInvOffset = 0;
-    private int nextIndex = 0;
+	protected final Container inventory;
+	protected final ContainerData inventorydata;
+	protected final Level world;
+	protected final int slotCount;
+	protected final BlockEntity tile;
+	protected int playerInvOffset = 0;
+	private int nextIndex = 0;
 
-    public int nextIndex() {
-	return nextIndex++;
-    }
-
-    protected GenericContainer(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(type, id);
-	checkContainerSize(inventory, inventory.getContainerSize());
-	checkContainerDataCount(inventorydata, inventorydata.getCount());
-	this.inventory = inventory;
-	this.inventorydata = inventorydata;
-	world = playerinv.player.level;
-	addInventorySlots(inventory, playerinv);
-	slotCount = slots.size();
-	for (int i = 0; i < 3; ++i) {
-	    for (int j = 0; j < 9; ++j) {
-		addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
-	    }
+	public int nextIndex() {
+		return nextIndex++;
 	}
 
-	for (int k = 0; k < 9; ++k) {
-	    addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
+	protected GenericContainer(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(type, id);
+		checkContainerSize(inventory, inventory.getContainerSize());
+		checkContainerDataCount(inventorydata, inventorydata.getCount());
+		this.inventory = inventory;
+		this.inventorydata = inventorydata;
+		world = playerinv.player.level;
+		addInventorySlots(inventory, playerinv);
+		slotCount = slots.size();
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
+			}
+		}
+
+		for (int k = 0; k < 9; ++k) {
+			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
+		}
+
+		tile = inventory instanceof BlockEntity bl ? bl : null;
+
+		addDataSlots(inventorydata);
 	}
 
-	tile = inventory instanceof BlockEntity bl ? bl : null;
+	public abstract void addInventorySlots(Container inv, Inventory playerinv);
 
-	addDataSlots(inventorydata);
-    }
-
-    public abstract void addInventorySlots(Container inv, Inventory playerinv);
-
-    public void clear() {
-	inventory.clearContent();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getSize() {
-	return inventory.getContainerSize();
-    }
-
-    public Container getIInventory() {
-	return inventory;
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-	return inventory.stillValid(player);
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-	return UtilitiesContainers.handleShiftClick(slots, player, index);
-    }
-
-    @Override
-    public void removed(Player player) {
-	super.removed(player);
-	inventory.stopOpen(player);
-    }
-
-    @Nullable
-    public T getHostFromIntArray() {
-	try {
-	    return (T) world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
-	} catch (Exception e) {
-	    return null;
+	public void clear() {
+		inventory.clearContent();
 	}
-    }
 
-    @Nullable
-    public BlockEntity getUnsafeHost() {
-	return world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
-    }
+	@OnlyIn(Dist.CLIENT)
+	public int getSize() {
+		return inventory.getContainerSize();
+	}
+
+	public Container getIInventory() {
+		return inventory;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return inventory.stillValid(player);
+	}
+
+	@Override
+	public ItemStack quickMoveStack(Player player, int index) {
+		return UtilitiesContainers.handleShiftClick(slots, player, index);
+	}
+
+	@Override
+	public void removed(Player player) {
+		super.removed(player);
+		inventory.stopOpen(player);
+	}
+
+	@Nullable
+	public T getHostFromIntArray() {
+		try {
+			return (T) world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Nullable
+	public BlockEntity getUnsafeHost() {
+		return world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
+	}
 }

@@ -12,18 +12,18 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenTankGeneric extends GenericScreen<ContainerTankGeneric> {
 
-    public ScreenTankGeneric(ContainerTankGeneric screenContainer, Inventory inv, Component titleIn) {
-	super(screenContainer, inv, titleIn);
+	public ScreenTankGeneric(ContainerTankGeneric screenContainer, Inventory inv, Component titleIn) {
+		super(screenContainer, inv, titleIn);
 
-	components.add(new ScreenComponentProgress(() -> 0, this, 52, 33));
-	components.add(new ScreenComponentProgress(() -> 0, this, 102, 33));
-	components.add(new ScreenComponentFluid(() -> {
-	    GenericTileTank boiler = menu.getHostFromIntArray();
-	    if (boiler != null) {
-		return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
-	    }
-	    return null;
-	}, this, 81, 18));
-    }
+		components.add(new ScreenComponentProgress(() -> 0, this, 52, 33));
+		components.add(new ScreenComponentProgress(() -> 0, this, 102, 33));
+		components.add(new ScreenComponentFluid(() -> {
+			GenericTileTank boiler = menu.getHostFromIntArray();
+			if (boiler != null) {
+				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+			}
+			return null;
+		}, this, 81, 18));
+	}
 
 }

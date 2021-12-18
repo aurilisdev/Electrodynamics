@@ -15,64 +15,64 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ScreenComponentInfo extends ScreenComponent {
-    public static final int SIZE = 26;
-    private TextPropertySupplier infoHandler;
+	public static final int SIZE = 26;
+	private TextPropertySupplier infoHandler;
 
-    protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IScreenWrapper gui, int x, int y) {
-	super(resource, gui, x, y);
+	protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IScreenWrapper gui, int x, int y) {
+		super(resource, gui, x, y);
 
-	this.infoHandler = infoHandler;
-    }
-
-    @Override
-    public Rectangle getBounds(int guiWidth, int guiHeight) {
-	return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, SIZE, SIZE);
-    }
-
-    @Override
-    public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-	UtilitiesRendering.bindTexture(resource);
-
-	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, SIZE, SIZE);
-    }
-
-    @Override
-    public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
-	if (isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
-	    displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
+		this.infoHandler = infoHandler;
 	}
-    }
 
-    @Override
-    public void preMouseClicked(double xAxis, double yAxis, int button) {
-
-    }
-
-    @Override
-    public void mouseClicked(double xAxis, double yAxis, int button) {
-	if (button == 0 && isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
-	    buttonClicked();
+	@Override
+	public Rectangle getBounds(int guiWidth, int guiHeight) {
+		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, SIZE, SIZE);
 	}
-    }
 
-    @Override
-    public void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
+	@Override
+	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		UtilitiesRendering.bindTexture(resource);
 
-    }
+		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, SIZE, SIZE);
+	}
 
-    @Override
-    public void mouseReleased(double x, double y, int type) {
+	@Override
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
+		if (isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
+			displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
+		}
+	}
 
-    }
+	@Override
+	public void preMouseClicked(double xAxis, double yAxis, int button) {
 
-    @Override
-    public void mouseWheel(double x, double y, double delta) {
+	}
 
-    }
+	@Override
+	public void mouseClicked(double xAxis, double yAxis, int button) {
+		if (button == 0 && isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
+			buttonClicked();
+		}
+	}
 
-    protected abstract List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list);
+	@Override
+	public void mouseClickMove(int mouseX, int mouseY, int button, long ticks) {
 
-    protected void buttonClicked() {
+	}
 
-    }
+	@Override
+	public void mouseReleased(double x, double y, int type) {
+
+	}
+
+	@Override
+	public void mouseWheel(double x, double y, double delta) {
+
+	}
+
+	protected abstract List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list);
+
+	protected void buttonClicked() {
+
+	}
 }

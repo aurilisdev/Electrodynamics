@@ -17,36 +17,36 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileTransformer extends GenericTile {
-    public CachedTileOutput output;
-    public TransferPack lastTransfer = TransferPack.EMPTY;
-    public boolean locked = false;
+	public CachedTileOutput output;
+	public TransferPack lastTransfer = TransferPack.EMPTY;
+	public boolean locked = false;
 
-    public TileTransformer(BlockPos worldPosition, BlockState blockState) {
-	super(DeferredRegisters.TILE_TRANSFORMER.get(), worldPosition, blockState);
-	addComponent(new ComponentDirection());
-	addComponent(
-		new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
-    }
+	public TileTransformer(BlockPos worldPosition, BlockState blockState) {
+		super(DeferredRegisters.TILE_TRANSFORMER.get(), worldPosition, blockState);
+		addComponent(new ComponentDirection());
+		addComponent(
+				new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
+	}
 
-    protected TransferPack receivePower(TransferPack transfer, boolean debug) {
-	Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	if (locked) {
-	    return TransferPack.EMPTY;
+	protected TransferPack receivePower(TransferPack transfer, boolean debug) {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (locked) {
+			return TransferPack.EMPTY;
+		}
+		if (output == null) {
+			output = new CachedTileOutput(level, worldPosition.relative(facing));
+		}
+		boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
+		double resultVoltage = Mth.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 61440.0);
+		locked = true;
+		TransferPack returner = ElectricityUtilities.receivePower(output.getSafe(), facing.getOpposite(),
+				TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
+		locked = false;
+		if (returner.getJoules() > 0) {
+			returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.TRANSFORMER_EFFICIENCY),
+					transfer.getVoltage());
+		}
+		lastTransfer = returner;
+		return returner;
 	}
-	if (output == null) {
-	    output = new CachedTileOutput(level, worldPosition.relative(facing));
-	}
-	boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
-	double resultVoltage = Mth.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 61440.0);
-	locked = true;
-	TransferPack returner = ElectricityUtilities.receivePower(output.getSafe(), facing.getOpposite(),
-		TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
-	locked = false;
-	if (returner.getJoules() > 0) {
-	    returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.TRANSFORMER_EFFICIENCY),
-		    transfer.getVoltage());
-	}
-	lastTransfer = returner;
-	return returner;
-    }
 }

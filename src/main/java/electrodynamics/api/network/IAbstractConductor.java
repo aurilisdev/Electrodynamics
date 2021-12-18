@@ -5,15 +5,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IAbstractConductor {
 
-    void removeFromNetwork();
+	void removeFromNetwork();
 
-    AbstractNetwork<?, ?, ?, ?> getAbstractNetwork();
+	AbstractNetwork<?, ?, ?, ?> getAbstractNetwork();
 
-    void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
+	void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
 
-    BlockEntity[] getAdjacentConnections();
+	BlockEntity[] getAdjacentConnections();
 
-    Object getConductorType();
+	Object getConductorType();
 
-    double getMaxTransfer();
+	double getMaxTransfer();
 }

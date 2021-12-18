@@ -34,131 +34,131 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
 
-    public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
-    public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
-    static {
-	int radius = 1;
-	for (int i = -radius; i <= radius; i++) {
-	    for (int j = -radius; j <= radius; j++) {
-		if (i == 0 && j == 0) {
-		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.block()));
-		} else {
-		    advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.box(0, 13.0 / 16.0, 0, 1, 1, 1)));
+	public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
+	public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
+	static {
+		int radius = 1;
+		for (int i = -radius; i <= radius; i++) {
+			for (int j = -radius; j <= radius; j++) {
+				if (i == 0 && j == 0) {
+					advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.block()));
+				} else {
+					advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.box(0, 13.0 / 16.0, 0, 1, 1, 1)));
+				}
+			}
 		}
-	    }
-	}
-	windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), Shapes.block()));
-    }
-
-    public final SubtypeMachine machine;
-
-    public BlockMachine(SubtypeMachine machine) {
-	super(machine::createTileEntity);
-	this.machine = machine;
-    }
-
-    @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-	if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
-	    TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
-	    if (tile != null && tile.lastTransfer.getJoules() > 0) {
-		UtilitiesElectricity.electrecuteEntity(entityIn, tile.lastTransfer);
-		tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
-	    }
-	}
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-	return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
-    }
-
-    @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-	return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
-		: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-	if (machine.showInItemGroup) {
-	    items.add(new ItemStack(this));
-	}
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-	return machine.getRenderType();
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	ItemStack addstack = switch (machine) {
-	case coalgeneratorrunning -> getMachine(SubtypeMachine.coalgenerator);
-	case electricfurnacerunning -> getMachine(SubtypeMachine.electricfurnace);
-	case oxidationfurnacerunning -> getMachine(SubtypeMachine.oxidationfurnace);
-	case energizedalloyerrunning -> getMachine(SubtypeMachine.energizedalloyer);
-	default -> getMachine(machine);
-	};
-	BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-	tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
-	    double joules = el.getJoulesStored();
-	    if (joules > 0) {
-		addstack.getOrCreateTag().putDouble("joules", joules);
-	    }
-	});
-	return Arrays.asList(addstack);
-    }
-
-    @Override
-    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-
-	switch (machine) {
-	case coalgeneratorrunning:
-	    return 12;
-	case electricfurnacerunning:
-	    return 8;
-	case oxidationfurnacerunning:
-	    return 6;
-	case energizedalloyerrunning:
-	    return 10;
-	default:
-	    return super.getLightEmission(state, world, pos);
+		windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), Shapes.block()));
 	}
 
-    }
+	public final SubtypeMachine machine;
 
-    @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-	super.setPlacedBy(worldIn, pos, state, placer, stack);
-	BlockEntity tile = worldIn.getBlockEntity(pos);
-	if (hasMultiBlock() && tile instanceof IMultiblockTileNode multi) {
-	    multi.onNodePlaced(worldIn, pos, state, placer, stack);
+	public BlockMachine(SubtypeMachine machine) {
+		super(machine::createTileEntity);
+		this.machine = machine;
 	}
-    }
 
-    @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-	boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
-	if (hasMultiBlock()) {
-	    BlockEntity tile = worldIn.getBlockEntity(pos);
-	    if (tile instanceof IMultiblockTileNode multi) {
-		multi.onNodeReplaced(worldIn, pos, !update);
-	    }
+	@Override
+	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+		if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
+			TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
+			if (tile != null && tile.lastTransfer.getJoules() > 0) {
+				UtilitiesElectricity.electrecuteEntity(entityIn, tile.lastTransfer);
+				tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
+			}
+		}
 	}
-	if (update) {
-	    super.onRemove(state, worldIn, pos, newState, isMoving);
-	} else {
-	    worldIn.setBlocksDirty(pos, state, newState);
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
 	}
-    }
 
-    @Override
-    public boolean hasMultiBlock() {
-	return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.windmill;
-    }
+	@Override
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+		return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
+				: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
+	}
 
-    private static ItemStack getMachine(SubtypeMachine inputMachine) {
-	return new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(inputMachine));
-    }
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if (machine.showInItemGroup) {
+			items.add(new ItemStack(this));
+		}
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState state) {
+		return machine.getRenderType();
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		ItemStack addstack = switch (machine) {
+		case coalgeneratorrunning -> getMachine(SubtypeMachine.coalgenerator);
+		case electricfurnacerunning -> getMachine(SubtypeMachine.electricfurnace);
+		case oxidationfurnacerunning -> getMachine(SubtypeMachine.oxidationfurnace);
+		case energizedalloyerrunning -> getMachine(SubtypeMachine.energizedalloyer);
+		default -> getMachine(machine);
+		};
+		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
+			double joules = el.getJoulesStored();
+			if (joules > 0) {
+				addstack.getOrCreateTag().putDouble("joules", joules);
+			}
+		});
+		return Arrays.asList(addstack);
+	}
+
+	@Override
+	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+
+		switch (machine) {
+		case coalgeneratorrunning:
+			return 12;
+		case electricfurnacerunning:
+			return 8;
+		case oxidationfurnacerunning:
+			return 6;
+		case energizedalloyerrunning:
+			return 10;
+		default:
+			return super.getLightEmission(state, world, pos);
+		}
+
+	}
+
+	@Override
+	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		BlockEntity tile = worldIn.getBlockEntity(pos);
+		if (hasMultiBlock() && tile instanceof IMultiblockTileNode multi) {
+			multi.onNodePlaced(worldIn, pos, state, placer, stack);
+		}
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
+		if (hasMultiBlock()) {
+			BlockEntity tile = worldIn.getBlockEntity(pos);
+			if (tile instanceof IMultiblockTileNode multi) {
+				multi.onNodeReplaced(worldIn, pos, !update);
+			}
+		}
+		if (update) {
+			super.onRemove(state, worldIn, pos, newState, isMoving);
+		} else {
+			worldIn.setBlocksDirty(pos, state, newState);
+		}
+	}
+
+	@Override
+	public boolean hasMultiBlock() {
+		return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.windmill;
+	}
+
+	private static ItemStack getMachine(SubtypeMachine inputMachine) {
+		return new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(inputMachine));
+	}
 }

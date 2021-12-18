@@ -15,20 +15,20 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerBatteryBox extends GenericContainer<TileBatteryBox> {
 
-    public ContainerBatteryBox(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
-    }
+	public ContainerBatteryBox(int id, Inventory playerinv) {
+		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
+	}
 
-    public ContainerBatteryBox(int id, Inventory pinv, Container inv, ContainerData data) {
-	super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
-    }
+	public ContainerBatteryBox(int id, Inventory pinv, Container inv, ContainerData data) {
+		super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
+	}
 
-    @Override
-    public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
-	addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
-	addSlot(new SlotRestricted(inv, nextIndex(), 133, 14, false, ItemElectric.class));
-    }
+	@Override
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
+		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
+		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
+		addSlot(new SlotRestricted(inv, nextIndex(), 133, 14, false, ItemElectric.class));
+	}
 
 }

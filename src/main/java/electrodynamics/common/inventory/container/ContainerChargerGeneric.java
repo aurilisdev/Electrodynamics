@@ -13,18 +13,18 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerChargerGeneric extends GenericContainer<GenericTileCharger> {
 
-    public ContainerChargerGeneric(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
-    }
+	public ContainerChargerGeneric(int id, Inventory playerinv) {
+		this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
+	}
 
-    public ContainerChargerGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(DeferredRegisters.CONTAINER_CHARGER.get(), id, playerinv, inventory, inventorydata);
-    }
+	public ContainerChargerGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(DeferredRegisters.CONTAINER_CHARGER.get(), id, playerinv, inventory, inventorydata);
+	}
 
-    @Override
-    public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new GenericSlot(inv, nextIndex(), 95, 34));
-	addSlot(new SlotRestricted(inv, nextIndex(), 145, 34));
-    }
+	@Override
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new GenericSlot(inv, nextIndex(), 95, 34));
+		addSlot(new SlotRestricted(inv, nextIndex(), 145, 34));
+	}
 
 }

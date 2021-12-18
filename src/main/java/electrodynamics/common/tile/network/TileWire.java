@@ -10,45 +10,45 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileWire extends GenericTileWire {
-    public double transmit = 0;
+	public double transmit = 0;
 
-    public TileWire(BlockPos pos, BlockState state) {
-	super(DeferredRegisters.TILE_WIRE.get(), pos, state);
-    }
-
-    public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType, BlockPos pos, BlockState state) {
-	super(tileEntityType, pos, state);
-    }
-
-    public SubtypeWire wire = null;
-
-    @Override
-    public SubtypeWire getWireType() {
-	if (wire == null) {
-	    wire = ((BlockWire) getBlockState().getBlock()).wire;
+	public TileWire(BlockPos pos, BlockState state) {
+		super(DeferredRegisters.TILE_WIRE.get(), pos, state);
 	}
-	return wire;
-    }
 
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-	compound.putInt("ord", getWireType().ordinal());
-	super.saveAdditional(compound);
-    }
+	public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType, BlockPos pos, BlockState state) {
+		super(tileEntityType, pos, state);
+	}
 
-    @Override
-    public void load(CompoundTag compound) {
-	super.load(compound);
-	wire = SubtypeWire.values()[compound.getInt("ord")];
-    }
+	public SubtypeWire wire = null;
 
-    @Override
-    protected void writeCustomPacket(CompoundTag nbt) {
-	nbt.putDouble("transmit", transmit);
-    }
+	@Override
+	public SubtypeWire getWireType() {
+		if (wire == null) {
+			wire = ((BlockWire) getBlockState().getBlock()).wire;
+		}
+		return wire;
+	}
 
-    @Override
-    protected void readCustomPacket(CompoundTag nbt) {
-	transmit = nbt.getDouble("transmit");
-    }
+	@Override
+	public void saveAdditional(CompoundTag compound) {
+		compound.putInt("ord", getWireType().ordinal());
+		super.saveAdditional(compound);
+	}
+
+	@Override
+	public void load(CompoundTag compound) {
+		super.load(compound);
+		wire = SubtypeWire.values()[compound.getInt("ord")];
+	}
+
+	@Override
+	protected void writeCustomPacket(CompoundTag nbt) {
+		nbt.putDouble("transmit", transmit);
+	}
+
+	@Override
+	protected void readCustomPacket(CompoundTag nbt) {
+		transmit = nbt.getDouble("transmit");
+	}
 }

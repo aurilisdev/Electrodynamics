@@ -11,22 +11,22 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class WireMillRecipe extends Item2ItemRecipe {
 
-    public static final String RECIPE_GROUP = "wire_mill_recipe";
-    public static final String MOD_ID = electrodynamics.api.References.ID;
-    public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final String RECIPE_GROUP = "wire_mill_recipe";
+	public static final String MOD_ID = electrodynamics.api.References.ID;
+	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-    public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output) {
-	super(id, input, output);
-    }
+	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output) {
+		super(id, input, output);
+	}
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipeInit.WIRE_MILL_SERIALIZER.get();
-    }
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return ElectrodynamicsRecipeInit.WIRE_MILL_SERIALIZER.get();
+	}
 
-    @Override
-    public RecipeType<?> getType() {
-	return Registry.RECIPE_TYPE.get(RECIPE_ID);
-    }
+	@Override
+	public RecipeType<?> getType() {
+		return Registry.RECIPE_TYPE.get(RECIPE_ID);
+	}
 
 }

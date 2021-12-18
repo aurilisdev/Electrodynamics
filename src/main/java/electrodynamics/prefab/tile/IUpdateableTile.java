@@ -11,37 +11,37 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkDirection;
 
 public interface IUpdateableTile {
-    CompoundTag writeCustomPacket();
+	CompoundTag writeCustomPacket();
 
-    CompoundTag writeGUIPacket();
+	CompoundTag writeGUIPacket();
 
-    void readGUIPacket(CompoundTag nbt);
+	void readGUIPacket(CompoundTag nbt);
 
-    void readCustomPacket(CompoundTag nbt);
+	void readCustomPacket(CompoundTag nbt);
 
-    default BlockEntity getTile() {
-	return (BlockEntity) this;
-    }
-
-    default void sendCustomPacket() {
-	PacketUpdateTile packet = new PacketUpdateTile(this, false);
-	BlockEntity source = getTile();
-	Level world = source.getLevel();
-	BlockPos pos = source.getBlockPos();
-	if (world instanceof ServerLevel s) {
-	    s.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+	default BlockEntity getTile() {
+		return (BlockEntity) this;
 	}
-    }
 
-    default void sendGUIPacket() {
-	PacketUpdateTile packet = new PacketUpdateTile(this, true);
-	BlockEntity source = getTile();
-	Level world = source.getLevel();
-	BlockPos pos = source.getBlockPos();
-	if (world instanceof ServerLevel s) {
-	    s.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+	default void sendCustomPacket() {
+		PacketUpdateTile packet = new PacketUpdateTile(this, false);
+		BlockEntity source = getTile();
+		Level world = source.getLevel();
+		BlockPos pos = source.getBlockPos();
+		if (world instanceof ServerLevel s) {
+			s.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+					.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+		}
 	}
-    }
+
+	default void sendGUIPacket() {
+		PacketUpdateTile packet = new PacketUpdateTile(this, true);
+		BlockEntity source = getTile();
+		Level world = source.getLevel();
+		BlockPos pos = source.getBlockPos();
+		if (world instanceof ServerLevel s) {
+			s.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+					.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+		}
+	}
 }
