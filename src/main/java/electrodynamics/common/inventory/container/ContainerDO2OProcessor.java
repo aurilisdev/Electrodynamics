@@ -22,13 +22,13 @@ public class ContainerDO2OProcessor extends GenericContainer<GenericTile> {
 	this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(3));
     }
 
-    public ContainerDO2OProcessor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), id, playerinv, inventory, inventorydata);
-    }
+	public ContainerDO2OProcessor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(DeferredRegisters.CONTAINER_DO2OPROCESSOR.get(), id, playerinv, inventory, inventorydata);
+	}
 
-    public ContainerDO2OProcessor(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(type, id, playerinv, inventory, inventorydata);
-    }
+	public ContainerDO2OProcessor(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(type, id, playerinv, inventory, inventorydata);
+	}
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {

@@ -13,21 +13,21 @@ import net.minecraft.world.item.Items;
 
 public class ContainerCoalGenerator extends GenericContainer<TileCoalGenerator> {
 
-    public ContainerCoalGenerator(int id, Inventory playerinv) {
-	this(id, playerinv, new SimpleContainer(1));
-    }
+	public ContainerCoalGenerator(int id, Inventory playerinv) {
+		this(id, playerinv, new SimpleContainer(1));
+	}
 
-    public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory) {
-	this(id, playerinv, inventory, new SimpleContainerData(3));
-    }
+	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory) {
+		this(id, playerinv, inventory, new SimpleContainerData(3));
+	}
 
-    public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-	super(DeferredRegisters.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
-    }
+	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(DeferredRegisters.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
+	}
 
-    @Override
-    public void addInventorySlots(Container inv, Inventory playerinv) {
-	addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
-    }
+	@Override
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
+	}
 
 }

@@ -6,24 +6,24 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class ComponentName implements Component {
-    protected boolean translation;
-    protected String name = "";
+	protected boolean translation;
+	protected String name = "";
 
-    public ComponentName(String name) {
-	this.name = name;
-    }
+	public ComponentName(String name) {
+		this.name = name;
+	}
 
-    public ComponentName translation(boolean value) {
-	translation = value;
-	return this;
-    }
+	public ComponentName translation(boolean value) {
+		translation = value;
+		return this;
+	}
 
-    public net.minecraft.network.chat.Component getName() {
-	return translation ? new TranslatableComponent(name) : new TextComponent(name);
-    }
+	public net.minecraft.network.chat.Component getName() {
+		return translation ? new TranslatableComponent(name) : new TextComponent(name);
+	}
 
-    @Override
-    public ComponentType getType() {
-	return ComponentType.Name;
-    }
+	@Override
+	public ComponentType getType() {
+		return ComponentType.Name;
+	}
 }

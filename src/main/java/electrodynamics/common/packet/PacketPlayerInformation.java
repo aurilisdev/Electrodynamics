@@ -12,35 +12,35 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class PacketPlayerInformation {
 
-    private String information;
+	private String information;
 
-    public PacketPlayerInformation() {
-	String actual = "";
-	List<ModInfo> total = FMLLoader.getLoadingModList().getMods();
-	for (ModInfo info : total) {
-	    actual += info.getModId() + ":";
+	public PacketPlayerInformation() {
+		String actual = "";
+		List<ModInfo> total = FMLLoader.getLoadingModList().getMods();
+		for (ModInfo info : total) {
+			actual += info.getModId() + ":";
+		}
+		for (Pack pack : Minecraft.getInstance().getResourcePackRepository().getAvailablePacks()) {
+			actual += pack.getId() + "," + pack.getTitle().getString() + "," + pack.getDescription() + ":";
+		}
+		information = actual;
 	}
-	for (Pack pack : Minecraft.getInstance().getResourcePackRepository().getAvailablePacks()) {
-	    actual += pack.getId() + "," + pack.getTitle().getString() + "," + pack.getDescription() + ":";
+
+	public PacketPlayerInformation(String info) {
+		information = info;
 	}
-	information = actual;
-    }
 
-    public PacketPlayerInformation(String info) {
-	information = info;
-    }
+	public static void handle(PacketPlayerInformation message, Supplier<Context> context) {
+		Context ctx = context.get();
+		ctx.enqueueWork(() -> NetworkHandler.playerInformation.put(context.get().getSender().getName().getString(), message.information));
+		ctx.setPacketHandled(true);
+	}
 
-    public static void handle(PacketPlayerInformation message, Supplier<Context> context) {
-	Context ctx = context.get();
-	ctx.enqueueWork(() -> NetworkHandler.playerInformation.put(context.get().getSender().getName().getString(), message.information));
-	ctx.setPacketHandled(true);
-    }
+	public static void encode(PacketPlayerInformation pkt, FriendlyByteBuf buf) {
+		buf.writeUtf(pkt.information);
+	}
 
-    public static void encode(PacketPlayerInformation pkt, FriendlyByteBuf buf) {
-	buf.writeUtf(pkt.information);
-    }
-
-    public static PacketPlayerInformation decode(FriendlyByteBuf buf) {
-	return new PacketPlayerInformation(buf.readUtf(999999));
-    }
+	public static PacketPlayerInformation decode(FriendlyByteBuf buf) {
+		return new PacketPlayerInformation(buf.readUtf(999999));
+	}
 }

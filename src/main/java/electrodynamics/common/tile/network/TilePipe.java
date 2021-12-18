@@ -9,41 +9,41 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TilePipe extends GenericTilePipe {
-    public double transmit = 0;
+	public double transmit = 0;
 
-    public TilePipe(BlockPos pos, BlockState state) {
-	super(DeferredRegisters.TILE_PIPE.get(), pos, state);
-    }
-
-    public SubtypePipe pipe = null;
-
-    @Override
-    public SubtypePipe getPipeType() {
-	if (pipe == null) {
-	    pipe = ((BlockPipe) getBlockState().getBlock()).pipe;
+	public TilePipe(BlockPos pos, BlockState state) {
+		super(DeferredRegisters.TILE_PIPE.get(), pos, state);
 	}
-	return pipe;
-    }
 
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-	compound.putInt("ord", getPipeType().ordinal());
-	super.saveAdditional(compound);
-    }
+	public SubtypePipe pipe = null;
 
-    @Override
-    public void load(CompoundTag compound) {
-	super.load(compound);
-	pipe = SubtypePipe.values()[compound.getInt("ord")];
-    }
+	@Override
+	public SubtypePipe getPipeType() {
+		if (pipe == null) {
+			pipe = ((BlockPipe) getBlockState().getBlock()).pipe;
+		}
+		return pipe;
+	}
 
-    @Override
-    protected void writeCustomPacket(CompoundTag nbt) {
-	nbt.putDouble("transmit", transmit);
-    }
+	@Override
+	public void saveAdditional(CompoundTag compound) {
+		compound.putInt("ord", getPipeType().ordinal());
+		super.saveAdditional(compound);
+	}
 
-    @Override
-    protected void readCustomPacket(CompoundTag nbt) {
-	transmit = nbt.getDouble("transmit");
-    }
+	@Override
+	public void load(CompoundTag compound) {
+		super.load(compound);
+		pipe = SubtypePipe.values()[compound.getInt("ord")];
+	}
+
+	@Override
+	protected void writeCustomPacket(CompoundTag nbt) {
+		nbt.putDouble("transmit", transmit);
+	}
+
+	@Override
+	protected void readCustomPacket(CompoundTag nbt) {
+		transmit = nbt.getDouble("transmit");
+	}
 }

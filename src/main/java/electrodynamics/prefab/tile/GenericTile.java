@@ -32,165 +32,165 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GenericTile extends BlockEntity implements Nameable {
-    private Component[] components = new Component[ComponentType.values().length];
-    private ComponentProcessor[] processors = new ComponentProcessor[5];
+	private Component[] components = new Component[ComponentType.values().length];
+	private ComponentProcessor[] processors = new ComponentProcessor[5];
 
-    public boolean hasComponent(ComponentType type) {
-	return components[type.ordinal()] != null;
-    }
-
-    public <T extends Component> T getComponent(ComponentType type) {
-	return !hasComponent(type) ? null : (T) components[type.ordinal()];
-    }
-
-    public ComponentProcessor getProcessor(int id) {
-	return processors[id];
-    }
-
-    public GenericTile addProcessor(ComponentProcessor processor) {
-	for (int i = 0; i < processors.length; i++) {
-	    if (processors[i] == null) {
-		processors[i] = processor;
-		processor.holder(this);
-		break;
-	    }
+	public boolean hasComponent(ComponentType type) {
+		return components[type.ordinal()] != null;
 	}
-	return this;
-    }
 
-    public GenericTile addComponent(Component component) {
-	component.holder(this);
-	if (hasComponent(component.getType())) {
-	    throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
+	public <T extends Component> T getComponent(ComponentType type) {
+		return !hasComponent(type) ? null : (T) components[type.ordinal()];
 	}
-	components[component.getType().ordinal()] = component;
-	return this;
-    }
 
-    @Deprecated(forRemoval = false, since = "Try not using this method.")
-    public GenericTile forceComponent(Component component) {
-	component.holder(this);
-	components[component.getType().ordinal()] = component;
-	return this;
-    }
+	public ComponentProcessor getProcessor(int id) {
+		return processors[id];
+	}
 
-    @Override
-    public void load(CompoundTag compound) {
-	for (Component component : components) {
-	    if (component != null) {
+	public GenericTile addProcessor(ComponentProcessor processor) {
+		for (int i = 0; i < processors.length; i++) {
+			if (processors[i] == null) {
+				processors[i] = processor;
+				processor.holder(this);
+				break;
+			}
+		}
+		return this;
+	}
+
+	public GenericTile addComponent(Component component) {
 		component.holder(this);
-		component.loadFromNBT(compound);
-	    }
+		if (hasComponent(component.getType())) {
+			throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
+		}
+		components[component.getType().ordinal()] = component;
+		return this;
 	}
-	for (ComponentProcessor pr : processors) {
-	    if (pr != null) {
-		pr.holder(this);
-		pr.loadFromNBT(compound);
-	    }
-	}
-    }
 
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-	for (Component component : components) {
-	    if (component != null) {
+	@Deprecated(forRemoval = false, since = "Try not using this method.")
+	public GenericTile forceComponent(Component component) {
 		component.holder(this);
-		component.saveToNBT(compound);
-	    }
+		components[component.getType().ordinal()] = component;
+		return this;
 	}
-	for (ComponentProcessor pr : processors) {
-	    if (pr != null) {
-		pr.holder(this);
-		pr.saveToNBT(compound);
-	    }
-	}
-	super.save(compound); // Just because it existed in 1.17. Might not need this but doesnt hurt i think.
-    }
 
-    protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
-	super(tileEntityTypeIn, worldPos, blockState);
-    }
-
-    @Override
-    public void onLoad() {
-	super.onLoad();
-	// JSON recipe fluids have to be added at load time
-	if (hasComponent(ComponentType.FluidHandler)) {
-	    AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
-	    tank.addFluids();
+	@Override
+	public void load(CompoundTag compound) {
+		for (Component component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.loadFromNBT(compound);
+			}
+		}
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				pr.holder(this);
+				pr.loadFromNBT(compound);
+			}
+		}
 	}
-	if (hasComponent(ComponentType.PacketHandler)) {
-	    Scheduler.schedule(1, () -> {
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-	    });
-	}
-    }
 
-    @Override
-    public net.minecraft.network.chat.Component getName() {
-	return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName()
-		: new TextComponent(References.ID + ".default.tile.name");
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
-	    return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
+	@Override
+	public void saveAdditional(CompoundTag compound) {
+		for (Component component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.saveToNBT(compound);
+			}
+		}
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				pr.holder(this);
+				pr.saveToNBT(compound);
+			}
+		}
+		super.save(compound); // Just because it existed in 1.17. Might not need this but doesnt hurt i think.
 	}
-	if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && components[ComponentType.FluidHandler.ordinal()] != null) {
-	    return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
-	}
-	if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && components[ComponentType.Inventory.ordinal()] != null) {
-	    return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
-	}
-	return super.getCapability(cap, side);
-    }
 
-    @Override
-    public void setRemoved() {
-	super.setRemoved();
-	for (Component component : components) {
-	    if (component != null) {
-		component.holder(this);
-		component.remove();
-	    }
+	protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+		super(tileEntityTypeIn, worldPos, blockState);
 	}
-	for (ComponentProcessor pr : processors) {
-	    if (pr != null) {
-		pr.holder(this);
-		pr.remove();
-	    }
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		// JSON recipe fluids have to be added at load time
+		if (hasComponent(ComponentType.FluidHandler)) {
+			AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
+			tank.addFluids();
+		}
+		if (hasComponent(ComponentType.PacketHandler)) {
+			Scheduler.schedule(1, () -> {
+				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+			});
+		}
 	}
-    }
 
-    public SimpleContainerData getCoordsArray() {
-	SimpleContainerData array = new SimpleContainerData(3);
-	array.set(0, worldPosition.getX());
-	array.set(1, worldPosition.getY());
-	array.set(2, worldPosition.getZ());
-	return array;
-    }
-
-    @Override
-    public BlockPos getBlockPos() {
-	return worldPosition;
-    }
-
-    protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
-	return (x, y, i) -> x < i.inputs()
-		|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
-		|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
-    }
-
-    protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator(int[] ints) {
-	List<Integer> list = new ArrayList<>();
-	for (int i : ints) {
-	    list.add(i);
+	@Override
+	public net.minecraft.network.chat.Component getName() {
+		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName()
+				: new TextComponent(References.ID + ".default.tile.name");
 	}
-	return (x, y, i) -> list.contains(x)
-		|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
-		|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
-    }
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
+			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
+		}
+		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && components[ComponentType.FluidHandler.ordinal()] != null) {
+			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
+		}
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && components[ComponentType.Inventory.ordinal()] != null) {
+			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
+		}
+		return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		for (Component component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.remove();
+			}
+		}
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				pr.holder(this);
+				pr.remove();
+			}
+		}
+	}
+
+	public SimpleContainerData getCoordsArray() {
+		SimpleContainerData array = new SimpleContainerData(3);
+		array.set(0, worldPosition.getX());
+		array.set(1, worldPosition.getY());
+		array.set(2, worldPosition.getZ());
+		return array;
+	}
+
+	@Override
+	public BlockPos getBlockPos() {
+		return worldPosition;
+	}
+
+	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
+		return (x, y, i) -> x < i.inputs()
+				|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
+				|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
+	}
+
+	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator(int[] ints) {
+		List<Integer> list = new ArrayList<>();
+		for (int i : ints) {
+			list.add(i);
+		}
+		return (x, y, i) -> list.contains(x)
+				|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
+				|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
+	}
 
 }

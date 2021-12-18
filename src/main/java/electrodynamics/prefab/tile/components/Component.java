@@ -7,25 +7,25 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public interface Component {
-    ComponentType getType();
+	ComponentType getType();
 
-    default void holder(GenericTile holder) {
-    }
+	default void holder(GenericTile holder) {
+	}
 
-    default void loadFromNBT(CompoundTag nbt) {
-    }
+	default void loadFromNBT(CompoundTag nbt) {
+	}
 
-    default void saveToNBT(CompoundTag nbt) {
-    }
+	default void saveToNBT(CompoundTag nbt) {
+	}
 
-    default void remove() {
-    }
+	default void remove() {
+	}
 
-    default boolean hasCapability(Capability<?> capability, Direction side) {
-	return false;
-    }
+	default boolean hasCapability(Capability<?> capability, Direction side) {
+		return false;
+	}
 
-    default <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-	return null;
-    }
+	default <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+		return null;
+	}
 }

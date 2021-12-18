@@ -7,5 +7,5 @@ import net.minecraftforge.fluids.IFluidTank;
 @OnlyIn(Dist.CLIENT)
 @FunctionalInterface
 public interface FluidTankSupplier {
-    IFluidTank getTank();
+	IFluidTank getTank();
 }

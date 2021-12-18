@@ -38,47 +38,47 @@ import net.minecraftforge.registries.RegistryObject;
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class Electrodynamics {
 
-    public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
+	public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
 
-    public static final Random RANDOM = new Random();
+	public static final Random RANDOM = new Random();
 
-    public Electrodynamics() {
-	ConfigurationHandler.registerConfig(Constants.class);
-	ConfigurationHandler.registerConfig(OreConfig.class);
-	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-	SoundRegister.SOUNDS.register(bus);
-	DeferredRegisters.BLOCKS.register(bus);
-	DeferredRegisters.ITEMS.register(bus);
-	DeferredRegisters.TILES.register(bus);
-	DeferredRegisters.CONTAINERS.register(bus);
-	DeferredRegisters.FLUIDS.register(bus);
-	DeferredRegisters.ENTITIES.register(bus);
-	Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
-	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
-    }
-
-    @SubscribeEvent
-    public static void onCommonSetup(FMLCommonSetupEvent event) {
-	OreGeneration.registerOres();
-	NetworkHandler.init();
-	ElectrodynamicsTags.init();
-    }
-
-    @SubscribeEvent
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-	CapabilityElectrodynamic.register(event);
-	CapabilityCeramicPlateStorage.register(event);
-	CapabilityDirectionalStorage.register(event);
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public static void onClientSetup(FMLClientSetupEvent event) {
-	for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
-	    if (block.get() instanceof BlockCustomGlass) {
-		ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
-	    }
+	public Electrodynamics() {
+		ConfigurationHandler.registerConfig(Constants.class);
+		ConfigurationHandler.registerConfig(OreConfig.class);
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		SoundRegister.SOUNDS.register(bus);
+		DeferredRegisters.BLOCKS.register(bus);
+		DeferredRegisters.ITEMS.register(bus);
+		DeferredRegisters.TILES.register(bus);
+		DeferredRegisters.CONTAINERS.register(bus);
+		DeferredRegisters.FLUIDS.register(bus);
+		DeferredRegisters.ENTITIES.register(bus);
+		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
+		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	}
-	ClientRegister.setup();
-    }
+
+	@SubscribeEvent
+	public static void onCommonSetup(FMLCommonSetupEvent event) {
+		OreGeneration.registerOres();
+		NetworkHandler.init();
+		ElectrodynamicsTags.init();
+	}
+
+	@SubscribeEvent
+	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		CapabilityElectrodynamic.register(event);
+		CapabilityCeramicPlateStorage.register(event);
+		CapabilityDirectionalStorage.register(event);
+	}
+
+	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public static void onClientSetup(FMLClientSetupEvent event) {
+		for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
+			if (block.get() instanceof BlockCustomGlass) {
+				ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
+			}
+		}
+		ClientRegister.setup();
+	}
 }

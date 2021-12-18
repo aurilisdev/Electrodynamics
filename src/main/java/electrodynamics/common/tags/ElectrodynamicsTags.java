@@ -8,7 +8,6 @@ import electrodynamics.common.fluid.types.FluidConcrete;
 import electrodynamics.common.fluid.types.FluidEthanol;
 import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.types.FluidSulfate;
-//import electrodynamics.common.fluid.types.FluidMolybdenum;
 import electrodynamics.common.fluid.types.FluidPolyethylene;
 import electrodynamics.common.fluid.types.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
@@ -20,18 +19,18 @@ import net.minecraftforge.common.Tags;
 
 public class ElectrodynamicsTags {
 
-    public static List<Tags.IOptionalNamedTag<Fluid>> FLUID_TAGS = new ArrayList<>();
+	public static List<Tags.IOptionalNamedTag<Fluid>> FLUID_TAGS = new ArrayList<>();
 
-    public static void init() {
-	Fluids.init();
-    }
+	public static void init() {
+		Fluids.init();
+	}
 
-    public static List<Tags.IOptionalNamedTag<Fluid>> getFluidTags() {
-	return FLUID_TAGS;
-    }
+	public static List<Tags.IOptionalNamedTag<Fluid>> getFluidTags() {
+		return FLUID_TAGS;
+	}
 
-    // Only the Tag objects should ever be visible from this class!
-    public static class Fluids {
+	// Only the Tag objects should ever be visible from this class!
+	public static class Fluids {
 
 	public static final Tags.IOptionalNamedTag<Fluid> SULFURIC_ACID = forgeTag(FluidSulfuricAcid.FORGE_TAG);
 	public static final Tags.IOptionalNamedTag<Fluid> ETHANOL = forgeTag(FluidEthanol.FORGE_TAG);
@@ -83,10 +82,10 @@ public class ElectrodynamicsTags {
 	    ItemCanister.addTag(CONCRETE);
 	}
 
-	private static Tags.IOptionalNamedTag<Fluid> forgeTag(String name) {
-	    return FluidTags.createOptional(new ResourceLocation("forge", name));
-	}
+		private static Tags.IOptionalNamedTag<Fluid> forgeTag(String name) {
+			return FluidTags.createOptional(new ResourceLocation("forge", name));
+		}
 
-    }
+	}
 
 }

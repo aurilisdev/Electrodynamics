@@ -19,67 +19,67 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ScreenComponentGauge extends ScreenComponent {
-    public static int WIDTH = 14;
-    public static int HEIGHT = 49;
+	public static int WIDTH = 14;
+	public static int HEIGHT = 49;
 
-    protected ScreenComponentGauge(IScreenWrapper gui, int x, int y) {
-	super(new ResourceLocation(References.ID + ":textures/screen/component/fluid.png"), gui, x, y);
-    }
+	protected ScreenComponentGauge(IScreenWrapper gui, int x, int y) {
+		super(new ResourceLocation(References.ID + ":textures/screen/component/fluid.png"), gui, x, y);
+	}
 
-    @Override
-    public Rectangle getBounds(int guiWidth, int guiHeight) {
-	return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, WIDTH, HEIGHT);
-    }
+	@Override
+	public Rectangle getBounds(int guiWidth, int guiHeight) {
+		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, WIDTH, HEIGHT);
+	}
 
-    @Override
-    @SuppressWarnings("java:S1874")
-    public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-	UtilitiesRendering.bindTexture(resource);
+	@Override
+	@SuppressWarnings("java:S1874")
+	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		UtilitiesRendering.bindTexture(resource);
 
-	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, WIDTH, HEIGHT);
+		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, WIDTH, HEIGHT);
 
-	ResourceLocation texture = getTexture();
-	int scale = getScaledLevel();
+		ResourceLocation texture = getTexture();
+		int scale = getScaledLevel();
 
-	if (texture != null && scale > 0) {
-	    ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
-	    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(texture);
-	    RenderSystem.setShaderTexture(0, sprite.atlas().getId());
-	    applyColor();
-	    for (int i = 0; i < 16; i += 16) {
-		for (int j = 0; j < scale; j += 16) {
-		    int drawWidth = Math.min(WIDTH - 2 - i, 16);
-		    int drawHeight = Math.min(scale - j, 16);
+		if (texture != null && scale > 0) {
+			ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
+			TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(texture);
+			RenderSystem.setShaderTexture(0, sprite.atlas().getId());
+			applyColor();
+			for (int i = 0; i < 16; i += 16) {
+				for (int j = 0; j < scale; j += 16) {
+					int drawWidth = Math.min(WIDTH - 2 - i, 16);
+					int drawHeight = Math.min(scale - j, 16);
 
-		    int drawX = guiWidth + xLocation + 1;
-		    int drawY = guiHeight + yLocation - 1 + HEIGHT - Math.min(scale - j, HEIGHT);
-		    GuiComponent.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
+					int drawX = guiWidth + xLocation + 1;
+					int drawY = guiHeight + yLocation - 1 + HEIGHT - Math.min(scale - j, HEIGHT);
+					GuiComponent.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
+				}
+			}
+			RenderSystem.setShaderColor(1, 1, 1, 1);
 		}
-	    }
-	    RenderSystem.setShaderColor(1, 1, 1, 1);
+
+		UtilitiesRendering.bindTexture(resource);
+
+		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, WIDTH, 0, WIDTH, HEIGHT);
 	}
 
-	UtilitiesRendering.bindTexture(resource);
+	protected abstract void applyColor();
 
-	gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, WIDTH, 0, WIDTH, HEIGHT);
-    }
+	@Override
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
+		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, WIDTH, HEIGHT)) {
+			Component tooltip = getTooltip();
 
-    protected abstract void applyColor();
-
-    @Override
-    public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
-	if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, WIDTH, HEIGHT)) {
-	    Component tooltip = getTooltip();
-
-	    if (tooltip != null && !tooltip.getString().isEmpty()) {
-		gui.displayTooltip(stack, tooltip, xAxis, yAxis);
-	    }
+			if (tooltip != null && !tooltip.getString().isEmpty()) {
+				gui.displayTooltip(stack, tooltip, xAxis, yAxis);
+			}
+		}
 	}
-    }
 
-    protected abstract int getScaledLevel();
+	protected abstract int getScaledLevel();
 
-    protected abstract ResourceLocation getTexture();
+	protected abstract ResourceLocation getTexture();
 
-    protected abstract Component getTooltip();
+	protected abstract Component getTooltip();
 }

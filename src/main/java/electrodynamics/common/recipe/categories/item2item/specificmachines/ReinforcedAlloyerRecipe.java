@@ -12,9 +12,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class ReinforcedAlloyerRecipe extends Item2ItemRecipe {
 
-    public static final String RECIPE_GROUP = "reinforced_alloyer_recipe";
-    public static final String MOD_ID = electrodynamics.api.References.ID;
-    public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final String RECIPE_GROUP = "reinforced_alloyer_recipe";
+	public static final String MOD_ID = electrodynamics.api.References.ID;
+	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
     public ReinforcedAlloyerRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output) {
 	super(recipeID, inputs, output);
@@ -24,14 +24,14 @@ public class ReinforcedAlloyerRecipe extends Item2ItemRecipe {
     	super(id, input, output, itemBiproducts);
     }
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get();
-    }
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get();
+	}
 
-    @Override
-    public RecipeType<?> getType() {
-	return Registry.RECIPE_TYPE.get(RECIPE_ID);
-    }
+	@Override
+	public RecipeType<?> getType() {
+		return Registry.RECIPE_TYPE.get(RECIPE_ID);
+	}
 
 }

@@ -39,43 +39,43 @@ public class TileEnergizedAlloyer extends GenericTile {
 	addComponent(new ComponentContainerProvider("container.energizedalloyer")
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
-	addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessEnergAlloy)
-		.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.ENERGIZEDALLOYER_REQUIRED_TICKS)
-		.usage(Constants.ENERGIZEDALLOYER_USAGE_PER_TICK));
-    }
+		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessEnergAlloy)
+				.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.ENERGIZEDALLOYER_REQUIRED_TICKS)
+				.usage(Constants.ENERGIZEDALLOYER_USAGE_PER_TICK));
+	}
 
-    protected boolean canProcessEnergAlloy(ComponentProcessor component) {
-	if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE)) {
-	    if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)) {
-		level.setBlock(worldPosition,
-			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning).defaultBlockState()
-				.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-				.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-			2 | 16 | 32);
-	    }
-	    return true;
-	} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)) {
-	    level.setBlock(worldPosition,
-		    DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer).defaultBlockState()
-			    .setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-			    .setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-		    2 | 16 | 32);
+	protected boolean canProcessEnergAlloy(ComponentProcessor component) {
+		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE)) {
+			if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer)) {
+				level.setBlock(worldPosition,
+						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning).defaultBlockState()
+								.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+								.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+						2 | 16 | 32);
+			}
+			return true;
+		} else if (getBlockState().getBlock() == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyerrunning)) {
+			level.setBlock(worldPosition,
+					DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.energizedalloyer).defaultBlockState()
+							.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+							.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
+					2 | 16 | 32);
+		}
+		return false;
 	}
-	return false;
-    }
 
-    protected void tickClient(ComponentTickable tickable) {
-	ComponentProcessor processor = getComponent(ComponentType.Processor);
-	if (processor.operatingTicks > 0 && level.random.nextDouble() < 0.15) {
-	    Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    double d4 = level.random.nextDouble();
-	    double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
-	    double d6 = level.random.nextDouble();
-	    double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
-	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
+	protected void tickClient(ComponentTickable tickable) {
+		ComponentProcessor processor = getComponent(ComponentType.Processor);
+		if (processor.operatingTicks > 0 && level.random.nextDouble() < 0.15) {
+			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			double d4 = level.random.nextDouble();
+			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
+			double d6 = level.random.nextDouble();
+			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
+			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
+		}
+		if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
+			SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+		}
 	}
-	if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
-	    SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
-	}
-    }
 }

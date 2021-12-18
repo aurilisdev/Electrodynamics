@@ -3,6 +3,7 @@ package electrodynamics.common.block.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeOre implements ISubtype {
+
     // default mc values in OrePlacements.class
     tin(1, 16, 9, -16, 112, 3f, 5f), // min + max + perChunk from copper
     silver(2, 8, 9, -64, 48, 4f, 5.5f), // min + max + perChunk based on gold
@@ -49,18 +50,18 @@ public enum SubtypeOre implements ISubtype {
 	this.maxXP = maxXP;
     }
 
-    @Override
-    public String tag() {
-	return "ore" + name();
-    }
+	@Override
+	public String tag() {
+		return "ore" + name();
+	}
 
-    @Override
-    public String forgeTag() {
-	return "ores/" + name();
-    }
+	@Override
+	public String forgeTag() {
+		return "ores/" + name();
+	}
 
-    @Override
-    public boolean isItem() {
-	return false;
-    }
+	@Override
+	public boolean isItem() {
+		return false;
+	}
 }

@@ -12,9 +12,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class MineralGrinderRecipe extends Item2ItemRecipe {
 
-    public static final String RECIPE_GROUP = "mineral_grinder_recipe";
-    public static final String MOD_ID = electrodynamics.api.References.ID;
-    public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final String RECIPE_GROUP = "mineral_grinder_recipe";
+	public static final String MOD_ID = electrodynamics.api.References.ID;
+	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
     public MineralGrinderRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output) {
 	super(id, input, output);
@@ -24,10 +24,10 @@ public class MineralGrinderRecipe extends Item2ItemRecipe {
     	super(id, input, output, itemBiproducts);
     }
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipeInit.MINERAL_GRINDER_SERIALIZER.get();
-    }
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return ElectrodynamicsRecipeInit.MINERAL_GRINDER_SERIALIZER.get();
+	}
 
     @Override
     public RecipeType<?> getType() {

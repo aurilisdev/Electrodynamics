@@ -7,11 +7,11 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
 public class CapabilityTemperature {
 
-    public static Capability<ICapabilityTemperature> TEMPERATURE = CapabilityManager.get(new CapabilityToken<>() {
-    });
+	public static Capability<ICapabilityTemperature> TEMPERATURE = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-    public static void register(RegisterCapabilitiesEvent event) {
-	event.register(ICapabilityTemperature.class);
-    }
+	public static void register(RegisterCapabilitiesEvent event) {
+		event.register(ICapabilityTemperature.class);
+	}
 
 }

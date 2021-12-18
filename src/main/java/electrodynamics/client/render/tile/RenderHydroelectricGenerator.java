@@ -14,16 +14,16 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class RenderHydroelectricGenerator implements BlockEntityRenderer<TileHydroelectricGenerator> {
-    public RenderHydroelectricGenerator(BlockEntityRendererProvider.Context context) {
-    }
+	public RenderHydroelectricGenerator(BlockEntityRendererProvider.Context context) {
+	}
 
-    @Override
-    public void render(TileHydroelectricGenerator tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-	    int combinedLightIn, int combinedOverlayIn) {
-	BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_HYDROELECTRICGENERATORBLADES);
-	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-	float partial = (float) (partialTicks * tileEntityIn.rotationSpeed * (tileEntityIn.directionFlag ? 1 : -1));
-	matrixStackIn.mulPose(new Quaternion((float) ((tileEntityIn.savedTickRotation + partial) * 5f), 0, 0, true));
-	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-    }
+	@Override
+	public void render(TileHydroelectricGenerator tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+			int combinedLightIn, int combinedOverlayIn) {
+		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_HYDROELECTRICGENERATORBLADES);
+		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		float partial = (float) (partialTicks * tileEntityIn.rotationSpeed * (tileEntityIn.directionFlag ? 1 : -1));
+		matrixStackIn.mulPose(new Quaternion((float) ((tileEntityIn.savedTickRotation + partial) * 5f), 0, 0, true));
+		UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	}
 }

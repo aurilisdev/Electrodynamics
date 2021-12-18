@@ -13,61 +13,61 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class ItemRubberArmor extends ArmorItem {
 
-    public ItemRubberArmor(ArmorMaterial materialIn, EquipmentSlot slot, Properties builderIn) {
-	super(materialIn, slot, builderIn);
-    }
+	public ItemRubberArmor(ArmorMaterial materialIn, EquipmentSlot slot, Properties builderIn) {
+		super(materialIn, slot, builderIn);
+	}
 
-    public ItemRubberArmor(EquipmentSlot slot, Properties builderIn) {
-	this(ArmorMaterialRubber.rubber, slot, builderIn);
-    }
-
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-	return References.ID + ":textures/model/rubberarmor.png";
-    }
-
-    public enum ArmorMaterialRubber implements ArmorMaterial {
-	rubber;
-
-	@Override
-	public int getDurabilityForSlot(EquipmentSlot slotIn) {
-	    return 100000;
+	public ItemRubberArmor(EquipmentSlot slot, Properties builderIn) {
+		this(ArmorMaterialRubber.rubber, slot, builderIn);
 	}
 
 	@Override
-	public int getDefenseForSlot(EquipmentSlot slotIn) {
-	    return 2;
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		return References.ID + ":textures/model/rubberarmor.png";
 	}
 
-	@Override
-	public int getEnchantmentValue() {
-	    return 0;
-	}
+	public enum ArmorMaterialRubber implements ArmorMaterial {
+		rubber;
 
-	@Override
-	public SoundEvent getEquipSound() {
-	    return SoundEvents.ARMOR_EQUIP_LEATHER;
-	}
+		@Override
+		public int getDurabilityForSlot(EquipmentSlot slotIn) {
+			return 100000;
+		}
 
-	@Override
-	public Ingredient getRepairIngredient() {
-	    return Ingredient.of(DeferredRegisters.ITEM_INSULATION.get());
-	}
+		@Override
+		public int getDefenseForSlot(EquipmentSlot slotIn) {
+			return 2;
+		}
 
-	@Override
-	public String getName() {
-	    return super.name();
-	}
+		@Override
+		public int getEnchantmentValue() {
+			return 0;
+		}
 
-	@Override
-	public float getToughness() {
-	    return 0;
-	}
+		@Override
+		public SoundEvent getEquipSound() {
+			return SoundEvents.ARMOR_EQUIP_LEATHER;
+		}
 
-	@Override
-	public float getKnockbackResistance() {
-	    return 0;
-	}
+		@Override
+		public Ingredient getRepairIngredient() {
+			return Ingredient.of(DeferredRegisters.ITEM_INSULATION.get());
+		}
 
-    }
+		@Override
+		public String getName() {
+			return super.name();
+		}
+
+		@Override
+		public float getToughness() {
+			return 0;
+		}
+
+		@Override
+		public float getKnockbackResistance() {
+			return 0;
+		}
+
+	}
 }

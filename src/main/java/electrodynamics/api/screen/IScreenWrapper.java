@@ -13,14 +13,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public interface IScreenWrapper {
-    void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h);
+	void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h);
 
-    void drawTexturedRectFromIcon(PoseStack stack, int x, int y, TextureAtlasSprite icon, int w, int h);
+	void drawTexturedRectFromIcon(PoseStack stack, int x, int y, TextureAtlasSprite icon, int w, int h);
 
-    void displayTooltip(PoseStack stack, Component text, int xAxis, int yAxis);
+	void displayTooltip(PoseStack stack, Component text, int xAxis, int yAxis);
 
-    void displayTooltips(PoseStack stack, List<? extends FormattedCharSequence> tooltips, int xAxis, int yAxis);
+	void displayTooltips(PoseStack stack, List<? extends FormattedCharSequence> tooltips, int xAxis, int yAxis);
 
-    Font getFontRenderer();
+	Font getFontRenderer();
 
 }

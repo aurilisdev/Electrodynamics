@@ -16,24 +16,24 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderMineralWasher implements BlockEntityRenderer<TileMineralWasher> {
-    public RenderMineralWasher(BlockEntityRendererProvider.Context context) {
-    }
-
-    @Override
-    public void render(TileMineralWasher tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
-	    int combinedOverlayIn) {
-	ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputContents().get(0).get(0);
-	if (!stack.isEmpty()) {
-	    Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	    matrixStackIn.pushPose();
-	    double scale = 12;
-	    matrixStackIn.translate(0.5 + dir.getStepX() / scale, stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale);
-	    matrixStackIn.scale(0.35f, 0.35f, 0.35f);
-	    matrixStackIn.scale(0.3f, 0.3f, 0.3f);
-	    matrixStackIn.translate(0, -0.2, 0);
-	    Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-		    bufferIn, 0);
-	    matrixStackIn.popPose();
+	public RenderMineralWasher(BlockEntityRendererProvider.Context context) {
 	}
-    }
+
+	@Override
+	public void render(TileMineralWasher tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
+			int combinedOverlayIn) {
+		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputContents().get(0).get(0);
+		if (!stack.isEmpty()) {
+			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			matrixStackIn.pushPose();
+			double scale = 12;
+			matrixStackIn.translate(0.5 + dir.getStepX() / scale, stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale);
+			matrixStackIn.scale(0.35f, 0.35f, 0.35f);
+			matrixStackIn.scale(0.3f, 0.3f, 0.3f);
+			matrixStackIn.translate(0, -0.2, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
+					bufferIn, 0);
+			matrixStackIn.popPose();
+		}
+	}
 }

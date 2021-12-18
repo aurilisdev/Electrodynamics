@@ -14,55 +14,55 @@ import net.minecraftforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentFluid extends ScreenComponentGauge {
-    private FluidTankSupplier fluidInfoHandler;
+	private FluidTankSupplier fluidInfoHandler;
 
-    public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IScreenWrapper gui, int x, int y) {
-	super(gui, x, y);
-	this.fluidInfoHandler = fluidInfoHandler;
-    }
-
-    @Override
-    protected int getScaledLevel() {
-	IFluidTank tank = fluidInfoHandler.getTank();
-	if (tank != null) {
-	    if (tank.getFluidAmount() > 0) {
-		return tank.getFluidAmount() * (HEIGHT - 2) / tank.getCapacity();
-	    }
+	public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IScreenWrapper gui, int x, int y) {
+		super(gui, x, y);
+		this.fluidInfoHandler = fluidInfoHandler;
 	}
 
-	return 0;
-    }
+	@Override
+	protected int getScaledLevel() {
+		IFluidTank tank = fluidInfoHandler.getTank();
+		if (tank != null) {
+			if (tank.getFluidAmount() > 0) {
+				return tank.getFluidAmount() * (HEIGHT - 2) / tank.getCapacity();
+			}
+		}
 
-    @Override
-    protected void applyColor() {
-	IFluidTank tank = fluidInfoHandler.getTank();
-	if (tank != null) {
-	    FluidStack fluidStack = tank.getFluid();
-	    if (!fluidStack.isEmpty()) {
-		UtilitiesRendering.color(fluidStack.getFluid().getAttributes().getColor());
-	    }
+		return 0;
 	}
-    }
 
-    @Override
-    protected ResourceLocation getTexture() {
-	IFluidTank tank = fluidInfoHandler.getTank();
-	if (tank != null) {
-	    FluidStack fluidStack = tank.getFluid();
-	    return fluidStack.getFluid().getAttributes().getStillTexture();
+	@Override
+	protected void applyColor() {
+		IFluidTank tank = fluidInfoHandler.getTank();
+		if (tank != null) {
+			FluidStack fluidStack = tank.getFluid();
+			if (!fluidStack.isEmpty()) {
+				UtilitiesRendering.color(fluidStack.getFluid().getAttributes().getColor());
+			}
+		}
 	}
-	return resource;
-    }
 
-    @Override
-    protected Component getTooltip() {
-	IFluidTank tank = fluidInfoHandler.getTank();
-	if (tank != null) {
-	    FluidStack fluidStack = tank.getFluid();
-	    if (fluidStack.getAmount() > 0) {
-		return new TranslatableComponent(fluidStack.getTranslationKey()).append(new TextComponent(" " + tank.getFluidAmount() + " mB"));
-	    }
+	@Override
+	protected ResourceLocation getTexture() {
+		IFluidTank tank = fluidInfoHandler.getTank();
+		if (tank != null) {
+			FluidStack fluidStack = tank.getFluid();
+			return fluidStack.getFluid().getAttributes().getStillTexture();
+		}
+		return resource;
 	}
-	return FluidStack.EMPTY.getDisplayName();
-    }
+
+	@Override
+	protected Component getTooltip() {
+		IFluidTank tank = fluidInfoHandler.getTank();
+		if (tank != null) {
+			FluidStack fluidStack = tank.getFluid();
+			if (fluidStack.getAmount() > 0) {
+				return new TranslatableComponent(fluidStack.getTranslationKey()).append(new TextComponent(" " + tank.getFluidAmount() + " mB"));
+			}
+		}
+		return FluidStack.EMPTY.getDisplayName();
+	}
 }

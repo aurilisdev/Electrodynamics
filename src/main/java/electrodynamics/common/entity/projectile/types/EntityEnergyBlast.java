@@ -20,48 +20,48 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class EntityEnergyBlast extends EntityCustomProjectile {
 
-    public EntityEnergyBlast(EntityType<? extends ThrowableItemProjectile> type, Level world) {
-	super(type, world);
-    }
-
-    public EntityEnergyBlast(LivingEntity entity, Level world) {
-	super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), entity, world);
-    }
-
-    public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
-	super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
-    }
-
-    @Override
-    protected void onHitBlock(BlockHitResult p_230299_1_) {
-	BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
-	if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
-	    if (!level.isClientSide) {
-		level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(),
-			4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
-	    }
-	    remove(Entity.RemovalReason.DISCARDED);
+	public EntityEnergyBlast(EntityType<? extends ThrowableItemProjectile> type, Level world) {
+		super(type, world);
 	}
-	if (tickCount > 100) {
-	    remove(Entity.RemovalReason.DISCARDED);
-	}
-    }
 
-    @Override
-    public void tick() {
-	super.tick();
-	if (isInWater() || isInLava()) {
-	    remove(Entity.RemovalReason.DISCARDED);
+	public EntityEnergyBlast(LivingEntity entity, Level world) {
+		super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), entity, world);
 	}
-	if (level.isClientSide) {
-	    level.addParticle(new DustParticleOptions(new Vector3f(0.8f, 0, 0.8f), 5), getX(), getY(), getZ(), 0, 0, 0);
-	}
-    }
 
-    @Override
-    public void onHitEntity(EntityHitResult p_213868_1_) {
-	p_213868_1_.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
-	super.onHitEntity(p_213868_1_);
-    }
+	public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
+		super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
+	}
+
+	@Override
+	protected void onHitBlock(BlockHitResult p_230299_1_) {
+		BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
+		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
+			if (!level.isClientSide) {
+				level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(),
+						4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
+			}
+			remove(Entity.RemovalReason.DISCARDED);
+		}
+		if (tickCount > 100) {
+			remove(Entity.RemovalReason.DISCARDED);
+		}
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (isInWater() || isInLava()) {
+			remove(Entity.RemovalReason.DISCARDED);
+		}
+		if (level.isClientSide) {
+			level.addParticle(new DustParticleOptions(new Vector3f(0.8f, 0, 0.8f), 5), getX(), getY(), getZ(), 0, 0, 0);
+		}
+	}
+
+	@Override
+	public void onHitEntity(EntityHitResult p_213868_1_) {
+		p_213868_1_.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
+		super.onHitEntity(p_213868_1_);
+	}
 
 }

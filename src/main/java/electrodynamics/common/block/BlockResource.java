@@ -11,13 +11,13 @@ import net.minecraft.world.level.storage.loot.LootContext.Builder;
 
 public class BlockResource extends Block {
 
-    public BlockResource(SubtypeResourceBlock subtype) {
-	super(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType()));
-    }
+	public BlockResource(SubtypeResourceBlock subtype) {
+		super(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType()));
+	}
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, Builder builder) {
-	return Arrays.asList(new ItemStack(this));
-    }
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		return Arrays.asList(new ItemStack(this));
+	}
 
 }

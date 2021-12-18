@@ -27,95 +27,95 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemUpgrade extends Item {
-    public final SubtypeItemUpgrade subtype;
+	public final SubtypeItemUpgrade subtype;
 
-    public ItemUpgrade(Properties properties, SubtypeItemUpgrade subtype) {
-	super(properties.stacksTo(subtype.maxSize));
-	this.subtype = subtype;
-    }
-
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-	SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
-	if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
-	    return new DirectionalStorageSerializer();
+	public ItemUpgrade(Properties properties, SubtypeItemUpgrade subtype) {
+		super(properties.stacksTo(subtype.maxSize));
+		this.subtype = subtype;
 	}
-	return super.initCapabilities(stack, nbt);
-    }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-	super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	if (subtype == SubtypeItemUpgrade.advancedcapacity || subtype == SubtypeItemUpgrade.basiccapacity) {
-	    double capacityMultiplier = subtype == SubtypeItemUpgrade.advancedcapacity ? 2.25 : 1.5;
-	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
-	    tooltip.add(new TranslatableComponent("tooltip.info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x")
-		    .withStyle(ChatFormatting.RED));
-	}
-	if (subtype == SubtypeItemUpgrade.advancedspeed || subtype == SubtypeItemUpgrade.basicspeed) {
-	    double speedMultiplier = subtype == SubtypeItemUpgrade.advancedspeed ? 2.25 : 1.5;
-	    tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
-	}
-	if (subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
-
-	    if (subtype == SubtypeItemUpgrade.itemoutput) {
-		tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
-	    } else {
-		tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
-	    }
-	    if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean)
-		    .orElse(false)) {
-		tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
-	    }
-	    List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-		    .map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
-	    if (!dirs.isEmpty()) {
-		tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
-		for (int i = 0; i < dirs.size(); i++) {
-		    Direction dir = dirs.get(i);
-		    tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.BLUE));
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+		SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
+		if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
+			return new DirectionalStorageSerializer();
 		}
-		tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.GRAY));
-	    } else {
-		tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.GRAY));
-	    }
-	    tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
+		return super.initCapabilities(stack, nbt);
 	}
-    }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-	if (!world.isClientSide) {
-	    if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
-		ItemStack handStack = player.getItemInHand(hand);
-		if (player.isShiftKeyDown()) {
-		    Vec3 look = player.getLookAngle();
-		    Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-		    handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
-		    return InteractionResultHolder.pass(player.getItemInHand(hand));
+	@Override
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		if (subtype == SubtypeItemUpgrade.advancedcapacity || subtype == SubtypeItemUpgrade.basiccapacity) {
+			double capacityMultiplier = subtype == SubtypeItemUpgrade.advancedcapacity ? 2.25 : 1.5;
+			tooltip.add(new TranslatableComponent("tooltip.info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TranslatableComponent("tooltip.info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x")
+					.withStyle(ChatFormatting.RED));
 		}
-		handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
-	    }
-	}
-	return super.use(world, player, hand);
-    }
+		if (subtype == SubtypeItemUpgrade.advancedspeed || subtype == SubtypeItemUpgrade.basicspeed) {
+			double speedMultiplier = subtype == SubtypeItemUpgrade.advancedspeed ? 2.25 : 1.5;
+			tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
+		}
+		if (subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
 
-    @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-	if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
-	    if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-		entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-			.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
-	    } else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-		entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-			.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
-	    }
+			if (subtype == SubtypeItemUpgrade.itemoutput) {
+				tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
+			} else {
+				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
+			}
+			if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean)
+					.orElse(false)) {
+				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
+			}
+			List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+					.map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
+			if (!dirs.isEmpty()) {
+				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
+				for (int i = 0; i < dirs.size(); i++) {
+					Direction dir = dirs.get(i);
+					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.BLUE));
+				}
+				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.GRAY));
+			} else {
+				tooltip.add(new TranslatableComponent("tooltip.info.nodirs").withStyle(ChatFormatting.GRAY));
+			}
+			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
+		}
 	}
-	return super.onEntitySwing(stack, entity);
-    }
 
-    @Override
-    public boolean isFoil(ItemStack stack) {
-	return stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
-    }
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		if (!world.isClientSide) {
+			if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+				ItemStack handStack = player.getItemInHand(hand);
+				if (player.isShiftKeyDown()) {
+					Vec3 look = player.getLookAngle();
+					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
+					handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
+					return InteractionResultHolder.pass(player.getItemInHand(hand));
+				}
+				handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
+			}
+		}
+		return super.use(world, player, hand);
+	}
+
+	@Override
+	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
+			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+				entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+						.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
+			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
+				entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+						.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
+			}
+		}
+		return super.onEntitySwing(stack, entity);
+	}
+
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
+	}
 }

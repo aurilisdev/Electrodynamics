@@ -13,37 +13,37 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class AbstractFluidRecipe extends ElectrodynamicsRecipe {
 
-    protected AbstractFluidRecipe(ResourceLocation recipeID) {
-	super(recipeID);
-    }
+	protected AbstractFluidRecipe(ResourceLocation recipeID) {
+		super(recipeID);
+	}
 
-    protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts) {
-	super(recipeID, itemBiproducts);
-    }
+	protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts) {
+		super(recipeID, itemBiproducts);
+	}
 
-    protected AbstractFluidRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
-	super(fluidBiproducts, recipeID);
-    }
+	protected AbstractFluidRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
+		super(fluidBiproducts, recipeID);
+	}
 
-    protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
-	super(recipeID, itemBiproducts, fluidBiproducts);
-    }
+	protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+		super(recipeID, itemBiproducts, fluidBiproducts);
+	}
 
-    @Override
-    public ItemStack assemble(RecipeWrapper inv) {
-	return new ItemStack(Items.DIRT, 1);
-    }
+	@Override
+	public ItemStack assemble(RecipeWrapper inv) {
+		return new ItemStack(Items.DIRT, 1);
+	}
 
-    @Override
-    public ItemStack getResultItem() {
-	return new ItemStack(Items.DIRT, 1);
-    }
+	@Override
+	public ItemStack getResultItem() {
+		return new ItemStack(Items.DIRT, 1);
+	}
 
-    @Nullable
-    public FluidStack getFluidRecipeOutput() {
-	return FluidStack.EMPTY;
-    }
+	@Nullable
+	public FluidStack getFluidRecipeOutput() {
+		return FluidStack.EMPTY;
+	}
 
-    public abstract List<FluidIngredient> getFluidIngredients();
+	public abstract List<FluidIngredient> getFluidIngredients();
 
 }

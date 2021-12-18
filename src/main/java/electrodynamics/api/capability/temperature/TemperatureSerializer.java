@@ -8,37 +8,37 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class TemperatureSerializer implements ICapabilitySerializable<CompoundTag> {
 
-    private final TemperatureStorage temperatureHolder = new TemperatureStorage();
-    private final LazyOptional<ICapabilityTemperature> lazyOptional = LazyOptional.of(() -> temperatureHolder);
+	private final TemperatureStorage temperatureHolder = new TemperatureStorage();
+	private final LazyOptional<ICapabilityTemperature> lazyOptional = LazyOptional.of(() -> temperatureHolder);
 
-    public static final String TEMPERATURE_KEY = "plates";
+	public static final String TEMPERATURE_KEY = "plates";
 
-    public void invalidate() {
-	lazyOptional.invalidate();
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	if (cap == CapabilityTemperature.TEMPERATURE) {
-	    return lazyOptional.cast();
+	public void invalidate() {
+		lazyOptional.invalidate();
 	}
-	return LazyOptional.empty();
 
-    }
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityTemperature.TEMPERATURE) {
+			return lazyOptional.cast();
+		}
+		return LazyOptional.empty();
 
-    @Override
-    public CompoundTag serializeNBT() {
-	if (CapabilityTemperature.TEMPERATURE != null) {
-	    CompoundTag nbt = new CompoundTag();
-	    nbt.putInt(TEMPERATURE_KEY, temperatureHolder.getTemperature());
 	}
-	return new CompoundTag();
-    }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-	if (CapabilityTemperature.TEMPERATURE != null) {
-	    temperatureHolder.setTemperature(nbt.getInt(TEMPERATURE_KEY));
+	@Override
+	public CompoundTag serializeNBT() {
+		if (CapabilityTemperature.TEMPERATURE != null) {
+			CompoundTag nbt = new CompoundTag();
+			nbt.putInt(TEMPERATURE_KEY, temperatureHolder.getTemperature());
+		}
+		return new CompoundTag();
 	}
-    }
+
+	@Override
+	public void deserializeNBT(CompoundTag nbt) {
+		if (CapabilityTemperature.TEMPERATURE != null) {
+			temperatureHolder.setTemperature(nbt.getInt(TEMPERATURE_KEY));
+		}
+	}
 }

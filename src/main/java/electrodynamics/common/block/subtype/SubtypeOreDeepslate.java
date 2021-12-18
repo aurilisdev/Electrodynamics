@@ -3,6 +3,7 @@ package electrodynamics.common.block.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeOreDeepslate implements ISubtype {
+
     tin(SubtypeOre.tin.harvestLevel, SubtypeOre.tin.veinsPerChunk, SubtypeOre.tin.veinSize, SubtypeOre.tin.minY, SubtypeOre.tin.maxY,
 	    SubtypeOre.tin.hardness, SubtypeOre.tin.resistance),
     silver(SubtypeOre.silver.harvestLevel, SubtypeOre.silver.veinsPerChunk, SubtypeOre.silver.veinSize, SubtypeOre.silver.minY,
@@ -63,18 +64,18 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	this.maxXP = maxXP;
     }
 
-    @Override
-    public String tag() {
-	return "deepslateore" + name();
-    }
+	@Override
+	public String tag() {
+		return "deepslateore" + name();
+	}
 
-    @Override
-    public String forgeTag() {
-	return "deepslateores/" + name();
-    }
+	@Override
+	public String forgeTag() {
+		return "deepslateores/" + name();
+	}
 
-    @Override
-    public boolean isItem() {
-	return false;
-    }
+	@Override
+	public boolean isItem() {
+		return false;
+	}
 }

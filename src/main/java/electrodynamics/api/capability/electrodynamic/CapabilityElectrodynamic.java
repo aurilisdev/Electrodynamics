@@ -7,12 +7,12 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
 public class CapabilityElectrodynamic {
 
-    public static final double DEFAULT_VOLTAGE = 120.0;
+	public static final double DEFAULT_VOLTAGE = 120.0;
 
-    public static Capability<ICapabilityElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
-    });
+	public static Capability<ICapabilityElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-    public static void register(RegisterCapabilitiesEvent event) {
-	event.register(ICapabilityElectrodynamic.class);
-    }
+	public static void register(RegisterCapabilitiesEvent event) {
+		event.register(ICapabilityElectrodynamic.class);
+	}
 }

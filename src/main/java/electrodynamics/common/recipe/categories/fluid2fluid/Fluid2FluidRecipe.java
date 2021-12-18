@@ -19,60 +19,60 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class Fluid2FluidRecipe extends AbstractFluidRecipe {
 
-    private FluidIngredient[] inputFluidIngredients;
-    private FluidStack outputFluidStack;
+	private FluidIngredient[] inputFluidIngredients;
+	private FluidStack outputFluidStack;
 
-    protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid) {
-	super(recipeID);
-	inputFluidIngredients = inputFluids;
-	outputFluidStack = outputFluid;
-    }
-
-    protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts) {
-	super(recipeID, itemBiproducts);
-	inputFluidIngredients = inputFluids;
-	outputFluidStack = outputFluid;
-    }
-
-    protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
-	super(fluidBiproducts, recipeID);
-	inputFluidIngredients = inputFluids;
-	outputFluidStack = outputFluid;
-    }
-
-    protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts,
-	    ProbableFluid[] fluidBiproducts) {
-	super(recipeID, itemBiproducts, fluidBiproducts);
-	inputFluidIngredients = inputFluids;
-	outputFluidStack = outputFluid;
-    }
-
-    @Override
-    public boolean matchesRecipe(ComponentProcessor pr) {
-	Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(),
-		((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
-	if (Boolean.TRUE.equals(pair.getSecond())) {
-	    setFluidArrangement(pair.getFirst());
-	    return true;
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid) {
+		super(recipeID);
+		inputFluidIngredients = inputFluids;
+		outputFluidStack = outputFluid;
 	}
-	return false;
-    }
 
-    @Override
-    public FluidStack getFluidRecipeOutput() {
-	return outputFluidStack;
-    }
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts) {
+		super(recipeID, itemBiproducts);
+		inputFluidIngredients = inputFluids;
+		outputFluidStack = outputFluid;
+	}
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-	NonNullList<Ingredient> ings = NonNullList.create();
-	ings.addAll(Arrays.asList(inputFluidIngredients));
-	return ings;
-    }
+	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
+		super(fluidBiproducts, recipeID);
+		inputFluidIngredients = inputFluids;
+		outputFluidStack = outputFluid;
+	}
 
-    @Override
-    public List<FluidIngredient> getFluidIngredients() {
-	return Arrays.asList(inputFluidIngredients);
-    }
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts,
+			ProbableFluid[] fluidBiproducts) {
+		super(recipeID, itemBiproducts, fluidBiproducts);
+		inputFluidIngredients = inputFluids;
+		outputFluidStack = outputFluid;
+	}
+
+	@Override
+	public boolean matchesRecipe(ComponentProcessor pr) {
+		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(),
+				((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
+		if (Boolean.TRUE.equals(pair.getSecond())) {
+			setFluidArrangement(pair.getFirst());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public FluidStack getFluidRecipeOutput() {
+		return outputFluidStack;
+	}
+
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		NonNullList<Ingredient> ings = NonNullList.create();
+		ings.addAll(Arrays.asList(inputFluidIngredients));
+		return ings;
+	}
+
+	@Override
+	public List<FluidIngredient> getFluidIngredients() {
+		return Arrays.asList(inputFluidIngredients);
+	}
 
 }

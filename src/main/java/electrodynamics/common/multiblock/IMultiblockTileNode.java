@@ -16,33 +16,33 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface IMultiblockTileNode {
 
-    default void onNodeReplaced(Level world, BlockPos pos, boolean update) {
-	Iterator<Subnode> it = getSubNodes().iterator();
-	while (it.hasNext()) {
-	    BlockPos inPos = it.next().pos;
-	    BlockPos offset = pos.offset(inPos);
-	    BlockState inState = world.getBlockState(offset);
-	    Block inBlock = inState.getBlock();
-	    if (update) {
-		if (inState.getMaterial().isReplaceable()) {
-		    world.setBlockAndUpdate(offset, DeferredRegisters.multi.defaultBlockState());
+	default void onNodeReplaced(Level world, BlockPos pos, boolean update) {
+		Iterator<Subnode> it = getSubNodes().iterator();
+		while (it.hasNext()) {
+			BlockPos inPos = it.next().pos;
+			BlockPos offset = pos.offset(inPos);
+			BlockState inState = world.getBlockState(offset);
+			Block inBlock = inState.getBlock();
+			if (update) {
+				if (inState.getMaterial().isReplaceable()) {
+					world.setBlockAndUpdate(offset, DeferredRegisters.multi.defaultBlockState());
+				}
+				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
+				if (subnode != null) {
+					subnode.nodePos = new Location(pos);
+				}
+			} else if (inBlock instanceof IMultiblockSubnode) {
+				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
+				if (subnode != null && subnode.nodePos.toBlockPos().equals(pos)) {
+					world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
+				}
+			}
 		}
-		TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
-		if (subnode != null) {
-		    subnode.nodePos = new Location(pos);
-		}
-	    } else if (inBlock instanceof IMultiblockSubnode) {
-		TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
-		if (subnode != null && subnode.nodePos.toBlockPos().equals(pos)) {
-		    world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
-		}
-	    }
 	}
-    }
 
-    default void onNodePlaced(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-	onNodeReplaced(world, pos, true);
-    }
+	default void onNodePlaced(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		onNodeReplaced(world, pos, true);
+	}
 
-    HashSet<Subnode> getSubNodes();
+	HashSet<Subnode> getSubNodes();
 }

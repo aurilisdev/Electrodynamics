@@ -37,45 +37,45 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class OreGeneration {
-    private static final HashSet<PlacedFeature> FEATURES = new HashSet<>();
+	private static final HashSet<PlacedFeature> FEATURES = new HashSet<>();
 
-    public static void registerOres() { // called in onCommonSetup(FMLCommonSetupEvent event)
-	for (SubtypeOre ore : SubtypeOre.values()) {
-	    BlockState oreDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState();
-	    BlockState oreDeepslateDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.values()[ore.ordinal()])
-		    .defaultBlockState();
-	    List<TargetBlockState> targetBlockStates = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault),
-		    OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
-	    ConfiguredFeature<?, ?> feature = FeatureUtils.register(ore.tag(),
-		    Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
-	    PlacedFeature placed = PlacementUtils.register(ore.tag(), feature.placed(List.of(
-		    CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(),
-		    HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
-	    FEATURES.add(placed);
-	}
-    }
-
-    @SubscribeEvent
-    public static void gen(BiomeLoadingEvent event) {
-	BiomeGenerationSettingsBuilder gen = event.getGeneration();
-	if (event.getCategory() != BiomeCategory.NETHER && event.getCategory() != BiomeCategory.THEEND) {
-	    for (PlacedFeature feature : FEATURES) {
-		gen.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, feature);
-	    }
-	}
-    }
-
-    public static void generateSulfurAround(Random rand, BlockPos pos, WorldGenLevel level) {
-	for (Direction direction : Direction.values()) {
-	    BlockPos offset = pos.offset(direction.getNormal());
-	    if (rand.nextFloat() < 0.3) {
-		if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
-		    level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.sulfur).defaultBlockState(), 3);
+	public static void registerOres() { // called in onCommonSetup(FMLCommonSetupEvent event)
+		for (SubtypeOre ore : SubtypeOre.values()) {
+			BlockState oreDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState();
+			BlockState oreDeepslateDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.values()[ore.ordinal()])
+					.defaultBlockState();
+			List<TargetBlockState> targetBlockStates = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault),
+					OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
+			ConfiguredFeature<?, ?> feature = FeatureUtils.register(ore.tag(),
+					Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
+			PlacedFeature placed = PlacementUtils.register(ore.tag(), feature.placed(List.of(
+					CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(),
+					HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
+			FEATURES.add(placed);
 		}
-		if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
-		    level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
-		}
-	    }
 	}
-    }
+
+	@SubscribeEvent
+	public static void gen(BiomeLoadingEvent event) {
+		BiomeGenerationSettingsBuilder gen = event.getGeneration();
+		if (event.getCategory() != BiomeCategory.NETHER && event.getCategory() != BiomeCategory.THEEND) {
+			for (PlacedFeature feature : FEATURES) {
+				gen.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, feature);
+			}
+		}
+	}
+
+	public static void generateSulfurAround(Random rand, BlockPos pos, WorldGenLevel level) {
+		for (Direction direction : Direction.values()) {
+			BlockPos offset = pos.offset(direction.getNormal());
+			if (rand.nextFloat() < 0.3) {
+				if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
+					level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.sulfur).defaultBlockState(), 3);
+				}
+				if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
+					level.setBlock(offset, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
+				}
+			}
+		}
+	}
 }
