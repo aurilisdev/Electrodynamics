@@ -36,7 +36,8 @@ public class TileWireMill extends GenericTile {
 		int processorCount = extra + 1;
 		int inputCount = processorInputs * (extra + 1);
 		int outputCount = 1 * (extra + 1);
-		int invSize = 3 + inputCount + outputCount;
+		int biproducts = 1 + extra;
+		int invSize = 3 + inputCount + outputCount + biproducts;
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
@@ -50,7 +51,7 @@ public class TileWireMill extends GenericTile {
 		}
 
 		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount)
-				.processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
+				.processorInputs(processorInputs).biproducts(biproducts).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
 		addComponent(new ComponentContainerProvider("container.wiremill" + extra).createMenu((id, player) -> (extra == 0
 				? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
 				: extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
