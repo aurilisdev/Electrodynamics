@@ -4,7 +4,7 @@
 	"fluidinputs":{
 		"count" : 1, 
 		"0":{
-			"tag":"forge:silver_mineral_fluid",
+			"tag":"forge:silver_sulfate",
 			"amount": 200
 		}
 	},

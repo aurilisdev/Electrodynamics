@@ -34,7 +34,6 @@
 		"electrodynamics:mineralgrindertriple",
 		"electrodynamics:mineralwasher",
 		"electrodynamics:multimeterblock",
-		"electrodynamics:multisubnode",
 		"electrodynamics:oxidationfurnace",
 		"electrodynamics:oxidationfurnacerunning",
 		"electrodynamics:pipesteel",
@@ -47,6 +46,10 @@
 		"electrodynamics:thermoelectricgenerator",
 		"electrodynamics:upgradetransformer",
 		"electrodynamics:windmill",
+		"electrodynamics:cobblestonegenerator",
+		"electrodynamics:creativepowersource",
+		"electrodynamics:creativefluidsource",
+		"electrodynamics:fluidvoid",
 		
 		"electrodynamics:orefluorite",
 		"electrodynamics:oresylvite",

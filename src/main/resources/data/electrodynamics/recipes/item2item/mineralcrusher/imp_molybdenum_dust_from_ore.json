@@ -10,5 +10,13 @@
 	"output": {
 		"item": "electrodynamics:impuredustmolybdenum",
 		"count": 3
+	},
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "electrodynamics:dustsulfur", 
+			"count" : 1,
+			"chance" : 0.3
+		}
 	}
 }

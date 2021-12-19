@@ -29,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
+
 	public ScreenDO2OProcessor(ContainerDO2OProcessor container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
 		components.add(new ScreenComponentProgress(() -> {
@@ -40,7 +41,7 @@ public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
 				}
 			}
 			return 0;
-		}, this, 84, 34));
+		}, this, 84 - ContainerDO2OProcessor.startXOffset, 34));
 		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 

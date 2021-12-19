@@ -13,6 +13,10 @@
 		"electrodynamics:resourceblocksilver",
 		"electrodynamics:resourceblocksteel",
 		"electrodynamics:resourceblockstainlesssteel",
-		"electrodynamics:resourceblockvanadiumsteel"
+		"electrodynamics:resourceblockvanadiumsteel",
+		
+		"electrodynamics:concreteregular",
+		"electrodynamics:concretetile",
+		"electrodynamics:concretebricks"
 	]
 }

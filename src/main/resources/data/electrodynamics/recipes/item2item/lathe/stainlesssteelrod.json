@@ -10,5 +10,13 @@
     "output":{
         "item":"electrodynamics:rodstainlesssteel",
         "count":1
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "electrodynamics:nuggetstainlesssteel", 
+			"count" : 2,
+			"chance" : 1
+		}
+	}
 }

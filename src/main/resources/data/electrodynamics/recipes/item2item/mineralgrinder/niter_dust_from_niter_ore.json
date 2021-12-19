@@ -3,7 +3,7 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0":{
-	        "tag":"forge:ores/niter",
+	        "tag":"forge:ores/saltpeter",
 	        "count":1
 	    }
 	},

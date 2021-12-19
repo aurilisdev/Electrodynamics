@@ -20,6 +20,7 @@ import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowAnimated
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.fluid.GenericFluidGaugeWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
+import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -30,6 +31,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +50,10 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	private Class<T> RECIPE_CATEGORY_CLASS;
 
-	private GenericLabelWrapper[] LABELS;
+    public GenericLabelWrapper[] LABELS;
+    
+    public int itemBiLabelFirstIndex;
+    public int fluidBiLabelFirstIndex;
 
 	private LoadingCache<Integer, List<IDrawableAnimated>> ANIMATED_ARROWS;
 	private LoadingCache<Integer, List<IDrawableStatic>> STATIC_ARROWS;
@@ -98,24 +103,39 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public IDrawable getIcon() {
 		return ICON;
 	}
-
+	
 	public String getRecipeGroup() {
 		return RECIPE_GROUP;
-	}
+    }
+
+    
+    public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
+		Font fontRenderer = Minecraft.getInstance().font;
+		BaseComponent text;
+		for (GenericLabelWrapper wrap : LABELS) {
+			text = wrap.getComponent(this, recipe);
+		    fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+		}
+    }
 
 	public int getAnimationTime() {
 		return ANIMATION_LENGTH;
 	}
 
-	public void addDescriptions(PoseStack stack) {
-		Font fontRenderer = Minecraft.getInstance().font;
-		TranslatableComponent text;
-		for (GenericLabelWrapper wrap : LABELS) {
-			text = new TranslatableComponent("gui.jei.category." + getRecipeGroup() + ".info." + wrap.getName(), getAnimationTime() / 20);
-			fontRenderer.draw(stack, text, wrap.getEndXPos() - fontRenderer.width(text), wrap.getYPos(), wrap.getColor());
-		}
-	}
-
+    public void setLabels(GenericLabelWrapper... labels) {
+    	LABELS = labels;
+    	GenericLabelWrapper wrap;
+    	boolean firstItemBi = false;
+    	for(int i = 0; i < labels.length; i++) {
+    		wrap = labels[i];
+    		if(!firstItemBi && wrap instanceof BiproductPercentWrapper) {
+    			this.itemBiLabelFirstIndex = i;
+    			firstItemBi = true;
+    		}
+    	}
+    	
+    }
+    
 	public void setInputSlots(IGuiHelper guiHelper, GenericItemSlotWrapper... inputSlots) {
 		inSlots = inputSlots;
 		INPUT_SLOTS = CacheBuilder.newBuilder().maximumSize(inputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
@@ -214,10 +234,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 				return arrows;
 			}
 		});
-	}
-
-	public void setLabels(GenericLabelWrapper... labels) {
-		LABELS = labels;
 	}
 
 	public void setItemInputs(IGuiItemStackGroup guiItemStacks) {

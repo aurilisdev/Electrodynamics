@@ -26,18 +26,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileReinforcedAlloyer extends GenericTile {
-	public TileReinforcedAlloyer(BlockPos worldPosition, BlockState blockState) {
+
+    public TileReinforcedAlloyer(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_REINFORCEDALLOYER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 8));
-		addComponent(new ComponentInventory(this).size(3).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
-				.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).upgrades(3).processors(1).processorInputs(2)
-				.valid(machineValidator()));
+		addComponent(new ComponentInventory(this).size(7).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
+			.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).upgrades(3).processors(1).processorInputs(2).biproducts(1)
+			.valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.reinforcedalloyer")
-				.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-
+			.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessReinfAlloy)
 				.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.REINFORCEDALLOYER_REQUIRED_TICKS)
 				.usage(Constants.REINFORCEDALLOYER_USAGE_PER_TICK));

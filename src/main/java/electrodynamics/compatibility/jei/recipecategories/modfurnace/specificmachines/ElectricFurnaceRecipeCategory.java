@@ -31,7 +31,7 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 23);
 	private static FlameStaticWrapper FLAME = new FlameStaticWrapper(5, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(48, BACK_WRAP);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48);
 
 	private static int ANIM_TIME = 50;
 

@@ -33,6 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTileNode, IElectricGenerator {
+
 	public TargetValue currentRotation = new TargetValue(0);
 	protected CachedTileOutput output;
 	private boolean generating = false;

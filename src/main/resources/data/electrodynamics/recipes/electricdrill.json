@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"dp ",
+		"dmp",
 		" sb"
 	],
 	"key": {
@@ -16,6 +16,9 @@
 		},
 		"d": {
 			"item": "electrodynamics:drillheadtitanium"
+		},
+		"m": {
+			"item": "electrodynamics:motor"
 		}
 	},
 	"result": {

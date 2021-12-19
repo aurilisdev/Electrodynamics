@@ -4,7 +4,7 @@
 	"fluidinputs":{
 		"count" : 1, 
 		"0":{
-			"tag":"forge:molybdenum_mineral_fluid",
+			"tag":"forge:molybdenum_sulfate",
 			"amount": 200
 		}
 	},

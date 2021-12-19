@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 public class ContainerTankGeneric extends GenericContainer<GenericTileTank> {
 
 	public ContainerTankGeneric(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
 	}
 
 	public ContainerTankGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

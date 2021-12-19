@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public class ComponentContainerProvider implements Component, MenuProvider {
+
 	protected GenericTile holder = null;
 
 	@Override

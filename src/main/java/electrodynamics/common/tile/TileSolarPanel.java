@@ -23,6 +23,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileSolarPanel extends GenericTile implements IElectricGenerator {
+
 	private CachedTileOutput output;
 	private boolean generating;
 	private double multiplier = 1;

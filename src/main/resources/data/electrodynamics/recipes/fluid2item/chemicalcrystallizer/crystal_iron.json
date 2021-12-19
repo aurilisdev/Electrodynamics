@@ -4,7 +4,7 @@
 	"fluidinputs":{
 		"count" : 1, 
 		"0":{
-			"tag":"forge:iron_mineral_fluid",
+			"tag":"forge:iron_sulfate",
 			"amount": 200
 		}
 	},

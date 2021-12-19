@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"nnn",
+		"nnn",
+		"nnn"
+	],
+	"key": {
+		"n": {
+			"tag": "forge:nuggets/hslasteel"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:ingothslasteel",
+		"count": 1
+	}
+}

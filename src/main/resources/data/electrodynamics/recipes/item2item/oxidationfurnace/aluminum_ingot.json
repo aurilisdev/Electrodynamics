@@ -14,5 +14,13 @@
     "output":{
         "item":"electrodynamics:ingotaluminum",
         "count":1
-    }
+    },
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "electrodynamics:slag", 
+			"count" : 1,
+			"chance" : 0.5
+		}
+	}
 }

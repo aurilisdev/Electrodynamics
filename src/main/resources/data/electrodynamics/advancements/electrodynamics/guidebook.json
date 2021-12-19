@@ -1,0 +1,12 @@
+{
+	"criteria": {
+		"spawn": {
+			"trigger": "minecraft:tick"
+		}
+	},
+	"rewards": {
+		"loot": [
+			"minecraft:advancement_reward/electroguidebook"
+		]
+	}
+}
