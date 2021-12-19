@@ -309,17 +309,21 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		}
 
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
-				new TranslatableComponent("info.jei.item.compositearmor"));
+			new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
-				new TranslatableComponent("info.jei.item.compositearmor"));
+			new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
-				new TranslatableComponent("info.jei.item.compositearmor"));
+			new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
-				new TranslatableComponent("info.jei.item.compositearmor"));
+			new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM,
-				new TranslatableComponent("info.jei.item.upgradeiteminput"));
+			new TranslatableComponent("info.jei.item.upgradeiteminput"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM,
-				new TranslatableComponent("info.jei.item.upgradeitemoutput"));
+			new TranslatableComponent("info.jei.item.upgradeitemoutput"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_PLASMARAILGUN.get()), VanillaTypes.ITEM,
+			new TranslatableComponent("info.jei.item.railgunplasma"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM,
+			new TranslatableComponent("info.jei.item.railgunkinetic"));
 	}
 
 	public static void addO2OClickArea(ResourceLocation loc) {

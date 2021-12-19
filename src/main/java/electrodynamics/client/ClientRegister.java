@@ -30,12 +30,14 @@ import electrodynamics.client.screen.ScreenChemicalMixer;
 import electrodynamics.client.screen.ScreenCoalGenerator;
 import electrodynamics.client.screen.ScreenCobblestoneGenerator;
 import electrodynamics.client.screen.ScreenCombustionChamber;
+import electrodynamics.client.screen.ScreenCreativeFluidSource;
 import electrodynamics.client.screen.ScreenCreativePowerSource;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
 import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.ScreenFermentationPlant;
+import electrodynamics.client.screen.ScreenFluidVoid;
 import electrodynamics.client.screen.ScreenHydroelectricGenerator;
 import electrodynamics.client.screen.ScreenLithiumBatteryBox;
 import electrodynamics.client.screen.ScreenMineralWasher;
@@ -191,6 +193,8 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_HYDROELECTRICGENERATOR.get(), ScreenHydroelectricGenerator::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_COBBLESTONEGENERATOR.get(), ScreenCobblestoneGenerator::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_CREATIVEPOWERSOURCE.get(), ScreenCreativePowerSource::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_CREATIVEFLUIDSOURCE.get(), ScreenCreativeFluidSource::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
 
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());

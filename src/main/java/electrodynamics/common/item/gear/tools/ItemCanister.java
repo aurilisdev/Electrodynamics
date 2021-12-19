@@ -136,9 +136,11 @@ public class ItemCanister extends Item {
 
 	    if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null 
 		    && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
-		whitelisted.add(fluid);
-	    }
+	    		whitelisted.add(fluid);
+	    	}
 		}
+		whitelisted.add(Fluids.WATER);
+		whitelisted.add(Fluids.LAVA);
 		return Pair.of(TAG_NAMES, whitelisted);
 	}
 

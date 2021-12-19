@@ -59,7 +59,7 @@ public class Electrodynamics {
 
 	@SubscribeEvent
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
-		//OreGeneration.registerOres();
+		OreGeneration.registerOres();
 		NetworkHandler.init();
 		ElectrodynamicsTags.init();
 	}

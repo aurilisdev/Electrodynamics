@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"bbb",
+		"bcb",
+		"bbb"
+	],
+	"key": {
+		"b": {
+			"item": "minecraft:bucket"
+		},
+		"c": {
+			"item": "electrodynamics:creativepowersource"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:creativefluidsource",
+		"count": 1
+	}
+}
