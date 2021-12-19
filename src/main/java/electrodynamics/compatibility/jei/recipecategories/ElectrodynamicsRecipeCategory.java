@@ -50,10 +50,10 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	private Class<T> RECIPE_CATEGORY_CLASS;
 
-    public GenericLabelWrapper[] LABELS;
-    
-    public int itemBiLabelFirstIndex;
-    public int fluidBiLabelFirstIndex;
+	public GenericLabelWrapper[] LABELS;
+
+	public int itemBiLabelFirstIndex;
+	public int fluidBiLabelFirstIndex;
 
 	private LoadingCache<Integer, List<IDrawableAnimated>> ANIMATED_ARROWS;
 	private LoadingCache<Integer, List<IDrawableStatic>> STATIC_ARROWS;
@@ -103,39 +103,38 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public IDrawable getIcon() {
 		return ICON;
 	}
-	
+
 	public String getRecipeGroup() {
 		return RECIPE_GROUP;
-    }
+	}
 
-    
-    public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
+	public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
 		BaseComponent text;
 		for (GenericLabelWrapper wrap : LABELS) {
 			text = wrap.getComponent(this, recipe);
-		    fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+			fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
 		}
-    }
+	}
 
 	public int getAnimationTime() {
 		return ANIMATION_LENGTH;
 	}
 
-    public void setLabels(GenericLabelWrapper... labels) {
-    	LABELS = labels;
-    	GenericLabelWrapper wrap;
-    	boolean firstItemBi = false;
-    	for(int i = 0; i < labels.length; i++) {
-    		wrap = labels[i];
-    		if(!firstItemBi && wrap instanceof BiproductPercentWrapper) {
-    			this.itemBiLabelFirstIndex = i;
-    			firstItemBi = true;
-    		}
-    	}
-    	
-    }
-    
+	public void setLabels(GenericLabelWrapper... labels) {
+		LABELS = labels;
+		GenericLabelWrapper wrap;
+		boolean firstItemBi = false;
+		for (int i = 0; i < labels.length; i++) {
+			wrap = labels[i];
+			if (!firstItemBi && wrap instanceof BiproductPercentWrapper) {
+				this.itemBiLabelFirstIndex = i;
+				firstItemBi = true;
+			}
+		}
+
+	}
+
 	public void setInputSlots(IGuiHelper guiHelper, GenericItemSlotWrapper... inputSlots) {
 		inSlots = inputSlots;
 		INPUT_SLOTS = CacheBuilder.newBuilder().maximumSize(inputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {

@@ -16,18 +16,18 @@ public class NetworkHandler {
 	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(References.ID, "main"), () -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
-    public static void init() {
+	public static void init() {
 		CHANNEL.registerMessage(disc++, PacketUpdateTile.class, PacketUpdateTile::encode, PacketUpdateTile::decode, PacketUpdateTile::handle,
-			Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+				Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketSpawnSmokeParticle.class, PacketSpawnSmokeParticle::encode, PacketSpawnSmokeParticle::decode,
-			PacketSpawnSmokeParticle::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+				PacketSpawnSmokeParticle::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketPlayerInformation.class, PacketPlayerInformation::encode, PacketPlayerInformation::decode,
-			PacketPlayerInformation::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+				PacketPlayerInformation::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketServerUpdateTile.class, PacketServerUpdateTile::encode, PacketServerUpdateTile::decode,
-			PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-		CHANNEL.registerMessage(disc++, PacketPowerSetting.class, PacketPowerSetting::encode, PacketPowerSetting::decode,
-			PacketPowerSetting::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-    }
+				PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+		CHANNEL.registerMessage(disc++, PacketPowerSetting.class, PacketPowerSetting::encode, PacketPowerSetting::decode, PacketPowerSetting::handle,
+				Optional.of(NetworkDirection.PLAY_TO_SERVER));
+	}
 
 	public static String getPlayerInformation(String username) {
 		return playerInformation.getOrDefault(username, "No Information");

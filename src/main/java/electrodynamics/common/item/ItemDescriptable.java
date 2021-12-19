@@ -13,12 +13,12 @@ import net.minecraft.world.level.Level;
 public class ItemDescriptable extends Item {
 
 	private String langKey;
-	
+
 	public ItemDescriptable(Properties properties, String langKey) {
 		super(properties);
 		this.langKey = langKey;
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);

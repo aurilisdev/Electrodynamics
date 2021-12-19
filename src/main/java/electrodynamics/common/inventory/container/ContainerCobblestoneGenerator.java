@@ -17,26 +17,26 @@ public class ContainerCobblestoneGenerator extends GenericContainer<TileCobblest
 
 	public ContainerCobblestoneGenerator(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(4), new SimpleContainerData(3));
-    }
+	}
 
-    public ContainerCobblestoneGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	public ContainerCobblestoneGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_COBBLESTONEGENERATOR.get(), id, playerinv, inventory, inventorydata);
-    }
+	}
 
-    public ContainerCobblestoneGenerator(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	public ContainerCobblestoneGenerator(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory, inventorydata);
-    }
+	}
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotRestricted(inv, nextIndex(), 68, 34));
 		addSlot(new UpgradeSlot(inv, nextIndex(), 150, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-			SubtypeItemUpgrade.itemoutput));
+				SubtypeItemUpgrade.itemoutput));
 		addSlot(new UpgradeSlot(inv, nextIndex(), 150, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-			SubtypeItemUpgrade.itemoutput));
+				SubtypeItemUpgrade.itemoutput));
 		addSlot(new UpgradeSlot(inv, nextIndex(), 150, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-			SubtypeItemUpgrade.itemoutput));
-		
+				SubtypeItemUpgrade.itemoutput));
+
 	}
-	
+
 }

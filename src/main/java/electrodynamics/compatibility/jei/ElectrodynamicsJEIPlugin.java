@@ -276,13 +276,13 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35,
-			O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
+				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55,
-			O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
+				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
 
 		/* DO2O Machines */
 		registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15,
-			DO2O_CLICK_AREAS.toArray(new ResourceLocation[DO2O_CLICK_AREAS.size()]));
+				DO2O_CLICK_AREAS.toArray(new ResourceLocation[DO2O_CLICK_AREAS.size()]));
 
 		registry.addRecipeClickArea(ScreenElectricFurnace.class, 85, 35, 22, 15, ElectricFurnaceRecipeCategory.UID);
 		registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, 85, 25, 22, 35, ElectricFurnaceRecipeCategory.UID);
@@ -309,21 +309,21 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		}
 
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.compositearmor"));
+				new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.compositearmor"));
+				new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.compositearmor"));
+				new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.compositearmor"));
+				new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.upgradeiteminput"));
+				new TranslatableComponent("info.jei.item.upgradeiteminput"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.upgradeitemoutput"));
+				new TranslatableComponent("info.jei.item.upgradeitemoutput"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_PLASMARAILGUN.get()), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.railgunplasma"));
+				new TranslatableComponent("info.jei.item.railgunplasma"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM,
-			new TranslatableComponent("info.jei.item.railgunkinetic"));
+				new TranslatableComponent("info.jei.item.railgunkinetic"));
 	}
 
 	public static void addO2OClickArea(ResourceLocation loc) {

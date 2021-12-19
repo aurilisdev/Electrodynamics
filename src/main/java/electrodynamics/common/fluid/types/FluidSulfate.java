@@ -9,19 +9,21 @@ import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidSulfate extends FluidNonPlaceable {
 
-    public static final String FORGE_TAG = "_sulfate";
+	public static final String FORGE_TAG = "_sulfate";
 
-    public SubtypeSulfateFluid mineral;
+	public SubtypeSulfateFluid mineral;
 
-    public FluidSulfate(SubtypeSulfateFluid mineral) {
-	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
-	this.mineral = mineral;
-    }
+	public FluidSulfate(SubtypeSulfateFluid mineral) {
+		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
+		this.mineral = mineral;
+	}
 
-    @Override
-    protected FluidAttributes createAttributes() {
-	return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"), new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"))
-		.translationKey("fluid.electrodynamics.sulfate" + mineral.name()).build(this);
-    }
+	@Override
+	protected FluidAttributes createAttributes() {
+		return FluidAttributes
+				.builder(new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"),
+						new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"))
+				.translationKey("fluid.electrodynamics.sulfate" + mineral.name()).build(this);
+	}
 
 }

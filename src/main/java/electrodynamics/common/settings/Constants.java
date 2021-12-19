@@ -8,7 +8,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 
 @Configuration(name = "Electrodynamics")
 public class Constants {
-	
+
 	@FloatValue(def = 0.9925f)
 	public static float TRANSFORMER_EFFICIENCY = 0.9925f;
 	@FloatValue(def = 0.995f)
@@ -82,9 +82,9 @@ public class Constants {
 	@DoubleValue(def = 1000.0)
 	public static double CHARGER_USAGER_PER_TICK = 1000.0;
 	@IntValue(def = 100)
-    public static int COBBLE_GEN_REQUIRED_TICKS = 100;
-    @DoubleValue(def = 100)
-    public static double COBBLE_GEN_USAGE_PER_TICK = 100;
+	public static int COBBLE_GEN_REQUIRED_TICKS = 100;
+	@DoubleValue(def = 100)
+	public static double COBBLE_GEN_USAGE_PER_TICK = 100;
 
 	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

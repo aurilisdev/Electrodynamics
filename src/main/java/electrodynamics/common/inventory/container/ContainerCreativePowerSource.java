@@ -17,40 +17,41 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ContainerCreativePowerSource extends GenericContainer<TileCreativePowerSource> {
 
 	private static final int POWER_MULTIPLIER = 1000000;
-	
-	 public ContainerCreativePowerSource(int id, Inventory playerinv) {
+
+	public ContainerCreativePowerSource(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(0), new SimpleContainerData(3));
-    }
+	}
 
-    public ContainerCreativePowerSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	public ContainerCreativePowerSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_CREATIVEPOWERSOURCE.get(), id, playerinv, new SimpleContainer(), inventorydata);
-    }
+	}
 
-    public ContainerCreativePowerSource(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	public ContainerCreativePowerSource(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory, inventorydata);
-    }
+	}
 
 	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {}
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void setValues(String voltageString, String powerString){
+	public void setValues(String voltageString, String powerString) {
 		Integer voltage = 0;
 		Integer power = 0;
 		try {
 			voltage = Integer.parseInt(voltageString);
-		} catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
 		try {
 			power = Integer.parseInt(powerString) * POWER_MULTIPLIER;
-		} catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
-		if(getHostFromIntArray() != null) {
+		if (getHostFromIntArray() != null) {
 			NetworkHandler.CHANNEL.sendToServer(new PacketPowerSetting(voltage, power, getHostFromIntArray().getBlockPos()));
 		}
-		
+
 	}
-	
+
 }

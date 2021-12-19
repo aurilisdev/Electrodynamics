@@ -25,11 +25,11 @@ public class TileCobblestoneGenerator extends GenericTile {
 
 	public boolean isPoweredClient;
 	public double progressClient;
-	
+
 	private double processTime;
 	private double progress;
 	private boolean isPowered;
-	
+
 	public TileCobblestoneGenerator(BlockPos worldPos, BlockState blockState) {
 		super(DeferredRegisters.TILE_COBBLESTONEGENERATOR.get(), worldPos, blockState);
 		addComponent(new ComponentDirection());
@@ -37,60 +37,60 @@ public class TileCobblestoneGenerator extends GenericTile {
 				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
-			.maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * 10));
+				.maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * 10));
 		addComponent(new ComponentInventory(this).size(4).outputs(1).upgrades(3).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.cobblestonegenerator")
-			.createMenu((id, player) -> new ContainerCobblestoneGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+				.createMenu((id, player) -> new ContainerCobblestoneGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	private void tickServer(ComponentTickable tick) {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(0);
-		if(output.isEmpty() || output.getMaxStackSize() - output.getCount() > 0) {
+		if (output.isEmpty() || output.getMaxStackSize() - output.getCount() > 0) {
 			double speed = 1;
-			for(ItemStack upgrade : inv.getUpgradeContents()) {
-				if(!upgrade.isEmpty() && upgrade.getItem() instanceof ItemUpgrade upg) {
+			for (ItemStack upgrade : inv.getUpgradeContents()) {
+				if (!upgrade.isEmpty() && upgrade.getItem() instanceof ItemUpgrade upg) {
 					for (int i = 0; i < upgrade.getCount(); i++) {
 						upg.subtype.applyUpgrade.accept(this, null, upgrade);
-						if(upg.subtype == SubtypeItemUpgrade.advancedspeed ) {
+						if (upg.subtype == SubtypeItemUpgrade.advancedspeed) {
 							speed = Math.min(speed * 2.25, Math.pow(2.25, 3));
 						} else if (upg.subtype == SubtypeItemUpgrade.basicspeed) {
-							speed = Math.min(speed * 1.5, Math.pow(2.25, 3));;
+							speed = Math.min(speed * 1.5, Math.pow(2.25, 3));
 						}
 					}
-				
+
 				}
 			}
 			processTime += speed;
 			ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 			electro.maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * speed * 10);
 			double usage = Constants.COBBLE_GEN_USAGE_PER_TICK * speed;
-			if(electro.getJoulesStored() >= usage) {
+			if (electro.getJoulesStored() >= usage) {
 				isPowered = true;
 			} else {
 				isPowered = false;
 			}
 			electro.joules(electro.getJoulesStored() - usage);
-			if(isPowered) {
-				progress = processTime/(Constants.COBBLE_GEN_REQUIRED_TICKS / speed);
-				if(progress >= 1) {
+			if (isPowered) {
+				progress = processTime / (Constants.COBBLE_GEN_REQUIRED_TICKS / speed);
+				if (progress >= 1) {
 					processTime = 0;
-					if(output.isEmpty()) {
+					if (output.isEmpty()) {
 						inv.setItem(0, new ItemStack(Items.COBBLESTONE, 1).copy());
 					} else {
 						output.grow(1);
 					}
 				}
 			}
-			
+
 		}
 	}
-	
+
 	private void createPacket(CompoundTag nbt) {
 		nbt.putDouble("progress", progress);
 		nbt.putBoolean("isPowered", isPowered);
 	}
-	
+
 	private void readPacket(CompoundTag nbt) {
 		progressClient = nbt.getDouble("progress");
 		isPoweredClient = nbt.getBoolean("isPowered");

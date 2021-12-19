@@ -27,16 +27,17 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileOxidationFurnace extends GenericTile {
 
-    public TileOxidationFurnace(BlockPos worldPosition, BlockState blockState) {
+	public TileOxidationFurnace(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_OXIDATIONFURNACE.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
 		addComponent(new ComponentInventory(this).size(7).faceSlots(Direction.UP, 0, 1).relativeFaceSlots(Direction.EAST, 1)
-			.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).biproducts(1).upgrades(3).processorInputs(2).valid(machineValidator()));
+				.relativeSlotFaces(2, Direction.DOWN, Direction.WEST).inputs(2).outputs(1).biproducts(1).upgrades(3).processorInputs(2)
+				.valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.oxidationfurnace")
-			.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+				.createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessOxideFurn)
 				.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS)
 				.usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK));
