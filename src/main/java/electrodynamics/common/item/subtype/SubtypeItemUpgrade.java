@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.util.TriConsumer;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
 import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
@@ -83,27 +84,33 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (!inv.areOutputsEmpty() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
-			List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-					.map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
-			boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-					.map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
-			if (isSmart) {
-				List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
-				combinedItems.addAll(inv.getItemBiContents());
-				ItemStack stack;
-				Direction dir = Direction.DOWN;
-				for (int i = 0; i < combinedItems.size(); i++) {
-					stack = combinedItems.get(i);
-					if (i < dirs.size()) {
-						dir = dirs.get(i);
+			int tickNumber = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getInt)
+					.orElse(0);
+			if (tickNumber >= 4) {
+				upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
+				List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+						.map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
+						.map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
+				if (isSmart) {
+					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
+					combinedItems.addAll(inv.getItemBiContents());
+					ItemStack stack;
+					Direction dir = Direction.DOWN;
+					for (int i = 0; i < combinedItems.size(); i++) {
+						stack = combinedItems.get(i);
+						if (i < dirs.size()) {
+							dir = dirs.get(i);
+						}
+						outputSmartMode(getBlockEntity(holder, dir), stack, dir);
 					}
-					outputSmartMode(getBlockEntity(holder, dir), stack, dir);
-				}
-			} else {
-				for (Direction dir : dirs) {
-					outputDefaultMode(getBlockEntity(holder, dir), inv, dir);
+				} else {
+					for (Direction dir : dirs) {
+						outputDefaultMode(getBlockEntity(holder, dir), inv, dir);
+					}
 				}
 			}
+			upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
 		}
 	}, 1), improvedsolarcell((holder, processor, upgrade) -> {
 		if (holder instanceof IElectricGenerator generator && (holder instanceof TileSolarPanel || holder instanceof TileAdvancedSolarPanel)) {
