@@ -46,6 +46,9 @@ import electrodynamics.common.inventory.container.ContainerCombustionChamber;
 import electrodynamics.common.inventory.container.ContainerCreativeFluidSource;
 import electrodynamics.common.inventory.container.ContainerCreativePowerSource;
 import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
+import electrodynamics.common.inventory.container.ContainerElectricArcFurnace;
+import electrodynamics.common.inventory.container.ContainerElectricArcFurnaceDouble;
+import electrodynamics.common.inventory.container.ContainerElectricArcFurnaceTriple;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple;
@@ -100,6 +103,9 @@ import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileCreativeFluidSource;
 import electrodynamics.common.tile.TileCreativePowerSource;
+import electrodynamics.common.tile.TileElectricArcFurnace;
+import electrodynamics.common.tile.TileElectricArcFurnaceDouble;
+import electrodynamics.common.tile.TileElectricArcFurnaceTriple;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
@@ -430,6 +436,25 @@ public class DeferredRegisters {
 							SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriplerunning)),
 					null));
 
+	// split to electric arc furnaces
+
+	public static final RegistryObject<BlockEntityType<TileElectricArcFurnace>> TILE_ELECTRICARCFURNACE = TILES.register(
+			SubtypeMachine.electricfurnace.tag(),
+			() -> new BlockEntityType<>(TileElectricArcFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace),
+					SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacerunning)), null));
+	public static final RegistryObject<BlockEntityType<TileElectricArcFurnaceDouble>> TILE_ELECTRICARCFURNACEDOUBLE = TILES.register(
+			SubtypeMachine.electricfurnacedouble.tag(),
+			() -> new BlockEntityType<>(TileElectricArcFurnaceDouble::new,
+					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble),
+							SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedoublerunning)),
+					null));
+	public static final RegistryObject<BlockEntityType<TileElectricArcFurnaceTriple>> TILE_ELECTRICARCFURNACETRIPLE = TILES.register(
+			SubtypeMachine.electricfurnacetriple.tag(),
+			() -> new BlockEntityType<>(TileElectricArcFurnaceTriple::new,
+					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple),
+							SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning)),
+					null));
+
 	// Split to wire mills
 
 	public static final RegistryObject<BlockEntityType<TileWireMill>> TILE_WIREMILL = TILES.register(SubtypeMachine.wiremill.tag(),
@@ -556,6 +581,12 @@ public class DeferredRegisters {
 			.register(SubtypeMachine.electricfurnacedouble.tag(), () -> new MenuType<>(ContainerElectricFurnaceDouble::new));
 	public static final RegistryObject<MenuType<ContainerElectricFurnaceTriple>> CONTAINER_ELECTRICFURNACETRIPLE = CONTAINERS
 			.register(SubtypeMachine.electricfurnacetriple.tag(), () -> new MenuType<>(ContainerElectricFurnaceTriple::new));
+	public static final RegistryObject<MenuType<ContainerElectricArcFurnace>> CONTAINER_ELECTRICARCFURNACE = CONTAINERS
+			.register(SubtypeMachine.electricarcfurnace.tag(), () -> new MenuType<>(ContainerElectricArcFurnace::new));
+	public static final RegistryObject<MenuType<ContainerElectricArcFurnaceDouble>> CONTAINER_ELECTRICARCFURNACEDOUBLE = CONTAINERS
+			.register(SubtypeMachine.electricarcfurnacedouble.tag(), () -> new MenuType<>(ContainerElectricArcFurnaceDouble::new));
+	public static final RegistryObject<MenuType<ContainerElectricArcFurnaceTriple>> CONTAINER_ELECTRICARCFURNACETRIPLE = CONTAINERS
+			.register(SubtypeMachine.electricarcfurnacetriple.tag(), () -> new MenuType<>(ContainerElectricArcFurnaceTriple::new));
 	public static final RegistryObject<MenuType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = CONTAINERS.register("o2oprocessor",
 			() -> new MenuType<>(ContainerO2OProcessor::new));
 	public static final RegistryObject<MenuType<ContainerO2OProcessorDouble>> CONTAINER_O2OPROCESSORDOUBLE = CONTAINERS.register("o2oprocessordouble",

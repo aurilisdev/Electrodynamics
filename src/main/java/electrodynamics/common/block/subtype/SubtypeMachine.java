@@ -17,6 +17,9 @@ import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileCreativeFluidSource;
 import electrodynamics.common.tile.TileCreativePowerSource;
+import electrodynamics.common.tile.TileElectricArcFurnace;
+import electrodynamics.common.tile.TileElectricArcFurnaceDouble;
+import electrodynamics.common.tile.TileElectricArcFurnaceTriple;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
@@ -60,6 +63,9 @@ public enum SubtypeMachine implements ISubtype {
 	electricfurnace(true, TileElectricFurnace.class), electricfurnacerunning(false, TileElectricFurnace.class),
 	electricfurnacedouble(true, TileElectricFurnaceDouble.class), electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
 	electricfurnacetriple(true, TileElectricFurnaceTriple.class), electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
+	electricarcfurnace(true, TileElectricArcFurnace.class), electricarcfurnacerunning(false, TileElectricArcFurnace.class),
+	electricarcfurnacedouble(true, TileElectricArcFurnaceDouble.class), electricarcfurnacedoublerunning(false, TileElectricArcFurnaceDouble.class),
+	electricarcfurnacetriple(true, TileElectricArcFurnaceTriple.class), electricarcfurnacetriplerunning(false, TileElectricArcFurnaceTriple.class),
 	coalgenerator(true, TileCoalGenerator.class), coalgeneratorrunning(false, TileCoalGenerator.class), wiremill(true, TileWireMill.class),
 	wiremilldouble(true, TileWireMillDouble.class), wiremilltriple(true, TileWireMillTriple.class),
 	mineralcrusher(true, TileMineralCrusher.class, true), mineralcrusherdouble(true, TileMineralCrusherDouble.class, true),
