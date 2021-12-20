@@ -173,7 +173,6 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
 	public static void setup() {
-
 		MenuScreens.register(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);

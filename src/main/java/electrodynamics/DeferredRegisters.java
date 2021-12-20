@@ -439,17 +439,17 @@ public class DeferredRegisters {
 	// split to electric arc furnaces
 
 	public static final RegistryObject<BlockEntityType<TileElectricArcFurnace>> TILE_ELECTRICARCFURNACE = TILES.register(
-			SubtypeMachine.electricfurnace.tag(),
+			SubtypeMachine.electricarcfurnace.tag(),
 			() -> new BlockEntityType<>(TileElectricArcFurnace::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace),
 					SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacerunning)), null));
 	public static final RegistryObject<BlockEntityType<TileElectricArcFurnaceDouble>> TILE_ELECTRICARCFURNACEDOUBLE = TILES.register(
-			SubtypeMachine.electricfurnacedouble.tag(),
+			SubtypeMachine.electricarcfurnacedouble.tag(),
 			() -> new BlockEntityType<>(TileElectricArcFurnaceDouble::new,
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble),
 							SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedoublerunning)),
 					null));
 	public static final RegistryObject<BlockEntityType<TileElectricArcFurnaceTriple>> TILE_ELECTRICARCFURNACETRIPLE = TILES.register(
-			SubtypeMachine.electricfurnacetriple.tag(),
+			SubtypeMachine.electricarcfurnacetriple.tag(),
 			() -> new BlockEntityType<>(TileElectricArcFurnaceTriple::new,
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple),
 							SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning)),
