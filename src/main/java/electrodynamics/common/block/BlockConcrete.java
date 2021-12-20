@@ -15,10 +15,10 @@ public class BlockConcrete extends Block {
 	public BlockConcrete(SubtypeConcrete concrete) {
 		super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(50F, 1200F));
 	}
-	
+
 	@Override
-    public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		return Arrays.asList(new ItemStack(this));
-    }
+	}
 
 }

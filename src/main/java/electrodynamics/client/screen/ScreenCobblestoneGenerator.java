@@ -32,54 +32,54 @@ public class ScreenCobblestoneGenerator extends GenericScreen<ContainerCobblesto
 	public ScreenCobblestoneGenerator(ContainerCobblestoneGenerator container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
 		components.add(new ScreenComponentFluid(() -> {
-		    TileCobblestoneGenerator cobble = container.getHostFromIntArray();
-		    if (cobble != null && cobble.isPoweredClient) {
-		    	FluidTank tank = new FluidTank(1000);
-		    	tank.fill(new FluidStack(Fluids.WATER, 1000), FluidAction.EXECUTE);
-		    	return tank;
-		    }
-		    return null;
+			TileCobblestoneGenerator cobble = container.getHostFromIntArray();
+			if (cobble != null && cobble.isPoweredClient) {
+				FluidTank tank = new FluidTank(1000);
+				tank.fill(new FluidStack(Fluids.WATER, 1000), FluidAction.EXECUTE);
+				return tank;
+			}
+			return null;
 		}, this, 21, 18));
 		components.add(new ScreenComponentFluid(() -> {
-		    TileCobblestoneGenerator cobble = container.getHostFromIntArray();
-		    if (cobble != null && cobble.isPoweredClient) {
-		    	FluidTank tank = new FluidTank(1000);
-		    	tank.fill(new FluidStack(Fluids.LAVA, 1000), FluidAction.EXECUTE);
-		    	return tank;
-		    }
-		    return null;
+			TileCobblestoneGenerator cobble = container.getHostFromIntArray();
+			if (cobble != null && cobble.isPoweredClient) {
+				FluidTank tank = new FluidTank(1000);
+				tank.fill(new FluidStack(Fluids.LAVA, 1000), FluidAction.EXECUTE);
+				return tank;
+			}
+			return null;
 		}, this, 117, 18));
 		components.add(new ScreenComponentProgress(() -> {
 			TileCobblestoneGenerator cobble = container.getHostFromIntArray();
-		    if (cobble != null) {
-		    	return cobble.progressClient;
-		    }
-		    return 0;
+			if (cobble != null) {
+				return cobble.progressClient;
+			}
+			return 0;
 		}, this, 40, 34));
 		components.add(new ScreenComponentProgress(() -> {
 			TileCobblestoneGenerator cobble = container.getHostFromIntArray();
-		    if (cobble != null) {
-		    	return cobble.progressClient;
-		    }
-		    return 0;
+			if (cobble != null) {
+				return cobble.progressClient;
+			}
+			return 0;
 		}, this, 90, 34).left());
 		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
-	
+
 	private List<? extends FormattedCharSequence> getEnergyInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		GenericTile box = menu.getHostFromIntArray();
 		if (box != null) {
-		    ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
 
-		    list.add(new TranslatableComponent("gui.do2oprocessor.usage",
-			    new TextComponent(ChatFormatter.getElectricDisplayShort(Constants.COBBLE_GEN_USAGE_PER_TICK * 20, ElectricUnit.WATT))
-				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		    list.add(new TranslatableComponent("gui.do2oprocessor.voltage",
-			    new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-				    .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.do2oprocessor.usage",
+					new TextComponent(ChatFormatter.getElectricDisplayShort(Constants.COBBLE_GEN_USAGE_PER_TICK * 20, ElectricUnit.WATT))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.do2oprocessor.voltage",
+					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
-	    }
+	}
 
 }

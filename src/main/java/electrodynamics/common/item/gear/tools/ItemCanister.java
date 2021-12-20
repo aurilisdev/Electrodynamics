@@ -134,10 +134,10 @@ public class ItemCanister extends Item {
 		List<Fluid> whitelisted = new ArrayList<>();
 		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
 
-	    if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null 
-		    && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
-	    		whitelisted.add(fluid);
-	    	}
+			if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null
+					&& fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+				whitelisted.add(fluid);
+			}
 		}
 		whitelisted.add(Fluids.WATER);
 		whitelisted.add(Fluids.LAVA);

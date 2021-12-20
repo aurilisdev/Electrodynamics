@@ -152,7 +152,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		return this;
 	}
 
-	public ComponentElectrodynamic enableUniversalInput() {
+	public ComponentElectrodynamic universalInput() {
 		for (Direction dir : Direction.values()) {
 			input(dir);
 		}

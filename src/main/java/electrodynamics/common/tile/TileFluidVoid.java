@@ -28,8 +28,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class TileFluidVoid extends GenericTile {
 
-private static Fluid[] fluids = new Fluid[0];
-	
+	private static Fluid[] fluids = new Fluid[0];
+
 	static {
 		List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
 		fluids = new Fluid[list.size()];
@@ -37,19 +37,20 @@ private static Fluid[] fluids = new Fluid[0];
 			fluids[i] = list.get(i);
 		}
 	}
-	
+
 	public TileFluidVoid(BlockPos worldPos, BlockState blockState) {
 		super(DeferredRegisters.TILE_FLUIDVOID.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN)
-			.setManualFluids(1, true, 128000, fluids));
+		addComponent(new ComponentFluidHandlerSimple(this)
+				.relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN)
+				.setManualFluids(1, true, 128000, fluids));
 		addComponent(new ComponentInventory(this).size(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider("container.fluidvoid")
 				.createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	private void tickServer(ComponentTickable tick) {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ComponentFluidHandlerSimple handler = getComponent(ComponentType.FluidHandler);

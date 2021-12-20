@@ -35,7 +35,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class TileCreativeFluidSource extends GenericTile {
 
 	private static Fluid[] fluids = new Fluid[0];
-	
+
 	static {
 		List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
 		fluids = new Fluid[list.size()];
@@ -43,19 +43,20 @@ public class TileCreativeFluidSource extends GenericTile {
 			fluids[i] = list.get(i);
 		}
 	}
-	
+
 	public TileCreativeFluidSource(BlockPos worldPos, BlockState blockState) {
 		super(DeferredRegisters.TILE_CREATIVEFLUIDSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(this).relativeOutput(Direction.NORTH, Direction.SOUTH, Direction.EAST, 
-			Direction.UP, Direction.WEST, Direction.DOWN).setManualFluids(1, true, 128000, fluids));
+		addComponent(new ComponentFluidHandlerSimple(this)
+				.relativeOutput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN)
+				.setManualFluids(1, true, 128000, fluids));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider("container.creativefluidsource")
 				.createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	private void tickServer(ComponentTickable tick) {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
@@ -64,15 +65,15 @@ public class TileCreativeFluidSource extends GenericTile {
 		BlockEntity faceTile = getLevel().getBlockEntity(face);
 		ItemStack input = inv.getItem(0);
 		ItemStack output = inv.getItem(1);
-		
+
 		FluidTank tank = handler.getInputTanks()[0];
 		tank.setFluid(new FluidStack(tank.getFluid(), tank.getCapacity()));
-		
+
 		// set tank fluid from slot 1
 		if (!input.isEmpty() && CapabilityUtils.hasFluidItemCap(input)) {
 			tank.setFluid(new FluidStack(CapabilityUtils.simDrain(input, Integer.MAX_VALUE).getFluid(), tank.getCapacity()));
 		}
-		//fill item in slot 2
+		// fill item in slot 2
 		if (!output.isEmpty() && CapabilityUtils.hasFluidItemCap(output)) {
 			boolean isBucket = output.getItem() instanceof BucketItem;
 			FluidStack tankFluid = handler.getFluidInTank(0);

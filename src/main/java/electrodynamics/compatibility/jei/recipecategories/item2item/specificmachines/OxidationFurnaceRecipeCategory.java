@@ -20,16 +20,15 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory {
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
-    private static DefaultItemSlotWrapper INPUT_SLOT_1 = new DefaultItemSlotWrapper(17, 11);
-    private static DefaultItemSlotWrapper INPUT_SLOT_2 = new DefaultItemSlotWrapper(17, 30);
-    private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(69, 16);
-    private static DefaultItemSlotWrapper BIPRODUCT_SLOT = new DefaultItemSlotWrapper(100, 20);
+	private static DefaultItemSlotWrapper INPUT_SLOT_1 = new DefaultItemSlotWrapper(17, 11);
+	private static DefaultItemSlotWrapper INPUT_SLOT_2 = new DefaultItemSlotWrapper(17, 30);
+	private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(69, 16);
+	private static DefaultItemSlotWrapper BIPRODUCT_SLOT = new DefaultItemSlotWrapper(100, 20);
 
-    private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
+	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
 
-    private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49);
-    private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
-
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49);
+	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
 
 	private static int ANIM_TIME = 50;
 

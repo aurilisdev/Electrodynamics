@@ -12,7 +12,7 @@ import net.minecraft.network.chat.TextComponent;
 public class BiproductPercentWrapper extends GenericLabelWrapper {
 
 	private boolean isFluid;
-	
+
 	public BiproductPercentWrapper(int xEndPos, int yPos, boolean isFluid) {
 		super(0xFF808080, yPos, xEndPos, "");
 		this.isFluid = isFluid;
@@ -20,15 +20,13 @@ public class BiproductPercentWrapper extends GenericLabelWrapper {
 
 	@Override
 	public BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
-		if(isFluid) {
-			//for future use
-		} else {
-			if(recipe.hasItemBiproducts()) {
-				List<GenericLabelWrapper> labels = Arrays.asList(category.LABELS);
-				int biPos = labels.indexOf(this) - category.itemBiLabelFirstIndex;
-				ProbableItem item = recipe.getItemBiproducts()[biPos];
-				return new TextComponent((item.getChance() * 100 ) + "%");
-			}
+		if (isFluid) {
+			// for future use
+		} else if (recipe.hasItemBiproducts()) {
+			List<GenericLabelWrapper> labels = Arrays.asList(category.LABELS);
+			int biPos = labels.indexOf(this) - category.itemBiLabelFirstIndex;
+			ProbableItem item = recipe.getItemBiproducts()[biPos];
+			return new TextComponent(item.getChance() * 100 + "%");
 		}
 		return new TextComponent("");
 	}

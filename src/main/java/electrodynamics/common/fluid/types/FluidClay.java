@@ -5,7 +5,7 @@ import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
 
 public class FluidClay extends FluidNonPlaceable {
-	
+
 	public static final String FORGE_TAG = "clay";
 
 	public FluidClay() {

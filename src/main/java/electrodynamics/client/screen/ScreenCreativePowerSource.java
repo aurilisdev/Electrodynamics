@@ -16,22 +16,22 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
 	private EditBox voltage;
 	private EditBox power;
-	
+
 	private boolean needsUpdate = true;
-	
+
 	public ScreenCreativePowerSource(ContainerCreativePowerSource container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
 		components.add(new ScreenComponentTextInputBar(this, 80, 27).small());
 		components.add(new ScreenComponentTextInputBar(this, 80, 45).small());
 	}
-	
+
 	@Override
 	protected void containerTick() {
 		super.containerTick();
 		voltage.tick();
 		power.tick();
 	}
-	
+
 	@Override
 	protected void init() {
 		super.init();
@@ -55,67 +55,67 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		power.setBordered(false);
 		power.setMaxLength(6);
 		power.setResponder(this::setPower);
-		
+
 		addWidget(voltage);
 		addWidget(power);
 		setInitialFocus(voltage);
 	}
-	
+
 	private void setVals(String vals) {
 		if (!vals.isEmpty()) {
-		    menu.setValues(voltage.getValue(), power.getValue());
+			menu.setValues(voltage.getValue(), power.getValue());
 		}
-    }
-	
+	}
+
 	private void setVoltage(String val) {
 		voltage.setFocus(true);
 		power.setFocus(false);
 		setVals(val);
-    }
+	}
 
-    private void setPower(String val) {
+	private void setPower(String val) {
 		voltage.setFocus(false);
 		power.setFocus(true);
 		setVals(val);
-    }
-    
-    @Override
-    public void resize(Minecraft minecraft, int width, int height) {
-    	String volt = voltage.getValue();
-    	String pow = power.getValue();
-    	init(minecraft, width, height);
-    	voltage.setValue(volt);
-    	power.setValue(pow);
-    }
-    
-    @Override
-    public void removed() {
-    	super.removed();
-    	minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-    
-    @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-    	super.render(matrixStack, mouseX, mouseY, partialTicks);
-    	if (needsUpdate) {
-    	    needsUpdate = false;
-    	    TileCreativePowerSource source = menu.getHostFromIntArray();
-    	    if (source != null && source.outputValue != null) {
-    	    	voltage.setValue("" + source.outputValue.getFirst());
-    	    	power.setValue("" + source.outputValue.getSecond());
-    	    }
-    	}
-    	voltage.render(matrixStack, mouseX, mouseY, partialTicks);
-    	power.render(matrixStack, mouseX, mouseY, partialTicks);
-    }
-    
-    @Override
-    protected void renderLabels(PoseStack stack, int x, int y) {
-    	super.renderLabels(stack, x, y);
-    	font.draw(stack, new TranslatableComponent("gui.creativepowersource.voltage"), 40, 31, 4210752);
-    	font.draw(stack, new TranslatableComponent("gui.creativepowersource.power"), 40, 49, 4210752);
-    	font.draw(stack, new TranslatableComponent("gui.creativepowersource.voltunit"), 131, 31, 4210752);
-    	font.draw(stack, new TranslatableComponent("gui.creativepowersource.powerunit"), 131, 49, 4210752);
-    }
+	}
+
+	@Override
+	public void resize(Minecraft minecraft, int width, int height) {
+		String volt = voltage.getValue();
+		String pow = power.getValue();
+		init(minecraft, width, height);
+		voltage.setValue(volt);
+		power.setValue(pow);
+	}
+
+	@Override
+	public void removed() {
+		super.removed();
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
+	}
+
+	@Override
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
+		if (needsUpdate) {
+			needsUpdate = false;
+			TileCreativePowerSource source = menu.getHostFromIntArray();
+			if (source != null && source.outputValue != null) {
+				voltage.setValue("" + source.outputValue.getFirst());
+				power.setValue("" + source.outputValue.getSecond());
+			}
+		}
+		voltage.render(matrixStack, mouseX, mouseY, partialTicks);
+		power.render(matrixStack, mouseX, mouseY, partialTicks);
+	}
+
+	@Override
+	protected void renderLabels(PoseStack stack, int x, int y) {
+		super.renderLabels(stack, x, y);
+		font.draw(stack, new TranslatableComponent("gui.creativepowersource.voltage"), 40, 31, 4210752);
+		font.draw(stack, new TranslatableComponent("gui.creativepowersource.power"), 40, 49, 4210752);
+		font.draw(stack, new TranslatableComponent("gui.creativepowersource.voltunit"), 131, 31, 4210752);
+		font.draw(stack, new TranslatableComponent("gui.creativepowersource.powerunit"), 131, 49, 4210752);
+	}
 
 }
