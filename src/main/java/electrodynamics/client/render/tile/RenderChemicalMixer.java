@@ -46,17 +46,14 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.pushPose();
 		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0.5, 0.2, 0.5);
+		ComponentFluidHandlerMulti multi = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler);
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
-		float prog = (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(Fluids.WATER, true)
-				.getFluidAmount()
-				+ tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-						.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount())
-				/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
+		float prog = (multi.getTankFromFluid(Fluids.WATER, true).getFluidAmount()
+				+ multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount()) / (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f, 1);
 			matrixStackIn.translate(0, prog / 8.0, 0);
-			if (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-					.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount() > 0) {
+			if (multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount() > 0) {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERSULFURICACID);
 			}
 			UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
