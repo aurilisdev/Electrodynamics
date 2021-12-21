@@ -30,9 +30,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 
-public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<SmeltingRecipe> {
+public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<AbstractCookingRecipe> {
 
 	private GenericLabelWrapper[] LABELS;
 
@@ -53,9 +53,11 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
+	
+	private Class<? extends AbstractCookingRecipe> RECIPE_CATEGORY_CLASS;
 
 	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper,
-			int animTime) {
+			Class<? extends AbstractCookingRecipe> recipeClass, int animTime) {
 
 		ANIMATION_LENGTH = animTime;
 
@@ -65,11 +67,13 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 		ICON = guiHelper.createDrawableIngredient(inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(),
 				wrapper.getLength(), wrapper.getWidth());
+		
+		RECIPE_CATEGORY_CLASS = recipeClass;
 	}
 
 	@Override
-	public Class<? extends SmeltingRecipe> getRecipeClass() {
-		return SmeltingRecipe.class;
+	public Class<? extends AbstractCookingRecipe> getRecipeClass() {
+		return RECIPE_CATEGORY_CLASS;
 	}
 
 	@Override
@@ -88,13 +92,13 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 	}
 
 	@Override
-	public void setIngredients(SmeltingRecipe recipe, IIngredients ingredients) {
+	public void setIngredients(AbstractCookingRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe));
 		ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, SmeltingRecipe recipe, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, AbstractCookingRecipe recipe, IIngredients ingredients) {
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
@@ -115,7 +119,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 	}
 
 	@Override
-	public void draw(SmeltingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(AbstractCookingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(ANIMATION_LENGTH);
 		IDrawableStatic image;
 		ScreenObjectWrapper wrapper;
@@ -150,9 +154,9 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Smelti
 	}
 
 	// in case we decide to do something wacky with a furnace
-	public abstract List<List<ItemStack>> getItemInputs(SmeltingRecipe recipe);
+	public abstract List<List<ItemStack>> getItemInputs(AbstractCookingRecipe recipe);
 
-	public abstract List<ItemStack> getItemOutputs(SmeltingRecipe recipe);
+	public abstract List<ItemStack> getItemOutputs(AbstractCookingRecipe recipe);
 
 	public void addDescriptions(PoseStack stack) {
 		Font fontRenderer = Minecraft.getInstance().font;

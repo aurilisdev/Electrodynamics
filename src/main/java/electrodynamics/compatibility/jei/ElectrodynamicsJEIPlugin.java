@@ -36,6 +36,7 @@ import electrodynamics.compatibility.jei.recipecategories.item2item.specificmach
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.OxidationFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.ReinforcedAlloyerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricArcFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.utils.InfoItems;
 import mezz.jei.api.IModPlugin;
@@ -51,9 +52,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 
 @JeiPlugin
 public class ElectrodynamicsJEIPlugin implements IModPlugin {
@@ -117,7 +118,18 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipeCatalyst(
 				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
 				MineralGrinderRecipeCategory.UID);
-
+		
+		/* Electric Arc Furnace */
+		
+		// 1x
+		registration.addRecipeCatalyst(ElectricArcFurnaceRecipeCategory.INPUT_MACHINE, ElectricArcFurnaceRecipeCategory.UID);
+		//2x
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble)),
+			ElectricArcFurnaceRecipeCategory.UID);
+		//3x
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)),
+			ElectricArcFurnaceRecipeCategory.UID);
+		
 		/* Oxidation Furnace */
 
 		registration.addRecipeCatalyst(OxidationFurnaceRecipeCategory.INPUT_MACHINE, OxidationFurnaceRecipeCategory.UID);
@@ -160,9 +172,12 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		RecipeManager recipeManager = world.getRecipeManager();
 
 		// Electric Furnace
-		Set<SmeltingRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.SMELTING));
+		Set<AbstractCookingRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.SMELTING));
 		registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
 
+		Set<AbstractCookingRecipe> electricArcFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.BLASTING));
+		registration.addRecipes(electricArcFurnaceRecipes, ElectricArcFurnaceRecipeCategory.UID);
+		
 		// Wire Mill
 		Set<Item2ItemRecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE));
 		registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
@@ -227,6 +242,8 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 		// Electric Furnace
 		registration.addRecipeCategories(new ElectricFurnaceRecipeCategory(guiHelper));
+		
+		registration.addRecipeCategories(new ElectricArcFurnaceRecipeCategory(guiHelper));
 
 		// Wire Mill
 		registration.addRecipeCategories(new WireMillRecipeCategory(guiHelper));
