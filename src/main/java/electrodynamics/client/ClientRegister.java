@@ -33,6 +33,9 @@ import electrodynamics.client.screen.ScreenCombustionChamber;
 import electrodynamics.client.screen.ScreenCreativeFluidSource;
 import electrodynamics.client.screen.ScreenCreativePowerSource;
 import electrodynamics.client.screen.ScreenDO2OProcessor;
+import electrodynamics.client.screen.ScreenElectricArcFurnace;
+import electrodynamics.client.screen.ScreenElectricArcFurnaceDouble;
+import electrodynamics.client.screen.ScreenElectricArcFurnaceTriple;
 import electrodynamics.client.screen.ScreenElectricFurnace;
 import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
@@ -170,11 +173,13 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
 	public static void setup() {
-
 		MenuScreens.register(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACETRIPLE.get(), ScreenElectricFurnaceTriple::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICARCFURNACE.get(), ScreenElectricArcFurnace::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICARCFURNACEDOUBLE.get(), ScreenElectricArcFurnaceDouble::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICARCFURNACETRIPLE.get(), ScreenElectricArcFurnaceTriple::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSOR.get(), ScreenO2OProcessor::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSORDOUBLE.get(), ScreenO2OProcessorDouble::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_O2OPROCESSORTRIPLE.get(), ScreenO2OProcessorTriple::new);

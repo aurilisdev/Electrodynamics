@@ -31,6 +31,10 @@ public class Constants {
 	public static double ELECTRICFURNACE_USAGE_PER_TICK = 175.0;
 	@IntValue(def = 100)
 	public static int ELECTRICFURNACE_REQUIRED_TICKS = 100;
+	@DoubleValue(def = 175)
+	public static double ELECTRICARCFURNACE_USAGE_PER_TICK = 175.0;
+	@IntValue(def = 50)
+	public static int ELECTRICARCFURNACE_REQUIRED_TICKS = 50;
 	@DoubleValue(def = 125.0)
 	public static double WIREMILL_USAGE_PER_TICK = 125.0;
 	@IntValue(def = 200)

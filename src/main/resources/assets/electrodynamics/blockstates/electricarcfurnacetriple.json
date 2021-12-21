@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "electrodynamics:block/electricarcfurnacetriple",
+			"y": 0
+		},
+		"facing=north": {
+			"model": "electrodynamics:block/electricarcfurnacetriple",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "electrodynamics:block/electricarcfurnacetriple",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "electrodynamics:block/electricarcfurnacetriple",
+			"y": 180
+		}
+	}
+}
