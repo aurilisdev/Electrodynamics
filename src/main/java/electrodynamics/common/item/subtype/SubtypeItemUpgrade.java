@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.util.TriConsumer;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
 import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;

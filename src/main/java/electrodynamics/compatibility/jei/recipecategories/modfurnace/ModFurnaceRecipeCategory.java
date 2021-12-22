@@ -53,7 +53,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
-	
+
 	private Class<? extends AbstractCookingRecipe> RECIPE_CATEGORY_CLASS;
 
 	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper,
@@ -67,7 +67,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 		ICON = guiHelper.createDrawableIngredient(inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(),
 				wrapper.getLength(), wrapper.getWidth());
-		
+
 		RECIPE_CATEGORY_CLASS = recipeClass;
 	}
 

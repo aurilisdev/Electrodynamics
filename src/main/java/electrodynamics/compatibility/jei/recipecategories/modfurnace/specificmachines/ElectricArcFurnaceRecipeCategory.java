@@ -36,12 +36,12 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	private static int ANIM_TIME = 50;
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace));
-	
+
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = "electric_arc_furnace";
-	
+
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
-	
+
 	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT);

@@ -47,20 +47,20 @@ public class TileCobblestoneGenerator extends GenericTile {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(0);
 		double speed = 1;
-		for(ItemStack upgrade : inv.getUpgradeContents()) {
-			if(!upgrade.isEmpty() && upgrade.getItem() instanceof ItemUpgrade upg) {
+		for (ItemStack upgrade : inv.getUpgradeContents()) {
+			if (!upgrade.isEmpty() && upgrade.getItem() instanceof ItemUpgrade upg) {
 				for (int i = 0; i < upgrade.getCount(); i++) {
 					upg.subtype.applyUpgrade.accept(this, null, upgrade);
-					if(upg.subtype == SubtypeItemUpgrade.advancedspeed ) {
+					if (upg.subtype == SubtypeItemUpgrade.advancedspeed) {
 						speed = Math.min(speed * 2.25, Math.pow(2.25, 3));
 					} else if (upg.subtype == SubtypeItemUpgrade.basicspeed) {
-						speed = Math.min(speed * 1.5, Math.pow(2.25, 3));;
+						speed = Math.min(speed * 1.5, Math.pow(2.25, 3));
 					}
 				}
-			
+
 			}
 		}
-		if(output.isEmpty() || output.getMaxStackSize() - output.getCount() > 0) {
+		if (output.isEmpty() || output.getMaxStackSize() - output.getCount() > 0) {
 			processTime += speed;
 			ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 			electro.maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * speed * 10);

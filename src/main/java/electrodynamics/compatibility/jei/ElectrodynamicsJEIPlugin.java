@@ -118,18 +118,20 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipeCatalyst(
 				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
 				MineralGrinderRecipeCategory.UID);
-		
+
 		/* Electric Arc Furnace */
-		
+
 		// 1x
 		registration.addRecipeCatalyst(ElectricArcFurnaceRecipeCategory.INPUT_MACHINE, ElectricArcFurnaceRecipeCategory.UID);
-		//2x
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble)),
-			ElectricArcFurnaceRecipeCategory.UID);
-		//3x
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)),
-			ElectricArcFurnaceRecipeCategory.UID);
-		
+		// 2x
+		registration.addRecipeCatalyst(
+				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble)),
+				ElectricArcFurnaceRecipeCategory.UID);
+		// 3x
+		registration.addRecipeCatalyst(
+				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)),
+				ElectricArcFurnaceRecipeCategory.UID);
+
 		/* Oxidation Furnace */
 
 		registration.addRecipeCatalyst(OxidationFurnaceRecipeCategory.INPUT_MACHINE, OxidationFurnaceRecipeCategory.UID);
@@ -177,7 +179,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 		Set<AbstractCookingRecipe> electricArcFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.BLASTING));
 		registration.addRecipes(electricArcFurnaceRecipes, ElectricArcFurnaceRecipeCategory.UID);
-		
+
 		// Wire Mill
 		Set<Item2ItemRecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE));
 		registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
@@ -242,7 +244,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 		// Electric Furnace
 		registration.addRecipeCategories(new ElectricFurnaceRecipeCategory(guiHelper));
-		
+
 		registration.addRecipeCategories(new ElectricArcFurnaceRecipeCategory(guiHelper));
 
 		// Wire Mill
