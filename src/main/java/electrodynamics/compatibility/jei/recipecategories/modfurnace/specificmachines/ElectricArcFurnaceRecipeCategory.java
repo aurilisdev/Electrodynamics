@@ -18,12 +18,11 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 
-public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
+public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 
-	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
 	private static DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(22, 20);
@@ -36,15 +35,15 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 
 	private static int ANIM_TIME = 50;
 
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace));
+	
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = "electric_furnace";
-
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace));
-
+	private static String RECIPE_GROUP = "electric_arc_furnace";
+	
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
-
-	public ElectricFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME);
+	
+	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT);
 		setStaticArrows(guiHelper, FLAME);
