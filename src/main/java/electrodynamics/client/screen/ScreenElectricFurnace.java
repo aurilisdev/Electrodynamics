@@ -1,10 +1,5 @@
 package electrodynamics.client.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.ContainerElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
@@ -14,14 +9,8 @@ import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,28 +41,11 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 			}
 			return 0;
 		}, this, 39, 36).flame());
-		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor"));
 	}
 
 	@Override
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
 		return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.SPEED : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
-	}
-
-	private List<? extends FormattedCharSequence> getEnergyInformation() {
-		ArrayList<FormattedCharSequence> list = new ArrayList<>();
-		TileElectricFurnace box = menu.getHostFromIntArray();
-		if (box != null) {
-			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-			ComponentProcessor processor = box.getProcessor(0);
-
-			list.add(new TranslatableComponent("gui.o2oprocessor.usage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.o2oprocessor.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		}
-		return list;
 	}
 }

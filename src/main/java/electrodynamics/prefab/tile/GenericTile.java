@@ -47,6 +47,10 @@ public class GenericTile extends BlockEntity implements Nameable {
 		return processors[id];
 	}
 
+	public ComponentProcessor[] getProcessors() {
+		return processors;
+	}
+
 	public GenericTile addProcessor(ComponentProcessor processor) {
 		for (int i = 0; i < processors.length; i++) {
 			if (processors[i] == null) {

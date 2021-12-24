@@ -77,10 +77,14 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getVoltage(), ElectricUnit.VOLTAGE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-					} else if (tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor processor && wattage == null) {
+					} else if (wattage == null) {
+						double usage = tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
+						for (ComponentProcessor proc : tile.getProcessors()) {
+							usage += proc.getUsage() * 20;
+						}
 						list2.add(new TranslatableComponent("gui." + tag + ".usage",
-								new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+								new TextComponent(ChatFormatter.getElectricDisplayShort(usage, ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
+										.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
