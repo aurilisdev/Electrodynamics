@@ -20,7 +20,6 @@ public abstract class ScreenComponentInfo extends ScreenComponent {
 
 	protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IScreenWrapper gui, int x, int y) {
 		super(resource, gui, x, y);
-
 		this.infoHandler = infoHandler;
 	}
 
