@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerCoalGenerator;
@@ -28,7 +29,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class TileCoalGenerator extends GenericTile {
+public class TileCoalGenerator extends GenericTile implements IElectricGenerator {
 	public static final int COAL_BURN_TIME = 1000;
 	protected static final int[] SLOTS_INPUT = new int[] { 0 };
 
@@ -38,6 +39,7 @@ public class TileCoalGenerator extends GenericTile {
 	protected int burnTime;
 	public double clientHeat;
 	public double clientBurnTime;
+	private double multiplier = 1;
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_COALGENERATOR.get(), worldPosition, blockState);
@@ -88,8 +90,7 @@ public class TileCoalGenerator extends GenericTile {
 			ElectricityUtilities.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
 		}
 		heat.rangeParameterize(27, 3000, burnTime > 0 ? 3000 : 27, heat.get(), 600).flush();
-		currentOutput = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
-				Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		currentOutput = getProduced();
 	}
 
 	protected void tickCommon(ComponentTickable tickable) {
@@ -114,6 +115,22 @@ public class TileCoalGenerator extends GenericTile {
 				}
 			}
 		}
+	}
+
+	@Override
+	public double getMultiplier() {
+		return multiplier;
+	}
+
+	@Override
+	public void setMultiplier(double val) {
+		this.multiplier = val;
+	}
+
+	@Override
+	public TransferPack getProduced() {
+		return TransferPack.ampsVoltage(multiplier * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
+				Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	protected void createPacket(CompoundTag nbt) {
