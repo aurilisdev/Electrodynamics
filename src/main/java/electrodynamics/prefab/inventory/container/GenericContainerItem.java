@@ -1,8 +1,14 @@
 package electrodynamics.prefab.inventory.container;
 
+import electrodynamics.prefab.inventory.container.slot.GenericSlot;
+import electrodynamics.prefab.inventory.container.slot.SlotNoModification;
+import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public abstract class GenericContainerItem extends GenericContainer {
@@ -13,10 +19,43 @@ public abstract class GenericContainerItem extends GenericContainer {
 		// the items have to be stored in the handler, so the container is just for indexing purposes
 		super(type, id, playerinv, new SimpleContainer(handler.getSlots()));
 		this.handler = handler;
+		addSafePlayerInventory(playerinv);
+		addItemInventorySlots(inventory, playerinv);
+	}
+
+	@Override
+	protected final void addPlayerInventory(Inventory playerinv) {
+	}
+
+	protected void addSafePlayerInventory(Inventory playerinv) {
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
+			}
+		}
+
+		for (int k = 0; k < 9; ++k) {
+			int index = k;
+			ItemStack stack = playerinv.getItem(index);
+			LazyOptional<IItemHandler> cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			if (cap.isPresent()) {
+				if (cap.resolve().get() == handler) {
+					addSlot(new SlotNoModification(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
+					continue;
+				}
+			}
+			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
+		}
+	}
+
+	public abstract void addItemInventorySlots(Container inv, Inventory playerinv);
+
+	@Override
+	// at this point in time the handler isnt intialized so we need to force a non usage policy on this and rather use addItemInventorySlots
+	public final void addInventorySlots(Container inv, Inventory playerinv) {
 	}
 
 	public IItemHandler getHandler() {
 		return handler;
 	}
-
 }

@@ -6,6 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,6 +32,10 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 		world = playerinv.player.level;
 		addInventorySlots(inventory, playerinv);
 		slotCount = slots.size();
+		addPlayerInventory(playerinv);
+	}
+
+	protected void addPlayerInventory(Inventory playerinv) {
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
 				addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
@@ -65,6 +70,13 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		return UtilitiesContainers.handleShiftClick(slots, player, index);
+	}
+
+	@Override
+	public void clicked(int slot, int craft, ClickType type, Player pl) {
+		if (type != ClickType.SWAP || (getSlot(slot).allowModification(pl) && getSlot(craft).allowModification(pl))) {
+			super.clicked(slot, craft, type, pl);
+		}
 	}
 
 	@Override
