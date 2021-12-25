@@ -286,13 +286,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 
 		/* O2O Machines */
-
-		registry.addRecipeClickArea(ScreenO2OProcessor.class, 85, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 85, 25, 22, 35,
-				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 85, 25, 22, 55,
-				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-
 		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35,
 				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));

@@ -1,6 +1,6 @@
 package electrodynamics.client.screen.tile;
 
-import electrodynamics.common.inventory.container.ContainerO2OProcessor;
+import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;

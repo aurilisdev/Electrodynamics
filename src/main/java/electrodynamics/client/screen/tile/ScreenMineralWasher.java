@@ -1,9 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import java.util.ArrayList;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileMineralWasher;

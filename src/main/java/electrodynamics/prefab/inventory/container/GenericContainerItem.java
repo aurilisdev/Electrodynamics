@@ -1,8 +1,7 @@
 package electrodynamics.prefab.inventory.container;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import electrodynamics.Electrodynamics;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,13 +24,12 @@ public abstract class GenericContainerItem extends GenericContainer {
 	@Override
 	public void removed(Player player) {
 		super.removed(player);
-		List<ItemStack> contained = new ArrayList<>();
-		contained.addAll(getItems());
 		LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		if(capability.isPresent()) {
 			ItemStackHandler handler = (ItemStackHandler) capability.resolve().get();
-			for(int i = 0; i < contained.size(); i++) {
-				handler.setStackInSlot(i, contained.get(i));
+			for(int i = 0; i < inventory.getContainerSize(); i++) {
+				Electrodynamics.LOGGER.info(inventory.getItem(i).toString());
+				handler.setStackInSlot(i, inventory.getItem(i));
 			}
 		}
 	}

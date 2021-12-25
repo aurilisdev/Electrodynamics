@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.common.inventory.container.ContainerCoalGenerator;
+import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.prefab.screen.GenericScreen;

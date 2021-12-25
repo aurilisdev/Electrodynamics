@@ -1,9 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import java.util.ArrayList;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;

@@ -16,8 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerCreativePowerSource extends GenericContainerBlockEntity<TileCreativePowerSource> {
 
-	private static final int POWER_MULTIPLIER = 1000000;
-
 	public ContainerCreativePowerSource(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(0), new SimpleContainerData(3));
 	}
@@ -44,7 +42,7 @@ public class ContainerCreativePowerSource extends GenericContainerBlockEntity<Ti
 
 		}
 		try {
-			power = Integer.parseInt(powerString) * POWER_MULTIPLIER;
+			power = Integer.parseInt(powerString);
 		} catch (Exception e) {
 
 		}

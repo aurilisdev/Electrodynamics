@@ -1,10 +1,8 @@
 package electrodynamics.client.screen.item;
 
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
-import electrodynamics.prefab.screen.GenericCustomScreen;
 import electrodynamics.prefab.screen.GenericScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner> {

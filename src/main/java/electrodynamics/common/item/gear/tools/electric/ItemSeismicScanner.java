@@ -60,7 +60,7 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 			container.setItem(0, handler.getStackInSlot(0));
 		}
 		return new SimpleMenuProvider((id, inv, play) -> {
-			return new ContainerSeismicScanner(id, player.getInventory(), container);
+			return new ContainerSeismicScanner(id, player.getInventory(), container, stack);
 		}, CONTAINER_TITLE);
 	}
 

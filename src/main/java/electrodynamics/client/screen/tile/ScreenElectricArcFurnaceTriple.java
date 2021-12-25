@@ -1,10 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceTriple;
 import electrodynamics.common.tile.TileElectricArcFurnace;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;

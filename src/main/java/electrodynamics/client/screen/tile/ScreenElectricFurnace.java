@@ -1,6 +1,6 @@
 package electrodynamics.client.screen.tile;
 
-import electrodynamics.common.inventory.container.ContainerElectricFurnace;
+import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;

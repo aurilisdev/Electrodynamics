@@ -1,10 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileChemicalMixer;

@@ -1,10 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCobblestoneGenerator;
