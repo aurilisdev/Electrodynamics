@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
+import electrodynamics.common.inventory.container.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -38,7 +38,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		}, this, 25, 25).flame());
 		components.add(
 				new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("coalgenerator"));
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {
@@ -53,26 +53,6 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.coalgenerator.heat",
 					new TextComponent(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%")
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		}
-		return list;
-	}
-
-	private List<? extends FormattedCharSequence> getEnergyInformation() {
-		ArrayList<FormattedCharSequence> list = new ArrayList<>();
-		TileCoalGenerator box = menu.getHostFromIntArray();
-		if (box != null) {
-			TransferPack output = TransferPack.ampsVoltage(
-					Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((box.clientHeat - 27.0) / (3000.0 - 27.0), 1),
-					Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-			list.add(new TranslatableComponent("gui.coalgenerator.current",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.coalgenerator.output",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.coalgenerator.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE))
 							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;

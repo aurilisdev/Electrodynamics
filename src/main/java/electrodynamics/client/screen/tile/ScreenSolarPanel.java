@@ -1,8 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -13,11 +10,8 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,24 +21,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 
 	public ScreenSolarPanel(ContainerSolarPanel container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
-	}
-
-	private List<? extends FormattedCharSequence> getEnergyInformation() {
-		ArrayList<FormattedCharSequence> list = new ArrayList<>();
-		if (menu.getUnsafeHost() instanceof IElectricGenerator gen) {
-			TransferPack transfer = gen.getProduced();
-			list.add(new TranslatableComponent("gui.solarpanel.current",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.solarpanel.output",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getWatts(), ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.solarpanel.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getVoltage(), ElectricUnit.VOLTAGE))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		}
-		return list;
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("solarpanel"));
 	}
 
 	@Override

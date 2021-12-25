@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.tile.generic.GenericTileCharger;
@@ -15,14 +13,12 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentCharge;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
@@ -44,7 +40,8 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			return 0;
 		}, this, 118, 37));
 
-		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor")
+				.wattage(e -> e.getMaxJoulesStored() * 20));
 	}
 
 	@Override
@@ -89,22 +86,6 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN));
 			}
 
-		}
-		return list;
-	}
-
-	private List<? extends FormattedCharSequence> getEnergyInformation() {
-		ArrayList<FormattedCharSequence> list = new ArrayList<>();
-		GenericTile box = menu.getHostFromIntArray();
-		if (box != null) {
-			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-
-			list.add(new TranslatableComponent("gui.o2oprocessor.usage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getMaxJoulesStored() * 20, ElectricUnit.WATT))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.o2oprocessor.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}

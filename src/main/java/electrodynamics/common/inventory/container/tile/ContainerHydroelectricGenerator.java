@@ -1,5 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
@@ -17,7 +18,7 @@ public class ContainerHydroelectricGenerator extends GenericContainerBlockEntity
 	}
 
 	public ContainerHydroelectricGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(electrodynamics.DeferredRegisters.CONTAINER_HYDROELECTRICGENERATOR.get(), id, playerinv, inventory, inventorydata);
+		super(DeferredRegisters.CONTAINER_HYDROELECTRICGENERATOR.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	@Override

@@ -18,14 +18,9 @@ import electrodynamics.prefab.screen.component.ScreenComponentSlot;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -71,7 +66,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 			}
 			return null;
 		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this::getEnergyInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("chemicalmixer"));
 	}
 
 	@Override
@@ -83,20 +78,4 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 				this, slot.x - 1, slot.y - 1);
 	}
 
-	private List<? extends FormattedCharSequence> getEnergyInformation() {
-		ArrayList<FormattedCharSequence> list = new ArrayList<>();
-		GenericTile box = menu.getHostFromIntArray();
-		if (box != null) {
-			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-			ComponentProcessor processor = box.getComponent(ComponentType.Processor);
-
-			list.add(new TranslatableComponent("gui.chemicalmixer.usage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(processor.getUsage() * 20, ElectricUnit.WATT))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.chemicalmixer.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		}
-		return list;
-	}
 }
