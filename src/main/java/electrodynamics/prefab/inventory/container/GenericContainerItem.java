@@ -5,6 +5,8 @@ import electrodynamics.prefab.inventory.container.slot.SlotNoModification;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
@@ -46,6 +48,28 @@ public abstract class GenericContainerItem extends GenericContainer {
 			}
 			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
 		}
+	}
+
+	@Override
+	public void clicked(int slot, int craft, ClickType type, Player pl) {
+		if (type == ClickType.SWAP) {
+			Inventory playerinv = pl.getInventory();
+			ItemStack stack = playerinv.getItem(slot);
+			LazyOptional<IItemHandler> cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			if (cap.isPresent()) {
+				if (cap.resolve().get() == handler) {
+					return;
+				}
+			}
+			stack = playerinv.getItem(craft);
+			cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			if (cap.isPresent()) {
+				if (cap.resolve().get() == handler) {
+					return;
+				}
+			}
+		}
+		super.clicked(slot, craft, type, pl);
 	}
 
 	public abstract void addItemInventorySlots(Container inv, Inventory playerinv);
