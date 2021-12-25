@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.inventory.container.ContainerCreativePowerSource;
+import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -24,6 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileCreativePowerSource extends GenericTile {
 
+	private static final int POWER_MULTIPLIER = 1000000;
+	
 	public Pair<Integer, Integer> outputValue;
 
 	protected List<CachedTileOutput> outputs;
@@ -62,7 +64,7 @@ public class TileCreativePowerSource extends GenericTile {
 			}
 		}
 		electro.voltage(outputValue.getSecond());
-		TransferPack output = TransferPack.joulesVoltage(outputValue.getSecond(), outputValue.getFirst());
+		TransferPack output = TransferPack.joulesVoltage(outputValue.getSecond() * POWER_MULTIPLIER, outputValue.getFirst());
 		for (int i = 0; i < outputs.size(); i++) {
 			CachedTileOutput cache = outputs.get(i);
 			Direction dir = Direction.values()[i];

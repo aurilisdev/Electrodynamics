@@ -36,33 +36,34 @@ import electrodynamics.common.fluid.types.FluidPolyethylene;
 import electrodynamics.common.fluid.types.FluidSulfate;
 import electrodynamics.common.fluid.types.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
-import electrodynamics.common.inventory.container.ContainerBatteryBox;
-import electrodynamics.common.inventory.container.ContainerChargerGeneric;
-import electrodynamics.common.inventory.container.ContainerChemicalCrystallizer;
-import electrodynamics.common.inventory.container.ContainerChemicalMixer;
-import electrodynamics.common.inventory.container.ContainerCoalGenerator;
-import electrodynamics.common.inventory.container.ContainerCobblestoneGenerator;
-import electrodynamics.common.inventory.container.ContainerCombustionChamber;
-import electrodynamics.common.inventory.container.ContainerCreativeFluidSource;
-import electrodynamics.common.inventory.container.ContainerCreativePowerSource;
-import electrodynamics.common.inventory.container.ContainerDO2OProcessor;
-import electrodynamics.common.inventory.container.ContainerElectricArcFurnace;
-import electrodynamics.common.inventory.container.ContainerElectricArcFurnaceDouble;
-import electrodynamics.common.inventory.container.ContainerElectricArcFurnaceTriple;
-import electrodynamics.common.inventory.container.ContainerElectricFurnace;
-import electrodynamics.common.inventory.container.ContainerElectricFurnaceDouble;
-import electrodynamics.common.inventory.container.ContainerElectricFurnaceTriple;
-import electrodynamics.common.inventory.container.ContainerFermentationPlant;
-import electrodynamics.common.inventory.container.ContainerFluidVoid;
-import electrodynamics.common.inventory.container.ContainerHydroelectricGenerator;
-import electrodynamics.common.inventory.container.ContainerLithiumBatteryBox;
-import electrodynamics.common.inventory.container.ContainerMineralWasher;
-import electrodynamics.common.inventory.container.ContainerO2OProcessor;
-import electrodynamics.common.inventory.container.ContainerO2OProcessorDouble;
-import electrodynamics.common.inventory.container.ContainerO2OProcessorTriple;
-import electrodynamics.common.inventory.container.ContainerSolarPanel;
-import electrodynamics.common.inventory.container.ContainerTankGeneric;
-import electrodynamics.common.inventory.container.ContainerWindmill;
+import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
+import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
+import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
+import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
+import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
+import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
+import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
+import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
+import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
+import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
+import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
+import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
+import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceDouble;
+import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceTriple;
+import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
+import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
+import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
+import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
+import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
+import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
+import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
+import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
+import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
+import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
+import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
+import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
+import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
@@ -78,6 +79,7 @@ import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunPlasma;
+import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -381,6 +383,10 @@ public class DeferredRegisters {
 			supplier(new ItemRailgunPlasma((ElectricItemProperties) new ElectricItemProperties().capacity(ItemRailgunPlasma.JOULES_PER_SHOT * 10)
 					.extract(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480))
 					.receive(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480)).tab(References.CORETAB).stacksTo(1))));
+	public static final RegistryObject<Item> ITEM_SEISMICSCANNER = ITEMS.register("seismicscanner",
+			supplier(new ItemSeismicScanner((ElectricItemProperties) new ElectricItemProperties().capacity(ItemRailgunPlasma.JOULES_PER_SHOT * 10)
+					.extract(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480))
+					.receive(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 			supplier(new ItemWrench(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
@@ -627,6 +633,8 @@ public class DeferredRegisters {
 			.register("creativefluidsource", () -> new MenuType<>(ContainerCreativeFluidSource::new));
 	public static final RegistryObject<MenuType<ContainerFluidVoid>> CONTAINER_FLUIDVOID = CONTAINERS.register("fluidvoid",
 			() -> new MenuType<>(ContainerFluidVoid::new));
+	public static final RegistryObject<MenuType<ContainerSeismicScanner>> CONTAINER_SEISMICSCANNER = CONTAINERS.register("seismicdetector",
+			() -> new MenuType<>(ContainerSeismicScanner::new));
 
 	// Entities
 

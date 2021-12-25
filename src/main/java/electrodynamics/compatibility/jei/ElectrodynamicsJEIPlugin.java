@@ -8,17 +8,17 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.client.screen.ScreenChemicalCrystallizer;
-import electrodynamics.client.screen.ScreenChemicalMixer;
-import electrodynamics.client.screen.ScreenDO2OProcessor;
-import electrodynamics.client.screen.ScreenElectricFurnace;
-import electrodynamics.client.screen.ScreenElectricFurnaceDouble;
-import electrodynamics.client.screen.ScreenElectricFurnaceTriple;
-import electrodynamics.client.screen.ScreenFermentationPlant;
-import electrodynamics.client.screen.ScreenMineralWasher;
-import electrodynamics.client.screen.ScreenO2OProcessor;
-import electrodynamics.client.screen.ScreenO2OProcessorDouble;
-import electrodynamics.client.screen.ScreenO2OProcessorTriple;
+import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
+import electrodynamics.client.screen.tile.ScreenChemicalMixer;
+import electrodynamics.client.screen.tile.ScreenDO2OProcessor;
+import electrodynamics.client.screen.tile.ScreenElectricFurnace;
+import electrodynamics.client.screen.tile.ScreenElectricFurnaceDouble;
+import electrodynamics.client.screen.tile.ScreenElectricFurnaceTriple;
+import electrodynamics.client.screen.tile.ScreenFermentationPlant;
+import electrodynamics.client.screen.tile.ScreenMineralWasher;
+import electrodynamics.client.screen.tile.ScreenO2OProcessor;
+import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
+import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -286,13 +286,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 
 		/* O2O Machines */
-
-		registry.addRecipeClickArea(ScreenO2OProcessor.class, 85, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 85, 25, 22, 35,
-				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 85, 25, 22, 55,
-				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-
 		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35,
 				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));

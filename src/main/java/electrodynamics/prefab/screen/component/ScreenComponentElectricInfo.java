@@ -11,6 +11,7 @@ import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
+import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -64,7 +65,7 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 	private List<? extends FormattedCharSequence> getElectricInformation() {
 		ArrayList<FormattedCharSequence> list2 = new ArrayList<>();
 		if (gui instanceof GenericScreen<?> menu) {
-			if (menu.getMenu().getUnsafeHost() instanceof GenericTile tile) {
+			if (((GenericContainerBlockEntity<?>)menu.getMenu()).getUnsafeHost() instanceof GenericTile tile) {
 				if (tile.getComponent(ComponentType.Electrodynamic) instanceof ComponentElectrodynamic electro) {
 					if (tile instanceof IElectricGenerator generator) {
 						TransferPack transfer = generator.getProduced();

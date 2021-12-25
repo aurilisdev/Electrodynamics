@@ -4,7 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.ContainerCoalGenerator;
+import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;

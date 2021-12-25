@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
-import electrodynamics.common.inventory.container.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;

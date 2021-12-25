@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
-import electrodynamics.common.inventory.container.ContainerLithiumBatteryBox;
+import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.components.ComponentType;
