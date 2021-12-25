@@ -2,14 +2,15 @@ package electrodynamics.common.inventory.container.item;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.prefab.inventory.container.GenericContainerItem;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerSeismicScanner extends GenericContainerItem {
 	
@@ -23,19 +24,17 @@ public class ContainerSeismicScanner extends GenericContainerItem {
 		}
 	}
 	
-	public static final int SLOT_COUNT = 1;
-	
 	public ContainerSeismicScanner(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(SLOT_COUNT), ItemStack.EMPTY);
+		this(id, playerinv, new ItemStackHandler(ItemSeismicScanner.SLOT_COUNT));
 	}
 	
-	public ContainerSeismicScanner(int id, Inventory playerinv, Container inventory, ItemStack stack) {
-		super(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), id, playerinv, inventory, stack);
+	public ContainerSeismicScanner(int id, Inventory playerinv, IItemHandler handler) {
+		super(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), id, playerinv, handler);
 	}
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.IRON_ORE));
+		addSlot(new SlotItemHandler(getHandler(), nextIndex(), 25, 42));
 	}
 
 }
