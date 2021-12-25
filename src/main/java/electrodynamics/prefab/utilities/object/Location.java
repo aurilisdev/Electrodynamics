@@ -4,6 +4,7 @@ import com.mojang.math.Vector3f;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -72,6 +73,12 @@ public final class Location {
 		x = loc.x;
 		y = loc.y;
 		z = loc.z;
+	}
+
+	public Location(Entity entity) {
+		x = entity.getX();
+		y = entity.getY();
+		z = entity.getZ();
 	}
 
 	public Location mul(double val) {

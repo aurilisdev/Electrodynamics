@@ -36,11 +36,11 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 
 	public ScreenComponentElectricInfo(final IScreenWrapper gui, final int x, final int y) {
 		super(null, new ResourceLocation(References.ID + ":textures/screen/component/electric.png"), gui, x, y);
-		this.infoHandler = this::getElectricInformation;
+		infoHandler = this::getElectricInformation;
 	}
 
 	public ScreenComponentElectricInfo tag(String val) {
-		this.tag = val;
+		tag = val;
 		return this;
 	}
 
@@ -77,23 +77,22 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getVoltage(), ElectricUnit.VOLTAGE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-					} else if (wattage == null) {
-						double usage = tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
-						for (ComponentProcessor proc : tile.getProcessors()) {
-							if (proc != null) {
-								usage += proc.getUsage() * 20;
-							}
-						}
-						list2.add(new TranslatableComponent("gui." + tag + ".usage",
-								new TextComponent(ChatFormatter.getElectricDisplayShort(usage, ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
-										.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
-								new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					} else {
-						list2.add(new TranslatableComponent("gui." + tag + ".usage",
-								new TextComponent(ChatFormatter.getElectricDisplayShort(wattage.apply(electro), ElectricUnit.WATT))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						if (wattage == null) {
+							double usage = tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
+							for (ComponentProcessor proc : tile.getProcessors()) {
+								if (proc != null) {
+									usage += proc.getUsage() * 20;
+								}
+							}
+							list2.add(new TranslatableComponent("gui." + tag + ".usage",
+									new TextComponent(ChatFormatter.getElectricDisplayShort(usage, ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
+											.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						} else {
+							list2.add(new TranslatableComponent("gui." + tag + ".usage",
+									new TextComponent(ChatFormatter.getElectricDisplayShort(wattage.apply(electro), ElectricUnit.WATT))
+											.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						}
 						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());

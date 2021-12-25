@@ -124,7 +124,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 
 	@Override
 	public void setMultiplier(double val) {
-		this.multiplier = val;
+		multiplier = val;
 	}
 
 	@Override
