@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileCreativePowerSource extends GenericTile {
 
 	private static final int POWER_MULTIPLIER = 1000000;
-	
+
 	public Pair<Integer, Integer> outputValue;
 
 	protected List<CachedTileOutput> outputs;

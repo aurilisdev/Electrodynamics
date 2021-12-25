@@ -10,10 +10,10 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class GenericContainerBlockEntity<T extends BlockEntity> extends GenericContainer {
-	
+
 	protected final BlockEntity tile;
 	protected final ContainerData inventorydata;
-	
+
 	protected GenericContainerBlockEntity(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory);
 		checkContainerDataCount(inventorydata, inventorydata.getCount());

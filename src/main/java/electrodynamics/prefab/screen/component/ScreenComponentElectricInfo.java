@@ -65,7 +65,7 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 	private List<? extends FormattedCharSequence> getElectricInformation() {
 		ArrayList<FormattedCharSequence> list2 = new ArrayList<>();
 		if (gui instanceof GenericScreen<?> menu) {
-			if (((GenericContainerBlockEntity<?>)menu.getMenu()).getUnsafeHost() instanceof GenericTile tile) {
+			if (((GenericContainerBlockEntity<?>) menu.getMenu()).getUnsafeHost() instanceof GenericTile tile) {
 				if (tile.getComponent(ComponentType.Electrodynamic) instanceof ComponentElectrodynamic electro) {
 					if (tile instanceof IElectricGenerator generator) {
 						TransferPack transfer = generator.getProduced();

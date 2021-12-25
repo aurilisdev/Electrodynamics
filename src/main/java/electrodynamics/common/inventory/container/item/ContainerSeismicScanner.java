@@ -13,21 +13,21 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerSeismicScanner extends GenericContainerItem {
-	
+
 	private static Item[] ores = new Item[0];
-	
+
 	static {
 		ItemStack[] stacks = ItemUtils.getIngredientFromTag("forge", "ores").getItems();
 		ores = new Item[stacks.length];
-		for(int i = 0; i < stacks.length; i++) {
+		for (int i = 0; i < stacks.length; i++) {
 			ores[i] = stacks[i].getItem();
 		}
 	}
-	
+
 	public ContainerSeismicScanner(int id, Inventory playerinv) {
 		this(id, playerinv, new ItemStackHandler(ItemSeismicScanner.SLOT_COUNT));
 	}
-	
+
 	public ContainerSeismicScanner(int id, Inventory playerinv, IItemHandler handler) {
 		super(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), id, playerinv, handler);
 	}

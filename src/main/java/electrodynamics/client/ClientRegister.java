@@ -202,7 +202,7 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_CREATIVEFLUIDSOURCE.get(), ScreenCreativeFluidSource::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), ScreenSeismicScanner::new);
-		
+
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant),

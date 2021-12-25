@@ -27,9 +27,9 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 
 	private static final Component CONTAINER_TITLE = new TranslatableComponent("container.seismicscanner");
 	private final ElectricItemProperties properties;
-	
+
 	public static final int SLOT_COUNT = 1;
-	
+
 	public ItemSeismicScanner(ElectricItemProperties properties) {
 		super(properties);
 		this.properties = properties;
@@ -39,25 +39,25 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		if(!world.isClientSide) {
-			NetworkHooks.openGui((ServerPlayer)player, getMenuProvider(world, player, player.getItemInHand(hand)));
+		if (!world.isClientSide) {
+			NetworkHooks.openGui((ServerPlayer) player, getMenuProvider(world, player, player.getItemInHand(hand)));
 		}
 		return super.use(world, player, hand);
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class);
 	}
-	
+
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
 		return new SimpleMenuProvider((id, inv, play) -> {
 			LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 			IItemHandler handler = new ItemStackHandler();
-			if(capability.isPresent()) {
+			if (capability.isPresent()) {
 				handler = capability.resolve().get();
 			}
 			return new ContainerSeismicScanner(id, player.getInventory(), handler);

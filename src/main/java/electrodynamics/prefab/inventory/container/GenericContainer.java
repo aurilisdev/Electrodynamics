@@ -19,11 +19,11 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 	protected final int slotCount;
 	protected int playerInvOffset = 0;
 	private int nextIndex = 0;
-	
+
 	public int nextIndex() {
 		return nextIndex++;
 	}
-	
+
 	protected GenericContainer(MenuType<?> type, int id, Inventory playerinv, Container inventory) {
 		super(type, id);
 		checkContainerSize(inventory, inventory.getContainerSize());
@@ -41,7 +41,7 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
 		}
 	}
-	
+
 	public abstract void addInventorySlots(Container inv, Inventory playerinv);
 
 	public void clear() {
@@ -72,5 +72,5 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 		super.removed(player);
 		inventory.stopOpen(player);
 	}
-	
+
 }
