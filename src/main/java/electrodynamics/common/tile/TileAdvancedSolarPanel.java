@@ -6,7 +6,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.inventory.container.ContainerSolarPanel;
+import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;

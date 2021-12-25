@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.common.inventory.container.ContainerCreativeFluidSource;
+import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.tile.generic.GenericTilePipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;

@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.inventory.container.ContainerCreativePowerSource;
+import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;

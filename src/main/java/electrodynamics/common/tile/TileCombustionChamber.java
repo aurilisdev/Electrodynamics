@@ -5,7 +5,7 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
-import electrodynamics.common.inventory.container.ContainerCombustionChamber;
+import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;

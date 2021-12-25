@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.common.inventory.container.ContainerSolarPanel;
+import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;

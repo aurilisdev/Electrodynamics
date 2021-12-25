@@ -1,7 +1,7 @@
 package electrodynamics.common.tile.generic;
 
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.common.inventory.container.ContainerTankGeneric;
+import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;

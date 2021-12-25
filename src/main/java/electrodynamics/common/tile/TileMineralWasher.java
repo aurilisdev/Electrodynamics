@@ -4,7 +4,7 @@ import com.mojang.math.Vector3f;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
-import electrodynamics.common.inventory.container.ContainerMineralWasher;
+import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
