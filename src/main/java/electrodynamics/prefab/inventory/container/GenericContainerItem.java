@@ -72,6 +72,18 @@ public abstract class GenericContainerItem extends GenericContainer {
 		super.clicked(slot, craft, type, pl);
 	}
 
+	@Override
+	public boolean stillValid(Player player) {
+		ItemStack stack = player.getUseItem();
+		LazyOptional<IItemHandler> cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		if (cap.isPresent()) {
+			if (cap.resolve().get() != handler) {
+				return false;
+			}
+		}
+		return super.stillValid(player);
+	}
+
 	public abstract void addItemInventorySlots(Container inv, Inventory playerinv);
 
 	@Override
