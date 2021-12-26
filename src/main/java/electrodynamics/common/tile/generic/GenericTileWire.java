@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.network.ElectricNetwork;
@@ -65,7 +65,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	@Override
 	@Nonnull
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == CapabilityElectrodynamic.ELECTRODYNAMIC) {
+		if (capability == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
 			return LazyOptional.of(() -> handler.get(facing.ordinal())).cast();
 		}
 		return super.getCapability(capability, facing);

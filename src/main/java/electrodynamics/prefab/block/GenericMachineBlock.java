@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -156,7 +156,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		ItemStack stack = new ItemStack(this);
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
+		tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
 			double joules = el.getJoulesStored();
 			if (joules > 0) {
 				stack.getOrCreateTag().putDouble("joules", joules);

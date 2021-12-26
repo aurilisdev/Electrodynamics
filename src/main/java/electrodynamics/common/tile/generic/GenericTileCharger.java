@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.generic;
 
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.prefab.tile.GenericTile;
@@ -32,7 +32,7 @@ public abstract class GenericTileCharger extends GenericTile {
 		addComponent(new ComponentPacketHandler().guiPacketReader(this::loadFromNBT).guiPacketWriter(this::saveToNBT));
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
-				.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(1000.0 * voltageMultiplier));
+				.voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(1000.0 * voltageMultiplier));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> slot < 1));
 		addComponent(new ComponentContainerProvider("container.charger" + containerName)
 				.createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));

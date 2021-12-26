@@ -1,17 +1,23 @@
 package electrodynamics.common.item.gear.tools.electric;
 
+import electrodynamics.Electrodynamics;
+import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.api.world.WorldUtils;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,6 +34,8 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 
 	public static final int SLOT_COUNT = 1;
 
+	public static final int RADUIS_BLOCKS = 16;
+	
 	public ItemSeismicScanner(ElectricItemProperties properties) {
 		super(properties);
 		this.properties = properties;
@@ -41,7 +49,17 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if (!world.isClientSide) {
-			player.openMenu(getMenuProvider(world, player, player.getItemInHand(hand)));
+			ItemStack scanner = player.getItemInHand(hand);
+			if(player.isShiftKeyDown()) {
+				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
+				ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
+				if(ore.getItem() instanceof BlockItem oreBlockItem) {
+					BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
+					Electrodynamics.LOGGER.info(pos.toString());
+				}
+			} else {
+				player.openMenu(getMenuProvider(world, player, scanner));
+			}
 		}
 		return super.use(world, player, hand);
 	}

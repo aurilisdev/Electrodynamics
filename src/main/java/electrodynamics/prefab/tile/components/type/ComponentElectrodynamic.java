@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ItemElectric;
@@ -44,7 +44,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected HashSet<Direction> relativeInputDirections = new HashSet<>();
 	protected HashSet<Direction> outputDirections = new HashSet<>();
 	protected HashSet<Direction> inputDirections = new HashSet<>();
-	protected double voltage = CapabilityElectrodynamic.DEFAULT_VOLTAGE;
+	protected double voltage = ElectrodynamicsCapabilities.DEFAULT_VOLTAGE;
 	protected double maxJoules = 0;
 	protected double joules = 0;
 	protected DoubleSupplier getJoules = () -> joules;
@@ -96,7 +96,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
 		lastReturnedSide = side;
-		if (capability != CapabilityElectrodynamic.ELECTRODYNAMIC || !hasCapability.getAsBoolean()) {
+		if (capability != ElectrodynamicsCapabilities.ELECTRODYNAMIC || !hasCapability.getAsBoolean()) {
 			return false;
 		}
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {

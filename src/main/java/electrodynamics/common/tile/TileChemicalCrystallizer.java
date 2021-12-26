@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -31,7 +31,7 @@ public class TileChemicalCrystallizer extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2)
 				.maxJoules(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK * 10));
 		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values()))
 				.setAddFluidsValues(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE, MAX_TANK_CAPACITY, true, false));

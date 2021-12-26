@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
@@ -32,7 +32,7 @@ public class TileLathe extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2)
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2)
 				.maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
 		addComponent(new ComponentInventory(this).size(6).inputs(1).outputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator())
 				.biproducts(1).shouldSendInfo());

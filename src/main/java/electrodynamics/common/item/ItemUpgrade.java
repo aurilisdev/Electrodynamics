@@ -5,9 +5,13 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.boolstorage.CapabilityBooleanStorage;
+import electrodynamics.api.capability.boolstorage.IBooleanStorage;
 import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
-import electrodynamics.api.capability.dirstorage.DirectionalStorageSerializer;
-import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
+import electrodynamics.api.capability.dirstorage.IDirectionalStorage;
+import electrodynamics.api.capability.intstorage.CapabilityIntStorage;
+import electrodynamics.api.capability.multicapability.ejectorupgrade.EjectorCapability;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -38,7 +42,7 @@ public class ItemUpgrade extends Item {
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
 		if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
-			return new DirectionalStorageSerializer();
+			return new EjectorCapability(new CapabilityBooleanStorage(), new CapabilityIntStorage(), new CapabilityDirectionalStorage());
 		}
 		return super.initCapabilities(stack, nbt);
 	}
@@ -63,12 +67,12 @@ public class ItemUpgrade extends Item {
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
-			if (stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean)
+			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean)
 					.orElse(false)) {
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
-			List<Direction> dirs = stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-					.map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
+			List<Direction> dirs = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
+					.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
 			if (!dirs.isEmpty()) {
 				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
 				for (int i = 0; i < dirs.size(); i++) {
@@ -86,15 +90,15 @@ public class ItemUpgrade extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if (!world.isClientSide) {
-			if (CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
+			if (ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY != null) {
 				ItemStack handStack = player.getItemInHand(hand);
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-					handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
+					handStack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
-				handStack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
+				handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
 			}
 		}
 		return super.use(world, player, hand);
@@ -104,11 +108,11 @@ public class ItemUpgrade extends Item {
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
 			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-				entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-						.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
+				entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
+						.ifPresent(IDirectionalStorage::removeAllDirs);
 			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-				entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-						.ifPresent(ICapabilityDirectionalStorage::removeAllDirs);
+				entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
+						.ifPresent(IDirectionalStorage::removeAllDirs);
 			}
 		}
 		return super.onEntitySwing(stack, entity);
@@ -116,6 +120,6 @@ public class ItemUpgrade extends Item {
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		return stack.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
+		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean).orElse(false);
 	}
 }

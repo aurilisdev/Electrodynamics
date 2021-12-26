@@ -1,5 +1,6 @@
 package electrodynamics.api.capability.electrodynamic;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -17,7 +18,7 @@ public interface ICapabilityElectrodynamic {
 	double getMaxJoulesStored();
 
 	default double getVoltage() {
-		return CapabilityElectrodynamic.DEFAULT_VOLTAGE;
+		return ElectrodynamicsCapabilities.DEFAULT_VOLTAGE;
 	}
 
 	default TransferPack extractPower(TransferPack transfer, boolean debug) {

@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlateStorage;
-import electrodynamics.api.capability.ceramicplate.CeramicPlateStorageSerializer;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.intstorage.CapabilityIntStorage;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import net.minecraft.ChatFormatting;
@@ -91,7 +91,7 @@ public class CompositeArmorItem extends ArmorItem {
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		CompositeArmorItem item = (CompositeArmorItem) stack.getItem();
 		if (EquipmentSlot.CHEST.equals(item.getSlot())) {
-			return new CeramicPlateStorageSerializer();
+			return new CapabilityIntStorage();
 		}
 		return null;
 	}
@@ -101,7 +101,7 @@ public class CompositeArmorItem extends ArmorItem {
 		if (allowdedIn(group)) {
 			ItemStack filled = new ItemStack(this);
 			if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-				filled.getCapability(CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> h.increasePlateCount(2));
+				filled.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(2));
 				items.add(filled);
 			}
 			ItemStack empty = new ItemStack(this);
@@ -123,8 +123,8 @@ public class CompositeArmorItem extends ArmorItem {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (EquipmentSlot.CHEST.equals(getSlot())) {
-			stack.getCapability(CapabilityCeramicPlateStorage.CERAMIC_PLATE_HOLDER_CAPABILITY).ifPresent(h -> {
-				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getPlateCount() + ""))
+			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
+				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getInt() + ""))
 						.withStyle(ChatFormatting.AQUA);
 				tooltip.add(tip);
 			});
