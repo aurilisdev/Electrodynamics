@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.core.Direction;
 
-public interface ICapabilityDirectionalStorage {
+public interface IDirectionalStorage {
 
 	void addDirection(Direction dir);
 
@@ -13,13 +13,5 @@ public interface ICapabilityDirectionalStorage {
 	void removeAllDirs();
 
 	List<Direction> getDirections();
-
-	void setBoolean(boolean bool);
-
-	boolean getBoolean();
-
-	void setInt(int number);
-
-	int getInt();
 
 }

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
@@ -101,7 +101,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		default -> getMachine(machine);
 		};
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		tile.getCapability(CapabilityElectrodynamic.ELECTRODYNAMIC).ifPresent(el -> {
+		tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
 			double joules = el.getJoulesStored();
 			if (joules > 0) {
 				addstack.getOrCreateTag().putDouble("joules", joules);

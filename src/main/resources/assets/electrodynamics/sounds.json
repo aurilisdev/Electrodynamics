@@ -110,5 +110,12 @@
 		"sounds": [
 			"electrodynamics:equipheavyarmor"
 		]
+	},
+	"seismicscanner":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.seismicscanner",
+		"sounds": [
+			"electrodynamics:seismicscanner"
+		]
 	}
 }

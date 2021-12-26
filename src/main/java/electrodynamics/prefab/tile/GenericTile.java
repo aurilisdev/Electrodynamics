@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.CapabilityUtils;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -139,7 +139,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
+		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
 			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
 		}
 		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && components[ComponentType.FluidHandler.ordinal()] != null) {

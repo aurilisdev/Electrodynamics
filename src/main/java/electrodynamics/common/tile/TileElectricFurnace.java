@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
@@ -54,7 +54,7 @@ public class TileElectricFurnace extends GenericTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
-				.voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * Math.pow(2, extra))
+				.voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra))
 				.maxJoules(Constants.ELECTRICFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
 
 		int[] ints = new int[extra + 1];

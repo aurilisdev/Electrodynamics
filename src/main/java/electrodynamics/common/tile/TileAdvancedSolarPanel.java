@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import java.util.HashSet;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
@@ -53,7 +53,7 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE * 2));
+		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
 		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo()
 				.valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
 		addComponent(new ComponentContainerProvider("container.advancedsolarpanel")

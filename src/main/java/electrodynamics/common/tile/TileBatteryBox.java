@@ -1,7 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
@@ -40,7 +40,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	protected CachedTileOutput output;
 
 	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * CapabilityElectrodynamic.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
+		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
 	}
 
 	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {
@@ -128,14 +128,14 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
-				.receivePower(TransferPack.joulesVoltage(maxReceive, CapabilityElectrodynamic.DEFAULT_VOLTAGE), simulate);
+				.receivePower(TransferPack.joulesVoltage(maxReceive, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
 		return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 	}
 
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
 		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
-				.extractPower(TransferPack.joulesVoltage(maxExtract, CapabilityElectrodynamic.DEFAULT_VOLTAGE), simulate);
+				.extractPower(TransferPack.joulesVoltage(maxExtract, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
 		return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 	}
 

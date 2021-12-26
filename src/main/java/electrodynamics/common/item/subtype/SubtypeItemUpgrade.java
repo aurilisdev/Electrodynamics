@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
-import electrodynamics.api.capability.dirstorage.ICapabilityDirectionalStorage;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.boolstorage.IBooleanStorage;
+import electrodynamics.api.capability.dirstorage.IDirectionalStorage;
+import electrodynamics.api.capability.intstorage.IIntStorage;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
@@ -51,15 +53,15 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	// Currently, it's set to every 4 ticks
 	iteminput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		if (inv.hasInputRoom() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getInt)
+		if (inv.hasInputRoom() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
+			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(IIntStorage::getInt)
 					.orElse(0);
 			if (tickNumber >= 4) {
-				upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
-				List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-						.map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-						.map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
+				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
+				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
+						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY)
+						.map(IBooleanStorage::getBoolean).orElse(false);
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
@@ -76,21 +78,21 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
+			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
 		}
 	}, 1),
 	// I can't really optimize this one any more than it is
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		if (!inv.areOutputsEmpty() && CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).map(ICapabilityDirectionalStorage::getInt)
+		if (!inv.areOutputsEmpty() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
+			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(IIntStorage::getInt)
 					.orElse(0);
 			if (tickNumber >= 4) {
-				upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
-				List<Direction> dirs = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-						.map(ICapabilityDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY)
-						.map(ICapabilityDirectionalStorage::getBoolean).orElse(false);
+				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
+				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
+						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY)
+						.map(IBooleanStorage::getBoolean).orElse(false);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 					combinedItems.addAll(inv.getItemBiContents());
@@ -109,7 +111,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			upgrade.getCapability(CapabilityDirectionalStorage.DIR_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
+			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(h.getInt() + 1));
 		}
 	}, 1), improvedsolarcell((holder, processor, upgrade) -> {
 		if (holder instanceof IElectricGenerator generator && (holder instanceof TileSolarPanel || holder instanceof TileAdvancedSolarPanel)) {

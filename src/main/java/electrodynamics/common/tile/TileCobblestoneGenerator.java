@@ -1,7 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.electrodynamic.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
@@ -36,7 +36,7 @@ public class TileCobblestoneGenerator extends GenericTile {
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(CapabilityElectrodynamic.DEFAULT_VOLTAGE)
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE)
 				.maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * 10));
 		addComponent(new ComponentInventory(this).size(4).outputs(1).upgrades(3).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.cobblestonegenerator")

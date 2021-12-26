@@ -12,7 +12,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class CapabilityItemStackHandler implements ICapabilitySerializable<CompoundTag> {
 
 	private ItemStackHandler handler;
-	private final LazyOptional<IItemHandler> lazyOptional = LazyOptional.of(() -> getHandler());
+	public final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> getHandler());
 
 	public CapabilityItemStackHandler(int slotCount, Class<?>... classes) {
 		handler = new ItemStackHandler(slotCount);
@@ -23,13 +23,13 @@ public class CapabilityItemStackHandler implements ICapabilitySerializable<Compo
 	}
 
 	public void invalidate() {
-		lazyOptional.invalidate();
+		holder.invalidate();
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return lazyOptional.cast();
+			return holder.cast();
 		}
 		return LazyOptional.empty();
 	}
