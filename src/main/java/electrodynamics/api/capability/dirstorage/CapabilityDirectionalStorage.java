@@ -49,7 +49,7 @@ public class CapabilityDirectionalStorage implements IDirectionalStorage, ICapab
 			}
 		}
 	}
-	
+
 	private List<Direction> directions = new ArrayList<>();
 
 	@Override

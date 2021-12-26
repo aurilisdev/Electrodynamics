@@ -5,7 +5,7 @@ import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileWindmill;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,10 +21,10 @@ public class RenderWindmill implements BlockEntityRenderer<TileWindmill> {
 	public void render(TileWindmill tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
 			int combinedOverlayIn) {
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_WINDMILLBLADES);
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0, 22.0 / 16.0, 0);
 		float partial = (float) (partialTicks * tileEntityIn.rotationSpeed * (tileEntityIn.directionFlag ? 1 : -1));
 		matrixStackIn.mulPose(new Quaternion((float) ((tileEntityIn.savedTickRotation + partial) * tileEntityIn.generating * 1.5), 0, 0, true));
-		UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	}
 }

@@ -7,7 +7,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -27,9 +27,9 @@ public class RenderCombustionChamber implements BlockEntityRenderer<TileCombusti
 				.getTankFromFluid(DeferredRegisters.fluidEthanol, true).getFluidAmount() / (float) TileCombustionChamber.TANK_CAPACITY;
 		matrixStackIn.translate(0, 2.0 / 16.0, 0);
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_COMBUSTIONCHAMBERETHANOL);
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		if (prog > 0) {
-			UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 					combinedOverlayIn);
 		}
 		matrixStackIn.popPose();

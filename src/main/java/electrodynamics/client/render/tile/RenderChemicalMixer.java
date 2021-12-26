@@ -9,7 +9,7 @@ import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,9 +28,9 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
 		matrixStackIn.pushPose();
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0, 1 / 16.0, 0);
-		UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 
 		matrixStackIn.pushPose();
@@ -40,11 +40,11 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 				(tileEntityIn.clientTicks
 						+ (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10,
 				0, true));
-		UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 
 		matrixStackIn.pushPose();
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0.5, 0.2, 0.5);
 		ComponentFluidHandlerMulti multi = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler);
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
@@ -56,7 +56,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 			if (multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount() > 0) {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERSULFURICACID);
 			}
-			UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 					combinedOverlayIn);
 		}
 		matrixStackIn.popPose();

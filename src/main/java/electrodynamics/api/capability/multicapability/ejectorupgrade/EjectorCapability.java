@@ -15,13 +15,13 @@ public class EjectorCapability implements ICapabilitySerializable<CompoundTag> {
 	private CapabilityBooleanStorage bool;
 	private CapabilityIntStorage number;
 	private CapabilityDirectionalStorage direction;
-	
+
 	public EjectorCapability(CapabilityBooleanStorage bool, CapabilityIntStorage number, CapabilityDirectionalStorage direciton) {
 		this.bool = bool;
 		this.number = number;
-		this.direction = direciton;
+		direction = direciton;
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY) {
@@ -30,7 +30,7 @@ public class EjectorCapability implements ICapabilitySerializable<CompoundTag> {
 			return number.holder.cast();
 		} else if (cap == ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY) {
 			return direction.holder.cast();
-		} 
+		}
 		return LazyOptional.empty();
 	}
 

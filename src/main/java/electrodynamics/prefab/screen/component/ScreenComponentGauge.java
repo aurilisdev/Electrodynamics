@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,7 +34,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 	@Override
 	@SuppressWarnings("java:S1874")
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		UtilitiesRendering.bindTexture(resource);
+		RenderingUtils.bindTexture(resource);
 
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, WIDTH, HEIGHT);
 
@@ -59,7 +59,7 @@ public abstract class ScreenComponentGauge extends ScreenComponent {
 			RenderSystem.setShaderColor(1, 1, 1, 1);
 		}
 
-		UtilitiesRendering.bindTexture(resource);
+		RenderingUtils.bindTexture(resource);
 
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, WIDTH, 0, WIDTH, HEIGHT);
 	}

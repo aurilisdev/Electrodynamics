@@ -40,7 +40,8 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	protected CachedTileOutput output;
 
 	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
+		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition,
+				blockState);
 	}
 
 	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {

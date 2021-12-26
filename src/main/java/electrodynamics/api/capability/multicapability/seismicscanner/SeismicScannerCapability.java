@@ -14,12 +14,12 @@ public class SeismicScannerCapability implements ICapabilitySerializable<Compoun
 
 	private CapabilityIntStorage number;
 	private CapabilityItemStackHandler handler;
-	
+
 	public SeismicScannerCapability(CapabilityIntStorage number, CapabilityItemStackHandler handler) {
 		this.number = number;
 		this.handler = handler;
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY) {

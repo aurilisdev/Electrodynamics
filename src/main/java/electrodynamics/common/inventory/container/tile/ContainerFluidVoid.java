@@ -1,10 +1,10 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.common.tile.TileFluidVoid;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;

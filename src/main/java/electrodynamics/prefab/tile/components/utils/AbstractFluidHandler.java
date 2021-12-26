@@ -9,7 +9,7 @@ import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.utilities.UtilitiesTiles;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -108,8 +108,8 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
 				: null;
 		if (dir != null) {
-			return relativeInputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side))
-					|| relativeOutputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side));
+			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side))
+					|| relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
 		}
 		return false;
 	}
@@ -122,7 +122,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public int fill(FluidStack resource, FluidAction action) {
-		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
+		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
 				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
 				: Direction.UP, lastDirection);
 		boolean canFill = inputDirections.contains(lastDirection)
@@ -134,7 +134,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public FluidStack drain(FluidStack resource, FluidAction action) {
-		Direction relative = UtilitiesTiles.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
+		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
 				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
 				: Direction.UP, lastDirection);
 		boolean canDrain = outputDirections.contains(lastDirection)

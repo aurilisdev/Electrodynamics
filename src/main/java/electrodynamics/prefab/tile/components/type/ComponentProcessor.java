@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
@@ -22,6 +21,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BucketItem;

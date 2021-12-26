@@ -6,7 +6,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 
-public class UtilitiesElectricity {
+public class ElectricityUtils {
 	public static void electrecuteEntity(Entity entityIn, TransferPack transfer) {
 		if (transfer.getVoltage() <= 960.0) {
 			for (ItemStack armor : entityIn.getArmorSlots()) {

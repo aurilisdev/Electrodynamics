@@ -12,7 +12,7 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.block.GenericMachineBlock;
-import electrodynamics.prefab.utilities.UtilitiesElectricity;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -62,7 +62,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 			TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
 			if (tile != null && tile.lastTransfer.getJoules() > 0) {
-				UtilitiesElectricity.electrecuteEntity(entityIn, tile.lastTransfer);
+				ElectricityUtils.electrecuteEntity(entityIn, tile.lastTransfer);
 				tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
 			}
 		}

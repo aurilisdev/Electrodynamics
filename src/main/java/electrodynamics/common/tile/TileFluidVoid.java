@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -14,6 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BucketItem;

@@ -8,7 +8,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 
-public class UtilitiesMath {
+public class MathUtils {
 	public static Location getRaytracedBlock(Entity entity) {
 		return getRaytracedBlock(entity, 100);
 	}

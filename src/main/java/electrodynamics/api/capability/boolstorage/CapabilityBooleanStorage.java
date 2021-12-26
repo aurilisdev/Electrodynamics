@@ -10,10 +10,10 @@ import net.minecraftforge.common.util.LazyOptional;
 public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySerializable<CompoundTag> {
 
 	public final LazyOptional<IBooleanStorage> holder = LazyOptional.of(() -> this);
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY) {
+		if (cap == ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY) {
 			return holder.cast();
 		}
 		return LazyOptional.empty();
@@ -21,7 +21,7 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 
 	@Override
 	public CompoundTag serializeNBT() {
-		if(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
+		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
 			CompoundTag nbt = new CompoundTag();
 			nbt.putBoolean(ElectrodynamicsCapabilities.BOOLEAN_KEY, bool);
 			return nbt;
@@ -31,17 +31,19 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		if(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
+		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
 			bool = nbt.getBoolean(ElectrodynamicsCapabilities.BOOLEAN_KEY);
 		}
 	}
 
 	private boolean bool = false;
-	
+
+	@Override
 	public void setBoolean(boolean bool) {
 		this.bool = bool;
 	}
-	
+
+	@Override
 	public boolean getBoolean() {
 		return bool;
 	}

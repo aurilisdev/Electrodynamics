@@ -22,8 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileLithiumBatteryBox extends TileBatteryBox {
 
 	public TileLithiumBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 40000000, worldPosition,
-				blockState);
+		super(DeferredRegisters.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 40000000,
+				worldPosition, blockState);
 		forceComponent(new ComponentContainerProvider("container.lithiumbatterybox")
 				.createMenu((id, player) -> new ContainerLithiumBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}

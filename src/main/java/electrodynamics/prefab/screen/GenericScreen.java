@@ -11,7 +11,7 @@ import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -64,7 +64,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	@Override
 	protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
-		UtilitiesRendering.bindTexture(defaultResource);
+		RenderingUtils.bindTexture(defaultResource);
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
 		blit(stack, guiWidth, guiHeight, 0, 248, imageWidth, 4);

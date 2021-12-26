@@ -1,4 +1,4 @@
-package electrodynamics.api.capability;
+package electrodynamics.prefab.utilities;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;

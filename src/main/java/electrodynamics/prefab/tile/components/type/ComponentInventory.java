@@ -13,7 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.utilities.UtilitiesTiles;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -167,7 +167,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		lastDirection = side;
 		return (side == null || directionMappings.containsKey(side)
 				|| holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(
-						UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))
+						BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))
 				&& capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
@@ -239,7 +239,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		}
 		if (holder.hasComponent(ComponentType.Direction)) {
 			Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
-			Direction relativeDirection = UtilitiesTiles
+			Direction relativeDirection = BlockEntityUtils
 					.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
 			Stream<Integer> stRel = relativeDirectionMappings.containsKey(relativeDirection)
 					? relativeDirectionMappings.get(relativeDirection).stream()

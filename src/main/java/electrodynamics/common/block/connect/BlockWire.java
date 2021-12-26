@@ -16,7 +16,7 @@ import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TileWire;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.utilities.Scheduler;
-import electrodynamics.prefab.utilities.UtilitiesElectricity;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -169,7 +169,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 		if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
 			if (!(tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0
 					|| tile.getNetwork().getActiveVoltage() <= 960.0 && wire.insulated && wire.highlyinsulated)) {
-				UtilitiesElectricity.electrecuteEntity(entityIn,
+				ElectricityUtils.electrecuteEntity(entityIn,
 						TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
 			}
 		}

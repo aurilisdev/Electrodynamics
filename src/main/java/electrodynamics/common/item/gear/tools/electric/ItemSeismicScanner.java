@@ -9,9 +9,9 @@ import electrodynamics.api.capability.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.capability.multicapability.seismicscanner.SeismicScannerCapability;
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.api.world.WorldUtils;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import electrodynamics.prefab.utilities.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +43,7 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 	public static final int SLOT_COUNT = 1;
 	public static final int RADUIS_BLOCKS = 16;
 	public static final int COOLDOWN_SECONDS = 10;
-	
+
 	public ItemSeismicScanner(ElectricItemProperties properties) {
 		super(properties);
 		this.properties = properties;
@@ -53,14 +53,14 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.use"));
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
 		boolean onCooldown = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
-			if(m.getInt() > 0) {
+			if (m.getInt() > 0) {
 				return true;
 			}
 			return false;
@@ -73,7 +73,7 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 			ItemStack invStack = h.getStackInSlot(0);
 			Component component;
-			if(invStack.isEmpty()) {
+			if (invStack.isEmpty()) {
 				component = new TranslatableComponent("tooltip.seismicscanner.empty");
 			} else {
 				component = invStack.getDisplayName();
@@ -86,17 +86,18 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if (!world.isClientSide) {
 			ItemStack scanner = player.getItemInHand(hand);
-			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m ->{
-				if(m.getInt() <= 0) {
+			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
+				if (m.getInt() <= 0) {
 					return true;
 				}
 				return false;
 			}).orElse(false);
-			if(player.isShiftKeyDown() && isTimerUp) {
+			if (player.isShiftKeyDown() && isTimerUp) {
 				scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(COOLDOWN_SECONDS * 20));
 				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
-				ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
-				if(ore.getItem() instanceof BlockItem oreBlockItem) {
+				ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0))
+						.orElse(ItemStack.EMPTY);
+				if (ore.getItem() instanceof BlockItem oreBlockItem) {
 					BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
 					Electrodynamics.LOGGER.info(pos.toString());
 				}
@@ -122,11 +123,11 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 			return new ContainerSeismicScanner(id, player.getInventory(), handler);
 		}, CONTAINER_TITLE);
 	}
-	
+
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
 		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-			if(h.getInt() > 0) {
+			if (h.getInt() > 0) {
 				h.setInt(h.getInt() - 1);
 			}
 		});

@@ -13,7 +13,7 @@ import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.utilities.UtilitiesTiles;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -105,8 +105,8 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		Direction dir = holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
 				: null;
 		if (dir != null) {
-			return relativeInputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side))
-					|| relativeOutputDirections.contains(UtilitiesTiles.getRelativeSide(dir, side));
+			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side))
+					|| relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
 		}
 		return false;
 	}
@@ -120,7 +120,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	@Override
 	public TransferPack extractPower(TransferPack transfer, boolean debug) {
 		if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(
-				UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
+				BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionExtractPower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
@@ -129,7 +129,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	@Override
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
 		if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(
-				UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
+				BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionReceivePower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;

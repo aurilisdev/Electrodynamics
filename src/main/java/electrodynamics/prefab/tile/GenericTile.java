@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.References;
-import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.components.Component;
@@ -14,6 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

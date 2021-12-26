@@ -6,8 +6,8 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

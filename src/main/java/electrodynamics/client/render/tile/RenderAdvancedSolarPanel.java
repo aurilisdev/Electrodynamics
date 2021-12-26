@@ -6,7 +6,7 @@ import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -31,7 +31,7 @@ public class RenderAdvancedSolarPanel implements BlockEntityRenderer<TileAdvance
 		matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -tileEntityIn.currentRotation.get(), false));
 		matrixStackIn.scale(2, 2, 2);
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_ADVSOLARTOP);
-		UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	}
 
 }

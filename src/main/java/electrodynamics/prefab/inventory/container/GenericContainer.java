@@ -1,7 +1,7 @@
 package electrodynamics.prefab.inventory.container;
 
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
-import electrodynamics.prefab.utilities.UtilitiesContainers;
+import electrodynamics.prefab.utilities.ContainerUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -68,7 +68,7 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		return UtilitiesContainers.handleShiftClick(slots, player, index);
+		return ContainerUtils.handleShiftClick(slots, player, index);
 	}
 
 	@Override

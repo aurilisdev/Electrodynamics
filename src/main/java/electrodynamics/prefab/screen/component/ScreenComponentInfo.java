@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,7 +30,7 @@ public abstract class ScreenComponentInfo extends ScreenComponent {
 
 	@Override
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		UtilitiesRendering.bindTexture(resource);
+		RenderingUtils.bindTexture(resource);
 
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, SIZE, SIZE);
 	}

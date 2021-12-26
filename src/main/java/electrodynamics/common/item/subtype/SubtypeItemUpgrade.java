@@ -54,14 +54,13 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	iteminput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (inv.hasInputRoom() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(IIntStorage::getInt)
-					.orElse(0);
+			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(IIntStorage::getInt).orElse(0);
 			if (tickNumber >= 4) {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
 				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
 						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY)
-						.map(IBooleanStorage::getBoolean).orElse(false);
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean)
+						.orElse(false);
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
@@ -85,14 +84,13 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (!inv.areOutputsEmpty() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(IIntStorage::getInt)
-					.orElse(0);
+			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(IIntStorage::getInt).orElse(0);
 			if (tickNumber >= 4) {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0));
 				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
 						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY)
-						.map(IBooleanStorage::getBoolean).orElse(false);
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean)
+						.orElse(false);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 					combinedItems.addAll(inv.getItemBiContents());

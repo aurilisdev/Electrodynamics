@@ -7,7 +7,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,22 +28,22 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 				.getTankFromFluid(DeferredRegisters.fluidEthanol, false).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 		matrixStackIn.translate(0, 1.0 / 16.0 - 2.5 / 16.0 * (1 - prog), 0);
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTETHANOL);
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
-			UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 					combinedOverlayIn);
 		}
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(0, 1.0 / 16.0, 0);
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTWATER);
-		UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(Fluids.WATER, true).getFluidAmount()
 				/ (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
-			UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 					combinedOverlayIn);
 		}
 		matrixStackIn.popPose();

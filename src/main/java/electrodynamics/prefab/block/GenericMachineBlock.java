@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import electrodynamics.api.IWrenchItem;
-import electrodynamics.api.capability.CapabilityUtils;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;

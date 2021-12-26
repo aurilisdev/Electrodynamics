@@ -2,7 +2,7 @@ package electrodynamics.prefab.screen.component;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -39,7 +39,7 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
 			if (!fluidStack.isEmpty()) {
-				UtilitiesRendering.color(fluidStack.getFluid().getAttributes().getColor());
+				RenderingUtils.color(fluidStack.getFluid().getAttributes().getColor());
 			}
 		}
 	}

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public final class UtilitiesContainers {
+public final class ContainerUtils {
 
 	static final int PLAYER_INV_Y_DEFAULT = 84;
 	static final int PLAYER_INV_X_DEFAULT = 8;
