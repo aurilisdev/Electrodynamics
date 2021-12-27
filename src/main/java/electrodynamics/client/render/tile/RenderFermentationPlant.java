@@ -31,8 +31,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
-			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
-					combinedOverlayIn);
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		}
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();
@@ -43,8 +42,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 				/ (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
-			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
-					combinedOverlayIn);
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		}
 		matrixStackIn.popPose();
 	}
