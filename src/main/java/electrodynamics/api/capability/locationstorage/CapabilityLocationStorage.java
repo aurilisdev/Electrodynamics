@@ -14,17 +14,17 @@ import net.minecraftforge.common.util.LazyOptional;
 public class CapabilityLocationStorage implements ILocationStorage, ICapabilitySerializable<CompoundTag> {
 
 	public final LazyOptional<ILocationStorage> holder = LazyOptional.of(() -> this);
-	
+
 	public CapabilityLocationStorage(int size) {
-		//avoids null errors
-		for(int i = 0; i < size; i++) {
-			locations.add(new Location(0,0,0));
+		// avoids null errors
+		for (int i = 0; i < size; i++) {
+			locations.add(new Location(0, 0, 0));
 		}
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY) {
+		if (cap == ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY) {
 			return holder.cast();
 		}
 		return LazyOptional.empty();
@@ -32,10 +32,10 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 
 	@Override
 	public CompoundTag serializeNBT() {
-		if(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY != null) {
+		if (ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY != null) {
 			CompoundTag nbt = new CompoundTag();
 			nbt.putInt("size", locations.size());
-			for(int i = 0; i < locations.size(); i++) {
+			for (int i = 0; i < locations.size(); i++) {
 				locations.get(i).writeToNBT(nbt, ElectrodynamicsCapabilities.LOCATION_KEY + i);
 			}
 			return nbt;
@@ -45,15 +45,15 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		if(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY != null) {
+		if (ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY != null) {
 			locations.clear();
-			for(int i = 0; i < nbt.getInt("size"); i++) {
+			for (int i = 0; i < nbt.getInt("size"); i++) {
 				locations.add(Location.readFromNBT(nbt, ElectrodynamicsCapabilities.LOCATION_KEY + i));
 			}
 		}
 	}
-	
-	private List<Location> locations = new ArrayList<>();;
+
+	private List<Location> locations = new ArrayList<>();
 
 	@Override
 	public void setLocation(int index, double x, double y, double z) {

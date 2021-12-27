@@ -37,7 +37,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
+public class ItemSeismicScanner extends ItemElectric {
 
 	private static final Component CONTAINER_TITLE = new TranslatableComponent("container.seismicscanner");
 	private final ElectricItemProperties properties;
