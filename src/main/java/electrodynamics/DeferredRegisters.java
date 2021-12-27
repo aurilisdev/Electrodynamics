@@ -384,9 +384,9 @@ public class DeferredRegisters {
 					.extract(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480))
 					.receive(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_SEISMICSCANNER = ITEMS.register("seismicscanner",
-			supplier(new ItemSeismicScanner((ElectricItemProperties) new ElectricItemProperties().capacity(ItemRailgunPlasma.JOULES_PER_SHOT * 10)
-					.extract(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480))
-					.receive(TransferPack.joulesVoltage(ItemRailgunKinetic.JOULES_PER_SHOT * 10, 480)).tab(References.CORETAB).stacksTo(1))));
+			supplier(new ItemSeismicScanner((ElectricItemProperties) new ElectricItemProperties().capacity(ItemSeismicScanner.JOULES_PER_SCAN * 30)
+					.extract(TransferPack.joulesVoltage(ItemSeismicScanner.JOULES_PER_SCAN, 120))
+					.receive(TransferPack.joulesVoltage(ItemSeismicScanner.JOULES_PER_SCAN, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 			supplier(new ItemWrench(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",

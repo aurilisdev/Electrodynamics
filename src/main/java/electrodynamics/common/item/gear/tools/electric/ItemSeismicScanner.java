@@ -2,18 +2,20 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.itemhandler.CapabilityItemStackHandler;
+import electrodynamics.api.capability.locationstorage.CapabilityLocationStorage;
 import electrodynamics.api.capability.multicapability.seismicscanner.SeismicScannerCapability;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -25,7 +27,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -35,7 +37,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemSeismicScanner extends Item implements IItemElectric {
+public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
 
 	private static final Component CONTAINER_TITLE = new TranslatableComponent("container.seismicscanner");
 	private final ElectricItemProperties properties;
@@ -43,6 +45,7 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 	public static final int SLOT_COUNT = 1;
 	public static final int RADUIS_BLOCKS = 16;
 	public static final int COOLDOWN_SECONDS = 10;
+	public static final int JOULES_PER_SCAN = 1000;
 
 	public ItemSeismicScanner(ElectricItemProperties properties) {
 		super(properties);
@@ -70,6 +73,7 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 		} else {
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 		}
+		/*
 		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 			ItemStack invStack = h.getStackInSlot(0);
 			Component component;
@@ -80,26 +84,63 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 			}
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.currentore", component));
 		});
+		*/
+	}
+	
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if (allowdedIn(group)) {
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
+
+			ItemStack empty = new ItemStack(this);
+			IItemElectric.setEnergyStored(empty, 0);
+			items.add(empty);
+		}
+	}
+	
+	@Override
+	public boolean canBeDepleted() {
+		return false;
+	}
+	
+	@Override
+	public int getBarWidth(ItemStack stack) {
+		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+	}
+
+	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return getJoulesStored(stack) < properties.capacity;
 	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if (!world.isClientSide) {
 			ItemStack scanner = player.getItemInHand(hand);
+			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
 			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
 				if (m.getInt() <= 0) {
 					return true;
 				}
 				return false;
 			}).orElse(false);
-			if (player.isShiftKeyDown() && isTimerUp) {
+			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
+			ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0))
+					.orElse(ItemStack.EMPTY);
+			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
+				extractPower(scanner, properties.extract.getJoules(), false);
 				scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(COOLDOWN_SECONDS * 20));
 				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
-				ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0))
-						.orElse(ItemStack.EMPTY);
 				if (ore.getItem() instanceof BlockItem oreBlockItem) {
 					BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
-					Electrodynamics.LOGGER.info(pos.toString());
+					scanner.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).ifPresent(h ->{
+						h.clearLocations();
+						h.addLocation(pos.getX(), pos.getY(), pos.getZ());
+						BlockPos playerPos = player.getOnPos();
+						h.addLocation(playerPos.getX(), playerPos.getY(), playerPos.getZ());
+					});
 				}
 			} else {
 				player.openMenu(getMenuProvider(world, player, scanner));
@@ -110,7 +151,7 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new SeismicScannerCapability(new CapabilityIntStorage(), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class));
+		return new SeismicScannerCapability(new CapabilityIntStorage(), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class), new CapabilityLocationStorage(2));
 	}
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
@@ -132,6 +173,11 @@ public class ItemSeismicScanner extends Item implements IItemElectric {
 			}
 		});
 		super.inventoryTick(stack, world, entity, itemSlot, isSelected);
+	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
 	}
 
 }

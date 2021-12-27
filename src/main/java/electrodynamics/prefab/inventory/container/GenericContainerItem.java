@@ -3,6 +3,7 @@ package electrodynamics.prefab.inventory.container;
 import electrodynamics.prefab.inventory.container.slot.GenericSlot;
 import electrodynamics.prefab.inventory.container.slot.SlotNoModification;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 public abstract class GenericContainerItem extends GenericContainer {
 
 	private IItemHandler handler;
+	private Player player;
 
 	protected GenericContainerItem(MenuType<?> type, int id, Inventory playerinv, IItemHandler handler) {
 		// the items have to be stored in the handler, so the container is just for indexing purposes
@@ -23,6 +25,7 @@ public abstract class GenericContainerItem extends GenericContainer {
 		this.handler = handler;
 		addSafePlayerInventory(playerinv);
 		addItemInventorySlots(inventory, playerinv);
+		this.player = playerinv.player;
 	}
 
 	@Override
@@ -93,5 +96,19 @@ public abstract class GenericContainerItem extends GenericContainer {
 
 	public IItemHandler getHandler() {
 		return handler;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	//cheesing NBT one line of code at a time
+	public ItemStack getOwnerItem() {
+		ItemStack handItem = player.getItemInHand(InteractionHand.MAIN_HAND);
+		if(!handItem.isEmpty()) {
+			return handItem;
+		}
+		return player.getItemInHand(InteractionHand.OFF_HAND);
+		
 	}
 }
