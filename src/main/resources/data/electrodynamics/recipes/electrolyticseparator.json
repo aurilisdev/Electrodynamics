@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "sts",
+        "txt",
+        "scs"
+    ],
+    "key": {
+        "t": {
+            "item": "electrodynamics:tanksteel"
+        },
+        "s": {
+            "tag": "forge:plates/steel"
+        },
+        "x": {
+            "item": "electrodynamics:upgradetransformer"
+        },
+        "c": {
+            "tag": "forge:circuits/advanced"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:electrolyticseparator",
+        "count": 1
+    }
+}

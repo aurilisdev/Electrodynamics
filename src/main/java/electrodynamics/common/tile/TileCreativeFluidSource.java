@@ -90,7 +90,7 @@ public class TileCreativeFluidSource extends GenericTile {
 		// try to output to pipe
 		ComponentDirection componentDirection = getComponent(ComponentType.Direction);
 		for(Direction relative : handler.relativeOutputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative);
+			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
 			BlockPos face = getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = getLevel().getBlockEntity(face);
 			if (faceTile != null) {

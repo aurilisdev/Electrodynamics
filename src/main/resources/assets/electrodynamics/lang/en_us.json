@@ -479,6 +479,7 @@
   "subtitles.electrodynamics.equipheavyarmor" : "Equipping heavy armor",
   "subtitles.electrodynamics.hydroelectricgenerator" : "Hydroelectric generator spins",
   "subtitles.electrodynamics.seismicscanner" : "Seismic Scanner pings",
+  "subtitles.electrodynamics.electrolyticseparator" : "Electrolytic Separator electrolyzes",
   "gui.jei.category.wiremill" : "Wire Mill",
   "gui.jei.category.wiremill.info.power" : "2.5 kW 120V",
   "gui.jei.category.electric_furnace" : "Electric Furnace",

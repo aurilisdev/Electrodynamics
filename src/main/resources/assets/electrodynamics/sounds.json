@@ -117,5 +117,12 @@
 		"sounds": [
 			"electrodynamics:seismicscanner"
 		]
+	},
+	"electrolyticseparator":{
+		"category": "blocks",
+		"subtitle": "subtitles.electrodynamics.electrolyticseparator",
+		"sounds": [
+			"electrodynamics:electrolyticseparator"
+		]
 	}
 }

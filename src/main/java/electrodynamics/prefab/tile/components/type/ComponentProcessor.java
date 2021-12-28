@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
@@ -216,7 +215,7 @@ public class ComponentProcessor implements Component {
 		ComponentDirection componentDirection = pr.getHolder().getComponent(ComponentType.Direction);
 		AbstractFluidHandler<?> handler = pr.getHolder().getComponent(ComponentType.FluidHandler);
 		for(Direction relative : handler.relativeOutputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative);
+			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
 			BlockPos face = pr.getHolder().getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = pr.getHolder().getLevel().getBlockEntity(face);
 			if (faceTile != null) {

@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.generic;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -83,7 +82,7 @@ public class GenericTileTank extends GenericTile {
 		// try to output to pipe
 		ComponentDirection componentDirection = getComponent(ComponentType.Direction);
 		for(Direction relative : handler.relativeOutputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative);
+			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
 			BlockPos face = getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = getLevel().getBlockEntity(face);
 			if (faceTile != null) {
@@ -95,9 +94,7 @@ public class GenericTileTank extends GenericTile {
 						FluidStack tankFluid = fluidTank.getFluid();
 						if (electroPipe) {
 							if (fluidTank.getFluidAmount() > 0) {
-								//Electrodynamics.LOGGER.info("ejecting");
 								int accepted = fHandler.fill(tankFluid, FluidAction.EXECUTE);
-								//Electrodynamics.LOGGER.info(accepted);
 								fluidTank.getFluid().shrink(accepted);
 							}
 						} else {

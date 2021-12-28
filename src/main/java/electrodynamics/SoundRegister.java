@@ -46,6 +46,8 @@ public class SoundRegister {
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":equipheavyarmor"))));
 	public static final RegistryObject<SoundEvent> SOUND_SEISMICSCANNER = SOUNDS.register("seismicscanner",
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":seismicscanner"))));
+	public static final RegistryObject<SoundEvent> SOUND_ELECTROLYTICSEPARATOR = SOUNDS.register("electrolyticseparator", 
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":electrolyticseparator"))));
 
 	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 		return () -> entry;
