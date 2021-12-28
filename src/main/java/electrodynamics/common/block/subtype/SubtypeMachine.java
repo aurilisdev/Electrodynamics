@@ -24,6 +24,7 @@ import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileFluidVoid;
@@ -87,7 +88,7 @@ public enum SubtypeMachine implements ISubtype {
 	chargerhv(true, TileChargerHV.class), tanksteel(true, TileTankSteel.class), tankreinforced(true, TileTankReinforced.class),
 	tankhsla(true, TileTankHSLA.class), cobblestonegenerator(true, TileCobblestoneGenerator.class),
 	creativepowersource(true, TileCreativePowerSource.class), creativefluidsource(true, TileCreativeFluidSource.class),
-	fluidvoid(true, TileFluidVoid.class);
+	fluidvoid(true, TileFluidVoid.class), electrolyticseparator(true, TileElectrolyticSeparator.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;

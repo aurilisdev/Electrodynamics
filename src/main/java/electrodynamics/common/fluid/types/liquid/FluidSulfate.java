@@ -1,4 +1,4 @@
-package electrodynamics.common.fluid.types;
+package electrodynamics.common.fluid.types.liquid;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;

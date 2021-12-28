@@ -28,13 +28,15 @@ import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
-import electrodynamics.common.fluid.types.FluidClay;
-import electrodynamics.common.fluid.types.FluidConcrete;
-import electrodynamics.common.fluid.types.FluidEthanol;
-import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
-import electrodynamics.common.fluid.types.FluidPolyethylene;
-import electrodynamics.common.fluid.types.FluidSulfate;
-import electrodynamics.common.fluid.types.FluidSulfuricAcid;
+import electrodynamics.common.fluid.types.gas.FluidHydrogen;
+import electrodynamics.common.fluid.types.gas.FluidOxygen;
+import electrodynamics.common.fluid.types.liquid.FluidClay;
+import electrodynamics.common.fluid.types.liquid.FluidConcrete;
+import electrodynamics.common.fluid.types.liquid.FluidEthanol;
+import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
+import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
+import electrodynamics.common.fluid.types.liquid.FluidSulfate;
+import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
@@ -53,6 +55,7 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurna
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
+import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
@@ -112,6 +115,7 @@ import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileFluidVoid;
@@ -174,12 +178,16 @@ public class DeferredRegisters {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
 	public static BlockMultiSubnode multi = new BlockMultiSubnode();
+	//liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
 	public static FluidHydrogenFluoride fluidHydrogenFluoride;
 	public static FluidPolyethylene fluidPolyethylene;
 	public static FluidClay fluidClay;
 	public static FluidConcrete fluidCement;
+	//gasses
+	public static FluidOxygen fluidOxygen;
+	public static FluidHydrogen fluidHydrogen;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -206,7 +214,7 @@ public class DeferredRegisters {
 		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
-
+		//Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
 		FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
@@ -217,6 +225,9 @@ public class DeferredRegisters {
 			FluidSulfate fluid = new FluidSulfate(mineral);
 			FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
 		}
+		//Gasses
+		FLUIDS.register("fluidoxygen", supplier(fluidOxygen = new FluidOxygen()));
+		FLUIDS.register("fluidhydrogen", supplier(fluidHydrogen = new FluidHydrogen()));
 	}
 
 	private static void registerSubtypeItem(ISubtype[] array) {
@@ -570,7 +581,9 @@ public class DeferredRegisters {
 			() -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile",
 			() -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
-
+	public static final RegistryObject<BlockEntityType<TileElectrolyticSeparator>> TILE_ELECTROLYTICSEPARATOR = TILES.register(SubtypeMachine.electrolyticseparator.tag(), 
+			() -> new BlockEntityType<>(TileElectrolyticSeparator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator)), null));
+	
 	public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES
 			.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new,
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
@@ -635,6 +648,8 @@ public class DeferredRegisters {
 			() -> new MenuType<>(ContainerFluidVoid::new));
 	public static final RegistryObject<MenuType<ContainerSeismicScanner>> CONTAINER_SEISMICSCANNER = CONTAINERS.register("seismicdetector",
 			() -> new MenuType<>(ContainerSeismicScanner::new));
+	public static final RegistryObject<MenuType<ContainerElectrolyticSeparator>> CONTAINER_ELECTROLYTICSEPARATOR = CONTAINERS.register("electrolyticseparator", 
+			() -> new MenuType<>(ContainerElectrolyticSeparator::new));
 
 	// Entities
 

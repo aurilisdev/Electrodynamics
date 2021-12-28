@@ -16,6 +16,6 @@
 	},
 	"output": {
 		"fluid": "electrodynamics:fluidconcrete",
-		"amount": 1000
+		"amount": 5000
 	}
 }

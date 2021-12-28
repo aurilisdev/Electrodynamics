@@ -43,7 +43,7 @@ public class ProbableItem {
 	public ItemStack roll() {
 		double random = Electrodynamics.RANDOM.nextDouble();
 		if (random > 1 - chance) {
-			double amount = maxCount * random;
+			double amount = chance >= 1 ? maxCount : maxCount * random;
 			int itemCount = (int) Math.ceil(amount);
 			return new ItemStack(item, itemCount);
 		}

@@ -45,7 +45,7 @@ public class ProbableFluid {
 	public FluidStack roll() {
 		double random = Electrodynamics.RANDOM.nextDouble();
 		if (random > 1 - chance) {
-			double amount = maxCount * random;
+			double amount = chance >= 1 ? maxCount : maxCount * random;
 			int fluidAmount = (int) Math.ceil(amount);
 			return new FluidStack(fluid, fluidAmount);
 		}

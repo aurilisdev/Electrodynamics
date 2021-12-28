@@ -14,6 +14,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,9 +61,6 @@ public class TileCreativeFluidSource extends GenericTile {
 	private void tickServer(ComponentTickable tick) {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		BlockPos face = getBlockPos().relative(direction.getDirection().getClockWise().getOpposite());
-		BlockEntity faceTile = getLevel().getBlockEntity(face);
 		ItemStack input = inv.getItem(0);
 		ItemStack output = inv.getItem(1);
 
@@ -90,28 +88,26 @@ public class TileCreativeFluidSource extends GenericTile {
 			}
 		}
 		// try to output to pipe
-		if (faceTile != null) {
-			boolean electroPipe = faceTile instanceof GenericTilePipe;
-			LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-					direction.getDirection().getClockWise().getOpposite().getOpposite());
-			if (cap.isPresent()) {
-				IFluidHandler fHandler = cap.resolve().get();
-				boolean outputFluid = false;
-				for (FluidTank fluidTank : handler.getOutputTanks()) {
-					if (outputFluid) {
-						break;
-					}
-					FluidStack tankFluid = fluidTank.getFluid();
-					if (electroPipe) {
-						if (fluidTank.getFluidAmount() > 0) {
-							fHandler.fill(tankFluid, FluidAction.EXECUTE);
-						}
-					} else {
-						int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
-						FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-						fHandler.fill(taken, FluidAction.EXECUTE);
-						if (amtAccepted > 0) {
-							outputFluid = true;
+		ComponentDirection componentDirection = getComponent(ComponentType.Direction);
+		for(Direction relative : handler.relativeOutputDirections) {
+			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative);
+			BlockPos face = getBlockPos().relative(direction.getOpposite());
+			BlockEntity faceTile = getLevel().getBlockEntity(face);
+			if (faceTile != null) {
+				boolean electroPipe = faceTile instanceof GenericTilePipe;
+				LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
+				if (cap.isPresent()) {
+					IFluidHandler fHandler = cap.resolve().get();
+					for (FluidTank fluidTank : handler.getOutputTanks()) {
+						FluidStack tankFluid = fluidTank.getFluid();
+						if (electroPipe) {
+							if (fluidTank.getFluidAmount() > 0) {
+								fHandler.fill(tankFluid, FluidAction.EXECUTE);
+							}
+						} else {
+							int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
+							FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
+							fHandler.fill(taken, FluidAction.EXECUTE);
 						}
 					}
 				}

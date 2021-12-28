@@ -3,8 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.cache.CacheBuilder;
@@ -13,8 +11,8 @@ import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
@@ -270,14 +268,16 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		}
 	}
 
-	public void setFluidOutputs(IGuiFluidStackGroup guiFluidStacks, ElectrodynamicsRecipe recipe, int indexOffset,
-			@Nullable FluidStack recipeOutput) {
+	public void setFluidOutputs(IGuiFluidStackGroup guiFluidStacks, ElectrodynamicsRecipe recipe) {
 		int offset = inSlots.length + outSlots.length + fluidInputs.length;
 		GenericFluidGaugeWrapper wrap;
-		FluidStack stack = recipeOutput;
-		if (stack != null) {
-			if (indexOffset == 1) {
-				wrap = fluidOutputs[0];
+		FluidStack stack = FluidStack.EMPTY;
+		if(recipe instanceof AbstractFluidRecipe fRecipe) {
+			stack = fRecipe.getFluidRecipeOutput();
+		}
+		if (!stack.isEmpty()) {
+			for(int i = 0; i < fluidOutputs.length; i++) {
+				wrap = fluidOutputs[i];
 
 				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
 				int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
@@ -285,21 +285,23 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
 						true, null);
 				offset++;
-			}
-
-			if (recipe.hasFluidBiproducts()) {
-				ProbableFluid[] stacks = recipe.getFluidBiproducts();
-				for (int i = 0; i < recipe.getFluidBiproductCount(); i++) {
-					wrap = fluidOutputs[i + indexOffset];
-					stack = stacks[i].getFullStack();
-
-					int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
-					int leftStartY = wrap.getYPos() - leftHeightOffset + 1;
-
-					guiFluidStacks.init(i + offset - indexOffset, false, wrap.getXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset,
-							stack.getAmount(), true, null);
-
+				if(recipe.hasFluidBiproducts() && i < recipe.getFluidBiproductCount()) {
+					stack = recipe.getFluidBiproducts()[i].getFullStack();
 				}
+			}
+		} else {
+			for(int i = 0; i < fluidOutputs.length; i++) {
+				if(recipe.hasFluidBiproducts()) {
+					stack = recipe.getFluidBiproducts()[i].getFullStack();
+				}
+				wrap = fluidOutputs[i];
+
+				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
+				int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
+
+				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
+						true, null);
+				offset++;
 			}
 		}
 	}

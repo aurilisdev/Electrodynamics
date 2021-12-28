@@ -1,0 +1,23 @@
+{
+	"type" : "electrodynamics:electrolytic_separator_recipe",
+	
+	"fluidinputs":{
+		"count" : 1, 
+		"0":{
+			"fluid":"minecraft:water",
+			"amount": 1000
+		}
+	},
+	"output":{
+		"fluid":"electrodynamics:fluidoxygen",
+		"amount": 1000
+	},
+	"fluidbi" : {
+		"count" : 1, 
+		"0" : {
+			"fluid" : "electrodynamics:fluidhydrogen", 
+			"amount" : 2000,
+			"chance" : 1
+		}
+	}
+}

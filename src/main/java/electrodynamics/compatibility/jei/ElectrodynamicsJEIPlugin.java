@@ -22,9 +22,11 @@ import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
+import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluid2item.specificmachines.ChemicalCrystallizerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.ChemicalMixerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.FermentationPlantRecipeCategory;
@@ -164,6 +166,8 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 		registration.addRecipeCatalyst(ReinforcedAlloyerRecipeCategory.INPUT_MACHINE, ReinforcedAlloyerRecipeCategory.UID);
 
+		registration.addRecipeCatalyst(ElectrolyticSeparatorRecipeCategory.INPUT_MACHINE, ElectrolyticSeparatorRecipeCategory.UID);
+		
 	}
 
 	@Override
@@ -232,7 +236,11 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet
 				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE));
 		registration.addRecipes(reinforcedAlloyerRecipes, ReinforcedAlloyerRecipeCategory.UID);
-
+		
+		Set<Fluid2FluidRecipe> electrolyticSeparatorRecipes = ImmutableSet
+				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE));
+		registration.addRecipes(electrolyticSeparatorRecipes, ElectrolyticSeparatorRecipeCategory.UID);
+		
 		electrodynamicsInfoTabs(registration);
 
 	}
@@ -279,6 +287,8 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 		// Reinforced Alloyer
 		registration.addRecipeCategories(new ReinforcedAlloyerRecipeCategory(guiHelper));
+		
+		registration.addRecipeCategories(new ElectrolyticSeparatorRecipeCategory(guiHelper));
 
 	}
 
