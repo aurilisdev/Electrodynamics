@@ -25,7 +25,7 @@ public abstract class GenericContainerItem extends GenericContainer {
 		this.handler = handler;
 		addSafePlayerInventory(playerinv);
 		addItemInventorySlots(inventory, playerinv);
-		this.player = playerinv.player;
+		player = playerinv.player;
 	}
 
 	@Override
@@ -97,18 +97,18 @@ public abstract class GenericContainerItem extends GenericContainer {
 	public IItemHandler getHandler() {
 		return handler;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
-	
-	//cheesing NBT one line of code at a time
+
+	// cheesing NBT one line of code at a time
 	public ItemStack getOwnerItem() {
 		ItemStack handItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-		if(!handItem.isEmpty()) {
+		if (!handItem.isEmpty()) {
 			return handItem;
 		}
 		return player.getItemInHand(InteractionHand.OFF_HAND);
-		
+
 	}
 }

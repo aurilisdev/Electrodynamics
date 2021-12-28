@@ -56,8 +56,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 			if (multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount() > 0) {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERSULFURICACID);
 			}
-			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
-					combinedOverlayIn);
+			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		}
 		matrixStackIn.popPose();
 	}

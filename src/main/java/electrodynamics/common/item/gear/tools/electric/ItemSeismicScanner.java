@@ -37,7 +37,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
+public class ItemSeismicScanner extends ItemElectric {
 
 	private static final Component CONTAINER_TITLE = new TranslatableComponent("container.seismicscanner");
 	private final ElectricItemProperties properties;
@@ -74,19 +74,10 @@ public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 		}
 		/*
-		stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-			ItemStack invStack = h.getStackInSlot(0);
-			Component component;
-			if (invStack.isEmpty()) {
-				component = new TranslatableComponent("tooltip.seismicscanner.empty");
-			} else {
-				component = invStack.getDisplayName();
-			}
-			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.currentore", component));
-		});
-		*/
+		 * stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> { ItemStack invStack = h.getStackInSlot(0); Component component; if (invStack.isEmpty()) { component = new TranslatableComponent("tooltip.seismicscanner.empty"); } else { component = invStack.getDisplayName(); } tooltips.add(new TranslatableComponent("tooltip.seismicscanner.currentore", component)); });
+		 */
 	}
-	
+
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowdedIn(group)) {
@@ -99,12 +90,12 @@ public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
 			items.add(empty);
 		}
 	}
-	
+
 	@Override
 	public boolean canBeDepleted() {
 		return false;
 	}
-	
+
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
@@ -135,7 +126,7 @@ public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
 				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
 				if (ore.getItem() instanceof BlockItem oreBlockItem) {
 					BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
-					scanner.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).ifPresent(h ->{
+					scanner.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).ifPresent(h -> {
 						h.clearLocations();
 						h.addLocation(pos.getX(), pos.getY(), pos.getZ());
 						BlockPos playerPos = player.getOnPos();
@@ -151,7 +142,8 @@ public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new SeismicScannerCapability(new CapabilityIntStorage(), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class), new CapabilityLocationStorage(2));
+		return new SeismicScannerCapability(new CapabilityIntStorage(), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class),
+				new CapabilityLocationStorage(2));
 	}
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
@@ -174,7 +166,7 @@ public class ItemSeismicScanner extends ItemElectric implements IItemElectric {
 		});
 		super.inventoryTick(stack, world, entity, itemSlot, isSelected);
 	}
-	
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;

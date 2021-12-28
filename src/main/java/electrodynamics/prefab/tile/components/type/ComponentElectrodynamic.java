@@ -119,8 +119,9 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public TransferPack extractPower(TransferPack transfer, boolean debug) {
-		if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(
-				BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
+		if (outputDirections.contains(lastReturnedSide)
+				|| holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(BlockEntityUtils
+						.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionExtractPower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
@@ -128,8 +129,9 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(
-				BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
+		if (inputDirections.contains(lastReturnedSide)
+				|| holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils
+						.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionReceivePower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
