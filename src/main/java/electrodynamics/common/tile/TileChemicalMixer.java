@@ -37,7 +37,7 @@ public class TileChemicalMixer extends GenericTile {
 		addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.EAST, Direction.UP).relativeSlotFaces(1, Direction.DOWN)
 				.inputs(1).bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-				.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
+				.canProcess(component -> component.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
 						ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE))
 				.process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.CHEMICALMIXER_USAGE_PER_TICK)
 				.requiredTicks(Constants.CHEMICALMIXER_REQUIRED_TICKS));

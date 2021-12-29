@@ -1,16 +1,16 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sgs",
-		"g g",
-		"sgs"
+		"sss",
+		"scs",
+		"sss"
 	],
 	"key": {
-		"g": {
-			"tag": "forge:glass"
-		},
 		"s": {
 			"tag": "forge:plates/steel"
+		},
+		"c": {
+			"item": "minecraft:cauldron"
 		}
 	},
 	"result": {

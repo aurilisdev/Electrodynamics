@@ -27,6 +27,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileCombustionChamber extends GenericTile {
 	public static final int TICKS_PER_MILLIBUCKET = 200;
@@ -43,7 +44,7 @@ public class TileCombustionChamber extends GenericTile {
 		addComponent(new ComponentPacketHandler().customPacketReader(this::readNBT).customPacketWriter(this::writeNBT).guiPacketReader(this::readNBT)
 				.guiPacketWriter(this::writeNBT));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
-		addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, ElectrodynamicsTags.Fluids.ETHANOL)
+		addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, ElectrodynamicsTags.Fluids.ETHANOL, ElectrodynamicsTags.Fluids.HYDROGEN)
 				.relativeInput(Direction.WEST));
 		addComponent(new ComponentContainerProvider("container.combustionchamber")
 				.createMenu((id, player) -> new ContainerCombustionChamber(id, player, null, getCoordsArray())));
@@ -58,22 +59,16 @@ public class TileCombustionChamber extends GenericTile {
 		if (tickable.getTicks() % 40 == 0) {
 			output.update();
 		}
-		ComponentFluidHandlerMulti tank = getComponent(ComponentType.FluidHandler);
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		if (burnTime <= 0) {
 			boolean shouldSend = !running;
 			running = false;
-			// can you think of a better name
-			List<Fluid> ethanols = ElectrodynamicsTags.Fluids.ETHANOL.getValues();
-			for (Fluid fluid : ethanols) {
-				FluidStack stack = tank.getTankFromFluid(fluid, true).getFluid();
-				if (stack.getAmount() > 0) {
-					stack.setAmount(stack.getAmount() - 1);
-					running = true;
-					burnTime = TICKS_PER_MILLIBUCKET;
-					shouldSend = true;
-					break;
-				}
+			FluidTank tank = getFuelTank();
+			if (tank.getFluidAmount() > 0) {
+				tank.getFluid().shrink(1);
+				running = true;
+				burnTime = TICKS_PER_MILLIBUCKET;
+				shouldSend = true;
 			}
 			if (shouldSend) {
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
@@ -115,5 +110,22 @@ public class TileCombustionChamber extends GenericTile {
 	protected void readNBT(CompoundTag nbt) {
 		running = nbt.getBoolean("running");
 		clientAmount = nbt.getInt("clientAmount");
+	}
+	
+	private FluidTank getFuelTank() {
+		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
+		for(Fluid ethanol : ElectrodynamicsTags.Fluids.ETHANOL.getValues()) {
+			FluidTank handlerTank = handler.getTankFromFluid(ethanol, true);
+			if(handlerTank.getFluidAmount() > 0) {
+				return handlerTank;
+			}
+		}
+		for(Fluid hydrogen : ElectrodynamicsTags.Fluids.HYDROGEN.getValues()) {
+			FluidTank handlerTank = handler.getTankFromFluid(hydrogen, true);
+			if(handlerTank.getFluidAmount() > 0) {
+				return handlerTank;
+			}
+		}
+		return new FluidTank(0);
 	}
 }

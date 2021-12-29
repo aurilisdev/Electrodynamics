@@ -30,12 +30,6 @@ public class InfoItems {
 		ITEMS.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.hydroelectricgenerator)));
 		// Wind Generator
 		ITEMS.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.windmill)));
-		// Steel Fluid Tank
-		ITEMS.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)));
-		// Reinforced Fluid Tank
-		ITEMS.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)));
-		// HSLA Fluid Tank
-		ITEMS.add(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla)));
 	}
 
 }

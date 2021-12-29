@@ -72,6 +72,7 @@ import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
 import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.nvgoggles.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
@@ -158,7 +159,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -316,6 +316,7 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator),
 				"|translate|tooltip.machine.voltage.120");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator), "|translate|tooltip.machine.voltage.240");
 
 		// generators
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel), "|translate|tooltip.machine.voltage.120");
@@ -340,28 +341,17 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource),
 				"|translate|tooltip.creativefluidsource.joke");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid), "|translate|tooltip.fluidvoid");
-
-		boolean jeiLoaded = ModList.get().isLoaded("jei");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
-		if (jeiLoaded) {
-			BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.usejei");
-		}
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
-		if (jeiLoaded) {
-			BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tanksteel.usejei");
-		}
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
-		if (jeiLoaded) {
-			BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tanksteel.usejei");
-		}
+
+		
 	}
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
 			supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic",
 			supplier(new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
-			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
 			supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667)
@@ -422,6 +412,14 @@ public class DeferredRegisters {
 			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots",
 			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.FEET)));
+	
+	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
+			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
+	
+	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS.register("nightvisiongoggles", 
+			supplier(new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000)
+					.extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120))
+					.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 
 	// Split from items to tiles
 

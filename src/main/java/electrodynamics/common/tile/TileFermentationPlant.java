@@ -37,7 +37,7 @@ public class TileFermentationPlant extends GenericTile {
 		addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP).inputs(1)
 				.bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-				.canProcess(processor -> processor.outputToPipe(processor).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
+				.canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
 						ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE))
 				.process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
 				.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));

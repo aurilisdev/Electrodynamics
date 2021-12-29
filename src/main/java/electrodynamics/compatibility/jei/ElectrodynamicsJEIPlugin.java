@@ -26,6 +26,10 @@ import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
+import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.TileTankHSLA;
+import electrodynamics.common.tile.TileTankReinforced;
+import electrodynamics.common.tile.TileTankSteel;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluid2item.specificmachines.ChemicalCrystallizerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.ChemicalMixerRecipeCategory;
@@ -57,6 +61,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.fluids.FluidStack;
 
 @JeiPlugin
 public class ElectrodynamicsJEIPlugin implements IModPlugin {
@@ -329,7 +334,16 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 			temp = item.getItem().toString();
 			registration.addIngredientInfo(item, VanillaTypes.ITEM, new TranslatableComponent("info.jei.block." + temp));
 		}
-
+		
+		//Blocks
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, 
+				new TranslatableComponent("info.jei.block.tank", TileTankSteel.CAPACITY));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), VanillaTypes.ITEM, 
+				new TranslatableComponent("info.jei.block.tank", TileTankReinforced.CAPACITY));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, 
+				new TranslatableComponent("info.jei.block.tank", TileTankHSLA.CAPACITY));
+		
+		//Items
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
 				new TranslatableComponent("info.jei.item.compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
@@ -346,6 +360,12 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 				new TranslatableComponent("info.jei.item.railgunplasma"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM,
 				new TranslatableComponent("info.jei.item.railgunkinetic"));
+		
+		//Fluids
+		registration.addIngredientInfo(new FluidStack(DeferredRegisters.fluidEthanol, TileCombustionChamber.TANK_CAPACITY), VanillaTypes.FLUID,
+				new TranslatableComponent("info.jei.fluid.combustionchamberfuel"));
+		registration.addIngredientInfo(new FluidStack(DeferredRegisters.fluidHydrogen, TileCombustionChamber.TANK_CAPACITY), VanillaTypes.FLUID,
+				new TranslatableComponent("info.jei.fluid.combustionchamberfuel"));
 	}
 
 	public static void addO2OClickArea(ResourceLocation loc) {

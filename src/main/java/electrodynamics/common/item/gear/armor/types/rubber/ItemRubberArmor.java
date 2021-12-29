@@ -23,7 +23,7 @@ public class ItemRubberArmor extends ArmorItem {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return References.ID + ":textures/model/rubberarmor.png";
+		return References.ID + ":textures/model/armor/rubberarmor.png";
 	}
 
 	public enum ArmorMaterialRubber implements ArmorMaterial {

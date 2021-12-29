@@ -39,7 +39,7 @@ public class TileMineralWasher extends GenericTile {
 		addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.values()).inputs(1).bucketInputs(1).bucketOutputs(1)
 				.upgrades(3).processors(1).processorInputs(1).valid(machineValidator()).shouldSendInfo());
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK)
-				.canProcess(component -> component.outputToPipe(component).consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
+				.canProcess(component -> component.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component,
 						ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE))
 				.process(component -> component.processFluidItem2FluidRecipe(component)).requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
 		addComponent(new ComponentContainerProvider("container.mineralwasher")
