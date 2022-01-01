@@ -5,7 +5,7 @@ import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeC
 import net.minecraft.network.chat.BaseComponent;
 
 public abstract class GenericLabelWrapper {
-
+	
 	protected static final String POWER = "power";
 
 	private int COLOR;
@@ -32,8 +32,8 @@ public abstract class GenericLabelWrapper {
 		return X_POS;
 	}
 
-	public String getName() {
-		return NAME;
+	public String getLocation() {
+		return "jei.guilabel." + NAME;
 	}
 
 	public abstract BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe);

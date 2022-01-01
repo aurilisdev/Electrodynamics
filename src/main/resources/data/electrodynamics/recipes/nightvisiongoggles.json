@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"l": {
-			"item": "minecraft:leather"
+			"tag": "forge:plastic"
 		},
 		"p": {
 			"item": "minecraft:lime_stained_glass_pane"

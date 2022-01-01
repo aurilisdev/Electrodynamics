@@ -2,10 +2,10 @@ package electrodynamics.compatibility.jei.utils.gui;
 
 public abstract class ScreenObjectWrapper {
 
-	protected static final String BACKGROUND = "textures/gui/jei/background.png";
-	protected static final String ITEM_SLOTS = "textures/gui/jei/itemslots.png";
-	protected static final String FLUID_GAUGES = "textures/gui/jei/fluidgauges.png";
-	protected static final String ARROWS = "textures/gui/jei/arrows.png";
+	protected static final String BACKGROUND = "background";
+	protected static final String ITEM_SLOTS = "itemslots";
+	protected static final String FLUID_GAUGES = "fluidgauges";
+	protected static final String ARROWS = "arrows";
 
 	private String texture;
 
@@ -54,7 +54,7 @@ public abstract class ScreenObjectWrapper {
 	}
 
 	public String getTexture() {
-		return texture;
+		return "textures/screen/jei/" + texture + ".png";
 	}
 
 }

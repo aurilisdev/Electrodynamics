@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2item.specificma
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluid2item.Fluid2ItemRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightBigAnimatedWrapper;
@@ -29,12 +30,12 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 
 	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(14, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK, 240);
 
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = "chemical_crystallizer";
+	private static String RECIPE_GROUP = SubtypeMachine.chemicalcrystallizer.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer));
 

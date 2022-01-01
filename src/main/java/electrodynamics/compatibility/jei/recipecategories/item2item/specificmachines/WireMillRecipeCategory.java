@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.item2item.specificmac
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
 import electrodynamics.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
@@ -26,13 +27,13 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory {
 
 	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, Constants.WIREMILL_USAGE_PER_TICK, 120);
 	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
 
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = "wiremill";
+	private static String RECIPE_GROUP = SubtypeMachine.wiremill.tag() + "0";
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill));
 

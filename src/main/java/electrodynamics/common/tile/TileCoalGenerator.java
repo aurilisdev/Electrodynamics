@@ -1,5 +1,8 @@
 package electrodynamics.common.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
@@ -23,22 +26,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.ForgeHooks;
 
 public class TileCoalGenerator extends GenericTile implements IElectricGenerator {
-	public static final int COAL_BURN_TIME = 1000;
-	protected static final int[] SLOTS_INPUT = new int[] { 0 };
+	//public static final int COAL_BURN_TIME = 1000;
+	//protected static final int[] SLOTS_INPUT = new int[] { 0 };
 
 	protected TransferPack currentOutput = TransferPack.EMPTY;
 	protected CachedTileOutput output;
 	protected TargetValue heat = new TargetValue(27);
 	protected int burnTime;
+	protected int maxBurnTime;
 	public double clientHeat;
 	public double clientBurnTime;
+	public double clientMaxBurnTime;
 	private double multiplier = 1;
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
@@ -49,8 +59,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
 		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH)
-				.valid((index, stack, i) -> stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL
-						|| stack.getItem() == Items.COAL_BLOCK));
+				.valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
 		addComponent(new ComponentContainerProvider("container.coalgenerator")
 				.createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
@@ -64,9 +73,12 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 			output.update();
 		}
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		if (burnTime <= 0 && !inv.getItem(0).isEmpty()) {
-			burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
-			inv.removeItem(0, 1);
+		ItemStack fuel = inv.getItem(0);
+		if (burnTime <= 0 && !fuel.isEmpty()) {
+			burnTime = ForgeHooks.getBurnTime(fuel, null);
+			fuel.shrink(1);
+			maxBurnTime = burnTime;
+			//burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
 		}
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {
@@ -136,17 +148,21 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	protected void createPacket(CompoundTag nbt) {
 		nbt.putDouble("clientHeat", heat.get());
 		nbt.putDouble("clientBurnTime", burnTime);
+		nbt.putInt("clientMaxBurn", maxBurnTime);
+		
 	}
 
 	protected void readPacket(CompoundTag nbt) {
 		clientHeat = nbt.getDouble("clientHeat");
 		clientBurnTime = nbt.getDouble("clientBurnTime");
+		clientMaxBurnTime = nbt.getInt("clientMaxBurn");
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag compound) {
 		compound.putDouble("heat", heat.get());
 		compound.putInt("burnTime", burnTime);
+		compound.putInt("maxBurnTime", maxBurnTime);
 		super.saveAdditional(compound);
 	}
 
@@ -155,5 +171,27 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		super.load(compound);
 		heat.set(compound.getDouble("heat"));
 		burnTime = compound.getInt("burnTime");
+		maxBurnTime = compound.getInt("maxBurnTime");
+	}
+	
+	public static List<Item> getValidItems(){
+		List<Item> items = new ArrayList<>();
+		items.addAll(ItemTags.COALS.getValues());
+		items.add(Items.CHARCOAL);
+		items.addAll(ItemTags.getAllTags().getTag(new ResourceLocation("forge", "storage_blocks/coal")).getValues());
+		//Suggested additions
+		/*
+		items.add(Items.BLAZE_ROD);
+		items.addAll(ItemTags.PLANKS.getValues());
+		items.addAll(ItemTags.LOGS_THAT_BURN.getValues());
+		items.addAll(ItemTags.WOODEN_BUTTONS.getValues());
+		items.addAll(ItemTags.WOODEN_DOORS.getValues());
+		items.addAll(ItemTags.WOODEN_FENCES.getValues());
+		items.addAll(ItemTags.WOODEN_PRESSURE_PLATES.getValues());
+		items.addAll(ItemTags.WOODEN_SLABS.getValues());
+		items.addAll(ItemTags.WOODEN_STAIRS.getValues());
+		items.addAll(ItemTags.WOODEN_TRAPDOORS.getValues());
+		*/
+		return items;
 	}
 }

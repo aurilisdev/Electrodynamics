@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileWire;

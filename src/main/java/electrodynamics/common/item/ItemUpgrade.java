@@ -6,12 +6,12 @@ import java.util.List;
 import org.codehaus.plexus.util.StringUtils;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.boolstorage.CapabilityBooleanStorage;
-import electrodynamics.api.capability.boolstorage.IBooleanStorage;
-import electrodynamics.api.capability.dirstorage.CapabilityDirectionalStorage;
-import electrodynamics.api.capability.dirstorage.IDirectionalStorage;
-import electrodynamics.api.capability.intstorage.CapabilityIntStorage;
-import electrodynamics.api.capability.multicapability.ejectorupgrade.EjectorCapability;
+import electrodynamics.api.capability.multicapability.EjectorCapability;
+import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
+import electrodynamics.api.capability.types.boolstorage.IBooleanStorage;
+import electrodynamics.api.capability.types.dirstorage.CapabilityDirectionalStorage;
+import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
+import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;

@@ -1,7 +1,7 @@
 package electrodynamics.common.network;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;

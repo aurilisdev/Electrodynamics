@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.network.ElectricityUtilities;

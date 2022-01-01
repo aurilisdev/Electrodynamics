@@ -7,6 +7,7 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.ModFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.stat.FlameStaticWrapper;
@@ -32,19 +33,19 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 23);
 	private static FlameStaticWrapper FLAME = new FlameStaticWrapper(5, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
 
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = "electric_furnace";
+	private static String RECIPE_GROUP = SubtypeMachine.electricfurnace.tag() + "0";
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public ElectricFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT);
 		setStaticArrows(guiHelper, FLAME);

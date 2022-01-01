@@ -9,19 +9,15 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.tile.TileBatteryBox;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -53,11 +49,6 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
-	}
-
-	@Override
-	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.BATTERY : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
 	}
 
 	@Override

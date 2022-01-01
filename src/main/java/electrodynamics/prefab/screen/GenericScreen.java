@@ -10,7 +10,9 @@ import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.prefab.inventory.container.GenericContainer;
+import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -42,7 +44,11 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	}
 
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		return new ScreenComponentSlot(this, slot.x - 1, slot.y - 1);
+		//this is a lot cleaner IMO and more straight-forward
+		if(slot instanceof SlotGeneric generic) {
+			return new ScreenComponentSlot(generic.getSlotType(), this, slot.x - 1, slot.y - 1);
+		}
+		return new ScreenComponentSlot(EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
 	}
 
 	@Override

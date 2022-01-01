@@ -1,24 +1,18 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileFermentationPlant;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -64,12 +58,4 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("fermentationplant"));
 	}
 
-	@Override
-	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		return new ScreenComponentSlot(slot instanceof SlotRestricted res
-				&& res.mayPlace(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.basicspeed)))
-						? EnumSlotType.SPEED
-						: slot instanceof SlotRestricted ? EnumSlotType.LIQUID : EnumSlotType.NORMAL,
-				this, slot.x - 1, slot.y - 1);
-	}
 }

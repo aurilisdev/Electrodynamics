@@ -3,8 +3,7 @@ package electrodynamics.common.inventory.container.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileTank;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
-import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,8 +22,8 @@ public class ContainerTankGeneric extends GenericContainerBlockEntity<GenericTil
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 27, 34, 0, CapabilityUtils.getFluidItemCap()));
-		addSlot(new SlotRestricted(inv, nextIndex(), 133, 34, 0, CapabilityUtils.getFluidItemCap()));
+		addSlot(new SlotFluid(inv, nextIndex(), 27, 34));
+		addSlot(new SlotFluid(inv, nextIndex(), 133, 34));
 
 	}
 

@@ -1,10 +1,10 @@
 package electrodynamics.api.capability;
 
-import electrodynamics.api.capability.boolstorage.IBooleanStorage;
-import electrodynamics.api.capability.dirstorage.IDirectionalStorage;
-import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.intstorage.IIntStorage;
-import electrodynamics.api.capability.locationstorage.ILocationStorage;
+import electrodynamics.api.capability.types.boolstorage.IBooleanStorage;
+import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.capability.types.intstorage.IIntStorage;
+import electrodynamics.api.capability.types.locationstorage.ILocationStorage;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;

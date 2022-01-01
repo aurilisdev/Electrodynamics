@@ -37,7 +37,7 @@ import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
-import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
@@ -70,10 +70,9 @@ import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
-import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
-import electrodynamics.common.item.gear.armor.types.nvgoggles.ItemNightVisionGoggles;
-import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
+import electrodynamics.common.item.gear.armor.types.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
+import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
@@ -361,6 +360,10 @@ public class DeferredRegisters {
 			supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(4 * 1666666.66667)
 					.extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240))
 					.receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).tab(References.CORETAB).stacksTo(1))));
+	public static final RegistryObject<Item> ITEM_CARBYNEBATTERY = ITEMS.register("carbynebattery",
+			supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(8 * 1666666.66667)
+					.extract(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480))
+					.receive(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter",
 			supplier(new ItemMultimeter(new Item.Properties().tab(References.CORETAB).stacksTo(1))));
@@ -405,13 +408,13 @@ public class DeferredRegisters {
 			supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.HEAD)));
+			supplier(new CompositeArmorItem(EquipmentSlot.HEAD)));
 	public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.CHEST)));
+			supplier(new CompositeArmorItem(EquipmentSlot.CHEST)));
 	public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.LEGS)));
+			supplier(new CompositeArmorItem(EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.FEET)));
+			supplier(new CompositeArmorItem(EquipmentSlot.FEET)));
 	
 	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
 			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));

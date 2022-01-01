@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.network.AbstractNetwork;

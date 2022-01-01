@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.tile.GenericTile;

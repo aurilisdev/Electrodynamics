@@ -7,12 +7,17 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class PowerLabelWrapper extends GenericLabelWrapper {
 
-	public PowerLabelWrapper(int xPos, int yPos) {
+	private double wattage;
+	private int voltage;
+	
+	public PowerLabelWrapper(int xPos, int yPos, double joulesPerTick, int voltage) {
 		super(0xFF808080, yPos, xPos, POWER);
+		this.wattage = joulesPerTick * 20 / 1000.0;
+		this.voltage = voltage;
 	}
 
 	@Override
 	public BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
-		return new TranslatableComponent("gui.jei.category." + category.getRecipeGroup() + ".info." + getName(), category.getAnimationTime() / 20);
+		return new TranslatableComponent(getLocation(), voltage, wattage);
 	}
 }

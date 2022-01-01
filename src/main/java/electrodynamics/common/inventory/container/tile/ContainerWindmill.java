@@ -3,7 +3,7 @@ package electrodynamics.common.inventory.container.tile;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.UpgradeSlot;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,6 +22,6 @@ public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill>
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new UpgradeSlot(inv, nextIndex(), 25, 42, SubtypeItemUpgrade.stator));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, SubtypeItemUpgrade.stator));
 	}
 }

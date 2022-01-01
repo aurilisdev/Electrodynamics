@@ -29,7 +29,6 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -89,7 +88,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP);
+		return new TranslatableComponent("container." + RECIPE_GROUP);
 	}
 
 	@Override
@@ -108,10 +107,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		BaseComponent text;
 		for (GenericLabelWrapper wrap : LABELS) {
-			text = wrap.getComponent(this, recipe);
-			fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+			fontRenderer.draw(stack, wrap.getComponent(this, recipe), wrap.getXPos(), wrap.getYPos(), wrap.getColor());
 		}
 	}
 

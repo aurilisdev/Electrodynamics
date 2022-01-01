@@ -5,6 +5,7 @@ import electrodynamics.api.References;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
+import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
 import electrodynamics.client.render.tile.RenderChargerGeneric;
@@ -84,6 +85,8 @@ public class ClientRegister {
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
 
+	public static LayerDefinition NIGHT_VISION_GOGGLES = ModelNightVisionGoggles.createBodyLayer();
+	
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
 		ForgeModelBakery.addSpecialModel(MODEL_ADVSOLARTOP);

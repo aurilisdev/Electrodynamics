@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"W W",
-		"PSP",
+		"NSN",
 		"PCP"
 	],
 	"key": {
@@ -17,6 +17,9 @@
 		},
 		"C": {
 			"tag": "forge:circuits/ultimate"
+		},
+		"N": {
+			"item": "minecraft:netherite_scrap"
 		}
 	},
 	"result": {

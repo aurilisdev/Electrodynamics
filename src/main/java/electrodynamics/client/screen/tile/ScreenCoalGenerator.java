@@ -32,7 +32,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		components.add(new ScreenComponentProgress(() -> {
 			TileCoalGenerator box = container.getHostFromIntArray();
 			if (box != null) {
-				return box.clientBurnTime / (TileCoalGenerator.COAL_BURN_TIME * 1.0);
+				return box.clientBurnTime / box.clientMaxBurnTime;
 			}
 			return 0;
 		}, this, 25, 25).flame());

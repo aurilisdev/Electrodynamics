@@ -1,7 +1,7 @@
 package electrodynamics.prefab.inventory.container;
 
-import electrodynamics.prefab.inventory.container.slot.GenericSlot;
-import electrodynamics.prefab.inventory.container.slot.SlotNoModification;
+import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotNoModification;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -35,7 +35,7 @@ public abstract class GenericContainerItem extends GenericContainer {
 	protected void addSafePlayerInventory(Inventory playerinv) {
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
-				addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
+				addSlot(new SlotGeneric(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
 			}
 		}
 
@@ -49,7 +49,7 @@ public abstract class GenericContainerItem extends GenericContainer {
 					continue;
 				}
 			}
-			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
+			addSlot(new SlotGeneric(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
 		}
 	}
 

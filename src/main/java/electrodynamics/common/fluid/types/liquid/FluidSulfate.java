@@ -3,7 +3,7 @@ package electrodynamics.common.fluid.types.liquid;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
-import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 
