@@ -9,7 +9,7 @@ import electrodynamics.api.References;
 public class ToolTypeConverter {
 
 	private static String BLOCK_DIRECTORY = "src/main/resources/assets/electrodynamics/blockstates";
-	private static String DATA_LOC = "src/main/resources/data/minecraft/tags/blocks/minable/blocknames.txt";
+	private static String DATA_LOC = "src/main/resources/data/minecraft/tags/blocks/mineable/blocknames.txt";
 
 	public static void main(String[] args) {
 
