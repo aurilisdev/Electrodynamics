@@ -35,6 +35,6 @@ public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionCh
 			}
 			return 0;
 		}, this, 119, 34).flame());
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("combustionchamber"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 }

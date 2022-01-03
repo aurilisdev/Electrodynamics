@@ -317,6 +317,12 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator),
 				"|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator), "|translate|tooltip.machine.voltage.240");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace),
+				"|translate|tooltip.machine.voltage.120");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble),
+				"|translate|tooltip.machine.voltage.240");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple),
+				"|translate|tooltip.machine.voltage.480");
 
 		// generators
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel), "|translate|tooltip.machine.voltage.120");

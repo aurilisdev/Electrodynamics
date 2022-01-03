@@ -37,7 +37,7 @@ public class ScreenO2OProcessorDouble extends GenericScreen<ContainerO2OProcesso
 			}
 			return 0;
 		}, this, 84 - ContainerO2OProcessor.startXOffset, 44));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

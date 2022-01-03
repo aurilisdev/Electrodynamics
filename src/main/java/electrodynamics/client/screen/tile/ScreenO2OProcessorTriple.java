@@ -49,6 +49,6 @@ public class ScreenO2OProcessorTriple extends GenericScreen<ContainerO2OProcesso
 		}, this, 84 - ContainerO2OProcessor.startXOffset, 66));
 		imageHeight += 20;
 		inventoryLabelY += 20;
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 }

@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentElectricInfo extends ScreenComponentInfo {
-	private String tag = null;
 	private Function<ComponentElectrodynamic, Double> wattage = null;
 
 	public ScreenComponentElectricInfo(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
@@ -38,11 +37,6 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 	public ScreenComponentElectricInfo(final IScreenWrapper gui, final int x, final int y) {
 		super(null, new ResourceLocation(References.ID + ":textures/screen/component/electric.png"), gui, x, y);
 		infoHandler = this::getElectricInformation;
-	}
-
-	public ScreenComponentElectricInfo tag(String val) {
-		tag = val;
-		return this;
 	}
 
 	public ScreenComponentElectricInfo wattage(double wattage) {
@@ -56,10 +50,7 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
-		if (tag != null) {
-			return getElectricInformation();
-		}
-		return list;
+		return getElectricInformation();
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {
@@ -69,13 +60,13 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 				if (tile.getComponent(ComponentType.Electrodynamic) instanceof ComponentElectrodynamic electro) {
 					if (tile instanceof IElectricGenerator generator) {
 						TransferPack transfer = generator.getProduced();
-						list2.add(new TranslatableComponent("gui." + tag + ".current",
+						list2.add(new TranslatableComponent("gui.machine.current",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list2.add(new TranslatableComponent("gui." + tag + ".output",
+						list2.add(new TranslatableComponent("gui.machine.output",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getWatts(), ElectricUnit.WATT))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
+						list2.add(new TranslatableComponent("gui.machine.voltage",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(transfer.getVoltage(), ElectricUnit.VOLTAGE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					} else {
@@ -86,15 +77,15 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 									usage += proc.getUsage() * 20;
 								}
 							}
-							list2.add(new TranslatableComponent("gui." + tag + ".usage",
+							list2.add(new TranslatableComponent("gui.machine.usage",
 									new TextComponent(ChatFormatter.getElectricDisplayShort(usage, ElectricUnit.WATT)).withStyle(ChatFormatting.GRAY))
 											.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						} else {
-							list2.add(new TranslatableComponent("gui." + tag + ".usage",
+							list2.add(new TranslatableComponent("gui.machine.usage",
 									new TextComponent(ChatFormatter.getElectricDisplayShort(wattage.apply(electro), ElectricUnit.WATT))
 											.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						}
-						list2.add(new TranslatableComponent("gui." + tag + ".voltage",
+						list2.add(new TranslatableComponent("gui.machine.voltage",
 								new TextComponent(ChatFormatter.getElectricDisplayShort(electro.getVoltage(), ElectricUnit.VOLTAGE))
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					}

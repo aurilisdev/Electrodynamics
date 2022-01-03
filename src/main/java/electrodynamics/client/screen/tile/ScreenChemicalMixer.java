@@ -55,7 +55,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 			}
 			return null;
 		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("chemicalmixer"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

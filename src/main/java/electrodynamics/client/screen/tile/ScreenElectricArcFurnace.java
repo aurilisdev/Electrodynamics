@@ -37,7 +37,7 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 			}
 			return 0;
 		}, this, 39, 36).flame());
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

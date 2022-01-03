@@ -59,7 +59,7 @@ public class ScreenElectrolyticSeparator extends GenericScreen<ContainerElectrol
 			}
 			return null;
 		}, this, 102, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("chemicalmixer"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

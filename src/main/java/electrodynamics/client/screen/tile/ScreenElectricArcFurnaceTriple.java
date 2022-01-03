@@ -79,6 +79,6 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 		}, this, 39, 66).flame());
 		imageHeight += 20;
 		inventoryLabelY += 20;
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 }

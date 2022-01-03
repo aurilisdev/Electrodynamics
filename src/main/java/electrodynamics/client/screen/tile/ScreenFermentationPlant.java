@@ -55,7 +55,7 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 			}
 			return null;
 		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("fermentationplant"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

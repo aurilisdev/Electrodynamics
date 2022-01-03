@@ -39,7 +39,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 			}
 			return null;
 		}, this, 21, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("chemicalcrystallizer"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

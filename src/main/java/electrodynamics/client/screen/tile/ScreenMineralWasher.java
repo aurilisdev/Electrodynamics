@@ -55,6 +55,6 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 			}
 			return null;
 		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("mineralwasher"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 }
