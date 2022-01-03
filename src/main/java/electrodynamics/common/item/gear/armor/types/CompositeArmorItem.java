@@ -153,7 +153,7 @@ public class CompositeArmorItem extends ArmorItem {
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
 	}
-	
+
 	public enum CompositeArmor implements ICustomArmor {
 		COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
 

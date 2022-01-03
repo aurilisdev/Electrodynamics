@@ -179,7 +179,7 @@ public class DeferredRegisters {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
 	public static BlockMultiSubnode multi = new BlockMultiSubnode();
-	//liquids
+	// liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
 	public static FluidHydrogenFluoride fluidHydrogenFluoride;
@@ -216,7 +216,7 @@ public class DeferredRegisters {
 		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
-		//Liquids
+		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
 		FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
@@ -228,7 +228,7 @@ public class DeferredRegisters {
 			FluidSulfate fluid = new FluidSulfate(mineral);
 			FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
 		}
-		//Gasses
+		// Gasses
 		FLUIDS.register("fluidoxygen", supplier(fluidOxygen = new FluidOxygen()));
 		FLUIDS.register("fluidhydrogen", supplier(fluidHydrogen = new FluidHydrogen()));
 	}
@@ -319,9 +319,9 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator),
 				"|translate|tooltip.machine.voltage.120");
-		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator), "|translate|tooltip.machine.voltage.240");
-		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace),
-				"|translate|tooltip.machine.voltage.120");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator),
+				"|translate|tooltip.machine.voltage.240");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble),
 				"|translate|tooltip.machine.voltage.240");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple),
@@ -354,7 +354,6 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
 
-		
 	}
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
@@ -425,14 +424,16 @@ public class DeferredRegisters {
 			supplier(new CompositeArmorItem(EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots",
 			supplier(new CompositeArmorItem(EquipmentSlot.FEET)));
-	
+
 	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
 			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
-	
-	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS.register("nightvisiongoggles", 
-			supplier(new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000)
-					.extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120))
-					.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
+
+	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS
+			.register("nightvisiongoggles",
+					supplier(new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties()
+							.capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000)
+							.extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120))
+							.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 
 	// Split from items to tiles
 
@@ -592,9 +593,10 @@ public class DeferredRegisters {
 			() -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile",
 			() -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
-	public static final RegistryObject<BlockEntityType<TileElectrolyticSeparator>> TILE_ELECTROLYTICSEPARATOR = TILES.register(SubtypeMachine.electrolyticseparator.tag(), 
-			() -> new BlockEntityType<>(TileElectrolyticSeparator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator)), null));
-	
+	public static final RegistryObject<BlockEntityType<TileElectrolyticSeparator>> TILE_ELECTROLYTICSEPARATOR = TILES
+			.register(SubtypeMachine.electrolyticseparator.tag(), () -> new BlockEntityType<>(TileElectrolyticSeparator::new,
+					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator)), null));
+
 	public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES
 			.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new,
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
@@ -662,8 +664,8 @@ public class DeferredRegisters {
 			() -> new MenuType<>(ContainerFluidVoid::new));
 	public static final RegistryObject<MenuType<ContainerSeismicScanner>> CONTAINER_SEISMICSCANNER = CONTAINERS.register("seismicdetector",
 			() -> new MenuType<>(ContainerSeismicScanner::new));
-	public static final RegistryObject<MenuType<ContainerElectrolyticSeparator>> CONTAINER_ELECTROLYTICSEPARATOR = CONTAINERS.register("electrolyticseparator", 
-			() -> new MenuType<>(ContainerElectrolyticSeparator::new));
+	public static final RegistryObject<MenuType<ContainerElectrolyticSeparator>> CONTAINER_ELECTROLYTICSEPARATOR = CONTAINERS
+			.register("electrolyticseparator", () -> new MenuType<>(ContainerElectrolyticSeparator::new));
 
 	// Entities
 

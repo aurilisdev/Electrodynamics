@@ -65,8 +65,7 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 							ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
 					inventoryLabelX, inventoryLabelY - 42f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.voltage",
-							ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)),
+					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)),
 					inventoryLabelX, inventoryLabelY - 29f, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.stored",

@@ -11,15 +11,15 @@ public class SlotFluid extends SlotGeneric {
 	public SlotFluid(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
-	
+
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		if(super.mayPlace(stack) && CapabilityUtils.hasFluidItemCap(stack)) {
+		if (super.mayPlace(stack) && CapabilityUtils.hasFluidItemCap(stack)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public EnumSlotType getSlotType() {
 		return EnumSlotType.LIQUID;

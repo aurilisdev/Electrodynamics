@@ -55,7 +55,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	private IDrawable ICON;
 
 	private Class<? extends AbstractCookingRecipe> RECIPE_CATEGORY_CLASS;
-	
+
 	private double JOULES;
 	private int VOLTAGE;
 
@@ -72,7 +72,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 				wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;
-		
+
 		JOULES = joulesPerTick;
 		VOLTAGE = voltage;
 	}

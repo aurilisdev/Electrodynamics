@@ -11,15 +11,15 @@ public class SlotCharging extends SlotGeneric {
 	public SlotCharging(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
-	
+
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		if(super.mayPlace(stack) && stack.getItem() instanceof ItemElectric) {
+		if (super.mayPlace(stack) && stack.getItem() instanceof ItemElectric) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public EnumSlotType getSlotType() {
 		return EnumSlotType.BATTERY;

@@ -15,15 +15,14 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<TileElectrolyticSeparator> {
 
-	public ContainerElectrolyticSeparator(MenuType<?> type, int id, Inventory playerinv, Container inventory,
-			ContainerData inventorydata) {
+	public ContainerElectrolyticSeparator(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerElectrolyticSeparator(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
 	}
-	
+
 	public ContainerElectrolyticSeparator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_ELECTROLYTICSEPARATOR.get(), id, playerinv, inventory, inventorydata);
 	}

@@ -30,10 +30,10 @@ public class TileElectrolyticSeparator extends GenericTile {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;
-	
+
 	private static final Direction OXYGEN_DIRECTION = Direction.EAST;
 	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
-	
+
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
 		super(DeferredRegisters.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
@@ -42,8 +42,8 @@ public class TileElectrolyticSeparator extends GenericTile {
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2)
 				.maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
 		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION)
-				.relativeInput(Direction.SOUTH))
-				.setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true, true));
+				.relativeInput(Direction.SOUTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true,
+						true));
 		addComponent(new ComponentInventory(this).size(6).bucketInputs(1).bucketOutputs(2).upgrades(3).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0)
 				.canProcess(component -> component.consumeBucket().dispenseBucket().canProcessFluid2FluidRecipe(component,
@@ -53,20 +53,20 @@ public class TileElectrolyticSeparator extends GenericTile {
 		addComponent(new ComponentContainerProvider("container.electrolyticseparator")
 				.createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	public void tickServer(ComponentTickable tickable) {
-		//ensures only one fluid per output
+		// ensures only one fluid per output
 		AbstractFluidHandler<?> handler = getComponent(ComponentType.FluidHandler);
 		FluidTank oxygen = handler.getOutputTanks()[0];
 		FluidTank hydrogen = handler.getOutputTanks()[1];
-		FluidUtilities.outputToPipe(this, new FluidTank[] {oxygen}, OXYGEN_DIRECTION);
-		FluidUtilities.outputToPipe(this, new FluidTank[] {hydrogen}, HYDROGEN_DIRECTION);
+		FluidUtilities.outputToPipe(this, new FluidTank[] { oxygen }, OXYGEN_DIRECTION);
+		FluidUtilities.outputToPipe(this, new FluidTank[] { hydrogen }, HYDROGEN_DIRECTION);
 	}
-	
+
 	protected void tickClient(ComponentTickable tickable) {
 		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
 		if (running) {
-			if(clientTicks >= 40 ) {
+			if (clientTicks >= 40) {
 				clientTicks = 0;
 				SoundAPI.playSound(SoundRegister.SOUND_ELECTROLYTICSEPARATOR.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
 			}

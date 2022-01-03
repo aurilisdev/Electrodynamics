@@ -269,11 +269,11 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		int offset = inSlots.length + outSlots.length + fluidInputs.length;
 		GenericFluidGaugeWrapper wrap;
 		FluidStack stack = FluidStack.EMPTY;
-		if(recipe instanceof AbstractFluidRecipe fRecipe) {
+		if (recipe instanceof AbstractFluidRecipe fRecipe) {
 			stack = fRecipe.getFluidRecipeOutput();
 		}
 		if (!stack.isEmpty()) {
-			for(int i = 0; i < fluidOutputs.length; i++) {
+			for (int i = 0; i < fluidOutputs.length; i++) {
 				wrap = fluidOutputs[i];
 
 				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
@@ -282,13 +282,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
 						true, null);
 				offset++;
-				if(recipe.hasFluidBiproducts() && i < recipe.getFluidBiproductCount()) {
+				if (recipe.hasFluidBiproducts() && i < recipe.getFluidBiproductCount()) {
 					stack = recipe.getFluidBiproducts()[i].getFullStack();
 				}
 			}
 		} else {
-			for(int i = 0; i < fluidOutputs.length; i++) {
-				if(recipe.hasFluidBiproducts()) {
+			for (int i = 0; i < fluidOutputs.length; i++) {
+				if (recipe.hasFluidBiproducts()) {
 					stack = recipe.getFluidBiproducts()[i].getFullStack();
 				}
 				wrap = fluidOutputs[i];

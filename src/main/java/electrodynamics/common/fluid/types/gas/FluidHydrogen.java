@@ -7,7 +7,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 public class FluidHydrogen extends FluidNonPlaceable {
 
 	public static final String FORGE_TAG = "hydrogen";
-	
+
 	public FluidHydrogen() {
 		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "hydrogen");
 	}

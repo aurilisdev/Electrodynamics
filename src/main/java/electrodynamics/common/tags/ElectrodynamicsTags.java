@@ -34,7 +34,7 @@ public class ElectrodynamicsTags {
 
 	// Only the Tag objects should ever be visible from this class!
 	public static class Fluids {
-		
+
 		public static final Tags.IOptionalNamedTag<Fluid> SULFURIC_ACID = forgeTag(FluidSulfuricAcid.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> ETHANOL = forgeTag(FluidEthanol.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN_FLUORIDE = forgeTag(FluidHydrogenFluoride.FORGE_TAG);

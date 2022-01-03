@@ -18,7 +18,7 @@ public class SlotRestricted extends SlotGeneric {
 	public SlotRestricted(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
-	
+
 	public SlotRestricted(Container inventory, int index, int x, int y, Item... items) {
 		super(inventory, index, x, y);
 		whitelist = Arrays.asList(items);

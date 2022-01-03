@@ -9,10 +9,10 @@ public class PowerLabelWrapper extends GenericLabelWrapper {
 
 	private double wattage;
 	private int voltage;
-	
+
 	public PowerLabelWrapper(int xPos, int yPos, double joulesPerTick, int voltage) {
 		super(0xFF808080, yPos, xPos, POWER);
-		this.wattage = joulesPerTick * 20 / 1000.0;
+		wattage = joulesPerTick * 20 / 1000.0;
 		this.voltage = voltage;
 	}
 
