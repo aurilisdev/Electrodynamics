@@ -3,8 +3,8 @@ package electrodynamics.common.inventory.container.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.GenericSlot;
-import electrodynamics.prefab.inventory.container.slot.UpgradeSlot;
+import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import electrodynamics.prefab.tile.GenericTile;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -31,22 +31,22 @@ public class ContainerO2OProcessorTriple extends GenericContainerBlockEntity<Gen
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		playerInvOffset = 20;
-		addSlot(new GenericSlot(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 24));
+		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 24));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 24));
-		addSlot(new GenericSlot(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 44));
+		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 44));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 44));
-		addSlot(new GenericSlot(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 64));
+		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 64));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 64));
 
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 24));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 44));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 64));
 
-		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 24, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 24, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
 				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
-		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 44, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 44, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
 				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
-		addSlot(new UpgradeSlot(inv, nextIndex(), 153, 64, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 64, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
 				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
 	}
 }

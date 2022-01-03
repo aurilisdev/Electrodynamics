@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:blasting",
-	"ingredient": {
-		"tag": "forge:dusts/steel"
-	},
-	"result": "electrodynamics:ingotsteel",
-	"experience": 0.0,
-	"cookingtime": 200
-}

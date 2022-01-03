@@ -4,10 +4,10 @@ import java.util.List;
 
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.intstorage.CapabilityIntStorage;
-import electrodynamics.api.capability.itemhandler.CapabilityItemStackHandler;
-import electrodynamics.api.capability.locationstorage.CapabilityLocationStorage;
-import electrodynamics.api.capability.multicapability.seismicscanner.SeismicScannerCapability;
+import electrodynamics.api.capability.multicapability.SeismicScannerCapability;
+import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
+import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
+import electrodynamics.api.capability.types.locationstorage.CapabilityLocationStorage;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.prefab.item.ElectricItemProperties;

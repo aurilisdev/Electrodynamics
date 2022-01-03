@@ -21,7 +21,7 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 
 	public ScreenWindmill(ContainerWindmill container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("windmill"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	@Override
@@ -30,13 +30,13 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 		if (menu.getUnsafeHost() instanceof IElectricGenerator gen) {
 			TransferPack transfer = gen.getProduced();
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.windmill.current", ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE)),
+					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 48, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.windmill.output", ChatFormatter.getElectricDisplayShort(transfer.getWatts(), ElectricUnit.WATT)),
+					new TranslatableComponent("gui.machine.output", ChatFormatter.getElectricDisplayShort(transfer.getWatts(), ElectricUnit.WATT)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 35, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.windmill.voltage",
+					new TranslatableComponent("gui.machine.voltage",
 							ChatFormatter.getElectricDisplayShort(transfer.getVoltage(), ElectricUnit.VOLTAGE)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 22, 4210752);
 		}

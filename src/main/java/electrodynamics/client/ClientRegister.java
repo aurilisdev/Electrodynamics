@@ -5,6 +5,7 @@ import electrodynamics.api.References;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
+import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
 import electrodynamics.client.render.tile.RenderChargerGeneric;
@@ -40,6 +41,7 @@ import electrodynamics.client.screen.tile.ScreenElectricArcFurnaceTriple;
 import electrodynamics.client.screen.tile.ScreenElectricFurnace;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceTriple;
+import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
 import electrodynamics.client.screen.tile.ScreenFluidVoid;
 import electrodynamics.client.screen.tile.ScreenHydroelectricGenerator;
@@ -83,6 +85,8 @@ public class ClientRegister {
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
 
+	public static LayerDefinition NIGHT_VISION_GOGGLES = ModelNightVisionGoggles.createBodyLayer();
+	
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
 		ForgeModelBakery.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -116,6 +120,7 @@ public class ClientRegister {
 		ForgeModelBakery.addSpecialModel(MODEL_FERMENTATIONPLANTWATER);
 		ForgeModelBakery.addSpecialModel(MODEL_FERMENTATIONPLANTETHANOL);
 		ForgeModelBakery.addSpecialModel(MODEL_COMBUSTIONCHAMBERETHANOL);
+		ForgeModelBakery.addSpecialModel(MODEL_COMBUSTIONCHAMBERHYDROGEN);
 		ForgeModelBakery.addSpecialModel(MODEL_CHEMICALMIXERBASE);
 		ForgeModelBakery.addSpecialModel(MODEL_CHEMICALMIXERBLADES);
 		ForgeModelBakery.addSpecialModel(MODEL_CHEMICALMIXERWATER);
@@ -158,6 +163,7 @@ public class ClientRegister {
 	public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(BLOCK_LOC + "fermentationplantwater");
 	public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(BLOCK_LOC + "fermentationplantethanol");
 	public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(BLOCK_LOC + "combustionchamberethanol");
+	public static final ResourceLocation MODEL_COMBUSTIONCHAMBERHYDROGEN = new ResourceLocation(BLOCK_LOC + "combustionchamberhydrogen");
 	public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(BLOCK_LOC + "chemicalmixerbase");
 	public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(BLOCK_LOC + "chemicalmixerblades");
 	public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(BLOCK_LOC + "chemicalmixerwater");
@@ -202,6 +208,7 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_CREATIVEFLUIDSOURCE.get(), ScreenCreativeFluidSource::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), ScreenSeismicScanner::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTROLYTICSEPARATOR.get(), ScreenElectrolyticSeparator::new);
 
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());

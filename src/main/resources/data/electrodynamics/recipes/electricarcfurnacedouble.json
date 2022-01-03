@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#i#",
+        "DRD",
+        "#i#"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:circuits/advanced"
+        },
+        "i": {
+            "tag": "forge:plates/steel"
+        },
+        "D": {
+            "item": "minecraft:diamond"
+        },
+        "R": {
+            "item": "electrodynamics:electricarcfurnace"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:electricarcfurnacedouble",
+        "count": 1
+    }
+}

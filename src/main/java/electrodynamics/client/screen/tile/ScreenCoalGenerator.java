@@ -32,13 +32,13 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		components.add(new ScreenComponentProgress(() -> {
 			TileCoalGenerator box = container.getHostFromIntArray();
 			if (box != null) {
-				return box.clientBurnTime / (TileCoalGenerator.COAL_BURN_TIME * 1.0);
+				return box.clientBurnTime / box.clientMaxBurnTime;
 			}
 			return 0;
 		}, this, 25, 25).flame());
 		components.add(
 				new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("coalgenerator"));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {
@@ -48,10 +48,10 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			list.add(new TranslatableComponent("gui.coalgenerator.timeleft",
 					new TextComponent(box.clientBurnTime / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY)
 							.getVisualOrderText());
-			list.add(new TranslatableComponent("gui.coalgenerator.temperature",
+			list.add(new TranslatableComponent("gui.machine.temperature",
 					new TextComponent(ChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C").withStyle(ChatFormatting.GRAY))
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.coalgenerator.heat",
+			list.add(new TranslatableComponent("gui.machine.heat",
 					new TextComponent(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%")
 							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
@@ -69,15 +69,15 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			font.draw(matrixStack, new TranslatableComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"), inventoryLabelX + 60f,
 					inventoryLabelY - 53f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.coalgenerator.current",
+					new TranslatableComponent("gui.machine.current",
 							ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)),
 					inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.coalgenerator.output",
+					new TranslatableComponent("gui.machine.output",
 							ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)),
 					inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.coalgenerator.voltage",
+					new TranslatableComponent("gui.machine.voltage",
 							ChatFormatter.getElectricDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE)),
 					inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
 		}

@@ -1,8 +1,10 @@
 package electrodynamics.prefab.tile.components.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
@@ -181,5 +183,14 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	}
 
 	public abstract void addFluids();
+	
+	public static Direction[] getDirectionalArray(HashSet<Direction> directionSet) {
+		Direction[] directions = new Direction[directionSet.size()];
+		List<Direction> list = (ArrayList<Direction>) directionSet.stream().collect(Collectors.toList());
+		for(int i = 0; i < directions.length; i++ ) {
+			directions[i] = list.get(i);
+		}
+		return directions;
+	}
 
 }

@@ -1,0 +1,15 @@
+{
+	"type" : "electrodynamics:chemical_crystallizer_recipe",
+	
+	"fluidinputs":{
+		"count" : 1, 
+		"0":{
+			"tag":"forge:netherite_sulfate",
+			"amount": 200
+		}
+	},
+	"output":{
+		"item":"electrodynamics:crystalnetherite",
+		"count": 1
+	}
+}

@@ -39,7 +39,6 @@ public class ScreenComponentProgress extends ScreenComponent {
 
 	public ScreenComponentProgress left() {
 		left = true;
-		// TODO: Finish left side render
 		return this;
 	}
 
@@ -62,10 +61,9 @@ public class ScreenComponentProgress extends ScreenComponent {
 			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + HEIGHTFLAME - scale, POSXFLAME, POSYFLAME + HEIGHTFLAME - scale,
 					WIDTHFLAME, scale);
 		} else if (left) {
-			// TODO this should work and idk why it doesn't
 			int progress = (int) (progressInfoHandler.getAsDouble() * WIDTHARROW);
-			int xStart = POSXARROW + WIDTHARROW * 3 - progress;
-			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, xStart, POSYARROW, progress, HEIGHTARROW);
+			int xStart = POSXARROW + WIDTHARROW * 2 + (WIDTHARROW - progress);
+			gui.drawTexturedRect(stack, guiWidth + xLocation + WIDTHARROW - progress, guiHeight + yLocation, xStart, POSYARROW, progress, HEIGHTARROW);
 		} else {
 			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
 					(int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);

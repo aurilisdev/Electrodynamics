@@ -56,7 +56,7 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 		setFluidInputs(guiFluidStacks, recipe.getFluidIngredients());
 		setItemOutputs(guiItemStacks);
 		if (recipe.hasFluidBiproducts()) {
-			setFluidOutputs(guiFluidStacks, recipe, 0, null);
+			setFluidOutputs(guiFluidStacks, recipe);
 		}
 
 		guiItemStacks.set(ingredients);

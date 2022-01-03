@@ -9,19 +9,15 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
-import electrodynamics.prefab.inventory.container.slot.SlotRestricted;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,18 +32,18 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileLithiumBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
-			list.add(new TranslatableComponent("gui.lithiumbatterybox.current",
+			list.add(new TranslatableComponent("gui.machine.current",
 					new TextComponent(ChatFormatter
 							.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.lithiumbatterybox.transfer",
+			list.add(new TranslatableComponent("gui.machine.transfer",
 					new TextComponent(
 							ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.lithiumbatterybox.voltage",
+			list.add(new TranslatableComponent("gui.machine.voltage",
 					new TextComponent(ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.lithiumbatterybox.stored",
+			list.add(new TranslatableComponent("gui.machine.stored",
 					new TextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
 							+ ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
@@ -56,29 +52,24 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 	}
 
 	@Override
-	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		return new ScreenComponentSlot(slot instanceof SlotRestricted ? EnumSlotType.BATTERY : EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
-	}
-
-	@Override
 	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
 		super.renderLabels(matrixStack, mouseX, mouseY);
 		TileLithiumBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.lithiumbatterybox.current", ChatFormatter.getElectricDisplayShort(
+					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(
 							box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE)),
 					inventoryLabelX, inventoryLabelY - 55f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.lithiumbatterybox.transfer",
+					new TranslatableComponent("gui.machine.transfer",
 							ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
 					inventoryLabelX, inventoryLabelY - 42f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.lithiumbatterybox.voltage",
+					new TranslatableComponent("gui.machine.voltage",
 							ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)),
 					inventoryLabelX, inventoryLabelY - 29f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.lithiumbatterybox.stored",
+					new TranslatableComponent("gui.machine.stored",
 							ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
 									+ ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
 					inventoryLabelX, inventoryLabelY - 16f, 4210752);

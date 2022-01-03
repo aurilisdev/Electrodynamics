@@ -54,13 +54,13 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		ItemStack ownerItem = menu.getOwnerItem();
 		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
-			list.add(new TranslatableComponent("gui.seismicscanner.usage",
+			list.add(new TranslatableComponent("gui.machine.usage",
 					new TextComponent(ChatFormatter.getElectricDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, ElectricUnit.WATT))
 							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.seismicscanner.voltage",
+			list.add(new TranslatableComponent("gui.machine.voltage",
 					new TextComponent(ChatFormatter.getElectricDisplayShort(120, ElectricUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.batterybox.stored",
+			list.add(new TranslatableComponent("gui.machine.stored",
 					new TextComponent(ChatFormatter.getElectricDisplayShort(scanner.getJoulesStored(ownerItem), ElectricUnit.JOULES) + " / "
 							+ ChatFormatter.getElectricDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, ElectricUnit.JOULES))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());

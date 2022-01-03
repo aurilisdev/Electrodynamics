@@ -4,7 +4,7 @@ import electrodynamics.api.ISubtype;
 
 public enum SubtypeDust implements ISubtype {
 	iron, gold, copper, tin, silver, steel, lead, bronze, superconductive, endereye, vanadium, sulfur, niter, obsidian, lithium, salt, silica,
-	molybdenum;
+	molybdenum, netherite;
 
 	@Override
 	public String tag() {

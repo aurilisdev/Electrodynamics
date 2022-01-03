@@ -55,9 +55,12 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	private IDrawable ICON;
 
 	private Class<? extends AbstractCookingRecipe> RECIPE_CATEGORY_CLASS;
+	
+	private double JOULES;
+	private int VOLTAGE;
 
 	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper,
-			Class<? extends AbstractCookingRecipe> recipeClass, int animTime) {
+			Class<? extends AbstractCookingRecipe> recipeClass, int animTime, double joulesPerTick, int voltage) {
 
 		ANIMATION_LENGTH = animTime;
 
@@ -69,6 +72,9 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 				wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;
+		
+		JOULES = joulesPerTick;
+		VOLTAGE = voltage;
 	}
 
 	@Override
@@ -78,7 +84,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("gui.jei.category." + RECIPE_GROUP);
+		return new TranslatableComponent("container." + RECIPE_GROUP);
 	}
 
 	@Override
@@ -162,7 +168,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 		Font fontRenderer = Minecraft.getInstance().font;
 		TranslatableComponent text;
 		for (GenericLabelWrapper wrap : LABELS) {
-			text = new TranslatableComponent("gui.jei.category." + RECIPE_GROUP + ".info." + wrap.getName(), ANIMATION_LENGTH / 20);
+			text = new TranslatableComponent("jei.guilabel.power", VOLTAGE, JOULES * 20 / 1000.0);
 			fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
 		}
 	}

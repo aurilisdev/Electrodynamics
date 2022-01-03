@@ -16,7 +16,7 @@
             "tag": "forge:circuits/basic"
         },
         "b": {
-            "item": "electrodynamics:lithiumbattery"
+            "item": "electrodynamics:battery"
         },
         "q": {
             "tag": "forge:gems/quartz"

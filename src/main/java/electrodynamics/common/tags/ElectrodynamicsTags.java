@@ -3,14 +3,16 @@ package electrodynamics.common.tags;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.common.fluid.types.FluidClay;
-import electrodynamics.common.fluid.types.FluidConcrete;
-import electrodynamics.common.fluid.types.FluidEthanol;
-import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
-import electrodynamics.common.fluid.types.FluidPolyethylene;
-import electrodynamics.common.fluid.types.FluidSulfate;
-import electrodynamics.common.fluid.types.FluidSulfuricAcid;
-import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.types.gas.FluidHydrogen;
+import electrodynamics.common.fluid.types.gas.FluidOxygen;
+import electrodynamics.common.fluid.types.liquid.FluidClay;
+import electrodynamics.common.fluid.types.liquid.FluidConcrete;
+import electrodynamics.common.fluid.types.liquid.FluidEthanol;
+import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
+import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
+import electrodynamics.common.fluid.types.liquid.FluidSulfate;
+import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
+import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
@@ -31,7 +33,7 @@ public class ElectrodynamicsTags {
 
 	// Only the Tag objects should ever be visible from this class!
 	public static class Fluids {
-
+		
 		public static final Tags.IOptionalNamedTag<Fluid> SULFURIC_ACID = forgeTag(FluidSulfuricAcid.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> ETHANOL = forgeTag(FluidEthanol.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN_FLUORIDE = forgeTag(FluidHydrogenFluoride.FORGE_TAG);
@@ -45,8 +47,11 @@ public class ElectrodynamicsTags {
 		public static final Tags.IOptionalNamedTag<Fluid> GOLD_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.gold.name());
 		public static final Tags.IOptionalNamedTag<Fluid> LITHIUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.lithium.name());
 		public static final Tags.IOptionalNamedTag<Fluid> MOLYBDENUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.molybdenum.name());
+		public static final Tags.IOptionalNamedTag<Fluid> NETHERITE_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.netherite.name());
 		public static final Tags.IOptionalNamedTag<Fluid> CLAY = forgeTag(FluidClay.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> CONCRETE = forgeTag(FluidConcrete.FORGE_TAG);
+		public static final Tags.IOptionalNamedTag<Fluid> OXYGEN = forgeTag(FluidOxygen.FORGE_TAG);
+		public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN = forgeTag(FluidHydrogen.FORGE_TAG);
 
 		private static void init() {
 			FLUID_TAGS.add(SULFURIC_ACID);
@@ -62,8 +67,11 @@ public class ElectrodynamicsTags {
 			FLUID_TAGS.add(GOLD_SULF);
 			FLUID_TAGS.add(LITHIUM_SULF);
 			FLUID_TAGS.add(MOLYBDENUM_SULF);
+			FLUID_TAGS.add(NETHERITE_SULF);
 			FLUID_TAGS.add(CLAY);
 			FLUID_TAGS.add(CONCRETE);
+			FLUID_TAGS.add(OXYGEN);
+			FLUID_TAGS.add(HYDROGEN);
 
 			ItemCanister.addTag(SULFURIC_ACID);
 			ItemCanister.addTag(ETHANOL);
@@ -78,8 +86,11 @@ public class ElectrodynamicsTags {
 			ItemCanister.addTag(GOLD_SULF);
 			ItemCanister.addTag(LITHIUM_SULF);
 			ItemCanister.addTag(MOLYBDENUM_SULF);
+			ItemCanister.addTag(NETHERITE_SULF);
 			ItemCanister.addTag(CLAY);
 			ItemCanister.addTag(CONCRETE);
+			ItemCanister.addTag(OXYGEN);
+			ItemCanister.addTag(HYDROGEN);
 		}
 
 		private static Tags.IOptionalNamedTag<Fluid> forgeTag(String name) {

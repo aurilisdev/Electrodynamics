@@ -40,7 +40,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			return 0;
 		}, this, 118, 37));
 
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).tag("o2oprocessor")
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2)
 				.wattage(e -> e.getMaxJoulesStored() * 20));
 	}
 

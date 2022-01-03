@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " s ",
+        "pnp",
+        "pnp"
+    ],
+    "key": {
+        "p": {
+            "tag": "forge:plates/titaniumcarbide"
+        },
+        "n": {
+            "tag": "forge:dusts/netherite"
+        },
+        "s": {
+            "item": "electrodynamics:wiresuperconductive"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:carbynebattery",
+        "count": 1
+    }
+}

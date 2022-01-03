@@ -7,9 +7,9 @@ import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.boolstorage.IBooleanStorage;
-import electrodynamics.api.capability.dirstorage.IDirectionalStorage;
-import electrodynamics.api.capability.intstorage.IIntStorage;
+import electrodynamics.api.capability.types.boolstorage.IBooleanStorage;
+import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
+import electrodynamics.api.capability.types.intstorage.IIntStorage;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;

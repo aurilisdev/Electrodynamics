@@ -59,7 +59,7 @@ public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCateg
 
 		if (recipe.hasFluidBiproducts()) {
 			IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-			setFluidOutputs(guiFluidStacks, recipe, 1, null);
+			setFluidOutputs(guiFluidStacks, recipe);
 			guiFluidStacks.set(ingredients);
 		}
 

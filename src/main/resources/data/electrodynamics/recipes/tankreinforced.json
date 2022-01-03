@@ -1,13 +1,13 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sgs",
-		"g g",
-		"sgs"
+		"sss",
+		"sts",
+		"sss"
 	],
 	"key": {
-		"g": {
-			"item": "electrodynamics:glassaluminum"
+		"t": {
+			"item": "electrodynamics:tanksteel"
 		},
 		"s": {
 			"tag": "forge:plates/stainlesssteel"

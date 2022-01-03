@@ -89,6 +89,11 @@ public class Constants {
 	public static int COBBLE_GEN_REQUIRED_TICKS = 100;
 	@DoubleValue(def = 100)
 	public static double COBBLE_GEN_USAGE_PER_TICK = 100;
+	@IntValue(def = 200)
+	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
+	@DoubleValue(def = 400)
+	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 400;
+	
 
 	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

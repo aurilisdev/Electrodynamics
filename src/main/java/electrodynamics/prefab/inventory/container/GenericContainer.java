@@ -1,6 +1,6 @@
 package electrodynamics.prefab.inventory.container;
 
-import electrodynamics.prefab.inventory.container.slot.GenericSlot;
+import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.utilities.ContainerUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,12 +37,12 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 	protected void addPlayerInventory(Inventory playerinv) {
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
-				addSlot(new GenericSlot(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
+				addSlot(new SlotGeneric(playerinv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + playerInvOffset));
 			}
 		}
 
 		for (int k = 0; k < 9; ++k) {
-			addSlot(new GenericSlot(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
+			addSlot(new SlotGeneric(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
 		}
 	}
 

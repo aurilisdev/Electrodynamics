@@ -28,14 +28,16 @@ import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
-import electrodynamics.common.fluid.types.FluidClay;
-import electrodynamics.common.fluid.types.FluidConcrete;
-import electrodynamics.common.fluid.types.FluidEthanol;
-import electrodynamics.common.fluid.types.FluidHydrogenFluoride;
-import electrodynamics.common.fluid.types.FluidPolyethylene;
-import electrodynamics.common.fluid.types.FluidSulfate;
-import electrodynamics.common.fluid.types.FluidSulfuricAcid;
-import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.types.gas.FluidHydrogen;
+import electrodynamics.common.fluid.types.gas.FluidOxygen;
+import electrodynamics.common.fluid.types.liquid.FluidClay;
+import electrodynamics.common.fluid.types.liquid.FluidConcrete;
+import electrodynamics.common.fluid.types.liquid.FluidEthanol;
+import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
+import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
+import electrodynamics.common.fluid.types.liquid.FluidSulfate;
+import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
+import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
@@ -53,6 +55,7 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurna
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
+import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
@@ -67,9 +70,9 @@ import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.gear.armor.types.composite.CompositeArmor;
-import electrodynamics.common.item.gear.armor.types.composite.CompositeArmorItem;
-import electrodynamics.common.item.gear.armor.types.rubber.ItemRubberArmor;
+import electrodynamics.common.item.gear.armor.types.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
+import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
@@ -112,6 +115,7 @@ import electrodynamics.common.tile.TileElectricFurnace;
 import electrodynamics.common.tile.TileElectricFurnaceDouble;
 import electrodynamics.common.tile.TileElectricFurnaceTriple;
 import electrodynamics.common.tile.TileElectricPump;
+import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileFluidVoid;
@@ -155,7 +159,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -175,12 +178,16 @@ public class DeferredRegisters {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
 	public static BlockMultiSubnode multi = new BlockMultiSubnode();
+	//liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
 	public static FluidHydrogenFluoride fluidHydrogenFluoride;
 	public static FluidPolyethylene fluidPolyethylene;
 	public static FluidClay fluidClay;
 	public static FluidConcrete fluidCement;
+	//gasses
+	public static FluidOxygen fluidOxygen;
+	public static FluidHydrogen fluidHydrogen;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -207,7 +214,7 @@ public class DeferredRegisters {
 		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
-
+		//Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
 		FLUIDS.register("fluidhydrogenfluoride", supplier(fluidHydrogenFluoride = new FluidHydrogenFluoride()));
@@ -218,6 +225,9 @@ public class DeferredRegisters {
 			FluidSulfate fluid = new FluidSulfate(mineral);
 			FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
 		}
+		//Gasses
+		FLUIDS.register("fluidoxygen", supplier(fluidOxygen = new FluidOxygen()));
+		FLUIDS.register("fluidhydrogen", supplier(fluidHydrogen = new FluidHydrogen()));
 	}
 
 	private static void registerSubtypeItem(ISubtype[] array) {
@@ -306,6 +316,13 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricpump), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.cobblestonegenerator),
 				"|translate|tooltip.machine.voltage.120");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator), "|translate|tooltip.machine.voltage.240");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace),
+				"|translate|tooltip.machine.voltage.120");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble),
+				"|translate|tooltip.machine.voltage.240");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple),
+				"|translate|tooltip.machine.voltage.480");
 
 		// generators
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.solarpanel), "|translate|tooltip.machine.voltage.120");
@@ -330,28 +347,17 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource),
 				"|translate|tooltip.creativefluidsource.joke");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid), "|translate|tooltip.fluidvoid");
-
-		boolean jeiLoaded = ModList.get().isLoaded("jei");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
-		if (jeiLoaded) {
-			BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.usejei");
-		}
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
-		if (jeiLoaded) {
-			BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tanksteel.usejei");
-		}
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
-		if (jeiLoaded) {
-			BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tanksteel.usejei");
-		}
+
+		
 	}
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation",
 			supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic",
 			supplier(new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
-			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery",
 			supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667)
@@ -361,6 +367,10 @@ public class DeferredRegisters {
 			supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(4 * 1666666.66667)
 					.extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240))
 					.receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).tab(References.CORETAB).stacksTo(1))));
+	public static final RegistryObject<Item> ITEM_CARBYNEBATTERY = ITEMS.register("carbynebattery",
+			supplier(new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(8 * 1666666.66667)
+					.extract(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480))
+					.receive(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter",
 			supplier(new ItemMultimeter(new Item.Properties().tab(References.CORETAB).stacksTo(1))));
@@ -405,13 +415,21 @@ public class DeferredRegisters {
 			supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.HEAD)));
+			supplier(new CompositeArmorItem(EquipmentSlot.HEAD)));
 	public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.CHEST)));
+			supplier(new CompositeArmorItem(EquipmentSlot.CHEST)));
 	public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.LEGS)));
+			supplier(new CompositeArmorItem(EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots",
-			supplier(new CompositeArmorItem(CompositeArmor.COMPOSITE_ARMOR, EquipmentSlot.FEET)));
+			supplier(new CompositeArmorItem(EquipmentSlot.FEET)));
+	
+	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
+			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
+	
+	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS.register("nightvisiongoggles", 
+			supplier(new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000)
+					.extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120))
+					.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 
 	// Split from items to tiles
 
@@ -571,7 +589,9 @@ public class DeferredRegisters {
 			() -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile",
 			() -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
-
+	public static final RegistryObject<BlockEntityType<TileElectrolyticSeparator>> TILE_ELECTROLYTICSEPARATOR = TILES.register(SubtypeMachine.electrolyticseparator.tag(), 
+			() -> new BlockEntityType<>(TileElectrolyticSeparator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator)), null));
+	
 	public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES
 			.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new,
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
@@ -639,6 +659,8 @@ public class DeferredRegisters {
 			() -> new MenuType<>(ContainerFluidVoid::new));
 	public static final RegistryObject<MenuType<ContainerSeismicScanner>> CONTAINER_SEISMICSCANNER = CONTAINERS.register("seismicdetector",
 			() -> new MenuType<>(ContainerSeismicScanner::new));
+	public static final RegistryObject<MenuType<ContainerElectrolyticSeparator>> CONTAINER_ELECTROLYTICSEPARATOR = CONTAINERS.register("electrolyticseparator", 
+			() -> new MenuType<>(ContainerElectrolyticSeparator::new));
 
 	// Entities
 

@@ -3,9 +3,10 @@ package electrodynamics.compatibility.jei.utils.label;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
 import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public abstract class GenericLabelWrapper {
-
+public class GenericLabelWrapper {
+	
 	protected static final String POWER = "power";
 
 	private int COLOR;
@@ -32,9 +33,11 @@ public abstract class GenericLabelWrapper {
 		return X_POS;
 	}
 
-	public String getName() {
-		return NAME;
+	public String getLocation() {
+		return "jei.guilabel." + NAME;
 	}
 
-	public abstract BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe);
+	public BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
+		return new TranslatableComponent(getLocation());
+	}
 }

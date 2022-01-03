@@ -1,5 +1,7 @@
 package electrodynamics.common.recipe;
 
+import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipeTypes;
+import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipeTypes;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipeTypes;
@@ -48,6 +50,9 @@ public class ElectrodynamicsRecipeInit {
 	// Fluid2Item
 	public static final RecipeType<ChemicalCrystalizerRecipe> CHEMICAL_CRYSTALIZER_TYPE = registerType(ChemicalCrystalizerRecipe.RECIPE_ID);
 
+	// Fluid2Fluid
+	public static final RecipeType<ElectrolyticSeparatorRecipe> ELECTROLYTIC_SEPERATOR_TYPE = registerType(ElectrolyticSeparatorRecipe.RECIPE_ID);
+	
 	/* SERIALIZERS */
 
 	// Item2Item
@@ -78,6 +83,10 @@ public class ElectrodynamicsRecipeInit {
 	public static final RegistryObject<RecipeSerializer<?>> CHEMICAL_CRYSTALIZER_SERIALIZER = RECIPE_SERIALIZER
 			.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> Fluid2ItemRecipeTypes.CHEMICAL_CRYSTALIZER_JSON_SERIALIZER);
 
+	// Fluid2Fluid
+	public static final RegistryObject<RecipeSerializer<?>> ELECTROLYTIC_SEPARATOR_SERIALIZER = RECIPE_SERIALIZER
+			.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> Fluid2FluidRecipeTypes.ELECTROLYTIC_SEPARATOR_RECIPE_SERIALIZER);
+	
 	/* Functional Methods */
 
 	public static <T extends RecipeType<?>> T registerType(ResourceLocation recipeTypeId) {

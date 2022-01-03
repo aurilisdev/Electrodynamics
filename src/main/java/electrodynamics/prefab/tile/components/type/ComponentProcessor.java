@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
@@ -16,23 +17,14 @@ import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.common.tile.generic.GenericTilePipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -167,82 +159,18 @@ public class ComponentProcessor implements Component {
 	}
 
 	public ComponentProcessor consumeBucket() {
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
-		FluidTank[] tanks = handler.getInputTanks();
-		List<ItemStack> buckets = inv.getInputBucketContents();
-		for (int i = 0; i < buckets.size(); i++) {
-			FluidTank tank = tanks[i];
-			ItemStack stack = buckets.get(i);
-			if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
-				FluidStack containerFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-				if (handler.getValidInputFluids().contains(containerFluid.getFluid()) && tank.isFluidValid(containerFluid)) {
-					int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
-					FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
-					CapabilityUtils.drain(stack, drained);
-					tank.fill(drained, FluidAction.EXECUTE);
-					if (stack.getItem() instanceof BucketItem) {
-						inv.setItem(inv.getInputBucketStartIndex() + i, new ItemStack(Items.BUCKET, 1));
-					}
-				}
-			}
-		}
+		FluidUtilities.drainItem(holder);
 		return this;
 	}
 
 	public ComponentProcessor dispenseBucket() {
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
-		FluidTank[] tanks = handler.getOutputTanks();
-		List<ItemStack> buckets = inv.getOutputBucketContents();
-		for (int i = 0; i < buckets.size(); i++) {
-			ItemStack stack = buckets.get(i);
-			FluidTank tank = tanks[i];
-			if (!stack.isEmpty() && !(stack.getItem() instanceof BucketItem) && !CapabilityUtils.isFluidItemNull()) {
-				FluidStack fluid = tank.getFluid();
-				int amtFilled = CapabilityUtils.simFill(stack, fluid);
-				FluidStack taken = new FluidStack(fluid.getFluid(), amtFilled);
-				CapabilityUtils.fill(stack, taken);
-				tank.drain(taken, FluidAction.EXECUTE);
-			}
-		}
+		FluidUtilities.fillItem(holder);
 		return this;
 	}
 
-	public ComponentProcessor outputToPipe(ComponentProcessor pr) {
-		ComponentDirection direction = pr.getHolder().getComponent(ComponentType.Direction);
-		AbstractFluidHandler<?> handler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-		BlockPos face = pr.getHolder().getBlockPos().relative(direction.getDirection().getClockWise().getOpposite());
-		BlockEntity faceTile = pr.getHolder().getLevel().getBlockEntity(face);
-		if (faceTile != null) {
-			boolean electroPipe = faceTile instanceof GenericTilePipe;
-			LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
-					direction.getDirection().getClockWise().getOpposite().getOpposite());
-			if (cap.isPresent()) {
-				IFluidHandler fHandler = cap.resolve().get();
-				boolean output = false;
-				for (FluidTank tank : handler.getOutputTanks()) {
-					if (output) {
-						break;
-					}
-					FluidStack tankFluid = tank.getFluid();
-					if (electroPipe) {
-						if (tank.getFluidAmount() > 0) {
-							fHandler.fill(tankFluid, FluidAction.EXECUTE);
-							tank.drain(tankFluid, FluidAction.EXECUTE);
-						}
-					} else {
-						int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
-						FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-						fHandler.fill(taken, FluidAction.EXECUTE);
-						tank.drain(taken, FluidAction.EXECUTE);
-						if (amtAccepted > 0) {
-							output = true;
-						}
-					}
-				}
-			}
-		}
+	public ComponentProcessor outputToPipe() {
+		AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
+		FluidUtilities.outputToPipe(holder, handler.getOutputTanks(), AbstractFluidHandler.getDirectionalArray(handler.relativeOutputDirections));
 		return this;
 	}
 
@@ -651,6 +579,44 @@ public class ComponentProcessor implements Component {
 			} else {
 				inv.getOutputContents().get(getProcessorNumber()).grow(locRecipe.getResultItem().getCount());
 			}
+
+			FluidTank[] tanks = handler.getInputTanks();
+			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
+			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
+			for (int i = 0; i < handler.getInputTankCount(); i++) {
+				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
+			}
+		}
+	}
+	
+	public <T extends Fluid2FluidRecipe> void processFluid2FluidRecipe(ComponentProcessor pr) {
+		if (getRecipe() != null) {
+			T locRecipe = (T) getRecipe();
+			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+			AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
+
+			if (locRecipe.hasItemBiproducts()) {
+				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+				List<ItemStack> invBi = inv.getItemBiContents();
+
+				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
+					if (invBi.get(i).isEmpty()) {
+						inv.setItem(inv.getItemBiproductStartIndex() + i, itemBi[i].roll().copy());
+					} else {
+						inv.getItem(inv.getItemBiproductStartIndex() + i).grow(itemBi[i].roll().getCount());
+					}
+				}
+			}
+
+			if (locRecipe.hasFluidBiproducts()) {
+				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
+				FluidTank[] outTanks = handler.getOutputTanks();
+				for (int i = 0; i < fluidBi.length; i++) {
+					outTanks[i + 1].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
+				}
+			}
+
+			handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
 
 			FluidTank[] tanks = handler.getInputTanks();
 			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
