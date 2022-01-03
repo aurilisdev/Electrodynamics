@@ -33,6 +33,7 @@ import electrodynamics.common.fluid.types.gas.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidClay;
 import electrodynamics.common.fluid.types.liquid.FluidConcrete;
 import electrodynamics.common.fluid.types.liquid.FluidEthanol;
+import electrodynamics.common.fluid.types.liquid.FluidHydraulic;
 import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
@@ -185,6 +186,7 @@ public class DeferredRegisters {
 	public static FluidPolyethylene fluidPolyethylene;
 	public static FluidClay fluidClay;
 	public static FluidConcrete fluidCement;
+	public static FluidHydraulic fluidHydraulic;
 	//gasses
 	public static FluidOxygen fluidOxygen;
 	public static FluidHydrogen fluidHydrogen;
@@ -221,6 +223,7 @@ public class DeferredRegisters {
 		FLUIDS.register("fluidpolyethylene", supplier(fluidPolyethylene = new FluidPolyethylene()));
 		FLUIDS.register("fluidclay", supplier(fluidClay = new FluidClay()));
 		FLUIDS.register("fluidconcrete", supplier(fluidCement = new FluidConcrete()));
+		FLUIDS.register("fluidhydraulic", supplier(fluidHydraulic = new FluidHydraulic()));
 		for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
 			FluidSulfate fluid = new FluidSulfate(mineral);
 			FLUIDS.register("fluidsulfate" + mineral.name(), supplier(fluid));
