@@ -23,11 +23,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class Fluid2FluidRecipeCategory extends ElectrodynamicsRecipeCategory<Fluid2FluidRecipe> {
 
-	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine,
-			BackgroundWrapper wrapper, int animationTime) {
+	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper,
+			int animationTime) {
 		super(guiHelper, modID, recipeGroup, inputMachine, wrapper, Fluid2FluidRecipe.class, animationTime);
 	}
-	
+
 	@Override
 	public void setIngredients(Fluid2FluidRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe));

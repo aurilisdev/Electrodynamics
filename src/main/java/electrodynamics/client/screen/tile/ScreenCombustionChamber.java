@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionChamber> {
-	
+
 	public ScreenCombustionChamber(ContainerCombustionChamber container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
 		components.add(new ScreenComponentFluid(() -> {
@@ -26,7 +26,7 @@ public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionCh
 				return handler.getInputTanks()[0];
 			}
 			return null;
-		}, this, 98, 18)); 
+		}, this, 98, 18));
 		components.add(new ScreenComponentProgress(() -> 0, this, 69, 33));
 		components.add(new ScreenComponentProgress(() -> {
 			TileCombustionChamber boiler = container.getHostFromIntArray();

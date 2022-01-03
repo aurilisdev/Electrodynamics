@@ -72,7 +72,7 @@ public class TileCobblestoneGenerator extends GenericTile {
 			}
 			electro.joules(electro.getJoulesStored() - usage);
 			if (isPowered) {
-				progress = Math.min((processTime / (Constants.COBBLE_GEN_REQUIRED_TICKS / speed)), 1.0);
+				progress = Math.min(processTime / (Constants.COBBLE_GEN_REQUIRED_TICKS / speed), 1.0);
 				if (progress >= 1) {
 					processTime = 0;
 					if (output.isEmpty()) {

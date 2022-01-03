@@ -39,9 +39,9 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 	public int burnTime;
 	private CachedTileOutput output;
 	private double multiplier = 1;
-	
+
 	private static IOptionalNamedTag<Fluid>[] FUELS;
-	
+
 	static {
 		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.HYDROGEN, 1, 1);
 		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1);
@@ -56,8 +56,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, FUELS)
-				.relativeInput(Direction.WEST));
+		addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, FUELS).relativeInput(Direction.WEST));
 		addComponent(new ComponentContainerProvider("container.combustionchamber")
 				.createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
@@ -106,7 +105,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 			SoundAPI.playSound(SoundRegister.SOUND_COMBUSTIONCHAMBER.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 		}
 	}
-	
+
 	protected void createPacket(CompoundTag nbt) {
 		nbt.putInt("burnTime", burnTime);
 		nbt.putBoolean("running", running);
@@ -133,7 +132,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 
 	@Override
 	public void setMultiplier(double val) {
-		
+
 	}
 
 	@Override

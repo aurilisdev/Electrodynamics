@@ -30,13 +30,13 @@ public class RenderCombustionChamber implements BlockEntityRenderer<TileCombusti
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		if (prog > 0) {
 			BakedModel ibakedmodel;
-			if(ElectrodynamicsTags.Fluids.ETHANOL.getValues().contains(fuel.getFluid())) {
+			if (ElectrodynamicsTags.Fluids.ETHANOL.getValues().contains(fuel.getFluid())) {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_COMBUSTIONCHAMBERETHANOL);
 			} else {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_COMBUSTIONCHAMBERHYDROGEN);
 			}
 			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-			
+
 		}
 		matrixStackIn.popPose();
 	}

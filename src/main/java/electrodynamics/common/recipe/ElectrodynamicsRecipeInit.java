@@ -52,7 +52,7 @@ public class ElectrodynamicsRecipeInit {
 
 	// Fluid2Fluid
 	public static final RecipeType<ElectrolyticSeparatorRecipe> ELECTROLYTIC_SEPERATOR_TYPE = registerType(ElectrolyticSeparatorRecipe.RECIPE_ID);
-	
+
 	/* SERIALIZERS */
 
 	// Item2Item
@@ -86,7 +86,7 @@ public class ElectrodynamicsRecipeInit {
 	// Fluid2Fluid
 	public static final RegistryObject<RecipeSerializer<?>> ELECTROLYTIC_SEPARATOR_SERIALIZER = RECIPE_SERIALIZER
 			.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> Fluid2FluidRecipeTypes.ELECTROLYTIC_SEPARATOR_RECIPE_SERIALIZER);
-	
+
 	/* Functional Methods */
 
 	public static <T extends RecipeType<?>> T registerType(ResourceLocation recipeTypeId) {

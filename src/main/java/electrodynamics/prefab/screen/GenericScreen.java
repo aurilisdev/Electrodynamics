@@ -44,8 +44,8 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	}
 
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		//this is a lot cleaner IMO and more straight-forward
-		if(slot instanceof SlotGeneric generic) {
+		// this is a lot cleaner IMO and more straight-forward
+		if (slot instanceof SlotGeneric generic) {
 			return new ScreenComponentSlot(generic.getSlotType(), this, slot.x - 1, slot.y - 1);
 		}
 		return new ScreenComponentSlot(EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);

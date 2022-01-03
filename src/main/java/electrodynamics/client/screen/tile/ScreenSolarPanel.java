@@ -30,8 +30,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 		if (menu.getUnsafeHost() instanceof IElectricGenerator gen) {
 			TransferPack transfer = gen.getProduced();
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.current",
-							ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE)),
+					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 48, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.output", ChatFormatter.getElectricDisplayShort(transfer.getWatts(), ElectricUnit.WATT)),

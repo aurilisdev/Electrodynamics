@@ -77,13 +77,11 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public static List<ResourceLocation> DO2O_CLICK_AREAS = new ArrayList<>();
 
 	private static final int FULL_FLUID_SQUARE = 1600;
-	
+
 	private static final String INFO_ITEM = "jei.info.item.";
 	private static final String INFO_BLOCK = "jei.info.block.";
 	private static final String INFO_FLUID = "jei.info.fluid.";
-	
-	
-	
+
 	@Override
 	public ResourceLocation getPluginUid() {
 		return new ResourceLocation(electrodynamics.api.References.ID, "jei");
@@ -134,7 +132,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipeCatalyst(FermentationPlantRecipeCategory.INPUT_MACHINE, FermentationPlantRecipeCategory.UID);
 		registration.addRecipeCatalyst(ReinforcedAlloyerRecipeCategory.INPUT_MACHINE, ReinforcedAlloyerRecipeCategory.UID);
 		registration.addRecipeCatalyst(ElectrolyticSeparatorRecipeCategory.INPUT_MACHINE, ElectrolyticSeparatorRecipeCategory.UID);
-		
+
 	}
 
 	@Override
@@ -203,12 +201,12 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet
 				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE));
 		registration.addRecipes(reinforcedAlloyerRecipes, ReinforcedAlloyerRecipeCategory.UID);
-		
-		//Electrolytic Separator
+
+		// Electrolytic Separator
 		Set<Fluid2FluidRecipe> electrolyticSeparatorRecipes = ImmutableSet
 				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE));
 		registration.addRecipes(electrolyticSeparatorRecipes, ElectrolyticSeparatorRecipeCategory.UID);
-		
+
 		electrodynamicsInfoTabs(registration);
 
 	}
@@ -254,21 +252,21 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 41, 35, 22, 15, ChemicalCrystallizerRecipeCategory.UID);
 		registry.addRecipeClickArea(ScreenElectrolyticSeparator.class, 38, 30, 22, 15, ElectrolyticSeparatorRecipeCategory.UID);
 	}
-	
+
 	private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
 		for (ItemStack item : InfoItems.ITEMS) {
 			registration.addIngredientInfo(item, VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + item.getItem().toString()));
 		}
-		
-		//Blocks
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, 
+
+		// Blocks
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM,
 				new TranslatableComponent(INFO_BLOCK + "tank", TileTankSteel.CAPACITY));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), VanillaTypes.ITEM, 
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), VanillaTypes.ITEM,
 				new TranslatableComponent(INFO_BLOCK + "tank", TileTankReinforced.CAPACITY));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, 
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM,
 				new TranslatableComponent(INFO_BLOCK + "tank", TileTankHSLA.CAPACITY));
-		
-		//Items
+
+		// Items
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
 				new TranslatableComponent(INFO_ITEM + "compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
@@ -285,22 +283,23 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 				new TranslatableComponent(INFO_ITEM + "railgunplasma"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM,
 				new TranslatableComponent(INFO_ITEM + "railgunkinetic"));
-		
-		for(Item item : TileCoalGenerator.getValidItems()) {
+
+		for (Item item : TileCoalGenerator.getValidItems()) {
 			ItemStack fuelStack = new ItemStack(item);
 			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM,
 					new TranslatableComponent(INFO_ITEM + "coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));
 		}
-		
-		//Fluids
-		for(IOptionalNamedTag<Fluid> tag : CombustionFuelSource.FUELS.keySet()) {
-			for(Fluid fluid : tag.getValues()) {
+
+		// Fluids
+		for (IOptionalNamedTag<Fluid> tag : CombustionFuelSource.FUELS.keySet()) {
+			for (Fluid fluid : tag.getValues()) {
 				CombustionFuelSource source = CombustionFuelSource.getSourceFromFluid(fluid);
 				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), VanillaTypes.FLUID,
-						new TranslatableComponent(INFO_FLUID + "combustionchamberfuel", source.getFluidUsage(), source.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
+						new TranslatableComponent(INFO_FLUID + "combustionchamberfuel", source.getFluidUsage(),
+								source.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
 			}
 		}
-		
+
 	}
 
 	public static void addO2OClickArea(ResourceLocation loc) {

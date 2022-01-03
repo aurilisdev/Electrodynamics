@@ -588,7 +588,7 @@ public class ComponentProcessor implements Component {
 			}
 		}
 	}
-	
+
 	public <T extends Fluid2FluidRecipe> void processFluid2FluidRecipe(ComponentProcessor pr) {
 		if (getRecipe() != null) {
 			T locRecipe = (T) getRecipe();

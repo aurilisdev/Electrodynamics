@@ -40,7 +40,7 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
-	
+
 	public ElectrolyticSeparatorRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
 		setInputSlots(guiHelper, IN_BUCKET_SLOT);

@@ -38,8 +38,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.ForgeHooks;
 
 public class TileCoalGenerator extends GenericTile implements IElectricGenerator {
-	//public static final int COAL_BURN_TIME = 1000;
-	//protected static final int[] SLOTS_INPUT = new int[] { 0 };
+	// public static final int COAL_BURN_TIME = 1000;
+	// protected static final int[] SLOTS_INPUT = new int[] { 0 };
 
 	protected TransferPack currentOutput = TransferPack.EMPTY;
 	protected CachedTileOutput output;
@@ -78,7 +78,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 			burnTime = ForgeHooks.getBurnTime(fuel, null);
 			fuel.shrink(1);
 			maxBurnTime = burnTime;
-			//burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
+			// burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
 		}
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {
@@ -149,7 +149,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		nbt.putDouble("clientHeat", heat.get());
 		nbt.putDouble("clientBurnTime", burnTime);
 		nbt.putInt("clientMaxBurn", maxBurnTime);
-		
+
 	}
 
 	protected void readPacket(CompoundTag nbt) {
@@ -173,25 +173,15 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		burnTime = compound.getInt("burnTime");
 		maxBurnTime = compound.getInt("maxBurnTime");
 	}
-	
-	public static List<Item> getValidItems(){
-		List<Item> items = new ArrayList<>();
-		items.addAll(ItemTags.COALS.getValues());
+
+	public static List<Item> getValidItems() {
+		List<Item> items = new ArrayList<>(ItemTags.COALS.getValues());
 		items.add(Items.CHARCOAL);
 		items.addAll(ItemTags.getAllTags().getTag(new ResourceLocation("forge", "storage_blocks/coal")).getValues());
-		//Suggested additions
+		// Suggested additions
 		/*
-		items.add(Items.BLAZE_ROD);
-		items.addAll(ItemTags.PLANKS.getValues());
-		items.addAll(ItemTags.LOGS_THAT_BURN.getValues());
-		items.addAll(ItemTags.WOODEN_BUTTONS.getValues());
-		items.addAll(ItemTags.WOODEN_DOORS.getValues());
-		items.addAll(ItemTags.WOODEN_FENCES.getValues());
-		items.addAll(ItemTags.WOODEN_PRESSURE_PLATES.getValues());
-		items.addAll(ItemTags.WOODEN_SLABS.getValues());
-		items.addAll(ItemTags.WOODEN_STAIRS.getValues());
-		items.addAll(ItemTags.WOODEN_TRAPDOORS.getValues());
-		*/
+		 * items.add(Items.BLAZE_ROD); items.addAll(ItemTags.PLANKS.getValues()); items.addAll(ItemTags.LOGS_THAT_BURN.getValues()); items.addAll(ItemTags.WOODEN_BUTTONS.getValues()); items.addAll(ItemTags.WOODEN_DOORS.getValues()); items.addAll(ItemTags.WOODEN_FENCES.getValues()); items.addAll(ItemTags.WOODEN_PRESSURE_PLATES.getValues()); items.addAll(ItemTags.WOODEN_SLABS.getValues()); items.addAll(ItemTags.WOODEN_STAIRS.getValues()); items.addAll(ItemTags.WOODEN_TRAPDOORS.getValues());
+		 */
 		return items;
 	}
 }

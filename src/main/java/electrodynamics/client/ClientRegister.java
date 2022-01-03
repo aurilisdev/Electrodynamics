@@ -86,7 +86,7 @@ public class ClientRegister {
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
 
 	public static LayerDefinition NIGHT_VISION_GOGGLES = ModelNightVisionGoggles.createBodyLayer();
-	
+
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
 		ForgeModelBakery.addSpecialModel(MODEL_ADVSOLARTOP);

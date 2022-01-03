@@ -44,7 +44,8 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME, Constants.ELECTRICARCFURNACE_USAGE_PER_TICK, 120);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME, Constants.ELECTRICARCFURNACE_USAGE_PER_TICK,
+				120);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT);
 		setStaticArrows(guiHelper, FLAME);

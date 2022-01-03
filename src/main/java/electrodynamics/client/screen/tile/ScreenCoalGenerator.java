@@ -69,12 +69,10 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			font.draw(matrixStack, new TranslatableComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"), inventoryLabelX + 60f,
 					inventoryLabelY - 53f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.current",
-							ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)),
+					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)),
 					inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.output",
-							ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)),
+					new TranslatableComponent("gui.machine.output", ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)),
 					inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.voltage",

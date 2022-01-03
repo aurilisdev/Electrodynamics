@@ -6,7 +6,7 @@ import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public class GenericLabelWrapper {
-	
+
 	protected static final String POWER = "power";
 
 	private int COLOR;

@@ -51,8 +51,7 @@ public class ScreenCobblestoneGenerator extends GenericScreen<ContainerCobblesto
 			}
 			return 0;
 		}, this, 90, 34).left());
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2)
-				.wattage(Constants.COBBLE_GEN_USAGE_PER_TICK * 20));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).wattage(Constants.COBBLE_GEN_USAGE_PER_TICK * 20));
 	}
 
 }

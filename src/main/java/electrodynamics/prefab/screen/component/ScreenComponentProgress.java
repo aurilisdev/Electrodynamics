@@ -62,8 +62,9 @@ public class ScreenComponentProgress extends ScreenComponent {
 					WIDTHFLAME, scale);
 		} else if (left) {
 			int progress = (int) (progressInfoHandler.getAsDouble() * WIDTHARROW);
-			int xStart = POSXARROW + WIDTHARROW * 2 + (WIDTHARROW - progress);
-			gui.drawTexturedRect(stack, guiWidth + xLocation + WIDTHARROW - progress, guiHeight + yLocation, xStart, POSYARROW, progress, HEIGHTARROW);
+			int xStart = POSXARROW + WIDTHARROW * 2 + WIDTHARROW - progress;
+			gui.drawTexturedRect(stack, guiWidth + xLocation + WIDTHARROW - progress, guiHeight + yLocation, xStart, POSYARROW, progress,
+					HEIGHTARROW);
 		} else {
 			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
 					(int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);

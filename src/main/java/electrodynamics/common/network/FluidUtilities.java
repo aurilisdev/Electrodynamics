@@ -75,10 +75,10 @@ public class FluidUtilities {
 	public static boolean canInputFluid(BlockEntity acceptor, Direction direction) {
 		return isFluidReceiver(acceptor, direction);
 	}
-	
-	public static void outputToPipe(GenericTile tile, FluidTank[] tanks, Direction...outputDirections) {
+
+	public static void outputToPipe(GenericTile tile, FluidTank[] tanks, Direction... outputDirections) {
 		ComponentDirection componentDirection = tile.getComponent(ComponentType.Direction);
-		for(Direction relative : outputDirections) {
+		for (Direction relative : outputDirections) {
 			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
@@ -104,7 +104,7 @@ public class FluidUtilities {
 			}
 		}
 	}
-	
+
 	public static void drainItem(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		AbstractFluidHandler<?> handler = tile.getComponent(ComponentType.FluidHandler);
@@ -127,7 +127,7 @@ public class FluidUtilities {
 			}
 		}
 	}
-	
+
 	public static void fillItem(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		AbstractFluidHandler<?> handler = tile.getComponent(ComponentType.FluidHandler);
@@ -145,7 +145,7 @@ public class FluidUtilities {
 			}
 		}
 	}
-	
+
 	public static Fluid[] getAllRegistryFluids() {
 		List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
 		Fluid[] fluids = new Fluid[list.size()];

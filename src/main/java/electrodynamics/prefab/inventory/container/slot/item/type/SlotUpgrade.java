@@ -28,7 +28,7 @@ public class SlotUpgrade extends SlotGeneric {
 	public boolean mayPlace(ItemStack stack) {
 		return items != null && items.contains(stack.getItem());
 	}
-	
+
 	@Override
 	public EnumSlotType getSlotType() {
 		return EnumSlotType.SPEED;
