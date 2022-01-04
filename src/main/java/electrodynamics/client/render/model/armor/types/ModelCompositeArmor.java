@@ -1,13 +1,10 @@
-/*
-  * Don't delete any of the commented out stuff please!
- */
 package electrodynamics.client.render.model.armor.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.api.References;
-import net.minecraft.client.model.HumanoidModel;
+import electrodynamics.client.render.model.armor.GenericArmorModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -20,50 +17,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 
-public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T> {
+public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorModel<T> {
 
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(References.ID, "composite_armor"), "main");
-
-	/* Humanoid Model Parts */
-	private final ModelPart parentHat;
-	private final ModelPart parentHead;
-	private final ModelPart parentChest;
-	private final ModelPart parentRightArm;
-	private final ModelPart parentLeftArm;
-	private final ModelPart parentRightLeg;
-	private final ModelPart parentLeftLeg;
-
-	/* Humanoid Model Strings */
-	private static final String HAT = "hat";
-	private static final String HEAD = "head";
-	private static final String CHEST = "body";// chest
-	private static final String RIGHT_ARM = "right_arm";// rightArm
-	private static final String LEFT_ARM = "left_arm";// leftArm
-	private static final String RIGHT_LEG = "right_leg";// rightLeg
-	private static final String LEFT_LEG = "left_leg";// leftLeg
-
-	/* Subpart Stringsr */
-	// private static final String RLEG = "rightleg";
-	// private static final String LLEG = "leftleg";
-	// private static final String RSHOE = "rightshoe";
-	// private static final String LSHOE = "leftshoe";
 
 	public ModelCompositeArmor(ModelPart root, EquipmentSlot slot) {
 		super(root);
 
-		this.parentHat = root.getChild(HAT);
-		this.parentHead = root.getChild(HEAD);
-		this.parentChest = root.getChild(CHEST);
-		this.parentRightArm = root.getChild(RIGHT_ARM);
-		this.parentLeftArm = root.getChild(LEFT_ARM);
-		this.parentRightLeg = root.getChild(RIGHT_LEG);
-		this.parentLeftLeg = root.getChild(LEFT_LEG);
-
-		// always invisible because it's a dummy
 		this.parentHat.visible = false;
-
+		
 		switch (slot) {
-
 		case HEAD:
 			this.parentHead.visible = true;
 			this.parentChest.visible = false;
@@ -71,9 +34,6 @@ public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T
 			this.parentLeftArm.visible = false;
 			this.parentRightLeg.visible = false;
 			this.parentLeftLeg.visible = false;
-			/*
-			 * this.rightLeg.getChild(RLEG).visible = false; this.rightLeg.getChild(RSHOE).visible = false; this.leftLeg.getChild(LLEG).visible = false; this.leftLeg.getChild(LSHOE).visible = false;
-			 */
 			break;
 		case CHEST:
 			this.parentHead.visible = false;
@@ -82,9 +42,6 @@ public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T
 			this.parentLeftArm.visible = true;
 			this.parentRightLeg.visible = false;
 			this.parentLeftLeg.visible = false;
-			/*
-			 * this.rightLeg.getChild(RLEG).visible = false; this.rightLeg.getChild(RSHOE).visible = false; this.leftLeg.getChild(LLEG).visible = false; this.leftLeg.getChild(LSHOE).visible = false;
-			 */
 			break;
 		case LEGS, FEET:
 			this.parentHead.visible = false;
@@ -93,26 +50,16 @@ public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T
 			this.parentLeftArm.visible = false;
 			this.parentRightLeg.visible = true;
 			this.parentLeftLeg.visible = true;
-			/*
-			 * this.rightLeg.getChild(RLEG).visible = true; this.rightLeg.getChild(RSHOE).visible = false; this.leftLeg.getChild(LLEG).visible = true; this.leftLeg.getChild(LSHOE).visible = false;
-			 */
 			break;
-		/*
-		 * case FEET: this.head.visible = false; this.chest.visible = false; this.rightArm.visible = false; this.leftArm.visible = false; this.rightLeg.visible = false; this.leftLeg.visible = false; /* this.rightLeg.getChild(RLEG).visible = false; this.rightLeg.getChild(RSHOE).visible = true; this.leftLeg.getChild(LLEG).visible = false; this.leftLeg.getChild(LSHOE).visible = true;
-		 *
-		 * break;
-		 */
 		default:
 			break;
 		}
 	}
 
-	// had to jury rig it for now
 	public static LayerDefinition createBodyLayer(int modelType, boolean noChestplate) {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition part = mesh.getRoot();
 
-		// dummy variable because mojang
 		part.addOrReplaceChild(HAT, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
 
 		// head
@@ -248,33 +195,8 @@ public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T
 			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
 		}
 
-		/*
-		 * 
-		 * //PartDefinition combinedRight = part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
-		 * 
-		 * //right leg combinedRight.addOrReplaceChild(RLEG, CubeListBuilder.create() .texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)) .texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)) .texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)) .texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)) .texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
-		 * 
-		 * //right shoe combinedRight.addOrReplaceChild(RSHOE, CubeListBuilder.create() .texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)) .texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)) .texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)) .texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)) .texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 17.0F, 0.0F));
-		 * 
-		 * //PartDefinition combinedLeft = part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
-		 * 
-		 * //left leg combinedLeft.addOrReplaceChild(LLEG, CubeListBuilder.create() .texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)) .texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)) .texOffs(33, 71).addBox(-1.8F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)) .texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)) .texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 12.0F, 0.0F));
-		 * 
-		 * //left shoe combinedLeft.addOrReplaceChild(LSHOE, CubeListBuilder.create() .texOffs(57, 3).addBox(2.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)) .texOffs(66, 7).addBox(-2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)) .texOffs(11, 27).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)) .texOffs(55, 41).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)) .texOffs(30, 47).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 17.0F, 0.0F));
-		 * 
-		 */
 		return LayerDefinition.create(mesh, 128, 128);
 	}
-
-//    @Override
-//    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-//	super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-//	/*
-//	 * leftLeg.getAllParts().forEach(c -> { c.copyFrom(leftLeg);
-//	 * c.loadPose(leftLeg.storePose()); }); rightLeg.getAllParts().forEach(c -> {
-//	 * c.copyFrom(rightLeg); c.loadPose(rightLeg.storePose()); });
-//	 */
-//    }
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue,
@@ -292,8 +214,6 @@ public class ModelCompositeArmor<T extends LivingEntity> extends HumanoidModel<T
 			parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
 			parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 		}
-		/*
-		 * if(rightLeg.getChild(RLEG).visible) { rightLeg.getChild(RLEG).render(poseStack, buffer, packedLight, packedOverlay); leftLeg.getChild(LLEG).render(poseStack, buffer, packedLight, packedOverlay); } if(rightLeg.getChild(RSHOE).visible) { rightLeg.getChild(RSHOE).render(poseStack, buffer, packedLight, packedOverlay); leftLeg.getChild(LSHOE).render(poseStack, buffer, packedLight, packedOverlay); }
-		 */
+
 	}
 }

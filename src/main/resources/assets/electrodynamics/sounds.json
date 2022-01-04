@@ -124,5 +124,19 @@
 		"sounds": [
 			"electrodynamics:electrolyticseparator"
 		]
+	},
+	"nightvisiongoggles":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.nightvisiongoggles",
+		"sounds": [
+			"electrodynamics:nightvisiongoggles"
+		]
+	},
+	"hydraulicboots":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.hydraulicboots",
+		"sounds": [
+			"electrodynamics:hydraulicboots"
+		]
 	}
 }

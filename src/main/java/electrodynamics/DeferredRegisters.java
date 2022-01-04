@@ -72,6 +72,7 @@ import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
@@ -434,7 +435,8 @@ public class DeferredRegisters {
 							.capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000)
 							.extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120))
 							.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
-
+	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
+	
 	// Split from items to tiles
 
 	public static final RegistryObject<BlockEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),

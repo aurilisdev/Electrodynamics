@@ -3,6 +3,7 @@ package electrodynamics.common.item.gear.armor.types;
 import java.util.List;
 import java.util.function.Consumer;
 
+import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
@@ -12,6 +13,7 @@ import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
+import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -20,6 +22,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +30,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -47,7 +49,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	private static final String ARMOR_TEXTURE_ON = References.ID + ":textures/model/armor/nightvisiongoggleson.png";
 
 	public ItemNightVisionGoggles(ElectricItemProperties properties) {
-		super(ArmorMaterials.LEATHER, EquipmentSlot.HEAD, properties);
+		super(NightVisionGoggles.NVGS, EquipmentSlot.HEAD, properties);
 		this.properties = properties;
 	}
 
@@ -101,6 +103,16 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
+	
+	@Override
+	public boolean isEnchantable(ItemStack p_41456_) {
+		return false;
+	}
+	
+	@Override
+	public boolean isRepairable(ItemStack stack) {
+		return false;
+	}
 
 	@Override
 	public boolean canBeDepleted() {
@@ -153,6 +165,41 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 			return ARMOR_TEXTURE_ON;
 		}
 		return ARMOR_TEXTURE_OFF;
+	}
+	
+	public enum NightVisionGoggles implements ICustomArmor {
+		NVGS;
+
+		@Override
+		public int getDurabilityForSlot(EquipmentSlot slotIn) {
+			return 100;
+		}
+
+		@Override
+		public int getDefenseForSlot(EquipmentSlot slotIn) {
+			return 1;
+		}
+
+		@Override
+		public SoundEvent getEquipSound() {
+			return SoundRegister.SOUND_NIGHTVISIONGOGGLES.get();
+		}
+
+		@Override
+		public String getName() {
+			return References.ID + ":nvgs";
+		}
+
+		@Override
+		public float getToughness() {
+			return 0.0F;
+		}
+
+		@Override
+		public float getKnockbackResistance() {
+			return 0.0F;
+		}
+		
 	}
 
 }
