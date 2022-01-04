@@ -187,7 +187,7 @@ public class DeferredRegisters {
 	public static FluidClay fluidClay;
 	public static FluidConcrete fluidCement;
 	public static FluidHydraulic fluidHydraulic;
-	//gasses
+	// gasses
 	public static FluidOxygen fluidOxygen;
 	public static FluidHydrogen fluidHydrogen;
 

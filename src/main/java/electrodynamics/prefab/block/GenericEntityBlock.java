@@ -43,7 +43,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
 		return (l, pos, s, tile) -> {
-			if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Tickable) instanceof ComponentTickable tickable) {
+			if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Tickable)instanceof ComponentTickable tickable) {
 				tickable.performTick(l);
 			}
 		};
@@ -76,7 +76,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
 		Level world = player.level;
 		BlockEntity tile = world.getBlockEntity(pos);
-		if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Inventory) instanceof ComponentInventory inv) {
+		if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Inventory)instanceof ComponentInventory inv) {
 			Containers.dropContents(world, pos, inv);
 		}
 		world.destroyBlock(pos, true, player);

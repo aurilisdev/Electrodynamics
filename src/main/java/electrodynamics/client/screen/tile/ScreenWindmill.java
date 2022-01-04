@@ -27,7 +27,7 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 	@Override
 	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
 		super.renderLabels(matrixStack, mouseX, mouseY);
-		if (menu.getUnsafeHost() instanceof IElectricGenerator gen) {
+		if (menu.getUnsafeHost()instanceof IElectricGenerator gen) {
 			TransferPack transfer = gen.getProduced();
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(transfer.getAmps(), ElectricUnit.AMPERE)),

@@ -52,7 +52,7 @@ public class TileSolarPanel extends GenericTile implements IElectricGenerator {
 	protected void tickCommon(ComponentTickable tickable) {
 		setMultiplier(1);
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
+			if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {
 					upgrade.subtype.applyUpgrade.accept(this, null, null);
 				}

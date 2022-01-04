@@ -103,7 +103,7 @@ public class TileMineralCrusher extends GenericTile {
 				for (int in = 0; in < amount; in++) {
 					ComponentInventory inv = getComponent(ComponentType.Inventory);
 					ItemStack stack = inv.getInputContents().get(getProcessor(in).getProcessorNumber()).get(0);
-					if (stack.getItem() instanceof BlockItem it) {
+					if (stack.getItem()instanceof BlockItem it) {
 						Block block = it.getBlock();
 						for (int i = 0; i < 5; i++) {
 							double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
