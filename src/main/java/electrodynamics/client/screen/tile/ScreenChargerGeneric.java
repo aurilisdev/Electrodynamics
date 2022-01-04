@@ -33,7 +33,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			GenericTileCharger charger = menu.getHostFromIntArray();
 			if (charger != null) {
 				ItemStack chargingItem = menu.getSlot(0).getItem();
-				if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
+				if (!chargingItem.isEmpty() && chargingItem.getItem()instanceof IItemElectric electricItem) {
 					return electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity;
 				}
 			}
@@ -65,7 +65,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			ItemStack chargingItem = menu.getSlot(0).getItem();
 			double chargingPercentage = 0;
 			double chargeCapable = 100.0;
-			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
+			if (!chargingItem.isEmpty() && chargingItem.getItem()instanceof IItemElectric electricItem) {
 
 				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
 

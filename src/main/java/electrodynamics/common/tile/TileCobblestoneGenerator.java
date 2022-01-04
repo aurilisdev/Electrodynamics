@@ -48,7 +48,7 @@ public class TileCobblestoneGenerator extends GenericTile {
 		ItemStack output = inv.getOutputContents().get(0);
 		double speed = 1;
 		for (ItemStack upgrade : inv.getUpgradeContents()) {
-			if (!upgrade.isEmpty() && upgrade.getItem() instanceof ItemUpgrade upg) {
+			if (!upgrade.isEmpty() && upgrade.getItem()instanceof ItemUpgrade upg) {
 				for (int i = 0; i < upgrade.getCount(); i++) {
 					upg.subtype.applyUpgrade.accept(this, null, upgrade);
 					if (upg.subtype == SubtypeItemUpgrade.advancedspeed) {

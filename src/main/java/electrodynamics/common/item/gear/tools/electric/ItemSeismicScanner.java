@@ -9,6 +9,7 @@ import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.capability.types.locationstorage.CapabilityLocationStorage;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.client.render.ClientRenderEvents;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
@@ -107,35 +108,36 @@ public class ItemSeismicScanner extends ItemElectric {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		if (!world.isClientSide) {
-			ItemStack scanner = player.getItemInHand(hand);
-			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
-			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
-				if (m.getInt() <= 0) {
-					return true;
-				}
-				return false;
-			}).orElse(false);
-			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
-			ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0))
-					.orElse(ItemStack.EMPTY);
-			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
-				extractPower(scanner, properties.extract.getJoules(), false);
-				scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(COOLDOWN_SECONDS * 20));
-				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
-				if (ore.getItem() instanceof BlockItem oreBlockItem) {
-					BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
-					scanner.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).ifPresent(h -> {
-						h.clearLocations();
-						h.addLocation(pos.getX(), pos.getY(), pos.getZ());
-						BlockPos playerPos = player.getOnPos();
-						h.addLocation(playerPos.getX(), playerPos.getY(), playerPos.getZ());
-					});
-				}
-			} else {
-				player.openMenu(getMenuProvider(world, player, scanner));
+	public InteractionResultHolder<ItemStack> use(final Level world, Player player, InteractionHand hand) {
+
+		ItemStack scanner = player.getItemInHand(hand);
+		ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
+		boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
+			if (m.getInt() <= 0) {
+				return true;
 			}
+			return false;
+		}).orElse(false);
+		boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
+		ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
+		if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
+			extractPower(scanner, properties.extract.getJoules(), false);
+			scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(COOLDOWN_SECONDS * 20));
+			world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
+			if (ore.getItem()instanceof BlockItem oreBlockItem) {
+				BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
+				scanner.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).ifPresent(h -> {
+					h.clearLocations();
+					h.addLocation(pos.getX(), pos.getY(), pos.getZ());
+					BlockPos playerPos = player.getOnPos();
+					h.addLocation(playerPos.getX(), playerPos.getY(), playerPos.getZ());
+					if (world.isClientSide) {
+						ClientRenderEvents.addRenderLocation(pos);
+					}
+				});
+			}
+		} else if (!world.isClientSide) {
+			player.openMenu(getMenuProvider(world, player, scanner));
 		}
 		return super.use(world, player, hand);
 	}
