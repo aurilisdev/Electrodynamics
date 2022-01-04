@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -84,8 +85,8 @@ public class ClientRenderEvents {
 	private static HashSet<Pair<Long, BlockPos>> blocks = new HashSet<>();
 
 	@SubscribeEvent
-	public static void renderSelectedBlocks(RenderGameOverlayEvent event) {
-		PoseStack matrix = event.getMatrixStack();
+	public static void renderSelectedBlocks(RenderLevelLastEvent event) {
+		PoseStack matrix = event.getPoseStack();
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		VertexConsumer builder = buffer.getBuffer(RenderType.LINES);
 		Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
