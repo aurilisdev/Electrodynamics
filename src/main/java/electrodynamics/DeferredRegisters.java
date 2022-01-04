@@ -216,6 +216,7 @@ public class DeferredRegisters {
 		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
+		BLOCKS.register("multisubnode", supplier(multi));
 		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
