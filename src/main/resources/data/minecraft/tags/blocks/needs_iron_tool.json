@@ -8,6 +8,13 @@
 		"electrodynamics:oresilver",
 		"electrodynamics:orevanadinite",
 		
+		"electrodynamics:deepslateorealuminum",
+		"electrodynamics:deepslateorelead",
+		"electrodynamics:deepslateorelepidolite",
+		"electrodynamics:deepslateoremonazite",
+		"electrodynamics:deepslateoresilver",
+		"electrodynamics:deepslateorevanadinite",
+		
 		"electrodynamics:resourceblockaluminum",
 		"electrodynamics:resourceblocklead",
 		"electrodynamics:resourceblocksilver",

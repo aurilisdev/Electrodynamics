@@ -8,6 +8,7 @@ import electrodynamics.common.fluid.types.gas.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidClay;
 import electrodynamics.common.fluid.types.liquid.FluidConcrete;
 import electrodynamics.common.fluid.types.liquid.FluidEthanol;
+import electrodynamics.common.fluid.types.liquid.FluidHydraulic;
 import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
@@ -52,6 +53,7 @@ public class ElectrodynamicsTags {
 		public static final Tags.IOptionalNamedTag<Fluid> CONCRETE = forgeTag(FluidConcrete.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> OXYGEN = forgeTag(FluidOxygen.FORGE_TAG);
 		public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN = forgeTag(FluidHydrogen.FORGE_TAG);
+		public static final Tags.IOptionalNamedTag<Fluid> HYDRAULIC_FLUID = forgeTag(FluidHydraulic.FORGE_TAG);
 
 		private static void init() {
 			FLUID_TAGS.add(SULFURIC_ACID);
@@ -72,6 +74,7 @@ public class ElectrodynamicsTags {
 			FLUID_TAGS.add(CONCRETE);
 			FLUID_TAGS.add(OXYGEN);
 			FLUID_TAGS.add(HYDROGEN);
+			FLUID_TAGS.add(HYDRAULIC_FLUID);
 
 			ItemCanister.addTag(SULFURIC_ACID);
 			ItemCanister.addTag(ETHANOL);
@@ -91,6 +94,7 @@ public class ElectrodynamicsTags {
 			ItemCanister.addTag(CONCRETE);
 			ItemCanister.addTag(OXYGEN);
 			ItemCanister.addTag(HYDROGEN);
+			ItemCanister.addTag(HYDRAULIC_FLUID);
 		}
 
 		private static Tags.IOptionalNamedTag<Fluid> forgeTag(String name) {

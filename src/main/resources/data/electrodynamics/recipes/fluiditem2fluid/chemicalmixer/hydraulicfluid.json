@@ -1,0 +1,21 @@
+{
+	"type": "electrodynamics:chemical_mixer_recipe",
+	"iteminputs":{
+		"count" : 1,
+		"0": {
+			"tag": "forge:dusts/silica",
+			"count": 1
+		}
+	},
+	"fluidinputs":{
+		"count" : 1,
+		"0": {
+			"tag":"forge:ethanol",
+			"amount": 500
+		}
+	},
+	"output": {
+		"fluid": "electrodynamics:fluidhydraulic",
+		"amount": 1000
+	}
+}

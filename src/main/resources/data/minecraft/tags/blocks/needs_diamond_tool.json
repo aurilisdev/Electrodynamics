@@ -6,6 +6,11 @@
 		"electrodynamics:orethorianite",
 		"electrodynamics:oreuraninite",
 		
+		"electrodynamics:deepslateorechromite",
+		"electrodynamics:deepslateorerutile",
+		"electrodynamics:deepslateorethorianite",
+		"electrodynamics:deepslateoreuraninite",
+		
 		"electrodynamics:resourceblockchromium",
 		"electrodynamics:resourceblocktitanium",
 		"electrodynamics:resourceblocktitaniumcarbide",

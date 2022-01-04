@@ -422,6 +422,7 @@
   "fluid.electrodynamics.clay" : "Liquid Clay",
   "fluid.electrodynamics.oxygen" : "Oxygen",
   "fluid.electrodynamics.hydrogen" : "Hydrogen",
+  "fluid.electrodynamics.hydraulic" : "Hydraulic Fluid",
   "subtitles.electrodynamics.hum" : "Hum",
   "subtitles.electrodynamics.mineralcrusher" : "Mineral Crusher crusher",
   "subtitles.electrodynamics.mineralgrinder" : "Mineral Grinder grinds",
