@@ -137,6 +137,14 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 				ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
 						+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
 								.withStyle(ChatFormatting.RED));
+		if(stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false)) {
+			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+				.append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+		} else {
+			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+		}
+		
 	}
 
 	@Override

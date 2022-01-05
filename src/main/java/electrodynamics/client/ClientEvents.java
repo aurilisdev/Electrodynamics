@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.packet.NetworkHandler;
@@ -42,10 +41,10 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
-
 		if (ElementType.ALL.equals(event.getType())) {
-			ItemStack gunStackMainHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.MAINHAND);
-			ItemStack gunStackOffHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.OFFHAND);
+			Player player = Minecraft.getInstance().player;
+			ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
+			ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
 
 			if (gunStackMainHand.getItem() instanceof ItemRailgun) {
 				renderHeatToolTip(event, gunStackMainHand);

@@ -7,9 +7,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -38,8 +36,7 @@ public class PacketJetpack {
 					if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
 						boolean enoughFuel = playerChest.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 						if(enoughFuel) {
-							
-							//player.sendMessage(new TextComponent("Recieved Packet!"), Util.NIL_UUID);
+							//TODO make the player fly
 						}
 					}
 				default:
