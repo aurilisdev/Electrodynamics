@@ -1,4 +1,4 @@
-package electrodynamics.client.render;
+package electrodynamics.client;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,6 +7,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
+import electrodynamics.Electrodynamics;
+import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -23,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
@@ -30,7 +33,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class ClientRenderEvents {
+public class ClientEvents {
 
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
@@ -107,5 +110,21 @@ public class ClientRenderEvents {
 
 	public static void addRenderLocation(BlockPos pos) {
 		blocks.add(new Pair<>(System.currentTimeMillis(), pos));
+	}
+	
+	@SubscribeEvent
+	public static void ascendWithJetpack(KeyInputEvent event) {
+		if(KeyBinds.jetpackAscend.matches(event.getKey(), event.getScanCode()) && KeyBinds.jetpackAscend.isDown()) {
+			ItemStack playerChest = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
+			//if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.))
+			
+			Electrodynamics.LOGGER.info("Key Pressed");
+		}
+		/* TODO
+		 * 1. Create custom key binding for jetpack fly key
+		 * 2. Create keyboard pressed and released events to detect key press
+		 * 3. Create packet to send to server for key press and release
+		 * 
+		 */
 	}
 }

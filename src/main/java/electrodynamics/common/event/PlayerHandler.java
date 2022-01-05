@@ -1,18 +1,20 @@
 package electrodynamics.common.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,15 +22,43 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class PlayerHandler {
 
+	private static final float LETHAL_DAMAGE_AMOUNT = 18.0f;
+	
 	@SubscribeEvent
 	public static void tick(PlayerTickEvent event) {
 		if (event.side == LogicalSide.CLIENT && event.player.level.getLevelData().getDayTime() % 50 == 10) {
 			NetworkHandler.CHANNEL.sendToServer(new PacketPlayerInformation());
+		}
+	}
+
+	@SubscribeEvent
+	public static void takeDamageWithArmor(LivingHurtEvent event) {
+		ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
+				new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
+				new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
+
+		List<ItemStack> armorPieces = new ArrayList<>();
+		event.getEntityLiving().getArmorSlots().forEach(armorPieces::add);
+
+		if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3])
+				&& ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2])
+				&& ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1])
+				&& ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
+			ItemStack stack = armorPieces.get(2);
+			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
+				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getInt() > 0) {
+
+					event.setAmount((float) Math.sqrt(event.getAmount()));
+					h.setInt(h.getInt() - 1);
+					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(),
+							SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
+				}
+			});
+
 		}
 	}
 	
@@ -48,15 +78,5 @@ public class PlayerHandler {
 				}
 			}
 		}
-	}
-	
-	@SubscribeEvent
-	public static void ascendWithJetpack(KeyboardKeyPressedEvent.Post event) {
-		/* TODO
-		 * 1. Create custom key binding for jetpack fly key
-		 * 2. Create keyboard pressed and released events to detect key press
-		 * 3. Create packet to send to server for key press and release
-		 * 
-		 */
 	}
 }

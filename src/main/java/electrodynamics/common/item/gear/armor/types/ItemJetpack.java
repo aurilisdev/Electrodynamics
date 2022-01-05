@@ -8,14 +8,16 @@ import com.mojang.datafixers.util.Pair;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -29,7 +31,7 @@ public class ItemJetpack extends ArmorItem {
 	public static final int MAX_CAPACITY = 2000;
 	
 	public ItemJetpack() {
-		super(ArmorMaterials.IRON, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
 	
 	@Override
@@ -51,6 +53,41 @@ public class ItemJetpack extends ArmorItem {
 		tags.add(ElectrodynamicsTags.Fluids.HYDROGEN.getName());
 		fluids.add(DeferredRegisters.fluidHydrogen);
 		return Pair.of(tags, fluids);
+	}
+	
+	public enum Jetpack implements ICustomArmor {
+		JETPACK;
+
+		@Override
+		public int getDurabilityForSlot(EquipmentSlot slotIn) {
+			return 100;
+		}
+
+		@Override
+		public int getDefenseForSlot(EquipmentSlot slotIn) {
+			return 1;
+		}
+
+		@Override
+		public SoundEvent getEquipSound() {
+			return SoundEvents.ARMOR_EQUIP_IRON;
+		}
+
+		@Override
+		public String getName() {
+			return References.ID + ":nvgs";
+		}
+
+		@Override
+		public float getToughness() {
+			return 0.0F;
+		}
+
+		@Override
+		public float getKnockbackResistance() {
+			return 0.0F;
+		}
+		
 	}
 
 }

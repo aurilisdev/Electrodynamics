@@ -37,11 +37,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class CompositeArmorItem extends ArmorItem {
+public class ItemCompositeArmor extends ArmorItem {
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 
-	public CompositeArmorItem(EquipmentSlot slot) {
+	public ItemCompositeArmor(EquipmentSlot slot) {
 		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());
 	}
 
@@ -91,7 +91,7 @@ public class CompositeArmorItem extends ArmorItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		CompositeArmorItem item = (CompositeArmorItem) stack.getItem();
+		ItemCompositeArmor item = (ItemCompositeArmor) stack.getItem();
 		if (EquipmentSlot.CHEST.equals(item.getSlot())) {
 			return new CapabilityIntStorage();
 		}

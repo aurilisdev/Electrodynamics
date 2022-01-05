@@ -240,6 +240,7 @@ public class ClientRegister {
 										&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
 												stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
 														: 0);
+		KeyBinds.registerKeys();
 	}
 
 	@SubscribeEvent

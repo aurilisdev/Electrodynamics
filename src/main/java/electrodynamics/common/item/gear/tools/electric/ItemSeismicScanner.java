@@ -9,7 +9,7 @@ import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.capability.types.locationstorage.CapabilityLocationStorage;
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.client.render.ClientRenderEvents;
+import electrodynamics.client.ClientEvents;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
@@ -132,7 +132,7 @@ public class ItemSeismicScanner extends ItemElectric {
 					BlockPos playerPos = player.getOnPos();
 					h.addLocation(playerPos.getX(), playerPos.getY(), playerPos.getZ());
 					if (world.isClientSide) {
-						ClientRenderEvents.addRenderLocation(pos);
+						ClientEvents.addRenderLocation(pos);
 					}
 				});
 			}

@@ -71,7 +71,7 @@ import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.gear.armor.types.CompositeArmorItem;
+import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
@@ -418,13 +418,13 @@ public class DeferredRegisters {
 			supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet",
-			supplier(new CompositeArmorItem(EquipmentSlot.HEAD)));
+			supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
 	public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate",
-			supplier(new CompositeArmorItem(EquipmentSlot.CHEST)));
+			supplier(new ItemCompositeArmor(EquipmentSlot.CHEST)));
 	public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings",
-			supplier(new CompositeArmorItem(EquipmentSlot.LEGS)));
+			supplier(new ItemCompositeArmor(EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots",
-			supplier(new CompositeArmorItem(EquipmentSlot.FEET)));
+			supplier(new ItemCompositeArmor(EquipmentSlot.FEET)));
 
 	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots",
 			supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
