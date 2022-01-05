@@ -41,6 +41,7 @@ import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
+import electrodynamics.common.inventory.container.tile.ContainerCarbyneBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
@@ -98,6 +99,7 @@ import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileCarbyneBatteryBox;
 import electrodynamics.common.tile.TileChargerHV;
 import electrodynamics.common.tile.TileChargerLV;
 import electrodynamics.common.tile.TileChargerMV;
@@ -523,6 +525,9 @@ public class DeferredRegisters {
 	public static final RegistryObject<BlockEntityType<TileLithiumBatteryBox>> TILE_LITHIUMBATTERYBOX = TILES
 			.register(SubtypeMachine.lithiumbatterybox.tag(), () -> new BlockEntityType<>(TileLithiumBatteryBox::new,
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lithiumbatterybox)), null));
+	public static final RegistryObject<BlockEntityType<TileCarbyneBatteryBox>> TILE_CARBYNEBATTERYBOX = TILES
+			.register(SubtypeMachine.carbynebatterybox.tag(), () -> new BlockEntityType<>(TileCarbyneBatteryBox::new,
+					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.carbynebatterybox)), null));
 	public static final RegistryObject<BlockEntityType<TileTransformer>> TILE_TRANSFORMER = TILES.register("transformer",
 			() -> new BlockEntityType<>(TileTransformer::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer),
 					SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer)), null));
@@ -667,6 +672,8 @@ public class DeferredRegisters {
 			() -> new MenuType<>(ContainerSeismicScanner::new));
 	public static final RegistryObject<MenuType<ContainerElectrolyticSeparator>> CONTAINER_ELECTROLYTICSEPARATOR = CONTAINERS
 			.register("electrolyticseparator", () -> new MenuType<>(ContainerElectrolyticSeparator::new));
+	public static final RegistryObject<MenuType<ContainerCarbyneBatteryBox>> CONTAINER_CARBYNEBATTERYBOX = CONTAINERS
+			.register(SubtypeMachine.carbynebatterybox.tag(), () -> new MenuType<>(ContainerCarbyneBatteryBox::new));
 
 	// Entities
 

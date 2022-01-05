@@ -6,6 +6,7 @@ import electrodynamics.api.ISubtype;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.TileCarbyneBatteryBox;
 import electrodynamics.common.tile.TileChargerHV;
 import electrodynamics.common.tile.TileChargerLV;
 import electrodynamics.common.tile.TileChargerMV;
@@ -74,7 +75,8 @@ public enum SubtypeMachine implements ISubtype {
 	mineralcrushertriple(true, TileMineralCrusherTriple.class, true), mineralgrinder(true, TileMineralGrinder.class, true),
 	mineralgrinderdouble(true, TileMineralGrinderDouble.class, true), mineralgrindertriple(true, TileMineralGrinderTriple.class, true),
 	batterybox(true, TileBatteryBox.class, true), lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
-	oxidationfurnace(true, TileOxidationFurnace.class), oxidationfurnacerunning(false, TileOxidationFurnace.class),
+	carbynebatterybox(true, TileCarbyneBatteryBox.class, true), oxidationfurnace(true, TileOxidationFurnace.class),
+	oxidationfurnacerunning(false, TileOxidationFurnace.class),
 	downgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
 	upgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
 	solarpanel(true, TileSolarPanel.class, false, Shapes.box(0, 0, 0, 1, 9.0 / 16.0, 1)), advancedsolarpanel(true, TileAdvancedSolarPanel.class),
