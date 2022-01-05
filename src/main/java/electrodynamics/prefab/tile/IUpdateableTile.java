@@ -1,7 +1,7 @@
 package electrodynamics.prefab.tile;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.PacketUpdateTile;
+import electrodynamics.common.packet.types.PacketUpdateTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

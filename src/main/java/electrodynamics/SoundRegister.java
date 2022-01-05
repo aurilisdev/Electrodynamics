@@ -48,8 +48,10 @@ public class SoundRegister {
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":seismicscanner"))));
 	public static final RegistryObject<SoundEvent> SOUND_ELECTROLYTICSEPARATOR = SOUNDS.register("electrolyticseparator",
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":electrolyticseparator"))));
-	public static final RegistryObject<SoundEvent> SOUND_NIGHTVISIONGOGGLES = SOUNDS.register("nightvisiongoggles", 
-			supplier(new SoundEvent(new ResourceLocation(References.ID + ":nightvisiongoggles"))));
+	public static final RegistryObject<SoundEvent> SOUND_NIGHTVISIONGOGGLESON = SOUNDS.register("nightvisiongoggleson", 
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":nightvisiongoggleson"))));
+	public static final RegistryObject<SoundEvent> SOUND_NIGHTVISIONGOGGLESOFF = SOUNDS.register("nightvisiongogglesoff", 
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":nightvisiongogglesoff"))));
 	public static final RegistryObject<SoundEvent> SOUND_HYDRAULICBOOTS = SOUNDS.register("hydraulicboots",
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":hydraulicboots"))));
 

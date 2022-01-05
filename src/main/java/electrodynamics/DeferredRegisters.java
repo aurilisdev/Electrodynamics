@@ -74,6 +74,7 @@ import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
+import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
@@ -439,6 +440,7 @@ public class DeferredRegisters {
 							.extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120))
 							.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
+	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(new ItemJetpack()));
 	
 	// Split from items to tiles
 

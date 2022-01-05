@@ -7,9 +7,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.PacketJetpack;
+import electrodynamics.common.packet.types.PacketNightVisionGoggles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -21,6 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -115,16 +120,22 @@ public class ClientEvents {
 	@SubscribeEvent
 	public static void ascendWithJetpack(KeyInputEvent event) {
 		if(KeyBinds.jetpackAscend.matches(event.getKey(), event.getScanCode()) && KeyBinds.jetpackAscend.isDown()) {
-			ItemStack playerChest = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
-			//if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.))
-			
-			Electrodynamics.LOGGER.info("Key Pressed");
+			Player player = Minecraft.getInstance().player;
+			ItemStack playerChest = player.getItemBySlot(EquipmentSlot.CHEST);
+			if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+				NetworkHandler.CHANNEL.sendToServer(new PacketJetpack(1, player.getUUID()));
+			}
 		}
-		/* TODO
-		 * 1. Create custom key binding for jetpack fly key
-		 * 2. Create keyboard pressed and released events to detect key press
-		 * 3. Create packet to send to server for key press and release
-		 * 
-		 */
+	}
+	
+	@SubscribeEvent
+	public static void toggleNvgs(KeyInputEvent event) {
+		if(KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
+			Player player = Minecraft.getInstance().player;
+			ItemStack playerChest = player.getItemBySlot(EquipmentSlot.HEAD);
+			if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
+				NetworkHandler.CHANNEL.sendToServer(new PacketNightVisionGoggles(player.getUUID()));
+			}
+		}
 	}
 }

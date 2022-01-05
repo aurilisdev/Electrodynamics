@@ -102,6 +102,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 		}
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
+	
 	@Override
 	public boolean canBeDepleted() {
 		return false;

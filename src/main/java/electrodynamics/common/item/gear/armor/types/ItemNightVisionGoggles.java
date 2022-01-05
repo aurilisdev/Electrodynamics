@@ -3,7 +3,7 @@ package electrodynamics.common.item.gear.armor.types;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.SoundRegister;
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
@@ -11,6 +11,7 @@ import electrodynamics.api.capability.types.boolstorage.IBooleanStorage;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
@@ -23,6 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -72,31 +74,28 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new CapabilityBooleanStorage();
+		CapabilityBooleanStorage storage = new CapabilityBooleanStorage();
+		storage.setBoolean(false);
+		return storage;
 	}
 
 	@Override
-	public void inventoryTick(ItemStack nvgStack, Level world, Entity entity, int slot, boolean isSelected) {
-		ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) nvgStack.getItem();
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
+		ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
 		if (entity instanceof Player player) {
-			//
-			if (nvgs.getJoulesStored(nvgStack) >= JOULES_PER_TICK) {
-				if (nvgStack.equals(player.getItemBySlot(EquipmentSlot.HEAD), false)) {
-					nvgStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(true));
-					nvgs.extractPower(nvgStack, JOULES_PER_TICK, false);
-					if (player.hasEffect(MobEffects.NIGHT_VISION)) {
-						player.getEffect(MobEffects.NIGHT_VISION)
-								.update(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, true, true, true));
-					} else {
-						player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
-					}
-
+			boolean status = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+			if(status && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.HEAD).getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
+				&& nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+				nvgs.extractPower(stack, JOULES_PER_TICK, false);
+				if (player.hasEffect(MobEffects.NIGHT_VISION)) {
+					player.getEffect(MobEffects.NIGHT_VISION)
+							.update(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, true, true, true));
+				} else {
+					player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
 				}
-			} else {
-				nvgStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(false));
 			}
 		}
-		super.inventoryTick(nvgStack, world, entity, slot, isSelected);
+		super.inventoryTick(stack, world, entity, slot, isSelected);
 	}
 
 	@Override
@@ -182,7 +181,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 		@Override
 		public SoundEvent getEquipSound() {
-			return SoundRegister.SOUND_NIGHTVISIONGOGGLES.get();
+			return SoundEvents.ARMOR_EQUIP_IRON;
 		}
 
 		@Override

@@ -13,12 +13,13 @@ public class KeyBinds {
 	
 	//KEYS
 	public static KeyMapping jetpackAscend;
-	
+	public static KeyMapping toggleNvgs;
 	
 	private KeyBinds() {}
 	
 	public static void registerKeys() {
 		jetpackAscend = registerKey("jetpackascend", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_SPACE);
+		toggleNvgs = registerKey("togglenvgs", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_N);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keyCode) {

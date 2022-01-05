@@ -1,8 +1,9 @@
-package electrodynamics.common.packet;
+package electrodynamics.common.packet.types;
 
 import java.util.List;
 import java.util.function.Supplier;
 
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.packs.repository.Pack;

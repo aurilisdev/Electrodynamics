@@ -143,7 +143,9 @@
   "item.electrodynamics.compositearmorchestplate" : "Composite Body Armor",
   "item.electrodynamics.compositearmorleggings" : "Composite Leggings",
   "item.electrodynamics.compositearmorboots" : "Composite Boots",
+  "item.electrodynamics.nightvisiongoggles" : "Night Vision Goggles",
   "item.electrodynamics.hydraulicboots" : "Hydraulic Boots",
+  "item.electrodynamics.jetpack" : "Jetpack",
   "item.electrodynamics.carbynebattery" : "Dense Carbyne Battery",
   "block.electrodynamics.glassclear" : "Clear Glass",
   "block.electrodynamics.glassaluminum" : "ALON",
@@ -443,10 +445,11 @@
   "subtitles.electrodynamics.hydroelectricgenerator" : "Hydroelectric generator spins",
   "subtitles.electrodynamics.seismicscanner" : "Seismic Scanner pings",
   "subtitles.electrodynamics.electrolyticseparator" : "Electrolytic Separator electrolyzes",
-  "subtitles.electrodynamics.nightvisiongoggles" : "Equipping Night Vision Goggles",
+  "subtitles.electrodynamics.nightvisiongoggleson" : "Night Vision Goggles activated",
+  "subtitles.electrodynamics.nightvisiongogglesoff" : "Night Vision Goggles de-activated",
   "keycategory.electrodynamics" : "Electrodynamics",
   "key.electrodynamics.jetpackascend" : "Ascend with Jetpack",
-  
+  "key.electrodynamics.togglenvgs" : "Toggle Night Vision Goggles",
   
   
   "jei.guilabel.power" : "%1$sV %2$skW",

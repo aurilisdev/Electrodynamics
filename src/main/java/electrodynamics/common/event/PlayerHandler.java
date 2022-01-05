@@ -9,7 +9,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.PacketPlayerInformation;
+import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
