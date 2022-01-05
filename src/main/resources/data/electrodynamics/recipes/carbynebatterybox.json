@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "bbb",
+        "hth",
+        "bbb"
+    ],
+    "key": {
+        "b": {
+            "item": "electrodynamics:carbynebattery"
+        },
+        "h": {
+            "tag": "forge:plates/hslasteel"
+        },
+        "t": {
+            "item": "electrodynamics:wirehighlyinsulatedsuperconductive"
+        }
+    },
+    "result": {
+        "item": "electrodynamics:carbynebatterybox",
+        "count": 1
+    }
+}
