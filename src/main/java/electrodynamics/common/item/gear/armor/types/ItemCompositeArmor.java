@@ -93,7 +93,7 @@ public class ItemCompositeArmor extends ArmorItem {
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		ItemCompositeArmor item = (ItemCompositeArmor) stack.getItem();
 		if (EquipmentSlot.CHEST.equals(item.getSlot())) {
-			return new CapabilityIntStorage();
+			return new CapabilityIntStorage(1);
 		}
 		return null;
 	}
@@ -103,7 +103,7 @@ public class ItemCompositeArmor extends ArmorItem {
 		if (allowdedIn(group)) {
 			ItemStack filled = new ItemStack(this);
 			if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-				filled.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(2));
+				filled.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 2));
 				items.add(filled);
 			}
 			ItemStack empty = new ItemStack(this);
@@ -126,7 +126,7 @@ public class ItemCompositeArmor extends ArmorItem {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (EquipmentSlot.CHEST.equals(getSlot())) {
 			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getInt() + ""))
+				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getInt(0) + ""))
 						.withStyle(ChatFormatting.AQUA);
 				tooltip.add(tip);
 			});

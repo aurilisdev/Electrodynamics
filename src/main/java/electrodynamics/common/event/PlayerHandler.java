@@ -50,10 +50,10 @@ public class PlayerHandler {
 				&& ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
 			ItemStack stack = armorPieces.get(2);
 			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getInt() > 0) {
+				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getInt(0) > 0) {
 
 					event.setAmount((float) Math.sqrt(event.getAmount()));
-					h.setInt(h.getInt() - 1);
+					h.setInt(0, h.getInt(0) - 1);
 					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(),
 							SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 				}

@@ -32,13 +32,13 @@ public class PacketModeSwitch {
 					ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 					if(ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
 						boolean sucessful = chest.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m ->{
-							int curMode = m.getInt();
+							int curMode = m.getInt(0);
 							if(curMode < 2) {
 								curMode ++;
 							} else {
 								curMode = 0;
 							}
-							m.setInt(curMode);
+							m.setInt(0, curMode);
 							return true;
 						}).orElse(false);
 						if(sucessful) {

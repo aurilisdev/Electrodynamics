@@ -6,6 +6,7 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.multicapability.JetpackCapability;
@@ -44,9 +45,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 public class ItemJetpack extends ArmorItem {
-
+	
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
-	public static final int MAX_CAPACITY = 2000;
+	public static final int MAX_CAPACITY = 30000;
 	
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
@@ -58,8 +59,8 @@ public class ItemJetpack extends ArmorItem {
 	
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		CapabilityIntStorage number = new CapabilityIntStorage();
-		number.setInt(0);
+		CapabilityIntStorage number = new CapabilityIntStorage(2);
+		number.setInt(0, 0);
 		return new JetpackCapability(new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids()), number);
 	}
 	
@@ -91,7 +92,7 @@ public class ItemJetpack extends ArmorItem {
 			});
 		}
 		
-		int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt()).orElse(1);
+		int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(1);
 		
 		Component modeTip  = switch(mode) {
 		case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
@@ -111,14 +112,22 @@ public class ItemJetpack extends ArmorItem {
 		if(entity instanceof Player player) {
 			//slot check catches ~99% of issues; still bugs if on hot bar slot #2
 			if(slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
-				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt()).orElse(2);
+				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
+				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
 				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
 				if(enoughFuel) {
+					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(10);
 					if(mode == 0 && isDown) {
+						if(ticks % 10 == 0) {
+							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
+						}
 						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
 						useGas(stack);
 					} else if(mode == 1 && player.fallDistance > 0) {
+						if(ticks % 10 == 0) {
+							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
+						}
 						hoverWithJetpack(player);
 						if(isDown) {
 							ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY, player);
@@ -126,6 +135,11 @@ public class ItemJetpack extends ArmorItem {
 						useGas(stack);
 					}
 				} 
+				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
+					if(h.getInt(1) > 100) {
+						h.setInt(1, 0);
+					}
+				});
 			}
 		}
 	}
@@ -207,7 +221,7 @@ public class ItemJetpack extends ArmorItem {
 
 		@Override
 		public String getName() {
-			return References.ID + ":nvgs";
+			return References.ID + ":jetpack";
 		}
 
 		@Override

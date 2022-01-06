@@ -455,6 +455,7 @@
   "subtitles.electrodynamics.nightvisiongoggleson" : "Night Vision Goggles activated",
   "subtitles.electrodynamics.nightvisiongogglesoff" : "Night Vision Goggles de-activated",
   "subtitles.electrodynamics.switchjetpackmode" : "Jetpack changes mode",
+  "subtitles.electrodynamics.jetpack" : "Jetpack engine runs",
   "keycategory.electrodynamics" : "Electrodynamics",
   "key.electrodynamics.jetpackascend" : "Ascend with Jetpack",
   "key.electrodynamics.togglenvgs" : "Toggle Night Vision Goggles",

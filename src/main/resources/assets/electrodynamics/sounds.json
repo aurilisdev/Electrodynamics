@@ -152,5 +152,12 @@
 		"sounds": [
 			"electrodynamics:jetpackswitchmode"
 		]
+	},
+	"jetpack":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.jetpack",
+		"sounds": [
+			"electrodynamics:jetpack"
+		]
 	}
 }
