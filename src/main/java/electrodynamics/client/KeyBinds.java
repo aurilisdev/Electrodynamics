@@ -13,12 +13,14 @@ public class KeyBinds {
 	
 	//KEYS
 	public static KeyMapping jetpackAscend;
+	public static KeyMapping switchJetpackMode;
 	public static KeyMapping toggleNvgs;
 	
 	private KeyBinds() {}
 	
 	public static void registerKeys() {
 		jetpackAscend = registerKey("jetpackascend", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_SPACE);
+		switchJetpackMode = registerKey("jetpackmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_M);
 		toggleNvgs = registerKey("togglenvgs", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_N);
 	}
 	

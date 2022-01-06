@@ -145,5 +145,12 @@
 		"sounds": [
 			"electrodynamics:hydraulicboots"
 		]
+	},
+	"jetpackswitchmode":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.jetpackswitchmode",
+		"sounds": [
+			"electrodynamics:jetpackswitchmode"
+		]
 	}
 }

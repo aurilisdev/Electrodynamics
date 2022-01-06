@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import electrodynamics.api.References;
-import electrodynamics.common.packet.types.PacketJetpack;
+import electrodynamics.common.packet.types.PacketModeSwitch;
 import electrodynamics.common.packet.types.PacketNightVisionGoggles;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.packet.types.PacketPowerSetting;
@@ -34,7 +34,7 @@ public class NetworkHandler {
 				PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketPowerSetting.class, PacketPowerSetting::encode, PacketPowerSetting::decode, PacketPowerSetting::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
-		CHANNEL.registerMessage(disc++, PacketJetpack.class, PacketJetpack::encode, PacketJetpack::decode, PacketJetpack::handle,
+		CHANNEL.registerMessage(disc++, PacketModeSwitch.class, PacketModeSwitch::encode, PacketModeSwitch::decode, PacketModeSwitch::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketNightVisionGoggles.class, PacketNightVisionGoggles::encode, PacketNightVisionGoggles::decode, PacketNightVisionGoggles::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
