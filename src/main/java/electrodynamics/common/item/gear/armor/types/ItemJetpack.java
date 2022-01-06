@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.armor.types;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -13,11 +14,14 @@ import electrodynamics.api.capability.multicapability.JetpackCapability;
 import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
+import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,6 +32,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -38,6 +43,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -53,8 +61,28 @@ public class ItemJetpack extends ArmorItem {
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VELOCITY = 1;
 	
+	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
+	
 	public ItemJetpack() {
 		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(new IItemRenderProperties() {
+			@Override
+			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
+
+				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ClientRegister.JETPACK.bakeRoot());
+
+				model.crouching = properties.crouching;
+				model.riding = properties.riding;
+				model.young = properties.young;
+
+				return (A) model;
+			}
+		});
 	}
 	
 	@Override
@@ -124,14 +152,17 @@ public class ItemJetpack extends ArmorItem {
 						}
 						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
 						useGas(stack);
+					} else if(mode == 1 && isDown) {
+						if(ticks % 10 == 0) {
+							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
+						}
+						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
+						useGas(stack);
 					} else if(mode == 1 && player.fallDistance > 0) {
 						if(ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						hoverWithJetpack(player);
-						if(isDown) {
-							ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY, player);
-						}
 						useGas(stack);
 					}
 				} 
@@ -199,6 +230,11 @@ public class ItemJetpack extends ArmorItem {
 	
 	private void useGas(ItemStack stack) {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
+	}
+	
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		return ARMOR_TEXTURE_LOCATION;
 	}
 	
 	public enum Jetpack implements ICustomArmor {

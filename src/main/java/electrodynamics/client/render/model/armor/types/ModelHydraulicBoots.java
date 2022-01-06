@@ -72,7 +72,7 @@ public class ModelHydraulicBoots<T extends LivingEntity> extends GenericArmorMod
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-		leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
+		parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+		parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 }
