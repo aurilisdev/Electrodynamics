@@ -2,8 +2,8 @@ package electrodynamics.api.capability.types.intstorage;
 
 public interface IIntStorage {
 
-	void setInt(int number);
+	void setInt(int index, int number);
 
-	int getInt();
+	int getInt(int index);
 
 }

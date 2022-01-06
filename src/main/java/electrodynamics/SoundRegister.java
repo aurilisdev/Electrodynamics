@@ -48,6 +48,16 @@ public class SoundRegister {
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":seismicscanner"))));
 	public static final RegistryObject<SoundEvent> SOUND_ELECTROLYTICSEPARATOR = SOUNDS.register("electrolyticseparator",
 			supplier(new SoundEvent(new ResourceLocation(References.ID + ":electrolyticseparator"))));
+	public static final RegistryObject<SoundEvent> SOUND_NIGHTVISIONGOGGLESON = SOUNDS.register("nightvisiongoggleson", 
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":nightvisiongoggleson"))));
+	public static final RegistryObject<SoundEvent> SOUND_NIGHTVISIONGOGGLESOFF = SOUNDS.register("nightvisiongogglesoff", 
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":nightvisiongogglesoff"))));
+	public static final RegistryObject<SoundEvent> SOUND_HYDRAULICBOOTS = SOUNDS.register("hydraulicboots",
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":hydraulicboots"))));
+	public static final RegistryObject<SoundEvent> SOUND_JETPACKSWITCHMODE = SOUNDS.register("jetpackswitchmode",
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":jetpackswitchmode"))));
+	public static final RegistryObject<SoundEvent> SOUND_JETPACK = SOUNDS.register("jetpack",
+			supplier(new SoundEvent(new ResourceLocation(References.ID + ":jetpack"))));
 
 	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 		return () -> entry;

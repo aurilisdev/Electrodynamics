@@ -3,7 +3,7 @@ package electrodynamics.prefab.tile.components.type;
 import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.PacketUpdateTile;
+import electrodynamics.common.packet.types.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;

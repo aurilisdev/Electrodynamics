@@ -124,5 +124,40 @@
 		"sounds": [
 			"electrodynamics:electrolyticseparator"
 		]
+	},
+	"nightvisiongoggleson":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.nightvisiongoggleson",
+		"sounds": [
+			"electrodynamics:nightvisiongoggleson"
+		]
+	},
+	"nightvisiongogglesoff":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.nightvisiongogglesoff",
+		"sounds": [
+			"electrodynamics:nightvisiongogglesoff"
+		]
+	},
+	"hydraulicboots":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.hydraulicboots",
+		"sounds": [
+			"electrodynamics:hydraulicboots"
+		]
+	},
+	"jetpackswitchmode":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.jetpackswitchmode",
+		"sounds": [
+			"electrodynamics:jetpackswitchmode"
+		]
+	},
+	"jetpack":{
+		"category": "players",
+		"subtitle": "subtitles.electrodynamics.jetpack",
+		"sounds": [
+			"electrodynamics:jetpack"
+		]
 	}
 }

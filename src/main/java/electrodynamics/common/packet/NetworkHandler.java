@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import electrodynamics.api.References;
+import electrodynamics.common.packet.types.PacketModeSwitch;
+import electrodynamics.common.packet.types.PacketNightVisionGoggles;
+import electrodynamics.common.packet.types.PacketPlayerInformation;
+import electrodynamics.common.packet.types.PacketPowerSetting;
+import electrodynamics.common.packet.types.PacketServerUpdateTile;
+import electrodynamics.common.packet.types.PacketSpawnSmokeParticle;
+import electrodynamics.common.packet.types.PacketUpdateTile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -26,6 +33,10 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketServerUpdateTile.class, PacketServerUpdateTile::encode, PacketServerUpdateTile::decode,
 				PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketPowerSetting.class, PacketPowerSetting::encode, PacketPowerSetting::decode, PacketPowerSetting::handle,
+				Optional.of(NetworkDirection.PLAY_TO_SERVER));
+		CHANNEL.registerMessage(disc++, PacketModeSwitch.class, PacketModeSwitch::encode, PacketModeSwitch::decode, PacketModeSwitch::handle,
+				Optional.of(NetworkDirection.PLAY_TO_SERVER));
+		CHANNEL.registerMessage(disc++, PacketNightVisionGoggles.class, PacketNightVisionGoggles::encode, PacketNightVisionGoggles::decode, PacketNightVisionGoggles::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
 	}
 

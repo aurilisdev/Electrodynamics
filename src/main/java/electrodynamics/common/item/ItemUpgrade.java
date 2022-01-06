@@ -42,7 +42,7 @@ public class ItemUpgrade extends Item {
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
 		if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput) {
-			return new EjectorCapability(new CapabilityBooleanStorage(), new CapabilityIntStorage(), new CapabilityDirectionalStorage());
+			return new EjectorCapability(new CapabilityBooleanStorage(), new CapabilityIntStorage(1), new CapabilityDirectionalStorage());
 		}
 		return super.initCapabilities(stack, nbt);
 	}

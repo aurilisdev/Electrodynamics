@@ -1,4 +1,4 @@
-package electrodynamics.client.render;
+package electrodynamics.client;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,7 +7,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
+import electrodynamics.DeferredRegisters;
+import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.PacketModeSwitch;
+import electrodynamics.common.packet.types.PacketNightVisionGoggles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -19,10 +24,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
@@ -30,14 +37,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class ClientRenderEvents {
+public class ClientEvents {
 
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
-
 		if (ElementType.ALL.equals(event.getType())) {
-			ItemStack gunStackMainHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.MAINHAND);
-			ItemStack gunStackOffHand = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.OFFHAND);
+			Player player = Minecraft.getInstance().player;
+			ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
+			ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
 
 			if (gunStackMainHand.getItem() instanceof ItemRailgun) {
 				renderHeatToolTip(event, gunStackMainHand);
@@ -108,4 +115,26 @@ public class ClientRenderEvents {
 	public static void addRenderLocation(BlockPos pos) {
 		blocks.add(new Pair<>(System.currentTimeMillis(), pos));
 	}
+	
+	@SubscribeEvent
+	public static void keyPressEvents(KeyInputEvent event) {
+		//I tried doing this w/o the packets, but it led to some desync issues
+		//Packets ensure those don't happen
+		if(KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
+			Player player = Minecraft.getInstance().player;
+			ItemStack playerChest = player.getItemBySlot(EquipmentSlot.CHEST);
+			if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitch(player.getUUID()));
+			}
+		}
+
+		if(KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
+			Player player = Minecraft.getInstance().player;
+			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
+			if(ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
+				NetworkHandler.CHANNEL.sendToServer(new PacketNightVisionGoggles(player.getUUID()));
+			}
+		}
+	}
+	
 }

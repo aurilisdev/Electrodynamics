@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.api.References;
-import net.minecraft.client.model.HumanoidModel;
+import electrodynamics.client.render.model.armor.GenericArmorModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,37 +16,13 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class ModelNightVisionGoggles<T extends LivingEntity> extends HumanoidModel<T> {
+public class ModelNightVisionGoggles<T extends LivingEntity> extends GenericArmorModel<T> {
 
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(References.ID, "night_vision_goggles"),
 			"main");
 
-	private final ModelPart parentHat;
-	private final ModelPart parentHead;
-	private final ModelPart parentChest;
-	private final ModelPart parentRightArm;
-	private final ModelPart parentLeftArm;
-	private final ModelPart parentRightLeg;
-	private final ModelPart parentLeftLeg;
-
-	private static final String HAT = "hat";
-	private static final String HEAD = "head";
-	private static final String CHEST = "body";
-	private static final String RIGHT_ARM = "right_arm";
-	private static final String LEFT_ARM = "left_arm";
-	private static final String RIGHT_LEG = "right_leg";
-	private static final String LEFT_LEG = "left_leg";
-
 	public ModelNightVisionGoggles(ModelPart root) {
 		super(root);
-
-		this.parentHat = root.getChild(HAT);
-		this.parentHead = root.getChild(HEAD);
-		this.parentChest = root.getChild(CHEST);
-		this.parentRightArm = root.getChild(RIGHT_ARM);
-		this.parentLeftArm = root.getChild(LEFT_ARM);
-		this.parentRightLeg = root.getChild(RIGHT_LEG);
-		this.parentLeftLeg = root.getChild(LEFT_LEG);
 
 		this.parentHat.visible = false;
 		this.parentHead.visible = true;

@@ -33,9 +33,9 @@ public class ItemCeramic extends Item {
 			ItemStack chestplate = armorPieces.get(2);
 			if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
 				chestplate.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-					if (h.getInt() < 2) {
+					if (h.getInt(0) < 2) {
 						playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
-						h.setInt(h.getInt() + 1);
+						h.setInt(0, h.getInt(0) + 1);
 						playerIn.getItemInHand(handIn).shrink(1);
 					}
 				});

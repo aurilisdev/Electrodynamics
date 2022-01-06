@@ -5,6 +5,8 @@ import electrodynamics.api.References;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
+import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
+import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
@@ -88,6 +90,10 @@ public class ClientRegister {
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
 
 	public static LayerDefinition NIGHT_VISION_GOGGLES = ModelNightVisionGoggles.createBodyLayer();
+	
+	public static LayerDefinition HYDRAULIC_BOOTS = ModelHydraulicBoots.createBodyLayer();
+	
+	public static LayerDefinition JETPACK = ModelJetpack.createBodyLayer();
 
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
@@ -254,6 +260,7 @@ public class ClientRegister {
 										&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
 												stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1
 														: 0);
+		KeyBinds.registerKeys();
 	}
 
 	@SubscribeEvent
