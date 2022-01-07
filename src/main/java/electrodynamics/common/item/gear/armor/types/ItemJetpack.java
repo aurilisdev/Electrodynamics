@@ -147,19 +147,19 @@ public class ItemJetpack extends ArmorItem {
 				if(enoughFuel) {
 					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(10);
 					if(mode == 0 && isDown) {
-						if(ticks % 10 == 0) {
+						if(ticks == 0 || ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
 						useGas(stack);
 					} else if(mode == 1 && isDown) {
-						if(ticks % 10 == 0) {
+						if(ticks == 0 || ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
 						useGas(stack);
 					} else if(mode == 1 && player.fallDistance > 0) {
-						if(ticks % 10 == 0) {
+						if(ticks == 0 || ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						hoverWithJetpack(player);
@@ -192,7 +192,10 @@ public class ItemJetpack extends ArmorItem {
 	
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return true;
+		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
+			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
+			return (13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0)) < 13.0;
+		}).orElse(false);
 	}
 	
 	@Override
@@ -201,6 +204,11 @@ public class ItemJetpack extends ArmorItem {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
+	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
 	}
 	
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
