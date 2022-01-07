@@ -191,6 +191,11 @@ public class ItemJetpack extends ArmorItem {
 	}
 	
 	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return true;
+	}
+	
+	@Override
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
