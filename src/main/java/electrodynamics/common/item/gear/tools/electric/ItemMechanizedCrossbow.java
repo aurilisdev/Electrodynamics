@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
+import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.ElectricUnit;
 import electrodynamics.api.item.IItemElectric;
@@ -17,7 +18,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +27,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
@@ -41,8 +40,11 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 
 	private final ElectricItemProperties properties;
 	
+	public static final int JOULES_PER_SHOT = 100;
+	public static final int NUMBER_OF_SHOTS = 30;
+	
 	public static final int PROJECTILE_RANGE = 20;
-	public static final int PROJECTILE_SPEED = 5;
+	public static final int PROJECTILE_SPEED = 3;
 	
 	public ItemMechanizedCrossbow(ElectricItemProperties properties) {
 		super(properties);
@@ -51,28 +53,46 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		 if (!world.isClientSide) {
-	        ItemStack crossbow = player.getItemInHand(hand); 
-			ItemStack arrow = getAmmo(player);
-	        Projectile projectile = getArrow(world, player, crossbow, arrow);
-	        if(!arrow.isEmpty()) {
-	        	Vec3 vec31 = player.getUpVector(1.0F);
-	            Quaternion quaternion = new Quaternion(new Vector3f(vec31), 0, true);
-	            Vec3 vec3 = player.getViewVector(1.0F);
-	            Vector3f vector3f = new Vector3f(vec3);
-	            vector3f.transform(quaternion);
-	            projectile.shoot((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z(), PROJECTILE_SPEED, 1);
-	            world.addFreshEntity(projectile);
-		        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
-		        return InteractionResultHolder.consume(crossbow);
-	        } 
+		ItemStack crossbow = player.getItemInHand(hand);  
+		if (!world.isClientSide) {
+	        ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
+	        if(mechanized.getJoulesStored(crossbow) >= JOULES_PER_SHOT) {
+	        	ItemStack arrow = getAmmo(player);
+		        Projectile projectile = getArrow(world, player, crossbow, arrow);
+		        if(!arrow.isEmpty()) {
+		        	mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+		        	arrow.shrink(1);
+		        	Vec3 playerUp = player.getUpVector(1.0F);
+		            Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
+		            Vec3 playerView = player.getViewVector(1.0F);
+		            Vector3f viewVector = new Vector3f(playerView);
+		            viewVector.transform(quaternion);
+		            projectile.shoot((double)viewVector.x(), (double)viewVector.y(), (double)viewVector.z(), PROJECTILE_SPEED, 1);
+		            world.addFreshEntity(projectile);
+			        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
+		        } else {
+		        	world.playSound(null, player.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+		        }
+	        } else {
+	        	world.playSound(null, player.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+	        }
 	    }
-		return super.use(world, player, hand);
+		return InteractionResultHolder.pass(crossbow);
 	}
 	
-	private static AbstractArrow getArrow(Level world_, LivingEntity entity, ItemStack crossbow, ItemStack ammo) {
+	@Override
+	public boolean canBeDepleted() {
+		return false;
+	}
+	
+	@Override
+	public boolean isEnchantable(ItemStack stack) {
+		return false;
+	}
+	
+	private static AbstractArrow getArrow(Level world, LivingEntity entity, ItemStack crossbow, ItemStack ammo) {
 	      ArrowItem arrowitem = (ArrowItem)(ammo.getItem() instanceof ArrowItem ? ammo.getItem() : Items.ARROW);
-	      AbstractArrow abstractarrow = arrowitem.createArrow(world_, ammo, entity);
+	      AbstractArrow abstractarrow = arrowitem.createArrow(world, ammo, entity);
 	      if (entity instanceof Player) {
 	         abstractarrow.setCritArrow(true);
 	      }
@@ -89,13 +109,9 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	
 	private ItemStack getAmmo(Player player) {
 		Inventory playerInv = player.getInventory();
-		for(Item item : ItemTags.ARROWS.getValues()) {
-			int loc = playerInv.findSlotMatchingItem(new ItemStack(item));
-			if(loc > -1) {
-				ItemStack arrow = playerInv.getItem(loc);
-				if(getAllSupportedProjectiles().test(arrow)) {
-					return arrow;
-				}
+		for(ItemStack stack : playerInv.items) {
+			if(getAllSupportedProjectiles().test(stack)) {
+				return stack;
 			}
 		}
 		return ItemStack.EMPTY;
