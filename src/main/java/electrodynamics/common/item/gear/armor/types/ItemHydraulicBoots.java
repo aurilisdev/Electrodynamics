@@ -122,6 +122,14 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 	
 	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
+			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
+			return (13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0)) < 13.0;
+		}).orElse(false);
+	}
+	
+	@Override
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
@@ -132,6 +140,11 @@ public class ItemHydraulicBoots extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return TEXTURE_LOCATION;
+	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
 	}
 	
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {

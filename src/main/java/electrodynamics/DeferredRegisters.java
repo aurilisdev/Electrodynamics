@@ -84,6 +84,7 @@ import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
+import electrodynamics.common.item.gear.tools.electric.ItemMechanizedCrossbow;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunPlasma;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
@@ -405,6 +406,10 @@ public class DeferredRegisters {
 			supplier(new ItemSeismicScanner((ElectricItemProperties) new ElectricItemProperties().capacity(ItemSeismicScanner.JOULES_PER_SCAN * 30)
 					.extract(TransferPack.joulesVoltage(ItemSeismicScanner.JOULES_PER_SCAN, 120))
 					.receive(TransferPack.joulesVoltage(ItemSeismicScanner.JOULES_PER_SCAN, 120)).tab(References.CORETAB).stacksTo(1))));
+	public static final RegistryObject<Item> ITEM_MECHANIZEDCROSSBOW = ITEMS.register("mechanizedcrossbow", 
+			supplier(new ItemMechanizedCrossbow((ElectricItemProperties) new ElectricItemProperties().capacity(ItemMechanizedCrossbow.JOULES_PER_SHOT * ItemMechanizedCrossbow.NUMBER_OF_SHOTS)
+					.extract(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 240))
+					.receive(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 240)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 			supplier(new ItemWrench(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
