@@ -46,18 +46,18 @@ public class ItemHydraulicBoots extends ArmorItem {
 
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 2000;
-	
+
 	private static final String TEXTURE_LOCATION = References.ID + ":textures/model/armor/hydraulicboots.png";
-	
+
 	public ItemHydraulicBoots() {
 		super(HydraulicBoots.HYDRAULIC_BOOTS, EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
 	}
-	
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
@@ -75,60 +75,59 @@ public class ItemHydraulicBoots extends ArmorItem {
 			}
 		});
 	}
-	
+
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if(allowdedIn(tab)) {
+		if (allowdedIn(tab)) {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				ItemStack full = new ItemStack(this);
 				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
 				full.getCapability(CapabilityUtils.getFluidItemCap())
-					.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
+						.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
 				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 				items.add(full);
 
 			}
 		}
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
 					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-					tooltip.add(
-							new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
 				}
 			});
 		}
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
-	
+
 	@Override
 	public boolean canBeDepleted() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
-			return (13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0)) < 13.0;
+			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
 		}).orElse(false);
 	}
-	
+
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
@@ -136,17 +135,17 @@ public class ItemHydraulicBoots extends ArmorItem {
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
 	}
-	
+
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return TEXTURE_LOCATION;
 	}
-	
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
@@ -154,7 +153,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 		fluids.add(DeferredRegisters.fluidHydraulic);
 		return Pair.of(tags, fluids);
 	}
-	
+
 	public enum HydraulicBoots implements ICustomArmor {
 		HYDRAULIC_BOOTS;
 

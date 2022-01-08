@@ -124,7 +124,7 @@ public class ItemSeismicScanner extends ItemElectric {
 			extractPower(scanner, properties.extract.getJoules(), false);
 			scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, COOLDOWN_SECONDS * 20));
 			world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
-			if (ore.getItem()instanceof BlockItem oreBlockItem) {
+			if (ore.getItem() instanceof BlockItem oreBlockItem) {
 				BlockPos pos = WorldUtils.getClosestBlockToCenter(world, player.getOnPos(), RADUIS_BLOCKS, oreBlockItem.getBlock());
 				scanner.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).ifPresent(h -> {
 					h.clearLocations();

@@ -39,7 +39,7 @@ public class TileMultimeterBlock extends GenericTile {
 			}
 			if (input.getSafe() instanceof IConductor) {
 				IConductor cond = input.getSafe();
-				if (cond.getAbstractNetwork()instanceof ElectricNetwork net) {
+				if (cond.getAbstractNetwork() instanceof ElectricNetwork net) {
 					joules = net.getActiveTransmitted();
 					voltage = net.getActiveVoltage();
 					resistance = net.getResistance();

@@ -56,8 +56,8 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 	private List<? extends FormattedCharSequence> getElectricInformation() {
 		ArrayList<FormattedCharSequence> list2 = new ArrayList<>();
 		if (gui instanceof GenericScreen<?> menu) {
-			if (((GenericContainerBlockEntity<?>) menu.getMenu()).getUnsafeHost()instanceof GenericTile tile) {
-				if (tile.getComponent(ComponentType.Electrodynamic)instanceof ComponentElectrodynamic electro) {
+			if (((GenericContainerBlockEntity<?>) menu.getMenu()).getUnsafeHost() instanceof GenericTile tile) {
+				if (tile.getComponent(ComponentType.Electrodynamic) instanceof ComponentElectrodynamic electro) {
 					if (tile instanceof IElectricGenerator generator) {
 						TransferPack transfer = generator.getProduced();
 						list2.add(new TranslatableComponent("gui.machine.current",
@@ -71,7 +71,7 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					} else {
 						if (wattage == null) {
-							double usage = tile.getComponent(ComponentType.Processor)instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
+							double usage = tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
 							for (ComponentProcessor proc : tile.getProcessors()) {
 								if (proc != null) {
 									usage += proc.getUsage() * 20;

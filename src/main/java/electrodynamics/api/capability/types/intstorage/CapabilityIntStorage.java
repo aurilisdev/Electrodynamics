@@ -13,10 +13,10 @@ import net.minecraftforge.common.util.LazyOptional;
 public class CapabilityIntStorage implements IIntStorage, ICapabilitySerializable<CompoundTag> {
 
 	public final LazyOptional<IIntStorage> holder = LazyOptional.of(() -> this);
-	
+
 	public CapabilityIntStorage(int size) {
 		numbers = new ArrayList<>();
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			numbers.add(0);
 		}
 	}
@@ -34,7 +34,7 @@ public class CapabilityIntStorage implements IIntStorage, ICapabilitySerializabl
 		if (ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
 			CompoundTag nbt = new CompoundTag();
 			nbt.putInt(ElectrodynamicsCapabilities.INT_KEY, numbers.size());
-			for(int i = 0; i < numbers.size(); i++) {
+			for (int i = 0; i < numbers.size(); i++) {
 				nbt.putInt(ElectrodynamicsCapabilities.INT_KEY + i, numbers.get(i));
 			}
 			return nbt;
@@ -47,7 +47,7 @@ public class CapabilityIntStorage implements IIntStorage, ICapabilitySerializabl
 		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
 			int size = nbt.getInt(ElectrodynamicsCapabilities.INT_KEY);
 			numbers = new ArrayList<>();
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				numbers.add(nbt.getInt(ElectrodynamicsCapabilities.INT_KEY + i));
 			}
 		}

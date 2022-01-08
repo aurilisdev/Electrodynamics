@@ -24,13 +24,13 @@ public class ModelNightVisionGoggles<T extends LivingEntity> extends GenericArmo
 	public ModelNightVisionGoggles(ModelPart root) {
 		super(root);
 
-		this.parentHat.visible = false;
-		this.parentHead.visible = true;
-		this.parentChest.visible = false;
-		this.parentRightArm.visible = false;
-		this.parentLeftArm.visible = false;
-		this.parentRightLeg.visible = false;
-		this.parentLeftLeg.visible = false;
+		parentHat.visible = false;
+		parentHead.visible = true;
+		parentChest.visible = false;
+		parentRightArm.visible = false;
+		parentLeftArm.visible = false;
+		parentRightLeg.visible = false;
+		parentLeftLeg.visible = false;
 	}
 
 	public static LayerDefinition createBodyLayer() {

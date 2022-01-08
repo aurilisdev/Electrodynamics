@@ -93,7 +93,7 @@ public class TileMineralGrinder extends GenericTile {
 			for (int i = 0; i < amount; i++) {
 				ComponentInventory inv = getComponent(ComponentType.Inventory);
 				ItemStack stack = inv.getInputContents().get(getProcessor(i).getProcessorNumber()).get(0);
-				if (stack.getItem()instanceof BlockItem it) {
+				if (stack.getItem() instanceof BlockItem it) {
 					Block block = it.getBlock();
 					double d4 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
 					double d6 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;

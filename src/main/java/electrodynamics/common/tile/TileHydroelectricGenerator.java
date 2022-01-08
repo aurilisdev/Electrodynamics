@@ -96,7 +96,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating ? 1 : -1), 0.0, 1.0);
 		setMultiplier(1);
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-			if (!stack.isEmpty() && stack.getItem()instanceof ItemUpgrade upgrade) {
+			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {
 					upgrade.subtype.applyUpgrade.accept(this, null, null);
 				}

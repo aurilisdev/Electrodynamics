@@ -36,8 +36,8 @@ public class NetworkHandler {
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketModeSwitch.class, PacketModeSwitch::encode, PacketModeSwitch::decode, PacketModeSwitch::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
-		CHANNEL.registerMessage(disc++, PacketNightVisionGoggles.class, PacketNightVisionGoggles::encode, PacketNightVisionGoggles::decode, PacketNightVisionGoggles::handle,
-				Optional.of(NetworkDirection.PLAY_TO_SERVER));
+		CHANNEL.registerMessage(disc++, PacketNightVisionGoggles.class, PacketNightVisionGoggles::encode, PacketNightVisionGoggles::decode,
+				PacketNightVisionGoggles::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 	}
 
 	public static String getPlayerInformation(String username) {
