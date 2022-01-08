@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/electricarcfurnacedouble",
-		"particle": "electrodynamics:model/electricarcfurnacedouble"
+		"0": "electrodynamics:model/electricarcfurnacedoublerunning",
+		"particle": "electrodynamics:model/electricarcfurnacedoublerunning"
 	},
 	"elements": [
 		{
@@ -166,7 +166,7 @@
 			"from": [7, 8.5, 5],
 			"to": [12, 9.5, 11],
 			"faces": {
-				"up": {"uv": [13, 13.5, 14.25, 14.5], "texture": "#0"}
+				"up": {"uv": [0, 15, 1.25, 16], "texture": "#0"}
 			}
 		},
 		{
