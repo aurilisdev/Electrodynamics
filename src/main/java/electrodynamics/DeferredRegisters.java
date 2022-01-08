@@ -139,7 +139,6 @@ import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
-import electrodynamics.common.tile.TileSeismicScanner;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTankHSLA;
 import electrodynamics.common.tile.TileTankReinforced;
@@ -618,9 +617,9 @@ public class DeferredRegisters {
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
 	public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(),
 			() -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
-	public static final RegistryObject<BlockEntityType<TileSeismicScanner>> TILE_SEISMICSCANNER = TILES
-			.register(SubtypeMachine.seismicscannermachine.tag(), () -> new BlockEntityType<>(TileSeismicScanner::new,
-					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicscannermachine)), null));
+//	public static final RegistryObject<BlockEntityType<TileSeismicScanner>> TILE_SEISMICSCANNER = TILES
+//			.register(SubtypeMachine.seismicscannermachine.tag(), () -> new BlockEntityType<>(TileSeismicScanner::new,
+//					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicscannermachine)), null));
 
 	// Containers
 
