@@ -19,10 +19,15 @@ import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -137,9 +142,10 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
-		super.inventoryTick(stack, world, entity, slot, isSelected);
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+		super.inventoryTick(stack, level, entity, slot, isSelected);
 		if (entity instanceof Player player) {
+			// TODO: need to fix this so it works on servers and not only clients
 			// slot check catches ~99% of issues; still bugs if on hot bar slot #2
 			if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
 				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
@@ -167,6 +173,14 @@ public class ItemJetpack extends ArmorItem {
 						}
 						hoverWithJetpack(player);
 						useGas(stack);
+					}
+					if (isDown && level.isClientSide) {
+						Vec3 worldPosition = entity.position();
+						for (int i = 0; i < 5; i++) {
+							double x = worldPosition.x - level.random.nextFloat() + 0.5;
+							double z = worldPosition.z - level.random.nextFloat() + 0.5;
+							level.addParticle(ParticleTypes.FLAME, x, worldPosition.y + 0.8, z, 0.0D, -2D, 0.0D);
+						}
 					}
 				}
 				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
