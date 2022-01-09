@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"b": {
-			"item": "electrodynamics:lithiumbattery"
+			"item": "electrodynamics:battery"
 		},
 		"c": {
 			"tag": "forge:circuits/basic"
