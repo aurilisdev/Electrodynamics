@@ -27,7 +27,6 @@ import electrodynamics.client.render.tile.RenderMineralGrinderTriple;
 import electrodynamics.client.render.tile.RenderMineralWasher;
 import electrodynamics.client.render.tile.RenderMultimeterBlock;
 import electrodynamics.client.render.tile.RenderWindmill;
-import electrodynamics.client.screen.item.ScreenPortableChest;
 import electrodynamics.client.screen.item.ScreenSeismicScanner;
 import electrodynamics.client.screen.tile.ScreenBatteryBox;
 import electrodynamics.client.screen.tile.ScreenCarbyneBatteryBox;
@@ -233,7 +232,6 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), ScreenSeismicScanner::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTROLYTICSEPARATOR.get(), ScreenElectrolyticSeparator::new);
-		MenuScreens.register(DeferredRegisters.CONTAINER_PORTABLECHEST.get(), ScreenPortableChest::new);
 		
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());

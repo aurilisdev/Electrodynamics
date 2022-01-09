@@ -7,10 +7,12 @@ import java.util.function.Consumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.multicapability.JetpackCapability;
+import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
 import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.item.ItemUtils;
@@ -18,6 +20,8 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.PacketJetpackFlightServer;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
@@ -90,7 +94,9 @@ public class ItemJetpack extends ArmorItem {
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		CapabilityIntStorage number = new CapabilityIntStorage(2);
 		number.setInt(0, 0);
-		return new JetpackCapability(new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids()), number);
+		CapabilityBooleanStorage bool = new CapabilityBooleanStorage();
+		bool.setBoolean(false);
+		return new JetpackCapability(new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids()), number, bool);
 	}
 
 	@Override
@@ -120,72 +126,81 @@ public class ItemJetpack extends ArmorItem {
 			});
 		}
 
-		int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(1);
+		if(!world.isClientSide) {
+			int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(1);
+			Component modeTip = switch (mode) {
+			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
+			case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
+			case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
+			default -> new TextComponent("");
+			};
 
-		Component modeTip = switch (mode) {
-		case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
-				.append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
-		case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
-				.append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
-		case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
-				.append(new TranslatableComponent("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
-		default -> new TextComponent("");
-		};
-
-		tooltip.add(modeTip);
-
+			tooltip.add(modeTip);
+		}
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
-		super.inventoryTick(stack, level, entity, slot, isSelected);
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
+		super.inventoryTick(stack, world, entity, slot, isSelected);
+		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
 		if (entity instanceof Player player) {
-			// TODO: need to fix this so it works on servers and not only clients
-			// slot check catches ~99% of issues; still bugs if on hot bar slot #2
-			if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
-				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
-				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
-				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
-						.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+			if(world.isClientSide) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
-				if (enoughFuel) {
-					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(10);
-					if (mode == 0 && isDown) {
-						if (ticks == 0 || ticks % 10 == 0) {
-							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
-						}
-						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
-						useGas(stack);
-					} else if (mode == 1 && isDown) {
-						if (ticks == 0 || ticks % 10 == 0) {
-							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
-						}
-						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
-						useGas(stack);
-					} else if (mode == 1 && player.fallDistance > 0) {
-						if (ticks == 0 || ticks % 10 == 0) {
-							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
-						}
-						hoverWithJetpack(player);
-						useGas(stack);
+				boolean serverDown = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+				if(isDown) {
+					if(!serverDown) {
+						NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), true));
 					}
-					if (isDown && level.isClientSide) {
-						Vec3 worldPosition = entity.position();
-						for (int i = 0; i < 5; i++) {
-							double x = worldPosition.x - level.random.nextFloat() + 0.5;
-							double z = worldPosition.z - level.random.nextFloat() + 0.5;
-							level.addParticle(ParticleTypes.FLAME, x, worldPosition.y + 0.8, z, 0.0D, -2D, 0.0D);
+				} else {
+					if(serverDown) {
+						NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), false));
+					}
+				}
+			} else {
+				// slot check catches ~99% of issues; still bugs if on hot bar slot #2
+				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
+					int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
+					boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
+							.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+					boolean isDown = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
+					Electrodynamics.LOGGER.info(isDown);
+					if (enoughFuel) {
+						int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(10);
+						if (mode == 0 && isDown) {
+							if (ticks == 0 || ticks % 10 == 0) {
+								player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
+							}
+							ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
+							useGas(stack);
+							//renderParticles(world, entity);
+						} else if (mode == 1 && isDown) {
+							if (ticks == 0 || ticks % 10 == 0) {
+								player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
+							}
+							ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
+							useGas(stack);
+							//renderParticles(world, entity);
+						} else if (mode == 1 && player.fallDistance > 0) {
+							if (ticks == 0 || ticks % 10 == 0) {
+								player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
+							}
+							hoverWithJetpack(player);
+							useGas(stack);
+							//renderParticles(world, entity);
 						}
 					}
 				}
-				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-					if (h.getInt(1) > 100) {
-						h.setInt(1, 0);
-					}
-				});
 			}
 		}
+		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
+			if (h.getInt(1) > 100) {
+				h.setInt(1, 0);
+			}
+		});
 	}
 
 	@Override
@@ -238,6 +253,7 @@ public class ItemJetpack extends ArmorItem {
 		double y = currMovement.y + speed >= termVelocity ? termVelocity : currMovement.y + speed;
 		currMovement = new Vec3(currMovement.x, y, currMovement.z);
 		player.setDeltaMovement(currMovement);
+		player.hurtMarked = true;
 	}
 
 	private static void hoverWithJetpack(Player player) {
@@ -251,11 +267,20 @@ public class ItemJetpack extends ArmorItem {
 			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
 			player.setDeltaMovement(currMovement);
 		}
-
+		player.hurtMarked = true;
 	}
 
 	private static void useGas(ItemStack stack) {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
+	}
+	
+	private static void renderParticles(Level world, Entity entity) {
+		Vec3 worldPosition = entity.position();
+		for (int i = 0; i < 5; i++) {
+			double x = worldPosition.x - world.random.nextFloat() + 0.5;
+			double z = worldPosition.z - world.random.nextFloat() + 0.5;
+			world.addParticle(ParticleTypes.FLAME, x, worldPosition.y + 0.8, z, 0.0D, -2D, 0.0D);
+		}
 	}
 
 	@Override
