@@ -24,32 +24,32 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 	public ModelCompositeArmor(ModelPart root, EquipmentSlot slot) {
 		super(root);
 
-		this.parentHat.visible = false;
-		
+		parentHat.visible = false;
+
 		switch (slot) {
 		case HEAD:
-			this.parentHead.visible = true;
-			this.parentChest.visible = false;
-			this.parentRightArm.visible = false;
-			this.parentLeftArm.visible = false;
-			this.parentRightLeg.visible = false;
-			this.parentLeftLeg.visible = false;
+			parentHead.visible = true;
+			parentChest.visible = false;
+			parentRightArm.visible = false;
+			parentLeftArm.visible = false;
+			parentRightLeg.visible = false;
+			parentLeftLeg.visible = false;
 			break;
 		case CHEST:
-			this.parentHead.visible = false;
-			this.parentChest.visible = true;
-			this.parentRightArm.visible = true;
-			this.parentLeftArm.visible = true;
-			this.parentRightLeg.visible = false;
-			this.parentLeftLeg.visible = false;
+			parentHead.visible = false;
+			parentChest.visible = true;
+			parentRightArm.visible = true;
+			parentLeftArm.visible = true;
+			parentRightLeg.visible = false;
+			parentLeftLeg.visible = false;
 			break;
 		case LEGS, FEET:
-			this.parentHead.visible = false;
-			this.parentChest.visible = false;
-			this.parentRightArm.visible = false;
-			this.parentLeftArm.visible = false;
-			this.parentRightLeg.visible = true;
-			this.parentLeftLeg.visible = true;
+			parentHead.visible = false;
+			parentChest.visible = false;
+			parentRightArm.visible = false;
+			parentLeftArm.visible = false;
+			parentRightLeg.visible = true;
+			parentLeftLeg.visible = true;
 			break;
 		default:
 			break;

@@ -23,6 +23,7 @@ import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -53,20 +54,20 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 public class ItemJetpack extends ArmorItem {
-	
+
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
-	
+
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VELOCITY = 1;
-	
+
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
-	
+
 	public ItemJetpack() {
 		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
-	
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
@@ -84,120 +85,132 @@ public class ItemJetpack extends ArmorItem {
 			}
 		});
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		CapabilityIntStorage number = new CapabilityIntStorage(2);
 		number.setInt(0, 0);
 		return new JetpackCapability(new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids()), number);
 	}
-	
+
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if(allowdedIn(tab)) {
+		if (allowdedIn(tab)) {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				ItemStack full = new ItemStack(this);
 				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
 				full.getCapability(CapabilityUtils.getFluidItemCap())
-					.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
+						.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
 				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 				items.add(full);
 
 			}
 		}
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
 					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-					tooltip.add(
-							new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
 				}
 			});
 		}
-		
+
 		int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(1);
-		
-		Component modeTip  = switch(mode) {
-		case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
-		case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
-		case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
+
+		Component modeTip = switch (mode) {
+		case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+				.append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
+		case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+				.append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
+		case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+				.append(new TranslatableComponent("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
 		default -> new TextComponent("");
 		};
-		
+
 		tooltip.add(modeTip);
-		
+
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
-	
+
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
-		super.inventoryTick(stack, world, entity, slot, isSelected);
-		if(entity instanceof Player player) {
-			//slot check catches ~99% of issues; still bugs if on hot bar slot #2
-			if(slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+		super.inventoryTick(stack, level, entity, slot, isSelected);
+		if (entity instanceof Player player) {
+			// TODO: need to fix this so it works on servers and not only clients
+			// slot check catches ~99% of issues; still bugs if on hot bar slot #2
+			if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
 				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
 				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
-				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
+						.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
-				if(enoughFuel) {
+				if (enoughFuel) {
 					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(10);
-					if(mode == 0 && isDown) {
-						if(ticks == 0 || ticks % 10 == 0) {
+					if (mode == 0 && isDown) {
+						if (ticks == 0 || ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
 						useGas(stack);
-					} else if(mode == 1 && isDown) {
-						if(ticks == 0 || ticks % 10 == 0) {
+					} else if (mode == 1 && isDown) {
+						if (ticks == 0 || ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
 						useGas(stack);
-					} else if(mode == 1 && player.fallDistance > 0) {
-						if(ticks == 0 || ticks % 10 == 0) {
+					} else if (mode == 1 && player.fallDistance > 0) {
+						if (ticks == 0 || ticks % 10 == 0) {
 							player.playSound(SoundRegister.SOUND_JETPACK.get(), 1, 1);
 						}
 						hoverWithJetpack(player);
 						useGas(stack);
 					}
-				} 
+					if (isDown && level.isClientSide) {
+						Vec3 worldPosition = entity.position();
+						for (int i = 0; i < 5; i++) {
+							double x = worldPosition.x - level.random.nextFloat() + 0.5;
+							double z = worldPosition.z - level.random.nextFloat() + 0.5;
+							level.addParticle(ParticleTypes.FLAME, x, worldPosition.y + 0.8, z, 0.0D, -2D, 0.0D);
+						}
+					}
+				}
 				stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-					if(h.getInt(1) > 100) {
+					if (h.getInt(1) > 100) {
 						h.setInt(1, 0);
 					}
 				});
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean canBeDepleted() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
-			return (13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0)) < 13.0;
+			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
 		}).orElse(false);
 	}
-	
+
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
@@ -205,12 +218,12 @@ public class ItemJetpack extends ArmorItem {
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
 	}
-	
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
@@ -218,7 +231,7 @@ public class ItemJetpack extends ArmorItem {
 		fluids.add(DeferredRegisters.fluidHydrogen);
 		return Pair.of(tags, fluids);
 	}
-	
+
 	private static void ascendWithJetpack(double speed, double termVelocity, Player player) {
 		player.resetFallDistance();
 		Vec3 currMovement = player.getDeltaMovement();
@@ -226,9 +239,9 @@ public class ItemJetpack extends ArmorItem {
 		currMovement = new Vec3(currMovement.x, y, currMovement.z);
 		player.setDeltaMovement(currMovement);
 	}
-	
+
 	private static void hoverWithJetpack(Player player) {
-		if(player.isShiftKeyDown()) {
+		if (player.isShiftKeyDown()) {
 			player.resetFallDistance();
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
@@ -238,18 +251,18 @@ public class ItemJetpack extends ArmorItem {
 			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
 			player.setDeltaMovement(currMovement);
 		}
-		
+
 	}
-	
-	private void useGas(ItemStack stack) {
+
+	private static void useGas(ItemStack stack) {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
 	}
-	
+
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
 	}
-	
+
 	public enum Jetpack implements ICustomArmor {
 		JETPACK;
 
@@ -282,7 +295,7 @@ public class ItemJetpack extends ArmorItem {
 		public float getKnockbackResistance() {
 			return 0.0F;
 		}
-		
+
 	}
 
 }

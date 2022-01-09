@@ -86,9 +86,10 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
 		if (entity instanceof Player player) {
-			boolean status = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false);
-			if(status && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.HEAD).getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
-				&& nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+			boolean status = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean)
+					.orElse(false);
+			if (status && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.HEAD).getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
+					&& nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
 				nvgs.extractPower(stack, JOULES_PER_TICK, false);
 				if (player.hasEffect(MobEffects.NIGHT_VISION)) {
 					player.getEffect(MobEffects.NIGHT_VISION)
@@ -105,12 +106,12 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public boolean isEnchantable(ItemStack p_41456_) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isRepairable(ItemStack stack) {
 		return false;
@@ -140,14 +141,14 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 				ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
 						+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
 								.withStyle(ChatFormatting.RED));
-		if(stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean()).orElse(false)) {
+		if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean).orElse(false)) {
 			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
-				.append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+					.append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 		} else {
 			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
 					.append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 		}
-		
+
 	}
 
 	@Override
@@ -176,7 +177,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		}
 		return ARMOR_TEXTURE_OFF;
 	}
-	
+
 	public enum NightVisionGoggles implements ICustomArmor {
 		NVGS;
 
@@ -209,7 +210,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		public float getKnockbackResistance() {
 			return 0.0F;
 		}
-		
+
 	}
 
 }

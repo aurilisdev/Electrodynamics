@@ -13,7 +13,7 @@ public abstract class GenericArmorModel<T extends LivingEntity> extends Humanoid
 	protected final ModelPart parentLeftArm;
 	protected final ModelPart parentRightLeg;
 	protected final ModelPart parentLeftLeg;
-	
+
 	protected static final String HAT = "hat";
 	protected static final String HEAD = "head";
 	protected static final String CHEST = "body";
@@ -21,10 +21,10 @@ public abstract class GenericArmorModel<T extends LivingEntity> extends Humanoid
 	protected static final String LEFT_ARM = "left_arm";
 	protected static final String RIGHT_LEG = "right_leg";
 	protected static final String LEFT_LEG = "left_leg";
-	
+
 	public GenericArmorModel(ModelPart root) {
 		super(root);
-		
+
 		this.parentHat = root.getChild(HAT);
 		this.parentHead = root.getChild(HEAD);
 		this.parentChest = root.getChild(CHEST);

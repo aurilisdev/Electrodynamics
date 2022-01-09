@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class PlayerHandler {
 
 	private static final float LETHAL_DAMAGE_AMOUNT = 18.0f;
-	
+
 	@SubscribeEvent
 	public static void tick(PlayerTickEvent event) {
 		if (event.side == LogicalSide.CLIENT && event.player.level.getLevelData().getDayTime() % 50 == 10) {
@@ -61,16 +61,17 @@ public class PlayerHandler {
 
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void hydraulicFallDamage(LivingHurtEvent event) {
 		DamageSource source = event.getSource();
-		if(source.isFall()) {
+		if (source.isFall()) {
 			ItemStack hydraulicBoots = new ItemStack(DeferredRegisters.ITEM_HYDRAULICBOOTS.get());
 			ItemStack playerBoots = event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET);
-			if(ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) && event.getAmount() >= 2) {
+			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) && event.getAmount() >= 2) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
-				if(playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
+				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0)
+						.orElse(false)) {
 					event.setAmount((float) Math.sqrt(event.getAmount()));
 					playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
 					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(),

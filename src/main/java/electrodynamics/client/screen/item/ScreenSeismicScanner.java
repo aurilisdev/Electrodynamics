@@ -53,7 +53,7 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	private List<? extends FormattedCharSequence> getElectricInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		ItemStack ownerItem = menu.getOwnerItem();
-		if (ownerItem.getItem()instanceof ItemSeismicScanner scanner) {
+		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
 			list.add(new TranslatableComponent("gui.machine.usage",
 					new TextComponent(ChatFormatter.getElectricDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, ElectricUnit.WATT))
 							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());

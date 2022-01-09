@@ -31,7 +31,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return worldIn.getBlockEntity(pos)instanceof TileMultiSubnode subnode ? subnode.getShape() : Shapes.block();
+		return worldIn.getBlockEntity(pos) instanceof TileMultiSubnode subnode ? subnode.getShape() : Shapes.block();
 	}
 
 	@Override

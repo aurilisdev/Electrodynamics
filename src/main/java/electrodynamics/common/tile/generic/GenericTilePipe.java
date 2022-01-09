@@ -118,7 +118,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 			HashSet<IPipe> adjacentCables = getConnectedConductors();
 			HashSet<FluidNetwork> connectedNets = new HashSet<>();
 			for (IPipe wire : adjacentCables) {
-				if (wire.getNetwork(false) != null && wire.getNetwork()instanceof FluidNetwork f) {
+				if (wire.getNetwork(false) != null && wire.getNetwork() instanceof FluidNetwork f) {
 					connectedNets.add(f);
 				}
 			}
@@ -151,7 +151,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 			ArrayList<FluidNetwork> foundNetworks = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
 				BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-				if (facing instanceof IPipe p && p.getNetwork()instanceof FluidNetwork n) {
+				if (facing instanceof IPipe p && p.getNetwork() instanceof FluidNetwork n) {
 					foundNetworks.add(n);
 				}
 			}

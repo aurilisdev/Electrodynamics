@@ -141,7 +141,6 @@ import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
-import electrodynamics.common.tile.TileSeismicScanner;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTankHSLA;
 import electrodynamics.common.tile.TileTankReinforced;
@@ -408,8 +407,9 @@ public class DeferredRegisters {
 			supplier(new ItemSeismicScanner((ElectricItemProperties) new ElectricItemProperties().capacity(ItemSeismicScanner.JOULES_PER_SCAN * 30)
 					.extract(TransferPack.joulesVoltage(ItemSeismicScanner.JOULES_PER_SCAN, 120))
 					.receive(TransferPack.joulesVoltage(ItemSeismicScanner.JOULES_PER_SCAN, 120)).tab(References.CORETAB).stacksTo(1))));
-	public static final RegistryObject<Item> ITEM_MECHANIZEDCROSSBOW = ITEMS.register("mechanizedcrossbow", 
-			supplier(new ItemMechanizedCrossbow((ElectricItemProperties) new ElectricItemProperties().capacity(ItemMechanizedCrossbow.JOULES_PER_SHOT * ItemMechanizedCrossbow.NUMBER_OF_SHOTS)
+	public static final RegistryObject<Item> ITEM_MECHANIZEDCROSSBOW = ITEMS.register("mechanizedcrossbow",
+			supplier(new ItemMechanizedCrossbow((ElectricItemProperties) new ElectricItemProperties()
+					.capacity(ItemMechanizedCrossbow.JOULES_PER_SHOT * ItemMechanizedCrossbow.NUMBER_OF_SHOTS)
 					.extract(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 240))
 					.receive(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 240)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
@@ -449,7 +449,7 @@ public class DeferredRegisters {
 							.receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
 	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(new ItemJetpack()));
-	
+
 	// Split from items to tiles
 
 	public static final RegistryObject<BlockEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(),
@@ -620,9 +620,9 @@ public class DeferredRegisters {
 					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
 	public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(),
 			() -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
-	public static final RegistryObject<BlockEntityType<TileSeismicScanner>> TILE_SEISMICSCANNER = TILES
-			.register(SubtypeMachine.seismicscannermachine.tag(), () -> new BlockEntityType<>(TileSeismicScanner::new,
-					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicscannermachine)), null));
+//	public static final RegistryObject<BlockEntityType<TileSeismicScanner>> TILE_SEISMICSCANNER = TILES
+//			.register(SubtypeMachine.seismicscannermachine.tag(), () -> new BlockEntityType<>(TileSeismicScanner::new,
+//					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicscannermachine)), null));
 
 	// Containers
 

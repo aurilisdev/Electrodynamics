@@ -115,26 +115,26 @@ public class ClientEvents {
 	public static void addRenderLocation(BlockPos pos) {
 		blocks.add(new Pair<>(System.currentTimeMillis(), pos));
 	}
-	
+
 	@SubscribeEvent
 	public static void keyPressEvents(KeyInputEvent event) {
-		//I tried doing this w/o the packets, but it led to some desync issues
-		//Packets ensure those don't happen
-		if(KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
+		// I tried doing this w/o the packets, but it led to some desync issues
+		// Packets ensure those don't happen
+		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
 			Player player = Minecraft.getInstance().player;
 			ItemStack playerChest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if(ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+			if (ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitch(player.getUUID()));
 			}
 		}
 
-		if(KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
+		if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
 			Player player = Minecraft.getInstance().player;
 			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-			if(ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
+			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketNightVisionGoggles(player.getUUID()));
 			}
 		}
 	}
-	
+
 }

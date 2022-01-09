@@ -39,84 +39,84 @@ import net.minecraft.world.phys.Vec3;
 public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IItemElectric {
 
 	private final ElectricItemProperties properties;
-	
+
 	public static final int JOULES_PER_SHOT = 100;
 	public static final int NUMBER_OF_SHOTS = 30;
-	
+
 	public static final int PROJECTILE_RANGE = 20;
 	public static final int PROJECTILE_SPEED = 3;
-	
+
 	public ItemMechanizedCrossbow(ElectricItemProperties properties) {
 		super(properties);
 		this.properties = properties;
 	}
-	
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		ItemStack crossbow = player.getItemInHand(hand);  
+		ItemStack crossbow = player.getItemInHand(hand);
 		if (!world.isClientSide) {
-	        ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
-	        if(mechanized.getJoulesStored(crossbow) >= JOULES_PER_SHOT) {
-	        	ItemStack arrow = getAmmo(player);
-		        Projectile projectile = getArrow(world, player, crossbow, arrow);
-		        if(!arrow.isEmpty()) {
-		        	mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
-		        	arrow.shrink(1);
-		        	Vec3 playerUp = player.getUpVector(1.0F);
-		            Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
-		            Vec3 playerView = player.getViewVector(1.0F);
-		            Vector3f viewVector = new Vector3f(playerView);
-		            viewVector.transform(quaternion);
-		            projectile.shoot((double)viewVector.x(), (double)viewVector.y(), (double)viewVector.z(), PROJECTILE_SPEED, 1);
-		            world.addFreshEntity(projectile);
-			        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
-		        } else {
-		        	world.playSound(null, player.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-		        }
-	        } else {
-	        	world.playSound(null, player.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-	        }
-	    }
+			ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
+			if (mechanized.getJoulesStored(crossbow) >= JOULES_PER_SHOT) {
+				ItemStack arrow = getAmmo(player);
+				Projectile projectile = getArrow(world, player, crossbow, arrow);
+				if (!arrow.isEmpty()) {
+					mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+					arrow.shrink(1);
+					Vec3 playerUp = player.getUpVector(1.0F);
+					Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
+					Vec3 playerView = player.getViewVector(1.0F);
+					Vector3f viewVector = new Vector3f(playerView);
+					viewVector.transform(quaternion);
+					projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
+					world.addFreshEntity(projectile);
+					world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
+				} else {
+					world.playSound(null, player.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+				}
+			} else {
+				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			}
+		}
 		return InteractionResultHolder.pass(crossbow);
 	}
-	
+
 	@Override
 	public boolean canBeDepleted() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
-	
+
 	private static AbstractArrow getArrow(Level world, LivingEntity entity, ItemStack crossbow, ItemStack ammo) {
-	      ArrowItem arrowitem = (ArrowItem)(ammo.getItem() instanceof ArrowItem ? ammo.getItem() : Items.ARROW);
-	      AbstractArrow abstractarrow = arrowitem.createArrow(world, ammo, entity);
-	      if (entity instanceof Player) {
-	         abstractarrow.setCritArrow(true);
-	      }
+		ArrowItem arrowitem = (ArrowItem) (ammo.getItem() instanceof ArrowItem ? ammo.getItem() : Items.ARROW);
+		AbstractArrow abstractarrow = arrowitem.createArrow(world, ammo, entity);
+		if (entity instanceof Player) {
+			abstractarrow.setCritArrow(true);
+		}
 
-	      abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-	      abstractarrow.setShotFromCrossbow(true);
-	      int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, crossbow);
-	      if (i > 0) {
-	         abstractarrow.setPierceLevel((byte)i);
-	      }
+		abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+		abstractarrow.setShotFromCrossbow(true);
+		int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, crossbow);
+		if (i > 0) {
+			abstractarrow.setPierceLevel((byte) i);
+		}
 
-	      return abstractarrow;
+		return abstractarrow;
 	}
-	
+
 	private ItemStack getAmmo(Player player) {
 		Inventory playerInv = player.getInventory();
-		for(ItemStack stack : playerInv.items) {
-			if(getAllSupportedProjectiles().test(stack)) {
+		for (ItemStack stack : playerInv.items) {
+			if (getAllSupportedProjectiles().test(stack)) {
 				return stack;
 			}
 		}
 		return ItemStack.EMPTY;
 	}
-	
+
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowdedIn(group)) {
@@ -128,7 +128,7 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 			items.add(empty);
 		}
 	}
-	
+
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
@@ -138,12 +138,12 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	public boolean isBarVisible(ItemStack stack) {
 		return getJoulesStored(stack) < properties.capacity;
 	}
-	
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);

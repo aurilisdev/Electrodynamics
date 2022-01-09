@@ -14,7 +14,7 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 
 	private RestrictedFluidHandlerItemStack handler;
 	private CapabilityIntStorage number;
-	
+
 	public JetpackCapability(RestrictedFluidHandlerItemStack handler, CapabilityIntStorage number) {
 		this.handler = handler;
 		this.number = number;
@@ -22,9 +22,9 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if(cap == CapabilityUtils.getFluidItemCap()) {
+		if (cap == CapabilityUtils.getFluidItemCap()) {
 			return handler.getCapability(cap, side);
-		} else if(cap == ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY) {
+		} else if (cap == ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY) {
 			return number.holder.cast();
 		}
 		return LazyOptional.empty();
@@ -41,5 +41,5 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 	public void deserializeNBT(CompoundTag nbt) {
 		number.deserializeNBT(nbt.getCompound("number"));
 	}
-	
+
 }

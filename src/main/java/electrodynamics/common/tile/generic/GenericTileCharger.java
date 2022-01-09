@@ -44,7 +44,7 @@ public abstract class GenericTileCharger extends GenericTile {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		ItemStack itemInput = inventory.getItem(0);
 		if (!itemInput.isEmpty() && electro.getJoulesStored() == electro.getMaxJoulesStored()
-				&& itemInput.getItem()instanceof IItemElectric electricItem) {
+				&& itemInput.getItem() instanceof IItemElectric electricItem) {
 			double recieveVoltage = electricItem.getElectricProperties().receive.getVoltage();
 			double machineVoltage = electro.getVoltage();
 
