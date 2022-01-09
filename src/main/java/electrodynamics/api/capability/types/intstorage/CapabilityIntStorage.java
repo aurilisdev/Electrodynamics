@@ -20,6 +20,11 @@ public class CapabilityIntStorage implements IIntStorage, ICapabilitySerializabl
 			numbers.add(0);
 		}
 	}
+	
+	public CapabilityIntStorage() {
+		numbers = new ArrayList<>();
+		numbers.add(0);
+	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

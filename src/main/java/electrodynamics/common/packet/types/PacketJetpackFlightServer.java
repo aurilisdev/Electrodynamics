@@ -32,7 +32,7 @@ public class PacketJetpackFlightServer {
 				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
 					chest.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h ->{
-						h.setBoolean(message.bool);
+						h.setBoolean(0, message.bool);
 					});
 				}
 			}
