@@ -39,6 +39,7 @@ import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.inventory.container.item.ContainerPortableChest;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerCarbyneBatteryBox;
@@ -80,6 +81,7 @@ import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
+import electrodynamics.common.item.gear.tools.ItemPortableChest;
 import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
@@ -425,6 +427,7 @@ public class DeferredRegisters {
 			supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook",
 			supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> PORTABLE_CHEST = ITEMS.register("portablechest", supplier(new ItemPortableChest()));
 
 	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet",
 			supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
@@ -683,7 +686,9 @@ public class DeferredRegisters {
 			.register("electrolyticseparator", () -> new MenuType<>(ContainerElectrolyticSeparator::new));
 	public static final RegistryObject<MenuType<ContainerCarbyneBatteryBox>> CONTAINER_CARBYNEBATTERYBOX = CONTAINERS
 			.register(SubtypeMachine.carbynebatterybox.tag(), () -> new MenuType<>(ContainerCarbyneBatteryBox::new));
-
+	public static final RegistryObject<MenuType<ContainerPortableChest>> CONTAINER_PORTABLECHEST = CONTAINERS.register("portablechest", 
+			() -> new MenuType<>(ContainerPortableChest::new));
+	
 	// Entities
 
 	public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder

@@ -23,7 +23,7 @@ public class ContainerSeismicScanner extends GenericContainerItem {
 	@Override
 	public void addItemInventorySlots(Container inv, Inventory playerinv) {
 		if (getHandler() != null) {
-			addSlot(new SlotItemHandlerRestricted(getHandler(), nextIndex(), 25, 42, BlockItem.class));
+			addSlot(new SlotItemHandlerRestricted(getHandler(), nextIndex(), 25, 42, true, BlockItem.class));
 		}
 	}
 

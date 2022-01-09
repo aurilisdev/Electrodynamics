@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"wlw",
+		"wcw",
+		"www"
+	],
+	"key": {
+		"w": {
+			"tag": "minecraft:wool"
+		},
+		"c": {
+			"item": "minecraft:chest"
+		},
+		"l": {
+			"item": "minecraft:leather"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:portablechest",
+		"count": 1
+	}
+}
