@@ -7,12 +7,14 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class PacketModeSwitchServer {
@@ -43,6 +45,12 @@ public class PacketModeSwitchServer {
 					}).orElse(false);
 					if (sucessful) {
 						player.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
+						world.getChunkSource().chunkMap.getPlayers(player.chunkPosition(), false).forEach(play ->{
+							if(play.getUUID().equals(message.playerId)) {
+								int mode = chest.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
+								NetworkHandler.CHANNEL.sendTo(new PacketModeSwitchClient(message.playerId, mode), play.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+							}
+						});
 					}
 				}
 			}

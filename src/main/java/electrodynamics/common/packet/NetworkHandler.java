@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import electrodynamics.api.References;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
+import electrodynamics.common.packet.types.PacketModeSwitchClient;
 import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketNightVisionGoggles;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
@@ -37,6 +38,8 @@ public class NetworkHandler {
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketModeSwitchServer.class, PacketModeSwitchServer::encode, PacketModeSwitchServer::decode, PacketModeSwitchServer::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
+		CHANNEL.registerMessage(disc++, PacketModeSwitchClient.class, PacketModeSwitchClient::encode, PacketModeSwitchClient::decode, PacketModeSwitchClient::handle,
+				Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketJetpackFlightServer.class, PacketJetpackFlightServer::encode, PacketJetpackFlightServer::decode, PacketJetpackFlightServer::handle,
 				Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketNightVisionGoggles.class, PacketNightVisionGoggles::encode, PacketNightVisionGoggles::decode,
