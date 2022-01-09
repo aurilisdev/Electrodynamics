@@ -9,7 +9,7 @@ public class SlotItemHandlerRestricted extends SlotItemHandler {
 	private Class<?>[] classes;
 	private boolean isWhitelist;
 
-	public SlotItemHandlerRestricted(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean isWhitelist, Class<?>...classes) {
+	public SlotItemHandlerRestricted(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean isWhitelist, Class<?>... classes) {
 		super(itemHandler, index, xPosition, yPosition);
 		this.classes = classes;
 		this.isWhitelist = isWhitelist;
@@ -17,10 +17,8 @@ public class SlotItemHandlerRestricted extends SlotItemHandler {
 
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		for(Class<?> clazz : classes) {
-			if (isWhitelist && clazz.isInstance(stack.getItem())) {
-				return super.mayPlace(stack);
-			} else if (!clazz.isInstance(stack.getItem())) {
+		for (Class<?> clazz : classes) {
+			if ((isWhitelist && clazz.isInstance(stack.getItem())) || !clazz.isInstance(stack.getItem())) {
 				return super.mayPlace(stack);
 			}
 		}

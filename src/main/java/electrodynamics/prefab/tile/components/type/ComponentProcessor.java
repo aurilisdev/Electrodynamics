@@ -203,20 +203,20 @@ public class ComponentProcessor implements Component {
 		}
 
 		setRecipe(locRecipe);
-		
+
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();
 		boolean isEmpty = output.isEmpty();
-		if(!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
+		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
 			return false;
 		}
-		
+
 		int locCap = isEmpty ? 64 : output.getMaxStackSize();
 		if (locCap < output.getCount() + result.getCount()) {
 			return false;
 		}
-		
+
 		if (locRecipe.hasItemBiproducts()) {
 			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
@@ -252,11 +252,11 @@ public class ComponentProcessor implements Component {
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();
 		boolean isEmpty = output.isEmpty();
-		
-		if(!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
+
+		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
 			return false;
 		}
-		
+
 		int locCap = isEmpty ? 64 : output.getMaxStackSize();
 		if (locCap < output.getCount() + result.getCount()) {
 			return false;
@@ -399,11 +399,11 @@ public class ComponentProcessor implements Component {
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();
 		boolean isEmpty = output.isEmpty();
-		
-		if(!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
+
+		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
 			return false;
 		}
-		
+
 		int locCap = isEmpty ? 64 : output.getMaxStackSize();
 		if (locCap < output.getCount() + result.getCount()) {
 			return false;

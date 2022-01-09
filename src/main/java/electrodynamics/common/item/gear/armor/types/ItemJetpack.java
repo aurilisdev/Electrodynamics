@@ -121,7 +121,7 @@ public class ItemJetpack extends ArmorItem {
 				tooltip.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
 			});
 		}
-		//TODO this breaks on the server for some reason
+		// TODO this breaks on the server for some reason
 		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
 			int mode = h.getInt(0);
 			Component modeTip = switch (mode) {
@@ -136,9 +136,7 @@ public class ItemJetpack extends ArmorItem {
 
 			tooltip.add(modeTip);
 		});
-		
-		
-			
+
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
 
@@ -147,48 +145,47 @@ public class ItemJetpack extends ArmorItem {
 		super.inventoryTick(stack, world, entity, slot, isSelected);
 		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
 		if (entity instanceof Player player) {
-			if(world.isClientSide) {
+			if (world.isClientSide) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
-				//has to be send every tick. 1 Hour of debugging confirms this
-				if(isDown) {
+				// has to be send every tick. 1 Hour of debugging confirms this
+				if (isDown) {
 					NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), true));
 				} else {
 					NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), false));
 				}
-				
-				boolean isRunning = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(1)).orElse(false);
-				if(isRunning) {
-					//TODO doesnt work on server
+
+				boolean isRunning = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(1))
+						.orElse(false);
+				if (isRunning) {
+					// TODO doesnt work on server
 					renderParticles(world, entity);
 				}
-				
-			} else {
-				// slot check catches ~99% of issues; still bugs if on hot bar slot #2
-				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
-					int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
-					boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
-							.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
-					boolean isDown = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
-					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
-					if (enoughFuel) {
-						if (mode == 0 && isDown) {
-							handleSound(ticks, player);
-							ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
-							handleRunning(world, entity, stack);
-						} else if (mode == 1 && isDown) {
-							handleSound(ticks, player);
-							ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
-							handleRunning(world, entity, stack);
-						} else if (mode == 1 && player.fallDistance > 0) {
-							handleSound(ticks, player);
-							hoverWithJetpack(player);
-							handleRunning(world, entity, stack);
-						} else {
-							stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, false));
-						}
+
+			} else // slot check catches ~99% of issues; still bugs if on hot bar slot #2
+			if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
+				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
+				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
+						.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+				boolean isDown = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+				int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
+				if (enoughFuel) {
+					if (mode == 0 && isDown) {
+						handleSound(ticks, player);
+						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
+						handleRunning(world, entity, stack);
+					} else if (mode == 1 && isDown) {
+						handleSound(ticks, player);
+						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
+						handleRunning(world, entity, stack);
+					} else if (mode == 1 && player.fallDistance > 0) {
+						handleSound(ticks, player);
+						hoverWithJetpack(player);
+						handleRunning(world, entity, stack);
 					} else {
 						stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, false));
 					}
+				} else {
+					stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, false));
 				}
 			}
 		}
@@ -253,7 +250,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	private static void hoverWithJetpack(Player player) {
-		//TODO doesnt work on server
+		// TODO doesnt work on server
 		if (player.isShiftKeyDown()) {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
@@ -267,11 +264,11 @@ public class ItemJetpack extends ArmorItem {
 		}
 		player.hurtMarked = true;
 	}
-	
+
 	private static void handleRunning(Level world, Entity entity, ItemStack stack) {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
 		stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, true));
-		
+
 	}
 
 	private static void handleSound(int ticks, Player player) {
@@ -279,7 +276,7 @@ public class ItemJetpack extends ArmorItem {
 			player.playNotifySound(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS, 1, 1);
 		}
 	}
-	
+
 	private static void renderParticles(Level world, Entity entity) {
 		Vec3 worldPosition = entity.position();
 		for (int i = 0; i < 5; i++) {

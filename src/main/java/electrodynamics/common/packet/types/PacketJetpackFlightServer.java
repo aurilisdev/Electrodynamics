@@ -17,12 +17,12 @@ public class PacketJetpackFlightServer {
 
 	private final UUID playerId;
 	private final boolean bool;
-	
+
 	public PacketJetpackFlightServer(UUID uuid, boolean bool) {
 		playerId = uuid;
 		this.bool = bool;
 	}
-	
+
 	public static void handle(PacketJetpackFlightServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
@@ -31,7 +31,7 @@ public class PacketJetpackFlightServer {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					chest.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h ->{
+					chest.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> {
 						h.setBoolean(0, message.bool);
 					});
 				}
@@ -39,12 +39,12 @@ public class PacketJetpackFlightServer {
 		});
 		ctx.setPacketHandled(true);
 	}
-	
+
 	public static void encode(PacketJetpackFlightServer message, FriendlyByteBuf buf) {
 		buf.writeUUID(message.playerId);
 		buf.writeBoolean(message.bool);
 	}
-	
+
 	public static PacketJetpackFlightServer decode(FriendlyByteBuf buf) {
 		return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean());
 	}

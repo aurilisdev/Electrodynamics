@@ -29,7 +29,7 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 			return handler.getCapability(cap, side);
 		} else if (cap == ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY) {
 			return number.holder.cast();
-		} else if(cap == ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY) {
+		} else if (cap == ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY) {
 			return bool.holder.cast();
 		}
 		return LazyOptional.empty();

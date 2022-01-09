@@ -49,5 +49,5 @@ public class PacketModeSwitchClient {
 	public static PacketModeSwitchClient decode(FriendlyByteBuf buf) {
 		return new PacketModeSwitchClient(buf.readUUID(), buf.readInt());
 	}
-	
+
 }

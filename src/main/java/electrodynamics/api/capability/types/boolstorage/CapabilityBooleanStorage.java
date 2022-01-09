@@ -13,18 +13,18 @@ import net.minecraftforge.common.util.LazyOptional;
 public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySerializable<CompoundTag> {
 
 	public final LazyOptional<IBooleanStorage> holder = LazyOptional.of(() -> this);
-	
+
 	public CapabilityBooleanStorage() {
 		values = new ArrayList<>();
 		values.add(false);
 	}
-	
+
 	public CapabilityBooleanStorage(int size) {
 		values = new ArrayList<>();
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			values.add(false);
 		}
-		
+
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
 			CompoundTag nbt = new CompoundTag();
 			nbt.putInt(ElectrodynamicsCapabilities.BOOLEAN_KEY, values.size());
-			for(int i = 0; i < values.size(); i++) {
+			for (int i = 0; i < values.size(); i++) {
 				nbt.putBoolean(ElectrodynamicsCapabilities.BOOLEAN_KEY + i, values.get(i));
 			}
 			return nbt;
@@ -53,7 +53,7 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
 			int size = nbt.getInt(ElectrodynamicsCapabilities.BOOLEAN_KEY);
 			values = new ArrayList<>();
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				values.add(nbt.getBoolean(ElectrodynamicsCapabilities.BOOLEAN_KEY + i));
 			}
 		}

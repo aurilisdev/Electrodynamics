@@ -125,7 +125,7 @@ public class ClientEvents {
 				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
 					NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID()));
 				}
-				
+
 			}
 		}
 

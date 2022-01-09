@@ -683,7 +683,7 @@ public class DeferredRegisters {
 			.register("electrolyticseparator", () -> new MenuType<>(ContainerElectrolyticSeparator::new));
 	public static final RegistryObject<MenuType<ContainerCarbyneBatteryBox>> CONTAINER_CARBYNEBATTERYBOX = CONTAINERS
 			.register(SubtypeMachine.carbynebatterybox.tag(), () -> new MenuType<>(ContainerCarbyneBatteryBox::new));
-	
+
 	// Entities
 
 	public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder
