@@ -7,7 +7,6 @@ import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.boolstorage.IBooleanStorage;
 import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
@@ -58,7 +57,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
 				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
 						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean)
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0))
 						.orElse(false);
 				if (isSmart) {
 					int slot;
@@ -88,7 +87,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
 				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
 						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean)
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0))
 						.orElse(false);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());

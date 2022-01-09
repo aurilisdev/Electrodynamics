@@ -11,7 +11,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketModeSwitch;
+import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketNightVisionGoggles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -118,13 +118,14 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void keyPressEvents(KeyInputEvent event) {
-		// I tried doing this w/o the packets, but it led to some desync issues
-		// Packets ensure those don't happen
 		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
 			Player player = Minecraft.getInstance().player;
-			ItemStack playerChest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (ItemUtils.testItems(playerChest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitch(player.getUUID()));
+			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+					NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID()));
+				}
+				
 			}
 		}
 

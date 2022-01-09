@@ -40,8 +40,8 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 
 	private final ElectricItemProperties properties;
 
-	public static final int JOULES_PER_SHOT = 100;
-	public static final int NUMBER_OF_SHOTS = 30;
+	public static final int JOULES_PER_SHOT = 5000;
+	public static final int NUMBER_OF_SHOTS = 200;
 
 	public static final int PROJECTILE_RANGE = 20;
 	public static final int PROJECTILE_SPEED = 3;

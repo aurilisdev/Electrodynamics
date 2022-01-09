@@ -1,6 +1,7 @@
 package electrodynamics.api.capability.multicapability;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
 import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -14,10 +15,12 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 
 	private RestrictedFluidHandlerItemStack handler;
 	private CapabilityIntStorage number;
+	private CapabilityBooleanStorage bool;
 
-	public JetpackCapability(RestrictedFluidHandlerItemStack handler, CapabilityIntStorage number) {
+	public JetpackCapability(RestrictedFluidHandlerItemStack handler, CapabilityIntStorage number, CapabilityBooleanStorage bool) {
 		this.handler = handler;
 		this.number = number;
+		this.bool = bool;
 	}
 
 	@Override
@@ -26,6 +29,8 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 			return handler.getCapability(cap, side);
 		} else if (cap == ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY) {
 			return number.holder.cast();
+		} else if(cap == ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY) {
+			return bool.holder.cast();
 		}
 		return LazyOptional.empty();
 	}
@@ -34,12 +39,14 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 	public CompoundTag serializeNBT() {
 		CompoundTag nbt = new CompoundTag();
 		nbt.put("number", number.serializeNBT());
+		nbt.put("bool", bool.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
 		number.deserializeNBT(nbt.getCompound("number"));
+		bool.deserializeNBT(nbt.getCompound("bool"));
 	}
 
 }

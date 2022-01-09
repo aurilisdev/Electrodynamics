@@ -74,9 +74,7 @@ public class ItemSeismicScanner extends ItemElectric {
 		} else {
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 		}
-		/*
-		 * stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> { ItemStack invStack = h.getStackInSlot(0); Component component; if (invStack.isEmpty()) { component = new TranslatableComponent("tooltip.seismicscanner.empty"); } else { component = invStack.getDisplayName(); } tooltips.add(new TranslatableComponent("tooltip.seismicscanner.currentore", component)); });
-		 */
+
 	}
 
 	@Override
