@@ -6,17 +6,23 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotItemHandlerRestricted extends SlotItemHandler {
 
-	private Class<?> validClass;
+	private Class<?>[] classes;
+	private boolean isWhitelist;
 
-	public SlotItemHandlerRestricted(IItemHandler itemHandler, int index, int xPosition, int yPosition, Class<?> validClass) {
+	public SlotItemHandlerRestricted(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean isWhitelist, Class<?>...classes) {
 		super(itemHandler, index, xPosition, yPosition);
-		this.validClass = validClass;
+		this.classes = classes;
+		this.isWhitelist = isWhitelist;
 	}
 
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		if (validClass.isInstance(stack.getItem())) {
-			return super.mayPlace(stack);
+		for(Class<?> clazz : classes) {
+			if (isWhitelist && clazz.isInstance(stack.getItem())) {
+				return super.mayPlace(stack);
+			} else if (!clazz.isInstance(stack.getItem())) {
+				return super.mayPlace(stack);
+			}
 		}
 		return false;
 	}

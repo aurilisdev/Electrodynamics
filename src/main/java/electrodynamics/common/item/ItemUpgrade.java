@@ -8,7 +8,6 @@ import org.codehaus.plexus.util.StringUtils;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.multicapability.EjectorCapability;
 import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
-import electrodynamics.api.capability.types.boolstorage.IBooleanStorage;
 import electrodynamics.api.capability.types.dirstorage.CapabilityDirectionalStorage;
 import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
 import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
@@ -67,7 +66,7 @@ public class ItemUpgrade extends Item {
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
-			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean).orElse(false)) {
+			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false)) {
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
 			List<Direction> dirs = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections)
@@ -97,7 +96,7 @@ public class ItemUpgrade extends Item {
 					handStack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
-				handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(!m.getBoolean()));
+				handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(0, !m.getBoolean(0)));
 			}
 		}
 		return super.use(world, player, hand);
@@ -119,6 +118,6 @@ public class ItemUpgrade extends Item {
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(IBooleanStorage::getBoolean).orElse(false);
+		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
 	}
 }

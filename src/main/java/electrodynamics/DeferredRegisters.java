@@ -408,8 +408,8 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_MECHANIZEDCROSSBOW = ITEMS.register("mechanizedcrossbow",
 			supplier(new ItemMechanizedCrossbow((ElectricItemProperties) new ElectricItemProperties()
 					.capacity(ItemMechanizedCrossbow.JOULES_PER_SHOT * ItemMechanizedCrossbow.NUMBER_OF_SHOTS)
-					.extract(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 240))
-					.receive(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 240)).tab(References.CORETAB).stacksTo(1))));
+					.extract(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 120))
+					.receive(TransferPack.joulesVoltage(ItemMechanizedCrossbow.JOULES_PER_SHOT, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench",
 			supplier(new ItemWrench(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate",
@@ -683,7 +683,7 @@ public class DeferredRegisters {
 			.register("electrolyticseparator", () -> new MenuType<>(ContainerElectrolyticSeparator::new));
 	public static final RegistryObject<MenuType<ContainerCarbyneBatteryBox>> CONTAINER_CARBYNEBATTERYBOX = CONTAINERS
 			.register(SubtypeMachine.carbynebatterybox.tag(), () -> new MenuType<>(ContainerCarbyneBatteryBox::new));
-
+	
 	// Entities
 
 	public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder
