@@ -125,6 +125,7 @@ public class ItemJetpack extends ArmorItem {
 				}
 			});
 		}
+		//TODO this breaks on the server for some reason
 		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
 			int mode = h.getInt(0);
 			Component modeTip = switch (mode) {
@@ -139,6 +140,8 @@ public class ItemJetpack extends ArmorItem {
 
 			tooltip.add(modeTip);
 		});
+		
+		
 			
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}

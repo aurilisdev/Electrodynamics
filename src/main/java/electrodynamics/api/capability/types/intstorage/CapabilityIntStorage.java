@@ -63,6 +63,7 @@ public class CapabilityIntStorage implements IIntStorage, ICapabilitySerializabl
 	@Override
 	public void setInt(int index, int number) {
 		numbers.set(index, number);
+		
 	}
 
 	@Override
