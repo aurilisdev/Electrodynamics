@@ -50,7 +50,10 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
-		return getElectricInformation();
+		if(infoHandler == null) {
+			return getElectricInformation();
+		}
+		return infoHandler.getInfo();
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {
