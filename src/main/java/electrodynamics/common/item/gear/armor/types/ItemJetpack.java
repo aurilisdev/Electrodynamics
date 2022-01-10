@@ -61,13 +61,12 @@ public class ItemJetpack extends ArmorItem {
 
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
-	
+
 	public static final String MODE_NBT_KEY = "mode";
 
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
-	
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
 
@@ -124,8 +123,8 @@ public class ItemJetpack extends ArmorItem {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip
 					.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
 		}
-		//cheesing sync issues one line of code at a time
-		if(stack.hasTag()) {
+		// cheesing sync issues one line of code at a time
+		if (stack.hasTag()) {
 			int mode = stack.getTag().getInt(MODE_NBT_KEY);
 			Component modeTip = switch (mode) {
 			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
@@ -137,7 +136,7 @@ public class ItemJetpack extends ArmorItem {
 			default -> new TextComponent("");
 			};
 
-			tooltip.add(modeTip);	
+			tooltip.add(modeTip);
 		} else {
 			tooltip.add(new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
 					.append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
@@ -145,7 +144,7 @@ public class ItemJetpack extends ArmorItem {
 
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
-	
+
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		super.inventoryTick(stack, world, entity, slot, isSelected);
@@ -160,8 +159,8 @@ public class ItemJetpack extends ArmorItem {
 					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
 					if (enoughFuel) {
 						Electrodynamics.LOGGER.info(mode);
-						//the capability resets in creative because Mojang so if a player opens their inventory, 
-						//the mode resets, but tbh why do you need a jetpack in creative
+						// the capability resets in creative because Mojang so if a player opens their inventory,
+						// the mode resets, but tbh why do you need a jetpack in creative
 						if (mode == 0 && isDown) {
 							handleSound(ticks, player);
 							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
@@ -188,14 +187,14 @@ public class ItemJetpack extends ArmorItem {
 				}
 			} else {
 				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(-1);
-				if(mode > -1) {
-					if(!stack.hasTag()) {
+				if (mode > -1) {
+					if (!stack.hasTag()) {
 						stack.setTag(new CompoundTag());
 					}
 					stack.getTag().putInt(MODE_NBT_KEY, mode);
 				}
 				boolean hasRan = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
-				if(hasRan) {
+				if (hasRan) {
 					drainHydrogen(stack);
 				}
 			}
@@ -253,12 +252,12 @@ public class ItemJetpack extends ArmorItem {
 
 	private static void moveWithJetpack(double speed, double termVelocity, Player player) {
 		Vec3 currMovement = player.getDeltaMovement();
-		
-        double ySum = currMovement.y + speed;
-        double absY = Math.min(Math.abs(ySum), termVelocity);
+
+		double ySum = currMovement.y + speed;
+		double absY = Math.min(Math.abs(ySum), termVelocity);
 		double newY = Math.signum(ySum) * absY;
 		currMovement = new Vec3(currMovement.x, newY, currMovement.z);
-		
+
 		player.setDeltaMovement(currMovement);
 		player.resetFallDistance();
 	}
@@ -268,15 +267,13 @@ public class ItemJetpack extends ArmorItem {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
 			player.setDeltaMovement(currMovement);
-			player.resetFallDistance();
 		} else {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
 			player.setDeltaMovement(currMovement);
-			player.resetFallDistance();
 		}
+		player.resetFallDistance();
 	}
-
 
 	private static void handleSound(int ticks, Player player) {
 		if (ticks % 10 == 0) {
@@ -292,11 +289,11 @@ public class ItemJetpack extends ArmorItem {
 			world.addParticle(ParticleTypes.FLAME, x, worldPosition.y + 0.8, z, 0.0D, -2D, 0.0D);
 		}
 	}
-	
+
 	private static void drainHydrogen(ItemStack stack) {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
 	}
-	
+
 	private static void sendPacket(Player player, boolean state) {
 		NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state));
 	}
