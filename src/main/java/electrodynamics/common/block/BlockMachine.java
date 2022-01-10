@@ -96,8 +96,14 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		ItemStack addstack = switch (machine) {
 		case coalgeneratorrunning -> getMachine(SubtypeMachine.coalgenerator);
 		case electricfurnacerunning -> getMachine(SubtypeMachine.electricfurnace);
+		case electricfurnacedoublerunning -> getMachine(SubtypeMachine.electricfurnacedouble);
+		case electricfurnacetriplerunning -> getMachine(SubtypeMachine.electricfurnacetriple);
+		case electricarcfurnacerunning -> getMachine(SubtypeMachine.electricarcfurnace);
+		case electricarcfurnacedoublerunning -> getMachine(SubtypeMachine.electricarcfurnacedouble);
+		case electricarcfurnacetriplerunning -> getMachine(SubtypeMachine.electricarcfurnacetriple);
 		case oxidationfurnacerunning -> getMachine(SubtypeMachine.oxidationfurnace);
 		case energizedalloyerrunning -> getMachine(SubtypeMachine.energizedalloyer);
+		case reinforcedalloyerrunning -> getMachine(SubtypeMachine.reinforcedalloyer);
 		default -> getMachine(machine);
 		};
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
@@ -116,12 +122,16 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		switch (machine) {
 		case coalgeneratorrunning:
 			return 12;
-		case electricfurnacerunning:
+		case electricfurnacerunning, electricfurnacedoublerunning, electricfurnacetriplerunning:
 			return 8;
+		case electricarcfurnacerunning, electricarcfurnacedoublerunning, electricarcfurnacetriplerunning:
+			return 9;
 		case oxidationfurnacerunning:
 			return 6;
 		case energizedalloyerrunning:
 			return 10;
+		case reinforcedalloyerrunning:
+			return 15;
 		default:
 			return super.getLightEmission(state, world, pos);
 		}

@@ -125,7 +125,7 @@ public enum SubtypeMachine implements ISubtype {
 		if (bb instanceof BlockMachine tb && ba instanceof BlockMachine ta) {
 			SubtypeMachine mb = tb.machine;
 			SubtypeMachine ma = ta.machine;
-
+			//TODO we need to clean this up
 			if (mb == electricfurnace && ma == electricfurnacerunning || mb == electricfurnacerunning && ma == electricfurnace
 					|| mb == electricfurnacedouble && ma == electricfurnacedoublerunning
 					|| mb == electricfurnacedoublerunning && ma == electricfurnacedouble
@@ -134,8 +134,13 @@ public enum SubtypeMachine implements ISubtype {
 					|| mb == coalgeneratorrunning && ma == coalgenerator || mb == oxidationfurnace && ma == oxidationfurnacerunning
 					|| mb == oxidationfurnacerunning && ma == oxidationfurnace || mb == energizedalloyer && ma == energizedalloyerrunning
 					|| ma == energizedalloyer && mb == energizedalloyerrunning || ma == reinforcedalloyer && mb == reinforcedalloyerrunning
-					|| mb == reinforcedalloyer && ma == reinforcedalloyerrunning)
-
+					|| mb == reinforcedalloyer && ma == reinforcedalloyerrunning
+					|| mb == electricarcfurnace && ma == electricarcfurnacerunning || mb == electricarcfurnacerunning && ma == electricarcfurnace
+					|| mb == electricarcfurnacedouble && ma == electricarcfurnacedoublerunning
+					|| mb == electricarcfurnacedoublerunning && ma == electricarcfurnacedouble
+					|| mb == electricarcfurnacetriple && ma == electricarcfurnacetriplerunning
+					|| mb == electricarcfurnacetriplerunning && ma == electricarcfurnacetriple
+					)		
 			{
 				return false;
 			}
