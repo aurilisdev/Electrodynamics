@@ -18,7 +18,7 @@ public class SlotItemHandlerRestricted extends SlotItemHandler {
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		for (Class<?> clazz : classes) {
-			if ((isWhitelist && clazz.isInstance(stack.getItem())) || !clazz.isInstance(stack.getItem())) {
+			if (isWhitelist && clazz.isInstance(stack.getItem()) || !clazz.isInstance(stack.getItem())) {
 				return super.mayPlace(stack);
 			}
 		}
