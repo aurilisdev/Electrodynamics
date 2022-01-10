@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -60,10 +61,13 @@ public class ItemJetpack extends ArmorItem {
 
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
+	
+	public static final String MODE_NBT_KEY = "mode";
 
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
-	public static final double TERMINAL_VELOCITY = 1;
+	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
+	
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
 
@@ -93,7 +97,7 @@ public class ItemJetpack extends ArmorItem {
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		CapabilityIntStorage number = new CapabilityIntStorage(2);
 		number.setInt(0, 0);
-		CapabilityBooleanStorage bool = new CapabilityBooleanStorage(2);
+		CapabilityBooleanStorage bool = new CapabilityBooleanStorage(1);
 		bool.setBoolean(0, false);
 		return new JetpackCapability(new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids()), number, bool);
 	}
@@ -120,9 +124,9 @@ public class ItemJetpack extends ArmorItem {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip
 					.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
 		}
-		// TODO this breaks on the server for some reason
-		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-			int mode = h.getInt(0);
+		//cheesing sync issues one line of code at a time
+		if(stack.hasTag()) {
+			int mode = stack.getTag().getInt(MODE_NBT_KEY);
 			Component modeTip = switch (mode) {
 			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
 					.append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
@@ -133,58 +137,66 @@ public class ItemJetpack extends ArmorItem {
 			default -> new TextComponent("");
 			};
 
-			tooltip.add(modeTip);
-		});
+			tooltip.add(modeTip);	
+		} else {
+			tooltip.add(new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
+		}
 
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
-
+	
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		super.inventoryTick(stack, world, entity, slot, isSelected);
 		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
 		if (entity instanceof Player player) {
 			if (world.isClientSide) {
-				boolean isDown = KeyBinds.jetpackAscend.isDown();
-				// has to be send every tick. 1 Hour of debugging confirms this
-				if (isDown) {
-					NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), true));
-				} else {
-					NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), false));
-				}
-
-				boolean isRunning = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(1))
-						.orElse(false);
-				if (isRunning) {
-					// TODO doesnt work on server
-					renderParticles(world, entity);
-				}
-
-			} else // slot check catches ~99% of issues; still bugs if on hot bar slot #2
-			if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem())) {
-				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(2);
-				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
-						.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
-				boolean isDown = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
-				int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
-				if (enoughFuel) {
-					if (mode == 0 && isDown) {
-						handleSound(ticks, player);
-						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VELOCITY, player);
-						handleRunning(world, entity, stack);
-					} else if (mode == 1 && isDown) {
-						handleSound(ticks, player);
-						ascendWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VELOCITY / 2, player);
-						handleRunning(world, entity, stack);
-					} else if (mode == 1 && player.fallDistance > 0) {
-						handleSound(ticks, player);
-						hoverWithJetpack(player);
-						handleRunning(world, entity, stack);
+				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem()) && stack.hasTag()) {
+					boolean isDown = KeyBinds.jetpackAscend.isDown();
+					int mode = stack.getTag().getInt(MODE_NBT_KEY);
+					boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap())
+							.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
+					if (enoughFuel) {
+						Electrodynamics.LOGGER.info(mode);
+						//the capability resets in creative because Mojang so if a player opens their inventory, 
+						//the mode resets, but tbh why do you need a jetpack in creative
+						if (mode == 0 && isDown) {
+							handleSound(ticks, player);
+							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
+							sendPacket(player, true);
+							renderParticles(world, entity);
+						} else if (mode == 1 && isDown) {
+							handleSound(ticks, player);
+							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
+							sendPacket(player, true);
+							renderParticles(world, entity);
+						} else if (mode == 1 && player.fallDistance > 0) {
+							handleSound(ticks, player);
+							hoverWithJetpack(player);
+							sendPacket(player, true);
+							renderParticles(world, entity);
+						} else {
+							sendPacket(player, false);
+						}
 					} else {
-						stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, false));
+						sendPacket(player, false);
 					}
 				} else {
-					stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, false));
+					sendPacket(player, false);
+				}
+			} else {
+				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(-1);
+				if(mode > -1) {
+					if(!stack.hasTag()) {
+						stack.setTag(new CompoundTag());
+					}
+					stack.getTag().putInt(MODE_NBT_KEY, mode);
+				}
+				boolean hasRan = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+				if(hasRan) {
+					drainHydrogen(stack);
 				}
 			}
 		}
@@ -239,36 +251,32 @@ public class ItemJetpack extends ArmorItem {
 		return Pair.of(tags, fluids);
 	}
 
-	private static void ascendWithJetpack(double speed, double termVelocity, Player player) {
+	private static void moveWithJetpack(double speed, double termVelocity, Player player) {
 		Vec3 currMovement = player.getDeltaMovement();
-		double y = currMovement.y + speed >= termVelocity ? termVelocity : currMovement.y + speed;
-		currMovement = new Vec3(currMovement.x, y, currMovement.z);
+		
+        double ySum = currMovement.y + speed;
+        double absY = Math.min(Math.abs(ySum), termVelocity);
+		double newY = Math.signum(ySum) * absY;
+		currMovement = new Vec3(currMovement.x, newY, currMovement.z);
+		
 		player.setDeltaMovement(currMovement);
 		player.resetFallDistance();
-		player.hurtMarked = true;
 	}
 
 	private static void hoverWithJetpack(Player player) {
-		// TODO doesnt work on server
 		if (player.isShiftKeyDown()) {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
-			player.resetFallDistance();
 			player.setDeltaMovement(currMovement);
+			player.resetFallDistance();
 		} else {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
 			player.setDeltaMovement(currMovement);
 			player.resetFallDistance();
 		}
-		player.hurtMarked = true;
 	}
 
-	private static void handleRunning(Level world, Entity entity, ItemStack stack) {
-		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
-		stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(1, true));
-
-	}
 
 	private static void handleSound(int ticks, Player player) {
 		if (ticks % 10 == 0) {
@@ -283,6 +291,14 @@ public class ItemJetpack extends ArmorItem {
 			double z = worldPosition.z - world.random.nextFloat() + 0.5;
 			world.addParticle(ParticleTypes.FLAME, x, worldPosition.y + 0.8, z, 0.0D, -2D, 0.0D);
 		}
+	}
+	
+	private static void drainHydrogen(ItemStack stack) {
+		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
+	}
+	
+	private static void sendPacket(Player player, boolean state) {
+		NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state));
 	}
 
 	@Override
