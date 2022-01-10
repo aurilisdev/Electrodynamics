@@ -44,11 +44,13 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	}
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 	super.fillItemCategory(group, items);
 	for (ItemStack stack : items) {
-	    IItemTemperate.setTemperature(stack, 0);
+		if(stack.getItem() instanceof ItemRailgun) {
+			IItemTemperate.setTemperature(stack, 0);
+		}
 	}
     }
 
