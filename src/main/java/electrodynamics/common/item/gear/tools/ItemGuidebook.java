@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 
 public class ItemGuidebook extends Item {
 
-	private static final String LINK = "https://electrodynamics.fandom.com/wiki/Electrodynamics_Wiki";
+	private static final String LINK = "https://wiki.aurilis.dev";
 
 	public ItemGuidebook(Properties properties) {
 		super(properties);
