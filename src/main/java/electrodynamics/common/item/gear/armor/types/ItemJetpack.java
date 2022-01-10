@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -149,7 +150,6 @@ public class ItemJetpack extends ArmorItem {
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		super.inventoryTick(stack, world, entity, slot, isSelected);
 		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(1, h.getInt(1) + 1));
-		//client handles flight and server handles results now
 		if (entity instanceof Player player) {
 			if (world.isClientSide) {
 				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem()) && stack.hasTag()) {
@@ -159,7 +159,9 @@ public class ItemJetpack extends ArmorItem {
 							.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
 					if (enoughFuel) {
-						//TODO when player opens gui, mode seems to revert to 0
+						Electrodynamics.LOGGER.info(mode);
+						//the capability resets in creative because Mojang so if a player opens their inventory, 
+						//the mode resets, but tbh why do you need a jetpack in creative
 						if (mode == 0 && isDown) {
 							handleSound(ticks, player);
 							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
@@ -182,11 +184,9 @@ public class ItemJetpack extends ArmorItem {
 						sendPacket(player, false);
 					}
 				} else {
-					// want to make sure server is always up to date with status
 					sendPacket(player, false);
 				}
 			} else {
-				//server now handles sending mode to client via nbt; avoids sync issues
 				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(-1);
 				if(mode > -1) {
 					if(!stack.hasTag()) {
@@ -267,8 +267,8 @@ public class ItemJetpack extends ArmorItem {
 		if (player.isShiftKeyDown()) {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
-			player.resetFallDistance();
 			player.setDeltaMovement(currMovement);
+			player.resetFallDistance();
 		} else {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, 0, currMovement.z);

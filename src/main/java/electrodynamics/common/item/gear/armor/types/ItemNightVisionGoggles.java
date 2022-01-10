@@ -47,10 +47,11 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public static final int JOULES_PER_TICK = 5;
 	public static final int DURATION_SECONDS = 12;
 
-	// will do a custom armor model at some point
 	private static final String ARMOR_TEXTURE_OFF = References.ID + ":textures/model/armor/nightvisiongogglesoff.png";
 	private static final String ARMOR_TEXTURE_ON = References.ID + ":textures/model/armor/nightvisiongoggleson.png";
 
+	private static final String BOOLEAN_NBT_KEY = "status";
+	
 	public ItemNightVisionGoggles(ElectricItemProperties properties) {
 		super(NightVisionGoggles.NVGS, EquipmentSlot.HEAD, properties);
 		this.properties = properties;
@@ -84,17 +85,17 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
-		if (entity instanceof Player player) {
+		if (entity instanceof Player player && !world.isClientSide) {
 			boolean status = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+			if(!stack.hasTag()) {
+				stack.setTag(new CompoundTag());
+			}
+			stack.getTag().putBoolean(BOOLEAN_NBT_KEY, status);
 			if (status && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.HEAD).getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
 					&& nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
 				nvgs.extractPower(stack, JOULES_PER_TICK, false);
-				if (player.hasEffect(MobEffects.NIGHT_VISION)) {
-					player.getEffect(MobEffects.NIGHT_VISION)
-							.update(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, true, true, true));
-				} else {
-					player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
-				}
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
+				
 			}
 		}
 		super.inventoryTick(stack, world, entity, slot, isSelected);
@@ -139,14 +140,17 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 				ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
 						+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
 								.withStyle(ChatFormatting.RED));
-		if (world != null && world.isClientSide) {
-			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false)) {
+		if (stack.hasTag()) {
+			if (stack.getTag().getBoolean(BOOLEAN_NBT_KEY)) {
 				tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
 						.append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
 						.append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
+		} else {
+			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 		}
 	}
 
