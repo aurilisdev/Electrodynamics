@@ -2,8 +2,7 @@ package electrodynamics.prefab.screen.component;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.base.Function;
+import java.util.function.Function;
 
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -50,7 +49,7 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
-		if(infoHandler == null) {
+		if (infoHandler == null) {
 			return getElectricInformation();
 		}
 		return infoHandler.getInfo();
