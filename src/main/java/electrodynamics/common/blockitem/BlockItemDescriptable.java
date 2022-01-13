@@ -43,7 +43,7 @@ public class BlockItemDescriptable extends BlockItem {
 
 	@Override
 	public InteractionResult place(BlockPlaceContext p) {
-		ItemStack stack = p.getItemInHand();
+		ItemStack stack = p.getItemInHand().copy();
 		double joules = stack.getOrCreateTag().getDouble("joules");
 		InteractionResult result = super.place(p);
 		if (block instanceof GenericMachineBlock) {
