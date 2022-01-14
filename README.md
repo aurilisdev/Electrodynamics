@@ -6,11 +6,13 @@ Electrodynamics has a discord where you can come chat with other Electrodynamics
 
 Invite link: https://discordapp.com/invite/jJANcdK
 
-## Electrodynamics Curseforge page
+## Electrodynamics CurseForge page
 https://www.curseforge.com/minecraft/mc-mods/electrodynamics
-## Nuclear Physics Curseforge page
-https://minecraft.curseforge.com/projects/physica-nuclear-physics
-## Modular Forcefield System Curseforge page
-https://minecraft.curseforge.com/projects/physica-modular-forcefield-system
+## Nuclear Physics CurseForge page
+https://www.curseforge.com/minecraft/mc-mods/nuclear-science
+## Physica Modular Forcefield System CurseForge page
+https://www.curseforge.com/minecraft/mc-mods/physica-modular-forcefield-system
+## Ballistix CurseForge page
+https://www.curseforge.com/minecraft/mc-mods/ballistix
 
 Modpack permission list: https://docs.google.com/spreadsheets/d/1L5j9d4VLD5U-IsB77o24luxfnnlFZzQYR-ZAyxIeNow/edit?usp=sharing
