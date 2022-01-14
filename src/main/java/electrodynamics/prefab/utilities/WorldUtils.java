@@ -6,8 +6,9 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 
@@ -15,7 +16,7 @@ public class WorldUtils {
 
 	public static final double CHUNK_WIDTH = 16;
 
-	public static List<LevelChunk> getChunksForRadius(Level world, BlockPos pos, int xRadius, int zRadius) {
+	public static List<LevelChunk> getChunksForRadius(LevelReader world, BlockPos pos, int xRadius, int zRadius) {
 
 		// sanity check
 		xRadius = Math.abs(xRadius);
@@ -40,7 +41,7 @@ public class WorldUtils {
 		return chunks;
 	}
 
-	private static List<LevelChunk> getChunksForQuadrant(Level world, BlockPos pos, int xRadius, int zRadius, int xSign, int zSign) {
+	private static List<LevelChunk> getChunksForQuadrant(LevelReader world, BlockPos pos, int xRadius, int zRadius, int xSign, int zSign) {
 
 		List<LevelChunk> quadrant = new ArrayList<>();
 
@@ -63,9 +64,12 @@ public class WorldUtils {
 		return quadrant;
 	}
 
-	public static BlockPos getClosestBlockToCenter(Level world, BlockPos startPos, int maxRadius, Block... caseBlocks) {
+	public static BlockPos getClosestBlockToCenter(LevelReader world, BlockPos startPos, int maxRadius, Block... caseBlocks) {
 		for (int radius = 1; radius <= maxRadius; radius++) {
-			int iMin = -radius, iMax = radius, jMax = radius, jMin = -radius;
+			int iMin = -radius;
+			int iMax = radius;
+			int jMax = radius;
+			int jMin = -radius;
 			for (Direction dir : Direction.values()) {
 				Vec3i orientation = dir.getNormal();
 				for (int i = iMin; i < iMax; i++) {
@@ -102,6 +106,22 @@ public class WorldUtils {
 			}
 		}
 		return false;
+	}
+
+	public static ArrayList<BlockEntity> getNearbyTiles(LevelReader level, BlockPos pos, int radius) {
+		ArrayList<BlockEntity> list = new ArrayList<>();
+		for (int i = -radius; i <= radius; i++) {
+			for (int j = -radius; j <= radius; j++) {
+				for (int k = -radius; k <= radius; k++) {
+					BlockPos offset = pos.offset(i, j, k);
+					BlockEntity entity = level.getBlockEntity(offset);
+					if (entity != null) {
+						list.add(entity);
+					}
+				}
+			}
+		}
+		return list;
 	}
 
 }
