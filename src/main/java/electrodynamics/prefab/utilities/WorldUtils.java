@@ -123,5 +123,5 @@ public class WorldUtils {
 		}
 		return list;
 	}
-
+	// TODO: Implement direct chunk block editing. Would only update liquids and falling blocks. Removes entities like normal and does them all in batches of lists of blockpositions
 }
