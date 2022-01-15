@@ -28,7 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileWireMill extends GenericTile {
 
     private static int itemBiSize = 0;
-    private static int inputBucketSlots = 1;
+    private static int inputBucketSlots = 0;
     private static int outputBucketSlots = 0;
     private static int upgradeSlots = 3;
 
