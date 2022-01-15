@@ -671,7 +671,7 @@ public class ComponentProcessor implements Component {
     private static boolean roomInItemBiSlots(List<ItemStack> slots, ItemStack[] biproducts) {
 	for (int i = 0; i < slots.size(); i++) {
 	    ItemStack slotStack = slots.get(i);
-	    ItemStack biStack = biproducts[i];
+	    ItemStack biStack = biproducts[Math.min(i, biproducts.length - 1)];
 	    if (slotStack.isEmpty() || ItemUtils.testItems(slotStack.getItem(), biStack.getItem())) {
 		if (slotStack.getCount() + biStack.getCount() > slotStack.getMaxStackSize()) {
 		    return false;
@@ -686,7 +686,7 @@ public class ComponentProcessor implements Component {
     private static boolean roomInBiproductTanks(FluidTank[] tanks, FluidStack[] stacks) {
 	for (int i = 1; i < tanks.length; i++) {
 	    FluidTank tank = tanks[i];
-	    FluidStack stack = stacks[i - 1];
+	    FluidStack stack = stacks[Math.min(i, stacks.length - 1)];
 	    int amtTaken = tank.fill(stack, FluidAction.SIMULATE);
 	    if (amtTaken < stack.getAmount()) {
 		return false;
