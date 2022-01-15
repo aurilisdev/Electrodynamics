@@ -36,7 +36,7 @@ public interface ICapabilityElectrodynamic {
 	}
 
 	default TransferPack receivePower(TransferPack transfer, boolean debug) {
-		double received = Math.min(transfer.getJoules(), getMaxJoulesStored() - getJoulesStored());
+		double received = Math.max(0, Math.min(transfer.getJoules(), getMaxJoulesStored() - getJoulesStored()));
 		if (!debug && received > 0) {
 			if (transfer.getVoltage() == getVoltage() || getVoltage() == -1) {
 				setJoulesStored(getJoulesStored() + received);
