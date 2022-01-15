@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -158,7 +157,6 @@ public class ItemJetpack extends ArmorItem {
 							.map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(1)).orElse(1);
 					if (enoughFuel) {
-						Electrodynamics.LOGGER.info(mode);
 						// the capability resets in creative because Mojang so if a player opens their inventory,
 						// the mode resets, but tbh why do you need a jetpack in creative
 						if (mode == 0 && isDown) {
