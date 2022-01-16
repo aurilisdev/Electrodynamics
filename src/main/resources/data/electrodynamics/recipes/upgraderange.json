@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pcp",
+		"cCc",
+		"pcp"
+	],
+	"key": {
+		"p": {
+			"tag": "forge:plates/steel"
+		},
+		"c": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		},
+		"C": {
+			"tag": "forge:circuits/basic"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:upgraderange",
+		"count": 1
+	}
+}

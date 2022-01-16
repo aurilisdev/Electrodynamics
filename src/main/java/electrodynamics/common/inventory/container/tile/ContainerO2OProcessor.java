@@ -35,10 +35,10 @@ public class ContainerO2OProcessor extends GenericContainerBlockEntity<GenericTi
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset, 34));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset + 20, 34));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 	}
 }

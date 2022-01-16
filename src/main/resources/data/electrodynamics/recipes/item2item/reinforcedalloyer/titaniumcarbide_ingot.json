@@ -15,6 +15,7 @@
         "item":"electrodynamics:ingottitaniumcarbide",
         "count":1
     },
+    "experience": 0.3,
 	"itembi" : {
 		"count" : 1, 
 		"0" : {

@@ -34,10 +34,10 @@ public class ContainerMineralWasher extends GenericContainerBlockEntity<TileMine
 		addSlot(new SlotFluid(inv, nextIndex(), 74, 51));
 		addSlot(new SlotFluid(inv, nextIndex(), 108, 51));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 	}
 }

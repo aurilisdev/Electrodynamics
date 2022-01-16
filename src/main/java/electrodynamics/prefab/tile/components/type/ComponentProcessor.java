@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
@@ -476,6 +478,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
 				inputs.get(procNumber).get(slotOrientation.get(i)).shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 			}
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -521,6 +524,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -570,6 +574,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -613,6 +618,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -651,6 +657,21 @@ public class ComponentProcessor implements Component {
 			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
+			}
+			dispenseExperience(inv, locRecipe.getXp());
+		}
+	}
+	
+	private static void dispenseExperience(ComponentInventory inv, double experience) {
+		for(ItemStack stack : inv.getUpgradeContents()) {
+			if(!stack.isEmpty()) {
+				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
+				if(upgrade.subtype == SubtypeItemUpgrade.experience) {
+					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> {
+						h.setDouble(0, h.getDouble(0) + experience);
+					});;
+				}
+				break;
 			}
 		}
 	}

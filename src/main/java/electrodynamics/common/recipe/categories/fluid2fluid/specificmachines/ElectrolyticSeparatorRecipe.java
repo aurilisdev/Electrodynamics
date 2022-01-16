@@ -17,8 +17,8 @@ public class ElectrolyticSeparatorRecipe extends Fluid2FluidRecipe {
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public ElectrolyticSeparatorRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidbiproducts,
-			ResourceLocation recipeID) {
-		super(inputFluids, outputFluid, fluidbiproducts, recipeID);
+			ResourceLocation recipeID, double experience) {
+		super(inputFluids, outputFluid, fluidbiproducts, recipeID, experience);
 	}
 
 	@Override

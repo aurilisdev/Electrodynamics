@@ -11,6 +11,7 @@
         "item":"minecraft:coal",
         "count":3
     },
+    "experience": 0.3,
 	"itembi" : {
 		"count" : 1, 
 		"0" : {

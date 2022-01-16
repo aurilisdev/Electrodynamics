@@ -16,12 +16,13 @@ public class MineralCrusherRecipe extends Item2ItemRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public MineralCrusherRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output) {
-		super(id, input, output);
+	public MineralCrusherRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, double experience) {
+		super(id, input, output, experience);
 	}
 
-	public MineralCrusherRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts) {
-		super(id, input, output, itemBiproducts);
+	public MineralCrusherRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
+			double experience) {
+		super(id, input, output, itemBiproducts, experience);
 	}
 
 	@Override

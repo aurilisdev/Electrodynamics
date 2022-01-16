@@ -32,10 +32,10 @@ public class ContainerElectricArcFurnace extends GenericContainerBlockEntity<Til
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 34));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 35));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed,
-				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput));
+				SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
 	}
 }

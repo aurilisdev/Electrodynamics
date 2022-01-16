@@ -10,5 +10,6 @@
 	"output": {
 		"item": "electrodynamics:dustobsidian",
 		"count": 2
-	}
+	},
+    "experience": 0.1
 }

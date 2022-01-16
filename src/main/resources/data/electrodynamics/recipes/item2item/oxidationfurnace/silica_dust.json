@@ -14,5 +14,6 @@
     "output":{
         "item":"electrodynamics:dustsilica",
         "count":1
-    }
+    },
+    "experience": 0.1
 }

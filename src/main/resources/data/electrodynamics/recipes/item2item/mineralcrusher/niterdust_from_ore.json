@@ -10,5 +10,6 @@
 	"output": {
 		"item": "electrodynamics:dustniter",
 		"count": 4
-	}
+	},
+    "experience": 0.1
 }

@@ -4,6 +4,6 @@
 		"tag": "forge:ingots/iron"
 	},
 	"result": "electrodynamics:ingotsteel",
-	"experience": 0.0,
+	"experience": 0.1,
 	"cookingtime": 100
 }

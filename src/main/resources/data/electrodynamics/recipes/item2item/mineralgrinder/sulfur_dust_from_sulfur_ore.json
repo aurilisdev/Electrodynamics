@@ -11,6 +11,7 @@
         "item":"electrodynamics:dustsulfur",
         "count":2
     },
+    "experience": 0.2,
 	"itembi" : {
 		"count" : 1, 
 		"0" : {

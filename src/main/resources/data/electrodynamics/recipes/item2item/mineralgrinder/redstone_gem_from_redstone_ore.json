@@ -11,6 +11,7 @@
         "item":"minecraft:redstone",
         "count":6
     },
+    "experience": 0.4,
 	"itembi" : {
 		"count" : 1, 
 		"0" : {
