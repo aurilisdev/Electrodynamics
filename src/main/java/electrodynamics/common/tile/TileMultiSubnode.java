@@ -44,7 +44,7 @@ public class TileMultiSubnode extends GenericTile {
 	}
 
 	protected void writeCustomPacket(CompoundTag nbt) {
-		save(nbt);
+		saveAdditional(nbt);
 	}
 
 	public VoxelShape getShape() {
