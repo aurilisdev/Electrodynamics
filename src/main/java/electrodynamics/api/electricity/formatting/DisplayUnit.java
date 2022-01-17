@@ -1,14 +1,14 @@
 package electrodynamics.api.electricity.formatting;
 
-public enum ElectricUnit {
+public enum DisplayUnit {
 	AMPERE("Amp", "A"), AMP_HOUR("Amp Hour", "Ah"), VOLTAGE("Volt", "V"), WATT("Watt", "W"), WATT_HOUR("Watt Hour", "Wh"), RESISTANCE("Ohm", "Ω"),
-	CONDUCTANCE("Siemen", "S"), JOULES("Joule", "J");
+	CONDUCTANCE("Siemen", "S"), JOULES("Joule", "J"), BUCKETS("Bucket", "B");
 
 	protected String symbol;
 
 	protected String name;
 
-	ElectricUnit(String name, String symbol) {
+	DisplayUnit(String name, String symbol) {
 		this.name = name;
 		this.symbol = symbol;
 	}

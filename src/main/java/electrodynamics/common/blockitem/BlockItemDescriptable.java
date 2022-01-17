@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -72,7 +72,7 @@ public class BlockItemDescriptable extends BlockItem {
 		}
 		double joules = stack.getOrCreateTag().getDouble("joules");
 		if (joules > 0) {
-			tooltip.add(new TextComponent("Stored: " + ChatFormatter.getElectricDisplay(joules, ElectricUnit.JOULES, 2, false)));
+			tooltip.add(new TextComponent("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
 		}
 	}
 

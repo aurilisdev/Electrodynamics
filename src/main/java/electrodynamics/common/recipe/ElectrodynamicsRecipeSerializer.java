@@ -31,7 +31,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 
 	private Class<T> RECIPE_CLASS;
 
-	public ElectrodynamicsRecipeSerializer(Class<T> recipeClass) {
+	protected ElectrodynamicsRecipeSerializer(Class<T> recipeClass) {
 		this.RECIPE_CLASS = recipeClass;
 	}
 

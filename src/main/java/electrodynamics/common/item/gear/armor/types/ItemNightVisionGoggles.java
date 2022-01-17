@@ -8,7 +8,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.ClientRegister;
@@ -135,10 +135,10 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
-				.append(new TextComponent(ChatFormatter.getElectricDisplayShort(getJoulesStored(stack), ElectricUnit.JOULES))));
+				.append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
-				ChatFormatter.getElectricDisplayShort(properties.receive.getVoltage(), ElectricUnit.VOLTAGE) + " / "
-						+ ChatFormatter.getElectricDisplayShort(properties.extract.getVoltage(), ElectricUnit.VOLTAGE))
+				ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / "
+						+ ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))
 								.withStyle(ChatFormatting.RED));
 		if (stack.hasTag() && stack.getTag().getBoolean(BOOLEAN_NBT_KEY)) {
 			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)

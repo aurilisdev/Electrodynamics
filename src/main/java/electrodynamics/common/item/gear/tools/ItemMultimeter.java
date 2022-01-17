@@ -1,7 +1,7 @@
 package electrodynamics.common.item.gear.tools;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.tile.network.TileWire;
 import net.minecraft.network.chat.TextComponent;
@@ -23,14 +23,14 @@ public class ItemMultimeter extends Item {
 			if (tile instanceof TileWire wire) {
 				ElectricNetwork net = wire.getNetwork();
 				String finalString = ChatFormatter
-						.getElectricDisplay(net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() * 20 / net.getActiveVoltage(),
-								ElectricUnit.AMPERE)
-						.replace(" Amps", "") + " / " + ChatFormatter.getElectricDisplay(net.networkMaxTransfer, ElectricUnit.AMPERE) + ", ";
-				finalString += ChatFormatter.getElectricDisplay(net.getActiveVoltage(), ElectricUnit.VOLTAGE) + ", ";
-				finalString += ChatFormatter.getElectricDisplay(net.getActiveTransmitted() * 20, ElectricUnit.WATT) + ", ";
-				finalString += ChatFormatter.getElectricDisplay(net.getResistance(), ElectricUnit.RESISTANCE) + " ( -"
+						.getChatDisplay(net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() * 20 / net.getActiveVoltage(),
+								DisplayUnit.AMPERE)
+						.replace(" Amps", "") + " / " + ChatFormatter.getChatDisplay(net.networkMaxTransfer, DisplayUnit.AMPERE) + ", ";
+				finalString += ChatFormatter.getChatDisplay(net.getActiveVoltage(), DisplayUnit.VOLTAGE) + ", ";
+				finalString += ChatFormatter.getChatDisplay(net.getActiveTransmitted() * 20, DisplayUnit.WATT) + ", ";
+				finalString += ChatFormatter.getChatDisplay(net.getResistance(), DisplayUnit.RESISTANCE) + " ( -"
 						+ Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100) + "% "
-						+ ChatFormatter.getElectricDisplay(net.getLastEnergyLoss() * 20, ElectricUnit.WATT) + " )";
+						+ ChatFormatter.getChatDisplay(net.getLastEnergyLoss() * 20, DisplayUnit.WATT) + " )";
 				context.getPlayer().displayClientMessage(new TextComponent(finalString), true);
 			}
 		}
