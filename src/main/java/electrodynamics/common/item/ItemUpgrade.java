@@ -37,7 +37,7 @@ public class ItemUpgrade extends Item {
 	public final SubtypeItemUpgrade subtype;
 
 	private static final DecimalFormat FORMATTER = new DecimalFormat("0.00");
-	
+
 	public ItemUpgrade(Properties properties, SubtypeItemUpgrade subtype) {
 		super(properties.stacksTo(subtype.maxSize));
 		this.subtype = subtype;
@@ -46,15 +46,10 @@ public class ItemUpgrade extends Item {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
-		if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput 
-				|| type == SubtypeItemUpgrade.experience) {
-			return new UpgradeCapability(
-				new CapabilityBooleanStorage(), 
-				new CapabilityIntStorage(1), 
-				new CapabilityDirectionalStorage(),
-				new CapabilityDoubleStorage(1)
-			);
-		} 
+		if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput || type == SubtypeItemUpgrade.experience) {
+			return new UpgradeCapability(new CapabilityBooleanStorage(), new CapabilityIntStorage(1), new CapabilityDirectionalStorage(),
+					new CapabilityDoubleStorage(1));
+		}
 		return super.initCapabilities(stack, nbt);
 	}
 
@@ -95,12 +90,13 @@ public class ItemUpgrade extends Item {
 			}
 			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
 		}
-		if(subtype == SubtypeItemUpgrade.experience) {
+		if (subtype == SubtypeItemUpgrade.experience) {
 			double storedXp = stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getDouble(0)).orElse(1.0);
-			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
+			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY)
+					.append(new TranslatableComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
 			tooltip.add(new TranslatableComponent("tooltip.info.xpusage").withStyle(ChatFormatting.GRAY));
 		}
-		if(subtype == SubtypeItemUpgrade.range) {
+		if (subtype == SubtypeItemUpgrade.range) {
 			tooltip.add(new TranslatableComponent("tooltip.info.range").withStyle(ChatFormatting.GRAY));
 		}
 	}
@@ -109,25 +105,24 @@ public class ItemUpgrade extends Item {
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if (!world.isClientSide) {
 			ItemStack handStack = player.getItemInHand(hand);
-			SubtypeItemUpgrade subtype = ((ItemUpgrade) handStack.getItem()).subtype;
-			if ((subtype ==  SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) 
+			SubtypeItemUpgrade localSubtype = ((ItemUpgrade) handStack.getItem()).subtype;
+			if ((localSubtype == SubtypeItemUpgrade.iteminput || localSubtype == SubtypeItemUpgrade.itemoutput)
 					&& ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY != null) {
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
 					handStack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
-				} else {
-					handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(0, !m.getBoolean(0)));
 				}
+				handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(0, !m.getBoolean(0)));
 			}
-			if(subtype == SubtypeItemUpgrade.experience && ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY != null) {
+			if (localSubtype == SubtypeItemUpgrade.experience && ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY != null) {
 				double storedXp = handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getDouble(0)).orElse(0.0);
 				int takenXp = (int) storedXp;
-				//it uses a Vec3 for some reason don't ask me why
+				// it uses a Vec3 for some reason don't ask me why
 				Vec3 playerPos = new Vec3(player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ());
-				ExperienceOrb.award((ServerLevel) world, playerPos , takenXp);
-				handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, storedXp - takenXp));;
+				ExperienceOrb.award((ServerLevel) world, playerPos, takenXp);
+				handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, storedXp - takenXp));
 			}
 		}
 		return super.use(world, player, hand);

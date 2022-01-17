@@ -492,7 +492,7 @@ public class ComponentProcessor implements Component {
 			if (locRecipe.hasItemBiproducts()) {
 				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
 				List<ItemStack> invBi = inv.getItemBiContents();
-				
+
 				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
 					int index = inv.getItemBiproductStartIndex() + procNumber;
 					if (invBi.get(i).isEmpty()) {
@@ -584,7 +584,7 @@ public class ComponentProcessor implements Component {
 			int procNumber = pr.getProcessorNumber();
 			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 			AbstractFluidHandler<?> handler = holder.getComponent(ComponentType.FluidHandler);
-			
+
 			if (locRecipe.hasItemBiproducts()) {
 				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
 				List<ItemStack> invBi = inv.getItemBiContents();
@@ -661,15 +661,14 @@ public class ComponentProcessor implements Component {
 			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
-	
+
 	private static void dispenseExperience(ComponentInventory inv, double experience) {
-		for(ItemStack stack : inv.getUpgradeContents()) {
-			if(!stack.isEmpty()) {
+		for (ItemStack stack : inv.getUpgradeContents()) {
+			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
-				if(upgrade.subtype == SubtypeItemUpgrade.experience) {
-					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> {
-						h.setDouble(0, h.getDouble(0) + experience);
-					});;
+				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
+					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY)
+							.ifPresent(h -> h.setDouble(0, h.getDouble(0) + experience));
 				}
 				break;
 			}
