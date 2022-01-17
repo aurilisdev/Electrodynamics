@@ -10,5 +10,6 @@
 	"output": {
 		"item": "electrodynamics:platelead",
 		"count": 1
-	}
+	},
+    "experience": 0.1
 }

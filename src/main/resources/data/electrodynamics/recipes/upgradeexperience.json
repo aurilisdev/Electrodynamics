@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pcp",
+		"cgc",
+		"pcp"
+	],
+	"key": {
+		"p": {
+			"tag": "forge:plates/bronze"
+		},
+		"c": {
+			"item": "electrodynamics:wireinsulatedcopper"
+		},
+		"g": {
+			"item": "minecraft:glass_bottle"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:upgradeexperience",
+		"count": 1
+	}
+}

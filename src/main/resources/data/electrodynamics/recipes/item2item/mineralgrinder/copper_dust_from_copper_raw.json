@@ -10,5 +10,6 @@
     "output":{
         "item":"electrodynamics:dustcopper",
         "count":2
-    }
+    },
+    "experience": 0.3
 }

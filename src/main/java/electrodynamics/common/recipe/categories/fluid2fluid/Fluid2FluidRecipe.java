@@ -22,27 +22,30 @@ public abstract class Fluid2FluidRecipe extends AbstractFluidRecipe {
 	private FluidIngredient[] inputFluidIngredients;
 	private FluidStack outputFluidStack;
 
-	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid) {
-		super(recipeID);
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, 
+			double experience) {
+		super(recipeID, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts) {
-		super(recipeID, itemBiproducts);
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, 
+			double experience) {
+		super(recipeID, itemBiproducts, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
-		super(fluidBiproducts, recipeID);
+	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, 
+			double experience) {
+		super(fluidBiproducts, recipeID, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
 	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts,
-			ProbableFluid[] fluidBiproducts) {
-		super(recipeID, itemBiproducts, fluidBiproducts);
+			ProbableFluid[] fluidBiproducts, double experience) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}

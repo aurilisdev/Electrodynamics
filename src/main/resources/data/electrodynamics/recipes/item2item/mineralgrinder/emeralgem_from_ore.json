@@ -11,6 +11,7 @@
         "item":"minecraft:emerald",
         "count":2
     },
+    "experience": 1,
 	"itembi" : {
 		"count" : 1, 
 		"0" : {

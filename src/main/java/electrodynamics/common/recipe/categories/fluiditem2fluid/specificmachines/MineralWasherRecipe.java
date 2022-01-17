@@ -16,8 +16,9 @@ public class MineralWasherRecipe extends FluidItem2FluidRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public MineralWasherRecipe(ResourceLocation recipeID, CountableIngredient[] inputItem, FluidIngredient[] inputFluid, FluidStack outputFluid) {
-		super(recipeID, inputItem, inputFluid, outputFluid);
+	public MineralWasherRecipe(ResourceLocation recipeID, CountableIngredient[] inputItem, FluidIngredient[] inputFluid, 
+			FluidStack outputFluid, double experience) {
+		super(recipeID, inputItem, inputFluid, outputFluid, experience);
 	}
 
 	@Override

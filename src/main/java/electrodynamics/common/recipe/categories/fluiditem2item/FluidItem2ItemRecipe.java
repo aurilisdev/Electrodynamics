@@ -26,32 +26,33 @@ public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 	private FluidIngredient[] fluidIngredients;
 	private ItemStack outputItemStack;
 
-	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput) {
-		super(recipeID);
+	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, 
+			ItemStack itemOutput, double experience) {
+		super(recipeID, experience);
 		ingredients = itemInputs;
 		fluidIngredients = fluidInputs;
 		outputItemStack = itemOutput;
 	}
 
 	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
-			ProbableItem[] itemBiproducts) {
-		super(recipeID, itemBiproducts);
+			ProbableItem[] itemBiproducts, double experience) {
+		super(recipeID, itemBiproducts, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputItemStack = itemOutput;
 	}
 
 	protected FluidItem2ItemRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
-			ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
-		super(fluidBiproducts, recipeID);
+			ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
+		super(fluidBiproducts, recipeID, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputItemStack = itemOutput;
 	}
 
 	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
-			ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
-		super(recipeID, itemBiproducts, fluidBiproducts);
+			ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputItemStack = itemOutput;

@@ -26,32 +26,32 @@ public abstract class FluidItem2FluidRecipe extends AbstractFluidRecipe {
 	private FluidStack outputStack;
 
 	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids,
-			FluidStack outputFluid) {
-		super(recipeID);
+			FluidStack outputFluid, double experience) {
+		super(recipeID, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
 	}
 
 	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids,
-			FluidStack outputFluid, ProbableItem[] itemBiproducts) {
-		super(recipeID, itemBiproducts);
+			FluidStack outputFluid, ProbableItem[] itemBiproducts, double experience) {
+		super(recipeID, itemBiproducts, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
 	}
 
 	protected FluidItem2FluidRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid,
-			ProbableFluid[] fluidBiproducts, ResourceLocation recipeID) {
-		super(fluidBiproducts, recipeID);
+			ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
+		super(fluidBiproducts, recipeID, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
 	}
 
 	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids,
-			FluidStack outputFluid, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
-		super(recipeID, itemBiproducts, fluidBiproducts);
+			FluidStack outputFluid, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
@@ -62,12 +62,10 @@ public abstract class FluidItem2FluidRecipe extends AbstractFluidRecipe {
 
 		Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(),
 				((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
-		// Electrodynamics.LOGGER.info("item pair " + itemPair.getSecond());
 		if (Boolean.TRUE.equals(itemPair.getSecond())) {
 			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(),
 					((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
 			if (Boolean.TRUE.equals(fluidPair.getSecond())) {
-				// Electrodynamics.LOGGER.info("fluid pair" + fluidPair.getSecond());
 				setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
 				setFluidArrangement(fluidPair.getFirst());
 				return true;

@@ -81,7 +81,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	// I can't really optimize this one any more than it is
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		if (!inv.areOutputsEmpty() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
+		if (inv.hasItemsInOutput() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
 			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
 			if (tickNumber >= 4) {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
@@ -117,7 +117,8 @@ public enum SubtypeItemUpgrade implements ISubtype {
 		if (holder instanceof IElectricGenerator generator && (holder instanceof TileWindmill || holder instanceof TileHydroelectricGenerator)) {
 			generator.setMultiplier(2.25);
 		}
-	}, 1);
+	}, 1), range((holder, processor, upgrade) -> {/*it does nothing; the count determines the new range*/}, 12),
+	       experience((holder, processor, upgrade) -> {/*the machine handles adding the experience*/}, 1);
 
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;

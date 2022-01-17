@@ -10,5 +10,6 @@
 	"output": {
 		"item": "electrodynamics:dustsulfur",
 		"count": 4
-	}
+	},
+    "experience": 0.1
 }

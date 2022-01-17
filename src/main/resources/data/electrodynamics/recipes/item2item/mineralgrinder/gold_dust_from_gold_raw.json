@@ -10,5 +10,6 @@
     "output":{
         "item":"electrodynamics:dustgold",
         "count":1
-    }
+    },
+    "experience": 0.5
 }

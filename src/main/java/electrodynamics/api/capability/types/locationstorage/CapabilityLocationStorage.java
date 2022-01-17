@@ -57,7 +57,7 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 
 	@Override
 	public void setLocation(int index, double x, double y, double z) {
-		locations.add(new Location(x, y, z));
+		locations.set(index, new Location(x, y, z));
 	}
 
 	@Override

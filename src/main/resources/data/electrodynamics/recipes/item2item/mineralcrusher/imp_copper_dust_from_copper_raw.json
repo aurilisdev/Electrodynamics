@@ -10,5 +10,6 @@
 	"output": {
 		"item": "electrodynamics:impuredustcopper",
 		"count": 2
-	}
+	},
+    "experience": 0.3
 }

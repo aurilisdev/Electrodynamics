@@ -10,5 +10,6 @@
     "output":{
         "item":"electrodynamics:crystalpotassiumchloride",
         "count":3
-    }
+    },
+    "experience": 0.3
 }

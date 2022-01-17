@@ -9,6 +9,7 @@
 	},
     "output":{
         "item":"electrodynamics:compositeplating",
-        "count":1
-    }
+        "count": 1
+    },
+    "experience": 1
 }

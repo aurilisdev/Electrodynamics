@@ -25,22 +25,23 @@ public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> ex
 		CountableIngredient[] inputs = getItemIngredients(recipeJson);
 		FluidIngredient[] fluidInputs = getFluidIngredients(recipeJson);
 		FluidStack output = getFluidOutput(recipeJson);
+		double experience = getExperience(recipeJson);
 		if (recipeJson.has(ITEM_BIPRODUCTS)) {
 			ProbableItem[] itemBi = getItemBiproducts(recipeJson);
 			if (recipeJson.has(FLUID_BIPRODUCTS)) {
 				ProbableFluid[] fluidBi = getFluidBiproducts(recipeJson);
 				try {
 					Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class,
-							FluidIngredient[].class, FluidStack.class, ProbableItem[].class, ProbableFluid[].class);
-					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi, fluidBi);
+							FluidIngredient[].class, FluidStack.class, ProbableItem[].class, ProbableFluid[].class, double.class);
+					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi, fluidBi, experience);
 				} catch (Exception e) {
 					Electrodynamics.LOGGER.info(e.getMessage());
 				}
 			} else {
 				try {
 					Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class,
-							FluidIngredient[].class, FluidStack.class, ProbableItem[].class);
-					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi);
+							FluidIngredient[].class, FluidStack.class, ProbableItem[].class, double.class);
+					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi, experience);
 				} catch (Exception e) {
 					Electrodynamics.LOGGER.info(e.getMessage());
 				}
@@ -49,21 +50,21 @@ public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> ex
 			ProbableFluid[] fluidBi = getFluidBiproducts(recipeJson);
 			try {
 				Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(CountableIngredient[].class, FluidIngredient[].class,
-						FluidStack.class, ProbableFluid[].class, ResourceLocation.class);
-				return recipeConstructor.newInstance(inputs, fluidInputs, output, fluidBi, recipeId);
+						FluidStack.class, ProbableFluid[].class, ResourceLocation.class, double.class);
+				return recipeConstructor.newInstance(inputs, fluidInputs, output, fluidBi, recipeId, experience);
 			} catch (Exception e) {
 				Electrodynamics.LOGGER.info(e.getMessage());
 			}
 		} else {
 			try {
 				Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class,
-						FluidIngredient[].class, FluidStack.class);
-				return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output);
+						FluidIngredient[].class, FluidStack.class, double.class);
+				return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, experience);
 			} catch (Exception e) {
 				Electrodynamics.LOGGER.info(e.getMessage());
 			}
 		}
-		Electrodynamics.LOGGER.info("returning null");
+		Electrodynamics.LOGGER.info("returning null at " + recipeId);
 		return null;
 	}
 
@@ -74,22 +75,23 @@ public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> ex
 		CountableIngredient[] inputs = CountableIngredient.readList(buffer);
 		FluidIngredient[] fluidInputs = FluidIngredient.readList(buffer);
 		FluidStack output = buffer.readFluidStack();
+		double experience = buffer.readDouble();
 		if (hasItemBi) {
 			ProbableItem[] itemBi = ProbableItem.readList(buffer);
 			if (hasFluidBi) {
 				ProbableFluid[] fluidBi = ProbableFluid.readList(buffer);
 				try {
 					Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class,
-							FluidIngredient[].class, FluidStack.class, ProbableItem[].class, ProbableFluid[].class);
-					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi, fluidBi);
+							FluidIngredient[].class, FluidStack.class, ProbableItem[].class, ProbableFluid[].class, double.class);
+					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi, fluidBi, experience);
 				} catch (Exception e) {
 					Electrodynamics.LOGGER.info(e.getMessage());
 				}
 			} else {
 				try {
 					Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class,
-							FluidIngredient[].class, FluidStack.class, ProbableItem[].class);
-					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi);
+							FluidIngredient[].class, FluidStack.class, ProbableItem[].class, double.class);
+					return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, itemBi, experience);
 				} catch (Exception e) {
 					Electrodynamics.LOGGER.info(e.getMessage());
 				}
@@ -98,21 +100,21 @@ public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> ex
 			ProbableFluid[] fluidBi = ProbableFluid.readList(buffer);
 			try {
 				Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(CountableIngredient[].class, FluidIngredient[].class,
-						FluidStack.class, ProbableFluid[].class, ResourceLocation.class);
-				return recipeConstructor.newInstance(inputs, fluidInputs, output, fluidBi, recipeId);
+						FluidStack.class, ProbableFluid[].class, ResourceLocation.class, double.class);
+				return recipeConstructor.newInstance(inputs, fluidInputs, output, fluidBi, recipeId, experience);
 			} catch (Exception e) {
 				Electrodynamics.LOGGER.info(e.getMessage());
 			}
 		} else {
 			try {
 				Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class,
-						FluidIngredient[].class, FluidStack.class);
-				return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output);
+						FluidIngredient[].class, FluidStack.class, double.class);
+				return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, experience);
 			} catch (Exception e) {
 				Electrodynamics.LOGGER.info(e.getMessage());
 			}
 		}
-		Electrodynamics.LOGGER.info("returning null");
+		Electrodynamics.LOGGER.info("returning null at " + recipeId);
 		return null;
 	}
 
@@ -123,6 +125,7 @@ public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> ex
 		CountableIngredient.writeList(buffer, recipe.getCountedIngredients());
 		FluidIngredient.writeList(buffer, recipe.getFluidIngredients());
 		buffer.writeFluidStack(recipe.getFluidRecipeOutput());
+		buffer.writeDouble(recipe.getXp());
 		if (recipe.hasItemBiproducts()) {
 			ProbableItem.writeList(buffer, recipe.getItemBiproducts());
 		}

@@ -16,12 +16,13 @@ public class OxidationFurnaceRecipe extends Item2ItemRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public OxidationFurnaceRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output) {
-		super(recipeID, inputs, output);
+	public OxidationFurnaceRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience) {
+		super(recipeID, inputs, output, experience);
 	}
 
-	public OxidationFurnaceRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts) {
-		super(id, input, output, itemBiproducts);
+	public OxidationFurnaceRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
+			double experience) {
+		super(id, input, output, itemBiproducts, experience);
 	}
 
 	@Override

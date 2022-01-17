@@ -27,6 +27,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 	public static final String ITEM_BIPRODUCTS = "itembi";
 	public static final String FLUID_BIPRODUCTS = "fluidbi";
 	private static final String OUTPUT = "output";
+	public static final String EXPERIENCE = "experience";
 
 	private Class<T> RECIPE_CLASS;
 
@@ -152,6 +153,14 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(fluid, "fluid"));
 		int amount = GsonHelper.getAsInt(fluid, "amount");
 		return new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount);
+	}
+	
+	public static double getExperience(JsonObject json) {
+		if(!json.has(EXPERIENCE)) {
+			return 0;
+		} else {
+			return json.get(EXPERIENCE).getAsDouble();
+		}
 	}
 
 }

@@ -10,5 +10,6 @@
     "output":{
         "item":"electrodynamics:titaniumheatcoil",
         "count":1
-    }
+    },
+    "experience": 0.5
 }

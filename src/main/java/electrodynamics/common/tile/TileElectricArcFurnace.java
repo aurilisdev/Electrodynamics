@@ -8,6 +8,8 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceDouble;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceTriple;
+import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
@@ -24,6 +26,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
@@ -88,6 +91,14 @@ public class TileElectricArcFurnace extends GenericTile {
 			inv.setItem(inv.getOutputSlots().get(component.getProcessorNumber()), result.copy());
 		}
 		inv.getInputContents().get(component.getProcessorNumber()).get(0).shrink(1);
+		for(ItemStack stack : inv.getUpgradeContents()) {
+			if(!stack.isEmpty() && (((ItemUpgrade)stack.getItem()).subtype == SubtypeItemUpgrade.experience)) {
+				stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> {
+					h.setDouble(0, h.getDouble(0) + ((AbstractCookingRecipe)cachedRecipe).getExperience());
+				});
+				break;
+			}
+		}
 	}
 
 	protected boolean canProcess(ComponentProcessor component) {

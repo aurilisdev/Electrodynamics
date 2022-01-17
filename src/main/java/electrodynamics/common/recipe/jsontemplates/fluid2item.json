@@ -17,6 +17,7 @@
 		"item" : "modid:item",
 		"count" : 5
 	},
+	"experience" : 0.5,
 	//these fields are optional
 	"itembi" : {
 		"count" : 2, //can be any number in theory; must have this field

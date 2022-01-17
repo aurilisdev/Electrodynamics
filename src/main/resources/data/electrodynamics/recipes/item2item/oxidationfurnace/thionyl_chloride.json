@@ -11,6 +11,7 @@
 			"count": 1
 		}
 	},
+    "experience": 0.1,
 	"output": {
 		"item": "electrodynamics:oxidethionylchloride",
 		"count": 1

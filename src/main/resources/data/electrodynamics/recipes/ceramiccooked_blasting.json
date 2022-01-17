@@ -4,6 +4,6 @@
 		"item": "electrodynamics:ceramicwet"
 	},
 	"result": "electrodynamics:ceramiccooked",
-	"experience": 0.0,
+	"experience": 0.1,
 	"cookingtime": 300
 }

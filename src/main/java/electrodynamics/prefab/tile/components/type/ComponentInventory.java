@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -502,17 +503,39 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public boolean areOutputsEmpty() {
+		boolean output = false;
+		boolean biproduct = false;
+		for (ItemStack stack : getOutputContents()) {
+			if (stack.isEmpty()) {
+				output = true;
+				break;
+			}
+		}
+		if(getItemBiContents().size() > 0) {
+			for (ItemStack stack : getItemBiContents()) {
+				if (stack.isEmpty()) {
+					biproduct = true;
+					break;
+				}
+			}
+		} else {
+			biproduct = true;
+		}
+		return output && biproduct;
+	}
+	
+	public boolean hasItemsInOutput() {
 		for (ItemStack stack : getOutputContents()) {
 			if (!stack.isEmpty()) {
-				return false;
+				return true;
 			}
 		}
 		for (ItemStack stack : getItemBiContents()) {
 			if (!stack.isEmpty()) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	// specialized case of hasInputRoom()
@@ -536,6 +559,25 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			}
 		}
 		return false;
+	}
+	
+	public static void addItemsToInventory(ComponentInventory inv, List<ItemStack> items, int start, int count) {
+		for(ItemStack item : items) {
+			for(int i = start; i < count; i++) {
+				ItemStack contained = inv.getItem(i);
+				int room = inv.getMaxStackSize() - contained.getCount();
+				int amtAccepted = room >= item.getCount() ? item.getCount() : room;
+				if (contained.isEmpty()) {
+					inv.setItem(i, new ItemStack(item.getItem(), amtAccepted).copy());
+					item.shrink(amtAccepted);
+					inv.setChanged();
+				} else if (ItemUtils.testItems(item.getItem(), contained.getItem())) {
+					contained.grow(amtAccepted);
+					item.shrink(amtAccepted);
+					inv.setChanged();
+				}
+			}
+		}
 	}
 
 }
