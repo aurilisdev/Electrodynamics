@@ -1,16 +1,26 @@
 package electrodynamics.prefab.utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class WorldUtils {
 
@@ -123,5 +133,58 @@ public class WorldUtils {
 		}
 		return list;
 	}
-	// TODO: Implement direct chunk block editing. Would only update liquids and falling blocks. Removes entities like normal and does them all in batches of lists of blockpositions
+
+	private static HashMap<ChunkPos, LevelChunk> chunkCache = new HashMap<>();
+
+	public static void clearChunkCache() {
+		for (LevelChunk chunk : chunkCache.values()) {
+			ServerLevel level = (ServerLevel) chunk.getLevel();
+			chunk.setUnsaved(true);
+			LevelLightEngine lightManager = level.getLightEngine();
+			lightManager.enableLightSources(chunk.getPos(), false);
+
+			ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(chunk, lightManager, null, null, false);
+			level.getChunkSource().chunkMap.getPlayers(chunk.getPos(), false).forEach(e -> e.connection.send(packet));
+			level.getChunkSource().updateChunkForced(chunk.getPos(), true);
+		}
+		chunkCache.clear();
+	}
+
+	public static void fastRemoveBlockExplosion(ServerLevel level, BlockPos pos) {
+		try {
+			if (!level.isOutsideBuildHeight(pos)) {
+				LevelChunk chunk = getChunk(level, pos);
+				LevelChunkSection storage = getBlockStorage(pos);
+				BlockState oldState = chunk.getBlockState(pos);
+				Block block = oldState.getBlock();
+				if (oldState != Blocks.AIR.defaultBlockState() && oldState != Blocks.VOID_AIR.defaultBlockState()
+						&& oldState.getDestroySpeed(level, pos) >= 0) {
+					if (block instanceof EntityBlock || block instanceof Fallable || block instanceof IFluidBlock) {
+						level.removeBlock(pos, false);
+						level.getLightEngine().checkBlock(pos);
+						return;
+					}
+					if (storage != null) {
+						storage.setBlockState(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15, Blocks.AIR.defaultBlockState());
+						level.getLightEngine().checkBlock(pos);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static LevelChunkSection getBlockStorage(BlockPos pos) {
+		LevelChunk chunk = getChunk(null, pos);
+		return chunk.getSection(chunk.getSectionIndex(pos.getY()));
+	}
+
+	private static LevelChunk getChunk(ServerLevel level, BlockPos pos) {
+		ChunkPos cp = new ChunkPos(pos);
+		if (!chunkCache.containsKey(cp)) {
+			chunkCache.put(cp, level.getChunk(pos.getX() >> 4, pos.getZ() >> 4));
+		}
+		return chunkCache.get(cp);
+	}
 }
