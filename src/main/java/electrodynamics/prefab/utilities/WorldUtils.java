@@ -151,27 +151,23 @@ public class WorldUtils {
 	}
 
 	public static void fastRemoveBlockExplosion(ServerLevel level, BlockPos pos) {
-		try {
-			if (!level.isOutsideBuildHeight(pos)) {
-				LevelChunk chunk = getChunk(level, pos);
-				LevelChunkSection storage = getBlockStorage(pos);
-				BlockState oldState = chunk.getBlockState(pos);
-				Block block = oldState.getBlock();
-				if (oldState != Blocks.AIR.defaultBlockState() && oldState != Blocks.VOID_AIR.defaultBlockState()
-						&& oldState.getDestroySpeed(level, pos) >= 0) {
-					if (block instanceof EntityBlock || block instanceof Fallable || block instanceof IFluidBlock) {
-						level.removeBlock(pos, false);
-						level.getLightEngine().checkBlock(pos);
-						return;
-					}
-					if (storage != null) {
-						storage.setBlockState(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15, Blocks.AIR.defaultBlockState());
-						level.getLightEngine().checkBlock(pos);
-					}
+		if (!level.isOutsideBuildHeight(pos)) {
+			LevelChunk chunk = getChunk(level, pos);
+			LevelChunkSection storage = getBlockStorage(pos);
+			BlockState oldState = chunk.getBlockState(pos);
+			Block block = oldState.getBlock();
+			if (oldState != Blocks.AIR.defaultBlockState() && oldState != Blocks.VOID_AIR.defaultBlockState()
+					&& oldState.getDestroySpeed(level, pos) >= 0) {
+				if (block instanceof EntityBlock || block instanceof Fallable || block instanceof IFluidBlock) {
+					level.removeBlock(pos, false);
+					level.getLightEngine().checkBlock(pos);
+					return;
+				}
+				if (storage != null) {
+					storage.setBlockState(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15, Blocks.AIR.defaultBlockState());
+					level.getLightEngine().checkBlock(pos);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
