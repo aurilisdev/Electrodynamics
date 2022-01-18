@@ -44,13 +44,15 @@ public class BlockItemDescriptable extends BlockItem {
 	@Override
 	public InteractionResult place(BlockPlaceContext p) {
 		ItemStack stack = p.getItemInHand().copy();
-		double joules = stack.getOrCreateTag().getDouble("joules");
 		InteractionResult result = super.place(p);
-		if (block instanceof GenericMachineBlock) {
-			BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos());
-			if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) {
-				ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic);
-				electrodynamic.setJoulesStored(joules);
+		if (stack.hasTag()) {
+			double joules = stack.getTag().getDouble("joules");
+			if (block instanceof GenericMachineBlock) {
+				BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos());
+				if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) {
+					ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic);
+					electrodynamic.setJoulesStored(joules);
+				}
 			}
 		}
 		return result;
@@ -70,9 +72,11 @@ public class BlockItemDescriptable extends BlockItem {
 				}
 			}
 		}
-		double joules = stack.getOrCreateTag().getDouble("joules");
-		if (joules > 0) {
-			tooltip.add(new TextComponent("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
+		if (stack.hasTag()) {
+			double joules = stack.getOrCreateTag().getDouble("joules");
+			if (joules > 0) {
+				tooltip.add(new TextComponent("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
+			}
 		}
 	}
 
