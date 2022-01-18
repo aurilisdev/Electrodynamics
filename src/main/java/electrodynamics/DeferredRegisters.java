@@ -13,6 +13,7 @@ import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.BlockResource;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
@@ -203,6 +204,9 @@ public class DeferredRegisters {
 		}
 		for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockDeepslateOre(subtype), subtype)));
+		}
+		for (SubtypeRawOreBlock subtype : SubtypeRawOreBlock.values()) {
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockRawOre(subtype), subtype)));
 		}
 		for (SubtypeMachine subtype : SubtypeMachine.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));

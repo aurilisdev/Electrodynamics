@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"tag": "forge:rawores/tin"
+	},
+	"result": "electrodynamics:ingottin",
+	"experience": 0.1,
+	"cookingtime": 100
+}
