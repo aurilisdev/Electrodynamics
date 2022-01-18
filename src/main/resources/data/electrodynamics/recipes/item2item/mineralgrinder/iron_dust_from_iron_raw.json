@@ -4,12 +4,12 @@
 		"count" : 1,
 		"0":{
 	        "item":"minecraft:raw_iron",
-	        "count":2
+	        "count":1
 	    }
 	},
     "output":{
         "item":"electrodynamics:dustiron",
-        "count":1
+        "count":2
     },
     "experience": 0.3
 }

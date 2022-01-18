@@ -38,7 +38,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		}, this, 25, 25).flame());
 		components.add(
 				new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2)); // TODO: For some reason this doesnt work
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {

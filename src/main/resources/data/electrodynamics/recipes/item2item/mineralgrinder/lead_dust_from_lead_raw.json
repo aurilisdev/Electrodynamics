@@ -3,13 +3,13 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0":{
-	        "item":"minecraft:raw_gold",
+	        "tag":"forge:rawores/lead",
 	        "count":1
 	    }
 	},
     "output":{
-        "item":"electrodynamics:dustgold",
+        "item":"electrodynamics:dustlead",
         "count":2
     },
-    "experience": 0.5
+    "experience": 0.3
 }

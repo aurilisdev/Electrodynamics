@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafsilverg_shaped",
+	"pattern": [
+		"iii",
+		"iii",
+		"iii"
+	],
+	"key": {
+		"i": {
+			"tag": "forge:rawores/silver"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:raworeblocksilver",
+		"count": 1
+	}
+}
