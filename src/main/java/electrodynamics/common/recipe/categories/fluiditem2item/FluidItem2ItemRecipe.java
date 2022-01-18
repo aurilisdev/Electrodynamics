@@ -26,8 +26,8 @@ public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 	private FluidIngredient[] fluidIngredients;
 	private ItemStack outputItemStack;
 
-	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, 
-			ItemStack itemOutput, double experience) {
+	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput,
+			double experience) {
 		super(recipeID, experience);
 		ingredients = itemInputs;
 		fluidIngredients = fluidInputs;

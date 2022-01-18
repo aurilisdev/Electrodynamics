@@ -55,7 +55,7 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		power.setBordered(false);
 		power.setMaxLength(6);
 		power.setResponder(this::setPower);
-		
+
 		addWidget(voltage);
 		addWidget(power);
 		setInitialFocus(voltage);

@@ -136,10 +136,11 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		super.appendHoverText(stack, world, tooltip, flagIn);
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
 				.append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
-				ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / "
-						+ ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))
-								.withStyle(ChatFormatting.RED));
+		tooltip.add(
+				new TranslatableComponent("tooltip.item.electric.voltage",
+						ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / "
+								+ ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))
+										.withStyle(ChatFormatting.RED));
 		if (stack.hasTag() && stack.getTag().getBoolean(BOOLEAN_NBT_KEY)) {
 			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
 					.append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));

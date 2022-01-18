@@ -29,14 +29,14 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, 
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(recipeID, itemBiproducts, experience);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, 
+	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID,
 			double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		ITEM_INPUTS = inputs;

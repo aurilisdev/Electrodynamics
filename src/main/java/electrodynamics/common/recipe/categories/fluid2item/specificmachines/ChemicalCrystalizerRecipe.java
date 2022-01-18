@@ -15,8 +15,7 @@ public class ChemicalCrystalizerRecipe extends Fluid2ItemRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public ChemicalCrystalizerRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInput, ItemStack itemOutput, 
-			double experience) {
+	public ChemicalCrystalizerRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInput, ItemStack itemOutput, double experience) {
 		super(recipeID, fluidInput, itemOutput, experience);
 	}
 

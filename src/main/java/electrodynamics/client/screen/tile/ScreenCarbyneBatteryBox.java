@@ -32,14 +32,14 @@ public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatte
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileCarbyneBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
-			list.add(new TranslatableComponent("gui.machine.current",
-					new TextComponent(ChatFormatter
-							.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE))
-									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(
+					new TranslatableComponent("gui.machine.current",
+							new TextComponent(ChatFormatter.getChatDisplayShort(
+									box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE))
+											.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.transfer",
-					new TextComponent(
-							ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT))
-									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+					new TextComponent(ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT))
+							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.voltage",
 					new TextComponent(ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
@@ -57,8 +57,8 @@ public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatte
 		TileCarbyneBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.current", ChatFormatter.getChatDisplayShort(
-							box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE)),
+					new TranslatableComponent("gui.machine.current", ChatFormatter
+							.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE)),
 					inventoryLabelX, inventoryLabelY - 55f, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.transfer",

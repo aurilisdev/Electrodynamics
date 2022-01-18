@@ -20,8 +20,7 @@ public class LatheRecipe extends Item2ItemRecipe {
 		super(id, input, output, experience);
 	}
 
-	public LatheRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
-			double experience) {
+	public LatheRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}
 

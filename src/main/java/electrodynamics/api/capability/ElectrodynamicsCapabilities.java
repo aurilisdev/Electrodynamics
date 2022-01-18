@@ -25,7 +25,7 @@ public class ElectrodynamicsCapabilities {
 	});
 	public static Capability<IIntStorage> INTEGER_STORAGE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
 	});
-	public static Capability<IDoubleStorage> DOUBLE_STORAGE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {	
+	public static Capability<IDoubleStorage> DOUBLE_STORAGE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
 	});
 	public static Capability<ICapabilityElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
 	});

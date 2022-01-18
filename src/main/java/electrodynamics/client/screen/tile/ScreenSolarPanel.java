@@ -36,8 +36,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 					new TranslatableComponent("gui.machine.output", ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnit.WATT)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 35, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.voltage",
-							ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)),
+					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 22, 4210752);
 		}
 	}
