@@ -75,6 +75,8 @@
 		"electrodynamics:deepslateoretin",
 		
 		"electrodynamics:resourceblocktin",
-		"electrodynamics:resourceblockbronze"
+		"electrodynamics:resourceblockbronze",
+		
+		"electrodynamics:raworeblocktin"
 	]
 }

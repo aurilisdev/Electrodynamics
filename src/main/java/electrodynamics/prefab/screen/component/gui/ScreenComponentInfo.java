@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.gui;
 
 import java.awt.Rectangle;
 import java.util.List;
