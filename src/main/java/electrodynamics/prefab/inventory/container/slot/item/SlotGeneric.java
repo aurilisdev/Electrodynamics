@@ -1,6 +1,6 @@
 package electrodynamics.prefab.inventory.container.slot.item;
 
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
+import electrodynamics.prefab.screen.component.gui.type.ScreenComponentSlot.EnumSlotType;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;

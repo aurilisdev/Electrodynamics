@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
+import electrodynamics.prefab.screen.component.gui.type.ScreenComponentTextInputBar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -55,7 +55,7 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		power.setBordered(false);
 		power.setMaxLength(6);
 		power.setResponder(this::setPower);
-
+		
 		addWidget(voltage);
 		addWidget(power);
 		setInitialFocus(voltage);

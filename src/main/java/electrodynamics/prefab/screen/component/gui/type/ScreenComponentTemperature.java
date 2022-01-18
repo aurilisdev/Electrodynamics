@@ -1,10 +1,11 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.gui.type;
 
 import java.util.List;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
+import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;

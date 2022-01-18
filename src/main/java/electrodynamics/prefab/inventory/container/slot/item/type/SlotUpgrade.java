@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
+import electrodynamics.prefab.screen.component.gui.type.ScreenComponentSlot.EnumSlotType;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
