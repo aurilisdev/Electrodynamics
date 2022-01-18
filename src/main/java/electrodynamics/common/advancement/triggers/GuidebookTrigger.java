@@ -2,6 +2,7 @@ package electrodynamics.common.advancement.triggers;
 
 import com.google.gson.JsonObject;
 
+import electrodynamics.api.References;
 import electrodynamics.common.settings.Constants;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -12,14 +13,14 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class GuidebookTrigger extends SimpleCriterionTrigger<GuidebookTrigger.TriggerInstance> {
 	
-	public static final ResourceLocation ID = new ResourceLocation("guidebook");
+	public static final ResourceLocation ID = new ResourceLocation(References.ID, "guidebook");
 
 	   public ResourceLocation getId() {
 	      return ID;
 	   }
 
-	   public GuidebookTrigger.TriggerInstance createInstance(JsonObject p_70644_, EntityPredicate.Composite p_70645_, DeserializationContext p_70646_) {
-	      return new GuidebookTrigger.TriggerInstance(p_70645_);
+	   public GuidebookTrigger.TriggerInstance createInstance(JsonObject p_70644_, EntityPredicate.Composite instance, DeserializationContext p_70646_) {
+	      return new GuidebookTrigger.TriggerInstance(instance);
 	   }
 
 	   public void trigger(ServerPlayer player) {
