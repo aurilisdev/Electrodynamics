@@ -116,6 +116,10 @@ public class RenderingUtils {
 		return (color >> 24 & 0xFF) / 255.0F;
 	}
 
+	public static int getRGBA(int a, int r, int g, int b) {
+		return (a << 24) + (r << 16) + (g << 8) + b;
+	}
+
 	public static float[] getColorArray(int color) {
 		return new float[] { getRed(color), getGreen(color), getBlue(color), getAlpha(color) };
 	}
