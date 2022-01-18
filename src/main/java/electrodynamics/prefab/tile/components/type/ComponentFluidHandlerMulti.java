@@ -8,7 +8,7 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.crafting.Recipe;

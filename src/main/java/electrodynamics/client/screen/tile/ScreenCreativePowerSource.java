@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentTextInputBar;
+import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;

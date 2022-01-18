@@ -2,9 +2,9 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;

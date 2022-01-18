@@ -4,10 +4,10 @@ import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGener
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentFluid;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.material.Fluids;

@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.gui.type;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
