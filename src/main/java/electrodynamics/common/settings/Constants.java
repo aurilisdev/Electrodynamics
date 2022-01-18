@@ -1,5 +1,6 @@
 package electrodynamics.common.settings;
 
+import electrodynamics.api.configuration.BooleanValue;
 import electrodynamics.api.configuration.Configuration;
 import electrodynamics.api.configuration.DoubleValue;
 import electrodynamics.api.configuration.FloatValue;
@@ -93,6 +94,9 @@ public class Constants {
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	@DoubleValue(def = 400)
 	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 400;
+	
+	@BooleanValue(def = true)
+	public static boolean DISPENSE_GUIDEBOOK = true;
 
 	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

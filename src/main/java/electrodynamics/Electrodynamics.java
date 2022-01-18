@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
+import electrodynamics.common.advancement.ElectrodynamicsAdvancements;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -60,6 +61,7 @@ public class Electrodynamics {
 		OreGeneration.registerOres();
 		NetworkHandler.init();
 		ElectrodynamicsTags.init();
+		ElectrodynamicsAdvancements.init();
 	}
 
 	@SubscribeEvent

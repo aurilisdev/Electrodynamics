@@ -1,7 +1,7 @@
 {
 	"criteria": {
 		"spawn": {
-			"trigger": "minecraft:tick"
+			"trigger": "electrodynamics:guidebook"
 		}
 	},
 	"rewards": {
