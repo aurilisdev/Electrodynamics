@@ -1,0 +1,15 @@
+{
+	"type": "electrodynamics:mineral_crusher_recipe",
+	"iteminputs" : {
+		"count" : 1,
+		"0": {
+			"tag": "forge:rawores/silver",
+			"count": 1
+		}
+	},
+	"output": {
+		"item": "electrodynamics:impuredustsilver",
+		"count": 3
+	},
+    "experience": 0.3
+}

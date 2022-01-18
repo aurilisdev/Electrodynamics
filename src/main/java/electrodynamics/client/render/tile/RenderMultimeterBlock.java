@@ -5,7 +5,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -45,7 +45,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 					break;
 				}
 				TextComponent displayNameIn = new TextComponent(
-						"Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, ElectricUnit.WATT, 2));
+						"Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -76,7 +76,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 					break;
 				}
 				TextComponent displayNameIn = new TextComponent(
-						"Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, ElectricUnit.VOLTAGE, 2));
+						"Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, DisplayUnit.VOLTAGE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -107,7 +107,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 					break;
 				}
 				TextComponent displayNameIn = new TextComponent(
-						"Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, ElectricUnit.RESISTANCE, 2));
+						"Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, DisplayUnit.RESISTANCE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -138,7 +138,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 					break;
 				}
 				TextComponent displayNameIn = new TextComponent(
-						"Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, ElectricUnit.WATT, 2));
+						"Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);

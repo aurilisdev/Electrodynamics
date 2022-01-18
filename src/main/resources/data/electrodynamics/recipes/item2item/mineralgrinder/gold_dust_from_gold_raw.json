@@ -4,12 +4,12 @@
 		"count" : 1,
 		"0":{
 	        "item":"minecraft:raw_gold",
-	        "count":2
+	        "count":1
 	    }
 	},
     "output":{
         "item":"electrodynamics:dustgold",
-        "count":1
+        "count":2
     },
     "experience": 0.5
 }

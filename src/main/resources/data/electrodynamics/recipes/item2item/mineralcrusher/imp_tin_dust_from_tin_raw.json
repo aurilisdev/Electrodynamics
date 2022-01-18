@@ -1,0 +1,15 @@
+{
+	"type": "electrodynamics:mineral_crusher_recipe",
+	"iteminputs" : {
+		"count" : 1,
+		"0": {
+			"tag": "forge:rawores/tin",
+			"count": 1
+		}
+	},
+	"output": {
+		"item": "electrodynamics:impuredusttin",
+		"count": 3
+	},
+    "experience": 0.3
+}

@@ -31,7 +31,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 
 	private Class<T> RECIPE_CLASS;
 
-	public ElectrodynamicsRecipeSerializer(Class<T> recipeClass) {
+	protected ElectrodynamicsRecipeSerializer(Class<T> recipeClass) {
 		this.RECIPE_CLASS = recipeClass;
 	}
 
@@ -154,13 +154,9 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		int amount = GsonHelper.getAsInt(fluid, "amount");
 		return new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount);
 	}
-	
+
 	public static double getExperience(JsonObject json) {
-		if(!json.has(EXPERIENCE)) {
-			return 0;
-		} else {
-			return json.get(EXPERIENCE).getAsDouble();
-		}
+		return json.has(EXPERIENCE) ? json.get(EXPERIENCE).getAsDouble() : 0;
 	}
 
 }

@@ -2,7 +2,7 @@ package electrodynamics.api.electricity.formatting;
 
 public class ChatFormatter {
 
-	public static String getElectricDisplay(double value, ElectricUnit unit, int decimalPlaces, boolean isShort) {
+	public static String getChatDisplay(double value, DisplayUnit unit, int decimalPlaces, boolean isShort) {
 		if (value < Long.MIN_VALUE + 10000) {
 			return "-Infinite" + (isShort ? unit.symbol : unit.getPlural());
 		} else if (value > Long.MAX_VALUE - 10000) {
@@ -38,19 +38,19 @@ public class ChatFormatter {
 		return roundDecimals(value, decimalPlaces) + " " + unitName;
 	}
 
-	public static String getElectricDisplay(double value, ElectricUnit unit) {
-		return getElectricDisplay(value, unit, 2, false);
+	public static String getChatDisplay(double value, DisplayUnit unit) {
+		return getChatDisplay(value, unit, 2, false);
 	}
 
-	public static String getElectricDisplayShort(double value, ElectricUnit unit) {
-		return getElectricDisplay(value, unit, 2, true);
+	public static String getChatDisplayShort(double value, DisplayUnit unit) {
+		return getChatDisplay(value, unit, 2, true);
 	}
 
-	public static String getDisplayShort(double value, ElectricUnit unit, int decimalPlaces) {
-		return getElectricDisplay(value, unit, decimalPlaces, true);
+	public static String getDisplayShort(double value, DisplayUnit unit, int decimalPlaces) {
+		return getChatDisplay(value, unit, decimalPlaces, true);
 	}
 
-	public static String getElectricDisplaySimple(double value, ElectricUnit unit, int decimalPlaces) {
+	public static String getChatDisplaySimple(double value, DisplayUnit unit, int decimalPlaces) {
 		if (value > 1.0D) {
 
 			if (decimalPlaces < 1) {

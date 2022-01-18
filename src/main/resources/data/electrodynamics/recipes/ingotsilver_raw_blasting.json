@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"tag": "forge:rawores/silver"
+	},
+	"result": "electrodynamics:ingotsilver",
+	"experience": 0.1,
+	"cookingtime": 100
+}

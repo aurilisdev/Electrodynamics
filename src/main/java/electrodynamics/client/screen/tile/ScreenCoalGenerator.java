@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
@@ -38,7 +38,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		}, this, 25, 25).flame());
 		components.add(
 				new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2)); // TODO: For some reason this doesnt work
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {
@@ -69,14 +69,14 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			font.draw(matrixStack, new TranslatableComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"), inventoryLabelX + 60f,
 					inventoryLabelY - 53f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(output.getAmps(), ElectricUnit.AMPERE)),
+					new TranslatableComponent("gui.machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)),
 					inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.output", ChatFormatter.getElectricDisplayShort(output.getWatts(), ElectricUnit.WATT)),
+					new TranslatableComponent("gui.machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)),
 					inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.voltage",
-							ChatFormatter.getElectricDisplayShort(output.getVoltage(), ElectricUnit.VOLTAGE)),
+							ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)),
 					inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
 		}
 	}

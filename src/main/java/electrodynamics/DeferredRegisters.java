@@ -13,6 +13,7 @@ import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.BlockResource;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
@@ -22,6 +23,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
@@ -99,6 +101,7 @@ import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
+import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
@@ -202,6 +205,9 @@ public class DeferredRegisters {
 		for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockDeepslateOre(subtype), subtype)));
 		}
+		for (SubtypeRawOreBlock subtype : SubtypeRawOreBlock.values()) {
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockRawOre(subtype), subtype)));
+		}
 		for (SubtypeMachine subtype : SubtypeMachine.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockMachine(subtype), subtype)));
 		}
@@ -254,6 +260,7 @@ public class DeferredRegisters {
 	static {
 		registerSubtypeBlockItem(SubtypeOre.values());
 		registerSubtypeBlockItem(SubtypeOreDeepslate.values());
+		registerSubtypeBlockItem(SubtypeRawOreBlock.values());
 		registerSubtypeBlockItem(SubtypeMachine.values());
 		registerSubtypeBlockItem(SubtypeGlass.values());
 		registerSubtypeBlockItem(SubtypeResourceBlock.values());
@@ -266,6 +273,7 @@ public class DeferredRegisters {
 			ITEMS.register(subtype.tag(),
 					supplier(new BlockItemDescriptable(SUBTYPEBLOCK_MAPPINGS.get(subtype), new Item.Properties().tab(References.CORETAB)), subtype));
 		}
+		registerSubtypeItem(SubtypeRawOre.values());
 		registerSubtypeItem(SubtypeIngot.values());
 		registerSubtypeItem(SubtypeDust.values());
 		registerSubtypeItem(SubtypeImpureDust.values());

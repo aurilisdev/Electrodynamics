@@ -10,7 +10,6 @@ public class BlockOre extends OreBlock {
 	public BlockOre(SubtypeOre subtype) {
 		super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance),
 				UniformInt.of(subtype.minXP, subtype.maxXP));
-
 	}
 
 }

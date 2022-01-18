@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -55,14 +55,14 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		ItemStack ownerItem = menu.getOwnerItem();
 		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
 			list.add(new TranslatableComponent("gui.machine.usage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, ElectricUnit.WATT))
+					new TextComponent(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, DisplayUnit.WATT))
 							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(120, ElectricUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
+					new TextComponent(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.stored",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(scanner.getJoulesStored(ownerItem), ElectricUnit.JOULES) + " / "
-							+ ChatFormatter.getElectricDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, ElectricUnit.JOULES))
+					new TextComponent(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / "
+							+ ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;

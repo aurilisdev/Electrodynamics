@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -34,18 +34,18 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 		if (box != null) {
 			list.add(new TranslatableComponent("gui.machine.current",
 					new TextComponent(ChatFormatter
-							.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE))
+							.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.transfer",
 					new TextComponent(
-							ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT))
+							ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.voltage",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
+					new TextComponent(ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
 							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(new TranslatableComponent("gui.machine.stored",
-					new TextComponent(ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
-							+ ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES))
+					new TextComponent(ChatFormatter.getChatDisplayShort(box.clientJoules, DisplayUnit.JOULES) + " / "
+							+ ChatFormatter.getChatDisplayShort(box.maxJoules * box.currentCapacityMultiplier, DisplayUnit.JOULES))
 									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
@@ -57,20 +57,20 @@ public class ScreenLithiumBatteryBox extends GenericScreen<ContainerLithiumBatte
 		TileLithiumBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.current", ChatFormatter.getElectricDisplayShort(
-							box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, ElectricUnit.AMPERE)),
+					new TranslatableComponent("gui.machine.current", ChatFormatter.getChatDisplayShort(
+							box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE)),
 					inventoryLabelX, inventoryLabelY - 55f, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.transfer",
-							ChatFormatter.getElectricDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, ElectricUnit.WATT)),
+							ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT)),
 					inventoryLabelX, inventoryLabelY - 42f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getElectricDisplayShort(box.clientVoltage, ElectricUnit.VOLTAGE)),
+					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)),
 					inventoryLabelX, inventoryLabelY - 29f, 4210752);
 			font.draw(matrixStack,
 					new TranslatableComponent("gui.machine.stored",
-							ChatFormatter.getElectricDisplayShort(box.clientJoules, ElectricUnit.JOULES) + " / "
-									+ ChatFormatter.getElectricDisplayShort(box.maxJoules * box.currentCapacityMultiplier, ElectricUnit.JOULES)),
+							ChatFormatter.getChatDisplayShort(box.clientJoules, DisplayUnit.JOULES) + " / "
+									+ ChatFormatter.getChatDisplayShort(box.maxJoules * box.currentCapacityMultiplier, DisplayUnit.JOULES)),
 					inventoryLabelX, inventoryLabelY - 16f, 4210752);
 		}
 	}
