@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;

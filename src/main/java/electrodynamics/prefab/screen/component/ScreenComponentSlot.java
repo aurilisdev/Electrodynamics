@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.gui.type;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextSupplier;
-import electrodynamics.prefab.screen.component.gui.ScreenComponent;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenComponentSlot extends ScreenComponent {
 	private final EnumSlotType type;
 	private TextSupplier tooltip;
+	private int color = RenderingUtils.getRGBA(255, 255, 255, 255);
 
 	public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y) {
 		super(new ResourceLocation(References.ID + ":textures/screen/component/slot.png"), gui, x, y);
@@ -50,8 +50,15 @@ public class ScreenComponentSlot extends ScreenComponent {
 	@Override
 	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
 		RenderingUtils.bindTexture(resource);
+		RenderingUtils.color(color);
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, type.getTextureX(), type.getTextureY(), type.getWidth(),
 				type.getHeight());
+		RenderingUtils.color(RenderingUtils.getRGBA(255, 255, 255, 255));
+	}
+
+	public ScreenComponentSlot color(int color) {
+		this.color = color;
+		return this;
 	}
 
 	@Override

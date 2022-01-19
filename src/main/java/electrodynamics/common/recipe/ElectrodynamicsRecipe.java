@@ -41,7 +41,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	// never even used!
 	private int itemBiCount;
 	private int fluidBiCount;
-	
+
 	private double xp;
 
 	private ProbableItem[] itemBiProducts;
@@ -54,7 +54,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		id = recipeID;
 		hasItemBi = false;
 		hasFluidBi = false;
-		this.xp = experience;
+		xp = experience;
 	}
 
 	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience) {
@@ -63,7 +63,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		itemBiProducts = itemBiproducts;
 		itemBiCount = itemBiproducts.length;
 		hasFluidBi = false;
-		this.xp = experience;
+		xp = experience;
 	}
 
 	protected ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
@@ -72,7 +72,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		hasFluidBi = true;
 		fluidBiProducts = fluidBiproducts;
 		fluidBiCount = fluidBiproducts.length;
-		this.xp = experience;
+		xp = experience;
 	}
 
 	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
@@ -83,7 +83,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		hasFluidBi = true;
 		fluidBiProducts = fluidBiproducts;
 		fluidBiCount = fluidBiproducts.length;
-		this.xp = experience;
+		xp = experience;
 	}
 
 	/**
@@ -177,7 +177,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	public List<Integer> getFluidArrangement() {
 		return fluidArrangement;
 	}
-	
+
 	public double getXp() {
 		return xp;
 	}

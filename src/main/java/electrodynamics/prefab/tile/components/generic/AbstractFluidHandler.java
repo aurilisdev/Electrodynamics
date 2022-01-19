@@ -1,4 +1,4 @@
-package electrodynamics.prefab.tile.components.utils;
+package electrodynamics.prefab.tile.components.generic;
 
 import java.util.Arrays;
 import java.util.HashSet;

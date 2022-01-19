@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.gui.type;
+package electrodynamics.prefab.screen.component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;

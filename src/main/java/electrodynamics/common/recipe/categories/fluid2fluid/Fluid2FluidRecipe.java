@@ -10,8 +10,8 @@ import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -22,21 +22,20 @@ public abstract class Fluid2FluidRecipe extends AbstractFluidRecipe {
 	private FluidIngredient[] inputFluidIngredients;
 	private FluidStack outputFluidStack;
 
-	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, 
-			double experience) {
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, double experience) {
 		super(recipeID, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, 
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(recipeID, itemBiproducts, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, 
+	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID,
 			double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		inputFluidIngredients = inputFluids;

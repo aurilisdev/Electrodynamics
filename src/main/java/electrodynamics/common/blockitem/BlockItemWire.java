@@ -25,8 +25,9 @@ public class BlockItemWire extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("tooltip.itemwire.resistance",
-				ChatFormatter.getChatDisplay(wire.wire.resistance, DisplayUnit.RESISTANCE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(
+				new TranslatableComponent("tooltip.itemwire.resistance", ChatFormatter.getChatDisplay(wire.wire.resistance, DisplayUnit.RESISTANCE))
+						.withStyle(ChatFormatting.GRAY));
 		tooltip.add(new TranslatableComponent("tooltip.itemwire.maxamps", ChatFormatter.getChatDisplay(wire.wire.capacity, DisplayUnit.AMPERE))
 				.withStyle(ChatFormatting.GRAY));
 		if (wire.wire.logistical) {

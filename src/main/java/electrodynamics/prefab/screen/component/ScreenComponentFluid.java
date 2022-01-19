@@ -1,8 +1,7 @@
-package electrodynamics.prefab.screen.component.gui.type;
+package electrodynamics.prefab.screen.component;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;

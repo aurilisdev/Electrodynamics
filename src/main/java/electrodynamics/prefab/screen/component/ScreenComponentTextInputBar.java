@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.gui.type;
+package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
 
@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
-import electrodynamics.prefab.screen.component.gui.ScreenComponent;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

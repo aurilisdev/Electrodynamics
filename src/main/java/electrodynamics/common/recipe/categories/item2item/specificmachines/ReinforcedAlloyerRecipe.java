@@ -20,7 +20,7 @@ public class ReinforcedAlloyerRecipe extends Item2ItemRecipe {
 		super(recipeID, inputs, output, experience);
 	}
 
-	public ReinforcedAlloyerRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
+	public ReinforcedAlloyerRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}

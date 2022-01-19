@@ -11,10 +11,10 @@ import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentTemperature;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentTemperature;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -75,8 +75,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 					new TranslatableComponent("gui.machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)),
 					inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.voltage",
-							ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)),
+					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)),
 					inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
 		}
 	}

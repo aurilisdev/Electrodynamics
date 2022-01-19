@@ -20,7 +20,7 @@ public class MineralCrusherRecipe extends Item2ItemRecipe {
 		super(id, input, output, experience);
 	}
 
-	public MineralCrusherRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
+	public MineralCrusherRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}

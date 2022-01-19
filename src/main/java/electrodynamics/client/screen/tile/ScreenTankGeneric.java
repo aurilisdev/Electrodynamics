@@ -3,10 +3,10 @@ package electrodynamics.client.screen.tile;
 import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
 import electrodynamics.common.tile.generic.GenericTileTank;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentFluid;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 

@@ -20,7 +20,7 @@ public class MineralGrinderRecipe extends Item2ItemRecipe {
 		super(id, input, output, experience);
 	}
 
-	public MineralGrinderRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
+	public MineralGrinderRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}

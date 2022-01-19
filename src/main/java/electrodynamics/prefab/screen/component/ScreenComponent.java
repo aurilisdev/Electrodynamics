@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.gui;
+package electrodynamics.prefab.screen.component;
 
 import java.util.List;
 

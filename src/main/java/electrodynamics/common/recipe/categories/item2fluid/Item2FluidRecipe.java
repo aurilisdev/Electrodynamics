@@ -29,14 +29,14 @@ public abstract class Item2FluidRecipe extends AbstractFluidRecipe {
 		FLUID_OUTPUT = fluidOutput;
 	}
 
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, 
+	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(recipeID, itemBiproducts, experience);
 		ITEM_INPUTS = inputs;
 		FLUID_OUTPUT = fluidOutput;
 	}
 
-	public Item2FluidRecipe(CountableIngredient[] inputs, FluidStack fluidOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, 
+	public Item2FluidRecipe(CountableIngredient[] inputs, FluidStack fluidOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID,
 			double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		ITEM_INPUTS = inputs;

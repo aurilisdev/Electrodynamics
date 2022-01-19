@@ -34,7 +34,7 @@ public class UpgradeCapability implements ICapabilitySerializable<CompoundTag> {
 			return number.holder.cast();
 		} else if (cap == ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY) {
 			return direction.holder.cast();
-		} else if(cap == ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY) {
+		} else if (cap == ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY) {
 			return doub.holder.cast();
 		}
 		return LazyOptional.empty();
@@ -55,8 +55,8 @@ public class UpgradeCapability implements ICapabilitySerializable<CompoundTag> {
 		bool.deserializeNBT((CompoundTag) nbt.get("bool"));
 		number.deserializeNBT((CompoundTag) nbt.get("int"));
 		direction.deserializeNBT((CompoundTag) nbt.get("dir"));
-		//prevents crashes like the last time
-		if(nbt.contains("doub")) {
+		// prevents crashes like the last time
+		if (nbt.contains("doub")) {
 			doub.deserializeNBT(nbt.getCompound("doub"));
 		} else {
 			CompoundTag newTag = new CompoundTag();

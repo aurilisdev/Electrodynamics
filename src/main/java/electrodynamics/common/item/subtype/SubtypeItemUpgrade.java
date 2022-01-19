@@ -117,8 +117,10 @@ public enum SubtypeItemUpgrade implements ISubtype {
 		if (holder instanceof IElectricGenerator generator && (holder instanceof TileWindmill || holder instanceof TileHydroelectricGenerator)) {
 			generator.setMultiplier(2.25);
 		}
-	}, 1), range((holder, processor, upgrade) -> {/*it does nothing; the count determines the new range*/}, 12),
-	       experience((holder, processor, upgrade) -> {/*the machine handles adding the experience*/}, 1);
+	}, 1), range((holder, processor, upgrade) -> {
+		/* it does nothing; the count determines the new range */}, 12),
+	experience((holder, processor, upgrade) -> {
+		/* the machine handles adding the experience */}, 1);
 
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;

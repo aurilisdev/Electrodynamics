@@ -52,10 +52,11 @@ public class ItemElectric extends Item implements IItemElectric {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
 				.append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage",
-				ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / "
-						+ ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))
-								.withStyle(ChatFormatting.RED));
+		tooltip.add(
+				new TranslatableComponent("tooltip.item.electric.voltage",
+						ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / "
+								+ ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))
+										.withStyle(ChatFormatting.RED));
 	}
 
 	@Override

@@ -20,8 +20,7 @@ public class WireMillRecipe extends Item2ItemRecipe {
 		super(id, input, output, experience);
 	}
 
-	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
-			double experience) {
+	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}
 

@@ -20,7 +20,7 @@ public class OxidationFurnaceRecipe extends Item2ItemRecipe {
 		super(recipeID, inputs, output, experience);
 	}
 
-	public OxidationFurnaceRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, 
+	public OxidationFurnaceRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts,
 			double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}

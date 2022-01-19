@@ -7,8 +7,8 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.gui.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.gui.type.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -36,8 +36,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 					new TranslatableComponent("gui.machine.output", ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnit.WATT)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 35, 4210752);
 			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.voltage",
-							ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)),
+					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)),
 					(float) inventoryLabelX + 60, (float) inventoryLabelY - 22, 4210752);
 		}
 	}
