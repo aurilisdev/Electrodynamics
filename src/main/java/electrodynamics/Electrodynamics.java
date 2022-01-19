@@ -72,7 +72,7 @@ public class Electrodynamics {
 	}
 	
 	@SubscribeEvent 
-    public void registerRecipeSerialziers(RegistryEvent.Register<RecipeSerializer<?>> event) {
+    public static void registerRecipeSerialziers(RegistryEvent.Register<RecipeSerializer<?>> event) {
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
 	}
 
