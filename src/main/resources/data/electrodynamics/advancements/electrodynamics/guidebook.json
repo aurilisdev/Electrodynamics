@@ -1,7 +1,12 @@
 {
+	"conditions": [
+	    {
+	      "type": "electrodynamics:config"
+	    }
+    ],
 	"criteria": {
 		"spawn": {
-			"trigger": "electrodynamics:guidebook"
+			"trigger": "minecraft:tick"
 		}
 	},
 	"rewards": {

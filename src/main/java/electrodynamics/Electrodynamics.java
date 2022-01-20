@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.advancement.ElectrodynamicsAdvancements;
 import electrodynamics.common.block.BlockCustomGlass;
+import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
@@ -19,10 +19,13 @@ import electrodynamics.common.world.OreGeneration;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -61,12 +64,16 @@ public class Electrodynamics {
 		OreGeneration.registerOres();
 		NetworkHandler.init();
 		ElectrodynamicsTags.init();
-		ElectrodynamicsAdvancements.init();
 	}
 
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		ElectrodynamicsCapabilities.register(event);
+	}
+	
+	@SubscribeEvent 
+    public static void registerRecipeSerialziers(RegistryEvent.Register<RecipeSerializer<?>> event) {
+		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
 	}
 
 	@SubscribeEvent
