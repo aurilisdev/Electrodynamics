@@ -108,7 +108,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 				pr.saveToNBT(compound);
 			}
 		}
-		super.save(compound); // Just because it existed in 1.17. Might not need this but doesnt hurt i think.
+		super.saveAdditional(compound);
 	}
 
 	protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
