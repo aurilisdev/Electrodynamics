@@ -70,7 +70,6 @@ public class RenderingUtils {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 		stack.popPose();
 	}

@@ -88,7 +88,9 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 		Direction facing = direction.getDirection();
 		if (tickable.getTicks() % 40 == 0) {
 			isGenerating = level.isEmptyBlock(worldPosition.relative(facing).relative(Direction.UP));
-			generating = Constants.WINDMILL_MAX_AMPERAGE * (0.6 + Math.sin((worldPosition.getY() - 60) / 50.0) * 0.4);
+			float height = level.getHeight();
+			double f = Math.log10((getBlockPos().getY() + height / 10) * 10 / height);
+			generating = Constants.WINDMILL_MAX_AMPERAGE * Mth.clamp(f, 0, 1);
 		}
 	}
 

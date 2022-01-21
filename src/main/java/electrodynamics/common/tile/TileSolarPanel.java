@@ -19,7 +19,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileSolarPanel extends GenericTile implements IElectricGenerator {
@@ -78,13 +77,11 @@ public class TileSolarPanel extends GenericTile implements IElectricGenerator {
 
 	@Override
 	public TransferPack getProduced() {
-		float mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
-		mod *= 1.0f - level.getRainLevel(1f) * 5.0f / 16.0f;
-		mod *= (1.0f - level.getThunderLevel(1f) * 5.0F / 16.0f) * 0.8f + 0.2f;
-		Biome b = level.getBiomeManager().getBiome(getBlockPos());
+		double mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
+		double temp = level.getBiomeManager().getBiome(getBlockPos()).getBaseTemperature();
+		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
 		return TransferPack.ampsVoltage(
-				getMultiplier() * Constants.SOLARPANEL_AMPERAGE * (b.getBaseTemperature() / 2.0) * mod
-						* (level.isRaining() || level.isThundering() ? 0.7f : 1),
+				getMultiplier() * Constants.SOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1),
 				this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
 }

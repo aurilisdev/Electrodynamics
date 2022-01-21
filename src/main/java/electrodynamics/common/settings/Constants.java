@@ -26,8 +26,8 @@ public class Constants {
 	public static double SOLARPANEL_AMPERAGE = 7;
 	@DoubleValue(def = 50.0)
 	public static double ELECTRICPUMP_USAGE_PER_TICK = 50.0;
-	@DoubleValue(def = 20.0)
-	public static double ADVANCEDSOLARPANEL_AMPERAGE = 20.0;
+	@DoubleValue(def = 25.0)
+	public static double ADVANCEDSOLARPANEL_AMPERAGE = 25.0;
 	@DoubleValue(def = 175)
 	public static double ELECTRICFURNACE_USAGE_PER_TICK = 175.0;
 	@IntValue(def = 100)
