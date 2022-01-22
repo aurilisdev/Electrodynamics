@@ -56,11 +56,10 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
 				FluidStack perReceiver = new FluidStack(transfer.getFluid(), transfer.getAmount() / availableAcceptors.size());
 				for (BlockEntity receiver : availableAcceptors) {
 					if (acceptorInputMap.containsKey(receiver)) {
-						/**
-						 * TODO: Here it doesn't account for side amounts. Say a block with two water inputs. If you try to input 500 mb into the machine it would do 500 mb into both inputs. This is a dupe which isnt relevant yet but might be if we add multiple inputs to a block in the future.
-						 */
+						FluidStack perConnection = new FluidStack(transfer.getFluid(),
+								perReceiver.getAmount() / acceptorInputMap.get(receiver).size());
 						for (Direction connection : acceptorInputMap.get(receiver)) {
-							int rec = FluidUtilities.receiveFluid(receiver, connection, perReceiver, false);
+							int rec = FluidUtilities.receiveFluid(receiver, connection, perConnection, false);
 							joulesSent.setAmount(joulesSent.getAmount() + rec);
 							transmittedThisTick += rec;
 						}
