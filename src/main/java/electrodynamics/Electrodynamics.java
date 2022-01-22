@@ -70,9 +70,9 @@ public class Electrodynamics {
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		ElectrodynamicsCapabilities.register(event);
 	}
-	
-	@SubscribeEvent 
-    public static void registerRecipeSerialziers(RegistryEvent.Register<RecipeSerializer<?>> event) {
+
+	@SubscribeEvent
+	public static void registerRecipeSerialziers(RegistryEvent.Register<RecipeSerializer<?>> event) {
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
 	}
 
