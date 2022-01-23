@@ -4,7 +4,6 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.inventory.container.tile.ContainerCarbyneBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -12,6 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -40,7 +40,7 @@ public class TileCarbyneBatteryBox extends TileBatteryBox {
 		}
 		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtilities
+			electro.joules(electro.getJoulesStored() - ElectricityUtils
 					.receivePower(output.getSafe(), facing, TransferPack
 							.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
 					.getJoules());

@@ -8,7 +8,6 @@ import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
@@ -19,6 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -99,7 +99,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 			}
 		}
 		if (heat.get() > 27 && output.valid()) {
-			ElectricityUtilities.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
+			ElectricityUtils.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
 		}
 		heat.rangeParameterize(27, 3000, burnTime > 0 ? 3000 : 27, heat.get(), 600).flush();
 		currentOutput = getProduced();

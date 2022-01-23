@@ -7,7 +7,6 @@ import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -15,6 +14,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -69,7 +69,7 @@ public class TileCreativePowerSource extends GenericTile {
 			CachedTileOutput cache = outputs.get(i);
 			Direction dir = Direction.values()[i];
 			if (cache.valid()) {
-				ElectricityUtilities.receivePower(cache.getSafe(), dir.getOpposite(), output, false);
+				ElectricityUtils.receivePower(cache.getSafe(), dir.getOpposite(), output, false);
 			}
 		}
 

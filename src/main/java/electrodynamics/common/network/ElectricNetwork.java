@@ -11,6 +11,7 @@ import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodyn
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.Direction;
@@ -89,7 +90,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 					if (acceptorInputMap.containsKey(receiver)) {
 						boolean shouldRemove = true;
 						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
+							TransferPack pack = ElectricityUtils.receivePower(receiver, connection,
 									TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
 							if (pack.getJoules() != 0) {
 								shouldRemove = false;
@@ -111,7 +112,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 						TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
 								maxTransfer.getVoltage());
 						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perConnection, debug);
+							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
 							joulesSent += pack.getJoules();
 							if (!debug) {
 								transmittedThisTick += pack.getJoules();
@@ -200,7 +201,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		for (BlockEntity tile : acceptorSet) {
 			if (acceptorInputMap.containsKey(tile)) {
 				for (Direction connection : acceptorInputMap.get(tile)) {
-					TransferPack pack = ElectricityUtilities.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
+					TransferPack pack = ElectricityUtils.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
 							true);
 					if (pack.getJoules() != 0) {
 						maxTransferBuffer += pack.getJoules();
@@ -223,12 +224,12 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	@Override
 	public boolean isConductor(BlockEntity tile) {
-		return ElectricityUtilities.isConductor(tile);
+		return ElectricityUtils.isConductor(tile);
 	}
 
 	@Override
 	public boolean isAcceptor(BlockEntity acceptor, Direction orientation) {
-		return ElectricityUtilities.isElectricReceiver(acceptor);
+		return ElectricityUtils.isElectricReceiver(acceptor);
 	}
 
 	@Override
@@ -255,7 +256,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	@Override
 	public boolean canConnect(BlockEntity acceptor, Direction orientation) {
-		return ElectricityUtilities.canInputPower(acceptor, orientation.getOpposite());
+		return ElectricityUtils.canInputPower(acceptor, orientation.getOpposite());
 	}
 
 	@Override

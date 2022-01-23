@@ -3,13 +3,13 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericTileWire;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ public class TileCircuitBreaker extends GenericTile {
 			return TransferPack.EMPTY;
 		}
 		locked = true;
-		TransferPack returner = ElectricityUtilities.receivePower(output.getSafe(), facing.getOpposite(),
+		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(),
 				TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 		locked = false;
 		if (returner.getJoules() > 0) {

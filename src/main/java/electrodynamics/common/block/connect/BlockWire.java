@@ -11,7 +11,6 @@ import com.google.common.collect.Maps;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TileWire;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
@@ -180,9 +179,9 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 		BlockState acc = stateIn;
 		for (Direction d : Direction.values()) {
 			BlockEntity facingTile = worldIn.getBlockEntity(pos.relative(d));
-			if (ElectricityUtilities.isConductor(facingTile)) {
+			if (ElectricityUtils.isConductor(facingTile)) {
 				acc = acc.setValue(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
-			} else if (ElectricityUtilities.isElectricReceiver(facingTile, d.getOpposite())) {
+			} else if (ElectricityUtils.isElectricReceiver(facingTile, d.getOpposite())) {
 				acc = acc.setValue(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.INVENTORY);
 			}
 		}
@@ -218,7 +217,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 		BlockEntity tile = world.getBlockEntity(facingPos);
 		if (tile instanceof IConductor) {
 			return stateIn.setValue(property, EnumConnectType.WIRE);
-		} else if (ElectricityUtilities.isElectricReceiver(tile, facing.getOpposite())) {
+		} else if (ElectricityUtils.isElectricReceiver(tile, facing.getOpposite())) {
 			return stateIn.setValue(property, EnumConnectType.INVENTORY);
 		} else {
 			return stateIn.setValue(property, EnumConnectType.NONE);

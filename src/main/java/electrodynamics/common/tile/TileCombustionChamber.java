@@ -5,7 +5,6 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;
@@ -19,6 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.prefab.utilities.tile.CombustionFuelSource;
@@ -92,7 +92,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 			--burnTime;
 		}
 		if (running && burnTime > 0 && output.valid()) {
-			ElectricityUtilities.receivePower(output.getSafe(), facing.getClockWise().getOpposite(), getProduced(), false);
+			ElectricityUtils.receivePower(output.getSafe(), facing.getClockWise().getOpposite(), getProduced(), false);
 		}
 	}
 

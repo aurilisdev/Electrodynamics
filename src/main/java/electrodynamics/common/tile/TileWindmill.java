@@ -11,7 +11,6 @@ import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -21,6 +20,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -69,7 +69,7 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
 		if (isGenerating && output.valid()) {
-			ElectricityUtilities.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
+			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
 		}
 	}
 

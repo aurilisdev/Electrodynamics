@@ -12,10 +12,10 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.network.ElectricNetwork;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -152,7 +152,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		boolean flag = false;
 		for (Direction dir : Direction.values()) {
 			BlockEntity tile = level.getBlockEntity(worldPosition.relative(dir));
-			boolean is = ElectricityUtilities.isElectricReceiver(tile, dir.getOpposite());
+			boolean is = ElectricityUtils.isElectricReceiver(tile, dir.getOpposite());
 			if (connections[dir.ordinal()] != is) {
 				connections[dir.ordinal()] = is;
 				tileConnections[dir.ordinal()] = tile;

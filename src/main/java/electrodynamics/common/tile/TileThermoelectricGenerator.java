@@ -1,13 +1,13 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -39,7 +39,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 			output.update();
 		}
 		if (hasHeat && output.valid()) {
-			ElectricityUtilities.receivePower(output.getSafe(), Direction.UP,
+			ElectricityUtils.receivePower(output.getSafe(), Direction.UP,
 					TransferPack.ampsVoltage(
 							Constants.THERMOELECTRICGENERATOR_AMPERAGE
 									* level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getAmount() / 16.0,

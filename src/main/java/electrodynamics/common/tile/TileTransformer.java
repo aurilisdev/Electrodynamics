@@ -3,12 +3,12 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -39,7 +39,7 @@ public class TileTransformer extends GenericTile {
 		boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
 		double resultVoltage = Mth.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 61440.0);
 		locked = true;
-		TransferPack returner = ElectricityUtilities.receivePower(output.getSafe(), facing.getOpposite(),
+		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(),
 				TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
 		locked = false;
 		if (returner.getJoules() > 0) {

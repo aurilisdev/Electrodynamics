@@ -5,7 +5,6 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -14,6 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -71,7 +71,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		}
 		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtilities
+			electro.joules(electro.getJoulesStored() - ElectricityUtils
 					.receivePower(output.getSafe(), facing, TransferPack
 							.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
 					.getJoules());

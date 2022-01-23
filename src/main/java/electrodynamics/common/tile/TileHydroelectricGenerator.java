@@ -6,7 +6,6 @@ import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.network.ElectricityUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -16,6 +15,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -87,7 +87,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 			output.update();
 		}
 		if (isGenerating && output.valid()) {
-			ElectricityUtilities.receivePower(output.getSafe(), facing, getProduced(), false);
+			ElectricityUtils.receivePower(output.getSafe(), facing, getProduced(), false);
 		}
 	}
 

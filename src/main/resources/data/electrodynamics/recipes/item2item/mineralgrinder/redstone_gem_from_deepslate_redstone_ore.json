@@ -1,0 +1,23 @@
+{
+    "type":"electrodynamics:mineral_grinder_recipe",
+	"iteminputs" : {
+		"count" : 1,
+		"0":{
+	        "item":"minecraft:deepslate_redstone_ore",
+	        "count":1
+	    }
+	},
+    "output":{
+        "item":"minecraft:redstone",
+        "count":6
+    },
+    "experience": 0.4,
+	"itembi" : {
+		"count" : 1, 
+		"0" : {
+			"item" : "minecraft:diamond", 
+			"count" : 1,
+			"chance" : 0.05
+		}
+	}
+}
