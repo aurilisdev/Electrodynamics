@@ -41,12 +41,14 @@ public class OreGeneration {
 
 	public static void registerOres() { // called in onCommonSetup(FMLCommonSetupEvent event)
 		for (SubtypeOre ore : SubtypeOre.values()) {
-			BlockState oreDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState();
-			BlockState oreDeepslateDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.values()[ore.ordinal()]).defaultBlockState();
-			List<TargetBlockState> targetBlockStates = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
-			ConfiguredFeature<?, ?> feature = FeatureUtils.register(ore.tag(), Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
-			PlacedFeature placed = PlacementUtils.register(ore.tag(), feature.placed(List.of(CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
-			FEATURES.add(placed);
+			if (OreConfig.oresToSpawn.contains(ore.name())) {
+				BlockState oreDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).defaultBlockState();
+				BlockState oreDeepslateDefault = DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOreDeepslate.values()[ore.ordinal()]).defaultBlockState();
+				List<TargetBlockState> targetBlockStates = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
+				ConfiguredFeature<?, ?> feature = FeatureUtils.register(ore.tag(), Feature.ORE.configured(new OreConfiguration(targetBlockStates, ore.veinSize)));
+				PlacedFeature placed = PlacementUtils.register(ore.tag(), feature.placed(List.of(CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome())));
+				FEATURES.add(placed);
+			}
 		}
 	}
 
