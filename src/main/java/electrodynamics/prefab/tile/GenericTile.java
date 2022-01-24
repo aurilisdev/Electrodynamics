@@ -180,6 +180,10 @@ public class GenericTile extends BlockEntity implements Nameable {
 		return worldPosition;
 	}
 
+	public boolean isPoweredByRedstone() {
+		return level.getDirectSignalTo(worldPosition) > 0;
+	}
+
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
 		return (x, y, i) -> x < i.inputs() || x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
 	}

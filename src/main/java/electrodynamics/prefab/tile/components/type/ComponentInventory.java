@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -64,6 +65,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	private int processors = 0;
 	private int processorInputs = 0;
+	private Consumer<ComponentInventory> onChanged;
 
 	public ComponentInventory(GenericTile holder) {
 		holder(holder);
@@ -74,6 +76,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).guiPacketReader(this::loadNBT).guiPacketWriter(this::saveNBT);
 		}
 		shouldSendInfo = true;
+		return this;
+	}
+
+	public ComponentInventory onChanged(Consumer<ComponentInventory> onChanged) {
+		this.onChanged = onChanged;
 		return this;
 	}
 
@@ -240,7 +247,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		}
 		return directionMappings.get(side) == null ? SLOTS_EMPTY : directionMappings.get(side).stream().mapToInt(i -> i).toArray();
-
 	}
 
 	@Override
@@ -289,6 +295,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public void setChanged() {
 		holder.setChanged();
+		onChanged.accept(this);
 	}
 
 	public ComponentInventory inputs(int par) {
