@@ -24,8 +24,7 @@ public class TileTransformer extends GenericTile {
 	public TileTransformer(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_TRANSFORMER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
-		addComponent(
-				new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
 	}
 
 	protected TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -39,12 +38,10 @@ public class TileTransformer extends GenericTile {
 		boolean shouldUpgrade = ((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.upgradetransformer;
 		double resultVoltage = Mth.clamp(transfer.getVoltage() * (shouldUpgrade ? 2 : 0.5), 15.0, 61440.0);
 		locked = true;
-		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(),
-				TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
+		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(), TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
 		locked = false;
 		if (returner.getJoules() > 0) {
-			returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.TRANSFORMER_EFFICIENCY),
-					transfer.getVoltage());
+			returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.TRANSFORMER_EFFICIENCY), transfer.getVoltage());
 		}
 		lastTransfer = returner;
 		return returner;

@@ -55,8 +55,7 @@ public class ScreenComponentSlot extends ScreenComponent {
 	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
 		RenderingUtils.bindTexture(resource);
 		RenderingUtils.color(color);
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, type.getTextureX(), type.getTextureY(), type.getWidth(),
-				type.getHeight());
+		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, type.getTextureX(), type.getTextureY(), type.getWidth(), type.getHeight());
 		RenderingUtils.color(RenderingUtils.getRGBA(255, 255, 255, 255));
 	}
 
@@ -67,8 +66,7 @@ public class ScreenComponentSlot extends ScreenComponent {
 
 	@Override
 	public void renderForeground(PoseStack stack, final int xAxis, final int yAxis) {
-		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, type.width, type.height) && tooltip != null
-				&& !tooltip.getText().getString().isEmpty()) {
+		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, type.width, type.height) && tooltip != null && !tooltip.getText().getString().isEmpty()) {
 			gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
 		}
 	}

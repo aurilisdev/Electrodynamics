@@ -30,19 +30,11 @@ public class TileFermentationPlant extends GenericTile {
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE)
-				.maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
-		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST))
-				.setAddFluidsValues(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE, MAX_TANK_CAPACITY, true, true));
-		addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP).inputs(1)
-				.bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-				.canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor,
-						ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE))
-				.process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK)
-				.requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
-		addComponent(new ComponentContainerProvider("container.fermentationplant")
-				.createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
+		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST)).setAddFluidsValues(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE, MAX_TANK_CAPACITY, true, true));
+		addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP).inputs(1).bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator()));
+		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE)).process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK).requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
+		addComponent(new ComponentContainerProvider("container.fermentationplant").createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
 
@@ -54,9 +46,7 @@ public class TileFermentationPlant extends GenericTile {
 	protected void tickClient(ComponentTickable tickable) {
 		if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0) {
 			if (level.random.nextDouble() < 0.15) {
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
-						worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D,
-						0.0D);
+				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
 			Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getClockWise();
 			double x = worldPosition.getX() + 0.55 + dir.getStepX() * 0.2;

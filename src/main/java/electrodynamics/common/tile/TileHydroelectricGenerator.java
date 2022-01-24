@@ -44,10 +44,8 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
-		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo()
-				.valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
-		addComponent(new ComponentContainerProvider("container.hydroelectricgenerator").createMenu(
-				(id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo().valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
+		addComponent(new ComponentContainerProvider("container.hydroelectricgenerator").createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	@Override
@@ -111,8 +109,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0.2D : 1.2D) : d4;
 			double d6 = level.random.nextDouble();
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0.2D : 1.2D) : d4;
-			level.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D,
-					0.0D, 0.0D);
+			level.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
 		if (isGenerating && tickable.getTicks() % 100 == 0) {
 			SoundAPI.playSound(SoundRegister.SOUND_HYDROELECTRICGENERATOR.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
@@ -141,7 +138,6 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating ? multiplier : 0),
-				this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating ? multiplier : 0), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
 }

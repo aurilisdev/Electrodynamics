@@ -28,8 +28,7 @@ public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCateg
 	 * > Output items supercede buckets in position > All biproducts will be included with the outputSlots field > All fluid bucket output slots will be incled with the outputSlots field
 	 */
 
-	protected Item2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap,
-			int animTime) {
+	protected Item2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, int animTime) {
 		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, Item2ItemRecipe.class, animTime);
 	}
 

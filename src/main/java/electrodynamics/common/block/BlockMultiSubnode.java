@@ -25,8 +25,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSubnode {
 
 	public BlockMultiSubnode() {
-		super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor((a, b, c) -> false)
-				.noOcclusion());
+		super(BlockBehaviour.Properties.of(Material.GLASS).strength(3.5F).sound(SoundType.METAL).isRedstoneConductor((a, b, c) -> false).noOcclusion());
 	}
 
 	@Override
@@ -74,8 +73,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		BlockEntity tile = blockAccess.getBlockEntity(pos);
 		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
-			return subnode.nodePos.getBlock(blockAccess).getDirectSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
-					subnode.nodePos.toBlockPos(), side);
+			return subnode.nodePos.getBlock(blockAccess).getDirectSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess, subnode.nodePos.toBlockPos(), side);
 		}
 		return super.getDirectSignal(blockState, blockAccess, pos, side);
 	}
@@ -84,8 +82,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		BlockEntity tile = blockAccess.getBlockEntity(pos);
 		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
-			return subnode.nodePos.getBlock(blockAccess).getSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess,
-					subnode.nodePos.toBlockPos(), side);
+			return subnode.nodePos.getBlock(blockAccess).getSignal(subnode.nodePos.getBlockState(blockAccess), blockAccess, subnode.nodePos.toBlockPos(), side);
 		}
 		return super.getSignal(blockState, blockAccess, pos, side);
 	}

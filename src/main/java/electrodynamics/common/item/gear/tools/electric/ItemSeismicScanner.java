@@ -142,8 +142,7 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new SeismicScannerCapability(new CapabilityIntStorage(1), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class),
-				new CapabilityLocationStorage(2));
+		return new SeismicScannerCapability(new CapabilityIntStorage(1), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class), new CapabilityLocationStorage(2));
 	}
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {

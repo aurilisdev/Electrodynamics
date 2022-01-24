@@ -28,8 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ElectrodynamicsRecipeInit {
 
 	// Deferred Register
-	public static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS,
-			electrodynamics.api.References.ID);
+	public static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, electrodynamics.api.References.ID);
 
 	/* RECIPE TYPES */
 
@@ -56,36 +55,24 @@ public class ElectrodynamicsRecipeInit {
 	/* SERIALIZERS */
 
 	// Item2Item
-	public static final RegistryObject<RecipeSerializer<?>> WIRE_MILL_SERIALIZER = RECIPE_SERIALIZER.register(WireMillRecipe.RECIPE_GROUP,
-			() -> Item2ItemRecipeTypes.WIRE_MILL_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> MINERAL_GRINDER_SERIALIZER = RECIPE_SERIALIZER.register(MineralGrinderRecipe.RECIPE_GROUP,
-			() -> Item2ItemRecipeTypes.MINERAL_CRUSHER_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> MINERAL_CRUSHER_SERIALIZER = RECIPE_SERIALIZER.register(MineralCrusherRecipe.RECIPE_GROUP,
-			() -> Item2ItemRecipeTypes.MINERAL_GRINDER_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> LATHE_SERIALIZER = RECIPE_SERIALIZER.register(LatheRecipe.RECIPE_GROUP,
-			() -> Item2ItemRecipeTypes.LATHE_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> OXIDATION_FURNACE_SERIALIZER = RECIPE_SERIALIZER
-			.register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.OXIDATION_FURNACE_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> ENERGIZED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER
-			.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> REINFORCED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER
-			.register(ReinforcedAlloyerRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.REINFORCED_ALLOYER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> WIRE_MILL_SERIALIZER = RECIPE_SERIALIZER.register(WireMillRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.WIRE_MILL_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> MINERAL_GRINDER_SERIALIZER = RECIPE_SERIALIZER.register(MineralGrinderRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.MINERAL_CRUSHER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> MINERAL_CRUSHER_SERIALIZER = RECIPE_SERIALIZER.register(MineralCrusherRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.MINERAL_GRINDER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> LATHE_SERIALIZER = RECIPE_SERIALIZER.register(LatheRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.LATHE_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> OXIDATION_FURNACE_SERIALIZER = RECIPE_SERIALIZER.register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.OXIDATION_FURNACE_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> ENERGIZED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.ENERGIZED_ALLOYER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> REINFORCED_ALLOYER_SERIALIZER = RECIPE_SERIALIZER.register(ReinforcedAlloyerRecipe.RECIPE_GROUP, () -> Item2ItemRecipeTypes.REINFORCED_ALLOYER_JSON_SERIALIZER);
 
 	// FluidItem2Fluid
-	public static final RegistryObject<RecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalMixerRecipe.RECIPE_GROUP,
-			() -> FluidItem2FluidRecipeTypes.CHEMICAL_MIXER_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> FERMENTATION_PLANT_SERIALIZER = RECIPE_SERIALIZER
-			.register(FermentationPlantRecipe.RECIPE_GROUP, () -> FluidItem2FluidRecipeTypes.FERMENTATION_PLANT_JSON_SERIALIZER);
-	public static final RegistryObject<RecipeSerializer<?>> MINERAL_WASHER_SERIALIZER = RECIPE_SERIALIZER.register(MineralWasherRecipe.RECIPE_GROUP,
-			() -> FluidItem2FluidRecipeTypes.MINERAL_WASHER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> CHEMICAL_MIXER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalMixerRecipe.RECIPE_GROUP, () -> FluidItem2FluidRecipeTypes.CHEMICAL_MIXER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> FERMENTATION_PLANT_SERIALIZER = RECIPE_SERIALIZER.register(FermentationPlantRecipe.RECIPE_GROUP, () -> FluidItem2FluidRecipeTypes.FERMENTATION_PLANT_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> MINERAL_WASHER_SERIALIZER = RECIPE_SERIALIZER.register(MineralWasherRecipe.RECIPE_GROUP, () -> FluidItem2FluidRecipeTypes.MINERAL_WASHER_JSON_SERIALIZER);
 
 	// Fluid2Item
-	public static final RegistryObject<RecipeSerializer<?>> CHEMICAL_CRYSTALIZER_SERIALIZER = RECIPE_SERIALIZER
-			.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> Fluid2ItemRecipeTypes.CHEMICAL_CRYSTALIZER_JSON_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> CHEMICAL_CRYSTALIZER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> Fluid2ItemRecipeTypes.CHEMICAL_CRYSTALIZER_JSON_SERIALIZER);
 
 	// Fluid2Fluid
-	public static final RegistryObject<RecipeSerializer<?>> ELECTROLYTIC_SEPARATOR_SERIALIZER = RECIPE_SERIALIZER
-			.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> Fluid2FluidRecipeTypes.ELECTROLYTIC_SEPARATOR_RECIPE_SERIALIZER);
+	public static final RegistryObject<RecipeSerializer<?>> ELECTROLYTIC_SEPARATOR_SERIALIZER = RECIPE_SERIALIZER.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> Fluid2FluidRecipeTypes.ELECTROLYTIC_SEPARATOR_RECIPE_SERIALIZER);
 
 	/* Functional Methods */
 

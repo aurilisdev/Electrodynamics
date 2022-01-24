@@ -19,8 +19,7 @@ public class RenderBatteryBox implements BlockEntityRenderer<TileBatteryBox> {
 	}
 
 	@Override
-	public void render(TileBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
-			int combinedOverlayIn) {
+	public void render(TileBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel;
 		int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
 		ibakedmodel = switch (stored) {

@@ -23,8 +23,7 @@ public class RenderLathe implements BlockEntityRenderer<TileLathe> {
 	}
 
 	@Override
-	public void render(TileLathe tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
-			int combinedOverlayIn) {
+	public void render(TileLathe tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 		BakedModel lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHE);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
@@ -47,8 +46,7 @@ public class RenderLathe implements BlockEntityRenderer<TileLathe> {
 			matrixStackIn.translate(0.5f, 0.78f, 0.5f);
 			matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 			matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-					bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
 			matrixStackIn.popPose();
 		}
 	}

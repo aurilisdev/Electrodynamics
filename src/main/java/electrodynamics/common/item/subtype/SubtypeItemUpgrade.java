@@ -55,10 +55,8 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
 			if (tickNumber >= 4) {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
-				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
-						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0))
-						.orElse(false);
+				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
@@ -85,10 +83,8 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
 			if (tickNumber >= 4) {
 				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
-				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY)
-						.map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0))
-						.orElse(false);
+				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 					combinedItems.addAll(inv.getItemBiContents());
@@ -229,8 +225,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				inv.setItem(slot, new ItemStack(containerItem.getItem(), amtAccepted).copy());
 				containerItem.shrink(amtAccepted);
 				container.setChanged();
-			} else if (!containerItem.isEmpty() && ItemUtils.testItems(invItem.getItem(), containerItem.getItem())
-					&& inv.getMaxStackSize() >= invItem.getMaxStackSize()) {
+			} else if (!containerItem.isEmpty() && ItemUtils.testItems(invItem.getItem(), containerItem.getItem()) && inv.getMaxStackSize() >= invItem.getMaxStackSize()) {
 				int room = invItem.getMaxStackSize() - invItem.getCount();
 				int amtAccepted = room >= containerItem.getCount() ? containerItem.getCount() : room;
 				invItem.grow(amtAccepted);

@@ -26,11 +26,9 @@ public class GenericTileTank extends GenericTile {
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP)
-				.relativeOutput(Direction.WEST, Direction.DOWN).setManualFluids(1, true, capacity, FluidUtilities.getAllRegistryFluids()));
+		addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP).relativeOutput(Direction.WEST, Direction.DOWN).setManualFluids(1, true, capacity, FluidUtilities.getAllRegistryFluids()));
 		addComponent(new ComponentInventory(this).size(2).bucketInputs(1).bucketOutputs(1).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.tank" + name)
-				.createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider("container.tank" + name).createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tick) {

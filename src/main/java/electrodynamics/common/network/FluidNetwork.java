@@ -56,8 +56,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
 				FluidStack perReceiver = new FluidStack(transfer.getFluid(), transfer.getAmount() / availableAcceptors.size());
 				for (BlockEntity receiver : availableAcceptors) {
 					if (acceptorInputMap.containsKey(receiver)) {
-						FluidStack perConnection = new FluidStack(transfer.getFluid(),
-								perReceiver.getAmount() / acceptorInputMap.get(receiver).size());
+						FluidStack perConnection = new FluidStack(transfer.getFluid(), perReceiver.getAmount() / acceptorInputMap.get(receiver).size());
 						for (Direction connection : acceptorInputMap.get(receiver)) {
 							int rec = FluidUtilities.receiveFluid(receiver, connection, perConnection, false);
 							joulesSent.setAmount(joulesSent.getAmount() + rec);
@@ -111,8 +110,7 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstance(
-			Set<AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack>> networks) {
+	public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstance(Set<AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack>> networks) {
 		return new FluidNetwork(networks);
 
 	}

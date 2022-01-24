@@ -22,11 +22,9 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 	}
 
 	@Override
-	public void render(TileMultimeterBlock tilemultimeter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileMultimeterBlock tilemultimeter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		for (Direction dir : Direction.values()) {
-			if (dir != Direction.UP && dir != Direction.DOWN
-					&& dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
+			if (dir != Direction.UP && dir != Direction.DOWN && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.85 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
@@ -44,8 +42,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				TextComponent displayNameIn = new TextComponent(
-						"Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, DisplayUnit.WATT, 2));
+				TextComponent displayNameIn = new TextComponent("Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -56,8 +53,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 			}
 		}
 		for (Direction dir : Direction.values()) {
-			if (dir != Direction.UP && dir != Direction.DOWN
-					&& dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
+			if (dir != Direction.UP && dir != Direction.DOWN && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.65 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
@@ -75,8 +71,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				TextComponent displayNameIn = new TextComponent(
-						"Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, DisplayUnit.VOLTAGE, 2));
+				TextComponent displayNameIn = new TextComponent("Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, DisplayUnit.VOLTAGE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -87,8 +82,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 			}
 		}
 		for (Direction dir : Direction.values()) {
-			if (dir != Direction.UP && dir != Direction.DOWN
-					&& dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
+			if (dir != Direction.UP && dir != Direction.DOWN && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.45 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
@@ -106,8 +100,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				TextComponent displayNameIn = new TextComponent(
-						"Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, DisplayUnit.RESISTANCE, 2));
+				TextComponent displayNameIn = new TextComponent("Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, DisplayUnit.RESISTANCE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -118,8 +111,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 			}
 		}
 		for (Direction dir : Direction.values()) {
-			if (dir != Direction.UP && dir != Direction.DOWN
-					&& dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
+			if (dir != Direction.UP && dir != Direction.DOWN && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.25 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
@@ -137,8 +129,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				TextComponent displayNameIn = new TextComponent(
-						"Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, DisplayUnit.WATT, 2));
+				TextComponent displayNameIn = new TextComponent("Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);

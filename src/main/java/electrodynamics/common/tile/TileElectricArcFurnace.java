@@ -43,9 +43,7 @@ public class TileElectricArcFurnace extends GenericTile {
 	}
 
 	public TileElectricArcFurnace(int extra, BlockPos worldPosition, BlockState blockState) {
-		super(extra == 1 ? DeferredRegisters.TILE_ELECTRICARCFURNACEDOUBLE.get()
-				: extra == 2 ? DeferredRegisters.TILE_ELECTRICARCFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICARCFURNACE.get(), worldPosition,
-				blockState);
+		super(extra == 1 ? DeferredRegisters.TILE_ELECTRICARCFURNACEDOUBLE.get() : extra == 2 ? DeferredRegisters.TILE_ELECTRICARCFURNACETRIPLE.get() : DeferredRegisters.TILE_ELECTRICARCFURNACE.get(), worldPosition, blockState);
 
 		int processorInputs = 1;
 		int processorCount = extra + 1;
@@ -56,28 +54,18 @@ public class TileElectricArcFurnace extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
-				.voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra))
-				.maxJoules(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).maxJoules(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
 
 		int[] ints = new int[extra + 1];
 		for (int i = 0; i <= extra; i++) {
 			ints[i] = i * 2;
 		}
 
-		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount)
-				.processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.electricarcfurnace" + extra).createMenu((id,
-				player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-						: extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-								: extra == 2
-										? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-										: null)));
+		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
+		addComponent(new ComponentContainerProvider("container.electricarcfurnace" + extra).createMenu((id, player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(this::canProcess).failed(component -> cachedRecipe = null)
-					.process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS)
-					.usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
+			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
 		}
 	}
 
@@ -103,43 +91,28 @@ public class TileElectricArcFurnace extends GenericTile {
 
 	protected boolean canProcess(ComponentProcessor component) {
 		timeSinceChange++;
-		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage()
-				* component.operatingSpeed) {
+		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed) {
 			if (timeSinceChange > 40) {
 				Block bl = getBlockState().getBlock();
 				if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace)) {
-					level.setBlock(worldPosition,
-							DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacerunning).defaultBlockState()
-									.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-									.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-							2 | 16 | 32);
+					level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 				} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble)) {
-					level.setBlock(worldPosition,
-							DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedoublerunning).defaultBlockState()
-									.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-									.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-							2 | 16 | 32);
+					level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedoublerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 				} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)) {
-					level.setBlock(worldPosition,
-							DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning).defaultBlockState()
-									.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-									.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-							2 | 16 | 32);
+					level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 				}
 				// TODO: This system should probably change to blockstate properties
 				timeSinceChange = 0;
 			}
 			ComponentInventory inv = getComponent(ComponentType.Inventory);
 			if (!inv.getInputContents().get(component.getProcessorNumber()).get(0).isEmpty()) {
-				if (cachedRecipe != null
-						&& !cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
+				if (cachedRecipe != null && !cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
 					cachedRecipe = null;
 				}
 				boolean hasRecipe = cachedRecipe != null;
 				if (!hasRecipe) {
 					for (Recipe<?> recipe : level.getRecipeManager().getRecipes()) {
-						if (recipe.getType() == RecipeType.BLASTING
-								&& recipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
+						if (recipe.getType() == RecipeType.BLASTING && recipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
 							hasRecipe = true;
 							cachedRecipe = recipe;
 						}
@@ -148,31 +121,18 @@ public class TileElectricArcFurnace extends GenericTile {
 				if (hasRecipe && cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
 					ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
 					ItemStack result = cachedRecipe.getResultItem();
-					return (output.isEmpty() || ItemStack.isSame(output, result))
-							&& output.getCount() + result.getCount() <= output.getMaxStackSize();
+					return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 				}
 			}
 		} else if (timeSinceChange > 40) {
 			timeSinceChange = 0;
 			Block bl = getBlockState().getBlock();
 			if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacerunning)) {
-				level.setBlock(worldPosition,
-						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace).defaultBlockState()
-								.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-								.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-						2 | 16 | 32);
+				level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedoublerunning)) {
-				level.setBlock(worldPosition,
-						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble).defaultBlockState()
-								.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-								.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-						2 | 16 | 32);
+				level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning)) {
-				level.setBlock(worldPosition,
-						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple).defaultBlockState()
-								.setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-								.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-						2 | 16 | 32);
+				level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}
 			// TODO: This system should probably change to blockstate properties
 		}
@@ -181,11 +141,7 @@ public class TileElectricArcFurnace extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == DeferredRegisters.TILE_ELECTRICARCFURNACEDOUBLE.get()
-				? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0
-				: getType() == DeferredRegisters.TILE_ELECTRICARCFURNACETRIPLE.get()
-						? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0
-						: getProcessor(0).operatingTicks > 0;
+		boolean has = getType() == DeferredRegisters.TILE_ELECTRICARCFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == DeferredRegisters.TILE_ELECTRICARCFURNACETRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
 		if (has && level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();

@@ -37,8 +37,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		if (!worldIn.isClientSide) {
 			ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
 
-			if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT
-					&& railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
+			if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
 
 				EntityCustomProjectile projectile = new EntityEnergyBlast(playerIn, worldIn);
 				projectile.setNoGravity(true);

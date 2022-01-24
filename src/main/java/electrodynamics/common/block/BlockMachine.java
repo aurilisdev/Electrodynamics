@@ -75,8 +75,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-		return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
-				: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
+		return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes : machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
 	}
 
 	@Override

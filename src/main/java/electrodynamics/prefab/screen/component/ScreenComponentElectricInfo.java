@@ -62,15 +62,9 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 				if (tile.getComponent(ComponentType.Electrodynamic) instanceof ComponentElectrodynamic electro) {
 					if (tile instanceof IElectricGenerator generator) {
 						TransferPack transfer = generator.getProduced();
-						list2.add(new TranslatableComponent("gui.machine.current",
-								new TextComponent(ChatFormatter.getChatDisplayShort(transfer.getAmps(), DisplayUnit.AMPERE))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list2.add(new TranslatableComponent("gui.machine.output",
-								new TextComponent(ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnit.WATT))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list2.add(new TranslatableComponent("gui.machine.voltage",
-								new TextComponent(ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list2.add(new TranslatableComponent("gui.machine.current", new TextComponent(ChatFormatter.getChatDisplayShort(transfer.getAmps(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list2.add(new TranslatableComponent("gui.machine.output", new TextComponent(ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list2.add(new TranslatableComponent("gui.machine.voltage", new TextComponent(ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					} else {
 						if (wattage == null) {
 							double usage = tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
@@ -79,17 +73,11 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 									usage += proc.getUsage() * 20;
 								}
 							}
-							list2.add(new TranslatableComponent("gui.machine.usage",
-									new TextComponent(ChatFormatter.getChatDisplayShort(usage, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY))
-											.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+							list2.add(new TranslatableComponent("gui.machine.usage", new TextComponent(ChatFormatter.getChatDisplayShort(usage, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						} else {
-							list2.add(new TranslatableComponent("gui.machine.usage",
-									new TextComponent(ChatFormatter.getChatDisplayShort(wattage.apply(electro), DisplayUnit.WATT))
-											.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+							list2.add(new TranslatableComponent("gui.machine.usage", new TextComponent(ChatFormatter.getChatDisplayShort(wattage.apply(electro), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						}
-						list2.add(new TranslatableComponent("gui.machine.voltage",
-								new TextComponent(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE))
-										.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list2.add(new TranslatableComponent("gui.machine.voltage", new TextComponent(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					}
 				}
 			}

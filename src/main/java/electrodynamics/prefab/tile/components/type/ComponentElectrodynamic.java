@@ -102,11 +102,9 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {
 			return true;
 		}
-		Direction dir = holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: null;
+		Direction dir = holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : null;
 		if (dir != null) {
-			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side))
-					|| relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
+			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side)) || relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
 		}
 		return false;
 	}
@@ -119,9 +117,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public TransferPack extractPower(TransferPack transfer, boolean debug) {
-		if (outputDirections.contains(lastReturnedSide)
-				|| holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(BlockEntityUtils
-						.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
+		if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionExtractPower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
@@ -129,9 +125,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (inputDirections.contains(lastReturnedSide)
-				|| holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils
-						.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
+		if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionReceivePower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
@@ -245,8 +239,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		Level world = holder.getLevel();
 		BlockPos pos = holder.getBlockPos();
 		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-		world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
-				BlockInteraction.DESTROY);
+		world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
 	}
 
 	@Override

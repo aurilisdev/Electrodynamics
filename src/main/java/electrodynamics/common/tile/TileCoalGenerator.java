@@ -54,14 +54,11 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_COALGENERATOR.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
-				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
-		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH)
-				.valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
-		addComponent(new ComponentContainerProvider("container.coalgenerator")
-				.createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
+		addComponent(new ComponentContainerProvider("container.coalgenerator").createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -91,11 +88,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 				update = true;
 			}
 			if (update) {
-				level.setBlock(worldPosition,
-						DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator)
-								.defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-								.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)),
-						3);
+				level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 3);
 			}
 		}
 		if (heat.get() > 27 && output.valid()) {
@@ -115,15 +108,12 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
 			Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			if (level.random.nextInt(10) == 0) {
-				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
-						SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F,
-						false);
+				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F, false);
 			}
 
 			if (level.random.nextInt(10) == 0) {
 				for (int i = 0; i < level.random.nextInt(1) + 1; ++i) {
-					level.addParticle(ParticleTypes.LAVA, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
-							dir.getStepX(), 0.0, dir.getStepZ());
+					level.addParticle(ParticleTypes.LAVA, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, dir.getStepX(), 0.0, dir.getStepZ());
 				}
 			}
 		}
@@ -141,8 +131,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(multiplier * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)),
-				Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		return TransferPack.ampsVoltage(multiplier * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	protected void createPacket(CompoundTag nbt) {

@@ -90,8 +90,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 					if (acceptorInputMap.containsKey(receiver)) {
 						boolean shouldRemove = true;
 						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtils.receivePower(receiver, connection,
-									TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
+							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
 							if (pack.getJoules() != 0) {
 								shouldRemove = false;
 								totalUsage += pack.getJoules();
@@ -106,11 +105,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 					usage.put(receiver, localUsage);
 				}
 				for (BlockEntity receiver : availableAcceptors) {
-					TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage),
-							maxTransfer.getVoltage());
+					TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
 					if (acceptorInputMap.containsKey(receiver)) {
-						TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
-								maxTransfer.getVoltage());
+						TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
 						for (Direction connection : acceptorInputMap.get(receiver)) {
 							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
 							joulesSent += pack.getJoules();
@@ -134,9 +131,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (networkMaxTransfer * voltage - transmittedThisTick <= 0 && voltage > 0) {
 			HashSet<SubtypeWire> checkList = new HashSet<>();
 			for (SubtypeWire type : SubtypeWire.values()) {
-				if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive
-						&& type != SubtypeWire.logisticssuperconductive && type.capacity <= transmittedLastTick / voltage * 20
-						&& type.capacity <= transmittedThisTick / voltage * 20) {
+				if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive && type != SubtypeWire.logisticssuperconductive && type.capacity <= transmittedLastTick / voltage * 20 && type.capacity <= transmittedThisTick / voltage * 20) {
 					checkList.add(type);
 				}
 			}
@@ -176,8 +171,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 			if ((int) voltage != 0 && voltage > 0) {
 				if (resistance > 0) {
 					double bufferAsWatts = transferBuffer * 20; // buffer as watts
-					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4 * bufferAsWatts * resistance))
-							/ (2 * resistance);
+					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4 * bufferAsWatts * resistance)) / (2 * resistance);
 					double maxPerTick = maxWatts / 20.0;
 					// above is power as watts when powerSend + powerLossToWires = m
 					TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
@@ -242,8 +236,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	@Override
-	public AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> createInstance(
-			Set<AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack>> networks) {
+	public AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> createInstance(Set<AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack>> networks) {
 		return new ElectricNetwork(networks);
 
 	}

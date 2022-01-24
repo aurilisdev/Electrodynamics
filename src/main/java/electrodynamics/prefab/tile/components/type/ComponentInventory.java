@@ -123,10 +123,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public ComponentInventory setMachineSlots(int extra) {
-		return relativeFaceSlots(Direction.EAST, 0, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
-				.relativeFaceSlots(Direction.UP, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
-				.relativeFaceSlots(Direction.WEST, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1)
-				.relativeFaceSlots(Direction.DOWN, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1);
+		return relativeFaceSlots(Direction.EAST, 0, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0).relativeFaceSlots(Direction.UP, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0).relativeFaceSlots(Direction.WEST, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1).relativeFaceSlots(Direction.DOWN, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1);
 	}
 
 	public ComponentInventory valid(TriPredicate<Integer, ItemStack, ComponentInventory> itemValidPredicate) {
@@ -166,10 +163,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
 		lastDirection = side;
-		return (side == null || directionMappings.containsKey(side)
-				|| holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(
-						BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))
-				&& capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+		return (side == null || directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
 	@Override
@@ -240,13 +234,9 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		}
 		if (holder.hasComponent(ComponentType.Direction)) {
 			Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
-			Direction relativeDirection = BlockEntityUtils
-					.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
-			Stream<Integer> stRel = relativeDirectionMappings.containsKey(relativeDirection)
-					? relativeDirectionMappings.get(relativeDirection).stream()
-					: null;
-			return ArrayUtils.addAll(st == null ? new int[0] : st.mapToInt(i -> i).toArray(),
-					stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
+			Direction relativeDirection = BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
+			Stream<Integer> stRel = relativeDirectionMappings.containsKey(relativeDirection) ? relativeDirectionMappings.get(relativeDirection).stream() : null;
+			return ArrayUtils.addAll(st == null ? new int[0] : st.mapToInt(i -> i).toArray(), stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
 
 		}
 		return directionMappings.get(side) == null ? SLOTS_EMPTY : directionMappings.get(side).stream().mapToInt(i -> i).toArray();

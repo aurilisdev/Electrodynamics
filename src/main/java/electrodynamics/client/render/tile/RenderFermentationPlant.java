@@ -21,11 +21,9 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 	}
 
 	@Override
-	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
-		float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-				.getTankFromFluid(DeferredRegisters.fluidEthanol, false).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
+		float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(DeferredRegisters.fluidEthanol, false).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 		matrixStackIn.translate(0, 1.0 / 16.0 - 2.5 / 16.0 * (1 - prog), 0);
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTETHANOL);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
@@ -38,8 +36,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 		matrixStackIn.translate(0, 1.0 / 16.0, 0);
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTWATER);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-		prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(Fluids.WATER, true).getFluidAmount()
-				/ (float) TileFermentationPlant.MAX_TANK_CAPACITY;
+		prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(Fluids.WATER, true).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
 			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);

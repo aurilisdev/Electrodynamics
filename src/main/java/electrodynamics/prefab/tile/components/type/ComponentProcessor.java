@@ -667,8 +667,7 @@ public class ComponentProcessor implements Component {
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY)
-							.ifPresent(h -> h.setDouble(0, h.getDouble(0) + experience));
+					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, h.getDouble(0) + experience));
 				}
 				break;
 			}

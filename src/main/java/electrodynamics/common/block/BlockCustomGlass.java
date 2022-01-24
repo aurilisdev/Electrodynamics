@@ -21,13 +21,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockCustomGlass extends Block {
 
 	public BlockCustomGlass(float hardness, float resistance) {
-		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false)
-				.noOcclusion());
+		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false).noOcclusion());
 	}
 
 	public BlockCustomGlass(SubtypeGlass glass) {
-		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance)
-				.isRedstoneConductor((x, y, z) -> false).noOcclusion());
+		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance).isRedstoneConductor((x, y, z) -> false).noOcclusion());
 	}
 
 	@Override

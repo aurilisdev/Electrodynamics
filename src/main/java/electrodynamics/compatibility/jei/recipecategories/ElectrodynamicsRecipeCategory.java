@@ -66,8 +66,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	private ArrowAnimatedWrapper[] animArrows = new ArrowAnimatedWrapper[0];
 	private ScreenObjectWrapper[] staticArrows = new ScreenObjectWrapper[0];
 
-	public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper,
-			Class<T> recipeCategoryClass, int animationTime) {
+	public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
 
 		RECIPE_GROUP = recipeGroup;
 		MOD_ID = modID;
@@ -75,8 +74,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
 
 		ICON = guiHelper.createDrawableIngredient(inputMachine);
-		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(),
-				wrapper.getLength(), wrapper.getWidth());
+		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		ANIMATION_LENGTH = animationTime;
 	}
@@ -137,8 +135,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> slots = new ArrayList<>();
 				for (ScreenObjectWrapper slot : inputSlots) {
-					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(),
-							slot.getLength(), slot.getWidth()).build());
+					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(), slot.getLength(), slot.getWidth()).build());
 				}
 				return slots;
 			}
@@ -152,8 +149,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> slots = new ArrayList<>();
 				for (ScreenObjectWrapper slot : outputSlots) {
-					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(),
-							slot.getLength(), slot.getWidth()).build());
+					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(), slot.getLength(), slot.getWidth()).build());
 				}
 				return slots;
 			}
@@ -167,8 +163,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> gauges = new ArrayList<>();
 				for (ScreenObjectWrapper gauge : fluidInputs) {
-					gauges.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, gauge.getTexture()), gauge.getTextX(), gauge.getTextY(),
-							gauge.getLength(), gauge.getWidth()).build());
+					gauges.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, gauge.getTexture()), gauge.getTextX(), gauge.getTextY(), gauge.getLength(), gauge.getWidth()).build());
 				}
 				return gauges;
 			}
@@ -182,8 +177,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> gauges = new ArrayList<>();
 				for (ScreenObjectWrapper gauge : fluidOutputs) {
-					gauges.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, gauge.getTexture()), gauge.getTextX(), gauge.getTextY(),
-							gauge.getLength(), gauge.getWidth()).build());
+					gauges.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, gauge.getTexture()), gauge.getTextX(), gauge.getTextY(), gauge.getLength(), gauge.getWidth()).build());
 				}
 				return gauges;
 			}
@@ -201,8 +195,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> arrows = new ArrayList<>();
 				for (ScreenObjectWrapper arrow : staticArrows) {
-					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(),
-							arrow.getLength(), arrow.getWidth()).build());
+					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(), arrow.getLength(), arrow.getWidth()).build());
 				}
 				return arrows;
 			}
@@ -221,8 +214,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			public List<IDrawableAnimated> load(Integer time) {
 				List<IDrawableAnimated> arrows = new ArrayList<>();
 				for (ArrowAnimatedWrapper arrow : animArrows) {
-					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(),
-							arrow.getLength(), arrow.getWidth()).buildAnimated(time, arrow.getStartDirection(), false));
+					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(), arrow.getLength(), arrow.getWidth()).buildAnimated(time, arrow.getStartDirection(), false));
 				}
 
 				return arrows;
@@ -259,8 +251,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
 			int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
 
-			guiFluidStacks.init(i + offset, true, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
-					true, null);
+			guiFluidStacks.init(i + offset, true, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(), true, null);
 
 		}
 	}
@@ -279,8 +270,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
 				int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
 
-				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
-						true, null);
+				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(), true, null);
 				offset++;
 				if (recipe.hasFluidBiproducts() && i < recipe.getFluidBiproductCount()) {
 					stack = recipe.getFluidBiproducts()[i].getFullStack();
@@ -296,8 +286,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
 				int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
 
-				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(),
-						true, null);
+				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(), true, null);
 				offset++;
 			}
 		}

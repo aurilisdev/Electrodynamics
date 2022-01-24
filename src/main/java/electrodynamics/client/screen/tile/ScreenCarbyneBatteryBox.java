@@ -32,21 +32,10 @@ public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatte
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileCarbyneBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
-			list.add(
-					new TranslatableComponent("gui.machine.current",
-							new TextComponent(ChatFormatter.getChatDisplayShort(
-									box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE))
-											.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.transfer",
-					new TextComponent(ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.voltage",
-					new TextComponent(ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.stored",
-					new TextComponent(ChatFormatter.getChatDisplayShort(box.clientJoules, DisplayUnit.JOULES) + " / "
-							+ ChatFormatter.getChatDisplayShort(box.maxJoules * box.currentCapacityMultiplier, DisplayUnit.JOULES))
-									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.current", new TextComponent(ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.transfer", new TextComponent(ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.voltage", new TextComponent(ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.stored", new TextComponent(ChatFormatter.getChatDisplayShort(box.clientJoules, DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules * box.currentCapacityMultiplier, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -56,22 +45,10 @@ public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatte
 		super.renderLabels(matrixStack, mouseX, mouseY);
 		TileCarbyneBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
-			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.current", ChatFormatter
-							.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE)),
-					inventoryLabelX, inventoryLabelY - 55f, 4210752);
-			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.transfer",
-							ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT)),
-					inventoryLabelX, inventoryLabelY - 42f, 4210752);
-			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)),
-					inventoryLabelX, inventoryLabelY - 29f, 4210752);
-			font.draw(matrixStack,
-					new TranslatableComponent("gui.machine.stored",
-							ChatFormatter.getChatDisplayShort(box.clientJoules, DisplayUnit.JOULES) + " / "
-									+ ChatFormatter.getChatDisplayShort(box.maxJoules * box.currentCapacityMultiplier, DisplayUnit.JOULES)),
-					inventoryLabelX, inventoryLabelY - 16f, 4210752);
+			font.draw(matrixStack, new TranslatableComponent("gui.machine.current", ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier / box.clientVoltage, DisplayUnit.AMPERE)), inventoryLabelX, inventoryLabelY - 55f, 4210752);
+			font.draw(matrixStack, new TranslatableComponent("gui.machine.transfer", ChatFormatter.getChatDisplayShort(box.powerOutput * 20.0 * box.currentCapacityMultiplier, DisplayUnit.WATT)), inventoryLabelX, inventoryLabelY - 42f, 4210752);
+			font.draw(matrixStack, new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(box.clientVoltage, DisplayUnit.VOLTAGE)), inventoryLabelX, inventoryLabelY - 29f, 4210752);
+			font.draw(matrixStack, new TranslatableComponent("gui.machine.stored", ChatFormatter.getChatDisplayShort(box.clientJoules, DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules * box.currentCapacityMultiplier, DisplayUnit.JOULES)), inventoryLabelX, inventoryLabelY - 16f, 4210752);
 		}
 	}
 }

@@ -22,10 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileCarbyneBatteryBox extends TileBatteryBox {
 
 	public TileCarbyneBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_CARBYNEBATTERYBOX.get(), 359.0 * (4 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000,
-				worldPosition, blockState);
-		forceComponent(new ComponentContainerProvider("container.carbynebatterybox")
-				.createMenu((id, player) -> new ContainerCarbyneBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		super(DeferredRegisters.TILE_CARBYNEBATTERYBOX.get(), 359.0 * (4 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000, worldPosition, blockState);
+		forceComponent(new ComponentContainerProvider("container.carbynebatterybox").createMenu((id, player) -> new ContainerCarbyneBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	@Override
@@ -40,10 +38,7 @@ public class TileCarbyneBatteryBox extends TileBatteryBox {
 		}
 		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtils
-					.receivePower(output.getSafe(), facing, TransferPack
-							.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
-					.getJoules());
+			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false).getJoules());
 		}
 		currentCapacityMultiplier = 1;
 		int currentVoltageMultiplier = 1;

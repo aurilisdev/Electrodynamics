@@ -49,8 +49,7 @@ public class ElectricityUtils {
 
 	public static boolean isElectricReceiver(BlockEntity tile, Direction dir) {
 		if (tile != null) {
-			if (tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).isPresent()
-					|| tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
+			if (tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).isPresent() || tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
 				return true;
 			}
 		}
@@ -71,14 +70,12 @@ public class ElectricityUtils {
 			LazyOptional<IEnergyStorage> cap2 = tile.getCapability(CapabilityEnergy.ENERGY, direction);
 			if (cap2.isPresent()) {
 				IEnergyStorage handler = cap2.resolve().get();
-				TransferPack returner = TransferPack
-						.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
+				TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
 				if (transfer.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
 					Level world = tile.getLevel();
 					BlockPos pos = tile.getBlockPos();
 					world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-					world.explode(null, pos.getX(), pos.getY(), pos.getZ(),
-							(float) Math.log10(10 + transfer.getVoltage() / ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), BlockInteraction.DESTROY);
+					world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), BlockInteraction.DESTROY);
 				}
 				return returner;
 			}

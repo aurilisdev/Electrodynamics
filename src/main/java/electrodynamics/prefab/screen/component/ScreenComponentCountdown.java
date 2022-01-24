@@ -34,8 +34,7 @@ public class ScreenComponentCountdown extends ScreenComponentInfo {
 
 	private static final String TEXTURE_LOC = ":textures/screen/component/countdown.png";
 
-	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y,
-			final String langKey) {
+	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y, final String langKey) {
 		super(null, new ResourceLocation(References.ID + TEXTURE_LOC), gui, x, y);
 		this.progressInfoHandler = progressInfoHandler;
 		infoHandler = this::getTooltips;
@@ -71,8 +70,7 @@ public class ScreenComponentCountdown extends ScreenComponentInfo {
 	private List<? extends FormattedCharSequence> getTooltips() {
 		List<FormattedCharSequence> tips = new ArrayList<>();
 		if (progressInfoHandler != null) {
-			tips.add(new TranslatableComponent(langKey, (int) (100 * progressInfoHandler.getAsDouble()) + "%").withStyle(ChatFormatting.GRAY)
-					.getVisualOrderText());
+			tips.add(new TranslatableComponent(langKey, (int) (100 * progressInfoHandler.getAsDouble()) + "%").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 		}
 		return tips;
 	}

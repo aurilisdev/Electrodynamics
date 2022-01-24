@@ -32,16 +32,10 @@ public class TileLathe extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2)
-				.maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
-		addComponent(new ComponentInventory(this).size(6).inputs(1).outputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator())
-				.biproducts(1).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.lathe")
-				.createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-		addProcessor(new ComponentProcessor(this).setProcessorNumber(0)
-				.canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.LATHE_TYPE))
-				.process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.LATHE_REQUIRED_TICKS)
-				.usage(Constants.LATHE_USAGE_PER_TICK));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
+		addComponent(new ComponentInventory(this).size(6).inputs(1).outputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator()).biproducts(1).shouldSendInfo());
+		addComponent(new ComponentContainerProvider("container.lathe").createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addProcessor(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.LATHE_TYPE)).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.LATHE_REQUIRED_TICKS).usage(Constants.LATHE_USAGE_PER_TICK));
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
@@ -51,9 +45,7 @@ public class TileLathe extends GenericTile {
 				for (int i = 0; i < 5; i++) {
 					double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 					double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-					ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.7,
-							worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D, Blocks.IRON_BLOCK.defaultBlockState(),
-							worldPosition);
+					ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.7, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D, Blocks.IRON_BLOCK.defaultBlockState(), worldPosition);
 				}
 			}
 			double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));

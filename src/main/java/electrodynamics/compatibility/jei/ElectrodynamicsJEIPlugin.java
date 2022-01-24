@@ -91,38 +91,20 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 
 		registration.addRecipeCatalyst(ElectricFurnaceRecipeCategory.INPUT_MACHINE, ElectricFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)),
-				ElectricFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)),
-				ElectricFurnaceRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble)), ElectricFurnaceRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacetriple)), ElectricFurnaceRecipeCategory.UID);
 		registration.addRecipeCatalyst(WireMillRecipeCategory.INPUT_MACHINE, WireMillRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilldouble)),
-				WireMillRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilltriple)),
-				WireMillRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilldouble)), WireMillRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremilltriple)), WireMillRecipeCategory.UID);
 		registration.addRecipeCatalyst(MineralCrusherRecipeCategory.INPUT_MACHINE, MineralCrusherRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)),
-				MineralCrusherRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)),
-				MineralCrusherRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrusherdouble)), MineralCrusherRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralcrushertriple)), MineralCrusherRecipeCategory.UID);
 		registration.addRecipeCatalyst(MineralGrinderRecipeCategory.INPUT_MACHINE, MineralGrinderRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)),
-				MineralGrinderRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)),
-				MineralGrinderRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrinderdouble)), MineralGrinderRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralgrindertriple)), MineralGrinderRecipeCategory.UID);
 		registration.addRecipeCatalyst(ElectricArcFurnaceRecipeCategory.INPUT_MACHINE, ElectricArcFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble)),
-				ElectricArcFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(
-				new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)),
-				ElectricArcFurnaceRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacedouble)), ElectricArcFurnaceRecipeCategory.UID);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)), ElectricArcFurnaceRecipeCategory.UID);
 		registration.addRecipeCatalyst(OxidationFurnaceRecipeCategory.INPUT_MACHINE, OxidationFurnaceRecipeCategory.UID);
 		registration.addRecipeCatalyst(EnergizedAlloyerRecipeCategory.INPUT_MACHINE, EnergizedAlloyerRecipeCategory.UID);
 		registration.addRecipeCatalyst(LatheRecipeCategory.INPUT_MACHINE, LatheRecipeCategory.UID);
@@ -154,23 +136,19 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
 
 		// Mineral Crusher
-		Set<Item2ItemRecipe> mineralCrusherRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
+		Set<Item2ItemRecipe> mineralCrusherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE));
 		registration.addRecipes(mineralCrusherRecipes, MineralCrusherRecipeCategory.UID);
 
 		// Mineral Grinder
-		Set<Item2ItemRecipe> mineralGrinderRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
+		Set<Item2ItemRecipe> mineralGrinderRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE));
 		registration.addRecipes(mineralGrinderRecipes, MineralGrinderRecipeCategory.UID);
 
 		// Oxidation Furnace
-		Set<Item2ItemRecipe> oxidationFurnaceRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
+		Set<Item2ItemRecipe> oxidationFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE));
 		registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
 
 		// Energized Alloyer
-		Set<Item2ItemRecipe> energizedAlloyerRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE));
+		Set<Item2ItemRecipe> energizedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE));
 		registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
 
 		// Lathe
@@ -178,33 +156,27 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipes(latheRecipes, LatheRecipeCategory.UID);
 
 		// Mineral Washer
-		Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE));
+		Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE));
 		registration.addRecipes(mineralWasherRecipes, MineralWasherRecipeCategory.UID);
 
 		// Chemical Crystallizer
-		Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE));
+		Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE));
 		registration.addRecipes(chemicalCrystallizerRecipes, ChemicalCrystallizerRecipeCategory.UID);
 
 		// Chemical Mixer
-		Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
+		Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
 		registration.addRecipes(chemicalMixerRecipes, ChemicalMixerRecipeCategory.UID);
 
 		// Fermentation Chamber
-		Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE));
+		Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE));
 		registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
 
 		// Reinforced Alloyer
-		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE));
+		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE));
 		registration.addRecipes(reinforcedAlloyerRecipes, ReinforcedAlloyerRecipeCategory.UID);
 
 		// Electrolytic Separator
-		Set<Fluid2FluidRecipe> electrolyticSeparatorRecipes = ImmutableSet
-				.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE));
+		Set<Fluid2FluidRecipe> electrolyticSeparatorRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE));
 		registration.addRecipes(electrolyticSeparatorRecipes, ElectrolyticSeparatorRecipeCategory.UID);
 
 		electrodynamicsInfoTabs(registration);
@@ -237,12 +209,9 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 
 		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35,
-				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55,
-				O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15,
-				DO2O_CLICK_AREAS.toArray(new ResourceLocation[DO2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15, DO2O_CLICK_AREAS.toArray(new ResourceLocation[DO2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenElectricFurnace.class, 85, 35, 22, 15, ElectricFurnaceRecipeCategory.UID);
 		registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, 85, 25, 22, 35, ElectricFurnaceRecipeCategory.UID);
 		registry.addRecipeClickArea(ScreenElectricFurnaceTriple.class, 85, 25, 22, 55, ElectricFurnaceRecipeCategory.UID);
@@ -259,44 +228,30 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		}
 
 		// Blocks
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_BLOCK + "tank", TileTankSteel.CAPACITY));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_BLOCK + "tank", TileTankReinforced.CAPACITY));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_BLOCK + "tank", TileTankHSLA.CAPACITY));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankSteel.CAPACITY));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankReinforced.CAPACITY));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankHSLA.CAPACITY));
 
 		// Items
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "upgradeiteminput"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "upgradeitemoutput"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_PLASMARAILGUN.get()), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "railgunplasma"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM,
-				new TranslatableComponent(INFO_ITEM + "railgunkinetic"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "upgradeiteminput"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "upgradeitemoutput"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_PLASMARAILGUN.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "railgunplasma"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "railgunkinetic"));
 
 		for (Item item : TileCoalGenerator.getValidItems()) {
 			ItemStack fuelStack = new ItemStack(item);
-			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM,
-					new TranslatableComponent(INFO_ITEM + "coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));
+			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));
 		}
 
 		// Fluids
 		for (IOptionalNamedTag<Fluid> tag : CombustionFuelSource.FUELS.keySet()) {
 			for (Fluid fluid : tag.getValues()) {
 				CombustionFuelSource source = CombustionFuelSource.getSourceFromFluid(fluid);
-				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), VanillaTypes.FLUID,
-						new TranslatableComponent(INFO_FLUID + "combustionchamberfuel", source.getFluidUsage(),
-								source.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
+				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), VanillaTypes.FLUID, new TranslatableComponent(INFO_FLUID + "combustionchamberfuel", source.getFluidUsage(), source.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
 			}
 		}
 

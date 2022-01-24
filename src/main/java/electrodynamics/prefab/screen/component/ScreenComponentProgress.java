@@ -53,21 +53,17 @@ public class ScreenComponentProgress extends ScreenComponent {
 		if (left) {
 			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW * 3, POSYARROW, WIDTHARROW, HEIGHTARROW);
 		} else {
-			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, isFlame ? POSXFLAME : POSXARROW,
-					isFlame ? POSYFLAME + HEIGHTFLAME : POSYARROW, isFlame ? WIDTHFLAME : WIDTHARROW, isFlame ? HEIGHTFLAME : HEIGHTARROW);
+			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, isFlame ? POSXFLAME : POSXARROW, isFlame ? POSYFLAME + HEIGHTFLAME : POSYARROW, isFlame ? WIDTHFLAME : WIDTHARROW, isFlame ? HEIGHTFLAME : HEIGHTARROW);
 		}
 		if (isFlame) {
 			int scale = (int) (progressInfoHandler.getAsDouble() * HEIGHTFLAME);
-			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + HEIGHTFLAME - scale, POSXFLAME, POSYFLAME + HEIGHTFLAME - scale,
-					WIDTHFLAME, scale);
+			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + HEIGHTFLAME - scale, POSXFLAME, POSYFLAME + HEIGHTFLAME - scale, WIDTHFLAME, scale);
 		} else if (left) {
 			int progress = (int) (progressInfoHandler.getAsDouble() * WIDTHARROW);
 			int xStart = POSXARROW + WIDTHARROW * 2 + WIDTHARROW - progress;
-			gui.drawTexturedRect(stack, guiWidth + xLocation + WIDTHARROW - progress, guiHeight + yLocation, xStart, POSYARROW, progress,
-					HEIGHTARROW);
+			gui.drawTexturedRect(stack, guiWidth + xLocation + WIDTHARROW - progress, guiHeight + yLocation, xStart, POSYARROW, progress, HEIGHTARROW);
 		} else {
-			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
-					(int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
+			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW, (int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
 		}
 	}
 

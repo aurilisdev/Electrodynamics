@@ -7,8 +7,7 @@ public abstract class ArrowAnimatedWrapper extends ScreenObjectWrapper {
 
 	private ScreenObjectWrapper STATIC_ARROW;
 
-	public ArrowAnimatedWrapper(String texture, int xStart, int yStart, int textX, int textY, int height, int width,
-			ScreenObjectWrapper staticArrow) {
+	public ArrowAnimatedWrapper(String texture, int xStart, int yStart, int textX, int textY, int height, int width, ScreenObjectWrapper staticArrow) {
 		super(texture, xStart, yStart, textX, textY, height, width);
 		STATIC_ARROW = staticArrow;
 	}

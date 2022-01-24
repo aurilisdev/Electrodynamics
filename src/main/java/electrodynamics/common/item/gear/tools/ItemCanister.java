@@ -58,8 +58,7 @@ public class ItemCanister extends Item {
 				for (Fluid liq : getWhitelistedFluids().getSecond()) {
 					ItemStack temp = new ItemStack(this);
 					// For init only; do not use anywhere else!
-					temp.getCapability(CapabilityUtils.getFluidItemCap())
-							.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
+					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
 					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 					items.add(temp);
 
@@ -79,8 +78,7 @@ public class ItemCanister extends Item {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
 					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-					tooltip.add(
-							new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
 					tooltip.add(new TextComponent(cap.getFluid().getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY));
 				}
 			});
@@ -98,8 +96,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
-				.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
+		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
 	}
 
 	@Override
@@ -134,8 +131,7 @@ public class ItemCanister extends Item {
 		List<Fluid> whitelisted = new ArrayList<>();
 		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
 
-			if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null
-					&& fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+			if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
 				whitelisted.add(fluid);
 			}
 		}

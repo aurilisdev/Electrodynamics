@@ -37,25 +37,19 @@ public class PlayerHandler {
 
 	@SubscribeEvent
 	public static void takeDamageWithArmor(LivingHurtEvent event) {
-		ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
-				new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
-				new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
+		ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
 
 		List<ItemStack> armorPieces = new ArrayList<>();
 		event.getEntityLiving().getArmorSlots().forEach(armorPieces::add);
 
-		if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3])
-				&& ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2])
-				&& ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1])
-				&& ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
+		if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2]) && ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1]) && ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
 			ItemStack stack = armorPieces.get(2);
 			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
 				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getInt(0) > 0) {
 
 					event.setAmount((float) Math.sqrt(event.getAmount()));
 					h.setInt(0, h.getInt(0) - 1);
-					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(),
-							SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
+					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 				}
 			});
 
@@ -70,12 +64,10 @@ public class PlayerHandler {
 			ItemStack playerBoots = event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET);
 			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) && event.getAmount() >= 2) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
-				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0)
-						.orElse(false)) {
+				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
 					event.setAmount((float) Math.sqrt(event.getAmount()));
 					playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
-					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(),
-							SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 				}
 			}
 		}

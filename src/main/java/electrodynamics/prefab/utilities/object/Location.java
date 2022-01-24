@@ -201,8 +201,7 @@ public final class Location {
 			return false;
 		}
 		Location other = (Location) obj;
-		return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x) && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y)
-				&& Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
+		return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x) && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y) && Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
 	}
 
 	@Override

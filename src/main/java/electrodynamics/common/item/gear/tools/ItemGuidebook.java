@@ -33,8 +33,7 @@ public class ItemGuidebook extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand handIn) {
 		if (world.isClientSide && player.isShiftKeyDown()) {
-			player.sendMessage(new TranslatableComponent("message.electrodynamics.guidebookclick").withStyle(ChatFormatting.BOLD, ChatFormatting.RED)
-					.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, LINK))), Util.NIL_UUID);
+			player.sendMessage(new TranslatableComponent("message.electrodynamics.guidebookclick").withStyle(ChatFormatting.BOLD, ChatFormatting.RED).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, LINK))), Util.NIL_UUID);
 			return InteractionResultHolder.pass(player.getItemInHand(handIn));
 		}
 		return super.use(world, player, handIn);

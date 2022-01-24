@@ -18,8 +18,7 @@ public class RenderHydroelectricGenerator implements BlockEntityRenderer<TileHyd
 	}
 
 	@Override
-	public void render(TileHydroelectricGenerator tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileHydroelectricGenerator tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_HYDROELECTRICGENERATORBLADES);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		float partial = (float) (partialTicks * tileEntityIn.rotationSpeed * (tileEntityIn.directionFlag ? 1 : -1));

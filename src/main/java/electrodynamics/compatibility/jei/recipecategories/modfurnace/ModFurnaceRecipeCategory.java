@@ -59,8 +59,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	private double JOULES;
 	private int VOLTAGE;
 
-	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper,
-			Class<? extends AbstractCookingRecipe> recipeClass, int animTime, double joulesPerTick, int voltage) {
+	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<? extends AbstractCookingRecipe> recipeClass, int animTime, double joulesPerTick, int voltage) {
 
 		ANIMATION_LENGTH = animTime;
 
@@ -68,8 +67,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 		MOD_ID = modID;
 
 		ICON = guiHelper.createDrawableIngredient(inputMachine);
-		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(),
-				wrapper.getLength(), wrapper.getWidth());
+		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;
 
@@ -180,8 +178,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> slots = new ArrayList<>();
 				for (ScreenObjectWrapper slot : inputSlots) {
-					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(),
-							slot.getLength(), slot.getWidth()).build());
+					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(), slot.getLength(), slot.getWidth()).build());
 				}
 				return slots;
 			}
@@ -195,8 +192,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> slots = new ArrayList<>();
 				for (ScreenObjectWrapper slot : outputSlots) {
-					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(),
-							slot.getLength(), slot.getWidth()).build());
+					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(), slot.getLength(), slot.getWidth()).build());
 				}
 				return slots;
 			}
@@ -214,8 +210,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> arrows = new ArrayList<>();
 				for (ScreenObjectWrapper arrow : staticArrows) {
-					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(),
-							arrow.getLength(), arrow.getWidth()).build());
+					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(), arrow.getLength(), arrow.getWidth()).build());
 				}
 				return arrows;
 			}
@@ -234,8 +229,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 			public List<IDrawableAnimated> load(Integer time) {
 				List<IDrawableAnimated> arrows = new ArrayList<>();
 				for (ArrowAnimatedWrapper arrow : animArrows) {
-					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(),
-							arrow.getLength(), arrow.getWidth()).buildAnimated(time, arrow.getStartDirection(), false));
+					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(), arrow.getLength(), arrow.getWidth()).buildAnimated(time, arrow.getStartDirection(), false));
 				}
 
 				return arrows;

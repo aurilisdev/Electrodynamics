@@ -29,22 +29,19 @@ public abstract class Fluid2ItemRecipe extends AbstractFluidRecipe {
 		ITEM_OUTPUT = itemOutput;
 	}
 
-	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts,
-			double experience) {
+	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, double experience) {
 		super(recipeID, itemBiproducts, experience);
 		INPUT_FLUIDS = inputFluids;
 		ITEM_OUTPUT = itemOutput;
 	}
 
-	public Fluid2ItemRecipe(FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID,
-			double experience) {
+	public Fluid2ItemRecipe(FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		INPUT_FLUIDS = inputFluids;
 		ITEM_OUTPUT = itemOutput;
 	}
 
-	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts,
-			ProbableFluid[] fluidBiproducts, double experience) {
+	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
 		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		INPUT_FLUIDS = inputFluids;
 		ITEM_OUTPUT = itemOutput;
@@ -52,8 +49,7 @@ public abstract class Fluid2ItemRecipe extends AbstractFluidRecipe {
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(),
-				((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
+		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), ((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
 		if (pair.getSecond()) {
 			setFluidArrangement(pair.getFirst());
 			return true;

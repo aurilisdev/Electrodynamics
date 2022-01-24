@@ -28,8 +28,7 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 	}
 
 	@Override
-	public void render(EntityMetalRod entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int packedLightIn) {
+	public void render(EntityMetalRod entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 
 		matrixStackIn.pushPose();
 
@@ -46,22 +45,15 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 
 		case 0:
 			BakedModel steelrod = Minecraft.getInstance().getModelManager().getModel(electrodynamics.client.ClientRegister.MODEL_RODSTEEL);
-			Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateWithoutAO(entity.level, steelrod, Blocks.AIR.defaultBlockState(),
-					entity.blockPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.solid()), false, entity.level.random,
-					new Random().nextLong(), 0);
+			Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateWithoutAO(entity.level, steelrod, Blocks.AIR.defaultBlockState(), entity.blockPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.solid()), false, entity.level.random, new Random().nextLong(), 0);
 			break;
 		case 1:
-			BakedModel stainlessSteelrod = Minecraft.getInstance().getModelManager()
-					.getModel(electrodynamics.client.ClientRegister.MODEL_RODSTAINLESSSTEEL);
-			Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateWithoutAO(entity.level, stainlessSteelrod,
-					Blocks.AIR.defaultBlockState(), entity.blockPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.solid()), false,
-					entity.level.random, new Random().nextLong(), 0);
+			BakedModel stainlessSteelrod = Minecraft.getInstance().getModelManager().getModel(electrodynamics.client.ClientRegister.MODEL_RODSTAINLESSSTEEL);
+			Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateWithoutAO(entity.level, stainlessSteelrod, Blocks.AIR.defaultBlockState(), entity.blockPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.solid()), false, entity.level.random, new Random().nextLong(), 0);
 			break;
 		case 2:
 			BakedModel hslaSteelrod = Minecraft.getInstance().getModelManager().getModel(electrodynamics.client.ClientRegister.MODEL_RODHSLASTEEL);
-			Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateWithoutAO(entity.level, hslaSteelrod,
-					Blocks.AIR.defaultBlockState(), entity.blockPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.solid()), false,
-					entity.level.random, new Random().nextLong(), 0);
+			Minecraft.getInstance().getBlockRenderer().getModelRenderer().tesselateWithoutAO(entity.level, hslaSteelrod, Blocks.AIR.defaultBlockState(), entity.blockPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.solid()), false, entity.level.random, new Random().nextLong(), 0);
 			break;
 		default:
 			break;

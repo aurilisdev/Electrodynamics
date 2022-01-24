@@ -29,22 +29,19 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts,
-			double experience) {
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
 		super(recipeID, itemBiproducts, experience);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID,
-			double experience) {
+	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts,
-			ProbableFluid[] fluidBiproducts, double experience) {
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
 		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
@@ -52,8 +49,7 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(),
-				((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
+		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
 		if (pair.getSecond()) {
 			setItemArrangement(pr.getProcessorNumber(), pair.getFirst());
 			return true;

@@ -73,9 +73,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 			}
 
-			list.add(new TranslatableComponent("gui.genericcharger.chargeperc",
-					new TextComponent(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY));
+			list.add(new TranslatableComponent("gui.genericcharger.chargeperc", new TextComponent(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
 			if (chargeCapable < 33) {
 				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.RED));
@@ -90,8 +88,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	}
 
 	private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
-		return new TranslatableComponent("gui.genericcharger.chargecapable",
-				new TextComponent(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
+		return new TranslatableComponent("gui.genericcharger.chargecapable", new TextComponent(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 }

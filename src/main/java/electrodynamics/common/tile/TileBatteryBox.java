@@ -40,8 +40,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	protected CachedTileOutput output;
 
 	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition,
-				blockState);
+		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
 	}
 
 	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {
@@ -52,11 +51,9 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		receiveLimitLeft = output * currentCapacityMultiplier;
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
-				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentInventory(this).size(4));
-		addComponent(new ComponentContainerProvider("container.batterybox")
-				.createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider("container.batterybox").createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 	}
 
@@ -71,10 +68,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		}
 		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtils
-					.receivePower(output.getSafe(), facing, TransferPack
-							.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false)
-					.getJoules());
+			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false).getJoules());
 		}
 		currentCapacityMultiplier = 1;
 		currentVoltageMultiplier = 1;
@@ -128,15 +122,13 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
-		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
-				.receivePower(TransferPack.joulesVoltage(maxReceive, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
+		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).receivePower(TransferPack.joulesVoltage(maxReceive, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
 		return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 	}
 
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
-		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
-				.extractPower(TransferPack.joulesVoltage(maxExtract, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
+		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).extractPower(TransferPack.joulesVoltage(maxExtract, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
 		return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
 	}
 

@@ -33,10 +33,8 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
 		ItemStack ownerItem = menu.getOwnerItem();
-		Location blockLoc = ownerItem.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).map(m -> m.getLocation(0))
-				.orElse(new Location(0, 0, 0));
-		Location playerLoc = ownerItem.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).map(m -> m.getLocation(1))
-				.orElse(new Location(0, 0, 0));
+		Location blockLoc = ownerItem.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).map(m -> m.getLocation(0)).orElse(new Location(0, 0, 0));
+		Location playerLoc = ownerItem.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).map(m -> m.getLocation(1)).orElse(new Location(0, 0, 0));
 		font.draw(stack, new TranslatableComponent("gui.seismicscanner.material"), 15, 32, 4210752);
 		font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
 		if (blockLoc.equals(playerLoc)) {
@@ -54,16 +52,9 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		ItemStack ownerItem = menu.getOwnerItem();
 		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
-			list.add(new TranslatableComponent("gui.machine.usage",
-					new TextComponent(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, DisplayUnit.WATT))
-							.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.voltage",
-					new TextComponent(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.stored",
-					new TextComponent(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / "
-							+ ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES))
-									.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.usage", new TextComponent(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.voltage", new TextComponent(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(new TranslatableComponent("gui.machine.stored", new TextComponent(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}

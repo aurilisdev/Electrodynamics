@@ -37,8 +37,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 		BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
 		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
 			if (!level.isClientSide) {
-				level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(),
-						4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
+				level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
 			}
 			remove(Entity.RemovalReason.DISCARDED);
 		}

@@ -67,8 +67,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	public final SubtypeWire wire;
 
 	public BlockWire(SubtypeWire wire) {
-		super(Properties.of(wire.insulated ? Material.WOOL : Material.METAL).sound(wire.insulated ? SoundType.WOOL : SoundType.METAL).strength(0.15f)
-				.dynamicShape());
+		super(Properties.of(wire.insulated ? Material.WOOL : Material.METAL).sound(wire.insulated ? SoundType.WOOL : SoundType.METAL).strength(0.15f).dynamicShape());
 		this.wire = wire;
 		double w = wire.insulated ? wire.highlyinsulated ? 3 : 2 : 1;
 		double sm = 8 - w;
@@ -86,8 +85,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST, EnumConnectType.SOUTH,
-				EnumConnectType.WEST);
+		builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST, EnumConnectType.SOUTH, EnumConnectType.WEST);
 	}
 
 	@Override
@@ -166,10 +164,8 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 		TileWire tile = (TileWire) worldIn.getBlockEntity(pos);
 		if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
-			if (!(tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0
-					|| tile.getNetwork().getActiveVoltage() <= 960.0 && wire.insulated && wire.highlyinsulated)) {
-				ElectricityUtils.electrecuteEntity(entityIn,
-						TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
+			if (!(tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0 || tile.getNetwork().getActiveVoltage() <= 960.0 && wire.insulated && wire.highlyinsulated)) {
+				ElectricityUtils.electrecuteEntity(entityIn, TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
 			}
 		}
 	}
@@ -208,8 +204,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos,
-			BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -237,18 +232,12 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 
 	@Override
 	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return wire.insulated
-				? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0
-						: 150
-				: 0;
+		return wire.insulated ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 150 : 0;
 	}
 
 	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return wire.insulated
-				? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0
-						: 400
-				: 0;
+		return wire.insulated ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 400 : 0;
 	}
 
 	@Override
@@ -265,8 +254,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlock(pos,
-				DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
+		Scheduler.schedule(5, () -> world.setBlock(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
 	}
 
 	@Override

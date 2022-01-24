@@ -28,22 +28,19 @@ public abstract class Fluid2FluidRecipe extends AbstractFluidRecipe {
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts,
-			double experience) {
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, double experience) {
 		super(recipeID, itemBiproducts, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID,
-			double experience) {
+	protected Fluid2FluidRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
 	}
 
-	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts,
-			ProbableFluid[] fluidBiproducts, double experience) {
+	protected Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
 		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		inputFluidIngredients = inputFluids;
 		outputFluidStack = outputFluid;
@@ -51,8 +48,7 @@ public abstract class Fluid2FluidRecipe extends AbstractFluidRecipe {
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(),
-				((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
+		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), ((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
 		if (Boolean.TRUE.equals(pair.getSecond())) {
 			setFluidArrangement(pair.getFirst());
 			return true;

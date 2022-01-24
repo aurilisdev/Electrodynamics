@@ -14,16 +14,14 @@ public class ButtonSwappableLabel extends Button {
 
 	private Boolean toggle;
 
-	public ButtonSwappableLabel(int xLoc, int yLoc, int length, int width, Component labelOff, Component labelOn, Supplier<Boolean> initialStatus,
-			OnPress onPressed) {
+	public ButtonSwappableLabel(int xLoc, int yLoc, int length, int width, Component labelOff, Component labelOn, Supplier<Boolean> initialStatus, OnPress onPressed) {
 		super(xLoc, yLoc, length, width, labelOff, onPressed);
 		this.labelOff = labelOff;
 		this.labelOn = labelOn;
 		initialToggleStatus = initialStatus;
 	}
 
-	public ButtonSwappableLabel(int xLoc, int yLoc, int length, int width, Component labelOff, Component labelOn, Supplier<Boolean> initialStatus,
-			OnPress onPressed, OnTooltip tooltip) {
+	public ButtonSwappableLabel(int xLoc, int yLoc, int length, int width, Component labelOff, Component labelOn, Supplier<Boolean> initialStatus, OnPress onPressed, OnTooltip tooltip) {
 		super(xLoc, yLoc, length, width, labelOff, onPressed, tooltip);
 		this.labelOff = labelOff;
 		this.labelOn = labelOn;

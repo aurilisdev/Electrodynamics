@@ -28,8 +28,7 @@ import net.minecraft.world.level.material.Material;
 
 public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
-	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT,
-			Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
+	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
 	private final ElectricItemProperties properties;
 
 	public ItemElectricChainsaw(ElectricItemProperties properties) {
@@ -56,9 +55,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return getJoulesStored(stack) > properties.extract.getJoules()
-				? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state)
-				: 0;
+		return getJoulesStored(stack) > properties.extract.getJoules() ? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state) : 0;
 	}
 
 	@Override
@@ -85,13 +82,8 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY)
-				.append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(
-				new TranslatableComponent("tooltip.item.electric.voltage",
-						ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / "
-								+ ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))
-										.withStyle(ChatFormatting.RED));
+		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
+		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 	}
 
 	@Override

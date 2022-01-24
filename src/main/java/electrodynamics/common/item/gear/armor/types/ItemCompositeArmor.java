@@ -52,15 +52,12 @@ public class ItemCompositeArmor extends ArmorItem {
 			@Override
 			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
 
-				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
-						new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
-						new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
+				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean isBoth = ItemStack.isSameIgnoreDurability(armorPieces.get(0), ARMOR_PIECES[3])
-						&& ItemStack.isSameIgnoreDurability(armorPieces.get(1), ARMOR_PIECES[2]);
+				boolean isBoth = ItemStack.isSameIgnoreDurability(armorPieces.get(0), ARMOR_PIECES[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), ARMOR_PIECES[2]);
 
 				boolean hasChest = ItemStack.isSameIgnoreDurability(armorPieces.get(2), ARMOR_PIECES[1]);
 
@@ -126,8 +123,7 @@ public class ItemCompositeArmor extends ArmorItem {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (EquipmentSlot.CHEST.equals(getSlot())) {
 			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getInt(0) + ""))
-						.withStyle(ChatFormatting.AQUA);
+				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getInt(0) + "")).withStyle(ChatFormatting.AQUA);
 				tooltip.add(tip);
 			});
 		}
@@ -136,15 +132,12 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
-		ItemStack[] pieces = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()),
-				new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()),
-				new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
+		ItemStack[] pieces = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
 
 		List<ItemStack> armorPieces = new ArrayList<>();
 		player.getArmorSlots().forEach(armorPieces::add);
 
-		if (ItemStack.isSame(armorPieces.get(0), pieces[3]) || ItemStack.isSame(armorPieces.get(1), pieces[2])
-				|| ItemStack.isSame(armorPieces.get(2), pieces[1]) || ItemStack.isSame(armorPieces.get(3), pieces[0])) {
+		if (ItemStack.isSame(armorPieces.get(0), pieces[3]) || ItemStack.isSame(armorPieces.get(1), pieces[2]) || ItemStack.isSame(armorPieces.get(2), pieces[1]) || ItemStack.isSame(armorPieces.get(3), pieces[0])) {
 			player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
 		}
 	}

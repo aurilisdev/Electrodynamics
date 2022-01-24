@@ -39,12 +39,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 			output.update();
 		}
 		if (hasHeat && output.valid()) {
-			ElectricityUtils.receivePower(output.getSafe(), Direction.UP,
-					TransferPack.ampsVoltage(
-							Constants.THERMOELECTRICGENERATOR_AMPERAGE
-									* level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getAmount() / 16.0,
-							electro.getVoltage()),
-					false);
+			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE * level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getAmount() / 16.0, electro.getVoltage()), false);
 		}
 	}
 }

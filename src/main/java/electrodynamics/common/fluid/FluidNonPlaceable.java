@@ -93,11 +93,9 @@ public abstract class FluidNonPlaceable extends Fluid {
 	@Override
 	protected FluidAttributes createAttributes() {
 		if (color == 0) {
-			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName))
-					.translationKey("fluid." + modID + "." + fluidName).build(this);
+			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).build(this);
 		}
-		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName))
-				.translationKey("fluid." + modID + "." + fluidName).color(color).build(this);
+		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).color(color).build(this);
 	}
 
 	@Override

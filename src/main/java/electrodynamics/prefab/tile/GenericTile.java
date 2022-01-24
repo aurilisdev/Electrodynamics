@@ -133,8 +133,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 
 	@Override
 	public net.minecraft.network.chat.Component getName() {
-		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName()
-				: new TextComponent(References.ID + ".default.tile.name");
+		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName() : new TextComponent(References.ID + ".default.tile.name");
 	}
 
 	@Override
@@ -182,9 +181,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 	}
 
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
-		return (x, y, i) -> x < i.inputs()
-				|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
-				|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
+		return (x, y, i) -> x < i.inputs() || x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
 	}
 
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator(int[] ints) {
@@ -192,9 +189,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 		for (int i : ints) {
 			list.add(i);
 		}
-		return (x, y, i) -> list.contains(x)
-				|| x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y)
-				|| x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
+		return (x, y, i) -> list.contains(x) || x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
 	}
 
 }

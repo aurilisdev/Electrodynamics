@@ -27,8 +27,7 @@ public class TileCircuitBreaker extends GenericTile {
 	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
-		addComponent(
-				new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
 	}
 
 	protected TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -43,12 +42,10 @@ public class TileCircuitBreaker extends GenericTile {
 			return TransferPack.EMPTY;
 		}
 		locked = true;
-		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(),
-				TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
+		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(), TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 		locked = false;
 		if (returner.getJoules() > 0) {
-			returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY),
-					transfer.getVoltage());
+			returner = TransferPack.joulesVoltage(returner.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
 		}
 		lastTransfer = returner.getJoules();
 		return returner;

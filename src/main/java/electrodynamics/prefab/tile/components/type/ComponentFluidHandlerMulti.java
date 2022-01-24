@@ -180,8 +180,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 
 	@Override
-	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int tanks, boolean isInput, int capacity,
-			IOptionalNamedTag<Fluid>... tags) {
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int tanks, boolean isInput, int capacity, IOptionalNamedTag<Fluid>... tags) {
 
 		List<Fluid> fluids = new ArrayList<>();
 		for (IOptionalNamedTag<Fluid> tag : tags) {

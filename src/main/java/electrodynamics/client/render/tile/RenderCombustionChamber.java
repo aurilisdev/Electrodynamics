@@ -21,8 +21,7 @@ public class RenderCombustionChamber implements BlockEntityRenderer<TileCombusti
 	}
 
 	@Override
-	public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 		FluidStack fuel = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getFluidInTank(0, true);
 		float prog = fuel.getAmount() / (float) TileCombustionChamber.TANK_CAPACITY;

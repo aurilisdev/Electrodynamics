@@ -84,8 +84,7 @@ public class ComponentPacketHandler implements Component {
 		Level world = holder.getLevel();
 		BlockPos pos = holder.getBlockPos();
 		if (world instanceof ServerLevel level) {
-			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
-					.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 		}
 	}
 
@@ -94,8 +93,7 @@ public class ComponentPacketHandler implements Component {
 		Level world = holder.getLevel();
 		BlockPos pos = holder.getBlockPos();
 		if (world instanceof ServerLevel level) {
-			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
-					.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 		}
 	}
 

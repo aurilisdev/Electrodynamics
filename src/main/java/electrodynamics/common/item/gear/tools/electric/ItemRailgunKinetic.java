@@ -46,8 +46,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		if (!worldIn.isClientSide) {
 			ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
 
-			if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && !ammoStack.isEmpty()
-					&& railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
+			if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && !ammoStack.isEmpty() && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
 
 				EntityCustomProjectile projectile = null;
 				int i = 0;

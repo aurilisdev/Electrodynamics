@@ -20,10 +20,7 @@ public class FluidSulfate extends FluidNonPlaceable {
 
 	@Override
 	protected FluidAttributes createAttributes() {
-		return FluidAttributes
-				.builder(new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"),
-						new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"))
-				.translationKey("fluid.electrodynamics.sulfate" + mineral.name()).build(this);
+		return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"), new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate")).translationKey("fluid.electrodynamics.sulfate" + mineral.name()).build(this);
 	}
 
 }

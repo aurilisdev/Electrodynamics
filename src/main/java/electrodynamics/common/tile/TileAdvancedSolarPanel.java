@@ -53,10 +53,8 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo()
-				.valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
-		addComponent(new ComponentContainerProvider("container.advancedsolarpanel")
-				.createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo().valid((slot, stack, i) -> stack.getItem() instanceof ItemUpgrade));
+		addComponent(new ComponentContainerProvider("container.advancedsolarpanel").createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickCommon(ComponentTickable tickable) {
@@ -91,9 +89,7 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 		double mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
 		double temp = level.getBiomeManager().getBiome(getBlockPos()).getBaseTemperature();
 		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
-		return TransferPack.ampsVoltage(
-				getMultiplier() * Constants.ADVANCEDSOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1),
-				this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(getMultiplier() * Constants.ADVANCEDSOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
 
 	@Override

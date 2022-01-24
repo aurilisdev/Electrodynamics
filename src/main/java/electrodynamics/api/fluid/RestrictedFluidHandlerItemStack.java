@@ -18,8 +18,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 	private List<ResourceLocation> tags;
 	private List<Fluid> fluids;
 
-	public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity,
-			Pair<List<ResourceLocation>, List<Fluid>> whitelistedFluids) {
+	public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity, Pair<List<ResourceLocation>, List<Fluid>> whitelistedFluids) {
 		super(container, emptyContainer, capacity);
 		tags = new ArrayList<>();
 		whitelistedFluids.getFirst().forEach(h -> {

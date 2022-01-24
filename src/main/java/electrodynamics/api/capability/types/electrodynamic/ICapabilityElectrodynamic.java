@@ -54,16 +54,14 @@ public interface ICapabilityElectrodynamic {
 			Level world = tile.getLevel();
 			BlockPos pos = tile.getBlockPos();
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
-					BlockInteraction.DESTROY);
+			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
 		} else if (this instanceof ComponentElectrodynamic electro) {
 			BlockEntity tile = electro.getHolder();
 			if (tile != null) {
 				Level world = tile.getLevel();
 				BlockPos pos = tile.getBlockPos();
 				world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-				world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()),
-						BlockInteraction.DESTROY);
+				world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
 			}
 		}
 	}

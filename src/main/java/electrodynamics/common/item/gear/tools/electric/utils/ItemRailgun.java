@@ -35,10 +35,8 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		ItemRailgun railgun = (ItemRailgun) stack.getItem();
-		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railguntemp").withStyle(ChatFormatting.YELLOW)
-				.append(new TextComponent(railgun.getTemperatureStored(stack) + " C")));
-		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railgunmaxtemp").withStyle(ChatFormatting.YELLOW)
-				.append(new TextComponent(overheatTemperature + " C")));
+		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railguntemp").withStyle(ChatFormatting.YELLOW).append(new TextComponent(railgun.getTemperatureStored(stack) + " C")));
+		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railgunmaxtemp").withStyle(ChatFormatting.YELLOW).append(new TextComponent(overheatTemperature + " C")));
 		if (railgun.getTemperatureStored(stack) >= getOverheatTemp()) {
 			tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 		}

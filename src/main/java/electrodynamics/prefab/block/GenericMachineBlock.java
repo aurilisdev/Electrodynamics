@@ -58,8 +58,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING)) && tile instanceof GenericTile generic
-				&& generic.hasComponent(ComponentType.Inventory)) {
+		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING)) && tile instanceof GenericTile generic && generic.hasComponent(ComponentType.Inventory)) {
 			Containers.dropContents(worldIn, pos, generic.<ComponentInventory>getComponent(ComponentType.Inventory));
 		}
 		super.onRemove(state, worldIn, pos, newState, isMoving);
@@ -90,8 +89,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 				// first try to drain the item
 				for (FluidTank tank : handler.getInputTanks()) {
 					FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-					int amtTaken = handler.getValidInputFluids().contains(containedFluid.getFluid()) ? tank.fill(containedFluid, FluidAction.SIMULATE)
-							: 0;
+					int amtTaken = handler.getValidInputFluids().contains(containedFluid.getFluid()) ? tank.fill(containedFluid, FluidAction.SIMULATE) : 0;
 					FluidStack taken = new FluidStack(containedFluid.getFluid(), amtTaken);
 					if (amtTaken == 1000) {
 						CapabilityUtils.drain(stack, taken);

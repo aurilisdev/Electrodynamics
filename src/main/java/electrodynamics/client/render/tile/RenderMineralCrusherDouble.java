@@ -25,8 +25,7 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 	}
 
 	@Override
-	public void render(TileMineralCrusherDouble tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileMineralCrusherDouble tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALCRUSHERDOUBLEBASE);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
@@ -44,8 +43,7 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();
 			double scale = stack.getItem() instanceof BlockItem ? 5.3 : 8.0;
-			matrixStackIn.translate(0.5 + dir.getStepX() / scale - (dir.getStepZ() != 0 ? 0.07 : 0),
-					stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale - (dir.getStepX() != 0 ? 0.07 : 0));
+			matrixStackIn.translate(0.5 + dir.getStepX() / scale - (dir.getStepZ() != 0 ? 0.07 : 0), stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale - (dir.getStepX() != 0 ? 0.07 : 0));
 			matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 			if (!(stack.getItem() instanceof BlockItem)) {
 				matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(90));
@@ -53,8 +51,7 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 				matrixStackIn.scale(0.3f, 0.3f, 0.3f);
 				matrixStackIn.translate(0, -0.5, 0);
 			}
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-					bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
 			matrixStackIn.popPose();
 		}
 		stack = inv.getInputContents().get(1).get(0);
@@ -62,8 +59,7 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();
 			double scale = stack.getItem() instanceof BlockItem ? 5.3 : 8.0;
-			matrixStackIn.translate(0.5 + dir.getStepX() / scale + (dir.getStepZ() != 0 ? 0.07 : 0),
-					stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale + (dir.getStepX() != 0 ? 0.07 : 0));
+			matrixStackIn.translate(0.5 + dir.getStepX() / scale + (dir.getStepZ() != 0 ? 0.07 : 0), stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale + (dir.getStepX() != 0 ? 0.07 : 0));
 			matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 			if (!(stack.getItem() instanceof BlockItem)) {
 				matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(90));
@@ -71,8 +67,7 @@ public class RenderMineralCrusherDouble implements BlockEntityRenderer<TileMiner
 				matrixStackIn.scale(0.3f, 0.3f, 0.3f);
 				matrixStackIn.translate(0, -0.5, 0);
 			}
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn,
-					bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
 			matrixStackIn.popPose();
 		}
 	}

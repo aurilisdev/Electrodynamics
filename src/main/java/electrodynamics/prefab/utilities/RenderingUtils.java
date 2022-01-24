@@ -26,8 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class RenderingUtils {
 
-	public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a,
-			boolean star) {
+	public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a, boolean star) {
 		stack.pushPose();
 		try {
 			float f5 = time / 200.0F;
@@ -46,22 +45,14 @@ public class RenderingUtils {
 				float f3 = random.nextFloat() * 20.0F + 1.0F;
 				float f4 = random.nextFloat() * 2.0F + 1.0F + (star ? 0 : 100);
 				Matrix4f matrix4f = stack.last().pose();
-				vertexconsumer2.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a))
-						.endVertex();
-				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4)
-						.color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
-				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4)
-						.color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
-				vertexconsumer2.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a))
-						.endVertex();
-				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4)
-						.color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
-				vertexconsumer2.vertex(matrix4f, 0.0F, f3, 1.0F * f4).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a))
-						.endVertex();
-				vertexconsumer2.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a))
-						.endVertex();
-				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4)
-						.color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, 0.0F, f3, 1.0F * f4).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
+				vertexconsumer2.vertex(matrix4f, -0.866f * f4, f3, -0.5F * f4).color((int) (255 * r), (int) (255 * g), (int) (255 * b), (int) (255 * a)).endVertex();
 			}
 
 			stack.popPose();
@@ -74,10 +65,8 @@ public class RenderingUtils {
 		stack.popPose();
 	}
 
-	public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer,
-			int combinedLightIn, int combinedOverlayIn) {
-		Minecraft.getInstance().getItemRenderer().render(new ItemStack(type == RenderType.translucent() ? Items.BLACK_STAINED_GLASS : Blocks.STONE),
-				TransformType.NONE, false, stack, buffer, combinedLightIn, combinedOverlayIn, model);
+	public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+		Minecraft.getInstance().getItemRenderer().render(new ItemStack(type == RenderType.translucent() ? Items.BLACK_STAINED_GLASS : Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn, combinedOverlayIn, model);
 	}
 
 	public static void prepareRotationalTileModel(BlockEntity tile, PoseStack stack) {

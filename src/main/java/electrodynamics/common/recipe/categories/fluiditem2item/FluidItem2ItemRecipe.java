@@ -26,32 +26,28 @@ public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 	private FluidIngredient[] fluidIngredients;
 	private ItemStack outputItemStack;
 
-	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput,
-			double experience) {
+	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput, double experience) {
 		super(recipeID, experience);
 		ingredients = itemInputs;
 		fluidIngredients = fluidInputs;
 		outputItemStack = itemOutput;
 	}
 
-	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
-			ProbableItem[] itemBiproducts, double experience) {
+	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, double experience) {
 		super(recipeID, itemBiproducts, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputItemStack = itemOutput;
 	}
 
-	protected FluidItem2ItemRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
-			ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
+	protected FluidItem2ItemRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
 		super(fluidBiproducts, recipeID, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputItemStack = itemOutput;
 	}
 
-	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput,
-			ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
+	protected FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
 		super(recipeID, itemBiproducts, fluidBiproducts, experience);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
@@ -60,11 +56,9 @@ public abstract class FluidItem2ItemRecipe extends AbstractFluidRecipe {
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(),
-				((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
+		Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
 		if (Boolean.TRUE.equals(itemPair.getSecond())) {
-			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(),
-					((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
+			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), ((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
 			if (Boolean.TRUE.equals(fluidPair.getSecond())) {
 				setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
 				setFluidArrangement(fluidPair.getFirst());

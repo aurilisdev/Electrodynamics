@@ -59,8 +59,7 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
 			if (!level.isClientSide) {
 				// Hardness of obsidian
-				if (state.getDestroySpeed(level, p_230299_1_.getBlockPos()) < 50f
-						&& !ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
+				if (state.getDestroySpeed(level, p_230299_1_.getBlockPos()) < 50f && !ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
 					level.removeBlock(p_230299_1_.getBlockPos(), false);
 				}
 				level.playSound(null, p_230299_1_.getBlockPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);

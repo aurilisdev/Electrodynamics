@@ -18,8 +18,7 @@ public class UpgradeCapability implements ICapabilitySerializable<CompoundTag> {
 	private CapabilityDirectionalStorage direction;
 	private CapabilityDoubleStorage doub;
 
-	public UpgradeCapability(CapabilityBooleanStorage bool, CapabilityIntStorage number, CapabilityDirectionalStorage direciton,
-			CapabilityDoubleStorage doub) {
+	public UpgradeCapability(CapabilityBooleanStorage bool, CapabilityIntStorage number, CapabilityDirectionalStorage direciton, CapabilityDoubleStorage doub) {
 		this.bool = bool;
 		this.number = number;
 		direction = direciton;

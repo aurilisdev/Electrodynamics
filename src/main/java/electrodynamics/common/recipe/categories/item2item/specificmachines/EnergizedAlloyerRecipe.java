@@ -20,8 +20,7 @@ public class EnergizedAlloyerRecipe extends Item2ItemRecipe {
 		super(recipeID, inputs, output, experience);
 	}
 
-	public EnergizedAlloyerRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts,
-			double experience) {
+	public EnergizedAlloyerRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
 		super(id, input, output, itemBiproducts, experience);
 	}
 

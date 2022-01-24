@@ -105,12 +105,9 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {
 			return true;
 		}
-		Direction dir = getHolder().hasComponent(ComponentType.Direction)
-				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: null;
+		Direction dir = getHolder().hasComponent(ComponentType.Direction) ? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : null;
 		if (dir != null) {
-			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side))
-					|| relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
+			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side)) || relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
 		}
 		return false;
 	}
@@ -123,23 +120,15 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public int fill(FluidStack resource, FluidAction action) {
-		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: Direction.UP, lastDirection);
-		boolean canFill = inputDirections.contains(lastDirection)
-				|| getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-		return canFill && resource != null && getValidInputFluids().contains(resource.getFluid())
-				? getTankFromFluid(resource.getFluid(), true).fill(resource, action)
-				: 0;
+		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction) ? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : Direction.UP, lastDirection);
+		boolean canFill = inputDirections.contains(lastDirection) || getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
+		return canFill && resource != null && getValidInputFluids().contains(resource.getFluid()) ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
 	}
 
 	@Override
 	public FluidStack drain(FluidStack resource, FluidAction action) {
-		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction)
-				? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: Direction.UP, lastDirection);
-		boolean canDrain = outputDirections.contains(lastDirection)
-				|| getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
+		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction) ? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : Direction.UP, lastDirection);
+		boolean canDrain = outputDirections.contains(lastDirection) || getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
 		return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
 	}
 

@@ -102,8 +102,7 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 				BlockEntity connectedBlockA = connectedTiles[countOne];
 				if (connectedBlockA != null) {
 					if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
-						AbstractNetworkFinder finder = new AbstractNetworkFinder(blockentity.getLevel(), connectedBlockA.getBlockPos(), this,
-								blockentity.getBlockPos());
+						AbstractNetworkFinder finder = new AbstractNetworkFinder(blockentity.getLevel(), connectedBlockA.getBlockPos(), this, blockentity.getBlockPos());
 						List<BlockEntity> partNetwork = finder.exploreNetwork();
 						for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
 							BlockEntity connectedBlockB = connectedTiles[countTwo];

@@ -39,19 +39,11 @@ public class TileElectrolyticSeparator extends GenericTile {
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2)
-				.maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
-		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION)
-				.relativeInput(Direction.SOUTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true,
-						true));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
+		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).relativeInput(Direction.SOUTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true, true));
 		addComponent(new ComponentInventory(this).size(6).bucketInputs(1).bucketOutputs(2).upgrades(3).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).setProcessorNumber(0)
-				.canProcess(component -> component.consumeBucket().dispenseBucket().canProcessFluid2FluidRecipe(component,
-						ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE))
-				.process(component -> component.processFluid2FluidRecipe(component)).usage(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK)
-				.requiredTicks(Constants.ELECTROLYTICSEPARATOR_REQUIRED_TICKS));
-		addComponent(new ComponentContainerProvider("container.electrolyticseparator")
-				.createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.consumeBucket().dispenseBucket().canProcessFluid2FluidRecipe(component, ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE)).process(component -> component.processFluid2FluidRecipe(component)).usage(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK).requiredTicks(Constants.ELECTROLYTICSEPARATOR_REQUIRED_TICKS));
+		addComponent(new ComponentContainerProvider("container.electrolyticseparator").createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tickable) {
@@ -71,9 +63,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 				SoundAPI.playSound(SoundRegister.SOUND_ELECTROLYTICSEPARATOR.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
 			}
 			if (level.random.nextDouble() < 0.15) {
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
-						worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D,
-						0.0D);
+				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
 			clientTicks++;
 		}

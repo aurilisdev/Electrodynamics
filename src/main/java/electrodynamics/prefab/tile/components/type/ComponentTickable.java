@@ -60,8 +60,7 @@ public class ComponentTickable implements Component {
 		if (tickServer != null) {
 			tickServer.accept(this);
 		}
-		if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory)
-				&& !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
+		if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) && !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
 			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
 	}

@@ -19,8 +19,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 	}
 
 	@Override
-	public void render(EntityEnergyBlast entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-			int packedLightIn) {
+	public void render(EntityEnergyBlast entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(entityIn.getX(), entityIn.getY(), entityIn.getX());
 		matrixStackIn.mulPoseMatrix(matrixStackIn.last().pose());
@@ -28,8 +27,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		float scale = 0.015f * ((entityIn.tickCount + partialTicks) / 5.0f);
 		matrixStackIn.scale(scale, scale, scale);
-		RenderingUtils.renderStar(matrixStackIn, bufferIn, entityIn.tickCount + partialTicks, 100, 0.62f, 0.19f, 0.63f,
-				0.3f / ((entityIn.tickCount + partialTicks) / 40.0f + 1), true);
+		RenderingUtils.renderStar(matrixStackIn, bufferIn, entityIn.tickCount + partialTicks, 100, 0.62f, 0.19f, 0.63f, 0.3f / ((entityIn.tickCount + partialTicks) / 40.0f + 1), true);
 		matrixStackIn.popPose();
 	}
 

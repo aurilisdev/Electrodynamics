@@ -23,8 +23,7 @@ public class RenderChargerGeneric implements BlockEntityRenderer<GenericTileChar
 	}
 
 	@Override
-	public void render(GenericTileCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
-			int combinedOverlayIn) {
+	public void render(GenericTileCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);
 		ItemStack chargingItem = inv.getItem(0);
@@ -82,8 +81,7 @@ public class RenderChargerGeneric implements BlockEntityRenderer<GenericTileChar
 				default:
 				}
 			}
-			Minecraft.getInstance().getItemRenderer().renderStatic(chargingItem, TransformType.NONE, combinedLightIn, combinedOverlayIn,
-					matrixStackIn, bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(chargingItem, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
 			matrixStackIn.popPose();
 		}
 

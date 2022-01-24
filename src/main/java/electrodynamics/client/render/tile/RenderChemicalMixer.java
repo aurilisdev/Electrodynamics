@@ -23,8 +23,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 	}
 
 	@Override
-	public void render(TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
-			int combinedOverlayIn) {
+	public void render(TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
 		matrixStackIn.pushPose();
@@ -36,10 +35,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.pushPose();
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
-		matrixStackIn.mulPose(new Quaternion(0,
-				(tileEntityIn.clientTicks
-						+ (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10,
-				0, true));
+		matrixStackIn.mulPose(new Quaternion(0, (tileEntityIn.clientTicks + (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 
@@ -48,8 +44,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.translate(0.5, 0.2, 0.5);
 		ComponentFluidHandlerMulti multi = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler);
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
-		float prog = (multi.getTankFromFluid(Fluids.WATER, true).getFluidAmount()
-				+ multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount()) / (float) TileChemicalMixer.MAX_TANK_CAPACITY;
+		float prog = (multi.getTankFromFluid(Fluids.WATER, true).getFluidAmount() + multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount()) / (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f, 1);
 			matrixStackIn.translate(0, prog / 8.0, 0);

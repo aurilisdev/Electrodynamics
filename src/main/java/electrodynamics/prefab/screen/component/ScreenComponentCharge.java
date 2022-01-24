@@ -35,8 +35,7 @@ public class ScreenComponentCharge extends ScreenComponent {
 
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW, POSYARROW, WIDTHARROW, HEIGHTARROW);
 
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW,
-				(int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
+		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, POSXARROW + WIDTHARROW, POSYARROW, (int) (progressInfoHandler.getAsDouble() * WIDTHARROW), HEIGHTARROW);
 	}
 
 }
