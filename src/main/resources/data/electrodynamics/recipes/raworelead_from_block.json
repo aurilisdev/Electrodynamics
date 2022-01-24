@@ -2,11 +2,11 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "electrodynamics:raworeblocktin"
+			"item": "electrodynamics:raworeblocklead"
 		}
 	],
 	"result": {
-		"item": "electrodynamics:raworetin",
+		"item": "electrodynamics:raworelead",
 		"count": 9
 	}
 }
