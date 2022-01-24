@@ -3,7 +3,11 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeGear implements ISubtype {
-	iron, copper, tin, steel, bronze;
+	iron,
+	copper,
+	tin,
+	steel,
+	bronze;
 
 	@Override
 	public String tag() {

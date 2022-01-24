@@ -3,7 +3,16 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeImpureDust implements ISubtype {
-	iron, gold, copper, tin, silver, lead, vanadium, lithium, molybdenum, netherite;
+	iron,
+	gold,
+	copper,
+	tin,
+	silver,
+	lead,
+	vanadium,
+	lithium,
+	molybdenum,
+	netherite;
 
 	@Override
 	public String tag() {

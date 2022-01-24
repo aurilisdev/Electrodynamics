@@ -33,16 +33,19 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(2.25, 3));
 			box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 2);
 		}
-	}, 2), basicspeed((holder, processor, upgrade) -> {
+	}, 2),
+	basicspeed((holder, processor, upgrade) -> {
 		if (processor != null) {
 			processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(2.25, 3));
 		}
-	}, 3), advancedcapacity((holder, processor, upgrade) -> {
+	}, 3),
+	advancedcapacity((holder, processor, upgrade) -> {
 		if (holder instanceof TileBatteryBox box) {
 			box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 2.25, Math.pow(2.25, 3));
 			box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 4);
 		}
-	}, 4), advancedspeed((holder, processor, upgrade) -> {
+	}, 4),
+	advancedspeed((holder, processor, upgrade) -> {
 		if (processor != null) {
 			processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
 		}

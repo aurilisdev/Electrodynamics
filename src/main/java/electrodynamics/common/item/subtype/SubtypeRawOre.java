@@ -3,7 +3,9 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeRawOre implements ISubtype {
-	silver, lead, tin;
+	silver,
+	lead,
+	tin;
 
 	@Override
 	public String tag() {

@@ -146,6 +146,10 @@ public final class Location {
 		return Math.sqrt(distanceSq(loc));
 	}
 
+	public double distancelinear(Location loc) {
+		return Math.abs(x - loc.x) + Math.abs(y - loc.y) + Math.abs(z - loc.z);
+	}
+
 	public BlockPos toBlockPos() {
 		return new BlockPos(x, y, z);
 	}

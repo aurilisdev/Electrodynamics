@@ -3,7 +3,10 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeCeramic implements ISubtype {
-	wet, cooked, plate, fuse;
+	wet,
+	cooked,
+	plate,
+	fuse;
 
 	@Override
 	public String tag() {

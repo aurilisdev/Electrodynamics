@@ -3,7 +3,14 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeNugget implements ISubtype {
-	tin, copper, silver, superconductive, steel, stainlesssteel, hslasteel, titaniumcarbide;
+	tin,
+	copper,
+	silver,
+	superconductive,
+	steel,
+	stainlesssteel,
+	hslasteel,
+	titaniumcarbide;
 
 	@Override
 	public String tag() {

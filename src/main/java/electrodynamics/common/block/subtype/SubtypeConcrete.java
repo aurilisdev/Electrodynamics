@@ -3,7 +3,9 @@ package electrodynamics.common.block.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeConcrete implements ISubtype {
-	regular, tile, bricks;
+	regular,
+	tile,
+	bricks;
 
 	@Override
 	public String tag() {

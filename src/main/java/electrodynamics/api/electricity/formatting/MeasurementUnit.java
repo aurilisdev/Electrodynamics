@@ -1,7 +1,10 @@
 package electrodynamics.api.electricity.formatting;
 
 public enum MeasurementUnit {
-	MICRO("Micro", "mi", 1.0E-6D), MILLI("Milli", "m", 0.001D), KILO("Kilo", "k", 1000.0D), MEGA("Mega", "M", 1000000.0D);
+	MICRO("Micro", "mi", 1.0E-6D),
+	MILLI("Milli", "m", 0.001D),
+	KILO("Kilo", "k", 1000.0D),
+	MEGA("Mega", "M", 1000000.0D);
 
 	protected double value;
 

@@ -3,7 +3,10 @@ package electrodynamics.common.item.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeCircuit implements ISubtype {
-	basic, advanced, elite, ultimate;
+	basic,
+	advanced,
+	elite,
+	ultimate;
 
 	@Override
 	public String tag() {

@@ -3,7 +3,9 @@ package electrodynamics.common.block.subtype;
 import electrodynamics.api.ISubtype;
 
 public enum SubtypeRawOreBlock implements ISubtype {
-	tin, lead, silver;
+	tin,
+	lead,
+	silver;
 
 	@Override
 	public String tag() {
