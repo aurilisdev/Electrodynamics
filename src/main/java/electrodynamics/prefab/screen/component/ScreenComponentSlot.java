@@ -42,6 +42,10 @@ public class ScreenComponentSlot extends ScreenComponent {
 		this.tooltip = tooltip;
 	}
 
+	public void tooltip(TextSupplier tooltip) {
+		this.tooltip = tooltip;
+	}
+
 	@Override
 	public Rectangle getBounds(final int guiWidth, final int guiHeight) {
 		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, type.getWidth(), type.getHeight());
