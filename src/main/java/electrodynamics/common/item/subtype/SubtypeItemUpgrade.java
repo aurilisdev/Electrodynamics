@@ -105,15 +105,18 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			}
 			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, h.getInt(0) + 1));
 		}
-	}, 1), improvedsolarcell((holder, processor, upgrade) -> {
+	}, 1),
+	improvedsolarcell((holder, processor, upgrade) -> {
 		if (holder instanceof IElectricGenerator generator && (holder instanceof TileSolarPanel || holder instanceof TileAdvancedSolarPanel)) {
 			generator.setMultiplier(2.25);
 		}
-	}, 1), stator((holder, processor, upgrade) -> {
+	}, 1),
+	stator((holder, processor, upgrade) -> {
 		if (holder instanceof IElectricGenerator generator && (holder instanceof TileWindmill || holder instanceof TileHydroelectricGenerator)) {
 			generator.setMultiplier(2.25);
 		}
-	}, 1), range((holder, processor, upgrade) -> {
+	}, 1),
+	range((holder, processor, upgrade) -> {
 		/* it does nothing; the count determines the new range */}, 12),
 	experience((holder, processor, upgrade) -> {
 		/* the machine handles adding the experience */}, 1);

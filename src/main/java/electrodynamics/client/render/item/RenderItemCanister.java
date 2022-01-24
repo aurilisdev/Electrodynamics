@@ -52,11 +52,9 @@
 //
 //public class RenderItemCanister implements IModelGeometry<RenderItemCanister> {
 //
-//    // TODO possible rework?
 //    private static final float NORTH_Z_COVER = 7.496f / 16f;
 //    private static final float SOUTH_Z_COVER = 8.504f / 16f;
 //
-//    // TODO rework for texture
 //    private static final float NORTH_Z_FLUID = 7.498f / 16f;
 //    private static final float SOUTH_Z_FLUID = 8.502f / 16f;
 //

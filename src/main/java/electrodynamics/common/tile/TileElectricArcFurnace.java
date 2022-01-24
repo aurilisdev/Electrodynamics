@@ -101,7 +101,6 @@ public class TileElectricArcFurnace extends GenericTile {
 				} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple)) {
 					level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 				}
-				// TODO: This system should probably change to blockstate properties
 				timeSinceChange = 0;
 			}
 			ComponentInventory inv = getComponent(ComponentType.Inventory);
@@ -134,7 +133,6 @@ public class TileElectricArcFurnace extends GenericTile {
 			} else if (bl == DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriplerunning)) {
 				level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnacetriple).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}
-			// TODO: This system should probably change to blockstate properties
 		}
 
 		return false;
