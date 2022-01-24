@@ -201,8 +201,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		for (BlockEntity tile : acceptorSet) {
 			if (acceptorInputMap.containsKey(tile)) {
 				for (Direction connection : acceptorInputMap.get(tile)) {
-					TransferPack pack = ElectricityUtils.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
-							true);
+					TransferPack pack = ElectricityUtils.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage), true);
 					if (pack.getJoules() != 0) {
 						maxTransferBuffer += pack.getJoules();
 						break;
