@@ -20,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -558,7 +559,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return false;
 	}
 
-	public static void addItemsToInventory(ComponentInventory inv, List<ItemStack> items, int start, int count) {
+	public static void addItemsToInventory(Container inv, List<ItemStack> items, int start, int count) { // TODO: Use InventoryUtils.addItemsToInventory instead
 		for (ItemStack item : items) {
 			for (int i = start; i < count; i++) {
 				ItemStack contained = inv.getItem(i);
