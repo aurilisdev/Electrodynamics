@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -15,6 +16,8 @@ import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -32,19 +35,33 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
+		
 		ItemStack ownerItem = menu.getOwnerItem();
-		Location blockLoc = ownerItem.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).map(m -> m.getLocation(0)).orElse(new Location(0, 0, 0));
-		Location playerLoc = ownerItem.getCapability(ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY).map(m -> m.getLocation(1)).orElse(new Location(0, 0, 0));
-		font.draw(stack, new TranslatableComponent("gui.seismicscanner.material"), 15, 32, 4210752);
-		font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
-		if (blockLoc.equals(playerLoc)) {
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.xcoordna", blockLoc.intX()), 95, 35, 4210752);
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoordna", blockLoc.intY()), 95, 45, 4210752);
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoordna", blockLoc.intZ()), 95, 55, 4210752);
+		
+		if(ownerItem.hasTag()) {
+			CompoundTag blockPos = ownerItem.getTagElement("scanloc");
+			CompoundTag playerPos = ownerItem.getTagElement("onloc");
+			
+			font.draw(stack, new TranslatableComponent("gui.seismicscanner.material"), 15, 32, 4210752);
+			font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
+			
+			if(blockPos != null && playerPos != null) {
+				
+				Location blockLoc = new Location(blockPos.getInt("x"), blockPos.getInt("y"), blockPos.getInt("z"));
+				Location playerLoc = new Location(playerPos.getInt("x"), playerPos.getInt("y"), playerPos.getInt("z"));
+				
+				if(blockLoc.equals(playerLoc)) {
+					drawNotFound(stack);
+				} else {
+					font.draw(stack, new TranslatableComponent("gui.seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
+					font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
+					font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
+				}
+			} else {
+				drawNotFound(stack);
+			}
 		} else {
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
+			drawNotFound(stack);
 		}
 	}
 
@@ -57,6 +74,12 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 			list.add(new TranslatableComponent("gui.machine.stored", new TextComponent(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
+	}
+	
+	private void drawNotFound(PoseStack stack) {
+		font.draw(stack, new TranslatableComponent("gui.seismicscanner.xcoordna"), 95, 35, 4210752);
+		font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoordna"), 95, 45, 4210752);
+		font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoordna"), 95, 55, 4210752);
 	}
 
 }
