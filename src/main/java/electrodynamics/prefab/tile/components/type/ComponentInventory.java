@@ -296,7 +296,9 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public void setChanged() {
 		holder.setChanged();
-		onChanged.accept(this);
+		if (onChanged != null) {
+			onChanged.accept(this);
+		}
 	}
 
 	public ComponentInventory inputs(int par) {

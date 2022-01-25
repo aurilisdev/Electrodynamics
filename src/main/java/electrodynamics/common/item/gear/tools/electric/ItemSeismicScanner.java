@@ -109,7 +109,7 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(final Level world, Player player, InteractionHand hand) {
-		if(!world.isClientSide) {
+		if (!world.isClientSide) {
 			ItemStack scanner = player.getItemInHand(hand);
 			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
 			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
@@ -131,7 +131,7 @@ public class ItemSeismicScanner extends ItemElectric {
 					CompoundTag onLoc = scanner.getOrCreateTagElement("onloc");
 					writePosToTag(scanLoc, blockPos);
 					writePosToTag(onLoc, playerPos);
-					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos), ((ServerPlayer)player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 				}
 			} else {
 				player.openMenu(getMenuProvider(world, player, scanner));
@@ -170,7 +170,7 @@ public class ItemSeismicScanner extends ItemElectric {
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	private void writePosToTag(CompoundTag tag, BlockPos pos) {
 		tag.remove("x");
 		tag.remove("y");
