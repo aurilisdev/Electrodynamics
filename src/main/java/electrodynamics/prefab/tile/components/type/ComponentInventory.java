@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -64,6 +66,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	private int processors = 0;
 	private int processorInputs = 0;
+	private Consumer<ComponentInventory> onChanged;
 
 	public ComponentInventory(GenericTile holder) {
 		holder(holder);
@@ -74,6 +77,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).guiPacketReader(this::loadNBT).guiPacketWriter(this::saveNBT);
 		}
 		shouldSendInfo = true;
+		return this;
+	}
+
+	public ComponentInventory onChanged(Consumer<ComponentInventory> onChanged) {
+		this.onChanged = onChanged;
 		return this;
 	}
 
@@ -240,7 +248,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		}
 		return directionMappings.get(side) == null ? SLOTS_EMPTY : directionMappings.get(side).stream().mapToInt(i -> i).toArray();
-
 	}
 
 	@Override
@@ -289,6 +296,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public void setChanged() {
 		holder.setChanged();
+		onChanged.accept(this);
 	}
 
 	public ComponentInventory inputs(int par) {
@@ -551,7 +559,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return false;
 	}
 
-	public static void addItemsToInventory(ComponentInventory inv, List<ItemStack> items, int start, int count) {
+	public static void addItemsToInventory(Container inv, List<ItemStack> items, int start, int count) { // TODO: Use InventoryUtils.addItemsToInventory instead
 		for (ItemStack item : items) {
 			for (int i = start; i < count; i++) {
 				ItemStack contained = inv.getItem(i);
