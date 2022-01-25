@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -20,7 +19,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -511,7 +509,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 				break;
 			}
 		}
-		if (getItemBiContents().size() > 0) {
+		if (!getItemBiContents().isEmpty()) {
 			for (ItemStack stack : getItemBiContents()) {
 				if (stack.isEmpty()) {
 					biproduct = true;
@@ -559,25 +557,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			}
 		}
 		return false;
-	}
-
-	public static void addItemsToInventory(Container inv, List<ItemStack> items, int start, int count) { // TODO: Use InventoryUtils.addItemsToInventory instead
-		for (ItemStack item : items) {
-			for (int i = start; i < count; i++) {
-				ItemStack contained = inv.getItem(i);
-				int room = inv.getMaxStackSize() - contained.getCount();
-				int amtAccepted = room >= item.getCount() ? item.getCount() : room;
-				if (contained.isEmpty()) {
-					inv.setItem(i, new ItemStack(item.getItem(), amtAccepted).copy());
-					item.shrink(amtAccepted);
-					inv.setChanged();
-				} else if (ItemUtils.testItems(item.getItem(), contained.getItem())) {
-					contained.grow(amtAccepted);
-					item.shrink(amtAccepted);
-					inv.setChanged();
-				}
-			}
-		}
 	}
 
 }

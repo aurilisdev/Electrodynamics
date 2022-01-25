@@ -11,12 +11,12 @@ import net.minecraftforge.items.IItemHandler;
 public class InventoryUtils {
 	public static void addItemsToInventory(Container inv, List<ItemStack> items, int start, int count) {
 		for (ItemStack item : items) {
-			for (int i = start; i < count; i++) {
-				ItemStack contained = inv.getItem(i);
+			for (int index = 0; index < start + count; index++) {
+				ItemStack contained = inv.getItem(index);
 				int room = inv.getMaxStackSize() - contained.getCount();
 				int amtAccepted = room >= item.getCount() ? item.getCount() : room;
 				if (contained.isEmpty()) {
-					inv.setItem(i, new ItemStack(item.getItem(), amtAccepted).copy());
+					inv.setItem(index, new ItemStack(item.getItem(), amtAccepted).copy());
 					item.shrink(amtAccepted);
 					inv.setChanged();
 				} else if (ItemUtils.testItems(item.getItem(), contained.getItem())) {
