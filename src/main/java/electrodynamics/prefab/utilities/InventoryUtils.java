@@ -28,8 +28,8 @@ public class InventoryUtils {
 		}
 	}
 
-	public static void addItemsToItemHandler(IItemHandler inv, List<ItemStack> items) {
-		addItemsToItemHandler(inv, items, 0, inv.getSlots());
+	public static List<ItemStack> addItemsToItemHandler(IItemHandler inv, List<ItemStack> items) {
+		return addItemsToItemHandler(inv, items, 0, inv.getSlots());
 	}
 
 	public static List<ItemStack> addItemsToItemHandler(IItemHandler inv, List<ItemStack> items, int start, int count) {

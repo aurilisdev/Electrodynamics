@@ -80,6 +80,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 
 	@Override
 	public void load(CompoundTag compound) {
+		super.load(compound);
 		for (Component component : components) {
 			if (component != null) {
 				component.holder(this);

@@ -131,6 +131,9 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 
 	@Override
 	public TransferPack getProduced() {
+		if (level.isClientSide) {
+			return TransferPack.ampsVoltage(multiplier * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((clientHeat - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		}
 		return TransferPack.ampsVoltage(multiplier * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
@@ -138,6 +141,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		nbt.putDouble("clientHeat", heat.get());
 		nbt.putDouble("clientBurnTime", burnTime);
 		nbt.putInt("clientMaxBurn", maxBurnTime);
+		nbt.putDouble("multiplier", multiplier);
 
 	}
 
@@ -145,6 +149,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		clientHeat = nbt.getDouble("clientHeat");
 		clientBurnTime = nbt.getDouble("clientBurnTime");
 		clientMaxBurnTime = nbt.getInt("clientMaxBurn");
+		multiplier = nbt.getDouble("multiplier");
 	}
 
 	@Override
