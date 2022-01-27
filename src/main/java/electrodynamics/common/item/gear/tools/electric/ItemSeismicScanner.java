@@ -65,12 +65,7 @@ public class ItemSeismicScanner extends ItemElectric {
 		super.appendHoverText(stack, world, tooltips, flag);
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.use"));
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
-		boolean onCooldown = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
-			if (m.getInt(0) > 0) {
-				return true;
-			}
-			return false;
-		}).orElse(false);
+		boolean onCooldown = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0) > 0).orElse(false);
 		if (onCooldown) {
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
 		} else {
@@ -112,12 +107,7 @@ public class ItemSeismicScanner extends ItemElectric {
 		if (!world.isClientSide) {
 			ItemStack scanner = player.getItemInHand(hand);
 			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
-			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
-				if (m.getInt(0) <= 0) {
-					return true;
-				}
-				return false;
-			}).orElse(false);
+			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0) <= 0).orElse(false);
 			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
 			ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
 			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
@@ -171,7 +161,7 @@ public class ItemSeismicScanner extends ItemElectric {
 		return slotChanged;
 	}
 
-	private void writePosToTag(CompoundTag tag, BlockPos pos) {
+	private static void writePosToTag(CompoundTag tag, BlockPos pos) {
 		tag.remove("x");
 		tag.remove("y");
 		tag.remove("z");
