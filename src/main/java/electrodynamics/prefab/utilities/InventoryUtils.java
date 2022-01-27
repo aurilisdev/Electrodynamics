@@ -11,7 +11,7 @@ import net.minecraftforge.items.IItemHandler;
 public class InventoryUtils {
 	public static void addItemsToInventory(Container inv, List<ItemStack> items, int start, int count) {
 		for (ItemStack item : items) {
-			for (int i = start; i < count; i++) {
+			for (int i = start; i < count + start; i++) {
 				ItemStack contained = inv.getItem(i);
 				int room = inv.getMaxStackSize() - contained.getCount();
 				int amtAccepted = room >= item.getCount() ? item.getCount() : room;
