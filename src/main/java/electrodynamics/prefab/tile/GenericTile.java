@@ -176,11 +176,6 @@ public class GenericTile extends BlockEntity implements Nameable {
 		return array;
 	}
 
-	@Override
-	public BlockPos getBlockPos() {
-		return worldPosition;
-	}
-
 	public boolean isPoweredByRedstone() {
 		return level.getDirectSignalTo(worldPosition) > 0;
 	}
