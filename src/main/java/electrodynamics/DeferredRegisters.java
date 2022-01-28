@@ -15,6 +15,7 @@ import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.BlockResource;
+import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
@@ -142,6 +143,7 @@ import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
+import electrodynamics.common.tile.TileSeismicMarker;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTankHSLA;
 import electrodynamics.common.tile.TileTankReinforced;
@@ -186,6 +188,7 @@ public class DeferredRegisters {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
 	public static BlockMultiSubnode multi = new BlockMultiSubnode();
+	public static BlockSeismicMarker blockSeismicMarker;
 	// liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
@@ -227,6 +230,7 @@ public class DeferredRegisters {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
 		BLOCKS.register("multisubnode", supplier(multi));
+		BLOCKS.register("seismicmarker" , supplier(blockSeismicMarker = new BlockSeismicMarker()));
 		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
@@ -292,7 +296,8 @@ public class DeferredRegisters {
 		ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("concretemix", supplier(new ItemDescriptable(new Item.Properties().stacksTo(64).tab(References.CORETAB), "tooltip.info.concretejoke")));
-
+		ITEMS.register("seismicmarker", supplier(new BlockItemDescriptable(blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
+		
 		// machines
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble), "|translate|tooltip.machine.voltage.240");
@@ -344,6 +349,7 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
+		BlockItemDescriptable.addDescription(blockSeismicMarker, "|translate|tooltip.seismicmarker.redstone");
 
 	}
 
@@ -455,6 +461,7 @@ public class DeferredRegisters {
 
 	public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
 	public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(), () -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
+	public static final RegistryObject<BlockEntityType<TileSeismicMarker>> TILE_SEISMICMARKER = TILES.register("seismicmarker", () -> new BlockEntityType<>(TileSeismicMarker::new, Sets.newHashSet(blockSeismicMarker), null));
 //	public static final RegistryObject<BlockEntityType<TileSeismicScanner>> TILE_SEISMICSCANNER = TILES
 //			.register(SubtypeMachine.seismicscannermachine.tag(), () -> new BlockEntityType<>(TileSeismicScanner::new,
 //					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicscannermachine)), null));

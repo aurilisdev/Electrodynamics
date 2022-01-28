@@ -296,6 +296,7 @@
   "block.electrodynamics.pipesteel" : "Steel Pipe",
   "block.electrodynamics.multisubnode" : "Multiblock Subnode",
   "block.electrodynamics.energizedalloyer" : "Energized Alloyer",
+  "block.electrodynamics.seismicmarker" : "Seismic Marker",
   "container.coalgenerator" : "Coal Generator",
   "container.electricfurnace0" : "Electric Furnace",
   "container.electricfurnace1" : "Smelting Factory",

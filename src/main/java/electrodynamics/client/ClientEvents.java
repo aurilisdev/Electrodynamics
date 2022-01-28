@@ -1,7 +1,9 @@
 package electrodynamics.client;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,6 +15,7 @@ import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketNightVisionGoggles;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -87,6 +90,8 @@ public class ClientEvents {
 	}
 
 	private static HashSet<Pair<Long, BlockPos>> blocks = new HashSet<>();
+	
+	public static HashMap<BlockPos, List<AABB>> markerLines = new HashMap<>();
 
 	@SubscribeEvent
 	public static void renderSelectedBlocks(RenderLevelLastEvent event) {
@@ -107,6 +112,14 @@ public class ClientEvents {
 			}
 		}
 		buffer.endBatch(RenderType.LINES);
+		markerLines.forEach((pos, list) -> {
+			list.forEach(aabb -> {
+				matrix.pushPose();
+				matrix.translate(-camera.x, -camera.y, -camera.z);
+				RenderingUtils.renderFilledBox(aabb, 1.0F, 1.0F, 1.0F, 1.0F);
+				matrix.popPose();
+			});
+		});
 	}
 
 	public static void addRenderLocation(BlockPos pos) {

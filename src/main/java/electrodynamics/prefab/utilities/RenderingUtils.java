@@ -3,14 +3,20 @@ package electrodynamics.prefab.utilities;
 import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.prefab.block.GenericEntityBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,6 +29,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RenderingUtils {
 
@@ -82,6 +91,20 @@ public class RenderingUtils {
 				stack.mulPose(new Quaternion(0, 180, 0, true));
 			}
 		}
+	}
+	
+	public static void renderFilledBox(PoseStack stack, VertexConsumer consumer, AABB box, float r, float g, float b, float a) {
+		VoxelShape rendered = Shapes.create(box);
+		LevelRenderer.renderVoxelShape(stack, consumer, rendered, a, a, a, r, g, b, a);
+	}
+	
+	public static void renderFilledBox(PoseStack stack, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float r, float g, float b, float a) {
+		Tesselator tesselator = Tesselator.getInstance();
+	    BufferBuilder bufferbuilder = tesselator.getBuilder();
+	    RenderSystem.setShader(GameRenderer::getPositionColorShader);
+	    bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+	    LevelRenderer.addChainedFilledBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY, maxZ, r, g, b, a);
+	    tesselator.end();
 	}
 
 	public static void bindTexture(ResourceLocation resource) {
