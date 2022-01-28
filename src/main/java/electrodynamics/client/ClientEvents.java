@@ -19,9 +19,11 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -98,7 +100,10 @@ public class ClientEvents {
 		PoseStack matrix = event.getPoseStack();
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		VertexConsumer builder = buffer.getBuffer(RenderType.LINES);
-		Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+		Minecraft minecraft = Minecraft.getInstance();
+		GameRenderer renderer = minecraft.gameRenderer;
+		Vec3 camera = renderer.getMainCamera().getPosition();
+		Player player = minecraft.player;
 		Iterator<Pair<Long, BlockPos>> it = blocks.iterator();
 		while (it.hasNext()) {
 			Pair<Long, BlockPos> pair = it.next();
@@ -112,14 +117,16 @@ public class ClientEvents {
 			}
 		}
 		buffer.endBatch(RenderType.LINES);
+		VertexConsumer sheetBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
 		markerLines.forEach((pos, list) -> {
 			list.forEach(aabb -> {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderFilledBox(aabb, 1.0F, 1.0F, 1.0F, 1.0F);
+				RenderingUtils.renderFilledBox(matrix, sheetBuilder, aabb, 1.0F, 1.0F, 1.0F, 1.0F, 1, 1, 10, 15);
 				matrix.popPose();
 			});
 		});
+		buffer.endBatch(Sheets.solidBlockSheet());
 	}
 
 	public static void addRenderLocation(BlockPos pos) {

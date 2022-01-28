@@ -3,20 +3,15 @@ package electrodynamics.prefab.utilities;
 import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.prefab.block.GenericEntityBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -30,8 +25,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RenderingUtils {
 
@@ -93,18 +86,53 @@ public class RenderingUtils {
 		}
 	}
 	
-	public static void renderFilledBox(PoseStack stack, VertexConsumer consumer, AABB box, float r, float g, float b, float a) {
-		VoxelShape rendered = Shapes.create(box);
-		LevelRenderer.renderVoxelShape(stack, consumer, rendered, a, a, a, r, g, b, a);
-	}
-	
-	public static void renderFilledBox(PoseStack stack, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float r, float g, float b, float a) {
-		Tesselator tesselator = Tesselator.getInstance();
-	    BufferBuilder bufferbuilder = tesselator.getBuilder();
-	    RenderSystem.setShader(GameRenderer::getPositionColorShader);
-	    bufferbuilder.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-	    LevelRenderer.addChainedFilledBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY, maxZ, r, g, b, a);
-	    tesselator.end();
+	public static void renderFilledBox(PoseStack stack, VertexConsumer builder, AABB box, float r, float g, float b, float a, float u, float v, int light, int overlay) {
+		Matrix4f matrix4f = stack.last().pose();
+	    Matrix3f matrix3f = stack.last().normal();
+
+	    float minX = (float) box.minX;
+	    float minY = (float) box.minY;
+	    float minZ = (float) box.minZ;
+	    float maxX = (float) box.maxX;
+	    float maxY = (float) box.maxY;
+	    float maxZ = (float) box.maxZ;
+	    
+	    //bottom
+	    builder.vertex(matrix4f, maxX, minY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, minX, minY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, maxX, minY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+	    
+	    //top
+	    builder.vertex(matrix4f, maxX, maxY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, minX, maxY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, minX, maxY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+        builder.vertex(matrix4f, maxX, maxY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, 0, 1, 0).endVertex();
+    
+        //North
+        builder.vertex(matrix4f, minX, maxY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0, -1).endVertex();
+        builder.vertex(matrix4f, maxX, maxY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0, -1).endVertex();
+        builder.vertex(matrix4f, maxX, minY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0, -1).endVertex();
+        builder.vertex(matrix4f, minX, minY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0, -1).endVertex();
+
+        //South
+        builder.vertex(matrix4f, maxX, maxY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0,  1).endVertex();
+        builder.vertex(matrix4f, minX, maxY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0,  1).endVertex();
+        builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0,  1).endVertex();
+        builder.vertex(matrix4f, maxX, minY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  0, 0,  1).endVertex();
+
+        //East
+        builder.vertex(matrix4f, maxX, maxY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  1, 0,  0).endVertex();
+        builder.vertex(matrix4f, maxX, maxY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  1, 0,  0).endVertex();
+        builder.vertex(matrix4f, maxX, minY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  1, 0,  0).endVertex();
+        builder.vertex(matrix4f, maxX, minY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f,  1, 0,  0).endVertex();
+
+        //West
+        builder.vertex(matrix4f, minX, maxY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, -1, 0,  0).endVertex();
+        builder.vertex(matrix4f, minX, maxY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, -1, 0,  0).endVertex();
+        builder.vertex(matrix4f, minX, minY, minZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, -1, 0,  0).endVertex();
+        builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(u, v).overlayCoords(overlay).uv2(light).normal(matrix3f, -1, 0,  0).endVertex();
+	    
 	}
 
 	public static void bindTexture(ResourceLocation resource) {
