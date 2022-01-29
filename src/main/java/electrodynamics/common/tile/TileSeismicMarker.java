@@ -16,7 +16,9 @@ public class TileSeismicMarker extends GenericTile {
 
 	public static final int MAX_RADIUS = 64;
 	
-	//the only reason this is a tile is because of the damn onRemove() method
+	public static final float MIN_UV = 3.01F;
+	public static final float MAX_UV = 12.99F;
+	
 	public TileSeismicMarker(BlockPos pos, BlockState state) {
 		super(DeferredRegisters.TILE_SEISMICMARKER.get(), pos, state);
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
@@ -29,10 +31,10 @@ public class TileSeismicMarker extends GenericTile {
 			//do not combine!
 			if(!ClientEvents.markerLines.containsKey(pos)) {
 				List<AABB> boxes = new ArrayList<>();
-				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.625, pos.getZ() + 0.4375, pos.getX() + MAX_RADIUS + 1.75, pos.getY() + 0.75, pos.getZ() + 0.5625));
-				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.625, pos.getZ() + 0.4375, pos.getX() - MAX_RADIUS - 0.75, pos.getY() + 0.75, pos.getZ() + 0.5625));
-				boxes.add(new AABB(pos.getX() + 0.4375, pos.getY() + 0.625, pos.getZ() + 0.25, pos.getX() + 0.5625, pos.getY() + 0.75, pos.getZ() + MAX_RADIUS + 1.75));
-				boxes.add(new AABB(pos.getX() + 0.4375, pos.getY() + 0.625, pos.getZ() + 0.25, pos.getX() + 0.5625, pos.getY() + 0.75, pos.getZ() - MAX_RADIUS - 0.75));
+				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.5625, pos.getZ() + 0.4375, pos.getX() + MAX_RADIUS + 1.5625, pos.getY() + 0.6875, pos.getZ() + 0.5625));
+				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.5625, pos.getZ() + 0.4375, pos.getX() - MAX_RADIUS - 0.5625, pos.getY() + 0.6875, pos.getZ() + 0.5625));
+				boxes.add(new AABB(pos.getX() + 0.4375, pos.getY() + 0.5625, pos.getZ() + 0.25, pos.getX() + 0.5625, pos.getY() + 0.6875, pos.getZ() + MAX_RADIUS + 1.5625));
+				boxes.add(new AABB(pos.getX() + 0.4375, pos.getY() + 0.5625, pos.getZ() + 0.25, pos.getX() + 0.5625, pos.getY() + 0.6875, pos.getZ() - MAX_RADIUS - 0.5625));
 				ClientEvents.markerLines.put(pos, boxes);
 			}
 		} else {

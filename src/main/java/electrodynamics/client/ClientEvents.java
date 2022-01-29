@@ -122,7 +122,8 @@ public class ClientEvents {
 			list.forEach(aabb -> {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderFilledBox(matrix, sheetBuilder, aabb, 1.0F, 1.0F, 1.0F, 1.0F, 15, 15, 255, 1);
+				
+				RenderingUtils.renderFilledBox(matrix, sheetBuilder, aabb, 1.0F, 0, 0, 1.0F, 15F, 15F, 15F, 15F, 255, 0);
 				matrix.popPose();
 			});
 		});
