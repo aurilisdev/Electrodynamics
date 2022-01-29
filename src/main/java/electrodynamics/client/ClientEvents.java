@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -103,7 +102,6 @@ public class ClientEvents {
 		Minecraft minecraft = Minecraft.getInstance();
 		GameRenderer renderer = minecraft.gameRenderer;
 		Vec3 camera = renderer.getMainCamera().getPosition();
-		Player player = minecraft.player;
 		Iterator<Pair<Long, BlockPos>> it = blocks.iterator();
 		while (it.hasNext()) {
 			Pair<Long, BlockPos> pair = it.next();
@@ -117,17 +115,16 @@ public class ClientEvents {
 			}
 		}
 		buffer.endBatch(RenderType.LINES);
-		VertexConsumer sheetBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
+		VertexConsumer sheetBuilder = buffer.getBuffer(RenderingUtils.beaconType());
 		markerLines.forEach((pos, list) -> {
 			list.forEach(aabb -> {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				
-				RenderingUtils.renderFilledBox(matrix, sheetBuilder, aabb, 1.0F, 1.0F, 1.0F, 1.0F, 15F, 15F, 15F, 15F, 255, 0);
+				RenderingUtils.renderSolidColorBox(matrix, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
 				matrix.popPose();
 			});
 		});
-		buffer.endBatch(Sheets.solidBlockSheet());
+		buffer.endBatch(RenderingUtils.beaconType());
 	}
 
 	public static void addRenderLocation(BlockPos pos) {
