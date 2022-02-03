@@ -1,0 +1,28 @@
+package electrodynamics.common.inventory.container.tile;
+
+import electrodynamics.DeferredRegisters;
+import electrodynamics.common.tile.TileSeismicRelay;
+import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+
+public class ContainerSeismicRelay extends GenericContainerBlockEntity<TileSeismicRelay> {
+
+	public ContainerSeismicRelay(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+		super(DeferredRegisters.CONTAINER_SEISMICRELAY.get(), id, playerinv, inventory, inventorydata);
+	}
+	
+	public ContainerSeismicRelay(int id, Inventory playerinv) {
+		super(DeferredRegisters.CONTAINER_SEISMICRELAY.get(), id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
+	}
+
+	@Override
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new SlotRestricted(inv, nextIndex(), 20, 34));
+	}
+
+}

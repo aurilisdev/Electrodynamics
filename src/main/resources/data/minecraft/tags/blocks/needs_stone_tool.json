@@ -58,6 +58,9 @@
 		"electrodynamics:creativefluidsource",
 		"electrodynamics:fluidvoid",
 		"electrodynamics:seismicmarker",
+		"electrodynamics:seismicrelay",
+		"electrodynamics:coolantresavoir",
+		"electrodynamics:motorcomplex",
 		
 		"electrodynamics:orefluorite",
 		"electrodynamics:oresylvite",

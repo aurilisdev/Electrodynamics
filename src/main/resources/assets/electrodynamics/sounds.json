@@ -159,5 +159,12 @@
 		"sounds": [
 			"electrodynamics:jetpack"
 		]
+	},
+	"motorrunning":{
+		"category": "blocks",
+		"subtitle": "subtitles.electrodynamics.motorrunning",
+		"sounds": [
+			"electrodynamics:motorrunning"
+		]
 	}
 }

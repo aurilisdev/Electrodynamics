@@ -14,6 +14,7 @@ import electrodynamics.client.render.tile.RenderCarbyneBatteryBox;
 import electrodynamics.client.render.tile.RenderChargerGeneric;
 import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
+import electrodynamics.client.render.tile.RenderCoolantResavoir;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderLathe;
@@ -25,7 +26,10 @@ import electrodynamics.client.render.tile.RenderMineralGrinder;
 import electrodynamics.client.render.tile.RenderMineralGrinderDouble;
 import electrodynamics.client.render.tile.RenderMineralGrinderTriple;
 import electrodynamics.client.render.tile.RenderMineralWasher;
+import electrodynamics.client.render.tile.RenderMotorComplex;
 import electrodynamics.client.render.tile.RenderMultimeterBlock;
+import electrodynamics.client.render.tile.RenderSeismicRelay;
+import electrodynamics.client.render.tile.RenderTankGeneric;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.item.ScreenSeismicScanner;
 import electrodynamics.client.screen.tile.ScreenBatteryBox;
@@ -36,6 +40,7 @@ import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenCoalGenerator;
 import electrodynamics.client.screen.tile.ScreenCobblestoneGenerator;
 import electrodynamics.client.screen.tile.ScreenCombustionChamber;
+import electrodynamics.client.screen.tile.ScreenCoolantResavoir;
 import electrodynamics.client.screen.tile.ScreenCreativeFluidSource;
 import electrodynamics.client.screen.tile.ScreenCreativePowerSource;
 import electrodynamics.client.screen.tile.ScreenDO2OProcessor;
@@ -51,9 +56,12 @@ import electrodynamics.client.screen.tile.ScreenFluidVoid;
 import electrodynamics.client.screen.tile.ScreenHydroelectricGenerator;
 import electrodynamics.client.screen.tile.ScreenLithiumBatteryBox;
 import electrodynamics.client.screen.tile.ScreenMineralWasher;
+import electrodynamics.client.screen.tile.ScreenMotorComplex;
 import electrodynamics.client.screen.tile.ScreenO2OProcessor;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
+import electrodynamics.client.screen.tile.ScreenQuarry;
+import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenTankGeneric;
 import electrodynamics.client.screen.tile.ScreenWindmill;
@@ -145,6 +153,7 @@ public class ClientRegister {
 		ForgeModelBakery.addSpecialModel(MODEL_RODHSLASTEEL);
 		ForgeModelBakery.addSpecialModel(MODEL_LATHE);
 		ForgeModelBakery.addSpecialModel(MODEL_LATHESHAFT);
+		ForgeModelBakery.addSpecialModel(MODEL_MOTORCOMPLEXROTOR);
 	}
 
 	public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(BLOCK_LOC + "advancedsolarpaneltop");
@@ -192,10 +201,12 @@ public class ClientRegister {
 	public static final ResourceLocation MODEL_CHEMICALMIXERSULFURICACID = new ResourceLocation(BLOCK_LOC + "chemicalmixersulfuricacid");
 	public static final ResourceLocation MODEL_LATHE = new ResourceLocation(BLOCK_LOC + "lathe");
 	public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(BLOCK_LOC + "latheshaft");
+	public static final ResourceLocation MODEL_MOTORCOMPLEXROTOR = new ResourceLocation(BLOCK_LOC + "motorcomplexrotor");
+	
 	public static final ResourceLocation MODEL_RODSTEEL = new ResourceLocation(References.ID + ":entity/rodsteel");
 	public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":entity/rodstainlesssteel");
 	public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
-
+	
 	public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
 	public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
@@ -231,7 +242,11 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), ScreenSeismicScanner::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTROLYTICSEPARATOR.get(), ScreenElectrolyticSeparator::new);
-
+		MenuScreens.register(DeferredRegisters.CONTAINER_SEISMICRELAY.get(), ScreenSeismicRelay::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_COOLANTRESAVOIR.get(), ScreenCoolantResavoir::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_MOTORCOMPLEX.get(), ScreenMotorComplex::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_QUARRY.get(), ScreenQuarry::new);
+		
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant), ClientRegister::shouldMultilayerRender);
@@ -239,6 +254,7 @@ public class ClientRegister {
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher), ClientRegister::shouldMultilayerRender);
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalcrystallizer), ClientRegister::shouldMultilayerRender);
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.circuitbreaker), ClientRegister::shouldMultilayerRender);
+		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.combustionchamber), ClientRegister::shouldMultilayerRender);
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.multi, RenderType.cutout());
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
@@ -270,7 +286,12 @@ public class ClientRegister {
 		event.registerBlockEntityRenderer(DeferredRegisters.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
 		event.registerBlockEntityRenderer(DeferredRegisters.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
 		event.registerBlockEntityRenderer(DeferredRegisters.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
-
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_SEISMICRELAY.get(), RenderSeismicRelay::new);
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_COOLANTRESAVOIR.get(), RenderCoolantResavoir::new);
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_TANKHSLA.get(), RenderTankGeneric::new);
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_TANKREINFORCED.get(), RenderTankGeneric::new);
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_MOTORCOMPLEX.get(), RenderMotorComplex::new);
 	}
 
 	public static boolean shouldMultilayerRender(RenderType type) {

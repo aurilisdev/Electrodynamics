@@ -33,14 +33,14 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
 
+		font.draw(stack, new TranslatableComponent("gui.seismicscanner.material"), 15, 32, 4210752);
+		font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
+		
 		ItemStack ownerItem = menu.getOwnerItem();
 
 		if (ownerItem.hasTag()) {
 			CompoundTag blockPos = ownerItem.getTagElement("scanloc");
 			CompoundTag playerPos = ownerItem.getTagElement("onloc");
-
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.material"), 15, 32, 4210752);
-			font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
 
 			if (blockPos != null && playerPos != null) {
 

@@ -1,9 +1,9 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sss",
-		"sts",
-		"sss"
+		"sgs",
+		"gtg",
+		"sgs"
 	],
 	"key": {
 		"t": {
@@ -11,6 +11,9 @@
 		},
 		"s": {
 			"tag": "forge:plates/stainlesssteel"
+		},
+		"g": {
+			"item": "electrodynamics:glassclear"
 		}
 	},
 	"result": {

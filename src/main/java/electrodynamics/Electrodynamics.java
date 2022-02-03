@@ -9,6 +9,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
+import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -47,6 +48,8 @@ public class Electrodynamics {
 	public Electrodynamics() {
 		ConfigurationHandler.registerConfig(Constants.class);
 		ConfigurationHandler.registerConfig(OreConfig.class);
+		//MUST GO BEFORE BLOCKS!!!!
+		ElectrodynamicsBlockStates.init();
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		SoundRegister.SOUNDS.register(bus);
 		DeferredRegisters.BLOCKS.register(bus);

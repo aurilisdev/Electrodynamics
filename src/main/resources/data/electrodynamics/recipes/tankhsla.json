@@ -1,9 +1,9 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sss",
-		"sts",
-		"sss"
+		"sas",
+		"ata",
+		"sas"
 	],
 	"key": {
 		"s": {
@@ -11,6 +11,9 @@
 		},
 		"t": {
 			"item": "electrodynamics:tankreinforced"
+		},
+		"a": {
+			"item": "electrodynamics:glassaluminum"
 		}
 	},
 	"result": {

@@ -94,6 +94,10 @@ public class Constants {
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	@DoubleValue(def = 400)
 	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 400;
+	@DoubleValue(def = 100)
+	public static double MOTORCOMPLEX_USAGE_PER_TICK = 100.0;
+	@DoubleValue(def = 100)
+	public static double QUARRY_USAGE_PER_TICK = 100.0;
 
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;

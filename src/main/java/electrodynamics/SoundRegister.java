@@ -35,7 +35,8 @@ public class SoundRegister {
 	public static final RegistryObject<SoundEvent> SOUND_HYDRAULICBOOTS = SOUNDS.register("hydraulicboots", supplier(new SoundEvent(new ResourceLocation(References.ID + ":hydraulicboots"))));
 	public static final RegistryObject<SoundEvent> SOUND_JETPACKSWITCHMODE = SOUNDS.register("jetpackswitchmode", supplier(new SoundEvent(new ResourceLocation(References.ID + ":jetpackswitchmode"))));
 	public static final RegistryObject<SoundEvent> SOUND_JETPACK = SOUNDS.register("jetpack", supplier(new SoundEvent(new ResourceLocation(References.ID + ":jetpack"))));
-
+	public static final RegistryObject<SoundEvent> SOUND_MOTORRUNNING = SOUNDS.register("motorrunning", supplier(new SoundEvent(new ResourceLocation(References.ID + ":motorrunning"))));
+	
 	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
 		return () -> entry;
 	}

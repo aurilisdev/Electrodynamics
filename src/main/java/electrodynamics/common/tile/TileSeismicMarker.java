@@ -16,9 +16,6 @@ public class TileSeismicMarker extends GenericTile {
 
 	public static final int MAX_RADIUS = 64;
 	
-	public static final float MIN_UV = 3.01F;
-	public static final float MAX_UV = 12.99F;
-	
 	public TileSeismicMarker(BlockPos pos, BlockState state) {
 		super(DeferredRegisters.TILE_SEISMICMARKER.get(), pos, state);
 		addComponent(new ComponentTickable().tickClient(this::tickClient));

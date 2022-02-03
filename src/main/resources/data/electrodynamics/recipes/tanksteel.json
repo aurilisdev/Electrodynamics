@@ -1,9 +1,9 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sss",
-		"scs",
-		"sss"
+		"sgs",
+		"gcg",
+		"sgs"
 	],
 	"key": {
 		"s": {
@@ -11,6 +11,9 @@
 		},
 		"c": {
 			"item": "minecraft:cauldron"
+		},
+		"g": {
+			"tag": "forge:glass"
 		}
 	},
 	"result": {

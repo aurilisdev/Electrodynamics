@@ -16,6 +16,7 @@ import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.TileCoolantResavoir;
 import electrodynamics.common.tile.TileCreativeFluidSource;
 import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.common.tile.TileElectricArcFurnace;
@@ -39,9 +40,12 @@ import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.common.tile.TileMineralGrinderDouble;
 import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
+import electrodynamics.common.tile.TileMotorComplex;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
+import electrodynamics.common.tile.TileQuarry;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
+import electrodynamics.common.tile.TileSeismicRelay;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTankHSLA;
 import electrodynamics.common.tile.TileTankReinforced;
@@ -120,8 +124,11 @@ public enum SubtypeMachine implements ISubtype {
 	creativepowersource(true, TileCreativePowerSource.class),
 	creativefluidsource(true, TileCreativeFluidSource.class),
 	fluidvoid(true, TileFluidVoid.class),
-	electrolyticseparator(true, TileElectrolyticSeparator.class),;
-//	seismicscannermachine(true, TileSeismicScanner.class);
+	electrolyticseparator(true, TileElectrolyticSeparator.class),
+	seismicrelay(true, TileSeismicRelay.class),
+	quarry(true, TileQuarry.class),
+	coolantresavoir(true, TileCoolantResavoir.class),
+	motorcomplex(true, TileMotorComplex.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;
