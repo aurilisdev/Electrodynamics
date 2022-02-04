@@ -23,12 +23,16 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -126,15 +130,39 @@ public class ClientEvents {
 				matrix.popPose();
 			});
 		});
+		buffer.endBatch(RenderingUtils.beaconType());
+		TextureAtlasSprite cornerFrame = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:textures/block/framecorner"));
+		float u0Frame = cornerFrame.getU0();
+		float u1Frame = cornerFrame.getU1();
+		float v0Frame = cornerFrame.getV0();
+		float v1Frame = cornerFrame.getV1();
+		float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
+		
+		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:textures/block/resource/resourceblocktitanium"));
+		float u0Titanium = titanium.getU0();
+		float u1Titanium = titanium.getU1();
+		float v0Titanium = titanium.getV0();
+		float v1Titanium = titanium.getV1();
+		float[] colorsTitanium = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
+		
+		VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
+		
 		quarryArm.forEach((pos, list) -> {
-			list.forEach(aabb -> {
+			for(int i = 0; i < list.size(); i++) {
+				AABB aabb = list.get(i);
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderSolidColorBox(matrix, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
+				if(i < 5) {
+					RenderingUtils.renderFilledBox(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255, 0);	
+				} else {
+					RenderingUtils.renderFilledBox(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255, 0);
+				}
 				matrix.popPose();
-			});
+			}
 		});
-		buffer.endBatch(RenderingUtils.beaconType());
+		
+		buffer.endBatch(Sheets.solidBlockSheet());
+		
 	}
 
 	public static void addRenderLocation(BlockPos pos) {

@@ -143,7 +143,7 @@ public class TileQuarry extends GenericTile {
 								
 								BlockPos checkPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 								
-								miningPos = checkPos;
+								miningPos = new BlockPos(checkPos.getX(), checkPos.getY(), checkPos.getZ());
 								
 								BlockState state = world.getBlockState(checkPos);
 								float strength = state.getDestroySpeed(world, checkPos);
@@ -208,10 +208,10 @@ public class TileQuarry extends GenericTile {
 			double z = miningCentered.getZ();
 			double y = startCentered.getY() + 0.5;
 			
-			double deltaY = startCentered.getY() - clientMiningPos.getY() - 0.5;
+			double deltaY = startCentered.getY() - clientMiningPos.getY() - 1;
 			
-			downArm = new AABB(x + 0.25 , y, z + 0.25, x + 0.6875, y - deltaY, z + 0.6875);
-			downHead = new AABB(x + 0.3125 , y - deltaY, z + 0.3125, x + 0.6875, y - deltaY + 0.5, z + 0.6875);
+			downArm = new AABB(x + 0.25 , y, z + 0.25, x + 0.75, y - deltaY, z + 0.75);
+			downHead = new AABB(x + 0.3125 , y - deltaY, z + 0.3125, x + 0.6875, y - deltaY - 0.5, z + 0.6875);
 			
 			Direction facing = ((ComponentDirection)getComponent(ComponentType.Direction)).getDirection().getOpposite();
 			switch(facing) {
@@ -683,6 +683,12 @@ public class TileQuarry extends GenericTile {
 		compound.putInt("widthShiftMiner", widthShiftMiner);
 		compound.putInt("tickDelayMiner", tickDelayMiner);
 		
+		if(miningPos != null) {
+			compound.putInt("miningX", miningPos.getX());
+			compound.putInt("miningY", miningPos.getY());
+			compound.putInt("miningZ", miningPos.getZ());
+		}
+		
 		super.saveAdditional(compound);
 	}
 	
@@ -744,6 +750,10 @@ public class TileQuarry extends GenericTile {
 		heightShiftMiner = compound.getInt("heightShiftMiner");
 		widthShiftMiner = compound.getInt("widthShiftMiner");
 		tickDelayMiner = compound.getInt("tickDelayMiner");
+		
+		if(compound.contains("miningX")) {
+			miningPos = new BlockPos(compound.getInt("miningX"), compound.getInt("miningY"), compound.getInt("miningZ"));
+		}
 		
 		super.load(compound);
 	}
