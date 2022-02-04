@@ -93,6 +93,8 @@ public class ClientEvents {
 	private static HashSet<Pair<Long, BlockPos>> blocks = new HashSet<>();
 	
 	public static HashMap<BlockPos, List<AABB>> markerLines = new HashMap<>();
+	
+	public static HashMap<BlockPos, List<AABB>> quarryArm = new HashMap<>();
 
 	@SubscribeEvent
 	public static void renderSelectedBlocks(RenderLevelLastEvent event) {
@@ -117,6 +119,14 @@ public class ClientEvents {
 		buffer.endBatch(RenderType.LINES);
 		VertexConsumer sheetBuilder = buffer.getBuffer(RenderingUtils.beaconType());
 		markerLines.forEach((pos, list) -> {
+			list.forEach(aabb -> {
+				matrix.pushPose();
+				matrix.translate(-camera.x, -camera.y, -camera.z);
+				RenderingUtils.renderSolidColorBox(matrix, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
+				matrix.popPose();
+			});
+		});
+		quarryArm.forEach((pos, list) -> {
 			list.forEach(aabb -> {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.client.ClientEvents;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
 import electrodynamics.common.settings.Constants;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 
 public class TileQuarry extends GenericTile {
 
@@ -72,8 +74,24 @@ public class TileQuarry extends GenericTile {
 	
 	
 	//Upgrades: Fortune, Silk Touch, Unbreaking, Void Upgrade
+	//want these seperate to prevent potential mixups
+	private int lengthShiftMiner = 0;
+	private int heightShiftMiner = 1;
+	private int widthShiftMiner = 0;
+	private int tickDelayMiner = 0;
+	
+	private BlockPos miningPos = null;
+	
+	private boolean isFinished = false;
 	
 	
+	
+	/* CLIENT PARAMETERS */
+	private boolean clientOnRight = false;
+	
+	
+	private List<BlockPos> clientCorners = new ArrayList<>();
+	private BlockPos clientMiningPos = null;
 	
 	
 	
@@ -82,13 +100,14 @@ public class TileQuarry extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
-		addComponent(new ComponentTickable().tickServer(this::tickServer));
+		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * 1000));
 		addComponent(new ComponentInventory(this).size(13).inputs(1).outputs(9).upgrades(3).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.quarry").createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 	
 	private void tickServer(ComponentTickable tick) {
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		if(hasComponents) {
 			hasHandledDecay = false;
 			if(hasRing) {
@@ -104,16 +123,51 @@ public class TileQuarry extends GenericTile {
 				} else if (!areComponentsNull()) {
 					//after this point it is assumed all tiles are accounted for
 					//start mining code here
-					if(complex.isPowered) {
+					if(complex.isPowered && (tick.getTicks() % (((int) complex.speed) + tickDelayMiner) == 0) && !isFinished) {
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
-						if(inv.areInputsEmpty()) {
+						if(inv.areOutputsEmpty()) {
 							ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+							boolean quarryPowered = false;
 							for(ItemStack stack : inv.getUpgradeContents()) {
 								//TODO handle upgrades
 							}
-							
-							
-							
+							quarryPowered = true;
+							if(quarryPowered) {
+								Level world = getLevel();
+								BlockPos cornerStart = corners.get(3);
+								BlockPos cornerEnd = corners.get(0);
+								int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
+								int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
+								int width = cornerStart.getX() - cornerEnd.getX() - (2 * deltaW);
+								int length = cornerStart.getZ() - cornerEnd.getZ() - (2 * deltaL);
+								
+								BlockPos checkPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
+								
+								miningPos = checkPos;
+								
+								BlockState state = world.getBlockState(checkPos);
+								float strength = state.getDestroySpeed(world, checkPos);
+								tickDelayMiner = (int) strength;
+								if(!state.isAir() && strength >= 0) {
+									world.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
+									world.playSound(null, checkPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);	
+								}
+								if(lengthShiftMiner == length) {
+									lengthShiftMiner = 0;
+									if(widthShiftMiner == width) {
+										widthShiftMiner = 0;
+										heightShiftMiner++;
+										if(checkPos.getY() - 1 == world.getMinBuildHeight()) {
+											heightShiftMiner = 1;
+											isFinished = true;
+										}
+									} else {
+										widthShiftMiner += deltaW;
+									}
+								} else {
+									lengthShiftMiner += deltaL;
+								}
+							}
 						}
 					}	
 				}
@@ -137,10 +191,118 @@ public class TileQuarry extends GenericTile {
 		
 	}
 	
+	private void tickClient(ComponentTickable tick) {
+		BlockPos pos = getBlockPos();
+		ClientEvents.quarryArm.remove(pos);
+		if(hasClientCorners() && clientMiningPos != null) {
+			BlockPos miningCentered = clientMiningPos.offset(0.5, 0.5, 0.5);
+			BlockPos startCentered = clientCorners.get(3).offset(0.5, 0.5, 0.5);
+			BlockPos endCentered = clientCorners.get(0).offset(0.5, 0.5, 0.5);
+			
+			double widthLeft, widthRight, widthTop, widthBottom;
+			AABB left, right, bottom, top, downArm, downHead;
+			
+			List<AABB> boxes = new ArrayList<>(); 
+			
+			double x = miningCentered.getX();
+			double z = miningCentered.getZ();
+			double y = startCentered.getY() + 0.5;
+			
+			double deltaY = startCentered.getY() - clientMiningPos.getY() - 0.5;
+			
+			downArm = new AABB(x + 0.25 , y, z + 0.25, x + 0.6875, y - deltaY, z + 0.6875);
+			downHead = new AABB(x + 0.3125 , y - deltaY, z + 0.3125, x + 0.6875, y - deltaY + 0.5, z + 0.6875);
+			
+			Direction facing = ((ComponentDirection)getComponent(ComponentType.Direction)).getDirection().getOpposite();
+			switch(facing) {
+			case NORTH, SOUTH:
+
+				widthLeft = x - startCentered.getX();
+				widthRight = x - endCentered.getX();
+				widthTop = z - startCentered.getZ();
+				widthBottom = z - endCentered.getZ();
+				
+				if(facing == Direction.SOUTH) {
+					if(clientOnRight) {
+						left =   new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.25, y + 0.25, z + 0.75);
+						right =  new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.75, y + 0.25, z + 0.75);
+					} else {
+						left =   new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.75, y + 0.25, z + 0.75);
+						right =  new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.25, y + 0.25, z + 0.75);
+					}
+					bottom = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthBottom + 0.25);
+					top =    new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthTop + 0.75);
+				} else {
+					if(clientOnRight) {
+						left =   new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.75, y + 0.25, z + 0.75);
+						right =  new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.25, y + 0.25, z + 0.75);
+					} else {
+						left =   new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.25, y + 0.25, z + 0.75);
+						right =  new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.75, y + 0.25, z + 0.75);
+					}
+					bottom = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthBottom + 0.75);
+					top =    new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthTop + 0.25);
+				}
+				
+				boxes.add(left);
+				boxes.add(right);
+				boxes.add(bottom);
+				boxes.add(top);
+				boxes.add(downArm);
+				boxes.add(downHead);
+				
+				break;
+			case EAST, WEST:
+				
+				widthLeft = miningCentered.getZ() - startCentered.getZ();
+				widthRight = miningCentered.getZ() - endCentered.getZ();
+				widthTop = miningCentered.getX() - startCentered.getX();
+				widthBottom = miningCentered.getX() - endCentered.getX();
+				
+				if(facing == Direction.WEST) {
+					if(clientOnRight) {
+						left =   new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.25);
+						right =  new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.75);
+					} else {
+						left =   new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.75);
+						right =  new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.25);
+					}
+					bottom = new AABB(x, y - 0.25, z + 0.25, x - widthBottom + 0.75, y + 0.25, z + 0.75);
+					top =    new AABB(x, y - 0.25, z + 0.25, x - widthTop + 0.25, y + 0.25, z + 0.75);
+				} else {
+					if(clientOnRight) {
+						left =   new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.75);
+						right =  new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.25);
+					} else {
+						left =   new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.25);
+						right =  new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.75);
+					}
+					bottom = new AABB(x, y - 0.25, z + 0.25, x - widthBottom + 0.25, y + 0.25, z + 0.75);
+					top =    new AABB(x, y - 0.25, z + 0.25, x - widthTop + 0.75, y + 0.25, z + 0.75);
+				}
+				
+				boxes.add(left);
+				boxes.add(right);
+				boxes.add(bottom);
+				boxes.add(top);
+				boxes.add(downArm);
+				boxes.add(downHead);
+				
+				break;
+			default:
+				break;
+			}
+			
+			ClientEvents.quarryArm.put(pos, boxes);
+			
+		}
+	}
+	
+	//ironic how simple it is when you need to check the whole area
 	private void clearArea() {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		double defaultUsage = Constants.QUARRY_USAGE_PER_TICK;
-		if(electro.getJoulesStored() >= defaultUsage) {
+		if(hasCorners() && electro.getJoulesStored() >= defaultUsage) {
 			Level world = getLevel();
 			BlockPos start = corners.get(3);
 			BlockPos end = corners.get(0);
@@ -153,10 +315,12 @@ public class TileQuarry extends GenericTile {
 			BlockState state = world.getBlockState(checkPos);
 			float strength = state.getDestroySpeed(world, checkPos);
 			if(strength >= 0 && electro.getJoulesStored() >= defaultUsage * strength) {
-				tickDelayCA = (int) Math.ceil(strength / 5.0F);
-				electro.joules(electro.getJoulesStored() - defaultUsage * strength);
-				world.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
-				world.playSound(null, checkPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				if(!state.isAir()) {
+					tickDelayCA = (int) Math.ceil(strength / 5.0F);
+					electro.joules(electro.getJoulesStored() - defaultUsage * strength);
+					world.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
+					world.playSound(null, checkPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				}
 				if(heightShiftCA == height) {
 					heightShiftCA = 0;
 					if(widthShiftCA == width) {
@@ -207,6 +371,15 @@ public class TileQuarry extends GenericTile {
 				if(hasAllStrips()) {
 					hasRing = true;
 					prevPos = null;
+					isFinished = false;
+					heightShiftMiner = 1;
+					widthShiftMiner = 0;
+					lengthShiftMiner = 0;
+					BlockPos cornerStart = corners.get(3);
+					BlockPos cornerEnd = corners.get(0);
+					int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
+					int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
+					miningPos = new BlockPos(cornerStart.getX() - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - deltaL);
 				}
 			}
 			switch(facing) {
@@ -407,12 +580,44 @@ public class TileQuarry extends GenericTile {
 		return corners.size() > 3;
 	}
 	
+	private boolean hasClientCorners() {
+		return clientCorners.size() > 3;
+	}
+	
 	private void createPacket(CompoundTag nbt) {
-		
+		if(miningPos != null) {
+			nbt.putInt("clientMiningX", miningPos.getX());
+			nbt.putInt("clientMiningY", miningPos.getY());
+			nbt.putInt("clientMiningZ", miningPos.getZ());
+		}
+		if(hasCorners()) {
+			nbt.putBoolean("clientOnRight", cornerOnRight);
+			nbt.putInt("clientCornerSize", corners.size());
+			for(int i = 0; i < corners.size(); i++) {
+				BlockPos pos = corners.get(i);
+				nbt.putInt("clientCornerX" + i, pos.getX());
+				nbt.putInt("clientCornerY" + i, pos.getY());
+				nbt.putInt("clientCornerZ" + i, pos.getZ());
+			}
+		}
 	}
 	
 	private void readPacket(CompoundTag nbt) {
-		
+		clientCorners.clear();
+		if(nbt.contains("clientMiningX")) {
+			clientMiningPos = new BlockPos(nbt.getInt("clientMiningX"), nbt.getInt("clientMiningY"), nbt.getInt("clientMiningZ"));
+		} else {
+			clientMiningPos = null;
+		}
+		if(nbt.contains("clientCornerSize")) {
+			clientOnRight = nbt.getBoolean("clientOnRight");
+			int cornerSize = nbt.getInt("clientCornerSize");
+			for (int i = 0; i < cornerSize; i++) {
+				clientCorners.add(new BlockPos(nbt.getInt("clientCornerX" + i), nbt.getInt("clientCornerY" + i), nbt.getInt("clientCornerZ" + i)));
+			}
+		} else {
+			clientCorners.clear();
+		}
 	}
 	
 	@Override
@@ -473,6 +678,11 @@ public class TileQuarry extends GenericTile {
 		compound.putInt("widthShiftCA", widthShiftCA);
 		compound.putInt("tickDelayCA", tickDelayCA);
 		
+		compound.putInt("lengthShiftMiner", lengthShiftMiner);
+		compound.putInt("heightShiftMiner", heightShiftMiner);
+		compound.putInt("widthShiftMiner", widthShiftMiner);
+		compound.putInt("tickDelayMiner", tickDelayMiner);
+		
 		super.saveAdditional(compound);
 	}
 	
@@ -530,6 +740,11 @@ public class TileQuarry extends GenericTile {
 		widthShiftCA = compound.getInt("widthShiftCA");
 		tickDelayCA = compound.getInt("tickDelayCA");
 		
+		lengthShiftMiner = compound.getInt("lengthShiftMiner");
+		heightShiftMiner = compound.getInt("heightShiftMiner");
+		widthShiftMiner = compound.getInt("widthShiftMiner");
+		tickDelayMiner = compound.getInt("tickDelayMiner");
+		
 		super.load(compound);
 	}
 	
@@ -538,12 +753,16 @@ public class TileQuarry extends GenericTile {
 		if(hasCorners() && isAreaCleared) {
 			handleFramesDecay();
 		}
+		if(getLevel().isClientSide) {
+			ClientEvents.quarryArm.remove(getBlockPos());
+		}
 		super.setRemoved();
 	}
 
 	//the method needs to be fast since it could be updating the 64x64 ring
 	//it is assumed that the block has marker corners when you call this method
 	private void handleFramesDecay() {
+		miningPos = null;
 		hasHandledDecay = true;
 		isAreaCleared = false;
 		hasRing = false;
@@ -656,6 +875,11 @@ public class TileQuarry extends GenericTile {
 	}
 	
 	private void updateState(Level world, BlockPos pos) {
+		BlockEntity entity = world.getBlockEntity(pos);
+		if(entity != null && entity instanceof TileFrame frame) {
+			frame.setNoNotify();
+			frame.setQuarryPos(null);
+		}
 		BlockState state = world.getBlockState(pos);
 		if(state.is(DeferredRegisters.blockFrame) || state.is(DeferredRegisters.blockFrameCorner)) {
 			world.setBlockAndUpdate(pos, state.setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.TRUE));

@@ -17,6 +17,7 @@ public class TileFrame extends GenericTile {
 
 	private BlockPos quarryPos = null;
 	private boolean isCorner = false;
+	private boolean shouldNotify = true;
 	
 	//DO NOT MAKE THIS TICK IF AT ALL POSSIBLE!!!!!
 	public TileFrame(BlockPos pos, BlockState state) {
@@ -40,10 +41,14 @@ public class TileFrame extends GenericTile {
 		return this.isCorner;
 	}
 	
+	public void setNoNotify() {
+		shouldNotify = false;
+	}
+	
 	@Override
 	public void setRemoved() {
 		Level world = getLevel();
-		if(quarryPos != null && !world.isClientSide) {
+		if(quarryPos != null && !world.isClientSide && shouldNotify) {
 			BlockEntity tile = world.getBlockEntity(quarryPos);
 			if(tile != null && tile instanceof TileQuarry quarry) {
 				BlockPos pos = getBlockPos();
@@ -64,6 +69,7 @@ public class TileFrame extends GenericTile {
 			compound.putInt("zPos", quarryPos.getZ());
 		}
 		compound.putBoolean("isCorner", isCorner);
+		compound.putBoolean("shouldNotify", shouldNotify);
 	}
 	
 	@Override
@@ -71,6 +77,7 @@ public class TileFrame extends GenericTile {
 		super.load(compound);
 		quarryPos = new BlockPos(compound.getInt("xPos"), compound.getInt("yPos"), compound.getInt("zPos"));
 		isCorner = compound.getBoolean("isCorner");
+		shouldNotify = compound.getBoolean("shouldNotify");
 	}
 
 }
