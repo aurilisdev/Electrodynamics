@@ -131,14 +131,14 @@ public class ClientEvents {
 			});
 		});
 		buffer.endBatch(RenderingUtils.beaconType());
-		TextureAtlasSprite cornerFrame = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:textures/block/framecorner"));
+		TextureAtlasSprite cornerFrame = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:block/resource/resourceblockaluminum"));
 		float u0Frame = cornerFrame.getU0();
 		float u1Frame = cornerFrame.getU1();
 		float v0Frame = cornerFrame.getV0();
 		float v1Frame = cornerFrame.getV1();
 		float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
 		
-		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:textures/block/resource/resourceblocktitanium"));
+		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:block/resource/resourceblocktitanium"));
 		float u0Titanium = titanium.getU0();
 		float u1Titanium = titanium.getU1();
 		float v0Titanium = titanium.getV0();

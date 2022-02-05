@@ -122,7 +122,11 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	range((holder, processor, upgrade) -> {
 		/* it does nothing; the count determines the new range */}, 12),
 	experience((holder, processor, upgrade) -> {
-		/* the machine handles adding the experience */}, 1);
+		/* the machine handles adding the experience */}, 1),
+	itemvoid((holder, processor, upgrade) -> {}, 1),
+	silktouch((holder, processor, upgrade) -> {}, 1),
+	fortune((holder, processor, upgrade) -> {}, 3),
+	unbreaking((holder, processor, upgrade) -> {}, 3);
 
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;

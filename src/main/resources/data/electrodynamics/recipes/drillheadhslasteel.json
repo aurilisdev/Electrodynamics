@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" i ",
+		"ipi"
+	],
+	"key": {
+		"i": {
+			"tag": "forge:ingots/hslasteel"
+		},
+		"p": {
+			"tag": "forge:plates/hslasteel"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:drillheadhslasteel",
+		"count": 1
+	}
+}

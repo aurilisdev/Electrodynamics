@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileMotorComplex extends GenericTile {
 	
 	//10 ticks per block
-	public static final double DEFAULT_SPEED = 10;
+	public static final double DEFAULT_SPEED = Math.min(Constants.MIN_QUARRYBLOCKS_PER_TICK, 100);
 	//1 tick per block
-	public static final double MAX_SPEED = 1;
+	public static final double MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
 	
 	public double speed = 1;	
 	public double clientSpeed = 1;
@@ -60,12 +60,12 @@ public class TileMotorComplex extends GenericTile {
 				for(int i = 0; i < stack.getCount(); i ++) {
 					switch(((ItemUpgrade)stack.getItem()).subtype) {
 					case basicspeed:
-						speed = Math.max(speed *= 0.95, MAX_SPEED);
-						powerMultiplier *= 1.5;
+						speed = Math.max(speed *= 0.8, MAX_SPEED);
+						powerMultiplier *= 2.5;
 						break;
 					case advancedspeed:
-						speed = Math.max(speed *= 0.8, MAX_SPEED);
-						powerMultiplier *= 1.25;
+						speed = Math.max(speed *= 0.5, MAX_SPEED);
+						powerMultiplier *= 2.5;
 						break;
 					default :
 						break;

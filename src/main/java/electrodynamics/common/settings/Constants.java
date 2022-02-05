@@ -98,7 +98,15 @@ public class Constants {
 	public static double MOTORCOMPLEX_USAGE_PER_TICK = 100.0;
 	@DoubleValue(def = 100)
 	public static double QUARRY_USAGE_PER_TICK = 100.0;
-
+	@IntValue(def = 100)
+	public static int QUARRY_WATERUSAGE_PER_BLOCK = 100;
+	@IntValue(def = 64, comment = "max radius = 128, min radius = 2")
+	public static int MARKER_RADIUS = 64;
+	@IntValue(def = 1, comment = "max possible is 1 tick / block")
+	public static int MAX_QUARRYBLOCKS_PER_TICK = 1;
+	@IntValue(def = 100, comment = "min possible speed is 100 ticks / block")
+	public static int MIN_QUARRYBLOCKS_PER_TICK = 100;
+	
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;
 

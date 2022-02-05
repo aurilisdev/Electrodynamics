@@ -11,6 +11,7 @@ import electrodynamics.common.block.BlockConcrete;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockFrame;
+import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
@@ -79,6 +80,7 @@ import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
+import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
@@ -99,6 +101,7 @@ import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
+import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
@@ -139,6 +142,7 @@ import electrodynamics.common.tile.TileFrame;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.common.tile.TileLogisticalManager;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -201,6 +205,7 @@ public class DeferredRegisters {
 	public static BlockSeismicMarker blockSeismicMarker;
 	public static BlockFrame blockFrame;
 	public static BlockFrame blockFrameCorner;
+	public static BlockLogisticalManager blockLogisticalManager;
 	// liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
@@ -245,6 +250,7 @@ public class DeferredRegisters {
 		BLOCKS.register("seismicmarker" , supplier(blockSeismicMarker = new BlockSeismicMarker()));
 		BLOCKS.register("frame", supplier(blockFrame = new BlockFrame()));
 		BLOCKS.register("framecorner", supplier(blockFrameCorner = new BlockFrame()));
+		BLOCKS.register("logisticalmanager", supplier(blockLogisticalManager = new BlockLogisticalManager()));
 		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
@@ -305,6 +311,9 @@ public class DeferredRegisters {
 		for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
 			ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));
 		}
+		for(SubtypeDrillHead drill : SubtypeDrillHead.values()) {
+			ITEMS.register(drill.tag(), supplier(new ItemDrillHead(drill), drill));
+		}
 		ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("compositeplating", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
@@ -312,6 +321,7 @@ public class DeferredRegisters {
 		ITEMS.register("concretemix", supplier(new ItemDescriptable(new Item.Properties().stacksTo(64).tab(References.CORETAB), "tooltip.info.concretejoke")));
 		ITEMS.register("frame", supplier(new BlockItemDescriptable(blockFrame, new Item.Properties().stacksTo(64))));
 		ITEMS.register("framecorner", supplier(new BlockItemDescriptable(blockFrameCorner, new Item.Properties().stacksTo(64))));
+		ITEMS.register("logisticalmanager", supplier(new BlockItemDescriptable(blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
 		
 		// machines
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), "|translate|tooltip.machine.voltage.120");
@@ -371,6 +381,7 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(blockFrame, "|translate|tooltip.blockframe.joke");
 		BlockItemDescriptable.addDescription(blockFrameCorner, "|translate|tooltip.blockframe.joke");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quarry), "|translate|tooltip.quarry.power");
+		BlockItemDescriptable.addDescription(blockLogisticalManager, "|translate|tooltip.logisticalmanager.use");
 
 	}
 
@@ -395,7 +406,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
+	//public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
@@ -489,6 +500,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<BlockEntityType<TileCoolantResavoir>> TILE_COOLANTRESAVOIR = TILES.register(SubtypeMachine.coolantresavoir.tag(), () -> new BlockEntityType<>(TileCoolantResavoir::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coolantresavoir)), null));
 	public static final RegistryObject<BlockEntityType<TileMotorComplex>> TILE_MOTORCOMPLEX = TILES.register(SubtypeMachine.motorcomplex.tag(), () -> new BlockEntityType<>(TileMotorComplex::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.motorcomplex)), null));
 	public static final RegistryObject<BlockEntityType<TileFrame>> TILE_FRAME = TILES.register("frame", () -> new BlockEntityType<>(TileFrame::new, Sets.newHashSet(blockFrame, blockFrameCorner), null));
+	public static final RegistryObject<BlockEntityType<TileLogisticalManager>> TILE_LOGISTICALMANAGER = TILES.register("logisticalmanager", () -> new BlockEntityType<>(TileLogisticalManager::new, Sets.newHashSet(blockLogisticalManager), null));
 	
 	// Containers
 

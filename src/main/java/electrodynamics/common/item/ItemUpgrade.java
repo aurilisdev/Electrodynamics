@@ -137,6 +137,8 @@ public class ItemUpgrade extends Item {
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+		SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
+		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false)
+			|| subtype == SubtypeItemUpgrade.fortune || subtype == SubtypeItemUpgrade.unbreaking || subtype == SubtypeItemUpgrade.silktouch;
 	}
 }

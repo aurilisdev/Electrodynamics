@@ -10,6 +10,9 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientEvents;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
+import electrodynamics.common.item.ItemDrillHead;
+import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.tile.GenericTile;
@@ -20,13 +23,19 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,6 +44,8 @@ import net.minecraft.world.phys.AABB;
 
 public class TileQuarry extends GenericTile {
 
+	private static final int CAPACITY = 10000;
+	
 	/* FRAME PARAMETERS */
 	
 	private boolean hasComponents = false;
@@ -72,8 +83,6 @@ public class TileQuarry extends GenericTile {
 	
 	/* MINING PARAMETERS */
 	
-	
-	//Upgrades: Fortune, Silk Touch, Unbreaking, Void Upgrade
 	//want these seperate to prevent potential mixups
 	private int lengthShiftMiner = 0;
 	private int heightShiftMiner = 1;
@@ -84,15 +93,34 @@ public class TileQuarry extends GenericTile {
 	
 	private boolean isFinished = false;
 	
+	private boolean widthReverse = false;
+	private boolean lengthReverse = false;
 	
+	public double quarryPowerUsage = 0;
+	private boolean isPowered = false;
+	private boolean hasHead = false;
+	
+	private boolean hasItemVoid = false;
+	private int fortuneLevel = 0;
+	private int silkTouchLevel = 0;
+	private int unbreakingLevel = 0;
 	
 	/* CLIENT PARAMETERS */
+	
 	private boolean clientOnRight = false;
-	
-	
 	private List<BlockPos> clientCorners = new ArrayList<>();
-	private BlockPos clientMiningPos = null;
+	public BlockPos clientMiningPos = null;
 	
+	public boolean clientItemVoid = false;
+	public int clientFortuneLevel = 0;
+	public int clientSilkTouchLevel = 0;
+	public int clientUnbreakingLevel = 0;
+	
+	public double clientPowerUsage = 0;
+	public boolean clientIsPowered = false;
+	
+	public boolean clientFinished = false;
+	public boolean clientHead = false;
 	
 	
 	public TileQuarry(BlockPos pos, BlockState state) {
@@ -101,8 +129,8 @@ public class TileQuarry extends GenericTile {
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket)
 				.customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * 1000));
-		addComponent(new ComponentInventory(this).size(13).inputs(1).outputs(9).upgrades(3).valid(machineValidator()));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * CAPACITY));
+		addComponent(new ComponentInventory(this).size(19).inputs(7).outputs(9).upgrades(3).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.quarry").createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 	
@@ -120,19 +148,67 @@ public class TileQuarry extends GenericTile {
 				if(brokenFrames.size() > 0) {
 					fixBrokenFrames();
 					//it only will mine if the frame is 100% intact
-				} else if (!areComponentsNull()) {
+				} else if (!isFinished && !areComponentsNull()) {
 					//after this point it is assumed all tiles are accounted for
 					//start mining code here
-					if(complex.isPowered && (tick.getTicks() % (((int) complex.speed) + tickDelayMiner) == 0) && !isFinished) {
+					if(complex.isPowered && (tick.getTicks() % (((int) complex.speed) + tickDelayMiner) == 0)) {
+						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
-						if(inv.areOutputsEmpty()) {
+						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
+						if(inv.areOutputsEmpty() && resavoir.hasEnoughFluid(fluidUse) && hasHead) {
 							ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-							boolean quarryPowered = false;
+							double quarryPowerMultiplier = 0;
+							silkTouchLevel = 0;
+							fortuneLevel = 0;
+							unbreakingLevel = 0;
+							hasItemVoid = false;
 							for(ItemStack stack : inv.getUpgradeContents()) {
-								//TODO handle upgrades
+								if(!stack.isEmpty()) {
+									ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
+									for(int i = 0; i < stack.getCount(); i++) {
+										switch(upgrade.subtype) {
+										case itemvoid:
+											hasItemVoid = true;
+											if(quarryPowerMultiplier < 1) {
+												quarryPowerMultiplier = 1;
+											}
+											break;
+										case silktouch:
+											if(fortuneLevel == 0 && silkTouchLevel < 1) {
+												silkTouchLevel++;
+											}
+											if(quarryPowerMultiplier < 1) {
+												quarryPowerMultiplier = 1;
+											} 
+											quarryPowerMultiplier = Math.min(quarryPowerMultiplier *= 4, CAPACITY / 10);
+										case fortune:
+											if(silkTouchLevel == 0 && fortuneLevel < 3) {
+												fortuneLevel++;
+											}
+											if(quarryPowerMultiplier < 1) {
+												quarryPowerMultiplier = 1;
+											}
+											quarryPowerMultiplier = Math.min(quarryPowerMultiplier *= 2, CAPACITY / 10);
+											break;
+										case unbreaking:
+											if(quarryPowerMultiplier < 1) {
+												quarryPowerMultiplier = 1;
+											}
+											if(unbreakingLevel < 3) {
+												unbreakingLevel++;
+											}
+											quarryPowerMultiplier = Math.min(quarryPowerMultiplier *= 1.5, CAPACITY / 10);
+											break;
+										default:
+											break;
+										}
+									}
+								}
 							}
-							quarryPowered = true;
-							if(quarryPowered) {
+							quarryPowerUsage = Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier;
+							isPowered = electro.getJoulesStored() >= quarryPowerUsage;
+							if(isPowered) {
+								resavoir.drainFluid(fluidUse);
 								Level world = getLevel();
 								BlockPos cornerStart = corners.get(3);
 								BlockPos cornerEnd = corners.get(0);
@@ -148,28 +224,40 @@ public class TileQuarry extends GenericTile {
 								BlockState state = world.getBlockState(checkPos);
 								float strength = state.getDestroySpeed(world, checkPos);
 								tickDelayMiner = (int) strength;
+								//TODO have this work with permission mods
 								if(!state.isAir() && strength >= 0) {
-									world.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
-									world.playSound(null, checkPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);	
+									mineBlock(checkPos, state, strength, world, inv.getItem(0), inv);
+									electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 								}
-								if(lengthShiftMiner == length) {
-									lengthShiftMiner = 0;
-									if(widthShiftMiner == width) {
-										widthShiftMiner = 0;
+								if((lengthShiftMiner == length && !lengthReverse) || (lengthShiftMiner == 0 && lengthReverse)) {
+									lengthReverse = !lengthReverse;
+									if((widthShiftMiner == width && !widthReverse) || (widthShiftMiner == 0 && widthReverse)) {
+										widthReverse = !widthReverse;
 										heightShiftMiner++;
 										if(checkPos.getY() - 1 == world.getMinBuildHeight()) {
 											heightShiftMiner = 1;
 											isFinished = true;
 										}
 									} else {
-										widthShiftMiner += deltaW;
+										if(widthReverse) {
+											widthShiftMiner -= deltaW;
+										} else {
+											widthShiftMiner += deltaW;
+										}
 									}
 								} else {
-									lengthShiftMiner += deltaL;
+									if(lengthReverse) {
+										lengthShiftMiner -= deltaL;
+									} else {
+										lengthShiftMiner += deltaL;
+									}
 								}
 							}
 						}
-					}	
+					}
+				} else if (isFinished && miningPos != null) {
+					int y = corners.get(0).getY();
+					miningPos = new BlockPos(miningPos.getX(), y - heightShiftMiner, miningPos.getZ());
 				}
 			} else {
 				if(tick.getTicks() % (3 + tickDelayCA) == 0) {
@@ -178,7 +266,6 @@ public class TileQuarry extends GenericTile {
 					} else {
 						clearArea();
 					}
-					
 				}
 			}
 		} else if (hasCorners() && !hasHandledDecay && isAreaCleared) {
@@ -298,11 +385,50 @@ public class TileQuarry extends GenericTile {
 		}
 	}
 	
+	private void mineBlock(BlockPos pos, BlockState state, float strength, Level world, ItemStack drillHead, ComponentInventory inv) {
+		SubtypeDrillHead head = ((ItemDrillHead)drillHead.getItem()).head;
+		if(!head.isUnbreakable) {
+			
+			int	durabilityUsed = (int) (Math.ceil(strength) / (float) (unbreakingLevel + 1.0F));
+			if(drillHead.getDamageValue() +  durabilityUsed >= drillHead.getMaxDamage()) {
+				world.playSound(null, getBlockPos(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+			}
+			drillHead.setDamageValue(drillHead.getDamageValue() + durabilityUsed);
+		}
+		//TODO make this work with custom mining tiers
+		ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
+		if(silkTouchLevel > 0) {
+			pickaxe.enchant(Enchantments.SILK_TOUCH, silkTouchLevel);
+		} else if (fortuneLevel > 0) {
+			pickaxe.enchant(Enchantments.BLOCK_FORTUNE, fortuneLevel);
+		}
+		List<ItemStack> lootItems = Block.getDrops(state, (ServerLevel) world, pos, null, null, pickaxe);
+		List<ItemStack> voidItemStacks = inv.getInputContents().get(0);
+		voidItemStacks.remove(0);
+		List<Item> voidItems = new ArrayList<>();
+		voidItemStacks.forEach(h -> {voidItems.add(h.getItem());});
+		List<ItemStack> items = new ArrayList<>();
+		
+		if(hasItemVoid) {
+			lootItems.forEach(lootItem ->{
+				if(!voidItems.contains(lootItem.getItem())) {
+					items.add(lootItem);
+				}
+			});
+		} else {
+			items.addAll(lootItems);
+		}
+		InventoryUtils.addItemsToInventory(inv, items, inv.getOutputStartIndex(), inv.getOutputContents().size());
+		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		world.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);	
+	}
+	
 	//ironic how simple it is when you need to check the whole area
 	private void clearArea() {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		double defaultUsage = Constants.QUARRY_USAGE_PER_TICK;
-		if(hasCorners() && electro.getJoulesStored() >= defaultUsage) {
+		quarryPowerUsage = Constants.QUARRY_USAGE_PER_TICK;
+		isPowered = electro.getJoulesStored() >= quarryPowerUsage;
+		if(hasCorners() && isPowered) {
 			Level world = getLevel();
 			BlockPos start = corners.get(3);
 			BlockPos end = corners.get(0);
@@ -314,10 +440,10 @@ public class TileQuarry extends GenericTile {
 			//TODO make this work with grief protection mods
 			BlockState state = world.getBlockState(checkPos);
 			float strength = state.getDestroySpeed(world, checkPos);
-			if(strength >= 0 && electro.getJoulesStored() >= defaultUsage * strength) {
+			if(strength >= 0 && electro.getJoulesStored() >= quarryPowerUsage * strength) {
 				if(!state.isAir()) {
 					tickDelayCA = (int) Math.ceil(strength / 5.0F);
-					electro.joules(electro.getJoulesStored() - defaultUsage * strength);
+					electro.joules(electro.getJoulesStored() - quarryPowerUsage * strength);
 					world.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
 					world.playSound(null, checkPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				}
@@ -375,6 +501,7 @@ public class TileQuarry extends GenericTile {
 					heightShiftMiner = 1;
 					widthShiftMiner = 0;
 					lengthShiftMiner = 0;
+					quarryPowerUsage = 0;
 					BlockPos cornerStart = corners.get(3);
 					BlockPos cornerEnd = corners.get(0);
 					int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
@@ -580,7 +707,7 @@ public class TileQuarry extends GenericTile {
 		return corners.size() > 3;
 	}
 	
-	private boolean hasClientCorners() {
+	public boolean hasClientCorners() {
 		return clientCorners.size() > 3;
 	}
 	
@@ -600,6 +727,17 @@ public class TileQuarry extends GenericTile {
 				nbt.putInt("clientCornerZ" + i, pos.getZ());
 			}
 		}
+		
+		nbt.putBoolean("clientVoid", hasItemVoid);
+		nbt.putInt("clientFortune", fortuneLevel);
+		nbt.putInt("clientSilk", silkTouchLevel);
+		nbt.putInt("clientUnbreaking", unbreakingLevel);
+		
+		nbt.putDouble("clientUsage", quarryPowerUsage);
+		nbt.putBoolean("clientPowered", isPowered);
+		
+		nbt.putBoolean("isFinished", isFinished);
+		nbt.putBoolean("hasHead", hasHead);
 	}
 	
 	private void readPacket(CompoundTag nbt) {
@@ -618,6 +756,17 @@ public class TileQuarry extends GenericTile {
 		} else {
 			clientCorners.clear();
 		}
+		
+		clientItemVoid = nbt.getBoolean("clientVoid");
+		clientFortuneLevel = nbt.getInt("clientFortune");
+		clientSilkTouchLevel = nbt.getInt("clientSilk");
+		clientUnbreakingLevel = nbt.getInt("clientUnbreaking");
+		
+		clientPowerUsage = nbt.getDouble("clientUsage");
+		clientIsPowered = nbt.getBoolean("clientPowered");
+		
+		clientFinished = nbt.getBoolean("isFinished");
+		clientHead = nbt.getBoolean("hasHead");
 	}
 	
 	@Override
@@ -689,6 +838,10 @@ public class TileQuarry extends GenericTile {
 			compound.putInt("miningZ", miningPos.getZ());
 		}
 		
+		compound.putBoolean("isFinished", isFinished);
+		compound.putBoolean("lengthReverse", lengthReverse);
+		compound.putBoolean("widthReverse", widthReverse);
+		
 		super.saveAdditional(compound);
 	}
 	
@@ -755,6 +908,11 @@ public class TileQuarry extends GenericTile {
 			miningPos = new BlockPos(compound.getInt("miningX"), compound.getInt("miningY"), compound.getInt("miningZ"));
 		}
 		
+		isFinished = compound.getBoolean("isFinished");
+		
+		lengthReverse = compound.getBoolean("lengthReverse");
+		widthReverse = compound.getBoolean("widthReverse");
+		
 		super.load(compound);
 	}
 	
@@ -780,6 +938,8 @@ public class TileQuarry extends GenericTile {
 		hasTopStrip = false;
 		hasLeftStrip = false;
 		hasRightStrip = false;
+		lengthReverse = false;
+		widthReverse = false;
 		Level world = getLevel();
 		BlockPos frontOfQuarry = corners.get(0);
 		BlockPos foqFar = corners.get(1);

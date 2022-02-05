@@ -5,6 +5,7 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientEvents;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.core.BlockPos;
@@ -14,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 
 public class TileSeismicMarker extends GenericTile {
 
-	public static final int MAX_RADIUS = 64;
+	public static final int MAX_RADIUS = Math.max(Math.min(Constants.MARKER_RADIUS, 128), 2);
 	
 	public TileSeismicMarker(BlockPos pos, BlockState state) {
 		super(DeferredRegisters.TILE_SEISMICMARKER.get(), pos, state);

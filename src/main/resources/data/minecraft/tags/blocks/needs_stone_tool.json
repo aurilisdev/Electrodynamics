@@ -61,6 +61,8 @@
 		"electrodynamics:seismicrelay",
 		"electrodynamics:coolantresavoir",
 		"electrodynamics:motorcomplex",
+		"electrodynamics:quarry",
+		"electrodynamics:logisticalmanager",
 		
 		"electrodynamics:orefluorite",
 		"electrodynamics:oresylvite",

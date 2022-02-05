@@ -109,6 +109,8 @@
 		"electrodynamics:seismicrelay",
 		"electrodynamics:coolantresavoir",
 		"electrodynamics:motorcomplex",
+		"electrodynamics:quarry",
+		"electrodynamics:logisticalmanager",
 		"electrodynamics:tankhsla",
 		"electrodynamics:tankreinforced",
 		"electrodynamics:tanksteel",

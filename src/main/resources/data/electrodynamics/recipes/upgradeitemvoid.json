@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"scs",
+		"cCc",
+		"scs"
+	],
+	"key": {
+		"s": {
+			"tag": "forge:plates/steel"
+		},
+		"c": {
+			"item": "minecraft:cactus"
+		},
+		"C": {
+			"tag": "forge:circuits/advanced"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:upgradeitemvoid",
+		"count": 1
+	}
+}

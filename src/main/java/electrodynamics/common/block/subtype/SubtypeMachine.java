@@ -33,6 +33,7 @@ import electrodynamics.common.tile.TileFluidVoid;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.common.tile.TileLogisticalManager;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
