@@ -1,7 +1,10 @@
 package electrodynamics.prefab.block;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -18,6 +21,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -43,11 +47,21 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 
 	protected BlockEntitySupplier<BlockEntity> blockEntitySupplier;
+	
+	public static HashMap<BlockPos, LivingEntity> IPLAYERSTORABLE_MAP = new HashMap<>();
 
 	public GenericMachineBlock(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
 		super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 		this.blockEntitySupplier = blockEntitySupplier;
+	}
+	
+	@Override
+	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+		if(isIPlayerStorable()) {
+			IPLAYERSTORABLE_MAP.put(pPos, pPlacer);
+		}
+		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 	}
 
 	@Override
@@ -161,6 +175,10 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 			}
 		});
 		return Arrays.asList(stack);
+	}
+	
+	public boolean isIPlayerStorable() {
+		return false;
 	}
 
 }

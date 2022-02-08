@@ -78,7 +78,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		CapabilityBooleanStorage storage = new CapabilityBooleanStorage(1);
-		storage.setBoolean(0, false);
+		storage.setServerBoolean(0, false);
 		return storage;
 	}
 
@@ -86,7 +86,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
 		if (entity instanceof Player player && !world.isClientSide) {
-			boolean status = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+			boolean status = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getServerBoolean(0)).orElse(false);
 			if (!stack.hasTag()) {
 				stack.setTag(new CompoundTag());
 			}
@@ -162,11 +162,29 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		boolean isOn = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+		boolean isOn = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getClientBoolean(0)).orElse(false);
 		if (isOn) {
 			return ARMOR_TEXTURE_ON;
 		}
 		return ARMOR_TEXTURE_OFF;
+	}
+	
+	@Override
+	public CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag tag = super.getShareTag(stack);
+		if(tag == null) {
+			tag = new CompoundTag();
+		}
+		tag.put("captag", CapabilityBooleanStorage.saveToClientNBT(stack));
+		return tag;
+	}
+	
+	@Override
+	public void readShareTag(ItemStack stack, CompoundTag nbt) {
+		super.readShareTag(stack, nbt);
+		if(nbt != null) {
+			CapabilityBooleanStorage.readFromClientNBT(nbt.getCompound("captag"), stack);
+		}
 	}
 
 	public enum NightVisionGoggles implements ICustomArmor {

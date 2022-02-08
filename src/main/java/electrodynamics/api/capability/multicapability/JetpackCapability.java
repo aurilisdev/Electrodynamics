@@ -7,6 +7,7 @@ import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -47,6 +48,18 @@ public class JetpackCapability implements ICapabilitySerializable<CompoundTag> {
 	public void deserializeNBT(CompoundTag nbt) {
 		number.deserializeNBT(nbt.getCompound("number"));
 		bool.deserializeNBT(nbt.getCompound("bool"));
+	}
+	
+	public static CompoundTag saveToClientNBT(ItemStack stack) {
+		CompoundTag tag = new CompoundTag();
+		tag.put("number", CapabilityIntStorage.saveToClientNBT(stack));
+		tag.put("bool", CapabilityBooleanStorage.saveToClientNBT(stack));
+		return tag;
+	}
+	
+	public static void readFromClientNBT(CompoundTag tag, ItemStack stack) {
+		CapabilityIntStorage.readFromClientNBT(tag.getCompound("number"), stack);
+		CapabilityBooleanStorage.readFromClientNBT(tag.getCompound("bool"), stack);
 	}
 
 }

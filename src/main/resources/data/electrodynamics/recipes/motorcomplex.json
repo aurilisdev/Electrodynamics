@@ -1,8 +1,8 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		"sts",
-		"tmc",
+		"sgs",
+		"gmc",
 		"sgs"
 	],
 	"key": {
@@ -14,9 +14,6 @@
 		},
 		"g": {
 			"tag": "forge:gears/steel"
-		},
-		"t": {
-			"tag": "forge:plates/stainlesssteel"
 		},
 		"m": {
 			"item": "electrodynamics:motor"

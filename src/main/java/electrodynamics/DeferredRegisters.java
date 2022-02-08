@@ -182,7 +182,9 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -251,6 +253,7 @@ public class DeferredRegisters {
 		BLOCKS.register("frame", supplier(blockFrame = new BlockFrame()));
 		BLOCKS.register("framecorner", supplier(blockFrameCorner = new BlockFrame()));
 		BLOCKS.register("logisticalmanager", supplier(blockLogisticalManager = new BlockLogisticalManager()));
+		BLOCKS.register("quarryarm", supplier(new Block(Properties.of(Material.STONE))));
 		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));

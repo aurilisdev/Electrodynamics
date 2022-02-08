@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.multicapability.UpgradeCapability;
@@ -65,21 +65,20 @@ public class ItemUpgrade extends Item {
 			tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
-
 			if (subtype == SubtypeItemUpgrade.itemoutput) {
 				tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
-			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false)) {
+			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getClientBoolean(0)).orElse(false)) {
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
-			List<Direction> dirs = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
+			List<Direction> dirs = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getClientDirections).orElse(new ArrayList<>());
 			if (!dirs.isEmpty()) {
 				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
 				for (int i = 0; i < dirs.size(); i++) {
 					Direction dir = dirs.get(i);
-					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.BLUE));
+					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalize(dir.getName())).withStyle(ChatFormatting.BLUE));
 				}
 				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.GRAY));
 			} else {
@@ -88,8 +87,8 @@ public class ItemUpgrade extends Item {
 			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.experience) {
-			double storedXp = stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getDouble(0)).orElse(1.0);
-			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
+			double storedXp = stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getClientValue(0)).orElse(1.0);
+			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TextComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
 			tooltip.add(new TranslatableComponent("tooltip.info.xpusage").withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.range) {
@@ -106,18 +105,21 @@ public class ItemUpgrade extends Item {
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-					handStack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
+					handStack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addServerDirection(lookingDir));
+					return InteractionResultHolder.pass(player.getItemInHand(hand));
+				} else {
+					handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setServerBoolean(0, !m.getServerBoolean(0)));
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
-				handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(0, !m.getBoolean(0)));
 			}
 			if (localSubtype == SubtypeItemUpgrade.experience && ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY != null) {
-				double storedXp = handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getDouble(0)).orElse(0.0);
+				double storedXp = handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getServerDouble(0)).orElse(0.0);
 				int takenXp = (int) storedXp;
 				// it uses a Vec3 for some reason don't ask me why
 				Vec3 playerPos = new Vec3(player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ());
 				ExperienceOrb.award((ServerLevel) world, playerPos, takenXp);
-				handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, storedXp - takenXp));
+				handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setServerDouble(0, storedXp - takenXp));
+				return InteractionResultHolder.pass(player.getItemInHand(hand));
 			}
 		}
 		return super.use(world, player, hand);
@@ -127,9 +129,9 @@ public class ItemUpgrade extends Item {
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
 			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-				entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(IDirectionalStorage::removeAllDirs);
+				entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(IDirectionalStorage::clearServerDirections);
 			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-				entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(IDirectionalStorage::removeAllDirs);
+				entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(IDirectionalStorage::clearServerDirections);
 			}
 		}
 		return super.onEntitySwing(stack, entity);
@@ -138,7 +140,26 @@ public class ItemUpgrade extends Item {
 	@Override
 	public boolean isFoil(ItemStack stack) {
 		SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
-		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false)
+		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getClientBoolean(0)).orElse(false)
 			|| subtype == SubtypeItemUpgrade.fortune || subtype == SubtypeItemUpgrade.unbreaking || subtype == SubtypeItemUpgrade.silktouch;
 	}
+	
+	@Override
+	public CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag superTag = super.getShareTag(stack);
+		if(superTag == null) {
+			superTag = new CompoundTag();
+		}
+		superTag.put("upgradecap", UpgradeCapability.saveToClientNBT(stack));
+		return superTag;
+	}
+	
+	@Override
+	public void readShareTag(ItemStack stack, CompoundTag nbt) {
+		super.readShareTag(stack, nbt);
+		if(nbt != null) {
+			UpgradeCapability.readFromClientNBT(stack, nbt.getCompound("upgradecap"));
+		}
+	}
+	
 }

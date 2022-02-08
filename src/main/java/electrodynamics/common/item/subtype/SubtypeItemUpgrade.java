@@ -55,11 +55,11 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	iteminput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (inv.hasInputRoom() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
+			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getServerInt(0)).orElse(0);
 			if (tickNumber >= 4) {
-				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
-				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, 0));
+				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getServerDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getServerBoolean(0)).orElse(false);
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
@@ -76,18 +76,18 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, h.getInt(0) + 1));
+			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, h.getServerInt(0) + 1));
 		}
 	}, 1),
 	// I can't really optimize this one any more than it is
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (inv.hasItemsInOutput() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
+			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getServerInt(0)).orElse(0);
 			if (tickNumber >= 4) {
-				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
-				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, 0));
+				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getServerDirections).orElse(new ArrayList<>());
+				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getServerBoolean(0)).orElse(false);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 					combinedItems.addAll(inv.getItemBiContents());
@@ -106,7 +106,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, h.getInt(0) + 1));
+			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, h.getServerInt(0) + 1));
 		}
 	}, 1),
 	improvedsolarcell((holder, processor, upgrade) -> {
@@ -169,8 +169,10 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			}
 		} else if (entity != null && entity instanceof GenericTile tile) {
 			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
-			for (int slot : inv.getInputSlots()) {
-				takeItemFromCompInv(inv, slot, otherInv, dir);
+			if(otherInv != null) {
+				for (int slot : inv.getInputSlots()) {
+					takeItemFromCompInv(inv, slot, otherInv, dir);
+				}
 			}
 		}
 	}
@@ -189,7 +191,9 @@ public enum SubtypeItemUpgrade implements ISubtype {
 
 	private static void outputDefaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
 		if (entity instanceof Container container) {
-			for (ItemStack stack : inv.getOutputContents()) {
+			List<ItemStack> combined = inv.getOutputContents();
+			combined.addAll(inv.getItemBiContents());
+			for (ItemStack stack : combined) {
 				attemptContainerInsert(stack, container, dir);
 			}
 		} else if (entity != null && entity instanceof GenericTile tile) {

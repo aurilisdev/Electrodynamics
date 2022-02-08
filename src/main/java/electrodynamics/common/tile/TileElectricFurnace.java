@@ -81,7 +81,7 @@ public class TileElectricFurnace extends GenericTile {
 		inv.getInputContents().get(component.getProcessorNumber()).get(0).shrink(1);
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
-				stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, h.getDouble(0) + ((AbstractCookingRecipe) cachedRecipe).getExperience()));
+				stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setServerDouble(0, h.getServerDouble(0) + ((AbstractCookingRecipe) cachedRecipe).getExperience()));
 				break;
 			}
 		}

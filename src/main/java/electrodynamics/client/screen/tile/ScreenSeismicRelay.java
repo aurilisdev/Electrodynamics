@@ -46,7 +46,7 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 			if(markers.size() > 3) {
 				renderCoordinate(stack, markers.get(3), 30, 4);
 			} else {
-				renderOptional(stack, 30, 4);
+				renderNotFound(stack, 30, 4);
 			}
 		} else {
 			renderNotFound(stack, 0, 1);
@@ -63,10 +63,6 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 	
 	private void renderCoordinate(PoseStack stack, BlockPos pos, int offset, int index) {
 		font.draw(stack, new TranslatableComponent("gui.seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752);
-	}
-	
-	private void renderOptional(PoseStack stack, int offset, int index) {
-		font.draw(stack, new TranslatableComponent("gui.seismicrelay.posoptional", index), 80, 30 + offset, 4210752);
 	}
 
 }

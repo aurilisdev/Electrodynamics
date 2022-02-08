@@ -32,9 +32,9 @@ public class PacketNightVisionGoggles {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
 				if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
-					playerHead.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(0, !h.getBoolean(0)));
+					playerHead.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setServerBoolean(0, !h.getServerBoolean(0)));
 					if (((ItemNightVisionGoggles) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
-						boolean status = playerHead.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+						boolean status = playerHead.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getServerBoolean(0)).orElse(false);
 						if (status) {
 							player.playNotifySound(SoundRegister.SOUND_NIGHTVISIONGOGGLESON.get(), SoundSource.PLAYERS, 1, 1);
 						} else {

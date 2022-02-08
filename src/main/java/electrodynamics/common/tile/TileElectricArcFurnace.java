@@ -82,7 +82,7 @@ public class TileElectricArcFurnace extends GenericTile {
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
 				stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> {
-					h.setDouble(0, h.getDouble(0) + ((AbstractCookingRecipe) cachedRecipe).getExperience());
+					h.setServerDouble(0, h.getServerDouble(0) + ((AbstractCookingRecipe) cachedRecipe).getExperience());
 				});
 				break;
 			}

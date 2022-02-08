@@ -55,17 +55,18 @@ public class TileMotorComplex extends GenericTile {
 		speed = DEFAULT_SPEED;
 		powerMultiplier = 1;
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		//comes out to roughly 128 kW; max speed still needs to be obtainable in survival...
 		for(ItemStack stack : inv.getUpgradeContents()) {
 			if(!stack.isEmpty()) {
 				for(int i = 0; i < stack.getCount(); i ++) {
 					switch(((ItemUpgrade)stack.getItem()).subtype) {
 					case basicspeed:
 						speed = Math.max(speed *= 0.8, MAX_SPEED);
-						powerMultiplier *= 2.5;
+						powerMultiplier *= 3;
 						break;
 					case advancedspeed:
 						speed = Math.max(speed *= 0.5, MAX_SPEED);
-						powerMultiplier *= 2.5;
+						powerMultiplier *= 2;
 						break;
 					default :
 						break;

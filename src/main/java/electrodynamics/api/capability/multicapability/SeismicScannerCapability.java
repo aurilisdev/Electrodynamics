@@ -5,6 +5,7 @@ import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -42,6 +43,16 @@ public class SeismicScannerCapability implements ICapabilitySerializable<Compoun
 	public void deserializeNBT(CompoundTag nbt) {
 		number.deserializeNBT(nbt.getCompound("int"));
 		handler.deserializeNBT(nbt.getCompound("item"));
+	}
+	
+	public static CompoundTag saveToClientNBT(ItemStack stack) {
+		CompoundTag tag = new CompoundTag();
+		tag.put("int", CapabilityIntStorage.saveToClientNBT(stack));
+		return tag;
+	}
+	
+	public static void readFromClientNBT(CompoundTag tag, ItemStack stack) {
+		CapabilityIntStorage.readFromClientNBT(tag.getCompound("int"), stack);
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -15,9 +16,8 @@ public class CapabilityDoubleStorage implements IDoubleStorage, ICapabilitySeria
 	public final LazyOptional<IDoubleStorage> holder = LazyOptional.of(() -> this);
 
 	public CapabilityDoubleStorage(int size) {
-		values = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			values.add(0.0);
+			serverValues.add(0.0);
 		}
 	}
 
@@ -32,12 +32,7 @@ public class CapabilityDoubleStorage implements IDoubleStorage, ICapabilitySeria
 	@Override
 	public CompoundTag serializeNBT() {
 		if (ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY != null) {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putInt(ElectrodynamicsCapabilities.DOUBLE_KEY, values.size());
-			for (int i = 0; i < values.size(); i++) {
-				nbt.putDouble(ElectrodynamicsCapabilities.DOUBLE_KEY + i, values.get(i));
-			}
-			return nbt;
+			return IDoubleStorage.saveToServerNBT(this);
 		}
 		return new CompoundTag();
 	}
@@ -45,24 +40,85 @@ public class CapabilityDoubleStorage implements IDoubleStorage, ICapabilitySeria
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
 		if (ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY != null) {
-			int size = nbt.getInt(ElectrodynamicsCapabilities.DOUBLE_KEY);
-			values = new ArrayList<>();
-			for (int i = 0; i < size; i++) {
-				values.add(nbt.getDouble(ElectrodynamicsCapabilities.DOUBLE_KEY + i));
-			}
+			IDoubleStorage.readFromServerNBT(nbt, this);
+		}
+	}
+	
+	public static CompoundTag saveToClientNBT(ItemStack stack) {
+		LazyOptional<IDoubleStorage> lazyDoub = stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY);
+		if(lazyDoub.isPresent()) {
+			return IDoubleStorage.saveToClientNBT(lazyDoub.resolve().get());
+		}
+		return new CompoundTag();
+	}
+	
+	public static void readFromClientNBT(CompoundTag tag, ItemStack stack) {
+		LazyOptional<IDoubleStorage> lazyDoub = stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY);
+		if(lazyDoub.isPresent()) {
+			IDoubleStorage.readFromClientNBT(tag, lazyDoub.resolve().get());
 		}
 	}
 
-	private List<Double> values;
+	private List<Double> serverValues = new ArrayList<>();
+	
+	private List<Double> clientValues = new ArrayList<>();
 
 	@Override
-	public void setDouble(int index, double value) {
-		values.set(index, value);
+	public void setServerDouble(int index, double value) {
+		if(index < serverValues.size()) {
+			serverValues.set(index, value);
+		}
 	}
 
 	@Override
-	public double getDouble(int index) {
-		return values.get(index);
+	public double getServerDouble(int index) {
+		if(index < serverValues.size()) {
+			return serverValues.get(index);
+		}
+		return 0;
+	}
+	
+	@Override
+	public void addServerValue(double val) {
+		serverValues.add(val);
+	}
+	
+	@Override
+	public List<Double> getServerValues() {
+		return serverValues;
+	}
+	
+	@Override
+	public void clearServerValues() {
+		serverValues.clear();
+	}
+	
+	@Override
+	public void setServerValues(List<Double> values) {
+		serverValues = values;
+	}
+	
+	@Override
+	public double getClientValue(int index) {
+		if(index < clientValues.size()) {
+			return clientValues.get(index);
+		}
+		return 0;
+	}
+	
+	@Override
+	public List<Double> getClientValues() {
+		return clientValues;
+	}
+	
+	@Override
+	public void setClientValues(List<Double> values) {
+		clientValues = values;
+	}
+	
+	@Override
+	public void clearClientValues() {
+		clientValues.clear();
 	}
 
 }

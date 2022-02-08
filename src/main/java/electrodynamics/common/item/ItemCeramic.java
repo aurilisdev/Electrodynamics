@@ -26,22 +26,23 @@ public class ItemCeramic extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if (ItemStack.isSame(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
-			List<ItemStack> armorPieces = new ArrayList<>();
-			playerIn.getArmorSlots().forEach(armorPieces::add);
+		if(!worldIn.isClientSide) {
+			if (ItemStack.isSame(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
+				List<ItemStack> armorPieces = new ArrayList<>();
+				playerIn.getArmorSlots().forEach(armorPieces::add);
 
-			ItemStack chestplate = armorPieces.get(2);
-			if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-				chestplate.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-					if (h.getInt(0) < 2) {
-						playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
-						h.setInt(0, h.getInt(0) + 1);
-						playerIn.getItemInHand(handIn).shrink(1);
-					}
-				});
+				ItemStack chestplate = armorPieces.get(2);
+				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+					chestplate.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
+						if (h.getServerInt(0) < 2) {
+							playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
+							h.setServerInt(0, h.getServerInt(0) + 1);
+							playerIn.getItemInHand(handIn).shrink(1);
+						}
+					});
+				}
 			}
 		}
-
 		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 	}
 

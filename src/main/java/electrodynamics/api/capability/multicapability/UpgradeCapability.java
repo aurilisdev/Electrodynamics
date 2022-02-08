@@ -7,6 +7,7 @@ import electrodynamics.api.capability.types.doublestorage.CapabilityDoubleStorag
 import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -54,15 +55,28 @@ public class UpgradeCapability implements ICapabilitySerializable<CompoundTag> {
 		bool.deserializeNBT((CompoundTag) nbt.get("bool"));
 		number.deserializeNBT((CompoundTag) nbt.get("int"));
 		direction.deserializeNBT((CompoundTag) nbt.get("dir"));
-		// prevents crashes like the last time
-		if (nbt.contains("doub")) {
-			doub.deserializeNBT(nbt.getCompound("doub"));
-		} else {
-			CompoundTag newTag = new CompoundTag();
-			newTag.putInt(ElectrodynamicsCapabilities.DOUBLE_KEY, 1);
-			newTag.putDouble(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY + "0", 0.0);
-			doub.deserializeNBT(newTag);
+		if(!nbt.contains("doub")) {
+			CompoundTag tag = new CompoundTag();
+			tag.putInt(ElectrodynamicsCapabilities.BOOLEAN_KEY, 0);
+			tag.putInt(ElectrodynamicsCapabilities.BOOLEAN_KEY + 0, 0);
 		}
+		doub.deserializeNBT((CompoundTag) nbt.get("doub"));
+	}
+	
+	public static CompoundTag saveToClientNBT(ItemStack stack) {
+		CompoundTag tag = new CompoundTag();
+		tag.put("bool", CapabilityBooleanStorage.saveToClientNBT(stack));
+		tag.put("int", CapabilityIntStorage.saveToClientNBT(stack));
+		tag.put("dir", CapabilityDirectionalStorage.saveToClientNBT(stack));
+		tag.put("doub", CapabilityDoubleStorage.saveToClientNBT(stack));
+		return tag;
+	}
+	
+	public static void readFromClientNBT(ItemStack stack, CompoundTag tag) {
+		CapabilityBooleanStorage.readFromClientNBT(tag.getCompound("bool"), stack);
+		CapabilityIntStorage.readFromClientNBT(tag.getCompound("int"), stack);
+		CapabilityDirectionalStorage.readFromClientNBT(tag.getCompound("dir"), stack);
+		CapabilityDoubleStorage.readFromClientNBT(tag.getCompound("doub"), stack);
 	}
 
 }

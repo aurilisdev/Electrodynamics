@@ -100,7 +100,7 @@ public class ItemCompositeArmor extends ArmorItem {
 		if (allowdedIn(group)) {
 			ItemStack filled = new ItemStack(this);
 			if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-				filled.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 2));
+				filled.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, 2));
 				items.add(filled);
 			}
 			ItemStack empty = new ItemStack(this);
@@ -123,7 +123,7 @@ public class ItemCompositeArmor extends ArmorItem {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (EquipmentSlot.CHEST.equals(getSlot())) {
 			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getInt(0) + "")).withStyle(ChatFormatting.AQUA);
+				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getClientInt(0) + "")).withStyle(ChatFormatting.AQUA);
 				tooltip.add(tip);
 			});
 		}
@@ -145,6 +145,24 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
+	}
+	
+	@Override
+	public CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag superTag = super.getShareTag(stack);
+		if(superTag == null) {
+			superTag = new CompoundTag();
+		}
+		superTag.put("capabiltag", CapabilityIntStorage.saveToClientNBT(stack));
+		return superTag;
+	}
+	
+	@Override
+	public void readShareTag(ItemStack stack, CompoundTag nbt) {
+		super.readShareTag(stack, nbt);
+		if(nbt != null) {
+			CapabilityIntStorage.readFromClientNBT(nbt.getCompound("capabiltag"), stack);
+		}
 	}
 
 	public enum CompositeArmor implements ICustomArmor {

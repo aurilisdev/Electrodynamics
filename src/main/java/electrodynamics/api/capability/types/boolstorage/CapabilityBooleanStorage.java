@@ -6,6 +6,7 @@ import java.util.List;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -15,14 +16,12 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 	public final LazyOptional<IBooleanStorage> holder = LazyOptional.of(() -> this);
 
 	public CapabilityBooleanStorage() {
-		values = new ArrayList<>();
-		values.add(false);
+		serverValues.add(false);
 	}
 
 	public CapabilityBooleanStorage(int size) {
-		values = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			values.add(false);
+			serverValues.add(false);
 		}
 
 	}
@@ -38,12 +37,7 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 	@Override
 	public CompoundTag serializeNBT() {
 		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putInt(ElectrodynamicsCapabilities.BOOLEAN_KEY, values.size());
-			for (int i = 0; i < values.size(); i++) {
-				nbt.putBoolean(ElectrodynamicsCapabilities.BOOLEAN_KEY + i, values.get(i));
-			}
-			return nbt;
+			return IBooleanStorage.saveToServerNBT(this);
 		}
 		return new CompoundTag();
 	}
@@ -51,24 +45,84 @@ public class CapabilityBooleanStorage implements IBooleanStorage, ICapabilitySer
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
 		if (ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY != null) {
-			int size = nbt.getInt(ElectrodynamicsCapabilities.BOOLEAN_KEY);
-			values = new ArrayList<>();
-			for (int i = 0; i < size; i++) {
-				values.add(nbt.getBoolean(ElectrodynamicsCapabilities.BOOLEAN_KEY + i));
-			}
+			IBooleanStorage.readFromServerNBT(nbt, this);
+		} 
+	}
+	
+	public static CompoundTag saveToClientNBT(ItemStack stack) {
+		LazyOptional<IBooleanStorage> lazyBool = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY);
+		if(lazyBool.isPresent()) {
+			return IBooleanStorage.saveToClientNBT(lazyBool.resolve().get());
+		}
+		return new CompoundTag();
+	}
+	
+	public static void readFromClientNBT(CompoundTag tag, ItemStack stack) {
+		LazyOptional<IBooleanStorage> lazyBool = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY);
+		if(lazyBool.isPresent()) {
+			IBooleanStorage.readFromClientNBT(tag, lazyBool.resolve().get());
 		}
 	}
 
-	private List<Boolean> values;
+	private List<Boolean> serverValues = new ArrayList<>();
+	private List<Boolean> clientValues = new ArrayList<>();
 
 	@Override
-	public void setBoolean(int index, boolean bool) {
-		values.set(index, bool);
+	public void setServerBoolean(int index, boolean bool) {
+		if(index < serverValues.size()) {
+			serverValues.set(index, bool);
+		}
+	}
+	
+	@Override
+	public void addServerBoolean(boolean val) {
+		serverValues.add(val);
 	}
 
 	@Override
-	public boolean getBoolean(int index) {
-		return values.get(index);
+	public boolean getServerBoolean(int index) {
+		if(index < serverValues.size()) {
+			return serverValues.get(index);
+		}
+		return false;
+	}
+	
+	@Override
+	public List<Boolean> getServerValues() {
+		return serverValues;
+	}
+	
+	@Override
+	public void clearServerValues() {
+		serverValues.clear();
+	}
+	
+	@Override
+	public void setServerValues(List<Boolean> values) {
+		serverValues = values;
+	}
+	
+	@Override
+	public boolean getClientBoolean(int index) {
+		if(index < clientValues.size()) {
+			return clientValues.get(index);
+		}
+		return false;
+	}
+	
+	@Override
+	public List<Boolean> getClientValues() {
+		return clientValues;
+	}
+	
+	@Override
+	public void setClientValues(List<Boolean> values) {
+		clientValues = values;
+	}
+	
+	@Override
+	public void clearClientValues() {
+		clientValues.clear();
 	}
 
 }

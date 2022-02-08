@@ -31,7 +31,7 @@ public class PacketJetpackFlightServer {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					chest.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(0, message.bool));
+					chest.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setServerBoolean(0, message.bool));
 				}
 			}
 		});

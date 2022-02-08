@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -26,15 +26,7 @@ public class CapabilityDirectionalStorage implements IDirectionalStorage, ICapab
 	@Override
 	public CompoundTag serializeNBT() {
 		if (ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY != null) {
-			CompoundTag nbt = new CompoundTag();
-			ListTag dirList = new ListTag();
-			for (Direction dir : directions) {
-				CompoundTag tag = new CompoundTag();
-				tag.putString(ElectrodynamicsCapabilities.DIR_KEY, dir.getName());
-				dirList.add(tag);
-			}
-			nbt.put("dirList", dirList);
-			return nbt;
+			return IDirectionalStorage.saveToServerNBT(this);
 		}
 		return new CompoundTag();
 	}
@@ -42,34 +34,90 @@ public class CapabilityDirectionalStorage implements IDirectionalStorage, ICapab
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
 		if (ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY != null) {
-			ListTag dirList = nbt.getList("dirList", 10);
-			for (Object element : dirList) {
-				CompoundTag compound = (CompoundTag) element;
-				addDirection(Direction.valueOf(compound.getString(ElectrodynamicsCapabilities.DIR_KEY).toUpperCase()));
-			}
+			IDirectionalStorage.readFromServerNBT(nbt, this);
+		}
+	}
+	
+	public static CompoundTag saveToClientNBT(ItemStack stack) {
+		LazyOptional<IDirectionalStorage> lazyDir = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY);
+		if(lazyDir.isPresent()) {
+			return IDirectionalStorage.saveToClientNBT(lazyDir.resolve().get());
+		}
+		return new CompoundTag();
+	}
+	
+	public static void readFromClientNBT(CompoundTag tag, ItemStack stack) {
+		LazyOptional<IDirectionalStorage> lazyDir = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY);
+		if(lazyDir.isPresent()) {
+			IDirectionalStorage.readFromClientNBT(tag, lazyDir.resolve().get());
 		}
 	}
 
-	private List<Direction> directions = new ArrayList<>();
+	private List<Direction> serverDirections = new ArrayList<>();
+	
+	private List<Direction> clientDirections = new ArrayList<>();
 
 	@Override
-	public void addDirection(Direction dir) {
-		directions.add(dir);
+	public void addServerDirection(Direction dir) {
+		serverDirections.add(dir);
+	}
+	
+	@Override
+	public Direction getServerDirection(int index) {
+		if(index < serverDirections.size()) {
+			return serverDirections.get(index);
+		}
+		return Direction.UP;
+	}
+	
+	@Override
+	public void setServerDirection(int index, Direction dir) {
+		if(index < serverDirections.size()) {
+			serverDirections.set(index, dir);
+		}
 	}
 
 	@Override
-	public void removeDirection(Direction dir) {
-		directions.remove(dir);
+	public void removeServerDirection(Direction dir) {
+		serverDirections.remove(dir);
 	}
 
 	@Override
-	public void removeAllDirs() {
-		directions.clear();
+	public void clearServerDirections() {
+		serverDirections.clear();
 	}
 
 	@Override
-	public List<Direction> getDirections() {
-		return directions;
+	public List<Direction> getServerDirections() {
+		return serverDirections;
+	}
+	
+	@Override
+	public void setServerDirections(List<Direction> values) {
+		serverDirections = values;
+	}
+	
+	@Override
+	public Direction getClientDirection(int index, Direction dir) {
+		if(index < clientDirections.size()) {
+			return clientDirections.get(index);
+		}
+		return Direction.UP;
+	}
+	
+	@Override
+	public List<Direction> getClientDirections() {
+		return clientDirections;
+	}
+	
+	@Override
+	public void clearClientDirections() {
+		clientDirections.clear();
+	}
+	
+	@Override
+	public void setClientDirections(List<Direction> values) {
+		clientDirections = values;
 	}
 
 }

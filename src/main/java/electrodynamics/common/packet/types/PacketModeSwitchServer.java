@@ -32,20 +32,17 @@ public class PacketModeSwitchServer {
 				ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
 				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
 					boolean sucessful = chest.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
-						int curMode = m.getInt(0);
+						int curMode = m.getServerInt(0);
 						if (curMode < 2) {
 							curMode++;
 						} else {
 							curMode = 0;
 						}
-						m.setInt(0, curMode);
+						m.setServerInt(0, curMode);
 						return true;
 					}).orElse(false);
 					if (sucessful) {
 						serverPlayer.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
-						/*
-						 * doesn't fix problem serverWorld.getChunkSource().chunkMap.getPlayers(serverPlayer.chunkPosition(), false).forEach(play ->{ if(play.getUUID().equals(message.playerId)) { int mode = chest.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(-1); NetworkHandler.CHANNEL.sendTo(new PacketModeSwitchClient(message.playerId, mode), play.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } });
-						 */
 					}
 				}
 			}
