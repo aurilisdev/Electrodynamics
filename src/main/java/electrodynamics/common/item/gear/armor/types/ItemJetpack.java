@@ -9,12 +9,10 @@ import com.mojang.datafixers.util.Pair;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.multicapability.JetpackCapability;
-import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
-import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.api.item.nbtutils.BooleanStorage;
+import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
@@ -61,8 +59,6 @@ public class ItemJetpack extends ArmorItem {
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
 
-	public static final String MODE_NBT_KEY = "mode";
-
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
@@ -90,14 +86,10 @@ public class ItemJetpack extends ArmorItem {
 			}
 		});
 	}
-
+	
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		CapabilityIntStorage number = new CapabilityIntStorage(2);
-		number.setServerInt(0, 0);
-		CapabilityBooleanStorage bool = new CapabilityBooleanStorage(1);
-		bool.setServerBoolean(0, false);
-		return new JetpackCapability(new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids()), number, bool);
+		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
 	}
 
 	@Override
@@ -122,14 +114,13 @@ public class ItemJetpack extends ArmorItem {
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
-			int mode = stack.getTag().getInt(MODE_NBT_KEY);
+			int mode = IntegerStorage.getInteger(0, stack);
 			Component modeTip = switch (mode) {
 			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
 			case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
 			case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
 			default -> new TextComponent("");
 			};
-
 			tooltip.add(modeTip);
 		} else {
 			tooltip.add(new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
@@ -141,17 +132,14 @@ public class ItemJetpack extends ArmorItem {
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		super.inventoryTick(stack, world, entity, slot, isSelected);
-		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(1, h.getClientInt(1) + 1));
 		if (entity instanceof Player player) {
 			if (world.isClientSide) {
 				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem()) && stack.hasTag()) {
 					boolean isDown = KeyBinds.jetpackAscend.isDown();
-					int mode = stack.getTag().getInt(MODE_NBT_KEY);
+					int mode = IntegerStorage.getInteger(0, stack);
 					boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
-					int ticks = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getClientInt(1)).orElse(1);
+					int ticks = IntegerStorage.getInteger(1, stack);
 					if (enoughFuel) {
-						// the capability resets in creative because Mojang so if a player opens their inventory,
-						// the mode resets, but tbh why do you need a jetpack in creative
 						if (mode == 0 && isDown) {
 							handleSound(ticks, player);
 							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
@@ -177,24 +165,17 @@ public class ItemJetpack extends ArmorItem {
 					sendPacket(player, false);
 				}
 			} else {
-				int mode = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getServerInt(0)).orElse(-1);
-				if (mode > -1) {
-					if (!stack.hasTag()) {
-						stack.setTag(new CompoundTag());
-					}
-					stack.getTag().putInt(MODE_NBT_KEY, mode);
-				}
-				boolean hasRan = stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getServerBoolean(0)).orElse(false);
+				IntegerStorage.addInteger(1, IntegerStorage.getInteger(1, stack) + 1, stack);
+				boolean hasRan = BooleanStorage.getBoolean(0, stack);
 				if (hasRan) {
 					drainHydrogen(stack);
+					player.resetFallDistance();
+				}
+				if(IntegerStorage.getInteger(1, stack) > 100) {
+					IntegerStorage.addInteger(1, 0, stack);
 				}
 			}
 		}
-		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-			if (h.getServerInt(1) > 100) {
-				h.setServerInt(1, 0);
-			}
-		});
 	}
 
 	@Override
@@ -292,24 +273,6 @@ public class ItemJetpack extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
-	}
-	
-	@Override
-	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag tag = super.getShareTag(stack);
-		if(tag == null) {
-			tag = new CompoundTag();
-		}
-		tag.put("captag", JetpackCapability.saveToClientNBT(stack));
-		return tag;
-	}
-	
-	@Override
-	public void readShareTag(ItemStack stack, CompoundTag nbt) {
-		super.readShareTag(stack, nbt);
-		if(nbt != null) {
-			JetpackCapability.readFromClientNBT(nbt.getCompound("captag"), stack);
-		}
 	}
 
 	public enum Jetpack implements ICustomArmor {

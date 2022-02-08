@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.api.item.nbtutils.DoubleStorage;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.network.FluidUtilities;
@@ -667,7 +667,7 @@ public class ComponentProcessor implements Component {
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setServerDouble(0, h.getServerDouble(0) + experience));
+					DoubleStorage.addDouble(0, DoubleStorage.getDouble(0, stack) + experience, stack);
 				}
 				break;
 			}

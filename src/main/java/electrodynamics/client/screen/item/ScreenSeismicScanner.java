@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.api.item.nbtutils.LocationStorage;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -14,7 +15,6 @@ import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -37,29 +37,19 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
 		
 		ItemStack ownerItem = menu.getOwnerItem();
+		
+		Location playerLoc = LocationStorage.getLocation(0, ownerItem);
+		Location blockLoc = LocationStorage.getLocation(1, ownerItem);
+		
 
-		if (ownerItem.hasTag()) {
-			CompoundTag blockPos = ownerItem.getTagElement("scanloc");
-			CompoundTag playerPos = ownerItem.getTagElement("onloc");
-
-			if (blockPos != null && playerPos != null) {
-
-				Location blockLoc = new Location(blockPos.getInt("x"), blockPos.getInt("y"), blockPos.getInt("z"));
-				Location playerLoc = new Location(playerPos.getInt("x"), playerPos.getInt("y"), playerPos.getInt("z"));
-
-				if (blockLoc.equals(playerLoc)) {
-					drawNotFound(stack);
-				} else {
-					font.draw(stack, new TranslatableComponent("gui.seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
-					font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
-					font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
-				}
-			} else {
-				drawNotFound(stack);
-			}
-		} else {
+		if (blockLoc.equals(playerLoc)) {
 			drawNotFound(stack);
+		} else {
+			font.draw(stack, new TranslatableComponent("gui.seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
+			font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
+			font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
 		}
+		
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {

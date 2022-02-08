@@ -3,11 +3,10 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 
 import electrodynamics.SoundRegister;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.multicapability.SeismicScannerCapability;
-import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.api.item.nbtutils.IntegerStorage;
+import electrodynamics.api.item.nbtutils.LocationStorage;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketAddClientRenderInfo;
@@ -59,13 +58,18 @@ public class ItemSeismicScanner extends ItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
+	
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+		return new CapabilityItemStackHandler(1);
+	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.use"));
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
-		boolean onCooldown = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getClientInt(0) > 0).orElse(false);
+		boolean onCooldown = IntegerStorage.getInteger(0, stack) > 0;
 		if (onCooldown) {
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
 		} else {
@@ -107,20 +111,18 @@ public class ItemSeismicScanner extends ItemElectric {
 		if (!world.isClientSide) {
 			ItemStack scanner = player.getItemInHand(hand);
 			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
-			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getServerInt(0) <= 0).orElse(false);
+			boolean isTimerUp = IntegerStorage.getInteger(0, scanner) <= 0;
 			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
 			ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
 			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
 				extractPower(scanner, properties.extract.getJoules(), false);
-				scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, COOLDOWN_SECONDS * 20));
+				IntegerStorage.addInteger(0, COOLDOWN_SECONDS * 20, scanner);
 				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
 				if (ore.getItem() instanceof BlockItem oreBlockItem) {
 					BlockPos playerPos = player.getOnPos();
 					BlockPos blockPos = WorldUtils.getClosestBlockToCenter(world, playerPos, RADUIS_BLOCKS, oreBlockItem.getBlock());
-					CompoundTag scanLoc = scanner.getOrCreateTagElement("scanloc");
-					CompoundTag onLoc = scanner.getOrCreateTagElement("onloc");
-					writePosToTag(scanLoc, blockPos);
-					writePosToTag(onLoc, playerPos);
+					LocationStorage.addBlockPos(0, playerPos, scanner);
+					LocationStorage.addBlockPos(1, blockPos, scanner);
 					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 				}
 			} else {
@@ -128,11 +130,6 @@ public class ItemSeismicScanner extends ItemElectric {
 			}
 		}
 		return super.use(world, player, hand);
-	}
-
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new SeismicScannerCapability(new CapabilityIntStorage(1), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class));
 	}
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
@@ -149,11 +146,10 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
 		if(!world.isClientSide) {
-			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				if (h.getServerInt(0) > 0) {
-					h.setServerInt(0, h.getServerInt(0) - 1);
-				}
-			});
+			int time = IntegerStorage.getInteger(0, stack);
+			if(time > 0) {
+				IntegerStorage.addInteger(0, time - 1, stack);
+			}
 		}
 		super.inventoryTick(stack, world, entity, itemSlot, isSelected);
 	}
@@ -161,33 +157,6 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
-	}
-
-	private static void writePosToTag(CompoundTag tag, BlockPos pos) {
-		tag.remove("x");
-		tag.remove("y");
-		tag.remove("z");
-		tag.putInt("x", pos.getX());
-		tag.putInt("y", pos.getY());
-		tag.putInt("z", pos.getZ());
-	}
-	
-	@Override
-	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag tag = super.getShareTag(stack);
-		if(tag == null) {
-			tag = new CompoundTag();
-		}
-		tag.put("captag", SeismicScannerCapability.saveToClientNBT(stack));
-		return tag;
-	}
-	
-	@Override
-	public void readShareTag(ItemStack stack, CompoundTag nbt) {
-		super.readShareTag(stack, nbt);
-		if(nbt != null) {
-			SeismicScannerCapability.readFromClientNBT(nbt.getCompound("captag"), stack);
-		}
 	}
 
 }

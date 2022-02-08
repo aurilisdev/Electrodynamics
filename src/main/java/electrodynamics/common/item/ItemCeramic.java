@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,13 +33,13 @@ public class ItemCeramic extends Item {
 
 				ItemStack chestplate = armorPieces.get(2);
 				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-					chestplate.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-						if (h.getServerInt(0) < 2) {
-							playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
-							h.setServerInt(0, h.getServerInt(0) + 1);
-							playerIn.getItemInHand(handIn).shrink(1);
-						}
-					});
+					int stored = IntegerStorage.getInteger(0, chestplate);
+					if (stored < 2) {
+						playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
+						IntegerStorage.addInteger(0, stored + 1, chestplate);
+						playerIn.getItemInHand(handIn).shrink(1);
+					}
+					
 				}
 			}
 		}

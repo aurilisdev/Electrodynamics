@@ -14,7 +14,7 @@ public class CapabilityItemStackHandler implements ICapabilitySerializable<Compo
 	private ItemStackHandler handler;
 	public final LazyOptional<IItemHandler> holder = LazyOptional.of(this::getHandler);
 
-	public CapabilityItemStackHandler(int slotCount, Class<?>... classes) {
+	public CapabilityItemStackHandler(int slotCount) {
 		handler = new ItemStackHandler(slotCount);
 	}
 

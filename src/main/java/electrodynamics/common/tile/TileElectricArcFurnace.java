@@ -3,6 +3,7 @@ package electrodynamics.common.tile;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.item.nbtutils.DoubleStorage;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
@@ -81,9 +82,7 @@ public class TileElectricArcFurnace extends GenericTile {
 		inv.getInputContents().get(component.getProcessorNumber()).get(0).shrink(1);
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
-				stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> {
-					h.setServerDouble(0, h.getServerDouble(0) + ((AbstractCookingRecipe) cachedRecipe).getExperience());
-				});
+				DoubleStorage.addDouble(0, DoubleStorage.getDouble(0, stack) + ((AbstractCookingRecipe) cachedRecipe).getExperience(), stack);
 				break;
 			}
 		}

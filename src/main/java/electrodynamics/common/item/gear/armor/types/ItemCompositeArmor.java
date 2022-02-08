@@ -7,15 +7,13 @@ import java.util.function.Consumer;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
+import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -35,7 +33,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemCompositeArmor extends ArmorItem {
 
@@ -87,20 +84,11 @@ public class ItemCompositeArmor extends ArmorItem {
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		ItemCompositeArmor item = (ItemCompositeArmor) stack.getItem();
-		if (EquipmentSlot.CHEST.equals(item.getSlot())) {
-			return new CapabilityIntStorage(1);
-		}
-		return null;
-	}
-
-	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowdedIn(group)) {
 			ItemStack filled = new ItemStack(this);
 			if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-				filled.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setServerInt(0, 2));
+				IntegerStorage.addInteger(0, 2, filled);
 				items.add(filled);
 			}
 			ItemStack empty = new ItemStack(this);
@@ -122,10 +110,7 @@ public class ItemCompositeArmor extends ArmorItem {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (EquipmentSlot.CHEST.equals(getSlot())) {
-			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				Component tip = new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(h.getClientInt(0) + "")).withStyle(ChatFormatting.AQUA);
-				tooltip.add(tip);
-			});
+			tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(IntegerStorage.getInteger(0, stack) + "")).withStyle(ChatFormatting.AQUA));
 		}
 	}
 
@@ -145,24 +130,6 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
-	}
-	
-	@Override
-	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag superTag = super.getShareTag(stack);
-		if(superTag == null) {
-			superTag = new CompoundTag();
-		}
-		superTag.put("capabiltag", CapabilityIntStorage.saveToClientNBT(stack));
-		return superTag;
-	}
-	
-	@Override
-	public void readShareTag(ItemStack stack, CompoundTag nbt) {
-		super.readShareTag(stack, nbt);
-		if(nbt != null) {
-			CapabilityIntStorage.readFromClientNBT(nbt.getCompound("capabiltag"), stack);
-		}
 	}
 
 	public enum CompositeArmor implements ICustomArmor {
