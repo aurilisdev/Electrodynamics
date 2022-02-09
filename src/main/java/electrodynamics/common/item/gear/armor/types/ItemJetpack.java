@@ -10,7 +10,6 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
@@ -129,34 +128,27 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
-		super.inventoryTick(stack, world, entity, slot, isSelected);
-		if (entity instanceof Player player) {
-			if (world.isClientSide) {
-				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem()) && stack.hasTag()) {
-					boolean isDown = KeyBinds.jetpackAscend.isDown();
-					int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
-					boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
-					int ticks = stack.hasTag() ? stack.getTag().getInt(NBTUtils.TIMER) : 1;
-					if (enoughFuel) {
-						if (mode == 0 && isDown) {
-							handleSound(ticks, player);
-							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
-							sendPacket(player, true);
-							renderParticles(world, entity);
-						} else if (mode == 1 && isDown) {
-							handleSound(ticks, player);
-							moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
-							sendPacket(player, true);
-							renderParticles(world, entity);
-						} else if (mode == 1 && player.fallDistance > 0) {
-							handleSound(ticks, player);
-							hoverWithJetpack(player);
-							sendPacket(player, true);
-							renderParticles(world, entity);
-						} else {
-							sendPacket(player, false);
-						}
+	public void onArmorTick(ItemStack stack, Level world, Player player) {
+		super.onArmorTick(stack, world, player);
+		if (world.isClientSide) {
+			ArmorItem item = (ArmorItem)stack.getItem();
+			if (item.getSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
+				boolean isDown = KeyBinds.jetpackAscend.isDown();
+				int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
+				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+				if (enoughFuel) {
+					if (mode == 0 && isDown) {
+						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
+						sendPacket(player, true);
+						renderParticles(world, player);
+					} else if (mode == 1 && isDown) {
+						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
+						sendPacket(player, true);
+						renderParticles(world, player);
+					} else if (mode == 1 && player.fallDistance > 0) {
+						hoverWithJetpack(player);
+						sendPacket(player, true);
+						renderParticles(world, player);
 					} else {
 						sendPacket(player, false);
 					}
@@ -164,16 +156,20 @@ public class ItemJetpack extends ArmorItem {
 					sendPacket(player, false);
 				}
 			} else {
-				CompoundTag tag = stack.getOrCreateTag();
-				tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER + 1));
-				boolean hasRan = tag.getBoolean(NBTUtils.USED);
-				if (hasRan) {
-					drainHydrogen(stack);
-					player.resetFallDistance();
-				}
-				if(tag.getInt(NBTUtils.TIMER) > 100) {
-					tag.putInt(NBTUtils.TIMER, 0);
-				}
+				sendPacket(player, false);
+			}
+		} else {
+			CompoundTag tag = stack.getOrCreateTag();
+			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
+			boolean hasRan = tag.getBoolean(NBTUtils.USED);
+			if (hasRan) {
+				int ticks = tag.getInt(NBTUtils.TIMER);
+				handleSound(ticks, player);
+				drainHydrogen(stack);
+				player.resetFallDistance();
+			}
+			if(tag.getInt(NBTUtils.TIMER) > 100) {
+				tag.putInt(NBTUtils.TIMER, 0);
 			}
 		}
 	}

@@ -1,0 +1,19 @@
+{
+	"type": "electrodynamics:reinforced_alloyer_recipe",
+	"iteminputs" : {
+		"count" : 2,
+		"0": {
+			"tag": "forge:coal_coke",
+			"count": 1
+		},
+		"1": {
+			"tag": "forge:sand",
+			"count": 16
+		}
+	},
+	"output": {
+		"item": "electrodynamics:glassclear",
+		"count": 16
+	},
+    "experience": 0.1
+}
