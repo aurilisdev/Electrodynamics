@@ -90,6 +90,9 @@ public class ItemUpgrade extends Item {
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
+					if(!handStack.hasTag()) {
+						handStack.setTag(new CompoundTag());
+					}
 					List<Direction> dirs = NBTUtils.readDirectionList(handStack);
 					dirs.add(lookingDir);
 					NBTUtils.clearDirectionList(handStack);

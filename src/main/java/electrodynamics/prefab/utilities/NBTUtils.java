@@ -22,7 +22,7 @@ public class NBTUtils {
 	
 	public static List<Direction> readDirectionList(ItemStack item){
 		List<Direction> dirs = new ArrayList<>();
-		CompoundTag tag = item.getOrCreateTag();
+		CompoundTag tag = item.getTag();
 		int size = tag.getInt(SIZE + DIRECTION);
 		for(int i = 0; i < size; i++) {
 			dirs.add(Direction.valueOf(tag.getString(DIRECTION + i).toUpperCase()));
@@ -32,7 +32,7 @@ public class NBTUtils {
 	
 	public static void writeDirectionList(List<Direction> dirs, ItemStack item) {
 		int size = dirs.size();
-		CompoundTag tag = item.getOrCreateTag();
+		CompoundTag tag = item.getTag();
 		tag.putInt(SIZE + DIRECTION, size);
 		for(int i = 0; i < size; i++) {
 			tag.putString(DIRECTION + i, dirs.get(i).getName());
@@ -40,7 +40,7 @@ public class NBTUtils {
 	}
 	
 	public static void clearDirectionList(ItemStack item) {
-		CompoundTag tag = item.getOrCreateTag();
+		CompoundTag tag = item.getTag();
 		int size = tag.getInt(SIZE + DIRECTION);
 		for(int i = 0; i < size; i++) {
 			tag.remove(DIRECTION + i);
