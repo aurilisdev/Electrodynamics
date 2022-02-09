@@ -1,14 +1,13 @@
 package electrodynamics.common.item;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import electrodynamics.api.item.nbtutils.BooleanStorage;
-import electrodynamics.api.item.nbtutils.DirectionStorage;
-import electrodynamics.api.item.nbtutils.DoubleStorage;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -55,10 +54,11 @@ public class ItemUpgrade extends Item {
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
-			if (BooleanStorage.getBoolean(0, stack)) {
+			boolean hasTag = stack.hasTag();
+			if (hasTag && stack.getTag().getBoolean(NBTUtils.SMART)) {
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
-			List<Direction> dirs = DirectionStorage.getAllDirections(stack);
+			List<Direction> dirs = hasTag ? NBTUtils.readDirectionList(stack) : new ArrayList<>();
 			if (!dirs.isEmpty()) {
 				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
 				for (int i = 0; i < dirs.size(); i++) {
@@ -72,7 +72,7 @@ public class ItemUpgrade extends Item {
 			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.experience) {
-			double storedXp = DoubleStorage.getDouble(0, stack);
+			double storedXp = stack.hasTag() ? stack.getTag().getDouble(NBTUtils.XP) : 0;
 			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TextComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
 			tooltip.add(new TranslatableComponent("tooltip.info.xpusage").withStyle(ChatFormatting.GRAY));
 		}
@@ -90,21 +90,25 @@ public class ItemUpgrade extends Item {
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-					int size = DirectionStorage.getSize(handStack);
-					DirectionStorage.addDirection(size, lookingDir, handStack);
+					List<Direction> dirs = NBTUtils.readDirectionList(handStack);
+					dirs.add(lookingDir);
+					NBTUtils.clearDirectionList(handStack);
+					NBTUtils.writeDirectionList(dirs, handStack);
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				} else {
-					BooleanStorage.addBoolean(0, !BooleanStorage.getBoolean(0, handStack), handStack);
+					CompoundTag tag = handStack.getOrCreateTag();
+					tag.putBoolean(NBTUtils.SMART, !tag.getBoolean(NBTUtils.SMART));
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
 			}
 			if (localSubtype == SubtypeItemUpgrade.experience) {
-				double storedXp = DoubleStorage.getDouble(0, handStack);
+				CompoundTag tag = handStack.getOrCreateTag();
+				double storedXp = tag.getDouble(NBTUtils.XP);
 				int takenXp = (int) storedXp;
 				// it uses a Vec3 for some reason don't ask me why
 				Vec3 playerPos = new Vec3(player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ());
 				ExperienceOrb.award((ServerLevel) world, playerPos, takenXp);
-				DoubleStorage.addDouble(0, storedXp - takenXp, handStack);
+				tag.putDouble(NBTUtils.XP, storedXp - takenXp);
 				return InteractionResultHolder.pass(player.getItemInHand(hand));
 			}
 		}
@@ -115,9 +119,21 @@ public class ItemUpgrade extends Item {
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
 			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-				DirectionStorage.clearData(stack);
+				SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
+				if(subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
+					if(!stack.hasTag()) {
+						stack.setTag(new CompoundTag());
+					}
+					NBTUtils.clearDirectionList(stack);
+				}
 			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-				DirectionStorage.clearData(stack);
+				SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
+				if(subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
+					if(!stack.hasTag()) {
+						stack.setTag(new CompoundTag());
+					}
+					NBTUtils.clearDirectionList(stack);
+				}
 			}
 		}
 		return super.onEntitySwing(stack, entity);
@@ -126,7 +142,10 @@ public class ItemUpgrade extends Item {
 	@Override
 	public boolean isFoil(ItemStack stack) {
 		SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
-		return BooleanStorage.getBoolean(0, stack) || subtype == SubtypeItemUpgrade.fortune || subtype == SubtypeItemUpgrade.unbreaking || subtype == SubtypeItemUpgrade.silktouch;
+		if(stack.hasTag()) {
+			return stack.getTag().getBoolean(NBTUtils.SMART);
+		}
+		return subtype == SubtypeItemUpgrade.fortune || subtype == SubtypeItemUpgrade.unbreaking || subtype == SubtypeItemUpgrade.silktouch;
 	}
 	
 }

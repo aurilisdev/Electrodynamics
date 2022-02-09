@@ -7,10 +7,11 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,10 +45,11 @@ public class PlayerHandler {
 
 		if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2]) && ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1]) && ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
 			ItemStack stack = armorPieces.get(2);
-			int stored = IntegerStorage.getInteger(0, stack);
+			CompoundTag tag = stack.getOrCreateTag();
+			int stored = tag.getInt(NBTUtils.PLATES);
 				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 					event.setAmount((float) Math.sqrt(event.getAmount()));
-					IntegerStorage.addInteger(0, stored - 1, stack);
+					tag.putInt(NBTUtils.PLATES, stored - 1);
 					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 				}
 		}

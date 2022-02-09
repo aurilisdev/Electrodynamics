@@ -6,7 +6,8 @@ import java.util.function.Supplier;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.IntegerStorage;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,13 +32,14 @@ public class PacketModeSwitchServer {
 				ServerPlayer serverPlayer = (ServerPlayer) serverWorld.getPlayerByUUID(message.playerId);
 				ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
 				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					int curMode = IntegerStorage.getInteger(0, chest);
+					CompoundTag tag = chest.getOrCreateTag();
+					int curMode = tag.getInt(NBTUtils.MODE);
 					if (curMode < 2) {
 						curMode++;
 					} else {
 						curMode = 0;
 					}
-					IntegerStorage.addInteger(0, curMode, chest);
+					tag.putInt(NBTUtils.MODE, curMode);
 					serverPlayer.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
 				}
 			}

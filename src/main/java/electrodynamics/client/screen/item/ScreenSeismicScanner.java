@@ -7,12 +7,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.nbtutils.LocationStorage;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -38,9 +38,8 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		
 		ItemStack ownerItem = menu.getOwnerItem();
 		
-		Location playerLoc = LocationStorage.getLocation(0, ownerItem);
-		Location blockLoc = LocationStorage.getLocation(1, ownerItem);
-		
+		Location playerLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.PLAY_LOC) : new Location(0,0,0);
+		Location blockLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.BLOCK_LOC) : new Location(0,0,0);
 
 		if (blockLoc.equals(playerLoc)) {
 			drawNotFound(stack);

@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.DoubleStorage;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.network.FluidUtilities;
@@ -23,6 +22,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -663,6 +663,23 @@ public class ComponentProcessor implements Component {
 	}
 
 	private static void dispenseExperience(ComponentInventory inv, double experience) {
+		int start = inv.getUpgradeSlotStartIndex();
+		int count = inv.upgrades();
+		for(int i = start; i < start + count; i++) {
+			ItemStack stack = inv.getItem(i);
+			if (!stack.isEmpty()) {
+				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
+				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
+					//TODO work god damn you
+					CompoundTag tag = stack.getOrCreateTag();
+					tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + experience);
+					inv.removeItem(i, 1);
+					inv.setItem(i, stack.copy());
+				}
+				break;
+			}
+		}
+		/*
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
@@ -672,6 +689,7 @@ public class ComponentProcessor implements Component {
 				break;
 			}
 		}
+		*/
 	}
 
 	private static boolean roomInItemBiSlots(List<ItemStack> slots, ItemStack[] biproducts) {

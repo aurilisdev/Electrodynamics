@@ -9,14 +9,15 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.BooleanStorage;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -74,7 +75,8 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
 		if (entity instanceof Player player && !world.isClientSide) {
 			ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
-			boolean status = BooleanStorage.getBoolean(0, stack);
+			CompoundTag tag = stack.getOrCreateTag();
+			boolean status = tag.getBoolean(NBTUtils.ON);
 			if (status && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.HEAD).getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get()) && nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
 				nvgs.extractPower(stack, JOULES_PER_TICK, false);
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
@@ -119,7 +121,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		super.appendHoverText(stack, world, tooltip, flagIn);
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
-		if (BooleanStorage.getBoolean(0, stack)) {
+		if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
 			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 		} else {
 			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
@@ -146,7 +148,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		boolean isOn = BooleanStorage.getBoolean(0, stack);
+		boolean isOn = stack.hasTag() ? stack.getTag().getBoolean(NBTUtils.ON) : false;
 		if (isOn) {
 			return ARMOR_TEXTURE_ON;
 		}

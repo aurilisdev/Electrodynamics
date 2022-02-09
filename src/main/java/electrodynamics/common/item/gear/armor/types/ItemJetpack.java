@@ -11,8 +11,6 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.BooleanStorage;
-import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
@@ -21,6 +19,7 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -114,7 +113,7 @@ public class ItemJetpack extends ArmorItem {
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
-			int mode = IntegerStorage.getInteger(0, stack);
+			int mode = stack.getTag().getInt(NBTUtils.MODE);
 			Component modeTip = switch (mode) {
 			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
 			case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
@@ -136,9 +135,9 @@ public class ItemJetpack extends ArmorItem {
 			if (world.isClientSide) {
 				if (slot == 2 && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.CHEST).getItem(), stack.getItem()) && stack.hasTag()) {
 					boolean isDown = KeyBinds.jetpackAscend.isDown();
-					int mode = IntegerStorage.getInteger(0, stack);
+					int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
 					boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
-					int ticks = IntegerStorage.getInteger(1, stack);
+					int ticks = stack.hasTag() ? stack.getTag().getInt(NBTUtils.TIMER) : 1;
 					if (enoughFuel) {
 						if (mode == 0 && isDown) {
 							handleSound(ticks, player);
@@ -165,14 +164,15 @@ public class ItemJetpack extends ArmorItem {
 					sendPacket(player, false);
 				}
 			} else {
-				IntegerStorage.addInteger(1, IntegerStorage.getInteger(1, stack) + 1, stack);
-				boolean hasRan = BooleanStorage.getBoolean(0, stack);
+				CompoundTag tag = stack.getOrCreateTag();
+				tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER + 1));
+				boolean hasRan = tag.getBoolean(NBTUtils.USED);
 				if (hasRan) {
 					drainHydrogen(stack);
 					player.resetFallDistance();
 				}
-				if(IntegerStorage.getInteger(1, stack) > 100) {
-					IntegerStorage.addInteger(1, 0, stack);
+				if(tag.getInt(NBTUtils.TIMER) > 100) {
+					tag.putInt(NBTUtils.TIMER, 0);
 				}
 			}
 		}

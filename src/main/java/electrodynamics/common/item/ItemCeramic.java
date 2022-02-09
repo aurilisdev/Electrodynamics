@@ -6,8 +6,9 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -33,10 +34,11 @@ public class ItemCeramic extends Item {
 
 				ItemStack chestplate = armorPieces.get(2);
 				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-					int stored = IntegerStorage.getInteger(0, chestplate);
+					CompoundTag tag = chestplate.getOrCreateTag();
+					int stored = tag.getInt(NBTUtils.PLATES);
 					if (stored < 2) {
 						playerIn.playNotifySound(SoundRegister.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
-						IntegerStorage.addInteger(0, stored + 1, chestplate);
+						tag.putInt(NBTUtils.PLATES, stored + 1);
 						playerIn.getItemInHand(handIn).shrink(1);
 					}
 					

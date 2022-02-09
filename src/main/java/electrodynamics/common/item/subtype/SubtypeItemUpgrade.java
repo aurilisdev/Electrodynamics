@@ -8,9 +8,6 @@ import org.apache.logging.log4j.util.TriConsumer;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.BooleanStorage;
-import electrodynamics.api.item.nbtutils.DirectionStorage;
-import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
@@ -20,8 +17,10 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
@@ -56,11 +55,12 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	iteminput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (inv.hasInputRoom()) {
-			int tickNumber = IntegerStorage.getInteger(0, upgrade);
+			CompoundTag tag = upgrade.getOrCreateTag();
+			int tickNumber = tag.getInt(NBTUtils.TIMER);
 			if (tickNumber >= 4) {
-				IntegerStorage.addInteger(0, 0, upgrade);
-				List<Direction> dirs = DirectionStorage.getAllDirections(upgrade);
-				boolean isSmart = BooleanStorage.getBoolean(0, upgrade);
+				tag.putInt(NBTUtils.TIMER, 0);
+				List<Direction> dirs = NBTUtils.readDirectionList(upgrade);
+				boolean isSmart = tag.getBoolean(NBTUtils.SMART);
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
@@ -77,18 +77,19 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			IntegerStorage.addInteger(0, IntegerStorage.getInteger(0, upgrade) + 1, upgrade);
+			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
 		}
 	}, 1),
 	// I can't really optimize this one any more than it is
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		if (inv.hasItemsInOutput()) {
-			int tickNumber = IntegerStorage.getInteger(0, upgrade);
+			CompoundTag tag = upgrade.getOrCreateTag();
+			int tickNumber = tag.getInt(NBTUtils.TIMER);
 			if (tickNumber >= 4) {
-				IntegerStorage.addInteger(0, 0, upgrade);
-				List<Direction> dirs = DirectionStorage.getAllDirections(upgrade);
-				boolean isSmart = BooleanStorage.getBoolean(0, upgrade);
+				tag.putInt(NBTUtils.TIMER, 0);
+				List<Direction> dirs = NBTUtils.readDirectionList(upgrade);
+				boolean isSmart = tag.getBoolean(NBTUtils.SMART);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 					combinedItems.addAll(inv.getItemBiContents());
@@ -107,7 +108,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			IntegerStorage.addInteger(0, IntegerStorage.getInteger(0, upgrade) + 1, upgrade);
+			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
 		}
 	}, 1),
 	improvedsolarcell((holder, processor, upgrade) -> {

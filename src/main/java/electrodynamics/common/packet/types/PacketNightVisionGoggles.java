@@ -6,8 +6,9 @@ import java.util.function.Supplier;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.api.item.nbtutils.BooleanStorage;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -32,9 +33,10 @@ public class PacketNightVisionGoggles {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
 				if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
-					BooleanStorage.addBoolean(0, !BooleanStorage.getBoolean(0, playerHead), playerHead);
+					CompoundTag tag = playerHead.getOrCreateTag();
+					tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 					if (((ItemNightVisionGoggles) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
-						if (BooleanStorage.getBoolean(0, playerHead)) {
+						if (tag.getBoolean(NBTUtils.ON)) {
 							player.playNotifySound(SoundRegister.SOUND_NIGHTVISIONGOGGLESON.get(), SoundSource.PLAYERS, 1, 1);
 						} else {
 							player.playNotifySound(SoundRegister.SOUND_NIGHTVISIONGOGGLESOFF.get(), SoundSource.PLAYERS, 1, 1);

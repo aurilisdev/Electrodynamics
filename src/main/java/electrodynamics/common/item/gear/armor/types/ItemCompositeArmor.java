@@ -7,13 +7,14 @@ import java.util.function.Consumer;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.item.nbtutils.IntegerStorage;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -88,7 +89,8 @@ public class ItemCompositeArmor extends ArmorItem {
 		if (allowdedIn(group)) {
 			ItemStack filled = new ItemStack(this);
 			if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
-				IntegerStorage.addInteger(0, 2, filled);
+				CompoundTag tag = filled.getOrCreateTag();
+				tag.putInt(NBTUtils.PLATES, 2);
 				items.add(filled);
 			}
 			ItemStack empty = new ItemStack(this);
@@ -109,8 +111,10 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if (EquipmentSlot.CHEST.equals(getSlot())) {
-			tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(IntegerStorage.getInteger(0, stack) + "")).withStyle(ChatFormatting.AQUA));
+		EquipmentSlot slot = ((ArmorItem)stack.getItem()).getSlot();
+		if (slot == EquipmentSlot.CHEST) {
+			int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
+			tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(plates + "")).withStyle(ChatFormatting.AQUA));
 		}
 	}
 
