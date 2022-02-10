@@ -19,9 +19,11 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class PacketModeSwitchServer {
 
 	private final UUID playerId;
+	private final Mode mode;
 
-	public PacketModeSwitchServer(UUID uuid) {
+	public PacketModeSwitchServer(UUID uuid, Mode mode) {
 		playerId = uuid;
+		this.mode = mode;
 	}
 
 	public static void handle(PacketModeSwitchServer message, Supplier<Context> context) {
@@ -30,30 +32,55 @@ public class PacketModeSwitchServer {
 			ServerLevel serverWorld = context.get().getSender().getLevel();
 			if (serverWorld != null) {
 				ServerPlayer serverPlayer = (ServerPlayer) serverWorld.getPlayerByUUID(message.playerId);
-				ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
-				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					CompoundTag tag = chest.getOrCreateTag();
-					int curMode = tag.getInt(NBTUtils.MODE);
-					if (curMode < 2) {
-						curMode++;
-					} else {
-						curMode = 0;
+				switch(message.mode) {
+				case JETPACK :
+					ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
+					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+						CompoundTag tag = chest.getOrCreateTag();
+						int curMode = tag.getInt(NBTUtils.MODE);
+						if (curMode < 2) {
+							curMode++;
+						} else {
+							curMode = 0;
+						}
+						tag.putInt(NBTUtils.MODE, curMode);
+						serverPlayer.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
 					}
-					tag.putInt(NBTUtils.MODE, curMode);
-					serverPlayer.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
+					break;
+				case SERVOLEGS:
+					ItemStack legs = serverPlayer.getItemBySlot(EquipmentSlot.LEGS);
+					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+						CompoundTag tag = legs.getOrCreateTag();
+						int curMode = tag.getInt(NBTUtils.MODE);
+						if (curMode < 3) {
+							curMode++;
+						} else {
+							curMode = 0;
+						}
+						tag.putInt(NBTUtils.MODE, curMode);
+						serverPlayer.playNotifySound(SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+					}
+					break;
+				default:
+					break;
 				}
 			}
-
 		});
 		ctx.setPacketHandled(true);
 	}
 
 	public static void encode(PacketModeSwitchServer message, FriendlyByteBuf buf) {
 		buf.writeUUID(message.playerId);
+		buf.writeEnum(message.mode);
 	}
 
 	public static PacketModeSwitchServer decode(FriendlyByteBuf buf) {
-		return new PacketModeSwitchServer(buf.readUUID());
+		return new PacketModeSwitchServer(buf.readUUID(), buf.readEnum(Mode.class));
+	}
+	
+	//Mekanism gave me this idea
+	public enum Mode {
+		JETPACK,SERVOLEGS;
 	}
 
 }

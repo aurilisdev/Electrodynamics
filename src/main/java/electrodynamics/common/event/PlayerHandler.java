@@ -64,7 +64,8 @@ public class PlayerHandler {
 			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) && event.getAmount() >= 2) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
 				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
-					event.setAmount((float) Math.sqrt(event.getAmount()));
+					event.setCanceled(true);
+					//event.setAmount((float) Math.sqrt(event.getAmount()));
 					playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
 					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 				}

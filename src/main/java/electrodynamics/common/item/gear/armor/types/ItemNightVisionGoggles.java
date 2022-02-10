@@ -3,12 +3,10 @@ package electrodynamics.common.item.gear.armor.types;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
@@ -72,18 +70,16 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) {
-		if (entity instanceof Player player && !world.isClientSide) {
+	public void onArmorTick(ItemStack stack, Level world, Player player) {
+		if (!world.isClientSide) {
 			ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
 			CompoundTag tag = stack.getOrCreateTag();
-			boolean status = tag.getBoolean(NBTUtils.ON);
-			if (status && ItemUtils.testItems(player.getItemBySlot(EquipmentSlot.HEAD).getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get()) && nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+			if (tag.getBoolean(NBTUtils.ON) && nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
 				nvgs.extractPower(stack, JOULES_PER_TICK, false);
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
-
 			}
 		}
-		super.inventoryTick(stack, world, entity, slot, isSelected);
+		super.onArmorTick(stack, world, player);
 	}
 
 	@Override

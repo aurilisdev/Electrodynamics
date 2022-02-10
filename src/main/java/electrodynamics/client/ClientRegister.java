@@ -8,6 +8,7 @@ import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
+import electrodynamics.client.render.model.armor.types.ModelServoLeggings;
 import electrodynamics.client.render.tile.RenderAdvancedSolarPanel;
 import electrodynamics.client.render.tile.RenderBatteryBox;
 import electrodynamics.client.render.tile.RenderCarbyneBatteryBox;
@@ -102,6 +103,8 @@ public class ClientRegister {
 	public static LayerDefinition HYDRAULIC_BOOTS = ModelHydraulicBoots.createBodyLayer();
 
 	public static LayerDefinition JETPACK = ModelJetpack.createBodyLayer();
+	
+	public static LayerDefinition SERVO_LEGGINGS = ModelServoLeggings.createBodyLayer();
 
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {

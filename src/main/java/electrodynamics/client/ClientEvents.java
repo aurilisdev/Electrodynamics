@@ -14,7 +14,9 @@ import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketModeSwitchServer;
-import electrodynamics.common.packet.types.PacketNightVisionGoggles;
+import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
+import electrodynamics.common.packet.types.PacketToggleOnServer;
+import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -175,10 +177,7 @@ public class ClientEvents {
 			Player player = Minecraft.getInstance().player;
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID()));
-				}
-
+				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
 			}
 		}
 
@@ -186,9 +185,26 @@ public class ClientEvents {
 			Player player = Minecraft.getInstance().player;
 			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
 			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketNightVisionGoggles(player.getUUID()));
+				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
 			}
 		}
+		
+		if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchServoLeggingsMode.isDown()) {
+			Player player = Minecraft.getInstance().player;
+			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
+			}
+		}
+		
+		if (KeyBinds.toggleServoLeggings.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleServoLeggings.isDown()) {
+			Player player = Minecraft.getInstance().player;
+			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.LEGS);
+			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.SERVOLEGGINGS));
+			}
+		}
+		
 	}
 
 }

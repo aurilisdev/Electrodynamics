@@ -7,7 +7,7 @@ import electrodynamics.api.References;
 import electrodynamics.common.packet.types.PacketAddClientRenderInfo;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
 import electrodynamics.common.packet.types.PacketModeSwitchServer;
-import electrodynamics.common.packet.types.PacketNightVisionGoggles;
+import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.packet.types.PacketPowerSetting;
 import electrodynamics.common.packet.types.PacketServerUpdateTile;
@@ -32,7 +32,7 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketPowerSetting.class, PacketPowerSetting::encode, PacketPowerSetting::decode, PacketPowerSetting::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketModeSwitchServer.class, PacketModeSwitchServer::encode, PacketModeSwitchServer::decode, PacketModeSwitchServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketJetpackFlightServer.class, PacketJetpackFlightServer::encode, PacketJetpackFlightServer::decode, PacketJetpackFlightServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-		CHANNEL.registerMessage(disc++, PacketNightVisionGoggles.class, PacketNightVisionGoggles::encode, PacketNightVisionGoggles::decode, PacketNightVisionGoggles::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+		CHANNEL.registerMessage(disc++, PacketToggleOnServer.class, PacketToggleOnServer::encode, PacketToggleOnServer::decode, PacketToggleOnServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketAddClientRenderInfo.class, PacketAddClientRenderInfo::encode, PacketAddClientRenderInfo::decode, PacketAddClientRenderInfo::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 	}
 

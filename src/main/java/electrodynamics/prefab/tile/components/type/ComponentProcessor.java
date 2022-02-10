@@ -478,7 +478,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
 				inputs.get(procNumber).get(slotOrientation.get(i)).shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -524,7 +524,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -574,7 +574,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -618,7 +618,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -658,11 +658,11 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
-	private static void dispenseExperience(ComponentInventory inv, double experience) {
+	private static void dispenseExperience(ComponentInventory inv, double experience, GenericTile holder) {
 		int start = inv.getUpgradeSlotStartIndex();
 		int count = inv.upgrades();
 		for(int i = start; i < start + count; i++) {
@@ -675,6 +675,7 @@ public class ComponentProcessor implements Component {
 					tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + experience);
 					inv.removeItem(i, 1);
 					inv.setItem(i, stack.copy());
+					//holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 				}
 				break;
 			}

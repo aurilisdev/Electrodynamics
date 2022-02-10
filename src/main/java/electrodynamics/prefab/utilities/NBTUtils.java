@@ -19,6 +19,7 @@ public class NBTUtils {
 	public static final String DIRECTION = "dir";
 	public static final String LOCATION = "loc";
 	public static final String PLATES = "plates";
+	public static final String SUCESS = "sucess";
 	
 	public static List<Direction> readDirectionList(ItemStack item){
 		List<Direction> dirs = new ArrayList<>();

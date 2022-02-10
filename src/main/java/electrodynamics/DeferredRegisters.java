@@ -87,6 +87,7 @@ import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
+import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
@@ -387,6 +388,8 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(blockLogisticalManager, "|translate|tooltip.logisticalmanager.use");
 
 	}
+	
+	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(new BlockItemDescriptable(blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
@@ -409,7 +412,6 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
-	//public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
@@ -422,8 +424,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS.register("nightvisiongoggles", supplier(new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
 	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(new ItemJetpack()));
-
-	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(new BlockItemDescriptable(blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_SERVOLEGGINGS = ITEMS.register("servoleggings", supplier(new ItemServoLeggings((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 	
 	// Split from items to tiles
 
