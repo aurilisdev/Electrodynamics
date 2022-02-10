@@ -1,7 +1,11 @@
 package electrodynamics.client.render.model.armor;
 
+import java.util.function.Function;
+
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
 public abstract class GenericArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
@@ -22,9 +26,8 @@ public abstract class GenericArmorModel<T extends LivingEntity> extends Humanoid
 	protected static final String RIGHT_LEG = "right_leg";
 	protected static final String LEFT_LEG = "left_leg";
 
-	public GenericArmorModel(ModelPart root) {
-		super(root);
-
+	public GenericArmorModel(ModelPart root, Function<ResourceLocation, RenderType> function) {
+		super(root, function);
 		this.parentHat = root.getChild(HAT);
 		this.parentHead = root.getChild(HEAD);
 		this.parentChest = root.getChild(CHEST);
@@ -32,6 +35,10 @@ public abstract class GenericArmorModel<T extends LivingEntity> extends Humanoid
 		this.parentLeftArm = root.getChild(LEFT_ARM);
 		this.parentRightLeg = root.getChild(RIGHT_LEG);
 		this.parentLeftLeg = root.getChild(LEFT_LEG);
+	}
+	
+	public GenericArmorModel(ModelPart root) {
+		this(root, RenderType::entityCutoutNoCull);
 	}
 
 }
