@@ -37,7 +37,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 
 public class ItemCompositeArmor extends ArmorItem {
 
-	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
+	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 
 	public ItemCompositeArmor(EquipmentSlot slot) {
 		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());

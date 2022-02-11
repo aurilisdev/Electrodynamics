@@ -2,6 +2,9 @@ package electrodynamics.client.render.model.armor;
 
 import java.util.function.Function;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
@@ -39,6 +42,10 @@ public abstract class GenericArmorModel<T extends LivingEntity> extends Humanoid
 	
 	public GenericArmorModel(ModelPart root) {
 		this(root, RenderType::entityCutoutNoCull);
+	}
+	
+	protected VertexConsumer getCustomConsumer(RenderType type) {
+		return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(type);
 	}
 
 }
