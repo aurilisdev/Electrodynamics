@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.api.References;
 import electrodynamics.client.render.model.armor.GenericArmorModel;
+import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,6 +14,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,7 +65,26 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 		part.addOrReplaceChild(HAT, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
 
 		// head
-		part.addOrReplaceChild(HEAD, CubeListBuilder.create().texOffs(19, 27).addBox(-6.0F, -6.0F, -4.0F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(30, 27).addBox(-5.0F, -6.0F, 4.0F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(30, 10).addBox(4.0F, -6.0F, 4.0F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 27).addBox(5.0F, -6.0F, -4.0F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(0, 27).addBox(-5.0F, -6.0F, -5.0F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 10).addBox(3.0F, -6.0F, -5.0F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(55, 34).addBox(-4.0F, -6.0F, 5.0F, 8.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(25, 0).addBox(-3.0F, -8.0F, -3.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(0, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 1.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(19, 10).addBox(4.0F, -8.0F, -4.0F, 1.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(17, 41).addBox(-4.0F, -8.0F, 4.0F, 8.0F, 8.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 10).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(44, 3).addBox(-4.0F, -1.0F, -5.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(44, 0).addBox(-5.0F, -2.0F, -5.0F, 10.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 69).addBox(-4.0F, -8.0F, -5.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 85).addBox(-4.0F, 0.05F, -4.0F, 8.0F, 0.1F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+		part.addOrReplaceChild(HEAD, 
+			CubeListBuilder.create()
+				.texOffs(19, 27).addBox(-6.0F, -6.0F, -4.0F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.0F))
+				.texOffs(30, 27).addBox(-5.0F, -6.0F, 4.0F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(30, 10).addBox(4.0F, -6.0F, 4.0F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 27).addBox(5.0F, -6.0F, -4.0F, 1.0F, 5.0F, 8.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 27).addBox(-5.0F, -6.0F, -5.0F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 10).addBox(3.0F, -6.0F, -5.0F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(55, 34).addBox(-4.0F, -6.0F, 5.0F, 8.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(25, 0).addBox(-3.0F, -8.0F, -3.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+				.texOffs(19, 10).addBox(4.0F, -8.0F, -4.0F, 1.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+				.texOffs(17, 41).addBox(-4.0F, -8.0F, 4.0F, 8.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 10).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+				.texOffs(44, 3).addBox(-4.0F, -1.0F, -5.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(44, 0).addBox(-5.0F, -2.0F, -5.0F, 10.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(71, 69).addBox(-4.0F, -8.0F, -5.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 85).addBox(-4.0F, 0.05F, -4.0F, 8.0F, 0.1F, 8.0F, new CubeDeformation(0.0F))
+				.texOffs(42, 84).addBox(-3.0F, -6.0F, -5.0F, 6.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), 
+			PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		if (noChestplate) {
 			part.addOrReplaceChild(CHEST, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
@@ -99,16 +120,17 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 		default:
 			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
 			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+			break;
 		}
 
 		return LayerDefinition.create(mesh, 128, 128);
 	}
 
 	@Override
+	//Call me a butcher, because I am hacking this game
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-
 		if (parentHead.visible) {
-			parentHead.render(poseStack, buffer, packedLight, packedOverlay);
+			parentHead.render(poseStack, getCustomConsumer(RenderType.entityTranslucent(new ResourceLocation(ItemCompositeArmor.ARMOR_TEXTURE_LOCATION))), packedLight, packedOverlay);
 		}
 		if (parentChest.visible) {
 			parentChest.render(poseStack, buffer, packedLight, packedOverlay);
@@ -119,6 +141,6 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 			parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
 			parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 		}
-
 	}
+	
 }

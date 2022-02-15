@@ -6,11 +6,12 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -37,23 +38,26 @@ public class PlayerHandler {
 
 	@SubscribeEvent
 	public static void takeDamageWithArmor(LivingHurtEvent event) {
-		ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
+		ItemStack[] compositeArmor = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()) };
+		ItemStack[] combatArmor = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMBATHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMBATLEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get()) };
 
 		List<ItemStack> armorPieces = new ArrayList<>();
 		event.getEntityLiving().getArmorSlots().forEach(armorPieces::add);
 
-		if (ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2]) && ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1]) && ItemStack.isSameIgnoreDurability(armorPieces.get(3), armorPiecesArray[0])) {
+		if (compareArmor(armorPieces, compositeArmor) || compareArmor(armorPieces, combatArmor)) {
 			ItemStack stack = armorPieces.get(2);
-			stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && h.getInt(0) > 0) {
-
+			CompoundTag tag = stack.getOrCreateTag();
+			int stored = tag.getInt(NBTUtils.PLATES);
+				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 					event.setAmount((float) Math.sqrt(event.getAmount()));
-					h.setInt(0, h.getInt(0) - 1);
+					tag.putInt(NBTUtils.PLATES, stored - 1);
 					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 				}
-			});
-
 		}
+	}
+	
+	private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
+		return ItemStack.isSameIgnoreDurability(set1.get(0), set2[3]) && ItemStack.isSameIgnoreDurability(set1.get(1), set2[2]) && ItemStack.isSameIgnoreDurability(set1.get(2), set2[1]) && ItemStack.isSameIgnoreDurability(set1.get(3), set2[0]);
 	}
 
 	@SubscribeEvent
@@ -61,11 +65,13 @@ public class PlayerHandler {
 		DamageSource source = event.getSource();
 		if (source.isFall()) {
 			ItemStack hydraulicBoots = new ItemStack(DeferredRegisters.ITEM_HYDRAULICBOOTS.get());
+			ItemStack combatBoots = new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get());
 			ItemStack playerBoots = event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET);
-			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) && event.getAmount() >= 2) {
+			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem())
+					|| ItemUtils.testItems(combatBoots.getItem(), playerBoots.getItem())) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
 				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
-					event.setAmount((float) Math.sqrt(event.getAmount()));
+					event.setCanceled(true);
 					playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
 					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 				}

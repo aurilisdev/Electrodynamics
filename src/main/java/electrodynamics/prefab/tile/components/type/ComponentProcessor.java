@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
@@ -23,6 +22,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -478,7 +478,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
 				inputs.get(procNumber).get(slotOrientation.get(i)).shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -524,7 +524,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -574,7 +574,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -618,7 +618,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
@@ -658,20 +658,39 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp());
+			dispenseExperience(inv, locRecipe.getXp(), holder);
 		}
 	}
 
-	private static void dispenseExperience(ComponentInventory inv, double experience) {
-		for (ItemStack stack : inv.getUpgradeContents()) {
+	private static void dispenseExperience(ComponentInventory inv, double experience, GenericTile holder) {
+		int start = inv.getUpgradeSlotStartIndex();
+		int count = inv.upgrades();
+		for(int i = start; i < start + count; i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, h.getDouble(0) + experience));
+					//TODO work god damn you
+					CompoundTag tag = stack.getOrCreateTag();
+					tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + experience);
+					inv.removeItem(i, 1);
+					inv.setItem(i, stack.copy());
+					//holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 				}
 				break;
 			}
 		}
+		/*
+		for (ItemStack stack : inv.getUpgradeContents()) {
+			if (!stack.isEmpty()) {
+				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
+				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
+					DoubleStorage.addDouble(0, DoubleStorage.getDouble(0, stack) + experience, stack);
+				}
+				break;
+			}
+		}
+		*/
 	}
 
 	private static boolean roomInItemBiSlots(List<ItemStack> slots, ItemStack[] biproducts) {

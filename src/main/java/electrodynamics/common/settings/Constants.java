@@ -72,16 +72,16 @@ public class Constants {
 	public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
 	@IntValue(def = 50)
 	public static int ENERGIZEDALLOYER_REQUIRED_TICKS = 50;
-	@DoubleValue(def = 2000.0)
-	public static double ENERGIZEDALLOYER_USAGE_PER_TICK = 2000.0;
+	@DoubleValue(def = 50.0)
+	public static double ENERGIZEDALLOYER_USAGE_PER_TICK = 50.0;
 	@IntValue(def = 200)
 	public static int LATHE_REQUIRED_TICKS = 200;
 	@DoubleValue(def = 350.0)
 	public static double LATHE_USAGE_PER_TICK = 350.0;
 	@IntValue(def = 50)
 	public static int REINFORCEDALLOYER_REQUIRED_TICKS = 50;
-	@DoubleValue(def = 2000.0)
-	public static double REINFORCEDALLOYER_USAGE_PER_TICK = 2000.0;
+	@DoubleValue(def = 50.0)
+	public static double REINFORCEDALLOYER_USAGE_PER_TICK = 50.0;
 	@IntValue(def = 10)
 	public static int CHARGER_REQUIRED_TICKS = 100;
 	@DoubleValue(def = 1000.0)
@@ -94,7 +94,29 @@ public class Constants {
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	@DoubleValue(def = 400)
 	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 400;
-
+	@DoubleValue(def = 100)
+	public static double MOTORCOMPLEX_USAGE_PER_TICK = 100.0;
+	@DoubleValue(def = 100)
+	public static double QUARRY_USAGE_PER_TICK = 100.0;
+	@IntValue(def = 100)
+	public static int QUARRY_WATERUSAGE_PER_BLOCK = 100;
+	@IntValue(def = 300, comment = "the maximum height the quarry can be placed at; min is -55, max is 300")
+	public static int MAX_QUARRY_Y_HEIGHT = 300;
+	@IntValue(def = 64, comment = "max radius = 128, min radius = 2")
+	public static int MARKER_RADIUS = 64;
+	@IntValue(def = 1, comment = "max possible is 1 tick / block")
+	public static int MAX_QUARRYBLOCKS_PER_TICK = 1;
+	@IntValue(def = 100, comment = "min possible speed is 100 ticks / block")
+	public static int MIN_QUARRYBLOCKS_PER_TICK = 100;
+	@IntValue(def = 64, comment = "how many air blocks the quarry can skip over in one clearing tick; max is 128, min is zero")
+	public static int CLEARING_AIR_SKIP = 64;
+	@IntValue(def = 64, comment = "how many air blocks the quarry can skip over in one mining tick; max is 128, min is zero")
+	public static int MINING_AIR_SKIP = 64;
+	@BooleanValue(def = true, comment = "controls whether or not the quarry will mine blocks that have been placed into the mining area")
+	public static boolean MAINTAIN_MINING_AREA = true;
+	@BooleanValue(def = false, comment = "Controls whether the quarry can bypass claims or not")
+	public static boolean BYPASS_CLAIMS = false;
+	
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;
 

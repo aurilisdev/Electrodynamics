@@ -4,16 +4,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.multicapability.UpgradeCapability;
-import electrodynamics.api.capability.types.boolstorage.CapabilityBooleanStorage;
-import electrodynamics.api.capability.types.dirstorage.CapabilityDirectionalStorage;
-import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
-import electrodynamics.api.capability.types.doublestorage.CapabilityDoubleStorage;
-import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemUpgrade extends Item {
 	public final SubtypeItemUpgrade subtype;
@@ -41,15 +34,6 @@ public class ItemUpgrade extends Item {
 	public ItemUpgrade(Properties properties, SubtypeItemUpgrade subtype) {
 		super(properties.stacksTo(subtype.maxSize));
 		this.subtype = subtype;
-	}
-
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		SubtypeItemUpgrade type = ((ItemUpgrade) stack.getItem()).subtype;
-		if (type == SubtypeItemUpgrade.itemoutput || type == SubtypeItemUpgrade.iteminput || type == SubtypeItemUpgrade.experience) {
-			return new UpgradeCapability(new CapabilityBooleanStorage(), new CapabilityIntStorage(1), new CapabilityDirectionalStorage(), new CapabilityDoubleStorage(1));
-		}
-		return super.initCapabilities(stack, nbt);
 	}
 
 	@Override
@@ -65,21 +49,21 @@ public class ItemUpgrade extends Item {
 			tooltip.add(new TranslatableComponent("tooltip.info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
-
 			if (subtype == SubtypeItemUpgrade.itemoutput) {
 				tooltip.add(new TranslatableComponent("tooltip.info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
-			if (stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false)) {
+			boolean hasTag = stack.hasTag();
+			if (hasTag && stack.getTag().getBoolean(NBTUtils.SMART)) {
 				tooltip.add(new TranslatableComponent("tooltip.info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
-			List<Direction> dirs = stack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
+			List<Direction> dirs = hasTag ? NBTUtils.readDirectionList(stack) : new ArrayList<>();
 			if (!dirs.isEmpty()) {
 				tooltip.add(new TranslatableComponent("tooltip.info.dirlist").withStyle(ChatFormatting.BLUE));
 				for (int i = 0; i < dirs.size(); i++) {
 					Direction dir = dirs.get(i);
-					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalise(dir.getName())).withStyle(ChatFormatting.BLUE));
+					tooltip.add(new TextComponent(i + 1 + ". " + StringUtils.capitalize(dir.getName())).withStyle(ChatFormatting.BLUE));
 				}
 				tooltip.add(new TranslatableComponent("tooltip.info.cleardirs").withStyle(ChatFormatting.GRAY));
 			} else {
@@ -88,9 +72,11 @@ public class ItemUpgrade extends Item {
 			tooltip.add(new TranslatableComponent("tooltip.info.togglesmart").withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.experience) {
-			double storedXp = stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getDouble(0)).orElse(1.0);
-			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
+			double storedXp = stack.hasTag() ? stack.getTag().getDouble(NBTUtils.XP) : 0;
+			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TextComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
 			tooltip.add(new TranslatableComponent("tooltip.info.xpusage").withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TranslatableComponent("tooltip.info.broken").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+			
 		}
 		if (subtype == SubtypeItemUpgrade.range) {
 			tooltip.add(new TranslatableComponent("tooltip.info.range").withStyle(ChatFormatting.GRAY));
@@ -102,22 +88,33 @@ public class ItemUpgrade extends Item {
 		if (!world.isClientSide) {
 			ItemStack handStack = player.getItemInHand(hand);
 			SubtypeItemUpgrade localSubtype = ((ItemUpgrade) handStack.getItem()).subtype;
-			if ((localSubtype == SubtypeItemUpgrade.iteminput || localSubtype == SubtypeItemUpgrade.itemoutput) && ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY != null) {
+			if (localSubtype == SubtypeItemUpgrade.iteminput || localSubtype == SubtypeItemUpgrade.itemoutput) {
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-					handStack.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(k -> k.addDirection(lookingDir));
+					if(!handStack.hasTag()) {
+						handStack.setTag(new CompoundTag());
+					}
+					List<Direction> dirs = NBTUtils.readDirectionList(handStack);
+					dirs.add(lookingDir);
+					NBTUtils.clearDirectionList(handStack);
+					NBTUtils.writeDirectionList(dirs, handStack);
+					return InteractionResultHolder.pass(player.getItemInHand(hand));
+				} else {
+					CompoundTag tag = handStack.getOrCreateTag();
+					tag.putBoolean(NBTUtils.SMART, !tag.getBoolean(NBTUtils.SMART));
 					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
-				handStack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(m -> m.setBoolean(0, !m.getBoolean(0)));
 			}
-			if (localSubtype == SubtypeItemUpgrade.experience && ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY != null) {
-				double storedXp = handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).map(m -> m.getDouble(0)).orElse(0.0);
+			if (localSubtype == SubtypeItemUpgrade.experience) {
+				CompoundTag tag = handStack.getOrCreateTag();
+				double storedXp = tag.getDouble(NBTUtils.XP);
 				int takenXp = (int) storedXp;
 				// it uses a Vec3 for some reason don't ask me why
 				Vec3 playerPos = new Vec3(player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ());
 				ExperienceOrb.award((ServerLevel) world, playerPos, takenXp);
-				handStack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, storedXp - takenXp));
+				tag.putDouble(NBTUtils.XP, storedXp - takenXp);
+				return InteractionResultHolder.pass(player.getItemInHand(hand));
 			}
 		}
 		return super.use(world, player, hand);
@@ -127,9 +124,21 @@ public class ItemUpgrade extends Item {
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
 			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-				entity.getItemInHand(InteractionHand.MAIN_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(IDirectionalStorage::removeAllDirs);
+				SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
+				if(subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
+					if(!stack.hasTag()) {
+						stack.setTag(new CompoundTag());
+					}
+					NBTUtils.clearDirectionList(stack);
+				}
 			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-				entity.getItemInHand(InteractionHand.OFF_HAND).getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).ifPresent(IDirectionalStorage::removeAllDirs);
+				SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
+				if(subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
+					if(!stack.hasTag()) {
+						stack.setTag(new CompoundTag());
+					}
+					NBTUtils.clearDirectionList(stack);
+				}
 			}
 		}
 		return super.onEntitySwing(stack, entity);
@@ -137,6 +146,11 @@ public class ItemUpgrade extends Item {
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		return stack.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+		SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
+		if(stack.hasTag()) {
+			return stack.getTag().getBoolean(NBTUtils.SMART);
+		}
+		return subtype == SubtypeItemUpgrade.fortune || subtype == SubtypeItemUpgrade.unbreaking || subtype == SubtypeItemUpgrade.silktouch;
 	}
+	
 }

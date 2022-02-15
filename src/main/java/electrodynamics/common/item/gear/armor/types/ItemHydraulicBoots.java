@@ -117,6 +117,10 @@ public class ItemHydraulicBoots extends ArmorItem {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
+		return staticIsBarVisible(stack);
+	}
+	
+	protected static boolean staticIsBarVisible(ItemStack stack) {
 		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
@@ -125,6 +129,10 @@ public class ItemHydraulicBoots extends ArmorItem {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
+		return staticGetBarWidth(stack);
+	}
+	
+	protected static int staticGetBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
@@ -142,6 +150,10 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
+		return staticGetWhitelistedFluids();
+	}
+	
+	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
 		tags.add(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID.getName());

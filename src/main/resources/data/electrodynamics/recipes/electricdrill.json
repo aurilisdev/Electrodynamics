@@ -12,10 +12,10 @@
 			"item": "electrodynamics:battery"
 		},
 		"p": {
-			"tag": "forge:plastic"
+			"tag": "forge:plates/steel"
 		},
 		"d": {
-			"item": "electrodynamics:drillheadtitanium"
+			"item": "electrodynamics:drillheadsteel"
 		},
 		"m": {
 			"item": "electrodynamics:motor"

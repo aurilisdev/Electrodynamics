@@ -10,11 +10,14 @@ import electrodynamics.api.References;
 import electrodynamics.common.block.BlockConcrete;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.BlockDeepslateOre;
+import electrodynamics.common.block.BlockFrame;
+import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.BlockResource;
+import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
@@ -50,6 +53,7 @@ import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
+import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
@@ -65,20 +69,26 @@ import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
+import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
+import electrodynamics.common.inventory.container.tile.ContainerQuarry;
+import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
+import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
+import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
@@ -93,6 +103,7 @@ import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
+import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
@@ -115,6 +126,7 @@ import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.TileCoolantResavoir;
 import electrodynamics.common.tile.TileCreativeFluidSource;
 import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.common.tile.TileElectricArcFurnace;
@@ -128,9 +140,11 @@ import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileFluidVoid;
+import electrodynamics.common.tile.TileFrame;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.common.tile.TileLogisticalManager;
 import electrodynamics.common.tile.TileMineralCrusher;
 import electrodynamics.common.tile.TileMineralCrusherDouble;
 import electrodynamics.common.tile.TileMineralCrusherTriple;
@@ -138,10 +152,14 @@ import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.common.tile.TileMineralGrinderDouble;
 import electrodynamics.common.tile.TileMineralGrinderTriple;
 import electrodynamics.common.tile.TileMineralWasher;
+import electrodynamics.common.tile.TileMotorComplex;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
+import electrodynamics.common.tile.TileQuarry;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
+import electrodynamics.common.tile.TileSeismicMarker;
+import electrodynamics.common.tile.TileSeismicRelay;
 import electrodynamics.common.tile.TileSolarPanel;
 import electrodynamics.common.tile.TileTankHSLA;
 import electrodynamics.common.tile.TileTankReinforced;
@@ -166,7 +184,9 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -186,6 +206,10 @@ public class DeferredRegisters {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, References.ID);
 	public static BlockMultiSubnode multi = new BlockMultiSubnode();
+	public static BlockSeismicMarker blockSeismicMarker;
+	public static BlockFrame blockFrame;
+	public static BlockFrame blockFrameCorner;
+	public static BlockLogisticalManager blockLogisticalManager;
 	// liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
@@ -227,6 +251,11 @@ public class DeferredRegisters {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
 		BLOCKS.register("multisubnode", supplier(multi));
+		BLOCKS.register("seismicmarker" , supplier(blockSeismicMarker = new BlockSeismicMarker()));
+		BLOCKS.register("frame", supplier(blockFrame = new BlockFrame()));
+		BLOCKS.register("framecorner", supplier(blockFrameCorner = new BlockFrame()));
+		BLOCKS.register("logisticalmanager", supplier(blockLogisticalManager = new BlockLogisticalManager()));
+		BLOCKS.register("quarryarm", supplier(new Block(Properties.of(Material.STONE))));
 		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));
@@ -287,12 +316,18 @@ public class DeferredRegisters {
 		for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
 			ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));
 		}
+		for(SubtypeDrillHead drill : SubtypeDrillHead.values()) {
+			ITEMS.register(drill.tag(), supplier(new ItemDrillHead(drill), drill));
+		}
 		ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("compositeplating", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("compositeplatingraw", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("molybdenumfertilizer", supplier(new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("concretemix", supplier(new ItemDescriptable(new Item.Properties().stacksTo(64).tab(References.CORETAB), "tooltip.info.concretejoke")));
-
+		ITEMS.register("frame", supplier(new BlockItemDescriptable(blockFrame, new Item.Properties().stacksTo(64))));
+		ITEMS.register("framecorner", supplier(new BlockItemDescriptable(blockFrameCorner, new Item.Properties().stacksTo(64))));
+		ITEMS.register("logisticalmanager", supplier(new BlockItemDescriptable(blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
+		
 		// machines
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble), "|translate|tooltip.machine.voltage.240");
@@ -344,8 +379,18 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel), "|translate|tooltip.tanksteel.capacity");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced), "|translate|tooltip.tankreinforced.capacity");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankhsla), "|translate|tooltip.tankhsla.capacity");
+		BlockItemDescriptable.addDescription(blockSeismicMarker, "|translate|tooltip.seismicmarker.redstone");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicrelay), "|translate|tooltip.seismicrelay.use");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coolantresavoir), "|translate|tooltip.coolantresavoir.place");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.motorcomplex), "|translate|tooltip.motorcomplex.use");
+		BlockItemDescriptable.addDescription(blockFrame, "|translate|tooltip.blockframe.joke");
+		BlockItemDescriptable.addDescription(blockFrameCorner, "|translate|tooltip.blockframe.joke");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quarry), "|translate|tooltip.quarry.power");
+		BlockItemDescriptable.addDescription(blockLogisticalManager, "|translate|tooltip.logisticalmanager.use");
 
 	}
+	
+	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(new BlockItemDescriptable(blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
@@ -368,20 +413,25 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> DRILL_HEAD_TITANIUM = ITEMS.register("drillheadtitanium", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
-	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
-	public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate", supplier(new ItemCompositeArmor(EquipmentSlot.CHEST)));
-	public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings", supplier(new ItemCompositeArmor(EquipmentSlot.LEGS)));
-	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots", supplier(new ItemCompositeArmor(EquipmentSlot.FEET)));
+	public static final RegistryObject<Item> ITEM_COMPOSITEHELMET = ITEMS.register("compositearmorhelmet", supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
+	public static final RegistryObject<Item> ITEM_COMPOSITECHESTPLATE = ITEMS.register("compositearmorchestplate", supplier(new ItemCompositeArmor(EquipmentSlot.CHEST)));
+	public static final RegistryObject<Item> ITEM_COMPOSITELEGGINGS = ITEMS.register("compositearmorleggings", supplier(new ItemCompositeArmor(EquipmentSlot.LEGS)));
+	public static final RegistryObject<Item> ITEM_COMPOSITEBOOTS = ITEMS.register("compositearmorboots", supplier(new ItemCompositeArmor(EquipmentSlot.FEET)));
 
 	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots", supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
 
 	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS.register("nightvisiongoggles", supplier(new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
 	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(new ItemJetpack()));
-
+	public static final RegistryObject<Item> ITEM_SERVOLEGGINGS = ITEMS.register("servoleggings", supplier(new ItemServoLeggings((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
+	
+	public static final RegistryObject<Item> ITEM_COMBATHELMET = ITEMS.register("combatarmorhelmet", supplier(new ItemCombatArmor((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.HEAD)));
+	public static final RegistryObject<Item> ITEM_COMBATCHESTPLATE = ITEMS.register("combatarmorchestplate", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB),EquipmentSlot.CHEST)));
+	public static final RegistryObject<Item> ITEM_COMBATLEGGINGS = ITEMS.register("combatarmorleggings", supplier(new ItemCombatArmor((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.LEGS)));
+	public static final RegistryObject<Item> ITEM_COMBATBOOTS = ITEMS.register("combatarmorboots", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB), EquipmentSlot.FEET)));
+	
 	// Split from items to tiles
 
 	public static final RegistryObject<BlockEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(), () -> new BlockEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
@@ -452,13 +502,16 @@ public class DeferredRegisters {
 	public static final RegistryObject<BlockEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = TILES.register("wirelogisticaltile", () -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
 	public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = TILES.register("pipegenerictile", () -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
 	public static final RegistryObject<BlockEntityType<TileElectrolyticSeparator>> TILE_ELECTROLYTICSEPARATOR = TILES.register(SubtypeMachine.electrolyticseparator.tag(), () -> new BlockEntityType<>(TileElectrolyticSeparator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator)), null));
-
 	public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
 	public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(), () -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
-//	public static final RegistryObject<BlockEntityType<TileSeismicScanner>> TILE_SEISMICSCANNER = TILES
-//			.register(SubtypeMachine.seismicscannermachine.tag(), () -> new BlockEntityType<>(TileSeismicScanner::new,
-//					Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicscannermachine)), null));
-
+	public static final RegistryObject<BlockEntityType<TileSeismicMarker>> TILE_SEISMICMARKER = TILES.register("seismicmarker", () -> new BlockEntityType<>(TileSeismicMarker::new, Sets.newHashSet(blockSeismicMarker), null));
+	public static final RegistryObject<BlockEntityType<TileSeismicRelay>> TILE_SEISMICRELAY = TILES.register(SubtypeMachine.seismicrelay.tag(), () -> new BlockEntityType<>(TileSeismicRelay::new,Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicrelay)), null));
+	public static final RegistryObject<BlockEntityType<TileQuarry>> TILE_QUARRY = TILES.register(SubtypeMachine.quarry.tag(), () -> new BlockEntityType<>(TileQuarry::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quarry)), null));
+	public static final RegistryObject<BlockEntityType<TileCoolantResavoir>> TILE_COOLANTRESAVOIR = TILES.register(SubtypeMachine.coolantresavoir.tag(), () -> new BlockEntityType<>(TileCoolantResavoir::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coolantresavoir)), null));
+	public static final RegistryObject<BlockEntityType<TileMotorComplex>> TILE_MOTORCOMPLEX = TILES.register(SubtypeMachine.motorcomplex.tag(), () -> new BlockEntityType<>(TileMotorComplex::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.motorcomplex)), null));
+	public static final RegistryObject<BlockEntityType<TileFrame>> TILE_FRAME = TILES.register("frame", () -> new BlockEntityType<>(TileFrame::new, Sets.newHashSet(blockFrame, blockFrameCorner), null));
+	public static final RegistryObject<BlockEntityType<TileLogisticalManager>> TILE_LOGISTICALMANAGER = TILES.register("logisticalmanager", () -> new BlockEntityType<>(TileLogisticalManager::new, Sets.newHashSet(blockLogisticalManager), null));
+	
 	// Containers
 
 	public static final RegistryObject<MenuType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS.register(SubtypeMachine.coalgenerator.tag(), () -> new MenuType<>(ContainerCoalGenerator::new));
@@ -491,7 +544,11 @@ public class DeferredRegisters {
 	public static final RegistryObject<MenuType<ContainerSeismicScanner>> CONTAINER_SEISMICSCANNER = CONTAINERS.register("seismicdetector", () -> new MenuType<>(ContainerSeismicScanner::new));
 	public static final RegistryObject<MenuType<ContainerElectrolyticSeparator>> CONTAINER_ELECTROLYTICSEPARATOR = CONTAINERS.register("electrolyticseparator", () -> new MenuType<>(ContainerElectrolyticSeparator::new));
 	public static final RegistryObject<MenuType<ContainerCarbyneBatteryBox>> CONTAINER_CARBYNEBATTERYBOX = CONTAINERS.register(SubtypeMachine.carbynebatterybox.tag(), () -> new MenuType<>(ContainerCarbyneBatteryBox::new));
-
+	public static final RegistryObject<MenuType<ContainerSeismicRelay>> CONTAINER_SEISMICRELAY = CONTAINERS.register("seismicrelay", () -> new MenuType<>(ContainerSeismicRelay::new));
+	public static final RegistryObject<MenuType<ContainerCoolantResavoir>> CONTAINER_COOLANTRESAVOIR = CONTAINERS.register("coolantresavoir", () -> new MenuType<>(ContainerCoolantResavoir::new));
+	public static final RegistryObject<MenuType<ContainerMotorComplex>> CONTAINER_MOTORCOMPLEX = CONTAINERS.register("motorcomplex", () -> new MenuType<>(ContainerMotorComplex::new));
+	public static final RegistryObject<MenuType<ContainerQuarry>> CONTAINER_QUARRY = CONTAINERS.register("quarry", () -> new MenuType<>(ContainerQuarry::new));
+	
 	// Entities
 
 	public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder.<EntityMetalRod>of(EntityMetalRod::new, MobCategory.MISC).sized(0.25f, 0.25f).fireImmune().build(References.ID + ".metalrod"));

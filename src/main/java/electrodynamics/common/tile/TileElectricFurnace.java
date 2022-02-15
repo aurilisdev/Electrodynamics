@@ -21,9 +21,11 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
@@ -81,7 +83,9 @@ public class TileElectricFurnace extends GenericTile {
 		inv.getInputContents().get(component.getProcessorNumber()).get(0).shrink(1);
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
-				stack.getCapability(ElectrodynamicsCapabilities.DOUBLE_STORAGE_CAPABILITY).ifPresent(h -> h.setDouble(0, h.getDouble(0) + ((AbstractCookingRecipe) cachedRecipe).getExperience()));
+				CompoundTag tag = stack.getOrCreateTag();
+				//TODO work damn you
+				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + ((AbstractCookingRecipe) cachedRecipe).getExperience());
 				break;
 			}
 		}

@@ -4,8 +4,9 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,8 +31,10 @@ public class PacketJetpackFlightServer {
 			if (world != null) {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					chest.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).ifPresent(h -> h.setBoolean(0, message.bool));
+				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
+						|| ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+					CompoundTag tag = chest.getOrCreateTag();
+					tag.putBoolean(NBTUtils.USED, message.bool);
 				}
 			}
 		});

@@ -57,6 +57,12 @@
 		"electrodynamics:creativepowersource",
 		"electrodynamics:creativefluidsource",
 		"electrodynamics:fluidvoid",
+		"electrodynamics:seismicmarker",
+		"electrodynamics:seismicrelay",
+		"electrodynamics:coolantresavoir",
+		"electrodynamics:motorcomplex",
+		"electrodynamics:quarry",
+		"electrodynamics:logisticalmanager",
 		
 		"electrodynamics:orefluorite",
 		"electrodynamics:oresylvite",

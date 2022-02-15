@@ -3,9 +3,6 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 
 import electrodynamics.SoundRegister;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.multicapability.SeismicScannerCapability;
-import electrodynamics.api.capability.types.intstorage.CapabilityIntStorage;
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
@@ -13,9 +10,10 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketAddClientRenderInfo;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
+import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
+import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -49,6 +47,9 @@ public class ItemSeismicScanner extends ItemElectric {
 	public static final int RADUIS_BLOCKS = 16;
 	public static final int COOLDOWN_SECONDS = 10;
 	public static final int JOULES_PER_SCAN = 1000;
+	
+	public static final String PLAY_LOC = "player";
+	public static final String BLOCK_LOC = "block";
 
 	public ItemSeismicScanner(ElectricItemProperties properties) {
 		super(properties);
@@ -59,13 +60,18 @@ public class ItemSeismicScanner extends ItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
+	
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+		return new CapabilityItemStackHandler(1);
+	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.use"));
 		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
-		boolean onCooldown = stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0) > 0).orElse(false);
+		boolean onCooldown = stack.hasTag() ? stack.getTag().getInt(NBTUtils.TIMER) > 0 : false;
 		if (onCooldown) {
 			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
 		} else {
@@ -107,32 +113,26 @@ public class ItemSeismicScanner extends ItemElectric {
 		if (!world.isClientSide) {
 			ItemStack scanner = player.getItemInHand(hand);
 			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
-			boolean isTimerUp = scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0) <= 0).orElse(false);
+			CompoundTag tag = scanner.getOrCreateTag();
+			boolean isTimerUp = tag.getInt(NBTUtils.TIMER) <= 0;
 			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
 			ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
 			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
 				extractPower(scanner, properties.extract.getJoules(), false);
-				scanner.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, COOLDOWN_SECONDS * 20));
+				tag.putInt(NBTUtils.TIMER, COOLDOWN_SECONDS * 20);
 				world.playSound(null, player.blockPosition(), SoundRegister.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
 				if (ore.getItem() instanceof BlockItem oreBlockItem) {
-					BlockPos playerPos = player.getOnPos();
-					BlockPos blockPos = WorldUtils.getClosestBlockToCenter(world, playerPos, RADUIS_BLOCKS, oreBlockItem.getBlock());
-					CompoundTag scanLoc = scanner.getOrCreateTagElement("scanloc");
-					CompoundTag onLoc = scanner.getOrCreateTagElement("onloc");
-					writePosToTag(scanLoc, blockPos);
-					writePosToTag(onLoc, playerPos);
-					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+					Location playerPos = new Location(player.getOnPos());
+					Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS, oreBlockItem.getBlock()));
+					playerPos.writeToNBT(tag, NBTUtils.LOCATION + PLAY_LOC);
+					blockPos.writeToNBT(tag, NBTUtils.LOCATION +  BLOCK_LOC);
+					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 				}
 			} else {
 				player.openMenu(getMenuProvider(world, player, scanner));
 			}
 		}
 		return super.use(world, player, hand);
-	}
-
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new SeismicScannerCapability(new CapabilityIntStorage(1), new CapabilityItemStackHandler(SLOT_COUNT, ItemSeismicScanner.class));
 	}
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
@@ -148,26 +148,19 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
-		stack.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> {
-			if (h.getInt(0) > 0) {
-				h.setInt(0, h.getInt(0) - 1);
+		if(!world.isClientSide) {
+			CompoundTag tag = stack.getOrCreateTag();
+			int time = tag.getInt(NBTUtils.TIMER);
+			if(time > 0) {
+				tag.putInt(NBTUtils.TIMER, time - 1);
 			}
-		});
+		}
 		super.inventoryTick(stack, world, entity, itemSlot, isSelected);
 	}
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
-	}
-
-	private static void writePosToTag(CompoundTag tag, BlockPos pos) {
-		tag.remove("x");
-		tag.remove("y");
-		tag.remove("z");
-		tag.putInt("x", pos.getX());
-		tag.putInt("y", pos.getY());
-		tag.putInt("z", pos.getZ());
 	}
 
 }

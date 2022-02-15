@@ -5,8 +5,9 @@ import java.util.function.Supplier;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,9 +19,11 @@ import net.minecraftforge.network.NetworkEvent.Context;
 public class PacketModeSwitchServer {
 
 	private final UUID playerId;
+	private final Mode mode;
 
-	public PacketModeSwitchServer(UUID uuid) {
+	public PacketModeSwitchServer(UUID uuid, Mode mode) {
 		playerId = uuid;
+		this.mode = mode;
 	}
 
 	public static void handle(PacketModeSwitchServer message, Supplier<Context> context) {
@@ -29,37 +32,57 @@ public class PacketModeSwitchServer {
 			ServerLevel serverWorld = context.get().getSender().getLevel();
 			if (serverWorld != null) {
 				ServerPlayer serverPlayer = (ServerPlayer) serverWorld.getPlayerByUUID(message.playerId);
-				ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
-				if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-					boolean sucessful = chest.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> {
-						int curMode = m.getInt(0);
+				switch(message.mode) {
+				case JETPACK :
+					ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
+					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
+							|| ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+						CompoundTag tag = chest.getOrCreateTag();
+						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 2) {
 							curMode++;
 						} else {
 							curMode = 0;
 						}
-						m.setInt(0, curMode);
-						return true;
-					}).orElse(false);
-					if (sucessful) {
+						tag.putInt(NBTUtils.MODE, curMode);
 						serverPlayer.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
-						/*
-						 * doesn't fix problem serverWorld.getChunkSource().chunkMap.getPlayers(serverPlayer.chunkPosition(), false).forEach(play ->{ if(play.getUUID().equals(message.playerId)) { int mode = chest.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(-1); NetworkHandler.CHANNEL.sendTo(new PacketModeSwitchClient(message.playerId, mode), play.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } });
-						 */
 					}
+					break;
+				case SERVOLEGS:
+					ItemStack legs = serverPlayer.getItemBySlot(EquipmentSlot.LEGS);
+					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
+							|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+						CompoundTag tag = legs.getOrCreateTag();
+						int curMode = tag.getInt(NBTUtils.MODE);
+						if (curMode < 3) {
+							curMode++;
+						} else {
+							curMode = 0;
+						}
+						tag.putInt(NBTUtils.MODE, curMode);
+						serverPlayer.playNotifySound(SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+					}
+					break;
+				default:
+					break;
 				}
 			}
-
 		});
 		ctx.setPacketHandled(true);
 	}
 
 	public static void encode(PacketModeSwitchServer message, FriendlyByteBuf buf) {
 		buf.writeUUID(message.playerId);
+		buf.writeEnum(message.mode);
 	}
 
 	public static PacketModeSwitchServer decode(FriendlyByteBuf buf) {
-		return new PacketModeSwitchServer(buf.readUUID());
+		return new PacketModeSwitchServer(buf.readUUID(), buf.readEnum(Mode.class));
+	}
+	
+	//Mekanism gave me this idea
+	public enum Mode {
+		JETPACK,SERVOLEGS;
 	}
 
 }

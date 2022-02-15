@@ -6,8 +6,6 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.dirstorage.IDirectionalStorage;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
@@ -19,8 +17,10 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
@@ -54,12 +54,13 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	// Currently, it's set to every 4 ticks
 	iteminput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		if (inv.hasInputRoom() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
+		if (inv.hasInputRoom()) {
+			CompoundTag tag = upgrade.getOrCreateTag();
+			int tickNumber = tag.getInt(NBTUtils.TIMER);
 			if (tickNumber >= 4) {
-				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
-				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+				tag.putInt(NBTUtils.TIMER, 0);
+				List<Direction> dirs = NBTUtils.readDirectionList(upgrade);
+				boolean isSmart = tag.getBoolean(NBTUtils.SMART);
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
@@ -76,18 +77,19 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, h.getInt(0) + 1));
+			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
 		}
 	}, 1),
 	// I can't really optimize this one any more than it is
 	itemoutput((holder, processor, upgrade) -> {
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-		if (inv.hasItemsInOutput() && ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY != null) {
-			int tickNumber = upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).map(m -> m.getInt(0)).orElse(0);
+		if (inv.hasItemsInOutput()) {
+			CompoundTag tag = upgrade.getOrCreateTag();
+			int tickNumber = tag.getInt(NBTUtils.TIMER);
 			if (tickNumber >= 4) {
-				upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, 0));
-				List<Direction> dirs = upgrade.getCapability(ElectrodynamicsCapabilities.DIR_STORAGE_CAPABILITY).map(IDirectionalStorage::getDirections).orElse(new ArrayList<>());
-				boolean isSmart = upgrade.getCapability(ElectrodynamicsCapabilities.BOOLEAN_STORAGE_CAPABILITY).map(m -> m.getBoolean(0)).orElse(false);
+				tag.putInt(NBTUtils.TIMER, 0);
+				List<Direction> dirs = NBTUtils.readDirectionList(upgrade);
+				boolean isSmart = tag.getBoolean(NBTUtils.SMART);
 				if (isSmart) {
 					List<ItemStack> combinedItems = new ArrayList<>(inv.getOutputContents());
 					combinedItems.addAll(inv.getItemBiContents());
@@ -106,7 +108,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 					}
 				}
 			}
-			upgrade.getCapability(ElectrodynamicsCapabilities.INTEGER_STORAGE_CAPABILITY).ifPresent(h -> h.setInt(0, h.getInt(0) + 1));
+			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
 		}
 	}, 1),
 	improvedsolarcell((holder, processor, upgrade) -> {
@@ -122,7 +124,11 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	range((holder, processor, upgrade) -> {
 		/* it does nothing; the count determines the new range */}, 12),
 	experience((holder, processor, upgrade) -> {
-		/* the machine handles adding the experience */}, 1);
+		/* the machine handles adding the experience */}, 1),
+	itemvoid((holder, processor, upgrade) -> {}, 1),
+	silktouch((holder, processor, upgrade) -> {}, 1),
+	fortune((holder, processor, upgrade) -> {}, 3),
+	unbreaking((holder, processor, upgrade) -> {}, 3);
 
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;
@@ -165,8 +171,10 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			}
 		} else if (entity != null && entity instanceof GenericTile tile) {
 			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
-			for (int slot : inv.getInputSlots()) {
-				takeItemFromCompInv(inv, slot, otherInv, dir);
+			if(otherInv != null) {
+				for (int slot : inv.getInputSlots()) {
+					takeItemFromCompInv(inv, slot, otherInv, dir);
+				}
 			}
 		}
 	}
@@ -185,7 +193,9 @@ public enum SubtypeItemUpgrade implements ISubtype {
 
 	private static void outputDefaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
 		if (entity instanceof Container container) {
-			for (ItemStack stack : inv.getOutputContents()) {
+			List<ItemStack> combined = inv.getOutputContents();
+			combined.addAll(inv.getItemBiContents());
+			for (ItemStack stack : combined) {
 				attemptContainerInsert(stack, container, dir);
 			}
 		} else if (entity != null && entity instanceof GenericTile tile) {
