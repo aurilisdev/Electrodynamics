@@ -102,6 +102,10 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		super.appendHoverText(stack, world, tooltip, flagIn);
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		staticAppendTooltips(stack, world, tooltip, flagIn);
+	}
+	
+	protected static void staticAppendTooltips(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
 			if(tag.getBoolean(NBTUtils.ON)) {
@@ -138,8 +142,13 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
+		super.onArmorTick(stack, world, player);
+		armorTick(stack, world, player);
+	}
+	
+	protected static void armorTick(ItemStack stack, Level world, Player player) {
 		if(!world.isClientSide) {
-			ItemServoLeggings legs = (ItemServoLeggings) stack.getItem();
+			IItemElectric legs = (IItemElectric) stack.getItem();
 			CompoundTag tag = stack.getOrCreateTag();
 			if(tag.getBoolean(NBTUtils.ON) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
 				switch(tag.getInt(NBTUtils.MODE)) {
@@ -198,7 +207,6 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 				}
 			}
 		}
-		super.onArmorTick(stack, world, player);
 	}
 
 	@Override

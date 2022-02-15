@@ -233,10 +233,10 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankHSLA.CAPACITY));
 
 		// Items
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
+		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "upgradeiteminput"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "upgradeitemoutput"));
 		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_PLASMARAILGUN.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "railgunplasma"));

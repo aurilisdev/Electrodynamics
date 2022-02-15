@@ -35,7 +35,8 @@ public class PacketModeSwitchServer {
 				switch(message.mode) {
 				case JETPACK :
 					ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
-					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
+							|| ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
 						CompoundTag tag = chest.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 2) {
@@ -49,7 +50,8 @@ public class PacketModeSwitchServer {
 					break;
 				case SERVOLEGS:
 					ItemStack legs = serverPlayer.getItemBySlot(EquipmentSlot.LEGS);
-					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
+							|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = legs.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 3) {

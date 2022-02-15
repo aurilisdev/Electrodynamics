@@ -173,34 +173,36 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void keyPressEvents(KeyInputEvent event) {
+		Minecraft minecraft = Minecraft.getInstance();
+		Player player = minecraft.player;
 		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
-			Player player = Minecraft.getInstance().player;
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
+			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
+					|| ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
 			}
 		}
 
 		if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
-			Player player = Minecraft.getInstance().player;
 			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
+			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
+					|| ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
 			}
 		}
 		
 		if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchServoLeggingsMode.isDown()) {
-			Player player = Minecraft.getInstance().player;
 			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
+					|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
 			}
 		}
 		
 		if (KeyBinds.toggleServoLeggings.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleServoLeggings.isDown()) {
-			Player player = Minecraft.getInstance().player;
-			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
+					|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.SERVOLEGGINGS));
 			}
 		}

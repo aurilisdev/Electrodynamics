@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
+import electrodynamics.api.item.IItemElectric;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.prefab.utilities.NBTUtils;
@@ -36,10 +37,11 @@ public class PacketToggleOnServer {
 				switch(message.type) {
 				case NVGS:
 					ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-					if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())) {
+					if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
+							|| ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
 						CompoundTag tag = playerHead.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
-						if (((ItemNightVisionGoggles) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
+						if (((IItemElectric) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
 							if (tag.getBoolean(NBTUtils.ON)) {
 								player.playNotifySound(SoundRegister.SOUND_NIGHTVISIONGOGGLESON.get(), SoundSource.PLAYERS, 1, 1);
 							} else {
@@ -50,7 +52,8 @@ public class PacketToggleOnServer {
 					break;
 				case SERVOLEGGINGS:
 					ItemStack playerLegs = player.getItemBySlot(EquipmentSlot.LEGS);
-					if (ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())) {
+					if (ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
+							|| ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = playerLegs.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 						player.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);

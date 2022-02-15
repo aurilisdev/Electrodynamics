@@ -120,6 +120,7 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 		default:
 			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
 			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+			break;
 		}
 
 		return LayerDefinition.create(mesh, 128, 128);

@@ -107,6 +107,11 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
+		staticAppendHoverText(stack, world, tooltip, flagIn);
+		super.appendHoverText(stack, world, tooltip, flagIn);
+	}
+	
+	protected static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
 		}
@@ -123,13 +128,15 @@ public class ItemJetpack extends ArmorItem {
 		} else {
 			tooltip.add(new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
 		}
-
-		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
 
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
+		armorTick(stack, world, player);
+	}
+	
+	protected static void armorTick(ItemStack stack, Level world, Player player) {
 		if (world.isClientSide) {
 			ArmorItem item = (ArmorItem)stack.getItem();
 			if (item.getSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
@@ -191,6 +198,10 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
+		return staticIsBarVisible(stack);
+	}
+	
+	protected static boolean staticIsBarVisible(ItemStack stack) {
 		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
@@ -199,6 +210,10 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
+		return staticGetBarWidth(stack);
+	}
+	
+	protected static int staticGetBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
@@ -211,6 +226,10 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
+		return staticGetWhitelistedFluids();
+	}
+	
+	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
 		tags.add(ElectrodynamicsTags.Fluids.HYDROGEN.getName());
@@ -218,7 +237,7 @@ public class ItemJetpack extends ArmorItem {
 		return Pair.of(tags, fluids);
 	}
 
-	private static void moveWithJetpack(double speed, double termVelocity, Player player) {
+	protected static void moveWithJetpack(double speed, double termVelocity, Player player) {
 		Vec3 currMovement = player.getDeltaMovement();
 
 		double ySum = currMovement.y + speed;
@@ -230,7 +249,7 @@ public class ItemJetpack extends ArmorItem {
 		player.resetFallDistance();
 	}
 
-	private static void hoverWithJetpack(Player player) {
+	protected static void hoverWithJetpack(Player player) {
 		if (player.isShiftKeyDown()) {
 			Vec3 currMovement = player.getDeltaMovement();
 			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
@@ -243,13 +262,13 @@ public class ItemJetpack extends ArmorItem {
 		player.resetFallDistance();
 	}
 
-	private static void handleSound(int ticks, Player player) {
+	protected static void handleSound(int ticks, Player player) {
 		if (ticks % 10 == 0) {
 			player.playNotifySound(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS, 1, 1);
 		}
 	}
 
-	private static void renderParticles(Level world, Entity entity) {
+	protected static void renderParticles(Level world, Entity entity) {
 		Vec3 worldPosition = entity.position();
 		for (int i = 0; i < 5; i++) {
 			double x = worldPosition.x - world.random.nextFloat() + 0.5;
@@ -258,11 +277,11 @@ public class ItemJetpack extends ArmorItem {
 		}
 	}
 
-	private static void drainHydrogen(ItemStack stack) {
+	protected static void drainHydrogen(ItemStack stack) {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
 	}
 
-	private static void sendPacket(Player player, boolean state) {
+	protected static void sendPacket(Player player, boolean state) {
 		NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state));
 	}
 

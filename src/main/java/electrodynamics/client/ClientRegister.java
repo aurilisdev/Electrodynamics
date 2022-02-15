@@ -4,6 +4,7 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
+import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
@@ -94,7 +95,6 @@ public class ClientRegister {
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_BOOTS = ModelCompositeArmor.createBodyLayer(2, false);
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_NOCHEST = ModelCompositeArmor.createBodyLayer(3, true);
-
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
 
@@ -105,6 +105,12 @@ public class ClientRegister {
 	public static LayerDefinition JETPACK = ModelJetpack.createBodyLayer();
 	
 	public static LayerDefinition SERVO_LEGGINGS = ModelServoLeggings.createBodyLayer();
+	
+	public static LayerDefinition COMBAT_ARMOR_LAYER_LEG_NOCHEST = ModelCombatArmor.createBodyLayer(1, true);
+	public static LayerDefinition COMBAT_ARMOR_LAYER_BOOTS = ModelCombatArmor.createBodyLayer(2, false);
+	public static LayerDefinition COMBAT_ARMOR_LAYER_COMB_NOCHEST = ModelCombatArmor.createBodyLayer(3, true);
+	public static LayerDefinition COMBAT_ARMOR_LAYER_LEG_CHEST = ModelCombatArmor.createBodyLayer(1, false);
+	public static LayerDefinition COMBAT_ARMOR_LAYER_COMB_CHEST = ModelCombatArmor.createBodyLayer(3, false);
 
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {

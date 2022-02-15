@@ -82,6 +82,7 @@ import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
@@ -414,10 +415,10 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", supplier(new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
-	public static final RegistryObject<Item> COMPOSITE_HELMET = ITEMS.register("compositearmorhelmet", supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
-	public static final RegistryObject<Item> COMPOSITE_CHESTPLATE = ITEMS.register("compositearmorchestplate", supplier(new ItemCompositeArmor(EquipmentSlot.CHEST)));
-	public static final RegistryObject<Item> COMPOSITE_LEGGINGS = ITEMS.register("compositearmorleggings", supplier(new ItemCompositeArmor(EquipmentSlot.LEGS)));
-	public static final RegistryObject<Item> COMPOSITE_BOOTS = ITEMS.register("compositearmorboots", supplier(new ItemCompositeArmor(EquipmentSlot.FEET)));
+	public static final RegistryObject<Item> ITEM_COMPOSITEHELMET = ITEMS.register("compositearmorhelmet", supplier(new ItemCompositeArmor(EquipmentSlot.HEAD)));
+	public static final RegistryObject<Item> ITEM_COMPOSITECHESTPLATE = ITEMS.register("compositearmorchestplate", supplier(new ItemCompositeArmor(EquipmentSlot.CHEST)));
+	public static final RegistryObject<Item> ITEM_COMPOSITELEGGINGS = ITEMS.register("compositearmorleggings", supplier(new ItemCompositeArmor(EquipmentSlot.LEGS)));
+	public static final RegistryObject<Item> ITEM_COMPOSITEBOOTS = ITEMS.register("compositearmorboots", supplier(new ItemCompositeArmor(EquipmentSlot.FEET)));
 
 	public static final RegistryObject<Item> ITEM_RUBBERBOOTS = ITEMS.register("rubberboots", supplier(new ItemRubberArmor(EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1).defaultDurability(100000))));
 
@@ -425,6 +426,11 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
 	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(new ItemJetpack()));
 	public static final RegistryObject<Item> ITEM_SERVOLEGGINGS = ITEMS.register("servoleggings", supplier(new ItemServoLeggings((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
+	
+	public static final RegistryObject<Item> ITEM_COMBATHELMET = ITEMS.register("combatarmorhelmet", supplier(new ItemCombatArmor((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.HEAD)));
+	public static final RegistryObject<Item> ITEM_COMBATCHESTPLATE = ITEMS.register("combatarmorchestplate", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB),EquipmentSlot.CHEST)));
+	public static final RegistryObject<Item> ITEM_COMBATLEGGINGS = ITEMS.register("combatarmorleggings", supplier(new ItemCombatArmor((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.LEGS)));
+	public static final RegistryObject<Item> ITEM_COMBATBOOTS = ITEMS.register("combatarmorboots", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB), EquipmentSlot.FEET)));
 	
 	// Split from items to tiles
 

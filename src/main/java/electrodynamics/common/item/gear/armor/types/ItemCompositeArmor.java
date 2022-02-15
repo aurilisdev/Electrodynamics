@@ -50,7 +50,7 @@ public class ItemCompositeArmor extends ArmorItem {
 			@Override
 			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
 
-				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
+				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
@@ -88,7 +88,7 @@ public class ItemCompositeArmor extends ArmorItem {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowdedIn(group)) {
 			ItemStack filled = new ItemStack(this);
-			if (ItemStack.isSameIgnoreDurability(filled, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+			if (getSlot() == EquipmentSlot.CHEST) {
 				CompoundTag tag = filled.getOrCreateTag();
 				tag.putInt(NBTUtils.PLATES, 2);
 				items.add(filled);
@@ -111,24 +111,20 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		EquipmentSlot slot = ((ArmorItem)stack.getItem()).getSlot();
-		if (slot == EquipmentSlot.CHEST) {
-			int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
-			tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(plates + "")).withStyle(ChatFormatting.AQUA));
+		if (((ArmorItem)stack.getItem()).getSlot() == EquipmentSlot.CHEST) {
+			staticAppendHoverText(stack, worldIn, tooltip, flagIn);
 		}
+	}
+	
+	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
+		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(plates + "")).withStyle(ChatFormatting.AQUA));
 	}
 
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
-		ItemStack[] pieces = new ItemStack[] { new ItemStack(DeferredRegisters.COMPOSITE_HELMET.get()), new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()), new ItemStack(DeferredRegisters.COMPOSITE_LEGGINGS.get()), new ItemStack(DeferredRegisters.COMPOSITE_BOOTS.get()) };
-
-		List<ItemStack> armorPieces = new ArrayList<>();
-		player.getArmorSlots().forEach(armorPieces::add);
-
-		if (ItemStack.isSame(armorPieces.get(0), pieces[3]) || ItemStack.isSame(armorPieces.get(1), pieces[2]) || ItemStack.isSame(armorPieces.get(2), pieces[1]) || ItemStack.isSame(armorPieces.get(3), pieces[0])) {
-			player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
-		}
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
 	}
 
 	@Override

@@ -71,15 +71,19 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
+		super.onArmorTick(stack, world, player);
+		armorTick(stack, world, player);
+	}
+	
+	protected static void armorTick(ItemStack stack, Level world, Player player) {
 		if (!world.isClientSide) {
-			ItemNightVisionGoggles nvgs = (ItemNightVisionGoggles) stack.getItem();
+			IItemElectric nvgs = (IItemElectric) stack.getItem();
 			CompoundTag tag = stack.getOrCreateTag();
 			if (tag.getBoolean(NBTUtils.ON) && nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
 				nvgs.extractPower(stack, JOULES_PER_TICK, false);
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
 			}
 		}
-		super.onArmorTick(stack, world, player);
 	}
 
 	@Override
@@ -106,6 +110,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public int getBarWidth(ItemStack stack) {
 		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
 	}
+	
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {

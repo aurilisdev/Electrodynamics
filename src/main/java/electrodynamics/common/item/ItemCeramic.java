@@ -33,7 +33,8 @@ public class ItemCeramic extends Item {
 				playerIn.getArmorSlots().forEach(armorPieces::add);
 
 				ItemStack chestplate = armorPieces.get(2);
-				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.COMPOSITE_CHESTPLATE.get()))) {
+				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()))
+						|| ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
 					CompoundTag tag = chestplate.getOrCreateTag();
 					int stored = tag.getInt(NBTUtils.PLATES);
 					if (stored < 2) {
