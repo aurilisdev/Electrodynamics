@@ -94,7 +94,7 @@ public class TileSeismicRelay extends GenericTile {
 		}
 	}
 
-	private BlockPos getMarker(Direction facing, BlockPos blockPos, Level level) {
+	private static BlockPos getMarker(Direction facing, BlockPos blockPos, Level level) {
 		for (int i = 0; i <= TileSeismicMarker.MAX_RADIUS; i++) {
 			blockPos = blockPos.relative(facing);
 			BlockEntity marker = level.getBlockEntity(blockPos);

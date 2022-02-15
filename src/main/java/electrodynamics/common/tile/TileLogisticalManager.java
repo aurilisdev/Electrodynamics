@@ -72,7 +72,7 @@ public class TileLogisticalManager extends GenericTile {
 		}
 	}
 
-	private void addItemToContainer(ItemStack stack, Container container, int slot) {
+	private static void addItemToContainer(ItemStack stack, Container container, int slot) {
 		if (!stack.isEmpty()) {
 			if (container.canPlaceItem(slot, stack)) {
 				ItemStack contained = container.getItem(slot);
@@ -91,7 +91,7 @@ public class TileLogisticalManager extends GenericTile {
 		}
 	}
 
-	private boolean takeItemFromContainer(ComponentInventory quarryInv, int drillSlot, Container container, ItemStack item) {
+	private static boolean takeItemFromContainer(ComponentInventory quarryInv, int drillSlot, Container container, ItemStack item) {
 		if (!item.isEmpty() && item.getItem() instanceof ItemDrillHead) {
 			quarryInv.setItem(drillSlot, item.copy());
 			item.shrink(item.getCount());

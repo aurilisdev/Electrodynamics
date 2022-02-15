@@ -177,7 +177,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					frame.setCorner(lastIsCorner);
 					lastFixed = null;
 				}
-				if (brokenFrames.size() > 0) {
+				if (!brokenFrames.isEmpty()) {
 					fixBrokenFrames();
 					// it only will mine if the frame is 100% intact and clear
 				} else if (!isFinished && !areComponentsNull()) {
@@ -213,6 +213,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 												quarryPowerMultiplier = 1;
 											}
 											quarryPowerMultiplier = Math.min(quarryPowerMultiplier *= 4, CAPACITY / 10);
+											break;
 										case fortune:
 											if (silkTouchLevel == 0 && fortuneLevel < 3) {
 												fortuneLevel++;
@@ -341,8 +342,16 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			BlockPos startCentered = clientCorners.get(3).offset(0.5, 0.5, 0.5);
 			BlockPos endCentered = clientCorners.get(0).offset(0.5, 0.5, 0.5);
 
-			double widthLeft, widthRight, widthTop, widthBottom;
-			AABB left, right, bottom, top, downArm, downHead;
+			double widthLeft;
+			double widthRight;
+			double widthTop;
+			double widthBottom;
+			AABB left;
+			AABB right;
+			AABB bottom;
+			AABB top;
+			AABB downArm;
+			AABB downHead;
 
 			List<AABB> boxes = new ArrayList<>();
 
@@ -516,9 +525,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				List<ItemStack> voidItemStacks = inv.getInputContents().get(0);
 				voidItemStacks.remove(0);
 				List<Item> voidItems = new ArrayList<>();
-				voidItemStacks.forEach(h -> {
-					voidItems.add(h.getItem());
-				});
+				voidItemStacks.forEach(h -> voidItems.add(h.getItem()));
 				List<ItemStack> items = new ArrayList<>();
 
 				if (hasItemVoid) {
@@ -561,9 +568,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 						widthShiftCA = 0;
 						tickDelayCA = 0;
 						return;
-					} else {
-						widthShiftCA += deltaW;
 					}
+					widthShiftCA += deltaW;
 				} else {
 					heightShiftCA += deltaH;
 				}
@@ -602,7 +608,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private void fixBrokenFrames() {
 		Level world = getLevel();
 		Triple<BlockPos, Direction, Boolean> blockInfo = brokenFrames.get(0);
-		if (blockInfo.getRight()) {
+		if (Boolean.TRUE.equals(blockInfo.getRight())) {
 			world.setBlockAndUpdate(blockInfo.getLeft(), DeferredRegisters.blockFrameCorner.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
 		} else {
 			world.setBlockAndUpdate(blockInfo.getLeft(), DeferredRegisters.blockFrame.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE).setValue(GenericEntityBlock.FACING, blockInfo.getMiddle()));
@@ -662,7 +668,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				}
 				if (!hasRightStrip) {
 					strip(world, frontOfQuarry, foqFar.getX(), Direction.EAST, Direction.NORTH, true, false);
-					return;
 				}
 				break;
 			case WEST:
@@ -680,7 +685,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				}
 				if (!hasRightStrip) {
 					strip(world, frontOfQuarry, foqFar.getX(), Direction.WEST, Direction.SOUTH, true, false);
-					return;
 				}
 				break;
 			case SOUTH:
@@ -698,7 +702,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				}
 				if (!hasRightStrip) {
 					strip(world, frontOfQuarry, foqFar.getZ(), Direction.SOUTH, Direction.EAST, false, false);
-					return;
 				}
 				break;
 			case NORTH:
@@ -716,7 +719,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				}
 				if (!hasRightStrip) {
 					strip(world, frontOfQuarry, foqFar.getZ(), Direction.NORTH, Direction.WEST, false, false);
-					return;
 				}
 				break;
 			default:
@@ -781,34 +783,34 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		BlockEntity leftEntity = world.getBlockEntity(machinePos.relative(left));
 		BlockEntity rightEntity;
 		BlockEntity aboveEntity;
-		if (leftEntity != null && leftEntity instanceof TileMotorComplex complex && ((ComponentDirection) complex.getComponent(ComponentType.Direction)).getDirection() == left) {
+		if (leftEntity != null && leftEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complex.getComponent(ComponentType.Direction)).getDirection() == left) {
 			rightEntity = world.getBlockEntity(machinePos.relative(right));
-			if (rightEntity != null && rightEntity instanceof TileSeismicRelay relay && ((ComponentDirection) relay.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
+			if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relay.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
 				corners = relay.markerLocs;
 				cornerOnRight = relay.cornerOnRight;
-				relay = relay;
+				relay = relayin;
 				aboveEntity = world.getBlockEntity(machinePos.above());
-				if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoir) {
+				if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoirin) {
 					hasComponents = true;
-					complex = complex;
-					resavoir = resavoir;
+					complex = complexin;
+					resavoir = resavoirin;
 				} else {
 					hasComponents = false;
 				}
 			} else {
 				hasComponents = false;
 			}
-		} else if (leftEntity != null && leftEntity instanceof TileSeismicRelay relay && ((ComponentDirection) relay.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
+		} else if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relay.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
 			corners = relay.markerLocs;
 			cornerOnRight = relay.cornerOnRight;
-			relay = relay;
+			relay = relayin;
 			rightEntity = world.getBlockEntity(machinePos.relative(right));
-			if (rightEntity != null && rightEntity instanceof TileMotorComplex complex && ((ComponentDirection) complex.getComponent(ComponentType.Direction)).getDirection() == right) {
+			if (rightEntity != null && rightEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complex.getComponent(ComponentType.Direction)).getDirection() == right) {
 				aboveEntity = world.getBlockEntity(machinePos.above());
-				if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoir) {
+				if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoirin) {
 					hasComponents = true;
-					complex = complex;
-					resavoir = resavoir;
+					complex = complexin;
+					resavoir = resavoirin;
 				} else {
 					hasComponents = false;
 				}
@@ -843,7 +845,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		return clientCorners.size() > 3;
 	}
 
-	private boolean skipBlock(BlockState state) {
+	private static boolean skipBlock(BlockState state) {
 		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY);
 	}
 
@@ -1116,7 +1118,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> updateState(world, pos));
 	}
 
-	private void updateState(Level world, BlockPos pos) {
+	private static void updateState(Level world, BlockPos pos) {
 		BlockEntity entity = world.getBlockEntity(pos);
 		if (entity != null && entity instanceof TileFrame frame) {
 			frame.setNoNotify();
