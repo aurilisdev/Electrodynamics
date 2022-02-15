@@ -24,7 +24,7 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(References.ID, "composite_armor"), "main");
 
 	public ModelCompositeArmor(ModelPart root, EquipmentSlot slot) {
-		super(root, RenderType::entityTranslucent);
+		super(root);
 
 		parentHat.visible = false;
 
@@ -129,18 +129,17 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 	@Override
 	//Call me a butcher, because I am hacking this game
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		VertexConsumer custom = getCustomConsumer(RenderType.entityTranslucent(new ResourceLocation(ItemCompositeArmor.ARMOR_TEXTURE_LOCATION)));
 		if (parentHead.visible) {
-			parentHead.render(poseStack, custom, packedLight, packedOverlay);
+			parentHead.render(poseStack, getCustomConsumer(RenderType.entityTranslucent(new ResourceLocation(ItemCompositeArmor.ARMOR_TEXTURE_LOCATION))), packedLight, packedOverlay);
 		}
 		if (parentChest.visible) {
-			parentChest.render(poseStack, custom, packedLight, packedOverlay);
-			parentRightArm.render(poseStack, custom, packedLight, packedOverlay);
-			parentLeftArm.render(poseStack, custom, packedLight, packedOverlay);
+			parentChest.render(poseStack, buffer, packedLight, packedOverlay);
+			parentRightArm.render(poseStack, buffer, packedLight, packedOverlay);
+			parentLeftArm.render(poseStack, buffer, packedLight, packedOverlay);
 		}
 		if (parentRightLeg.visible) {
-			parentRightLeg.render(poseStack, custom, packedLight, packedOverlay);
-			parentLeftLeg.render(poseStack, custom, packedLight, packedOverlay);
+			parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+			parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 		}
 	}
 	

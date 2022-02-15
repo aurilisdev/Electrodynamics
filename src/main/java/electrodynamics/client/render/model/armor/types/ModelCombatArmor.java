@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.client.render.model.armor.GenericArmorModel;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
-import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -265,18 +264,17 @@ public class ModelCombatArmor<T extends LivingEntity> extends GenericArmorModel<
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		VertexConsumer custom = getCustomConsumer(RenderType.entityTranslucent(new ResourceLocation(ItemCombatArmor.ARMOR_TEXTURE_LOCATION)));
 		if (parentHead.visible) {
-			parentHead.render(poseStack, custom, packedLight, packedOverlay);
+			parentHead.render(poseStack, getCustomConsumer(RenderType.entityTranslucent(new ResourceLocation(ItemCombatArmor.ARMOR_TEXTURE_LOCATION))), packedLight, packedOverlay);
 		}
 		if (parentChest.visible) {
-			parentChest.render(poseStack, custom, packedLight, packedOverlay);
-			parentRightArm.render(poseStack, custom, packedLight, packedOverlay);
-			parentLeftArm.render(poseStack, custom, packedLight, packedOverlay);
+			parentChest.render(poseStack, buffer, packedLight, packedOverlay);
+			parentRightArm.render(poseStack, buffer, packedLight, packedOverlay);
+			parentLeftArm.render(poseStack, buffer, packedLight, packedOverlay);
 		}
 		if (parentRightLeg.visible) {
-			parentRightLeg.render(poseStack, custom, packedLight, packedOverlay);
-			parentLeftLeg.render(poseStack, custom, packedLight, packedOverlay);
+			parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+			parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
 		}
 	}
 
