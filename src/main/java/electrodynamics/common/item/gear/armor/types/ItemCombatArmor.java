@@ -113,40 +113,42 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		switch (getSlot()) {
-		case HEAD, LEGS:
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+		if (tab == References.CORETAB) {
+			switch (getSlot()) {
+			case HEAD, LEGS:
+				ItemStack empty = new ItemStack(this);
+				IItemElectric.setEnergyStored(empty, 0);
+				items.add(empty);
 
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-			break;
-		case CHEST:
-			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isFluidItemNull()) {
-				ItemStack full = new ItemStack(this);
-				Fluid fluid = ItemJetpack.staticGetWhitelistedFluids().getSecond().get(0);
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
-				CompoundTag tag = full.getOrCreateTag();
-				tag.putInt(NBTUtils.PLATES, 2);
-				items.add(full);
+				ItemStack charged = new ItemStack(this);
+				IItemElectric.setEnergyStored(charged, properties.capacity);
+				items.add(charged);
+				break;
+			case CHEST:
+				items.add(new ItemStack(this));
+				if (!CapabilityUtils.isFluidItemNull()) {
+					ItemStack full = new ItemStack(this);
+					Fluid fluid = ItemJetpack.staticGetWhitelistedFluids().getSecond().get(0);
+					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
+					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
+					CompoundTag tag = full.getOrCreateTag();
+					tag.putInt(NBTUtils.PLATES, 2);
+					items.add(full);
+				}
+				break;
+			case FEET:
+				items.add(new ItemStack(this));
+				if (!CapabilityUtils.isFluidItemNull()) {
+					ItemStack full = new ItemStack(this);
+					Fluid fluid = ItemHydraulicBoots.staticGetWhitelistedFluids().getSecond().get(0);
+					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
+					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
+					items.add(full);
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case FEET:
-			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isFluidItemNull()) {
-				ItemStack full = new ItemStack(this);
-				Fluid fluid = ItemHydraulicBoots.staticGetWhitelistedFluids().getSecond().get(0);
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
-				items.add(full);
-			}
-			break;
-		default:
-			break;
 		}
 	}
 
