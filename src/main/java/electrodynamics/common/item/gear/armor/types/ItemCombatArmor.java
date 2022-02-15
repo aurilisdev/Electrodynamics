@@ -40,23 +40,23 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class ItemCombatArmor extends ArmorItem implements IItemElectric {
-	
+
 	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/combatarmor.png";
-	
+
 	private final ElectricItemProperties properties;
-	
+
 	public ItemCombatArmor(Properties properties, EquipmentSlot slot) {
 		super(ItemCompositeArmor.CompositeArmor.COMPOSITE_ARMOR, slot, properties);
-		switch(slot) {
+		switch (slot) {
 		case HEAD, LEGS:
 			this.properties = (ElectricItemProperties) properties;
-			break;	
+			break;
 		default:
 			this.properties = new ElectricItemProperties();
 			break;
 		}
 	}
-	
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
@@ -97,11 +97,11 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			}
 		});
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		ArmorItem armor = (ArmorItem) stack.getItem();
-		switch(armor.getSlot()) {
+		switch (armor.getSlot()) {
 		case CHEST:
 			return new RestrictedFluidHandlerItemStack(stack, stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.staticGetWhitelistedFluids());
 		case FEET:
@@ -110,15 +110,15 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			return super.initCapabilities(stack, nbt);
 		}
 	}
-	
+
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		switch(this.getSlot()) {
+		switch (this.getSlot()) {
 		case HEAD, LEGS:
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
-			
+
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);
@@ -149,11 +149,11 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagin) {
 		super.appendHoverText(stack, level, tooltip, flagin);
-		switch(((ArmorItem)stack.getItem()).getSlot()) {
+		switch (((ArmorItem) stack.getItem()).getSlot()) {
 		case HEAD:
 			tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 			tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
@@ -183,12 +183,12 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch(combat.getSlot()) {
+		switch (combat.getSlot()) {
 		case HEAD:
 			ItemNightVisionGoggles.armorTick(stack, world, player);
 			break;
@@ -202,11 +202,11 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			break;
 		}
 	}
-	
+
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch(combat.getSlot()) {
+		switch (combat.getSlot()) {
 		case HEAD, LEGS:
 			return getJoulesStored(stack) < properties.capacity;
 		case CHEST:
@@ -217,11 +217,11 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch(combat.getSlot()) {
+		switch (combat.getSlot()) {
 		case HEAD, LEGS:
 			return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
 		case CHEST:
@@ -232,12 +232,12 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			return 0;
 		}
 	}
-	
+
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
 	}
-	
+
 	@Override
 	public boolean canBeDepleted() {
 		return false;
@@ -252,7 +252,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
@@ -262,5 +262,5 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 }

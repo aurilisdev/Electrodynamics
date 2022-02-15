@@ -29,7 +29,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		inventoryLabelY += 58;
 		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
-	
+
 	private List<? extends FormattedCharSequence> getElectricInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileQuarry quarry = menu.getHostFromIntArray();
@@ -40,48 +40,48 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		}
 		return list;
 	}
-	
+
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
 		TileQuarry quarry = menu.getHostFromIntArray();
-		if(quarry != null) {
-			if(quarry.clientItemVoid) {
+		if (quarry != null) {
+			if (quarry.clientItemVoid) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.voiditems"), 85, 14, 4210752);
 			} else {
 				font.draw(stack, new TranslatableComponent("gui.quarry.needvoidcard"), 85, 14, 4210752);
 			}
 			font.draw(stack, new TranslatableComponent("gui.quarry.status"), 5, 22, 4210752);
-			if(quarry.hasClientCorners()) {
+			if (quarry.hasClientCorners()) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.ringfound"), 10, 32, 4210752);
 			} else {
 				font.draw(stack, new TranslatableComponent("gui.quarry.noring"), 10, 32, 4210752);
 			}
-			if(quarry.clientMiningPos == null && quarry.hasClientCorners() && !quarry.clientFinished) {
+			if (quarry.clientMiningPos == null && quarry.hasClientCorners() && !quarry.clientFinished) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.setup"), 10, 42, 4210752);
-			} else if(quarry.clientMiningPos != null && !quarry.clientFinished) {
+			} else if (quarry.clientMiningPos != null && !quarry.clientFinished) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.mining"), 10, 42, 4210752);
-			} else if(quarry.clientFinished) {
+			} else if (quarry.clientFinished) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.finished"), 10, 42, 4210752);
 			} else {
 				font.draw(stack, new TranslatableComponent("gui.quarry.error"), 10, 42, 4210752);
 			}
-			if(quarry.clientHead) {
+			if (quarry.clientHead) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.hashead"), 10, 52, 4210752);
 			} else {
 				font.draw(stack, new TranslatableComponent("gui.quarry.nohead"), 10, 52, 4210752);
 			}
-			if(quarry.clientIsPowered) {
+			if (quarry.clientIsPowered) {
 				font.draw(stack, new TranslatableComponent("gui.quarry.running"), 10, 62, 4210752);
 			} else {
 				font.draw(stack, new TranslatableComponent("gui.quarry.needspower"), 10, 62, 4210752);
 			}
-			
+
 			font.draw(stack, new TranslatableComponent("gui.quarry.stats"), 5, 82, 4210752);
 			font.draw(stack, new TranslatableComponent("gui.quarry.fortune", quarry.clientFortuneLevel), 10, 92, 4210752);
 			font.draw(stack, new TranslatableComponent("gui.quarry.silktouch", quarry.clientSilkTouchLevel), 10, 102, 4210752);
 			font.draw(stack, new TranslatableComponent("gui.quarry.unbreaking", quarry.clientUnbreakingLevel), 10, 112, 4210752);
-		} 
+		}
 	}
 
 }

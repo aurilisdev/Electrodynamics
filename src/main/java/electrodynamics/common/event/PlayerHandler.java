@@ -48,14 +48,14 @@ public class PlayerHandler {
 			ItemStack stack = armorPieces.get(2);
 			CompoundTag tag = stack.getOrCreateTag();
 			int stored = tag.getInt(NBTUtils.PLATES);
-				if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
-					event.setAmount((float) Math.sqrt(event.getAmount()));
-					tag.putInt(NBTUtils.PLATES, stored - 1);
-					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
-				}
+			if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
+				event.setAmount((float) Math.sqrt(event.getAmount()));
+				tag.putInt(NBTUtils.PLATES, stored - 1);
+				event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
+			}
 		}
 	}
-	
+
 	private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
 		return ItemStack.isSameIgnoreDurability(set1.get(0), set2[3]) && ItemStack.isSameIgnoreDurability(set1.get(1), set2[2]) && ItemStack.isSameIgnoreDurability(set1.get(2), set2[1]) && ItemStack.isSameIgnoreDurability(set1.get(3), set2[0]);
 	}
@@ -67,8 +67,7 @@ public class PlayerHandler {
 			ItemStack hydraulicBoots = new ItemStack(DeferredRegisters.ITEM_HYDRAULICBOOTS.get());
 			ItemStack combatBoots = new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get());
 			ItemStack playerBoots = event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET);
-			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem())
-					|| ItemUtils.testItems(combatBoots.getItem(), playerBoots.getItem())) {
+			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) || ItemUtils.testItems(combatBoots.getItem(), playerBoots.getItem())) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
 				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
 					event.setCanceled(true);

@@ -34,11 +34,10 @@ public class PacketToggleOnServer {
 			ServerLevel world = context.get().getSender().getLevel();
 			if (world != null) {
 				Player player = world.getPlayerByUUID(message.playerId);
-				switch(message.type) {
+				switch (message.type) {
 				case NVGS:
 					ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-					if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
-							|| ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
+					if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
 						CompoundTag tag = playerHead.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 						if (((IItemElectric) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
@@ -52,8 +51,7 @@ public class PacketToggleOnServer {
 					break;
 				case SERVOLEGGINGS:
 					ItemStack playerLegs = player.getItemBySlot(EquipmentSlot.LEGS);
-					if (ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
-							|| ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+					if (ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = playerLegs.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 						player.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
@@ -74,8 +72,9 @@ public class PacketToggleOnServer {
 	public static PacketToggleOnServer decode(FriendlyByteBuf buf) {
 		return new PacketToggleOnServer(buf.readUUID(), buf.readEnum(Type.class));
 	}
-	
+
 	public enum Type {
-		NVGS, SERVOLEGGINGS;
+		NVGS,
+		SERVOLEGGINGS;
 	}
 }

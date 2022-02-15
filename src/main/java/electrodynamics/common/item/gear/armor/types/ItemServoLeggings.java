@@ -35,21 +35,21 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 
 public class ItemServoLeggings extends ArmorItem implements IItemElectric {
-	
+
 	public static final int JOULES_PER_TICK = 5;
 	public static final int DURATION_SECONDS = 1;
-	
+
 	public static final float DEFAULT_VANILLA_STEPUP = 0.6F;
-	
-	private static final String ARMOR_TEXTURE= References.ID + ":textures/model/armor/servoleggings.png";
-	
+
+	private static final String ARMOR_TEXTURE = References.ID + ":textures/model/armor/servoleggings.png";
+
 	final ElectricItemProperties properties;
-	
+
 	public ItemServoLeggings(ElectricItemProperties pProperties) {
 		super(ServoLeggings.SERVOLEGGINGS, EquipmentSlot.LEGS, pProperties);
 		properties = pProperties;
 	}
-	
+
 	@Override
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
@@ -71,7 +71,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public boolean isEnchantable(ItemStack p_41456_) {
 		return false;
@@ -96,7 +96,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	public boolean isBarVisible(ItemStack stack) {
 		return getJoulesStored(stack) < properties.capacity;
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
@@ -104,11 +104,11 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 		staticAppendTooltips(stack, world, tooltip, flagIn);
 	}
-	
+
 	protected static void staticAppendTooltips(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
-			if(tag.getBoolean(NBTUtils.ON)) {
+			if (tag.getBoolean(NBTUtils.ON)) {
 				tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 			} else {
 				tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
@@ -139,19 +139,19 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 			items.add(empty);
 		}
 	}
-	
+
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
 		armorTick(stack, world, player);
 	}
-	
+
 	protected static void armorTick(ItemStack stack, Level world, Player player) {
-		if(!world.isClientSide) {
+		if (!world.isClientSide) {
 			IItemElectric legs = (IItemElectric) stack.getItem();
 			CompoundTag tag = stack.getOrCreateTag();
-			if(tag.getBoolean(NBTUtils.ON) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
-				switch(tag.getInt(NBTUtils.MODE)) {
+			if (tag.getBoolean(NBTUtils.ON) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+				switch (tag.getInt(NBTUtils.MODE)) {
 				case 0:
 					tag.putBoolean("reset", false);
 					tag.putBoolean(NBTUtils.SUCESS, true);
@@ -173,7 +173,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 					break;
 				case 3:
 					tag.putBoolean(NBTUtils.SUCESS, false);
-					if(!tag.getBoolean("reset")) {
+					if (!tag.getBoolean("reset")) {
 						player.maxUpStep = DEFAULT_VANILLA_STEPUP;
 					}
 					break;
@@ -182,19 +182,19 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 				}
 			} else {
 				tag.putBoolean(NBTUtils.SUCESS, false);
-				if(!tag.getBoolean("reset")) {
+				if (!tag.getBoolean("reset")) {
 					player.maxUpStep = DEFAULT_VANILLA_STEPUP;
 				}
 			}
 		} else if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
-			if(tag.getBoolean(NBTUtils.SUCESS)) {
-				switch(tag.getInt(NBTUtils.MODE)) {
+			if (tag.getBoolean(NBTUtils.SUCESS)) {
+				switch (tag.getInt(NBTUtils.MODE)) {
 				case 0, 1:
 					player.maxUpStep = 1.1F;
 					break;
-				case 2,3:
-					if(!tag.getBoolean("reset")) {
+				case 2, 3:
+					if (!tag.getBoolean("reset")) {
 						player.maxUpStep = DEFAULT_VANILLA_STEPUP;
 					}
 					break;
@@ -202,7 +202,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 					break;
 				}
 			} else {
-				if(!tag.getBoolean("reset")) {
+				if (!tag.getBoolean("reset")) {
 					player.maxUpStep = DEFAULT_VANILLA_STEPUP;
 				}
 			}
@@ -213,12 +213,12 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE;
 	}
-	
+
 	public enum ServoLeggings implements ICustomArmor {
 		SERVOLEGGINGS;
 

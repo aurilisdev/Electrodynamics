@@ -103,9 +103,9 @@ public class ClientRegister {
 	public static LayerDefinition HYDRAULIC_BOOTS = ModelHydraulicBoots.createBodyLayer();
 
 	public static LayerDefinition JETPACK = ModelJetpack.createBodyLayer();
-	
+
 	public static LayerDefinition SERVO_LEGGINGS = ModelServoLeggings.createBodyLayer();
-	
+
 	public static LayerDefinition COMBAT_ARMOR_LAYER_LEG_NOCHEST = ModelCombatArmor.createBodyLayer(1, true);
 	public static LayerDefinition COMBAT_ARMOR_LAYER_BOOTS = ModelCombatArmor.createBodyLayer(2, false);
 	public static LayerDefinition COMBAT_ARMOR_LAYER_COMB_NOCHEST = ModelCombatArmor.createBodyLayer(3, true);
@@ -211,11 +211,11 @@ public class ClientRegister {
 	public static final ResourceLocation MODEL_LATHE = new ResourceLocation(BLOCK_LOC + "lathe");
 	public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(BLOCK_LOC + "latheshaft");
 	public static final ResourceLocation MODEL_MOTORCOMPLEXROTOR = new ResourceLocation(BLOCK_LOC + "motorcomplexrotor");
-	
+
 	public static final ResourceLocation MODEL_RODSTEEL = new ResourceLocation(References.ID + ":entity/rodsteel");
 	public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":entity/rodstainlesssteel");
 	public static final ResourceLocation MODEL_RODHSLASTEEL = new ResourceLocation(References.ID + ":entity/rodhslasteel");
-	
+
 	public static final ResourceLocation TEXTURE_RODSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodsteel.png");
 	public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
@@ -255,7 +255,7 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_COOLANTRESAVOIR.get(), ScreenCoolantResavoir::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_MOTORCOMPLEX.get(), ScreenMotorComplex::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_QUARRY.get(), ScreenQuarry::new);
-		
+
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant), ClientRegister::shouldMultilayerRender);

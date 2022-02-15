@@ -16,18 +16,18 @@ import net.minecraft.world.phys.AABB;
 public class TileSeismicMarker extends GenericTile {
 
 	public static final int MAX_RADIUS = Math.max(Math.min(Constants.MARKER_RADIUS, 128), 2);
-	
+
 	public TileSeismicMarker(BlockPos pos, BlockState state) {
 		super(DeferredRegisters.TILE_SEISMICMARKER.get(), pos, state);
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 	}
-	
+
 	private void tickClient(ComponentTickable tick) {
 		Level world = getLevel();
 		BlockPos pos = getBlockPos();
-		if(world.hasNeighborSignal(pos)) {
-			//do not combine!
-			if(!ClientEvents.markerLines.containsKey(pos)) {
+		if (world.hasNeighborSignal(pos)) {
+			// do not combine!
+			if (!ClientEvents.markerLines.containsKey(pos)) {
 				List<AABB> boxes = new ArrayList<>();
 				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.5625, pos.getZ() + 0.4375, pos.getX() + MAX_RADIUS + 1.5625, pos.getY() + 0.6875, pos.getZ() + 0.5625));
 				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.5625, pos.getZ() + 0.4375, pos.getX() - MAX_RADIUS - 0.5625, pos.getY() + 0.6875, pos.getZ() + 0.5625));
@@ -39,11 +39,11 @@ public class TileSeismicMarker extends GenericTile {
 			ClientEvents.markerLines.remove(pos);
 		}
 	}
-	
+
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-		if(getLevel().isClientSide) {
+		if (getLevel().isClientSide) {
 			ClientEvents.markerLines.remove(getBlockPos());
 		}
 	}

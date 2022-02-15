@@ -24,31 +24,31 @@ public class TileLogisticalManager extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 	}
-	
+
 	private void tickServer(ComponentTickable tick) {
-		Direction facing = ((ComponentDirection)getComponent(ComponentType.Direction)).getDirection().getOpposite();
+		Direction facing = ((ComponentDirection) getComponent(ComponentType.Direction)).getDirection().getOpposite();
 		Direction left = facing.getCounterClockWise();
 		Direction right = facing.getClockWise();
 		BlockPos pos = getBlockPos();
 		Level world = getLevel();
-		//Quarry
+		// Quarry
 		BlockEntity front = world.getBlockEntity(pos.relative(facing));
-		if(front != null && front instanceof TileQuarry quarry) {
+		if (front != null && front instanceof TileQuarry quarry) {
 			ComponentInventory quarryInv = quarry.getComponent(ComponentType.Inventory);
-			//left is for drill heads
+			// left is for drill heads
 			int drillSlot = 0;
-			if(quarryInv.getItem(drillSlot).isEmpty()) {
+			if (quarryInv.getItem(drillSlot).isEmpty()) {
 				BlockEntity leftChest = world.getBlockEntity(pos.relative(left));
-				if(leftChest != null && leftChest instanceof Container container) {
+				if (leftChest != null && leftChest instanceof Container container) {
 					if (container instanceof WorldlyContainer worldly) {
 						for (int containerSlot : worldly.getSlotsForFace(left)) {
-							if(takeItemFromContainer(quarryInv, drillSlot, container, container.getItem(containerSlot))) {
+							if (takeItemFromContainer(quarryInv, drillSlot, container, container.getItem(containerSlot))) {
 								break;
 							}
 						}
 					} else {
 						for (int i = 0; i < container.getContainerSize(); i++) {
-							if(takeItemFromContainer(quarryInv, drillSlot, container, container.getItem(i))) {
+							if (takeItemFromContainer(quarryInv, drillSlot, container, container.getItem(i))) {
 								break;
 							}
 						}
@@ -56,8 +56,8 @@ public class TileLogisticalManager extends GenericTile {
 				}
 			}
 			BlockEntity rightChest = world.getBlockEntity(pos.relative(right));
-			if(rightChest != null && rightChest instanceof Container container) {
-				for(ItemStack stack : quarryInv.getOutputContents()) {
+			if (rightChest != null && rightChest instanceof Container container) {
+				for (ItemStack stack : quarryInv.getOutputContents()) {
 					if (container instanceof WorldlyContainer worldly) {
 						for (int slot : worldly.getSlotsForFace(right)) {
 							addItemToContainer(stack, container, slot);
@@ -92,7 +92,7 @@ public class TileLogisticalManager extends GenericTile {
 	}
 
 	private boolean takeItemFromContainer(ComponentInventory quarryInv, int drillSlot, Container container, ItemStack item) {
-		if(!item.isEmpty() && item.getItem() instanceof ItemDrillHead) {
+		if (!item.isEmpty() && item.getItem() instanceof ItemDrillHead) {
 			quarryInv.setItem(drillSlot, item.copy());
 			item.shrink(item.getCount());
 			container.setChanged();

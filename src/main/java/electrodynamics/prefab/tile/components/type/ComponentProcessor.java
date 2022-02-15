@@ -665,32 +665,24 @@ public class ComponentProcessor implements Component {
 	private static void dispenseExperience(ComponentInventory inv, double experience, GenericTile holder) {
 		int start = inv.getUpgradeSlotStartIndex();
 		int count = inv.upgrades();
-		for(int i = start; i < start + count; i++) {
+		for (int i = start; i < start + count; i++) {
 			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					//TODO work god damn you
+					// TODO work god damn you
 					CompoundTag tag = stack.getOrCreateTag();
 					tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + experience);
 					inv.removeItem(i, 1);
 					inv.setItem(i, stack.copy());
-					//holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+					// holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 				}
 				break;
 			}
 		}
 		/*
-		for (ItemStack stack : inv.getUpgradeContents()) {
-			if (!stack.isEmpty()) {
-				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
-				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					DoubleStorage.addDouble(0, DoubleStorage.getDouble(0, stack) + experience, stack);
-				}
-				break;
-			}
-		}
-		*/
+		 * for (ItemStack stack : inv.getUpgradeContents()) { if (!stack.isEmpty()) { ItemUpgrade upgrade = (ItemUpgrade) stack.getItem(); if (upgrade.subtype == SubtypeItemUpgrade.experience) { DoubleStorage.addDouble(0, DoubleStorage.getDouble(0, stack) + experience, stack); } break; } }
+		 */
 	}
 
 	private static boolean roomInItemBiSlots(List<ItemStack> slots, ItemStack[] biproducts) {

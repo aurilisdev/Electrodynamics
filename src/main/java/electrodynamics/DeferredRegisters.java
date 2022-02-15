@@ -251,7 +251,7 @@ public class DeferredRegisters {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(new BlockConcrete(subtype), subtype)));
 		}
 		BLOCKS.register("multisubnode", supplier(multi));
-		BLOCKS.register("seismicmarker" , supplier(blockSeismicMarker = new BlockSeismicMarker()));
+		BLOCKS.register("seismicmarker", supplier(blockSeismicMarker = new BlockSeismicMarker()));
 		BLOCKS.register("frame", supplier(blockFrame = new BlockFrame()));
 		BLOCKS.register("framecorner", supplier(blockFrameCorner = new BlockFrame()));
 		BLOCKS.register("logisticalmanager", supplier(blockLogisticalManager = new BlockLogisticalManager()));
@@ -316,7 +316,7 @@ public class DeferredRegisters {
 		for (SubtypeCeramic subtype : SubtypeCeramic.values()) {
 			ITEMS.register(subtype.tag(), supplier(new ItemCeramic(subtype), subtype));
 		}
-		for(SubtypeDrillHead drill : SubtypeDrillHead.values()) {
+		for (SubtypeDrillHead drill : SubtypeDrillHead.values()) {
 			ITEMS.register(drill.tag(), supplier(new ItemDrillHead(drill), drill));
 		}
 		ITEMS.register("sheetplastic", supplier(new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
@@ -327,7 +327,7 @@ public class DeferredRegisters {
 		ITEMS.register("frame", supplier(new BlockItemDescriptable(blockFrame, new Item.Properties().stacksTo(64))));
 		ITEMS.register("framecorner", supplier(new BlockItemDescriptable(blockFrameCorner, new Item.Properties().stacksTo(64))));
 		ITEMS.register("logisticalmanager", supplier(new BlockItemDescriptable(blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
-		
+
 		// machines
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnace), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricfurnacedouble), "|translate|tooltip.machine.voltage.240");
@@ -389,7 +389,7 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(blockLogisticalManager, "|translate|tooltip.logisticalmanager.use");
 
 	}
-	
+
 	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(new BlockItemDescriptable(blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(new Item(new Item.Properties().tab(References.CORETAB))));
@@ -426,12 +426,12 @@ public class DeferredRegisters {
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(new ItemHydraulicBoots()));
 	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(new ItemJetpack()));
 	public static final RegistryObject<Item> ITEM_SERVOLEGGINGS = ITEMS.register("servoleggings", supplier(new ItemServoLeggings((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
-	
+
 	public static final RegistryObject<Item> ITEM_COMBATHELMET = ITEMS.register("combatarmorhelmet", supplier(new ItemCombatArmor((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.HEAD)));
-	public static final RegistryObject<Item> ITEM_COMBATCHESTPLATE = ITEMS.register("combatarmorchestplate", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB),EquipmentSlot.CHEST)));
+	public static final RegistryObject<Item> ITEM_COMBATCHESTPLATE = ITEMS.register("combatarmorchestplate", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB), EquipmentSlot.CHEST)));
 	public static final RegistryObject<Item> ITEM_COMBATLEGGINGS = ITEMS.register("combatarmorleggings", supplier(new ItemCombatArmor((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> ITEM_COMBATBOOTS = ITEMS.register("combatarmorboots", supplier(new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB), EquipmentSlot.FEET)));
-	
+
 	// Split from items to tiles
 
 	public static final RegistryObject<BlockEntityType<TileCoalGenerator>> TILE_COALGENERATOR = TILES.register(SubtypeMachine.coalgenerator.tag(), () -> new BlockEntityType<>(TileCoalGenerator::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgenerator), SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning)), null));
@@ -505,13 +505,13 @@ public class DeferredRegisters {
 	public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = TILES.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource)), null));
 	public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = TILES.register(SubtypeMachine.fluidvoid.tag(), () -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid)), null));
 	public static final RegistryObject<BlockEntityType<TileSeismicMarker>> TILE_SEISMICMARKER = TILES.register("seismicmarker", () -> new BlockEntityType<>(TileSeismicMarker::new, Sets.newHashSet(blockSeismicMarker), null));
-	public static final RegistryObject<BlockEntityType<TileSeismicRelay>> TILE_SEISMICRELAY = TILES.register(SubtypeMachine.seismicrelay.tag(), () -> new BlockEntityType<>(TileSeismicRelay::new,Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicrelay)), null));
+	public static final RegistryObject<BlockEntityType<TileSeismicRelay>> TILE_SEISMICRELAY = TILES.register(SubtypeMachine.seismicrelay.tag(), () -> new BlockEntityType<>(TileSeismicRelay::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.seismicrelay)), null));
 	public static final RegistryObject<BlockEntityType<TileQuarry>> TILE_QUARRY = TILES.register(SubtypeMachine.quarry.tag(), () -> new BlockEntityType<>(TileQuarry::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.quarry)), null));
 	public static final RegistryObject<BlockEntityType<TileCoolantResavoir>> TILE_COOLANTRESAVOIR = TILES.register(SubtypeMachine.coolantresavoir.tag(), () -> new BlockEntityType<>(TileCoolantResavoir::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coolantresavoir)), null));
 	public static final RegistryObject<BlockEntityType<TileMotorComplex>> TILE_MOTORCOMPLEX = TILES.register(SubtypeMachine.motorcomplex.tag(), () -> new BlockEntityType<>(TileMotorComplex::new, Sets.newHashSet(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.motorcomplex)), null));
 	public static final RegistryObject<BlockEntityType<TileFrame>> TILE_FRAME = TILES.register("frame", () -> new BlockEntityType<>(TileFrame::new, Sets.newHashSet(blockFrame, blockFrameCorner), null));
 	public static final RegistryObject<BlockEntityType<TileLogisticalManager>> TILE_LOGISTICALMANAGER = TILES.register("logisticalmanager", () -> new BlockEntityType<>(TileLogisticalManager::new, Sets.newHashSet(blockLogisticalManager), null));
-	
+
 	// Containers
 
 	public static final RegistryObject<MenuType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = CONTAINERS.register(SubtypeMachine.coalgenerator.tag(), () -> new MenuType<>(ContainerCoalGenerator::new));
@@ -548,7 +548,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<MenuType<ContainerCoolantResavoir>> CONTAINER_COOLANTRESAVOIR = CONTAINERS.register("coolantresavoir", () -> new MenuType<>(ContainerCoolantResavoir::new));
 	public static final RegistryObject<MenuType<ContainerMotorComplex>> CONTAINER_MOTORCOMPLEX = CONTAINERS.register("motorcomplex", () -> new MenuType<>(ContainerMotorComplex::new));
 	public static final RegistryObject<MenuType<ContainerQuarry>> CONTAINER_QUARRY = CONTAINERS.register("quarry", () -> new MenuType<>(ContainerQuarry::new));
-	
+
 	// Entities
 
 	public static final RegistryObject<EntityType<EntityMetalRod>> ENTITY_METALROD = ENTITIES.register("metalrod", () -> EntityType.Builder.<EntityMetalRod>of(EntityMetalRod::new, MobCategory.MISC).sized(0.25f, 0.25f).fireImmune().build(References.ID + ".metalrod"));

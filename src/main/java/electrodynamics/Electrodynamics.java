@@ -48,7 +48,7 @@ public class Electrodynamics {
 	public Electrodynamics() {
 		ConfigurationHandler.registerConfig(Constants.class);
 		ConfigurationHandler.registerConfig(OreConfig.class);
-		//MUST GO BEFORE BLOCKS!!!!
+		// MUST GO BEFORE BLOCKS!!!!
 		ElectrodynamicsBlockStates.init();
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		SoundRegister.SOUNDS.register(bus);

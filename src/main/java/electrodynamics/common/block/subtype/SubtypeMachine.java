@@ -196,7 +196,7 @@ public enum SubtypeMachine implements ISubtype {
 	public VoxelShape getCustomShape() {
 		return customShape;
 	}
-	
+
 	public boolean isPlayerStorable() {
 		return this == quarry;
 	}

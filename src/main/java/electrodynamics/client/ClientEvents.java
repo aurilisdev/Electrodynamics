@@ -97,9 +97,9 @@ public class ClientEvents {
 	}
 
 	private static HashSet<Pair<Long, BlockPos>> blocks = new HashSet<>();
-	
+
 	public static HashMap<BlockPos, List<AABB>> markerLines = new HashMap<>();
-	
+
 	public static HashMap<BlockPos, List<AABB>> quarryArm = new HashMap<>();
 
 	@SubscribeEvent
@@ -139,32 +139,32 @@ public class ClientEvents {
 		float v0Frame = cornerFrame.getV0();
 		float v1Frame = cornerFrame.getV1();
 		float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-		
+
 		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:block/resource/resourceblocktitanium"));
 		float u0Titanium = titanium.getU0();
 		float u1Titanium = titanium.getU1();
 		float v0Titanium = titanium.getV0();
 		float v1Titanium = titanium.getV1();
 		float[] colorsTitanium = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-		
+
 		VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
-		
+
 		quarryArm.forEach((pos, list) -> {
-			for(int i = 0; i < list.size(); i++) {
+			for (int i = 0; i < list.size(); i++) {
 				AABB aabb = list.get(i);
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				if(i < 5) {
-					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);	
+				if (i < 5) {
+					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
 				} else {
 					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
 				}
 				matrix.popPose();
 			}
 		});
-		
+
 		buffer.endBatch(Sheets.solidBlockSheet());
-		
+
 	}
 
 	public static void addRenderLocation(BlockPos pos) {
@@ -177,36 +177,32 @@ public class ClientEvents {
 		Player player = minecraft.player;
 		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
-					|| ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
 			}
 		}
 
 		if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
 			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get())
-					|| ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
+			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
 			}
 		}
-		
+
 		if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchServoLeggingsMode.isDown()) {
 			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
-					|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
 			}
 		}
-		
+
 		if (KeyBinds.toggleServoLeggings.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleServoLeggings.isDown()) {
 			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
-					|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.SERVOLEGGINGS));
 			}
 		}
-		
+
 	}
 
 }

@@ -35,11 +35,11 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 
 		font.draw(stack, new TranslatableComponent("gui.seismicscanner.material"), 15, 32, 4210752);
 		font.draw(stack, new TranslatableComponent("gui.seismicscanner.dataheader"), 85, 25, 4210752);
-		
+
 		ItemStack ownerItem = menu.getOwnerItem();
-		
-		Location playerLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.PLAY_LOC) : new Location(0,0,0);
-		Location blockLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.BLOCK_LOC) : new Location(0,0,0);
+
+		Location playerLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.PLAY_LOC) : new Location(0, 0, 0);
+		Location blockLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.BLOCK_LOC) : new Location(0, 0, 0);
 
 		if (blockLoc.equals(playerLoc)) {
 			drawNotFound(stack);
@@ -48,7 +48,7 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 			font.draw(stack, new TranslatableComponent("gui.seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
 			font.draw(stack, new TranslatableComponent("gui.seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
 		}
-		
+
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {

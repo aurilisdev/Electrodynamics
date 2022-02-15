@@ -47,7 +47,7 @@ public class ItemSeismicScanner extends ItemElectric {
 	public static final int RADUIS_BLOCKS = 16;
 	public static final int COOLDOWN_SECONDS = 10;
 	public static final int JOULES_PER_SCAN = 1000;
-	
+
 	public static final String PLAY_LOC = "player";
 	public static final String BLOCK_LOC = "block";
 
@@ -60,7 +60,7 @@ public class ItemSeismicScanner extends ItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new CapabilityItemStackHandler(1);
@@ -125,7 +125,7 @@ public class ItemSeismicScanner extends ItemElectric {
 					Location playerPos = new Location(player.getOnPos());
 					Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS, oreBlockItem.getBlock()));
 					playerPos.writeToNBT(tag, NBTUtils.LOCATION + PLAY_LOC);
-					blockPos.writeToNBT(tag, NBTUtils.LOCATION +  BLOCK_LOC);
+					blockPos.writeToNBT(tag, NBTUtils.LOCATION + BLOCK_LOC);
 					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 				}
 			} else {
@@ -148,10 +148,10 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
-		if(!world.isClientSide) {
+		if (!world.isClientSide) {
 			CompoundTag tag = stack.getOrCreateTag();
 			int time = tag.getInt(NBTUtils.TIMER);
-			if(time > 0) {
+			if (time > 0) {
 				tag.putInt(NBTUtils.TIMER, time - 1);
 			}
 		}
