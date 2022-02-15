@@ -39,11 +39,11 @@ public abstract class GenericArmorModel<T extends LivingEntity> extends Humanoid
 		this.parentRightLeg = root.getChild(RIGHT_LEG);
 		this.parentLeftLeg = root.getChild(LEFT_LEG);
 	}
-	
+
 	public GenericArmorModel(ModelPart root) {
 		this(root, RenderType::entityCutoutNoCull);
 	}
-	
+
 	protected VertexConsumer getCustomConsumer(RenderType type) {
 		return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(type);
 	}

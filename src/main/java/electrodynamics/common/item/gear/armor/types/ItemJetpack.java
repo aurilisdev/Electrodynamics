@@ -84,7 +84,7 @@ public class ItemJetpack extends ArmorItem {
 			}
 		});
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
@@ -110,7 +110,7 @@ public class ItemJetpack extends ArmorItem {
 		staticAppendHoverText(stack, world, tooltip, flagIn);
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
-	
+
 	protected static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
@@ -135,10 +135,10 @@ public class ItemJetpack extends ArmorItem {
 		super.onArmorTick(stack, world, player);
 		armorTick(stack, world, player);
 	}
-	
+
 	protected static void armorTick(ItemStack stack, Level world, Player player) {
 		if (world.isClientSide) {
-			ArmorItem item = (ArmorItem)stack.getItem();
+			ArmorItem item = (ArmorItem) stack.getItem();
 			if (item.getSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
 				int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
@@ -175,7 +175,7 @@ public class ItemJetpack extends ArmorItem {
 				drainHydrogen(stack);
 				player.resetFallDistance();
 			}
-			if(tag.getInt(NBTUtils.TIMER) > 100) {
+			if (tag.getInt(NBTUtils.TIMER) > 100) {
 				tag.putInt(NBTUtils.TIMER, 0);
 			}
 		}
@@ -200,7 +200,7 @@ public class ItemJetpack extends ArmorItem {
 	public boolean isBarVisible(ItemStack stack) {
 		return staticIsBarVisible(stack);
 	}
-	
+
 	protected static boolean staticIsBarVisible(ItemStack stack) {
 		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
@@ -212,7 +212,7 @@ public class ItemJetpack extends ArmorItem {
 	public int getBarWidth(ItemStack stack) {
 		return staticGetBarWidth(stack);
 	}
-	
+
 	protected static int staticGetBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
@@ -228,7 +228,7 @@ public class ItemJetpack extends ArmorItem {
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		return staticGetWhitelistedFluids();
 	}
-	
+
 	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();

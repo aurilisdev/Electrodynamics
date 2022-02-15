@@ -8,15 +8,15 @@ public enum SubtypeDrillHead implements ISubtype {
 	hslasteel(600, false),
 	titanium(1000, false),
 	titaniumcarbide(1, true);
-	
+
 	public final int durability;
 	public final boolean isUnbreakable;
-	
-	private SubtypeDrillHead(int durability, boolean unbreakable) {
+
+	SubtypeDrillHead(int durability, boolean unbreakable) {
 		this.durability = durability;
-		this.isUnbreakable = unbreakable;
+		isUnbreakable = unbreakable;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "drillhead" + name();

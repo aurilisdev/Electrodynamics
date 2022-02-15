@@ -170,7 +170,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	private static ItemStack getMachine(SubtypeMachine inputMachine) {
 		return new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(inputMachine));
 	}
-	
+
 	@Override
 	public boolean isIPlayerStorable() {
 		return machine.isPlayerStorable();

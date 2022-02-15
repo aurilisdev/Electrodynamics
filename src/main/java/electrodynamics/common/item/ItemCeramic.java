@@ -27,14 +27,13 @@ public class ItemCeramic extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if(!worldIn.isClientSide) {
+		if (!worldIn.isClientSide) {
 			if (ItemStack.isSame(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
 				List<ItemStack> armorPieces = new ArrayList<>();
 				playerIn.getArmorSlots().forEach(armorPieces::add);
 
 				ItemStack chestplate = armorPieces.get(2);
-				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()))
-						|| ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get())) || ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
 					CompoundTag tag = chestplate.getOrCreateTag();
 					int stored = tag.getInt(NBTUtils.PLATES);
 					if (stored < 2) {
@@ -42,7 +41,7 @@ public class ItemCeramic extends Item {
 						tag.putInt(NBTUtils.PLATES, stored + 1);
 						playerIn.getItemInHand(handIn).shrink(1);
 					}
-					
+
 				}
 			}
 		}

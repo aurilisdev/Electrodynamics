@@ -30,24 +30,20 @@ public class TileCoolantResavoir extends GenericTile {
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid(machineValidator()).shouldSendInfo());
 		addComponent(new ComponentContainerProvider("container.coolantresavoir").createMenu((id, player) -> new ContainerCoolantResavoir(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	private void tickServer(ComponentTickable tick) {
-		if(tick.getTicks() % 10 == 0) {
+		if (tick.getTicks() % 10 == 0) {
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
 		FluidUtilities.drainItem(this);
 	}
-	
+
 	public boolean hasEnoughFluid(int fluidAmnt) {
 		ComponentFluidHandlerSimple simple = getComponent(ComponentType.FluidHandler);
 		FluidTank tank = simple.getInputTanks()[0];
-		if(!tank.isEmpty() && tank.getFluidAmount() >= fluidAmnt) {
-			return true;
-		} else {
-			return false;
-		}
+		return !tank.isEmpty() && tank.getFluidAmount() >= fluidAmnt;
 	}
-	
+
 	public void drainFluid(int fluidAmnt) {
 		ComponentFluidHandlerSimple simple = getComponent(ComponentType.FluidHandler);
 		simple.getInputTanks()[0].drain(fluidAmnt, FluidAction.EXECUTE);

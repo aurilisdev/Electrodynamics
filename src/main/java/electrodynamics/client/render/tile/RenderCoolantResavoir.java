@@ -24,13 +24,14 @@ public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantRes
 	private static final float MAX_Y = 14.99F / 16.0F;
 	private static final float MIN_Z = 1.0F / 16.0F;
 	private static final float MAX_Z = 15.0F / 16.0F;
-	
-	public RenderCoolantResavoir(BlockEntityRendererProvider.Context context) {}
-	
+
+	public RenderCoolantResavoir(BlockEntityRendererProvider.Context context) {
+	}
+
 	@Override
 	public void render(TileCoolantResavoir entity, float tick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
-		FluidTank tank = ((ComponentFluidHandlerSimple)entity.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
-		if(!tank.isEmpty() && tank.getFluidAmount() > 0) {
+		FluidTank tank = ((ComponentFluidHandlerSimple) entity.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);
 			AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);

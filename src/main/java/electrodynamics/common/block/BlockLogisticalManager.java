@@ -1,6 +1,7 @@
 package electrodynamics.common.block;
 
 import electrodynamics.common.tile.TileLogisticalManager;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,16 +21,16 @@ public class BlockLogisticalManager extends GenericMachineBlock {
 	public BlockLogisticalManager() {
 		super(TileLogisticalManager::new);
 	}
-	
+
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		return InteractionResult.FAIL;
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		Direction facing = pState.getValue(GenericMachineBlock.FACING);
-		switch(facing) {
+		Direction facing = pState.getValue(GenericEntityBlock.FACING);
+		switch (facing) {
 		case WEST:
 			return Block.box(4.0D, 4.0D, 0, 16.0D, 12.0D, 16.0D);
 		case EAST:

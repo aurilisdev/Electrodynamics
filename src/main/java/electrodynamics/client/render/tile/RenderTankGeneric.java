@@ -24,13 +24,14 @@ public class RenderTankGeneric implements BlockEntityRenderer<GenericTileTank> {
 	private static final float MAX_Y = 13.99F / 16.0F;
 	private static final float MIN_Z = 2.0F / 16.0F;
 	private static final float MAX_Z = 14.0F / 16.0F;
-	
-	public RenderTankGeneric(BlockEntityRendererProvider.Context context) {}
+
+	public RenderTankGeneric(BlockEntityRendererProvider.Context context) {
+	}
 
 	@Override
 	public void render(GenericTileTank entity, float ticks, PoseStack stack, MultiBufferSource source, int light, int overlay) {
-		FluidTank tank = ((ComponentFluidHandlerSimple)entity.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
-		if(!tank.isEmpty() && tank.getFluidAmount() > 0) {
+		FluidTank tank = ((ComponentFluidHandlerSimple) entity.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);
 			AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);

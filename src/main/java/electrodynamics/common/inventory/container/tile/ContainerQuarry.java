@@ -19,7 +19,7 @@ public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 	public ContainerQuarry(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerQuarry(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(19), new SimpleContainerData(3));
 	}

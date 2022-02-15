@@ -125,10 +125,14 @@ public enum SubtypeItemUpgrade implements ISubtype {
 		/* it does nothing; the count determines the new range */}, 12),
 	experience((holder, processor, upgrade) -> {
 		/* the machine handles adding the experience */}, 1),
-	itemvoid((holder, processor, upgrade) -> {}, 1),
-	silktouch((holder, processor, upgrade) -> {}, 1),
-	fortune((holder, processor, upgrade) -> {}, 3),
-	unbreaking((holder, processor, upgrade) -> {}, 3);
+	itemvoid((holder, processor, upgrade) -> {
+	}, 1),
+	silktouch((holder, processor, upgrade) -> {
+	}, 1),
+	fortune((holder, processor, upgrade) -> {
+	}, 3),
+	unbreaking((holder, processor, upgrade) -> {
+	}, 3);
 
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;
@@ -171,7 +175,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			}
 		} else if (entity != null && entity instanceof GenericTile tile) {
 			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
-			if(otherInv != null) {
+			if (otherInv != null) {
 				for (int slot : inv.getInputSlots()) {
 					takeItemFromCompInv(inv, slot, otherInv, dir);
 				}

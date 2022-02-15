@@ -16,7 +16,7 @@ public class ContainerMotorComplex extends GenericContainerBlockEntity<TileMotor
 	public ContainerMotorComplex(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_MOTORCOMPLEX.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerMotorComplex(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(3), new SimpleContainerData(3));
 	}

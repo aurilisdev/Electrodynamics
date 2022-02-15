@@ -6,8 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 
 public interface IPlayerStorable {
 
-	public void setPlayer(LivingEntity player);
-	
-	public UUID getPlayerID();
-	
+	void setPlayer(LivingEntity player);
+
+	UUID getPlayerID();
+
 }

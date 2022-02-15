@@ -76,7 +76,7 @@ public class ItemUpgrade extends Item {
 			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TextComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
 			tooltip.add(new TranslatableComponent("tooltip.info.xpusage").withStyle(ChatFormatting.GRAY));
 			tooltip.add(new TranslatableComponent("tooltip.info.broken").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
-			
+
 		}
 		if (subtype == SubtypeItemUpgrade.range) {
 			tooltip.add(new TranslatableComponent("tooltip.info.range").withStyle(ChatFormatting.GRAY));
@@ -92,19 +92,18 @@ public class ItemUpgrade extends Item {
 				if (player.isShiftKeyDown()) {
 					Vec3 look = player.getLookAngle();
 					Direction lookingDir = Direction.getNearest(look.x, look.y, look.z);
-					if(!handStack.hasTag()) {
+					if (!handStack.hasTag()) {
 						handStack.setTag(new CompoundTag());
 					}
 					List<Direction> dirs = NBTUtils.readDirectionList(handStack);
 					dirs.add(lookingDir);
 					NBTUtils.clearDirectionList(handStack);
 					NBTUtils.writeDirectionList(dirs, handStack);
-					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				} else {
 					CompoundTag tag = handStack.getOrCreateTag();
 					tag.putBoolean(NBTUtils.SMART, !tag.getBoolean(NBTUtils.SMART));
-					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
+				return InteractionResultHolder.pass(player.getItemInHand(hand));
 			}
 			if (localSubtype == SubtypeItemUpgrade.experience) {
 				CompoundTag tag = handStack.getOrCreateTag();
@@ -123,18 +122,10 @@ public class ItemUpgrade extends Item {
 	@Override
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
-			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-				SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
-				if(subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
-					if(!stack.hasTag()) {
-						stack.setTag(new CompoundTag());
-					}
-					NBTUtils.clearDirectionList(stack);
-				}
-			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-				SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
-				if(subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
-					if(!stack.hasTag()) {
+			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || !entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
+				SubtypeItemUpgrade subtype = ((ItemUpgrade) stack.getItem()).subtype;
+				if (subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
+					if (!stack.hasTag()) {
 						stack.setTag(new CompoundTag());
 					}
 					NBTUtils.clearDirectionList(stack);
@@ -146,11 +137,11 @@ public class ItemUpgrade extends Item {
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		SubtypeItemUpgrade subtype = ((ItemUpgrade)stack.getItem()).subtype;
-		if(stack.hasTag()) {
+		SubtypeItemUpgrade subtype = ((ItemUpgrade) stack.getItem()).subtype;
+		if (stack.hasTag()) {
 			return stack.getTag().getBoolean(NBTUtils.SMART);
 		}
 		return subtype == SubtypeItemUpgrade.fortune || subtype == SubtypeItemUpgrade.unbreaking || subtype == SubtypeItemUpgrade.silktouch;
 	}
-	
+
 }

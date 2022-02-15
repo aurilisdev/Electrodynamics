@@ -111,11 +111,11 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if (((ArmorItem)stack.getItem()).getSlot() == EquipmentSlot.CHEST) {
+		if (((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.CHEST) {
 			staticAppendHoverText(stack, worldIn, tooltip, flagIn);
 		}
 	}
-	
+
 	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
 		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(plates + "")).withStyle(ChatFormatting.AQUA));

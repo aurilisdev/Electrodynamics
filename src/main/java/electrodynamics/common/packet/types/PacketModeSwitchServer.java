@@ -32,11 +32,10 @@ public class PacketModeSwitchServer {
 			ServerLevel serverWorld = context.get().getSender().getLevel();
 			if (serverWorld != null) {
 				ServerPlayer serverPlayer = (ServerPlayer) serverWorld.getPlayerByUUID(message.playerId);
-				switch(message.mode) {
-				case JETPACK :
+				switch (message.mode) {
+				case JETPACK:
 					ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
-					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
-							|| ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
 						CompoundTag tag = chest.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 2) {
@@ -50,8 +49,7 @@ public class PacketModeSwitchServer {
 					break;
 				case SERVOLEGS:
 					ItemStack legs = serverPlayer.getItemBySlot(EquipmentSlot.LEGS);
-					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get())
-							|| ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = legs.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 3) {
@@ -79,10 +77,11 @@ public class PacketModeSwitchServer {
 	public static PacketModeSwitchServer decode(FriendlyByteBuf buf) {
 		return new PacketModeSwitchServer(buf.readUUID(), buf.readEnum(Mode.class));
 	}
-	
-	//Mekanism gave me this idea
+
+	// Mekanism gave me this idea
 	public enum Mode {
-		JETPACK,SERVOLEGS;
+		JETPACK,
+		SERVOLEGS;
 	}
 
 }

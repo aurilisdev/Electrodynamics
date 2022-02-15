@@ -116,7 +116,7 @@ public class Constants {
 	public static boolean MAINTAIN_MINING_AREA = true;
 	@BooleanValue(def = false, comment = "Controls whether the quarry can bypass claims or not")
 	public static boolean BYPASS_CLAIMS = false;
-	
+
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;
 

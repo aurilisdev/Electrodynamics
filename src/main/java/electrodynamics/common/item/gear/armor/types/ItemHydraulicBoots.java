@@ -119,7 +119,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	public boolean isBarVisible(ItemStack stack) {
 		return staticIsBarVisible(stack);
 	}
-	
+
 	protected static boolean staticIsBarVisible(ItemStack stack) {
 		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
@@ -131,7 +131,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	public int getBarWidth(ItemStack stack) {
 		return staticGetBarWidth(stack);
 	}
-	
+
 	protected static int staticGetBarWidth(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
@@ -152,7 +152,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		return staticGetWhitelistedFluids();
 	}
-	
+
 	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();

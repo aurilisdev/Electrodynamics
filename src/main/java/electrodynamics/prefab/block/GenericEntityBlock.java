@@ -86,5 +86,5 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		return Arrays.asList(new ItemStack(this));
 	}
-	
+
 }

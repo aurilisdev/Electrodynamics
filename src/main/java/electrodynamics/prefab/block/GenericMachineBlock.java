@@ -47,7 +47,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 
 	protected BlockEntitySupplier<BlockEntity> blockEntitySupplier;
-	
+
 	public static HashMap<BlockPos, LivingEntity> IPLAYERSTORABLE_MAP = new HashMap<>();
 
 	public GenericMachineBlock(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
@@ -55,10 +55,10 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 		this.blockEntitySupplier = blockEntitySupplier;
 	}
-	
+
 	@Override
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-		if(isIPlayerStorable()) {
+		if (isIPlayerStorable()) {
 			IPLAYERSTORABLE_MAP.put(pPos, pPlacer);
 		}
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -176,7 +176,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		});
 		return Arrays.asList(stack);
 	}
-	
+
 	public boolean isIPlayerStorable() {
 		return false;
 	}

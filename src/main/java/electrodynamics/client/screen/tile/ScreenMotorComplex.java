@@ -28,7 +28,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		super(container, inv, titleIn);
 		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
 	}
-	
+
 	private List<? extends FormattedCharSequence> getElectricInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileMotorComplex motor = menu.getHostFromIntArray();
@@ -39,13 +39,13 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		}
 		return list;
 	}
-	
+
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
 		int blocksPerTick = 0;
 		TileMotorComplex motor = menu.getHostFromIntArray();
-		if(motor != null && motor.clientPowered) {
+		if (motor != null && motor.clientPowered) {
 			blocksPerTick = (int) motor.clientSpeed;
 		}
 		font.draw(stack, new TranslatableComponent("gui.motorcomplex.speed", blocksPerTick), 30, 40, 4210752);
