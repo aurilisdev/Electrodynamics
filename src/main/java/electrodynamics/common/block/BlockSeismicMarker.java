@@ -31,12 +31,14 @@ public class BlockSeismicMarker extends GenericMachineBlock {
 		return true;
 	}
 
+	@Override
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		return canSupportCenter(reader, pos.below(), Direction.UP);
 	}
 
+	@Override
 	public BlockState updateShape(BlockState state, Direction dir, BlockState other, LevelAccessor world, BlockPos pos, BlockPos otherpos) {
-		return dir == Direction.DOWN && !this.canSurvive(state, world, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, dir, other, world, pos, otherpos);
+		return dir == Direction.DOWN && !canSurvive(state, world, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, dir, other, world, pos, otherpos);
 	}
 
 }

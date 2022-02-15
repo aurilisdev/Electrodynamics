@@ -201,10 +201,8 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 				default:
 					break;
 				}
-			} else {
-				if (!tag.getBoolean("reset")) {
-					player.maxUpStep = DEFAULT_VANILLA_STEPUP;
-				}
+			} else if (!tag.getBoolean("reset")) {
+				player.maxUpStep = DEFAULT_VANILLA_STEPUP;
 			}
 		}
 	}

@@ -99,12 +99,11 @@ public class ItemUpgrade extends Item {
 					dirs.add(lookingDir);
 					NBTUtils.clearDirectionList(handStack);
 					NBTUtils.writeDirectionList(dirs, handStack);
-					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				} else {
 					CompoundTag tag = handStack.getOrCreateTag();
 					tag.putBoolean(NBTUtils.SMART, !tag.getBoolean(NBTUtils.SMART));
-					return InteractionResultHolder.pass(player.getItemInHand(hand));
 				}
+				return InteractionResultHolder.pass(player.getItemInHand(hand));
 			}
 			if (localSubtype == SubtypeItemUpgrade.experience) {
 				CompoundTag tag = handStack.getOrCreateTag();
@@ -123,15 +122,7 @@ public class ItemUpgrade extends Item {
 	@Override
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
-			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-				SubtypeItemUpgrade subtype = ((ItemUpgrade) stack.getItem()).subtype;
-				if (subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
-					if (!stack.hasTag()) {
-						stack.setTag(new CompoundTag());
-					}
-					NBTUtils.clearDirectionList(stack);
-				}
-			} else if (!entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
+			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || !entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
 				SubtypeItemUpgrade subtype = ((ItemUpgrade) stack.getItem()).subtype;
 				if (subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {
 					if (!stack.hasTag()) {

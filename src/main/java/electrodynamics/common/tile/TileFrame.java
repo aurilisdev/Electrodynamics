@@ -26,19 +26,19 @@ public class TileFrame extends GenericTile {
 	}
 
 	public void setQuarryPos(BlockPos pos) {
-		this.quarryPos = pos;
+		quarryPos = pos;
 	}
 
 	public BlockPos getQuarryPos() {
-		return this.quarryPos;
+		return quarryPos;
 	}
 
 	public void setCorner(boolean bool) {
-		this.isCorner = bool;
+		isCorner = bool;
 	}
 
 	public boolean isCorner() {
-		return this.isCorner;
+		return isCorner;
 	}
 
 	public void setNoNotify() {

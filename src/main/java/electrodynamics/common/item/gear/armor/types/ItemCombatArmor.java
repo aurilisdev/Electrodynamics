@@ -113,7 +113,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		switch (this.getSlot()) {
+		switch (getSlot()) {
 		case HEAD, LEGS:
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
