@@ -124,10 +124,6 @@ public class ClientRegister {
 	// for registration purposes only!
 	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
 	
-	static {
-		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
-	}
-	
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
 		ForgeModelBakery.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -325,6 +321,10 @@ public class ClientRegister {
 
 	public static boolean shouldMultilayerRender(RenderType type) {
 		return type == RenderType.translucent() || type == RenderType.solid();
+	}
+	
+	static {
+		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
 	}
 	
 	@SubscribeEvent
