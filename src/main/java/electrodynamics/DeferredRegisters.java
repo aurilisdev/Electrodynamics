@@ -255,7 +255,6 @@ public class DeferredRegisters {
 		BLOCKS.register("frame", supplier(blockFrame = new BlockFrame()));
 		BLOCKS.register("framecorner", supplier(blockFrameCorner = new BlockFrame()));
 		BLOCKS.register("logisticalmanager", supplier(blockLogisticalManager = new BlockLogisticalManager()));
-		//BLOCKS.register("quarryarm", supplier(new Block(Properties.of(Material.STONE))));
 		// Liquids
 		FLUIDS.register("fluidethanol", supplier(fluidEthanol = new FluidEthanol()));
 		FLUIDS.register("fluidsulfuricacid", supplier(fluidSulfuricAcid = new FluidSulfuricAcid()));

@@ -1,6 +1,8 @@
 package electrodynamics.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
@@ -77,12 +79,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -117,6 +121,12 @@ public class ClientRegister {
 	public static LayerDefinition COMBAT_ARMOR_LAYER_COMB_CHEST = ModelCombatArmor.createBodyLayer(3, false);
 
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
+	// for registration purposes only!
+	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
+	
+	static {
+		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
+	}
 	
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
@@ -317,6 +327,22 @@ public class ClientRegister {
 
 	public static boolean shouldMultilayerRender(RenderType type) {
 		return type == RenderType.translucent() || type == RenderType.solid();
+	}
+	
+	@SubscribeEvent
+	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			customBlockTextures.forEach(h -> event.addSprite(h));
+		}
+	}
+	
+	@SubscribeEvent
+	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			for(ResourceLocation loc : customBlockTextures) {
+				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
+			}
+		}
 	}
 
 }
