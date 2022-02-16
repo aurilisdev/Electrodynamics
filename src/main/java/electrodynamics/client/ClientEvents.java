@@ -1,5 +1,6 @@
 package electrodynamics.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,6 +11,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.packet.NetworkHandler;
@@ -26,6 +28,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -43,12 +46,38 @@ import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
 
+	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
+	
+	static {
+		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
+	}
+	
+	@SubscribeEvent
+	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			customBlockTextures.forEach(h -> event.addSprite(h));
+			Electrodynamics.LOGGER.info("pre added");
+		}
+	}
+	
+	@SubscribeEvent
+	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			for(ResourceLocation loc : customBlockTextures) {
+				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
+				Electrodynamics.LOGGER.info("post called");
+			}
+		}
+	}
+	
+	
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 		if (ElementType.ALL.equals(event.getType())) {
@@ -133,7 +162,7 @@ public class ClientEvents {
 			});
 		});
 		buffer.endBatch(RenderingUtils.beaconType());
-		TextureAtlasSprite cornerFrame = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:block/quarryarm"));
+		TextureAtlasSprite cornerFrame = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
 		float u0Frame = cornerFrame.getU0();
 		float u1Frame = cornerFrame.getU1();
 		float v0Frame = cornerFrame.getV0();
