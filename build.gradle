@@ -116,8 +116,8 @@ mixin {
 }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.1-39.0.55'
-	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
+	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.100:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.100")
     
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
