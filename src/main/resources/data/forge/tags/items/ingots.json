@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ingots/aluminum",
+    "#forge:ingots/bronze",
+    "#forge:ingots/chromium",
+    "#forge:ingots/copper",
+    "#forge:ingots/hslasteel",
+    "#forge:ingots/lead",
+    "#forge:ingots/lithium",
+    "#forge:ingots/molybdenum",
+    "#forge:ingots/silver",
+    "#forge:ingots/stainlesssteel",
+    "#forge:ingots/steel",
+    "#forge:ingots/superconductive",
+    "#forge:ingots/tin",
+    "#forge:ingots/titanium",
+    "#forge:ingots/titaniumcarbide",
+    "#forge:ingots/vanadium",
+    "#forge:ingots/vanadiumsteel"
+  ]
+}

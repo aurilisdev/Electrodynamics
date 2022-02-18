@@ -1,5 +1,9 @@
 package electrodynamics.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
@@ -75,11 +79,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -90,6 +97,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientRegister {
 
 	private static final String BLOCK_LOC = References.ID + ":block/";
+	private static final String CUSTOM_LOC = References.ID + ":custom/";
 
 	// sometimes I fucking hate this game
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
@@ -112,6 +120,10 @@ public class ClientRegister {
 	public static LayerDefinition COMBAT_ARMOR_LAYER_LEG_CHEST = ModelCombatArmor.createBodyLayer(1, false);
 	public static LayerDefinition COMBAT_ARMOR_LAYER_COMB_CHEST = ModelCombatArmor.createBodyLayer(3, false);
 
+	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
+	// for registration purposes only!
+	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
+	
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
 		ForgeModelBakery.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -220,6 +232,9 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
+	//Custom Textures
+	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(CUSTOM_LOC + "quarryarm");
+	
 	public static void setup() {
 		MenuScreens.register(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
@@ -306,6 +321,26 @@ public class ClientRegister {
 
 	public static boolean shouldMultilayerRender(RenderType type) {
 		return type == RenderType.translucent() || type == RenderType.solid();
+	}
+	
+	static {
+		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
+	}
+	
+	@SubscribeEvent
+	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			customBlockTextures.forEach(h -> event.addSprite(h));
+		}
+	}
+	
+	@SubscribeEvent
+	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			for(ResourceLocation loc : customBlockTextures) {
+				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
+			}
+		}
 	}
 
 }

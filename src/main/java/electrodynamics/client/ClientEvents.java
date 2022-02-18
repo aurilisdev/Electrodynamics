@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
-
+	
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 		if (ElementType.ALL.equals(event.getType())) {
@@ -133,7 +133,7 @@ public class ClientEvents {
 			});
 		});
 		buffer.endBatch(RenderingUtils.beaconType());
-		TextureAtlasSprite cornerFrame = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:block/quarryarm"));
+		TextureAtlasSprite cornerFrame = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
 		float u0Frame = cornerFrame.getU0();
 		float u1Frame = cornerFrame.getU1();
 		float v0Frame = cornerFrame.getV0();

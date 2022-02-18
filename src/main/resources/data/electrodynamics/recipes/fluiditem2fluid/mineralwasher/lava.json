@@ -1,0 +1,21 @@
+{
+	"type": "electrodynamics:mineral_washer_recipe",
+	"iteminputs":{
+		"count" : 1,
+		"0": {
+			"item": "minecraft:magma_block",
+			"count": 1
+		}
+	},
+	"fluidinputs":{
+		"count" : 1,
+		"0": {
+			"fluid":"minecraft:lava",
+			"amount": 1000
+		}
+	},
+	"output": {
+		"fluid": "minecraft:lava",
+		"amount": 1500
+	}
+}

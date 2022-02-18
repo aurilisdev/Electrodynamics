@@ -21,6 +21,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -49,11 +52,19 @@ public class TileMineralWasher extends GenericTile {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
+			ComponentInventory inv = getComponent(ComponentType.Inventory);
+			ItemStack input = inv.getInputContents().get(0).get(0);
+			Vector3f color;
+			if(input.getItem() instanceof BlockItem block && block.getBlock().defaultBlockState().is(Blocks.MAGMA_BLOCK)) {
+				color = new Vector3f(1f, 0.64706f, 0);
+			} else {
+				color = new Vector3f(1f, 1f, 0);
+			}
 			for (int i = 0; i < 2; i++) {
 				double x = 0.5 + level.random.nextDouble() * 0.4 - 0.2;
 				double y = 0.5 + level.random.nextDouble() * 0.3 - 0.15;
 				double z = 0.5 + level.random.nextDouble() * 0.4 - 0.2;
-				level.addParticle(new DustParticleOptions(new Vector3f(1f, 1f, 0), 1), worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1);
+				level.addParticle(new DustParticleOptions(color, 1), worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1, level.random.nextDouble() * 0.2 - 0.1);
 			}
 		}
 	}

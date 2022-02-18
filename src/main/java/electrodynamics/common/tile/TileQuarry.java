@@ -783,11 +783,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		BlockEntity leftEntity = world.getBlockEntity(machinePos.relative(left));
 		BlockEntity rightEntity;
 		BlockEntity aboveEntity;
-		if (leftEntity != null && leftEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complex.getComponent(ComponentType.Direction)).getDirection() == left) {
+		if (leftEntity != null && leftEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complexin.getComponent(ComponentType.Direction)).getDirection() == left) {
 			rightEntity = world.getBlockEntity(machinePos.relative(right));
-			if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relay.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
-				corners = relay.markerLocs;
-				cornerOnRight = relay.cornerOnRight;
+			if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
+				corners = relayin.markerLocs;
+				cornerOnRight = relayin.cornerOnRight;
 				relay = relayin;
 				aboveEntity = world.getBlockEntity(machinePos.above());
 				if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoirin) {
@@ -800,12 +800,12 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			} else {
 				hasComponents = false;
 			}
-		} else if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relay.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
-			corners = relay.markerLocs;
-			cornerOnRight = relay.cornerOnRight;
+		} else if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
+			corners = relayin.markerLocs;
+			cornerOnRight = relayin.cornerOnRight;
 			relay = relayin;
 			rightEntity = world.getBlockEntity(machinePos.relative(right));
-			if (rightEntity != null && rightEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complex.getComponent(ComponentType.Direction)).getDirection() == right) {
+			if (rightEntity != null && rightEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complexin.getComponent(ComponentType.Direction)).getDirection() == right) {
 				aboveEntity = world.getBlockEntity(machinePos.above());
 				if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoirin) {
 					hasComponents = true;
