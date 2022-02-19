@@ -1,6 +1,7 @@
 package electrodynamics.compatibility.jei.recipecategories;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -11,21 +12,22 @@ import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
-import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.fluid.GenericFluidGaugeWrapper;
+import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
-import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -73,7 +75,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
 
-		ICON = guiHelper.createDrawableIngredient(inputMachine);
+		
+		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		ANIMATION_LENGTH = animationTime;
@@ -97,6 +100,26 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	@Override
 	public IDrawable getIcon() {
 		return ICON;
+	}
+	
+	@Override
+	public void draw(ElectrodynamicsRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+		drawInputSlots(matrixStack);
+		drawOutputSlots(matrixStack);
+		drawStaticArrows(matrixStack);
+		drawFluidInputs(matrixStack);
+		drawFluidOutputs(matrixStack);
+		drawAnimatedArrows(matrixStack);
+
+		addDescriptions(matrixStack, recipe);
+	}
+	
+	@Override
+	public void setRecipe(IRecipeLayoutBuilder builder, ElectrodynamicsRecipe recipe, IFocusGroup focuses) {
+		setItemInputs(getItemInputs(recipe), builder);
+		setFluidInputs(getFluidInputs(recipe), builder);
+		setItemOutputs(getItemOutputs(recipe), builder);
+		setFluidOutputs(getFluidOutputs(recipe), builder);
 	}
 
 	public String getRecipeGroup() {
@@ -221,141 +244,145 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			}
 		});
 	}
-
-	public void setItemInputs(IGuiItemStackGroup guiItemStacks) {
+	
+	public void setItemInputs(List<List<ItemStack>> inputs, IRecipeLayoutBuilder builder){
 		GenericItemSlotWrapper wrapper;
+		RecipeIngredientRole role;
 		for (int i = 0; i < inSlots.length; i++) {
 			wrapper = inSlots[i];
-			guiItemStacks.init(i, true, wrapper.itemXStart(), wrapper.itemYStart());
+			role = wrapper instanceof BucketSlotWrapper ? RecipeIngredientRole.RENDER_ONLY : RecipeIngredientRole.INPUT;
+			builder.addSlot(role, wrapper.itemXStart(), wrapper.itemYStart()).addItemStacks(inputs.get(i));
 		}
 	}
-
-	public void setItemOutputs(IGuiItemStackGroup guiItemStacks) {
+	
+	public void setItemOutputs(List<ItemStack> outputs, IRecipeLayoutBuilder builder) {
 		GenericItemSlotWrapper wrapper;
-		int offset = inSlots.length + fluidInputs.length;
+		RecipeIngredientRole role;
 		for (int i = 0; i < outSlots.length; i++) {
 			wrapper = outSlots[i];
-			guiItemStacks.init(i + offset, false, wrapper.itemXStart(), wrapper.itemYStart());
+			role = wrapper instanceof BucketSlotWrapper ? RecipeIngredientRole.RENDER_ONLY : RecipeIngredientRole.OUTPUT;
+			if(i < outputs.size()) {
+				builder.addSlot(role, wrapper.itemXStart(), wrapper.itemYStart()).addItemStack(outputs.get(i));
+			}
 		}
 	}
-
-	public void setFluidInputs(IGuiFluidStackGroup guiFluidStacks, List<FluidIngredient> ings) {
-		int offset = inSlots.length;
-
-		GenericFluidGaugeWrapper wrap;
+	
+	public void setFluidInputs(List<List<FluidStack>> inputs, IRecipeLayoutBuilder builder) {
+		GenericFluidGaugeWrapper wrapper;
+		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
 		FluidStack stack;
 		for (int i = 0; i < fluidInputs.length; i++) {
-			wrap = fluidInputs[i];
-			stack = ings.get(i).getFluidStack();
-
-			int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
-			int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
-
-			guiFluidStacks.init(i + offset, true, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(), true, null);
-
+			wrapper = fluidInputs[i];
+			stack = inputs.get(i).get(0);
+			int height = (int) Math.ceil(stack.getAmount() / (float) wrapper.getAmount() * wrapper.getFluidTextHeight());
+			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredients(VanillaTypes.FLUID, inputs.get(i));
 		}
 	}
-
-	public void setFluidOutputs(IGuiFluidStackGroup guiFluidStacks, ElectrodynamicsRecipe recipe) {
-		int offset = inSlots.length + outSlots.length + fluidInputs.length;
-		GenericFluidGaugeWrapper wrap;
-		FluidStack stack = FluidStack.EMPTY;
-		if (recipe instanceof AbstractFluidRecipe fRecipe) {
-			stack = fRecipe.getFluidRecipeOutput();
-		}
-		if (!stack.isEmpty()) {
-			for (int i = 0; i < fluidOutputs.length; i++) {
-				wrap = fluidOutputs[i];
-
-				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
-				int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
-
-				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(), true, null);
-				offset++;
-				if (recipe.hasFluidBiproducts() && i < recipe.getFluidBiproductCount()) {
-					stack = recipe.getFluidBiproducts()[i].getFullStack();
-				}
-			}
-		} else {
-			for (int i = 0; i < fluidOutputs.length; i++) {
-				if (recipe.hasFluidBiproducts()) {
-					stack = recipe.getFluidBiproducts()[i].getFullStack();
-				}
-				wrap = fluidOutputs[i];
-
-				int leftHeightOffset = (int) Math.ceil(stack.getAmount() / (float) wrap.getAmount() * wrap.getFluidTextHeight());
-				int leftStartY = wrap.getFluidTextYPos() - leftHeightOffset + 1;
-
-				guiFluidStacks.init(offset, false, wrap.getFluidTextXPos(), leftStartY, wrap.getFluidTextWidth(), leftHeightOffset, stack.getAmount(), true, null);
-				offset++;
-			}
+	
+	public void setFluidOutputs(List<FluidStack> outputs, IRecipeLayoutBuilder builder) {
+		GenericFluidGaugeWrapper wrapper;
+		RecipeIngredientRole role = RecipeIngredientRole.OUTPUT;
+		FluidStack stack;
+		for (int i = 0; i < fluidOutputs.length; i++) {
+			wrapper = fluidOutputs[i];
+			stack = outputs.get(i);
+			int height = (int) Math.ceil(stack.getAmount() / (float) wrapper.getAmount() * wrapper.getFluidTextHeight());
+			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredient(VanillaTypes.FLUID, stack);
 		}
 	}
 
 	public void drawInputSlots(PoseStack matrixStack) {
-		List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(getAnimationTime());
-		IDrawableStatic image;
-		ScreenObjectWrapper wrapper;
-		for (int i = 0; i < inputSlots.size(); i++) {
-			image = inputSlots.get(i);
-			wrapper = inSlots[i];
-			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		if(INPUT_SLOTS != null) {
+			List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(getAnimationTime());
+			IDrawableStatic image;
+			ScreenObjectWrapper wrapper;
+			for (int i = 0; i < inputSlots.size(); i++) {
+				image = inputSlots.get(i);
+				wrapper = inSlots[i];
+				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+			}
 		}
 	}
 
 	public void drawOutputSlots(PoseStack matrixStack) {
-		List<IDrawableStatic> outputSlots = OUTPUT_SLOTS.getUnchecked(getAnimationTime());
-		IDrawableStatic image;
-		ScreenObjectWrapper wrapper;
-		for (int i = 0; i < outputSlots.size(); i++) {
-			image = outputSlots.get(i);
-			wrapper = outSlots[i];
-			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		if(OUTPUT_SLOTS != null) {
+			List<IDrawableStatic> outputSlots = OUTPUT_SLOTS.getUnchecked(getAnimationTime());
+			IDrawableStatic image;
+			ScreenObjectWrapper wrapper;
+			for (int i = 0; i < outputSlots.size(); i++) {
+				image = outputSlots.get(i);
+				wrapper = outSlots[i];
+				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+			}
 		}
 	}
 
 	public void drawFluidInputs(PoseStack matrixStack) {
-		List<IDrawableStatic> inFluidGauges = FLUID_INPUTS.getUnchecked(getAnimationTime());
-		IDrawableStatic image;
-		ScreenObjectWrapper wrapper;
-		for (int i = 0; i < inFluidGauges.size(); i++) {
-			image = inFluidGauges.get(i);
-			wrapper = fluidInputs[i];
-			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		if(FLUID_INPUTS != null) {
+			List<IDrawableStatic> inFluidGauges = FLUID_INPUTS.getUnchecked(getAnimationTime());
+			IDrawableStatic image;
+			ScreenObjectWrapper wrapper;
+			for (int i = 0; i < inFluidGauges.size(); i++) {
+				image = inFluidGauges.get(i);
+				wrapper = fluidInputs[i];
+				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+			}
 		}
 	}
 
 	public void drawFluidOutputs(PoseStack matrixStack) {
-		List<IDrawableStatic> fluidGauges = FLUID_OUTPUTS.getUnchecked(getAnimationTime());
-		IDrawableStatic image;
-		ScreenObjectWrapper wrapper;
-		for (int i = 0; i < fluidGauges.size(); i++) {
-			image = fluidGauges.get(i);
-			wrapper = fluidOutputs[i];
-			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		if(FLUID_OUTPUTS != null) {
+			List<IDrawableStatic> fluidGauges = FLUID_OUTPUTS.getUnchecked(getAnimationTime());
+			IDrawableStatic image;
+			ScreenObjectWrapper wrapper;
+			for (int i = 0; i < fluidGauges.size(); i++) {
+				image = fluidGauges.get(i);
+				wrapper = fluidOutputs[i];
+				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+			}
 		}
 	}
 
 	public void drawStaticArrows(PoseStack matrixStack) {
-		List<IDrawableStatic> arrows = STATIC_ARROWS.getUnchecked(getAnimationTime());
-		IDrawableStatic image;
-		ScreenObjectWrapper wrapper;
-		for (int i = 0; i < arrows.size(); i++) {
-			image = arrows.get(i);
-			wrapper = staticArrows[i];
-			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		if(STATIC_ARROWS != null) {
+			List<IDrawableStatic> arrows = STATIC_ARROWS.getUnchecked(getAnimationTime());
+			IDrawableStatic image;
+			ScreenObjectWrapper wrapper;
+			for (int i = 0; i < arrows.size(); i++) {
+				image = arrows.get(i);
+				wrapper = staticArrows[i];
+				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+			}
 		}
 	}
 
 	public void drawAnimatedArrows(PoseStack matrixStack) {
-		List<IDrawableAnimated> arrows = ANIMATED_ARROWS.getUnchecked(getAnimationTime());
-		IDrawableAnimated arrow;
-		ScreenObjectWrapper wrapper;
-		for (int i = 0; i < arrows.size(); i++) {
-			arrow = arrows.get(i);
-			wrapper = animArrows[i];
-			arrow.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		if(ANIMATED_ARROWS != null) {
+			List<IDrawableAnimated> arrows = ANIMATED_ARROWS.getUnchecked(getAnimationTime());
+			IDrawableAnimated arrow;
+			ScreenObjectWrapper wrapper;
+			for (int i = 0; i < arrows.size(); i++) {
+				arrow = arrows.get(i);
+				wrapper = animArrows[i];
+				arrow.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+			}
 		}
+	}
+
+	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro){
+		return Collections.emptyList();
+	}
+	
+	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro){
+		return Collections.emptyList();
+	}
+	
+	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
+		return Collections.emptyList();
+	}
+	
+	public List<FluidStack> getFluidOutputs(ElectrodynamicsRecipe electro){
+		return Collections.emptyList();
 	}
 
 }

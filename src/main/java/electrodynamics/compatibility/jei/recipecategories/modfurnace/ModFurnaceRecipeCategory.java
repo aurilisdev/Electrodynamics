@@ -16,13 +16,13 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -66,7 +66,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 		RECIPE_GROUP = recipeGroup;
 		MOD_ID = modID;
 
-		ICON = guiHelper.createDrawableIngredient(inputMachine);
+		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;
@@ -94,7 +94,22 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	public IDrawable getIcon() {
 		return ICON;
 	}
-
+	
+	@Override
+	public void setRecipe(IRecipeLayoutBuilder builder, AbstractCookingRecipe recipe, IFocusGroup focuses) {
+		GenericItemSlotWrapper wrapper;
+		List<List<ItemStack>> inputs = getItemInputs(recipe);
+		for (int i = 0; i < inSlots.length; i++) {
+			wrapper = inSlots[i];
+			builder.addSlot(RecipeIngredientRole.INPUT, wrapper.itemXStart(), wrapper.itemYStart()).addItemStacks(inputs.get(i));
+		}
+		List<ItemStack> outputs = getItemOutputs(recipe);
+		for (int i = 0; i < outSlots.length; i++) {
+			wrapper = outSlots[i];
+			builder.addSlot(RecipeIngredientRole.OUTPUT, wrapper.itemXStart(), wrapper.itemYStart()).addItemStack(outputs.get(i));
+		}
+	}
+	/*
 	@Override
 	public void setIngredients(AbstractCookingRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe));
@@ -121,7 +136,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 
 		guiItemStacks.set(ingredients);
 	}
-
+	*/
 	@Override
 	public void draw(AbstractCookingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(ANIMATION_LENGTH);
