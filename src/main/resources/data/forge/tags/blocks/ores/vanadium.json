@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/vanadium"
+    "electrodynamics:orevanadinite",
+    "electrodynamics:deepslateorevanadinite"
   ]
 }

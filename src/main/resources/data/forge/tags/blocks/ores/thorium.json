@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/thorium"
+    "electrodynamics:orethorianite",
+    "electrodynamics:deepslateorethorianite"
   ]
 }

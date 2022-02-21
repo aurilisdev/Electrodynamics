@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/lead"
+    "electrodynamics:orelead",
+    "electrodynamics:deepslateorelead"
   ]
 }

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/chromium"
+    "electrodynamics:orechromite",
+    "electrodynamics:deepslateorechromite"
   ]
 }

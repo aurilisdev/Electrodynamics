@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/titanium"
+    "electrodynamics:orerutile",
+    "electrodynamics:deepslateorerutile"
   ]
 }

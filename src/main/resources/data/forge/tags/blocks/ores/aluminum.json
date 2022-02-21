@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/aluminum"
+    "electrodynamics:orealuminum",
+    "electrodynamics:deepslateorealuminum"
   ]
 }

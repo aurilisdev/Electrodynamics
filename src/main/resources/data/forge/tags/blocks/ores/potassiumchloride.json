@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/potassiumchloride"
+    "electrodynamics:oresylvite",
+    "electrodynamics:deepslateoresylvite"
   ]
 }
