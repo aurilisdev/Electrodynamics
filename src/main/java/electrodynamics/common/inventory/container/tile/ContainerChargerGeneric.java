@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 public class ContainerChargerGeneric extends GenericContainerBlockEntity<GenericTileCharger> {
 
 	public ContainerChargerGeneric(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
 	}
 
 	public ContainerChargerGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
