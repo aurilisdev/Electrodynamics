@@ -36,7 +36,7 @@ public abstract class GenericTileCharger extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().guiPacketReader(this::loadFromNBT).guiPacketWriter(this::saveToNBT));
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(1000.0 * voltageMultiplier));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
 		addComponent(new ComponentInventory(this).size(2 + BATTERY_COUNT).inputs(1 + BATTERY_COUNT).outputs(1).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.charger" + containerName).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
@@ -52,7 +52,6 @@ public abstract class GenericTileCharger extends GenericTile {
 				hasOvervolted = drainBatterySlots(inventory, electro);
 			}
 			double room = electricItem.getElectricProperties().capacity - electricItem.getJoulesStored(itemInput);
-			//Electrodynamics.LOGGER.info(electro.getJoulesStored());
 			if(electro.getJoulesStored() > 0 && !hasOvervolted && room > 0) {
 				double recieveVoltage = electricItem.getElectricProperties().receive.getVoltage();
 				double machineVoltage = electro.getVoltage();
@@ -61,7 +60,6 @@ public abstract class GenericTileCharger extends GenericTile {
 					level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
 					level.explode(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 2f, BlockInteraction.DESTROY);
 				} else if (machineVoltage == recieveVoltage) {
-					//electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false);
 					electro.joules(electro.getJoulesStored() - electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false).getJoules());
 				} else {
 					float underVoltRatio = (float) ((float) machineVoltage / recieveVoltage);
@@ -72,7 +70,6 @@ public abstract class GenericTileCharger extends GenericTile {
 					if (itemStoredRatio >= underVoltRatio) {
 						electricItem.extractPower(itemInput, electro.getJoulesStored() * reductionCoef, false);
 					} else {
-						//electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored() * reductionCoef, recieveVoltage), false);
 						electro.joules(electro.getJoulesStored() - electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored() * reductionCoef, recieveVoltage), false).getJoules());
 					}
 				}
@@ -112,7 +109,6 @@ public abstract class GenericTileCharger extends GenericTile {
 					return true;
 				} else if (electro.getMaxJoulesStored() - electro.getJoulesStored() > 0) {
 					electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, MAX_BATTERY_TRANSFER_JOULES, false).getJoules());				}
-				//Electrodynamics.LOGGER.info(electro.getJoulesStored());
 			}
 		}
 		return false;
