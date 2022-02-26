@@ -76,7 +76,7 @@ public abstract class GenericTileCharger extends GenericTile {
 						electro.joules(electro.getJoulesStored() - electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored() * reductionCoef, recieveVoltage), false).getJoules());
 					}
 				}
-				if (electricItem.getJoulesStored(itemInput) == electricItem.getElectricProperties().capacity && inventory.getItem(1).isEmpty()) {
+				if (electricItem.getJoulesStored(itemInput) == electricItem.getElectricProperties().capacity && inventory.getItem(4).isEmpty()) {
 					inventory.setItem(4, inventory.getItem(0).copy());
 					inventory.getItem(0).shrink(1);
 				}
