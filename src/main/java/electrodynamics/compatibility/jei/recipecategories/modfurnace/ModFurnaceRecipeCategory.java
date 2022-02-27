@@ -94,7 +94,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	public IDrawable getIcon() {
 		return ICON;
 	}
-	
+
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, AbstractCookingRecipe recipe, IFocusGroup focuses) {
 		GenericItemSlotWrapper wrapper;
@@ -109,34 +109,22 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 			builder.addSlot(RecipeIngredientRole.OUTPUT, wrapper.itemXStart(), wrapper.itemYStart()).addItemStack(outputs.get(i));
 		}
 	}
+
 	/*
-	@Override
-	public void setIngredients(AbstractCookingRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe));
-		ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
-	}
-
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, AbstractCookingRecipe recipe, IIngredients ingredients) {
-
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-
-		GenericItemSlotWrapper wrapper;
-		for (int i = 0; i < inSlots.length; i++) {
-			wrapper = inSlots[i];
-			guiItemStacks.init(i, true, wrapper.itemXStart(), wrapper.itemYStart());
-		}
-
-		int offset = inSlots.length;
-
-		for (int i = 0; i < outSlots.length; i++) {
-			wrapper = outSlots[i];
-			guiItemStacks.init(i + offset, false, wrapper.itemXStart(), wrapper.itemYStart());
-		}
-
-		guiItemStacks.set(ingredients);
-	}
-	*/
+	 * @Override public void setIngredients(AbstractCookingRecipe recipe, IIngredients ingredients) { ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe)); ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe)); }
+	 * 
+	 * @Override public void setRecipe(IRecipeLayout recipeLayout, AbstractCookingRecipe recipe, IIngredients ingredients) {
+	 * 
+	 * IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+	 * 
+	 * GenericItemSlotWrapper wrapper; for (int i = 0; i < inSlots.length; i++) { wrapper = inSlots[i]; guiItemStacks.init(i, true, wrapper.itemXStart(), wrapper.itemYStart()); }
+	 * 
+	 * int offset = inSlots.length;
+	 * 
+	 * for (int i = 0; i < outSlots.length; i++) { wrapper = outSlots[i]; guiItemStacks.init(i + offset, false, wrapper.itemXStart(), wrapper.itemYStart()); }
+	 * 
+	 * guiItemStacks.set(ingredients); }
+	 */
 	@Override
 	public void draw(AbstractCookingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(ANIMATION_LENGTH);

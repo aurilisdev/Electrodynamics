@@ -32,7 +32,7 @@ public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCateg
 		recipe.getCountedIngredients().forEach(h -> inputs.add(h.fetchCountedStacks()));
 		return inputs;
 	}
-	
+
 	@Override
 	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
 		Item2ItemRecipe recipe = (Item2ItemRecipe) electro;

@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
-	
+
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
 		if (ElementType.ALL.equals(event.getType())) {

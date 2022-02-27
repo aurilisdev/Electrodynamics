@@ -51,7 +51,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 		if (!screenOverlays.isEmpty()) {
 			font.draw(matrixStack, screenOverlays.get(0), inventoryLabelX, 33f, 0);
 			font.draw(matrixStack, screenOverlays.get(1), inventoryLabelX, 43f, 0);
-		} 
+		}
 	}
 
 	private List<? extends Component> getChargerInfo() {

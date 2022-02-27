@@ -30,50 +30,24 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	}
 
 	/*
-	@Override
-	public void setIngredients(FluidItem2ItemRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe));
-		ingredients.setInputLists(VanillaTypes.FLUID, getFluidInputs(recipe));
-		ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
-		if (recipe.hasFluidBiproducts()) {
-			ingredients.setOutputs(VanillaTypes.FLUID, Arrays.asList(recipe.getFullFluidBiStacks()));
-		}
-	}
-
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, FluidItem2ItemRecipe recipe, IIngredients ingredients) {
-
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-
-		setItemInputs(guiItemStacks);
-		setFluidInputs(guiFluidStacks, recipe.getFluidIngredients());
-		setItemOutputs(guiItemStacks);
-		if (recipe.hasFluidBiproducts()) {
-			setFluidOutputs(guiFluidStacks, recipe);
-		}
-
-		guiItemStacks.set(ingredients);
-		guiFluidStacks.set(ingredients);
-
-	}
-
-	@Override
-	public void draw(FluidItem2ItemRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-
-		drawInputSlots(matrixStack);
-		drawOutputSlots(matrixStack);
-		drawStaticArrows(matrixStack);
-		drawFluidInputs(matrixStack);
-		if (recipe.hasFluidBiproducts()) {
-			drawFluidOutputs(matrixStack);
-		}
-		drawAnimatedArrows(matrixStack);
-
-		// was +8
-		addDescriptions(matrixStack, recipe);
-	}
-	*/
+	 * @Override public void setIngredients(FluidItem2ItemRecipe recipe, IIngredients ingredients) { ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe)); ingredients.setInputLists(VanillaTypes.FLUID, getFluidInputs(recipe)); ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe)); if (recipe.hasFluidBiproducts()) { ingredients.setOutputs(VanillaTypes.FLUID, Arrays.asList(recipe.getFullFluidBiStacks())); } }
+	 * 
+	 * @Override public void setRecipe(IRecipeLayout recipeLayout, FluidItem2ItemRecipe recipe, IIngredients ingredients) {
+	 * 
+	 * IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks(); IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+	 * 
+	 * setItemInputs(guiItemStacks); setFluidInputs(guiFluidStacks, recipe.getFluidIngredients()); setItemOutputs(guiItemStacks); if (recipe.hasFluidBiproducts()) { setFluidOutputs(guiFluidStacks, recipe); }
+	 * 
+	 * guiItemStacks.set(ingredients); guiFluidStacks.set(ingredients);
+	 * 
+	 * }
+	 * 
+	 * @Override public void draw(FluidItem2ItemRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+	 * 
+	 * drawInputSlots(matrixStack); drawOutputSlots(matrixStack); drawStaticArrows(matrixStack); drawFluidInputs(matrixStack); if (recipe.hasFluidBiproducts()) { drawFluidOutputs(matrixStack); } drawAnimatedArrows(matrixStack);
+	 * 
+	 * // was +8 addDescriptions(matrixStack, recipe); }
+	 */
 	@Override
 	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
 		FluidItem2ItemRecipe recipe = (FluidItem2ItemRecipe) electro;

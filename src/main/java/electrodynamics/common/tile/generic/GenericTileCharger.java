@@ -27,10 +27,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class GenericTileCharger extends GenericTile {
-	
+
 	private static final int BATTERY_COUNT = 3;
 	private static final double MAX_BATTERY_TRANSFER_JOULES = 1000.0;
-	
+
 	protected GenericTileCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition, BlockState blockState) {
 		super(typeIn, worldPosition, blockState);
 		addComponent(new ComponentDirection());
@@ -48,11 +48,11 @@ public abstract class GenericTileCharger extends GenericTile {
 		ItemStack itemInput = inventory.getItem(0);
 		if (!itemInput.isEmpty() && itemInput.getItem() instanceof IItemElectric electricItem) {
 			boolean hasOvervolted = false;
-			if(inventory.inputs() > 1) {
+			if (inventory.inputs() > 1) {
 				hasOvervolted = drainBatterySlots(inventory, electro);
 			}
 			double room = electricItem.getElectricProperties().capacity - electricItem.getJoulesStored(itemInput);
-			if(electro.getJoulesStored() > 0 && !hasOvervolted && room > 0) {
+			if (electro.getJoulesStored() > 0 && !hasOvervolted && room > 0) {
 				double recieveVoltage = electricItem.getElectricProperties().receive.getVoltage();
 				double machineVoltage = electro.getVoltage();
 				if (machineVoltage > recieveVoltage) {
@@ -93,22 +93,23 @@ public abstract class GenericTileCharger extends GenericTile {
 			return 1 / x;
 		}
 	}
-	
+
 	private boolean drainBatterySlots(ComponentInventory inv, ComponentElectrodynamic electro) {
 		double machineVoltage = electro.getVoltage();
 		double battVoltage = 0;
-		for(int i = 0; i < BATTERY_COUNT; i++) {
+		for (int i = 0; i < BATTERY_COUNT; i++) {
 			ItemStack battery = inv.getItem(i + 1);
-			if(!battery.isEmpty() && battery.getItem() instanceof IItemElectric electricItem) {
+			if (!battery.isEmpty() && battery.getItem() instanceof IItemElectric electricItem) {
 				battVoltage = electricItem.getElectricProperties().receive.getVoltage();
-				if(battVoltage < machineVoltage) {
+				if (battVoltage < machineVoltage) {
 					inv.setItem(i + 1, new ItemStack(DeferredRegisters.SLAG.get()).copy());
 					getLevel().playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1F, 1F);
 				} else if (battVoltage > machineVoltage) {
 					electro.overVoltage(TransferPack.joulesVoltage(electro.getJoulesStored(), battVoltage));
 					return true;
 				} else if (electro.getMaxJoulesStored() - electro.getJoulesStored() > 0) {
-					electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, MAX_BATTERY_TRANSFER_JOULES, false).getJoules());				}
+					electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, MAX_BATTERY_TRANSFER_JOULES, false).getJoules());
+				}
 			}
 		}
 		return false;

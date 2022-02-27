@@ -30,46 +30,28 @@ public abstract class FluidItem2FluidRecipeCategory extends ElectrodynamicsRecip
 	}
 
 	/*
-	
-	@Override
-	public void setIngredients(FluidItem2FluidRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe));
-		ingredients.setInputLists(VanillaTypes.FLUID, getFluidInputs(recipe));
-		ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
-		ingredients.setOutputs(VanillaTypes.FLUID, getFluidOutputs(recipe));
-	}
-
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, FluidItem2FluidRecipe recipe, IIngredients ingredients) {
-
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-
-		setItemInputs(guiItemStacks);
-		setFluidInputs(guiFluidStacks, recipe.getFluidIngredients());
-
-		setItemOutputs(guiItemStacks);
-		setFluidOutputs(guiFluidStacks, recipe);
-
-		guiItemStacks.set(ingredients);
-		guiFluidStacks.set(ingredients);
-
-	}
-	*/
+	 * 
+	 * @Override public void setIngredients(FluidItem2FluidRecipe recipe, IIngredients ingredients) { ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe)); ingredients.setInputLists(VanillaTypes.FLUID, getFluidInputs(recipe)); ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe)); ingredients.setOutputs(VanillaTypes.FLUID, getFluidOutputs(recipe)); }
+	 * 
+	 * @Override public void setRecipe(IRecipeLayout recipeLayout, FluidItem2FluidRecipe recipe, IIngredients ingredients) {
+	 * 
+	 * IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks(); IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+	 * 
+	 * setItemInputs(guiItemStacks); setFluidInputs(guiFluidStacks, recipe.getFluidIngredients());
+	 * 
+	 * setItemOutputs(guiItemStacks); setFluidOutputs(guiFluidStacks, recipe);
+	 * 
+	 * guiItemStacks.set(ingredients); guiFluidStacks.set(ingredients);
+	 * 
+	 * }
+	 */
 	/*
-	@Override
-	public void draw(FluidItem2FluidRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-
-		drawInputSlots(matrixStack);
-		drawOutputSlots(matrixStack);
-		drawStaticArrows(matrixStack);
-		drawFluidInputs(matrixStack);
-		drawFluidOutputs(matrixStack);
-		drawAnimatedArrows(matrixStack);
-
-		addDescriptions(matrixStack, recipe);
-	}
-	*/
+	 * @Override public void draw(FluidItem2FluidRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+	 * 
+	 * drawInputSlots(matrixStack); drawOutputSlots(matrixStack); drawStaticArrows(matrixStack); drawFluidInputs(matrixStack); drawFluidOutputs(matrixStack); drawAnimatedArrows(matrixStack);
+	 * 
+	 * addDescriptions(matrixStack, recipe); }
+	 */
 	@Override
 	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
 		FluidItem2FluidRecipe recipe = (FluidItem2FluidRecipe) electro;

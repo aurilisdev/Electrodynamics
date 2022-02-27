@@ -254,9 +254,9 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
 								while (skipBlock(state) && blockSkip < MINE_SKIP) {
-									if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
+									if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
 										lengthReverse = !lengthReverse;
-										if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
+										if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
 											widthReverse = !widthReverse;
 											heightShiftMiner++;
 											if (miningPos.getY() - 1 == world.getMinBuildHeight()) {
@@ -270,12 +270,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 												widthShiftMiner += deltaW;
 											}
 										}
+									} else if (lengthReverse) {
+										lengthShiftMiner -= deltaL;
 									} else {
-										if (lengthReverse) {
-											lengthShiftMiner -= deltaL;
-										} else {
-											lengthShiftMiner += deltaL;
-										}
+										lengthShiftMiner += deltaL;
 									}
 									miningPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 									state = world.getBlockState(miningPos);
@@ -288,8 +286,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 									mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 								}
-								if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
-									if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
+								if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
+									if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
 										widthReverse = !widthReverse;
 										heightShiftMiner++;
 										if (miningPos.getY() - 1 == world.getMinBuildHeight()) {
@@ -303,12 +301,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 											widthShiftMiner += deltaW;
 										}
 									}
+								} else if (lengthReverse) {
+									lengthShiftMiner -= deltaL;
 								} else {
-									if (lengthReverse) {
-										lengthShiftMiner -= deltaL;
-									} else {
-										lengthShiftMiner += deltaL;
-									}
+									lengthShiftMiner += deltaL;
 								}
 							}
 						}

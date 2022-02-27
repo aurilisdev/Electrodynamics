@@ -75,7 +75,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
 
-		
 		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
@@ -101,7 +100,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public IDrawable getIcon() {
 		return ICON;
 	}
-	
+
 	@Override
 	public void draw(ElectrodynamicsRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		drawInputSlots(matrixStack);
@@ -113,7 +112,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 		addDescriptions(matrixStack, recipe);
 	}
-	
+
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ElectrodynamicsRecipe recipe, IFocusGroup focuses) {
 		setItemInputs(getItemInputs(recipe), builder);
@@ -244,8 +243,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			}
 		});
 	}
-	
-	public void setItemInputs(List<List<ItemStack>> inputs, IRecipeLayoutBuilder builder){
+
+	public void setItemInputs(List<List<ItemStack>> inputs, IRecipeLayoutBuilder builder) {
 		GenericItemSlotWrapper wrapper;
 		RecipeIngredientRole role;
 		for (int i = 0; i < inSlots.length; i++) {
@@ -254,19 +253,19 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			builder.addSlot(role, wrapper.itemXStart(), wrapper.itemYStart()).addItemStacks(inputs.get(i));
 		}
 	}
-	
+
 	public void setItemOutputs(List<ItemStack> outputs, IRecipeLayoutBuilder builder) {
 		GenericItemSlotWrapper wrapper;
 		RecipeIngredientRole role;
 		for (int i = 0; i < outSlots.length; i++) {
 			wrapper = outSlots[i];
 			role = wrapper instanceof BucketSlotWrapper ? RecipeIngredientRole.RENDER_ONLY : RecipeIngredientRole.OUTPUT;
-			if(i < outputs.size()) {
+			if (i < outputs.size()) {
 				builder.addSlot(role, wrapper.itemXStart(), wrapper.itemYStart()).addItemStack(outputs.get(i));
 			}
 		}
 	}
-	
+
 	public void setFluidInputs(List<List<FluidStack>> inputs, IRecipeLayoutBuilder builder) {
 		GenericFluidGaugeWrapper wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
@@ -278,7 +277,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredients(VanillaTypes.FLUID, inputs.get(i));
 		}
 	}
-	
+
 	public void setFluidOutputs(List<FluidStack> outputs, IRecipeLayoutBuilder builder) {
 		GenericFluidGaugeWrapper wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.OUTPUT;
@@ -292,7 +291,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void drawInputSlots(PoseStack matrixStack) {
-		if(INPUT_SLOTS != null) {
+		if (INPUT_SLOTS != null) {
 			List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(getAnimationTime());
 			IDrawableStatic image;
 			ScreenObjectWrapper wrapper;
@@ -305,7 +304,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void drawOutputSlots(PoseStack matrixStack) {
-		if(OUTPUT_SLOTS != null) {
+		if (OUTPUT_SLOTS != null) {
 			List<IDrawableStatic> outputSlots = OUTPUT_SLOTS.getUnchecked(getAnimationTime());
 			IDrawableStatic image;
 			ScreenObjectWrapper wrapper;
@@ -318,7 +317,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void drawFluidInputs(PoseStack matrixStack) {
-		if(FLUID_INPUTS != null) {
+		if (FLUID_INPUTS != null) {
 			List<IDrawableStatic> inFluidGauges = FLUID_INPUTS.getUnchecked(getAnimationTime());
 			IDrawableStatic image;
 			ScreenObjectWrapper wrapper;
@@ -331,7 +330,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void drawFluidOutputs(PoseStack matrixStack) {
-		if(FLUID_OUTPUTS != null) {
+		if (FLUID_OUTPUTS != null) {
 			List<IDrawableStatic> fluidGauges = FLUID_OUTPUTS.getUnchecked(getAnimationTime());
 			IDrawableStatic image;
 			ScreenObjectWrapper wrapper;
@@ -344,7 +343,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void drawStaticArrows(PoseStack matrixStack) {
-		if(STATIC_ARROWS != null) {
+		if (STATIC_ARROWS != null) {
 			List<IDrawableStatic> arrows = STATIC_ARROWS.getUnchecked(getAnimationTime());
 			IDrawableStatic image;
 			ScreenObjectWrapper wrapper;
@@ -357,7 +356,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void drawAnimatedArrows(PoseStack matrixStack) {
-		if(ANIMATED_ARROWS != null) {
+		if (ANIMATED_ARROWS != null) {
 			List<IDrawableAnimated> arrows = ANIMATED_ARROWS.getUnchecked(getAnimationTime());
 			IDrawableAnimated arrow;
 			ScreenObjectWrapper wrapper;
@@ -369,19 +368,19 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		}
 	}
 
-	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro){
+	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
 		return Collections.emptyList();
 	}
-	
-	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro){
+
+	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
 		return Collections.emptyList();
 	}
-	
+
 	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
 		return Collections.emptyList();
 	}
-	
-	public List<FluidStack> getFluidOutputs(ElectrodynamicsRecipe electro){
+
+	public List<FluidStack> getFluidOutputs(ElectrodynamicsRecipe electro) {
 		return Collections.emptyList();
 	}
 

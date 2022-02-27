@@ -20,7 +20,7 @@ public abstract class Fluid2FluidRecipeCategory extends ElectrodynamicsRecipeCat
 	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, int animationTime) {
 		super(guiHelper, modID, recipeGroup, inputMachine, wrapper, Fluid2FluidRecipe.class, animationTime);
 	}
-	
+
 	@Override
 	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
 		Fluid2FluidRecipe recipe = (Fluid2FluidRecipe) electro;

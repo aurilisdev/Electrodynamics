@@ -123,7 +123,7 @@ public class ClientRegister {
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
 	// for registration purposes only!
 	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
-	
+
 	@SubscribeEvent
 	public static void onModelEvent(ModelRegistryEvent event) {
 		ForgeModelBakery.addSpecialModel(MODEL_ADVSOLARTOP);
@@ -232,9 +232,9 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
-	//Custom Textures
+	// Custom Textures
 	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(CUSTOM_LOC + "quarryarm");
-	
+
 	public static void setup() {
 		MenuScreens.register(DeferredRegisters.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
@@ -322,22 +322,22 @@ public class ClientRegister {
 	public static boolean shouldMultilayerRender(RenderType type) {
 		return type == RenderType.translucent() || type == RenderType.solid();
 	}
-	
+
 	static {
 		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
 	}
-	
+
 	@SubscribeEvent
 	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
-		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
 			customBlockTextures.forEach(h -> event.addSprite(h));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
-		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			for(ResourceLocation loc : customBlockTextures) {
+		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+			for (ResourceLocation loc : customBlockTextures) {
 				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
 			}
 		}

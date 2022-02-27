@@ -55,7 +55,7 @@ public class TileMineralWasher extends GenericTile {
 			ComponentInventory inv = getComponent(ComponentType.Inventory);
 			ItemStack input = inv.getInputContents().get(0).get(0);
 			Vector3f color;
-			if(input.getItem() instanceof BlockItem block && block.getBlock().defaultBlockState().is(Blocks.MAGMA_BLOCK)) {
+			if (input.getItem() instanceof BlockItem block && block.getBlock().defaultBlockState().is(Blocks.MAGMA_BLOCK)) {
 				color = new Vector3f(1f, 0.64706f, 0);
 			} else {
 				color = new Vector3f(1f, 1f, 0);
