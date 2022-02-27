@@ -4,20 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -33,6 +27,7 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 
 		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, Fluid2ItemRecipe.class, animTime);
 	}
+	/*
 
 	@Override
 	public void setIngredients(Fluid2ItemRecipe recipe, IIngredients ingredients) {
@@ -73,8 +68,10 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 
 		addDescriptions(matrixStack, recipe);
 	}
-
-	private static List<List<FluidStack>> getFluidInputs(Fluid2ItemRecipe recipe) {
+	*/
+	@Override
+	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
+		Fluid2ItemRecipe recipe = (Fluid2ItemRecipe) electro;
 		List<List<FluidStack>> ingredients = new ArrayList<>();
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
 			List<FluidStack> fluids = new ArrayList<>();
@@ -88,7 +85,9 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 		return ingredients;
 	}
 
-	private static List<List<ItemStack>> getItemInputs(Fluid2ItemRecipe recipe) {
+	@Override
+	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
+		Fluid2ItemRecipe recipe = (Fluid2ItemRecipe) electro;
 		List<FluidIngredient> ings = recipe.getFluidIngredients();
 		List<List<ItemStack>> totalBuckets = new ArrayList<>();
 		for (FluidIngredient ing : ings) {
@@ -103,8 +102,9 @@ public abstract class Fluid2ItemRecipeCategory extends ElectrodynamicsRecipeCate
 		return totalBuckets;
 	}
 
-	private static List<ItemStack> getItemOutputs(Fluid2ItemRecipe recipe) {
-
+	@Override
+	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
+		Fluid2ItemRecipe recipe = (Fluid2ItemRecipe) electro;
 		List<ItemStack> outputItems = new ArrayList<>();
 
 		outputItems.add(recipe.getResultItem());

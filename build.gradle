@@ -32,8 +32,8 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 libsDirName = "../output"
 distsDirName = "../output"
 
-def	version_minor="5"
-def	version_revision='9'
+def	version_minor="6"
+def	version_revision='0'
 def	minecraft_version='1.18.1'
 def	version_build='0'
 def	version_major='0'
@@ -49,7 +49,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     //mappings channel: 'official', version: '1.18.1' 
-    mappings channel: 'parchment', version: '2022.01.23-1.18.1'
+    mappings channel: 'parchment', version: '2022.02.13-1.18.1'
     
     runs {
         client {
@@ -116,8 +116,8 @@ mixin {
 }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.1-39.0.55'
-	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.1.0.41")
+	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.101:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.101")
     
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }

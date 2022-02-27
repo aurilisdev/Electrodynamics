@@ -8,12 +8,12 @@ public class DefaultItemSlotWrapper extends GenericItemSlotWrapper {
 
 	@Override
 	public int itemXStart() {
-		return getXPos();
+		return getXPos() + 1;
 	}
 
 	@Override
 	public int itemYStart() {
-		return getYPos();
+		return getYPos() + 1;
 	}
 
 }

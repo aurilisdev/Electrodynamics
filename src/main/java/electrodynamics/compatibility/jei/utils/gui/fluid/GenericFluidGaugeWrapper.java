@@ -23,12 +23,12 @@ public abstract class GenericFluidGaugeWrapper extends ScreenObjectWrapper {
 		return getLength() - 2;
 	}
 
-	public int getFluidTextXPos() {
+	public int getFluidXPos() {
 		return getXPos() + 1;
 	}
 
-	public int getFluidTextYPos() {
-		return getYPos() + getWidth() - 2;
+	public int getFluidYPos() {
+		return getYPos() + getWidth() - 1;
 	}
 
 }

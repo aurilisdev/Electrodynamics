@@ -8,12 +8,12 @@ public class BigItemSlotWrapper extends GenericItemSlotWrapper {
 
 	@Override
 	public int itemXStart() {
-		return getXPos() + 4;
+		return getXPos() + 5;
 	}
 
 	@Override
 	public int itemYStart() {
-		return getYPos() + 4;
+		return getYPos() + 5;
 	}
 
 }

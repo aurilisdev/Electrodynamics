@@ -4,20 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<Item2ItemRecipe> {
@@ -33,52 +26,16 @@ public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCateg
 	}
 
 	@Override
-	public void setIngredients(Item2ItemRecipe recipe, IIngredients ingredients) {
+	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
+		Item2ItemRecipe recipe = (Item2ItemRecipe) electro;
 		List<List<ItemStack>> inputs = new ArrayList<>();
-		for (CountableIngredient ing : recipe.getCountedIngredients()) {
-			inputs.add(ing.fetchCountedStacks());
-		}
-		ingredients.setInputLists(VanillaTypes.ITEM, inputs);
-
-		ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe));
-
-		if (recipe.hasFluidBiproducts()) {
-			ingredients.setOutputs(VanillaTypes.FLUID, Arrays.asList(recipe.getFullFluidBiStacks()));
-		}
-
+		recipe.getCountedIngredients().forEach(h -> inputs.add(h.fetchCountedStacks()));
+		return inputs;
 	}
-
+	
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, Item2ItemRecipe recipe, IIngredients ingredients) {
-
-		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-		setItemInputs(guiItemStacks);
-		setItemOutputs(guiItemStacks);
-		guiItemStacks.set(ingredients);
-
-		if (recipe.hasFluidBiproducts()) {
-			IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-			setFluidOutputs(guiFluidStacks, recipe);
-			guiFluidStacks.set(ingredients);
-		}
-
-	}
-
-	@Override
-	public void draw(Item2ItemRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-
-		drawInputSlots(matrixStack);
-		drawOutputSlots(matrixStack);
-		drawStaticArrows(matrixStack);
-		if (recipe.hasFluidBiproducts()) {
-			drawFluidOutputs(matrixStack);
-		}
-		drawAnimatedArrows(matrixStack);
-
-		addDescriptions(matrixStack, recipe);
-	}
-
-	private static List<ItemStack> getItemOutputs(Item2ItemRecipe recipe) {
+	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
+		Item2ItemRecipe recipe = (Item2ItemRecipe) electro;
 		List<ItemStack> outputs = new ArrayList<>();
 		outputs.add(recipe.getResultItem());
 
@@ -93,7 +50,6 @@ public abstract class Item2ItemRecipeCategory extends ElectrodynamicsRecipeCateg
 				outputs.add(canister);
 			}
 		}
-
 		return outputs;
 	}
 
