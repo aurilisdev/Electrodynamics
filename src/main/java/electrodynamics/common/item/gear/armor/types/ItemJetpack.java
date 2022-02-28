@@ -72,7 +72,7 @@ public class ItemJetpack extends ArmorItem {
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
 			@Override
-			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
+			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
 				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ClientRegister.JETPACK.bakeRoot());
 
@@ -80,7 +80,7 @@ public class ItemJetpack extends ArmorItem {
 				model.riding = properties.riding;
 				model.young = properties.young;
 
-				return (A) model;
+				return model;
 			}
 		});
 	}

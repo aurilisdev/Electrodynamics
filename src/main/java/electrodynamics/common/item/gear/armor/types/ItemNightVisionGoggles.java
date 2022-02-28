@@ -56,16 +56,17 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
 			@Override
-			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
-
+			public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 				ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(ClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
 				model.young = properties.young;
 
-				return (A) model;
+				return model;
 			}
+		});
+		consumer.accept(new IItemRenderProperties() {
 		});
 	}
 

@@ -62,7 +62,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
 			@Override
-			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
+			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
 				ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(ClientRegister.HYDRAULIC_BOOTS.bakeRoot());
 
@@ -70,7 +70,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 				model.riding = properties.riding;
 				model.young = properties.young;
 
-				return (A) model;
+				return model;
 			}
 		});
 	}

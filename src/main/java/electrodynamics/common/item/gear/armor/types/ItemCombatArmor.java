@@ -62,8 +62,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
 			@Override
-			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, A properties) {
-
+			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMBATHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMBATLEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
@@ -93,7 +92,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				model.riding = properties.riding;
 				model.young = properties.young;
 
-				return (A) model;
+				return  model;
 			}
 		});
 	}
