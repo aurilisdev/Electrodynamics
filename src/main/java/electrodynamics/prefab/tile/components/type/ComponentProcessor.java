@@ -1,7 +1,7 @@
 package electrodynamics.prefab.tile.components.type;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -28,7 +28,6 @@ import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -51,7 +50,7 @@ public class ComponentProcessor implements Component {
 	private Consumer<ComponentProcessor> failed;
 	private int processorNumber = 0;
 
-	private Set<Recipe<?>> cachedRecipes;
+	private List<ElectrodynamicsRecipe> cachedRecipes = new ArrayList<>();
 	private ElectrodynamicsRecipe recipe;
 
 	public ComponentProcessor(GenericTile source) {
@@ -194,7 +193,7 @@ public class ComponentProcessor implements Component {
 	}
 
 	// Instead of checking all at once, we check one at a time; more efficient
-	public boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
+	public  boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -729,15 +728,11 @@ public class ComponentProcessor implements Component {
 		return false;
 	}
 	
-	private void checkCache(ComponentProcessor pr, RecipeType<?> typeIn) {
-		if(cachedRecipes == null || cachedRecipes.size() == 0) {
-			cachedRecipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().getLevel());
-		}
-	}
-	
 	@Nullable
 	private ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		checkCache(pr, typeIn);
+		if(cachedRecipes.size() == 0) {
+			cachedRecipes = ElectrodynamicsRecipe.findRecipesbyType((RecipeType<ElectrodynamicsRecipe>)typeIn, pr.getHolder().getLevel());
+		}
 		return ElectrodynamicsRecipe.getRecipe(pr, cachedRecipes);
 	}
 

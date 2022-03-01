@@ -50,7 +50,6 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 minecraft {
     //mappings channel: 'official', version: '1.18.1' 
     mappings channel: 'parchment', version: '2022.02.13-1.18.1'
-    
     runs {
         client {
             workingDirectory project.file('run')
