@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 
+import electrodynamics.common.recipe.recipeutils.AbstractResourceReloadListener;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
@@ -25,7 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
+public abstract class ElectrodynamicsRecipe extends AbstractResourceReloadListener implements Recipe<RecipeWrapper> {
 
 	/*
 	 * Need to know: > does it have fluid and item biproducts ; store as booleans > the number of fluid and item biproducts ; store as ints > the arrangement of the items in the machine's inventory ; store as int list
