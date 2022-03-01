@@ -1,24 +1,16 @@
 package electrodynamics.common.recipe.categories.fluid2fluid.specificmachines;
 
-import java.util.Set;
-
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ElectrolyticSeparatorRecipe extends Fluid2FluidRecipe {
-
-	//instance goes here
-	//arrlist goes here
 	
 	public static final String RECIPE_GROUP = "electrolytic_separator_recipe";
 	public static final String MOD_ID = electrodynamics.api.References.ID;
@@ -36,12 +28,6 @@ public class ElectrolyticSeparatorRecipe extends Fluid2FluidRecipe {
 	@Override
 	public RecipeType<?> getType() {
 		return Registry.RECIPE_TYPE.get(RECIPE_ID);
-	}
-
-	@Override
-	public Set<Recipe<? extends ElectrodynamicsRecipe>> getRecipesByType(RecipeManager manager) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

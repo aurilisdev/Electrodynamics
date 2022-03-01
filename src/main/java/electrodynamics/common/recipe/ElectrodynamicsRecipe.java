@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.common.recipe.recipeutils.AbstractResourceReloadListener;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
@@ -26,7 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public abstract class ElectrodynamicsRecipe extends AbstractResourceReloadListener implements Recipe<RecipeWrapper> {
+public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 
 	/*
 	 * Need to know: > does it have fluid and item biproducts ; store as booleans > the number of fluid and item biproducts ; store as ints > the arrangement of the items in the machine's inventory ; store as int list
@@ -188,8 +187,7 @@ public abstract class ElectrodynamicsRecipe extends AbstractResourceReloadListen
 	}
 
 	@Nullable
-	public static ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		Set<Recipe<?>> recipes = findRecipesbyType(typeIn, pr.getHolder().getLevel());
+	public static ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, Set<Recipe<?>> recipes) {
 		for (Recipe<?> iRecipe : recipes) {
 			ElectrodynamicsRecipe recipe = (ElectrodynamicsRecipe) iRecipe;
 			if (recipe.matchesRecipe(pr)) {
@@ -201,9 +199,6 @@ public abstract class ElectrodynamicsRecipe extends AbstractResourceReloadListen
 
 	public static Pair<List<Integer>, Boolean> areItemsValid(List<CountableIngredient> ingredients, List<ItemStack> stacks) {
 		Boolean valid = true;
-		// for(ItemStack stack : stacks) {
-		// Electrodynamics.LOGGER.info(stack.toString());
-		// }
 		List<Integer> slotOreintation = new ArrayList<>();
 		for (int i = 0; i < ingredients.size(); i++) {
 			CountableIngredient ing = ingredients.get(i);
