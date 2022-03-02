@@ -193,7 +193,7 @@ public class ComponentProcessor implements Component {
 	}
 
 	// Instead of checking all at once, we check one at a time; more efficient
-	public  boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
+	public boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -733,11 +733,11 @@ public class ComponentProcessor implements Component {
 		}
 		return false;
 	}
-	
+
 	@Nullable
 	private ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		if(cachedRecipes.size() == 0) {
-			cachedRecipes = ElectrodynamicsRecipe.findRecipesbyType((RecipeType<ElectrodynamicsRecipe>)typeIn, pr.getHolder().getLevel());
+		if (cachedRecipes.size() == 0) {
+			cachedRecipes = ElectrodynamicsRecipe.findRecipesbyType((RecipeType<ElectrodynamicsRecipe>) typeIn, pr.getHolder().getLevel());
 		}
 		return ElectrodynamicsRecipe.getRecipe(pr, cachedRecipes);
 	}

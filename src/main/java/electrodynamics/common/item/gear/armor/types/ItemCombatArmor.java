@@ -92,7 +92,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				model.riding = properties.riding;
 				model.young = properties.young;
 
-				return  model;
+				return model;
 			}
 		});
 	}

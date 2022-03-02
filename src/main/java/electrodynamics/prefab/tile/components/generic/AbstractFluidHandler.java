@@ -166,7 +166,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	public AbstractFluidHandler<A> setAddFluidsValues(RecipeType<? extends AbstractFluidRecipe> recipeType, int capacity, boolean hasInput, boolean hasOutput) {
 		this.hasInput = hasInput;
 		this.hasOutput = hasOutput;
-		this.recipeType = (RecipeType<AbstractFluidRecipe>)recipeType;
+		this.recipeType = (RecipeType<AbstractFluidRecipe>) recipeType;
 		this.tankCapacity = capacity;
 		return this;
 	}

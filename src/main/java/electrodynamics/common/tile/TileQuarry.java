@@ -253,7 +253,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
-								while(skipBlock(state) && blockSkip < MINE_SKIP) {
+
+								while (skipBlock(state) && blockSkip < MINE_SKIP) {
 									if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
 										lengthReverse = !lengthReverse;
 										if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
