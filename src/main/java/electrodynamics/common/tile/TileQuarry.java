@@ -253,6 +253,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
+
 								while (skipBlock(state) && blockSkip < MINE_SKIP) {
 									if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
 										lengthReverse = !lengthReverse;
@@ -843,7 +844,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private static boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY);
+		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK);
 	}
 
 	private void createPacket(CompoundTag nbt) {
