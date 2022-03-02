@@ -181,7 +181,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	}
 
 	public static List<ElectrodynamicsRecipe> findRecipesbyType(RecipeType<? extends ElectrodynamicsRecipe> typeIn, Level world) {
-		return world != null ? world.getRecipeManager().getAllRecipesFor((RecipeType<ElectrodynamicsRecipe>)typeIn) : Collections.emptyList();
+		return world != null ? world.getRecipeManager().getAllRecipesFor((RecipeType<ElectrodynamicsRecipe>) typeIn) : Collections.emptyList();
 	}
 
 	@Nullable
