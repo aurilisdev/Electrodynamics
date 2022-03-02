@@ -200,6 +200,7 @@ public class ComponentProcessor implements Component {
 		}
 		Item2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			pr.operatingTicks = 0;
 			locRecipe = (Item2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -246,6 +247,7 @@ public class ComponentProcessor implements Component {
 		}
 		Fluid2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			pr.operatingTicks = 0;
 			locRecipe = (Fluid2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -290,6 +292,7 @@ public class ComponentProcessor implements Component {
 		}
 		Fluid2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			pr.operatingTicks = 0;
 			locRecipe = (Fluid2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -326,6 +329,7 @@ public class ComponentProcessor implements Component {
 		}
 		Item2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			pr.operatingTicks = 0;
 			locRecipe = (Item2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -362,6 +366,7 @@ public class ComponentProcessor implements Component {
 		}
 		FluidItem2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			pr.operatingTicks = 0;
 			locRecipe = (FluidItem2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -398,6 +403,7 @@ public class ComponentProcessor implements Component {
 		}
 		FluidItem2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			pr.operatingTicks = 0;
 			locRecipe = (FluidItem2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;

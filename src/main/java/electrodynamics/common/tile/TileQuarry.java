@@ -254,28 +254,26 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
 								while(skipBlock(state) && blockSkip < MINE_SKIP) {
-									if((lengthShiftMiner == length && !lengthReverse) || (lengthShiftMiner == 0 && lengthReverse)) {
+									if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
 										lengthReverse = !lengthReverse;
-										if((widthShiftMiner == width && !widthReverse) || (widthShiftMiner == 0 && widthReverse)) {
+										if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
 											widthReverse = !widthReverse;
 											heightShiftMiner++;
-											if(miningPos.getY() - 1 == world.getMinBuildHeight()) {
+											if (miningPos.getY() - 1 == world.getMinBuildHeight()) {
 												heightShiftMiner = 1;
 												isFinished = true;
 											}
 										} else {
-											if(widthReverse) {
+											if (widthReverse) {
 												widthShiftMiner -= deltaW;
 											} else {
 												widthShiftMiner += deltaW;
 											}
 										}
+									} else if (lengthReverse) {
+										lengthShiftMiner -= deltaL;
 									} else {
-										if(lengthReverse) {
-											lengthShiftMiner -= deltaL;
-										} else {
-											lengthShiftMiner += deltaL;
-										}
+										lengthShiftMiner += deltaL;
 									}
 									miningPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 									state = world.getBlockState(miningPos);
@@ -288,28 +286,26 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 									mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 								}
-								if((lengthShiftMiner == length && !lengthReverse) || (lengthShiftMiner == 0 && lengthReverse)) {
+								if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
 									lengthReverse = !lengthReverse;
-									if((widthShiftMiner == width && !widthReverse) || (widthShiftMiner == 0 && widthReverse)) {
+									if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
 										widthReverse = !widthReverse;
 										heightShiftMiner++;
-										if(miningPos.getY() - 1 == world.getMinBuildHeight()) {
+										if (miningPos.getY() - 1 == world.getMinBuildHeight()) {
 											heightShiftMiner = 1;
 											isFinished = true;
 										}
 									} else {
-										if(widthReverse) {
+										if (widthReverse) {
 											widthShiftMiner -= deltaW;
 										} else {
 											widthShiftMiner += deltaW;
 										}
 									}
+								} else if (lengthReverse) {
+									lengthShiftMiner -= deltaL;
 								} else {
-									if(lengthReverse) {
-										lengthShiftMiner -= deltaL;
-									} else {
-										lengthShiftMiner += deltaL;
-									}
+									lengthShiftMiner += deltaL;
 								}
 							}
 						}
@@ -847,7 +843,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private static boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY);
+		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK);
 	}
 
 	private void createPacket(CompoundTag nbt) {
