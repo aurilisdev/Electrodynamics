@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -182,15 +180,13 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		return xp;
 	}
 
-	public static Set<Recipe<?>> findRecipesbyType(RecipeType<?> typeIn, Level world) {
-		return world != null ? world.getRecipeManager().getRecipes().stream().filter(recipe -> recipe.getType() == typeIn).collect(Collectors.toSet()) : Collections.emptySet();
+	public static List<ElectrodynamicsRecipe> findRecipesbyType(RecipeType<? extends ElectrodynamicsRecipe> typeIn, Level world) {
+		return world != null ? world.getRecipeManager().getAllRecipesFor((RecipeType<ElectrodynamicsRecipe>)typeIn) : Collections.emptyList();
 	}
 
 	@Nullable
-	public static ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		Set<Recipe<?>> recipes = findRecipesbyType(typeIn, pr.getHolder().getLevel());
-		for (Recipe<?> iRecipe : recipes) {
-			ElectrodynamicsRecipe recipe = (ElectrodynamicsRecipe) iRecipe;
+	public static ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, List<ElectrodynamicsRecipe> recipes) {
+		for (ElectrodynamicsRecipe recipe : recipes) {
 			if (recipe.matchesRecipe(pr)) {
 				return recipe;
 			}
@@ -200,9 +196,6 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 
 	public static Pair<List<Integer>, Boolean> areItemsValid(List<CountableIngredient> ingredients, List<ItemStack> stacks) {
 		Boolean valid = true;
-		// for(ItemStack stack : stacks) {
-		// Electrodynamics.LOGGER.info(stack.toString());
-		// }
 		List<Integer> slotOreintation = new ArrayList<>();
 		for (int i = 0; i < ingredients.size(); i++) {
 			CountableIngredient ing = ingredients.get(i);

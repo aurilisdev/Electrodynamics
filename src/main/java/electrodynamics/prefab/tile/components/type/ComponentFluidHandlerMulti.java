@@ -2,7 +2,6 @@ package electrodynamics.prefab.tile.components.type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
@@ -11,7 +10,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
@@ -309,16 +308,15 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	@Override
 	public void addFluids() {
 		if (recipeType != null) {
-			Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, getHolder().getLevel());
+			List<ElectrodynamicsRecipe> recipes = ElectrodynamicsRecipe.findRecipesbyType((RecipeType<AbstractFluidRecipe>) recipeType, getHolder().getLevel());
 
 			int inTankCount = 0;
 			int outTankCount = 0;
 			List<Fluid> inputFluidHolder = new ArrayList<>();
 			List<Fluid> outputFluidHohlder = new ArrayList<>();
 
-			for (Recipe<?> iRecipe : recipes) {
+			for (ElectrodynamicsRecipe iRecipe : recipes) {
 				AbstractFluidRecipe recipe = (AbstractFluidRecipe) iRecipe;
-
 				if (hasInput) {
 					int ingCount = recipe.getFluidIngredients().size();
 					if (ingCount > inTankCount) {

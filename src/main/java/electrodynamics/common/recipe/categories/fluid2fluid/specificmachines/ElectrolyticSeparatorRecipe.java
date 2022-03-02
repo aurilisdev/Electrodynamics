@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ElectrolyticSeparatorRecipe extends Fluid2FluidRecipe {
-
+	
 	public static final String RECIPE_GROUP = "electrolytic_separator_recipe";
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);

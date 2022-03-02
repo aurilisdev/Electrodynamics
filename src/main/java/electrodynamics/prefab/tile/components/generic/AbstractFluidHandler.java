@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -33,7 +34,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	public HashSet<Direction> inputDirections = new HashSet<>();
 	public Direction lastDirection = null;
 
-	protected RecipeType<?> recipeType;
+	protected RecipeType<AbstractFluidRecipe> recipeType;
 	protected int tankCapacity;
 	protected boolean hasInput;
 	protected boolean hasOutput;
@@ -162,10 +163,10 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	public abstract void drainFluidFromTank(FluidStack fluid, boolean isInput);
 
-	public AbstractFluidHandler<A> setAddFluidsValues(RecipeType<?> recipeType, int capacity, boolean hasInput, boolean hasOutput) {
+	public AbstractFluidHandler<A> setAddFluidsValues(RecipeType<? extends AbstractFluidRecipe> recipeType, int capacity, boolean hasInput, boolean hasOutput) {
 		this.hasInput = hasInput;
 		this.hasOutput = hasOutput;
-		this.recipeType = recipeType;
+		this.recipeType = (RecipeType<AbstractFluidRecipe>)recipeType;
 		this.tankCapacity = capacity;
 		return this;
 	}
