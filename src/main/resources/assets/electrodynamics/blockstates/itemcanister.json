@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "inventory": {
+      "model": "electrodynamics:itemcanister",
+      "textures": {
+        "base": "forge:items/bucket_base",
+        "fluid": "forge:items/bucket_fluid",
+        "cover": "forge:items/bucket_cover"
+      },
+      "transform": "forge:default-item",
+      "custom": {
+        "fluid": "water",
+        "flipGas": true,
+        "applyTint": false
+      }
+    }
+  }
+}

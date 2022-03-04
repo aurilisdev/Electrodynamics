@@ -13,6 +13,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerMotorComplex extends GenericContainerBlockEntity<TileMotorComplex> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed};
+	
 	public ContainerMotorComplex(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_MOTORCOMPLEX.get(), id, playerinv, inventory, inventorydata);
 	}
@@ -23,9 +25,9 @@ public class ContainerMotorComplex extends GenericContainerBlockEntity<TileMotor
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
 	}
 
 }

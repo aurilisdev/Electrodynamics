@@ -12,6 +12,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.improvedsolarcell};
+	
 	public ContainerWindmill(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
 	}
@@ -22,6 +24,6 @@ public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill>
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, SubtypeItemUpgrade.stator));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, VALID_UPGRADES));
 	}
 }

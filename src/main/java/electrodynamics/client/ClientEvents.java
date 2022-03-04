@@ -154,7 +154,7 @@ public class ClientEvents {
 				AABB aabb = list.get(i);
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				if (i < 5) {
+				if (i < list.size() - 2) {
 					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
 				} else {
 					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);

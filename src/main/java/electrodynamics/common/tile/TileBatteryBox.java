@@ -52,7 +52,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
-		addComponent(new ComponentInventory(this).size(4));
+		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.batterybox").createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 	}

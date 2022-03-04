@@ -1,6 +1,9 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "electrodynamics:item/canisterreinforced"
-	}
+    "parent": "forge:item/default",
+    "loader" : "forge:bucket",
+    "fluid" : "minecraft:air",
+    "textures": {
+        "base": "electrodynamics:item/canisterreinforced/base",
+        "fluid": "electrodynamics:item/canisterreinforced/fluid"
+    }
 }

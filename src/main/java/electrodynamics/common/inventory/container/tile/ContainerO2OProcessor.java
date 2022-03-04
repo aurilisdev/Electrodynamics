@@ -15,6 +15,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerO2OProcessor extends GenericContainerBlockEntity<GenericTile> {
+	
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience};
 	public static final int startXOffset = 36;
 
 	public ContainerO2OProcessor(int id, Inventory playerinv) {
@@ -34,8 +36,8 @@ public class ContainerO2OProcessor extends GenericContainerBlockEntity<GenericTi
 		addSlot(new SlotGeneric(inv, nextIndex(), 56 - startXOffset, 34));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset, 34));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - startXOffset + 20, 34));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
 	}
 }

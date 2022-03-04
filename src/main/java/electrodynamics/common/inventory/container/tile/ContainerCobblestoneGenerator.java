@@ -15,6 +15,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerCobblestoneGenerator extends GenericContainerBlockEntity<TileCobblestoneGenerator> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput};
+	
 	public ContainerCobblestoneGenerator(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(4), new SimpleContainerData(3));
 	}
@@ -30,9 +32,9 @@ public class ContainerCobblestoneGenerator extends GenericContainerBlockEntity<T
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotRestricted(inv, nextIndex(), 68, 34));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, VALID_UPGRADES));
 
 	}
 

@@ -16,6 +16,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerFermentationPlant extends GenericContainerBlockEntity<TileFermentationPlant> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience};
+	
 	public ContainerFermentationPlant(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
 	}
@@ -33,8 +35,8 @@ public class ContainerFermentationPlant extends GenericContainerBlockEntity<Tile
 		addSlot(new SlotGeneric(inv, nextIndex(), 74, 31));
 		addSlot(new SlotFluid(inv, nextIndex(), 74, 51));
 		addSlot(new SlotFluid(inv, nextIndex(), 108, 51));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, VALID_UPGRADES));
 	}
 }

@@ -16,6 +16,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<TileChemicalCrystallizer> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.experience};
+	
 	public ContainerChemicalCrystallizer(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
 	}
@@ -32,8 +34,8 @@ public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<T
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 82, 31));
 		addSlot(new SlotFluid(inv, nextIndex(), 82, 51));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.experience));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, VALID_UPGRADES));
 	}
 }

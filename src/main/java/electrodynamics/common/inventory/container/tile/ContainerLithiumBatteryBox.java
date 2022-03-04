@@ -1,7 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotCharging;
@@ -24,9 +23,9 @@ public class ContainerLithiumBatteryBox extends GenericContainerBlockEntity<Tile
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ContainerBatteryBox.VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ContainerBatteryBox.VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, ContainerBatteryBox.VALID_UPGRADES));
 		addSlot(new SlotCharging(inv, nextIndex(), 133, 14));
 	}
 

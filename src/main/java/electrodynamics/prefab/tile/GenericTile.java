@@ -181,7 +181,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 	}
 
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
-		return (x, y, i) -> x < i.inputs() || x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
+		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
 
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator(int[] ints) {
@@ -189,7 +189,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 		for (int i : ints) {
 			list.add(i);
 		}
-		return (x, y, i) -> list.contains(x) || x >= i.inputs() + i.outputs() + i.biproducts() && x < i.getContainerSize() - i.processors() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getContainerSize() - i.processors() && y.getItem() instanceof ItemUpgrade;
+		return (x, y, i) -> list.contains(x) || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
 
 }
