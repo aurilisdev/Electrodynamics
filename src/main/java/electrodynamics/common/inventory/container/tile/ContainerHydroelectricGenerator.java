@@ -13,6 +13,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerHydroelectricGenerator extends GenericContainerBlockEntity<TileHydroelectricGenerator> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.stator};
+	
 	public ContainerHydroelectricGenerator(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
 	}
@@ -23,6 +25,6 @@ public class ContainerHydroelectricGenerator extends GenericContainerBlockEntity
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, SubtypeItemUpgrade.stator));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, VALID_UPGRADES));
 	}
 }

@@ -36,7 +36,7 @@ public class TileCobblestoneGenerator extends GenericTile {
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * 10));
-		addComponent(new ComponentInventory(this).size(4).outputs(1).upgrades(3).valid(machineValidator()));
+		addComponent(new ComponentInventory(this).size(4).outputs(1).upgrades(3).validUpgrades(ContainerCobblestoneGenerator.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.cobblestonegenerator").createMenu((id, player) -> new ContainerCobblestoneGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

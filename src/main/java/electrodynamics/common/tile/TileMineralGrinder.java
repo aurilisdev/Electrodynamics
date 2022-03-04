@@ -55,7 +55,7 @@ public class TileMineralGrinder extends GenericTile {
 			ints[i] = i * 2;
 		}
 
-		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).biproducts(biproducts).upgrades(3).processors(processorCount).processorInputs(processorInputs).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
+		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).biproducts(biproducts).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
 		addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {

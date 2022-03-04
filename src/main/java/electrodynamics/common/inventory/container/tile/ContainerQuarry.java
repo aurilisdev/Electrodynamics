@@ -16,6 +16,8 @@ import net.minecraft.world.item.BlockItem;
 
 public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid};
+	
 	public ContainerQuarry(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(DeferredRegisters.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);
 	}
@@ -38,9 +40,9 @@ public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 				addSlot(new SlotRestricted(inv, nextIndex(), 85 + j * 18, 75 + i * 18));
 			}
 		}
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 71, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 91, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 111, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 71, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 91, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 111, VALID_UPGRADES));
 	}
 
 }

@@ -15,6 +15,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<TileElectrolyticSeparator> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed};
+	
 	public ContainerElectrolyticSeparator(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory, inventorydata);
 	}
@@ -32,9 +34,9 @@ public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<
 		addSlot(new SlotFluid(inv, nextIndex(), 40, 51));
 		addSlot(new SlotFluid(inv, nextIndex(), 81, 51));
 		addSlot(new SlotFluid(inv, nextIndex(), 121, 51));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.experience));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
 	}
 
 }

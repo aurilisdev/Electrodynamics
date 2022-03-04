@@ -30,6 +30,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -133,7 +134,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private boolean clientOnRight = false;
 	private List<BlockPos> clientCorners = new ArrayList<>();
-	public BlockPos clientMiningPos = null;
+	public Location clientMiningPos = null;
+	private Location prevClientMiningPos = null;
+	//private Location clientCurrArmLoc = null;
+	private double clientMiningSpeed = 0;
+	private List<Location> storedArmFrames = new ArrayList<>();
 
 	public boolean clientItemVoid = false;
 	public int clientFortuneLevel = 0;
@@ -152,7 +157,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * CAPACITY));
-		addComponent(new ComponentInventory(this).size(19).inputs(7).outputs(9).upgrades(3).valid(machineValidator()));
+		addComponent(new ComponentInventory(this).size(19).inputs(7).outputs(9).upgrades(3).validUpgrades(ContainerQuarry.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.quarry").createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -184,7 +189,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					if (tick.getTicks() % 4 == 0 && Constants.MAINTAIN_MINING_AREA) {
 						maintainMiningArea();
 					}
-					if (complex.isPowered && tick.getTicks() % ((int) complex.speed + tickDelayMiner) == 0) {
+					if (complex.isPowered && tick.getTicks() % ((int) complex.speed) == 0) {
 						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
 						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
@@ -248,7 +253,17 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
 								int width = cornerStart.getX() - cornerEnd.getX() - 2 * deltaW;
 								int length = cornerStart.getZ() - cornerEnd.getZ() - 2 * deltaL;
-
+								//if we have the quarry mine the current block on the next tick, it
+								//deals with the issue of the client pos always being one tick behind
+								//the server's
+								if(miningPos != null) {
+									BlockState miningState = world.getBlockState(miningPos);
+									float strength = miningState.getDestroySpeed(world, miningPos);
+									if (!skipBlock(miningState) && strength >= 0) {
+										mineBlock(miningPos, miningState, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
+									}
+								}
+								
 								miningPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 
 								BlockState state = world.getBlockState(miningPos);
@@ -284,7 +299,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								tickDelayMiner = (int) strength;
 								if (!skipBlock(state) && strength >= 0) {
 									posForClient = new BlockPos(miningPos.getX(), miningPos.getY(), miningPos.getZ());
-									mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
+									//mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 								}
 								if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
@@ -331,12 +346,16 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	}
 
-	// TODO make this a little more fluid
+	private static final int Y_ARM_SEGMENT_LENGTH = 20;
+	
 	private void tickClient(ComponentTickable tick) {
 		BlockPos pos = getBlockPos();
 		ClientEvents.quarryArm.remove(pos);
 		if (hasClientCorners() && clientMiningPos != null) {
-			BlockPos miningCentered = clientMiningPos.offset(0.5, 0.5, 0.5);
+			if(storedArmFrames.size() == 0) {
+				storedArmFrames = getArmFrames();
+			}
+			Location loc = storedArmFrames.get(0);
 			BlockPos startCentered = clientCorners.get(3).offset(0.5, 0.5, 0.5);
 			BlockPos endCentered = clientCorners.get(0).offset(0.5, 0.5, 0.5);
 
@@ -348,20 +367,30 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			AABB right;
 			AABB bottom;
 			AABB top;
-			AABB downArm;
+			AABB center;
+			List<AABB> downArms = new ArrayList<>();
 			AABB downHead;
 
 			List<AABB> boxes = new ArrayList<>();
 
-			double x = miningCentered.getX();
-			double z = miningCentered.getZ();
+			double x = loc.x();
+			double z = loc.z();
 			double y = startCentered.getY() + 0.5;
 
-			double deltaY = startCentered.getY() - clientMiningPos.getY() - 1;
-
-			downArm = new AABB(x + 0.25, y, z + 0.25, x + 0.75, y - deltaY, z + 0.75);
+			double deltaY = startCentered.getY() - loc.y() - 1;
+			
+			int wholeSegmentCount = (int) (deltaY / Y_ARM_SEGMENT_LENGTH);
+			double remainder = (deltaY / Y_ARM_SEGMENT_LENGTH) - wholeSegmentCount;
+			for (int i = 0; i < wholeSegmentCount; i++) {
+				downArms.add(new AABB(x + 0.25, y - i * Y_ARM_SEGMENT_LENGTH, z + 0.25, x + 0.75, y - (i + 1)*Y_ARM_SEGMENT_LENGTH, z + 0.75));
+			}
+			int wholeOffset = wholeSegmentCount * Y_ARM_SEGMENT_LENGTH;
+			downArms.add(new AABB(x + 0.25, y - wholeOffset , z + 0.25, x + 0.75, y - wholeOffset - Y_ARM_SEGMENT_LENGTH * remainder, z + 0.75));
+			
 			downHead = new AABB(x + 0.3125, y - deltaY, z + 0.3125, x + 0.6875, y - deltaY - 0.5, z + 0.6875);
-
+			
+			center = new AABB(x + 0.1875, y + 0.325 , z + 0.1875, x + 0.8125, y - 0.325, z + 0.8125);
+			
 			Direction facing = ((ComponentDirection) getComponent(ComponentType.Direction)).getDirection().getOpposite();
 			switch (facing) {
 			case NORTH, SOUTH:
@@ -373,78 +402,104 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 				if (facing == Direction.SOUTH) {
 					if (clientOnRight) {
-						left = new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.25, y + 0.25, z + 0.75);
-						right = new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.75, y + 0.25, z + 0.75);
+						left = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthLeft + 0.25, y + 0.25, z + 0.75);
+						right = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthRight + 0.75, y + 0.25, z + 0.75);
 					} else {
-						left = new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.75, y + 0.25, z + 0.75);
-						right = new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.25, y + 0.25, z + 0.75);
+						left = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthLeft + 0.75, y + 0.25, z + 0.75);
+						right = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthRight + 0.25, y + 0.25, z + 0.75);
 					}
-					bottom = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthBottom + 0.25);
-					top = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthTop + 0.75);
+					bottom = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthBottom + 0.25);
+					top = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthTop + 0.75);
 				} else {
 					if (clientOnRight) {
-						left = new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.75, y + 0.25, z + 0.75);
-						right = new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.25, y + 0.25, z + 0.75);
+						left = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthLeft + 0.75, y + 0.25, z + 0.75);
+						right = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthRight + 0.25, y + 0.25, z + 0.75);
 					} else {
-						left = new AABB(x, y - 0.25, z + 0.25, x - widthLeft + 0.25, y + 0.25, z + 0.75);
-						right = new AABB(x, y - 0.25, z + 0.25, x - widthRight + 0.75, y + 0.25, z + 0.75);
+						left = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthLeft + 0.25, y + 0.25, z + 0.75);
+						right = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthRight + 0.75, y + 0.25, z + 0.75);
 					}
-					bottom = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthBottom + 0.75);
-					top = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthTop + 0.25);
+					bottom = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthBottom + 0.75);
+					top = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthTop + 0.25);
 				}
 
 				boxes.add(left);
 				boxes.add(right);
 				boxes.add(bottom);
 				boxes.add(top);
-				boxes.add(downArm);
+				boxes.addAll(downArms);
+				boxes.add(center);
 				boxes.add(downHead);
 
 				break;
 			case EAST, WEST:
 
-				widthLeft = miningCentered.getZ() - startCentered.getZ();
-				widthRight = miningCentered.getZ() - endCentered.getZ();
-				widthTop = miningCentered.getX() - startCentered.getX();
-				widthBottom = miningCentered.getX() - endCentered.getX();
+				widthLeft = loc.z() - startCentered.getZ();
+				widthRight = loc.z() - endCentered.getZ();
+				widthTop = loc.x() - startCentered.getX();
+				widthBottom = loc.x() - endCentered.getX();
 
 				if (facing == Direction.WEST) {
 					if (clientOnRight) {
-						left = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.25);
-						right = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.75);
+						left = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthLeft + 0.25);
+						right = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthRight + 0.75);
 					} else {
-						left = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.75);
-						right = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.25);
+						left = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthLeft + 0.75);
+						right = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthRight + 0.25);
 					}
-					bottom = new AABB(x, y - 0.25, z + 0.25, x - widthBottom + 0.75, y + 0.25, z + 0.75);
-					top = new AABB(x, y - 0.25, z + 0.25, x - widthTop + 0.25, y + 0.25, z + 0.75);
+					bottom = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthBottom + 0.75, y + 0.25, z + 0.75);
+					top = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthTop + 0.25, y + 0.25, z + 0.75);
 				} else {
 					if (clientOnRight) {
-						left = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.75);
-						right = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.25);
+						left = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthLeft + 0.75);
+						right = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthRight + 0.25);
 					} else {
-						left = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthLeft + 0.25);
-						right = new AABB(x + 0.25, y - 0.25, z, x + 0.75, y + 0.25, z - widthRight + 0.75);
+						left = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthLeft + 0.25);
+						right = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthRight + 0.75);
 					}
-					bottom = new AABB(x, y - 0.25, z + 0.25, x - widthBottom + 0.25, y + 0.25, z + 0.75);
-					top = new AABB(x, y - 0.25, z + 0.25, x - widthTop + 0.75, y + 0.25, z + 0.75);
+					bottom = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthBottom + 0.25, y + 0.25, z + 0.75);
+					top = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthTop + 0.75, y + 0.25, z + 0.75);
 				}
 
 				boxes.add(left);
 				boxes.add(right);
 				boxes.add(bottom);
 				boxes.add(top);
-				boxes.add(downArm);
+				boxes.addAll(downArms);
+				boxes.add(center);
 				boxes.add(downHead);
 
 				break;
 			default:
 				break;
 			}
-
+			storedArmFrames.remove(0);
 			ClientEvents.quarryArm.put(pos, boxes);
-
 		}
+	}
+	
+	private List<Location> getArmFrames(){
+		List<Location> armFrames = new ArrayList<>();
+		if(clientMiningPos != null) {
+			if (prevClientMiningPos != null) {
+				int numberOfFrames = (int) clientMiningSpeed;
+				if (numberOfFrames == 0) {
+					numberOfFrames = 1;
+				}
+				double deltaX = (double) (clientMiningPos.x() - prevClientMiningPos.x()) / (double) numberOfFrames;
+				double deltaY = (double) (clientMiningPos.y() - prevClientMiningPos.y()) / (double) numberOfFrames;
+				double deltaZ = (double) (clientMiningPos.z() - prevClientMiningPos.z()) / (double) numberOfFrames;
+				if ((Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ)) == 0) {
+					armFrames.add(clientMiningPos);
+				} else {
+					for (int i = 1; i <= numberOfFrames; i++) {
+						armFrames.add(new Location(prevClientMiningPos.x() + deltaX * i, prevClientMiningPos.y() + deltaY * i, prevClientMiningPos.z() + deltaZ * i));
+					}
+				}
+			} else {
+				armFrames.add(clientMiningPos);
+			}
+		}
+		return armFrames;
 	}
 
 	// There is sadly not really a better way to do this
@@ -863,7 +918,9 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				nbt.putInt("clientCornerZ" + i, pos.getZ());
 			}
 		}
-
+		if(complex != null) {
+			nbt.putDouble("clientMiningSpeed", complex.speed + tickDelayMiner);
+		}
 		nbt.putBoolean("clientVoid", hasItemVoid);
 		nbt.putInt("clientFortune", fortuneLevel);
 		nbt.putInt("clientSilk", silkTouchLevel);
@@ -879,9 +936,18 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private void readPacket(CompoundTag nbt) {
 		clientCorners.clear();
 		if (nbt.contains("clientMiningX")) {
-			clientMiningPos = new BlockPos(nbt.getInt("clientMiningX"), nbt.getInt("clientMiningY"), nbt.getInt("clientMiningZ"));
+			Location readPos = new Location(nbt.getInt("clientMiningX"), nbt.getInt("clientMiningY"), nbt.getInt("clientMiningZ"));
+			//prev is only updated if there is a change in readPos
+			if(clientMiningPos == null) {
+				clientMiningPos = new Location(readPos.x(), readPos.y(), readPos.z());
+				prevClientMiningPos = new Location(readPos.x(), readPos.y(), readPos.z());
+			} else if (!clientMiningPos.equals(readPos)) {
+				prevClientMiningPos = new Location(clientMiningPos.x(), clientMiningPos.y(), clientMiningPos.z());
+				clientMiningPos = new Location(readPos.x(), readPos.y(), readPos.z());
+			}
 		} else {
 			clientMiningPos = null;
+			prevClientMiningPos = null;
 		}
 		if (nbt.contains("clientCornerSize")) {
 			clientOnRight = nbt.getBoolean("clientOnRight");
@@ -891,6 +957,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			}
 		} else {
 			clientCorners.clear();
+		}
+		if (nbt.contains("clientMiningSpeed")) {
+			clientMiningSpeed = nbt.getDouble("clientMiningSpeed");
+		} else {
+			clientMiningSpeed = 0;
 		}
 
 		clientItemVoid = nbt.getBoolean("clientVoid");

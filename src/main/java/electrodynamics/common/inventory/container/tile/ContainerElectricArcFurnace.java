@@ -15,6 +15,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerElectricArcFurnace extends GenericContainerBlockEntity<TileElectricArcFurnace> {
 
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience};
+	
 	public ContainerElectricArcFurnace(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(5));
 	}
@@ -31,8 +33,8 @@ public class ContainerElectricArcFurnace extends GenericContainerBlockEntity<Til
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 34));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 35));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
 	}
 }

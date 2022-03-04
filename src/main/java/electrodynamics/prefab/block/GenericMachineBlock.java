@@ -8,6 +8,8 @@ import javax.annotation.Nullable;
 
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.item.ItemUtils;
+import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
@@ -94,62 +96,91 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 			return InteractionResult.SUCCESS;
 		}
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		ItemStack stack = player.getItemInHand(handIn);
-		if (CapabilityUtils.hasFluidItemCap(stack)) {
-			if (tile instanceof GenericTile generic && generic.hasComponent(ComponentType.FluidHandler)) {
-
-				AbstractFluidHandler<?> handler = generic.getComponent(ComponentType.FluidHandler);
-				boolean isBucket = stack.getItem() instanceof BucketItem;
-				// first try to drain the item
-				for (FluidTank tank : handler.getInputTanks()) {
-					FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-					int amtTaken = handler.getValidInputFluids().contains(containedFluid.getFluid()) ? tank.fill(containedFluid, FluidAction.SIMULATE) : 0;
-					FluidStack taken = new FluidStack(containedFluid.getFluid(), amtTaken);
-					if (amtTaken == 1000) {
-						CapabilityUtils.drain(stack, taken);
-						tank.fill(taken, FluidAction.EXECUTE);
-						if (!player.isCreative()) {
-							player.setItemInHand(handIn, new ItemStack(Items.BUCKET, 1));
+		if (tile instanceof GenericTile generic && generic != null) {
+			ItemStack stack = player.getItemInHand(handIn);
+			if (CapabilityUtils.hasFluidItemCap(stack)) {
+				if (generic.hasComponent(ComponentType.FluidHandler)) {
+					
+					AbstractFluidHandler<?> handler = generic.getComponent(ComponentType.FluidHandler);
+					boolean isBucket = stack.getItem() instanceof BucketItem;
+					// first try to drain the item
+					for (FluidTank tank : handler.getInputTanks()) {
+						FluidStack containedFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+						int amtTaken = handler.getValidInputFluids().contains(containedFluid.getFluid()) ? tank.fill(containedFluid, FluidAction.SIMULATE) : 0;
+						FluidStack taken = new FluidStack(containedFluid.getFluid(), amtTaken);
+						if (amtTaken == 1000) {
+							CapabilityUtils.drain(stack, taken);
+							tank.fill(taken, FluidAction.EXECUTE);
+							if (!player.isCreative()) {
+								player.setItemInHand(handIn, new ItemStack(Items.BUCKET, 1));
+							}
+							worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
+							return InteractionResult.FAIL;
+						} else if (amtTaken > 0 && !isBucket) {
+							CapabilityUtils.drain(stack, taken);
+							tank.fill(taken, FluidAction.EXECUTE);
+							worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
+							return InteractionResult.FAIL;
 						}
-						worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
-						return InteractionResult.FAIL;
-					} else if (amtTaken > 0 && !isBucket) {
-						CapabilityUtils.drain(stack, taken);
-						tank.fill(taken, FluidAction.EXECUTE);
-						worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
-						return InteractionResult.FAIL;
+					}
+					// now try to fill it
+					for (FluidTank tank : handler.getOutputTanks()) {
+						FluidStack tankFluid = tank.getFluid();
+						int amtTaken = CapabilityUtils.simFill(stack, tankFluid);
+						FluidStack taken = new FluidStack(tankFluid.getFluid(), amtTaken);
+						if (isBucket && amtTaken == 1000 && (tankFluid.getFluid().isSame(Fluids.WATER) || tankFluid.getFluid().isSame(Fluids.LAVA))) {
+							player.setItemInHand(handIn, new ItemStack(taken.getFluid().getBucket(), 1));
+							tank.drain(taken, FluidAction.EXECUTE);
+							worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
+							return InteractionResult.FAIL;
+						} else if (amtTaken > 0 && !isBucket) {
+							CapabilityUtils.fill(stack, taken);
+							tank.drain(taken, FluidAction.EXECUTE);
+							worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
+							return InteractionResult.FAIL;
+						}
+					}
+					if (generic.hasComponent(ComponentType.ContainerProvider)) {
+						player.openMenu(generic.getComponent(ComponentType.ContainerProvider));
 					}
 				}
-				// now try to fill it
-				for (FluidTank tank : handler.getOutputTanks()) {
-					FluidStack tankFluid = tank.getFluid();
-					int amtTaken = CapabilityUtils.simFill(stack, tankFluid);
-					FluidStack taken = new FluidStack(tankFluid.getFluid(), amtTaken);
-					if (isBucket && amtTaken == 1000 && (tankFluid.getFluid().isSame(Fluids.WATER) || tankFluid.getFluid().isSame(Fluids.LAVA))) {
-						player.setItemInHand(handIn, new ItemStack(taken.getFluid().getBucket(), 1));
-						tank.drain(taken, FluidAction.EXECUTE);
-						worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
-						return InteractionResult.FAIL;
-					} else if (amtTaken > 0 && !isBucket) {
-						CapabilityUtils.fill(stack, taken);
-						tank.drain(taken, FluidAction.EXECUTE);
-						worldIn.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
-						return InteractionResult.FAIL;
+				player.awardStat(Stats.INTERACT_WITH_FURNACE);
+				return InteractionResult.CONSUME;
+			} else if (stack.getItem() instanceof ItemUpgrade upgrade && generic.hasComponent(ComponentType.Inventory)) {
+				
+				ComponentInventory inv = generic.getComponent(ComponentType.Inventory);
+				//null check for safety
+				if (inv != null && inv.upgrades() > 0) {
+					int upgradeIndex = inv.getUpgradeSlotStartIndex();
+					for (int i = 0; i < inv.upgrades(); i++) {
+						if(inv.canPlaceItem(upgradeIndex + i, stack)) {
+							ItemStack upgradeStack = inv.getItem(upgradeIndex + i);
+							if(upgradeStack.isEmpty()) {
+								inv.setItem(upgradeIndex + i, stack.copy());
+								stack.shrink(stack.getCount());
+								return InteractionResult.CONSUME;
+							} else if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
+								int room = upgradeStack.getMaxStackSize() - upgradeStack.getCount();
+								if(room > 0) {
+									int accepted = room > stack.getCount() ? stack.getCount() : room;
+									upgradeStack.grow(accepted);
+									stack.shrink(accepted);
+									return InteractionResult.CONSUME;
+								}
+							}
+						}
 					}
 				}
+				
+			} else if (!(stack.getItem() instanceof IWrenchItem)) {
 				if (generic.hasComponent(ComponentType.ContainerProvider)) {
 					player.openMenu(generic.getComponent(ComponentType.ContainerProvider));
 				}
+				player.awardStat(Stats.INTERACT_WITH_FURNACE);
+				return InteractionResult.CONSUME;
 			}
-			player.awardStat(Stats.INTERACT_WITH_FURNACE);
-			return InteractionResult.CONSUME;
-		} else if (!(stack.getItem() instanceof IWrenchItem)) {
-			if (tile instanceof GenericTile generic && generic.hasComponent(ComponentType.ContainerProvider)) {
-				player.openMenu(generic.getComponent(ComponentType.ContainerProvider));
-			}
-			player.awardStat(Stats.INTERACT_WITH_FURNACE);
-			return InteractionResult.CONSUME;
 		}
+		
 		return InteractionResult.FAIL;
 	}
 
