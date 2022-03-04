@@ -15,8 +15,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerElectricFurnace extends GenericContainerBlockEntity<TileElectricFurnace> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience};
-	
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
+
 	public ContainerElectricFurnace(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(5));
 	}

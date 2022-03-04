@@ -136,7 +136,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private List<BlockPos> clientCorners = new ArrayList<>();
 	public Location clientMiningPos = null;
 	private Location prevClientMiningPos = null;
-	//private Location clientCurrArmLoc = null;
+	// private Location clientCurrArmLoc = null;
 	private double clientMiningSpeed = 0;
 	private List<Location> storedArmFrames = new ArrayList<>();
 
@@ -189,7 +189,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					if (tick.getTicks() % 4 == 0 && Constants.MAINTAIN_MINING_AREA) {
 						maintainMiningArea();
 					}
-					if (complex.isPowered && tick.getTicks() % ((int) complex.speed) == 0) {
+					if (complex.isPowered && tick.getTicks() % (int) complex.speed == 0) {
 						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
 						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
@@ -253,38 +253,36 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
 								int width = cornerStart.getX() - cornerEnd.getX() - 2 * deltaW;
 								int length = cornerStart.getZ() - cornerEnd.getZ() - 2 * deltaL;
-								//if we have the quarry mine the current block on the next tick, it
-								//deals with the issue of the client pos always being one tick behind
-								//the server's
-								if(miningPos != null) {
+								// if we have the quarry mine the current block on the next tick, it
+								// deals with the issue of the client pos always being one tick behind
+								// the server's
+								if (miningPos != null) {
 									BlockState miningState = world.getBlockState(miningPos);
 									float strength = miningState.getDestroySpeed(world, miningPos);
 									if (!skipBlock(miningState) && strength >= 0) {
 										mineBlock(miningPos, miningState, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									}
 								}
-								
+
 								miningPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
 
 								while (skipBlock(state) && blockSkip < MINE_SKIP) {
-									if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
+									if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
 										lengthReverse = !lengthReverse;
-										if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
+										if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
 											widthReverse = !widthReverse;
 											heightShiftMiner++;
 											if (miningPos.getY() - 1 == world.getMinBuildHeight()) {
 												heightShiftMiner = 1;
 												isFinished = true;
 											}
+										} else if (widthReverse) {
+											widthShiftMiner -= deltaW;
 										} else {
-											if (widthReverse) {
-												widthShiftMiner -= deltaW;
-											} else {
-												widthShiftMiner += deltaW;
-											}
+											widthShiftMiner += deltaW;
 										}
 									} else if (lengthReverse) {
 										lengthShiftMiner -= deltaL;
@@ -299,24 +297,22 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								tickDelayMiner = (int) strength;
 								if (!skipBlock(state) && strength >= 0) {
 									posForClient = new BlockPos(miningPos.getX(), miningPos.getY(), miningPos.getZ());
-									//mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
+									// mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 								}
-								if ((lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length)) {
+								if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
 									lengthReverse = !lengthReverse;
-									if ((widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width)) {
+									if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
 										widthReverse = !widthReverse;
 										heightShiftMiner++;
 										if (miningPos.getY() - 1 == world.getMinBuildHeight()) {
 											heightShiftMiner = 1;
 											isFinished = true;
 										}
+									} else if (widthReverse) {
+										widthShiftMiner -= deltaW;
 									} else {
-										if (widthReverse) {
-											widthShiftMiner -= deltaW;
-										} else {
-											widthShiftMiner += deltaW;
-										}
+										widthShiftMiner += deltaW;
 									}
 								} else if (lengthReverse) {
 									lengthShiftMiner -= deltaL;
@@ -347,12 +343,12 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private static final int Y_ARM_SEGMENT_LENGTH = 20;
-	
+
 	private void tickClient(ComponentTickable tick) {
 		BlockPos pos = getBlockPos();
 		ClientEvents.quarryArm.remove(pos);
 		if (hasClientCorners() && clientMiningPos != null) {
-			if(storedArmFrames.size() == 0) {
+			if (storedArmFrames.size() == 0) {
 				storedArmFrames = getArmFrames();
 			}
 			Location loc = storedArmFrames.get(0);
@@ -378,19 +374,19 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			double y = startCentered.getY() + 0.5;
 
 			double deltaY = startCentered.getY() - loc.y() - 1;
-			
+
 			int wholeSegmentCount = (int) (deltaY / Y_ARM_SEGMENT_LENGTH);
-			double remainder = (deltaY / Y_ARM_SEGMENT_LENGTH) - wholeSegmentCount;
+			double remainder = deltaY / Y_ARM_SEGMENT_LENGTH - wholeSegmentCount;
 			for (int i = 0; i < wholeSegmentCount; i++) {
-				downArms.add(new AABB(x + 0.25, y - i * Y_ARM_SEGMENT_LENGTH, z + 0.25, x + 0.75, y - (i + 1)*Y_ARM_SEGMENT_LENGTH, z + 0.75));
+				downArms.add(new AABB(x + 0.25, y - i * Y_ARM_SEGMENT_LENGTH, z + 0.25, x + 0.75, y - (i + 1) * Y_ARM_SEGMENT_LENGTH, z + 0.75));
 			}
 			int wholeOffset = wholeSegmentCount * Y_ARM_SEGMENT_LENGTH;
-			downArms.add(new AABB(x + 0.25, y - wholeOffset , z + 0.25, x + 0.75, y - wholeOffset - Y_ARM_SEGMENT_LENGTH * remainder, z + 0.75));
-			
+			downArms.add(new AABB(x + 0.25, y - wholeOffset, z + 0.25, x + 0.75, y - wholeOffset - Y_ARM_SEGMENT_LENGTH * remainder, z + 0.75));
+
 			downHead = new AABB(x + 0.3125, y - deltaY, z + 0.3125, x + 0.6875, y - deltaY - 0.5, z + 0.6875);
-			
-			center = new AABB(x + 0.1875, y + 0.325 , z + 0.1875, x + 0.8125, y - 0.325, z + 0.8125);
-			
+
+			center = new AABB(x + 0.1875, y + 0.325, z + 0.1875, x + 0.8125, y - 0.325, z + 0.8125);
+
 			Direction facing = ((ComponentDirection) getComponent(ComponentType.Direction)).getDirection().getOpposite();
 			switch (facing) {
 			case NORTH, SOUTH:
@@ -476,19 +472,19 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			ClientEvents.quarryArm.put(pos, boxes);
 		}
 	}
-	
-	private List<Location> getArmFrames(){
+
+	private List<Location> getArmFrames() {
 		List<Location> armFrames = new ArrayList<>();
-		if(clientMiningPos != null) {
+		if (clientMiningPos != null) {
 			if (prevClientMiningPos != null) {
 				int numberOfFrames = (int) clientMiningSpeed;
 				if (numberOfFrames == 0) {
 					numberOfFrames = 1;
 				}
-				double deltaX = (double) (clientMiningPos.x() - prevClientMiningPos.x()) / (double) numberOfFrames;
-				double deltaY = (double) (clientMiningPos.y() - prevClientMiningPos.y()) / (double) numberOfFrames;
-				double deltaZ = (double) (clientMiningPos.z() - prevClientMiningPos.z()) / (double) numberOfFrames;
-				if ((Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ)) == 0) {
+				double deltaX = (clientMiningPos.x() - prevClientMiningPos.x()) / numberOfFrames;
+				double deltaY = (clientMiningPos.y() - prevClientMiningPos.y()) / numberOfFrames;
+				double deltaZ = (clientMiningPos.z() - prevClientMiningPos.z()) / numberOfFrames;
+				if (Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ) == 0) {
 					armFrames.add(clientMiningPos);
 				} else {
 					for (int i = 1; i <= numberOfFrames; i++) {
@@ -918,7 +914,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				nbt.putInt("clientCornerZ" + i, pos.getZ());
 			}
 		}
-		if(complex != null) {
+		if (complex != null) {
 			nbt.putDouble("clientMiningSpeed", complex.speed + tickDelayMiner);
 		}
 		nbt.putBoolean("clientVoid", hasItemVoid);
@@ -937,8 +933,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		clientCorners.clear();
 		if (nbt.contains("clientMiningX")) {
 			Location readPos = new Location(nbt.getInt("clientMiningX"), nbt.getInt("clientMiningY"), nbt.getInt("clientMiningZ"));
-			//prev is only updated if there is a change in readPos
-			if(clientMiningPos == null) {
+			// prev is only updated if there is a change in readPos
+			if (clientMiningPos == null) {
 				clientMiningPos = new Location(readPos.x(), readPos.y(), readPos.z());
 				prevClientMiningPos = new Location(readPos.x(), readPos.y(), readPos.z());
 			} else if (!clientMiningPos.equals(readPos)) {

@@ -14,8 +14,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerBatteryBox extends GenericContainerBlockEntity<TileBatteryBox> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity};
-	
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity };
+
 	public ContainerBatteryBox(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
 	}

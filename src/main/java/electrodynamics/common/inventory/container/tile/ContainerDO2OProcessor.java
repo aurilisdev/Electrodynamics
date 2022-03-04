@@ -16,8 +16,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerDO2OProcessor extends GenericContainerBlockEntity<GenericTile> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience};
-	
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
+
 	public static final int startXOffset = 36;
 
 	public ContainerDO2OProcessor(int id, Inventory playerinv) {
