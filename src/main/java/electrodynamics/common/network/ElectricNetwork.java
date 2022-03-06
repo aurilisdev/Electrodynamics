@@ -204,11 +204,16 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 			}
 		}
 		Iterator<IConductor> it = conductorSet.iterator();
+		boolean broken = false;
 		while (it.hasNext()) {
 			IConductor conductor = it.next();
 			if (conductor instanceof BlockEntity entity && entity.isRemoved() || conductor.getNetwork() != this) {
-				it.remove();
+				broken = true;
+				break;
 			}
+		}
+		if (broken) {
+			refresh();
 		}
 		if (getSize() == 0) {
 			deregister();
