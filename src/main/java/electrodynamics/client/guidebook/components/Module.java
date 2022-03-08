@@ -1,0 +1,111 @@
+package electrodynamics.client.guidebook.components;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import electrodynamics.client.guidebook.components.Page.ChapterPage;
+import electrodynamics.client.guidebook.utils.ImageWrapperObject;
+
+/**
+ * The Module is the most general section of the guidebook. A mod will define a Module and 
+ * add it to the Guidebook.
+ * 
+ * A Module must contain:
+ * > Sections
+ * > A logo : 800 x 800p
+ * > A name
+ * > A 1 line description of the mod
+ * 
+ * @author skip999
+ *
+ */
+public abstract class Module {
+
+	private List<Chapter> chapters;
+	private int startingPageNumber;
+	private int endingPageNumber;
+	private int chapterPages = 0;
+	
+	public static final int CHAPTERS_PER_PAGE = 4;
+	
+	public Module() {
+		chapters = genChapters();
+		chapterPages = (int) Math.ceil((double) chapters.size() / (double) CHAPTERS_PER_PAGE);
+	}
+	
+	public int setPageNumbers(int startingPageNumber) {
+		this.startingPageNumber = startingPageNumber;
+		startingPageNumber += chapterPages;
+		for(Chapter chapter : chapters) {
+			startingPageNumber += chapter.setPageNumbers(startingPageNumber);
+		}
+		endingPageNumber = startingPageNumber;
+		
+		int index = 0;
+		for(int i = 0; i < chapterPages; i++) {
+			for(int j = 0; j < CHAPTERS_PER_PAGE; j++) {
+				if(index < chapters.size()) {
+					chapters.get(index).setChapterPageNumber(this.startingPageNumber + i);
+					index++;
+				} else {
+					break;
+				}
+			}
+		}
+		
+		return startingPageNumber;
+	}
+	
+	public List<Page> getAllPages(){
+		List<Page> pages = new ArrayList<>();
+		for(int i = 0; i < chapterPages; i++) {
+			pages.add(new ChapterPage(i + startingPageNumber));
+		}
+		for(Chapter chapter : chapters) {
+			pages.addAll(chapter.getPages());
+		}
+		return pages;
+	}
+	
+	public int getStartingPageNumber() {
+		return startingPageNumber;
+	}
+	
+	public int getEndingPageNumber() {
+		return endingPageNumber;
+	}
+	
+	public boolean isChapterListPage(int pageNumber) {
+		return startingPageNumber + chapterPages < pageNumber;
+	}
+	
+	public boolean isPageInModule(int pageNumber) {
+		return pageNumber >= startingPageNumber && pageNumber < endingPageNumber;
+	}
+	
+	public List<Chapter> getChapters(){
+		return chapters;
+	}
+	
+	public List<Chapter> getChapterSubList(int pageNumber){
+		List<Chapter> chapters = new ArrayList<>();
+		for(Chapter chapter : this.chapters) {
+			if(chapter.getChapterPageNumber() == pageNumber) {
+				chapters.add(chapter);
+			}
+		}
+		return chapters;
+	}
+	
+	public int getChapterPages() {
+		return chapterPages;
+	}
+	
+	public abstract ImageWrapperObject getLogo();
+	
+	public abstract String getTitleKey();
+	
+	//this is called at init() and init() only
+	protected abstract List<Chapter> genChapters();
+	
+}

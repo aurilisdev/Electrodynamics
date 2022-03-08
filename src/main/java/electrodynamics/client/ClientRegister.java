@@ -6,6 +6,8 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
+import electrodynamics.client.guidebook.ScreenGuidebook;
+import electrodynamics.client.guidebook.electrodynamics.ModuleElectrodynamics;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
@@ -270,6 +272,7 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_COOLANTRESAVOIR.get(), ScreenCoolantResavoir::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_MOTORCOMPLEX.get(), ScreenMotorComplex::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_QUARRY.get(), ScreenQuarry::new);
+		MenuScreens.register(DeferredRegisters.CONTAINER_GUIDEBOOK.get(), ScreenGuidebook::new);
 
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill), RenderType.cutout());
@@ -284,6 +287,19 @@ public class ClientRegister {
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		KeyBinds.registerKeys();
+		
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		/*
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		*/
 	}
 
 	@SubscribeEvent

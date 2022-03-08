@@ -1,0 +1,72 @@
+package electrodynamics.client.guidebook.components;
+
+import java.util.List;
+
+import electrodynamics.client.guidebook.utils.ImageWrapperObject;
+
+/**
+ * A Chapter is where all actual information is contained. A chapter can be as long or as short as
+ * needed, and covers specific topics such as "Ores" or "Power Generation"
+ * 
+ * A Chapter will contain:
+ * > Specific information about the top it is over
+ * 
+ * @author skip999
+ *
+ */
+public abstract class Chapter {
+	
+	private List<Page> pages;
+	private int startingPageNumber;
+	private int endingPageNumber;
+	
+	private int chapterPageNumber;
+	
+	public Chapter() {
+		pages = genPages();
+	}
+	
+	public int setPageNumbers(int startingPageNumber) {
+		this.startingPageNumber = startingPageNumber;
+		int count = 0;
+		for(Page page : pages) {
+			page.setPageNumber(startingPageNumber);
+			page.setChapterKey(getTitleKey());
+			startingPageNumber++;
+			count++;
+		}
+		endingPageNumber = startingPageNumber;
+		return count;
+	}
+	
+	public List<Page> getPages() {
+		return pages;
+	}
+	
+	public int getStartingPageNumber() {
+		return startingPageNumber;
+	}
+	
+	public int getEndingPageNumber() {
+		return endingPageNumber;
+	}
+	
+	public void setChapterPageNumber(int number) {
+		chapterPageNumber = number;
+	}
+	
+	public int getChapterPageNumber() {
+		return chapterPageNumber;
+	}
+	
+	public boolean isPageInChapter(int pageNumber) {
+		return pageNumber >= startingPageNumber && pageNumber < endingPageNumber;
+	}
+	
+	protected abstract List<Page> genPages();
+	
+	public abstract ImageWrapperObject getLogo();
+	
+	public abstract String getTitleKey();
+	
+}
