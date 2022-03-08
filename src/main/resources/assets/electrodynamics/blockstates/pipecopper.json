@@ -5,7 +5,7 @@
 				"down": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_none",
+				"model": "electrodynamics:pipe/copperpipe_none",
 				"x": 90
 			}
 		},
@@ -21,7 +21,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_side",
+				"model": "electrodynamics:pipe/copperpipe_side",
 				"x": 90
 			}
 		},
@@ -30,7 +30,7 @@
 				"up": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_none",
+				"model": "electrodynamics:pipe/copperpipe_none",
 				"x": 270
 			}
 		},
@@ -46,7 +46,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_side",
+				"model": "electrodynamics:pipe/copperpipe_side",
 				"x": 270
 			}
 		},
@@ -55,7 +55,7 @@
 				"north": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_none"
+				"model": "electrodynamics:pipe/copperpipe_none"
 			}
 		},
 		{
@@ -70,7 +70,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_side"
+				"model": "electrodynamics:pipe/copperpipe_side"
 			}
 		},
 		{
@@ -78,7 +78,7 @@
 				"south": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_none",
+				"model": "electrodynamics:pipe/copperpipe_none",
 				"y": 180
 			}
 		},
@@ -94,7 +94,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_side",
+				"model": "electrodynamics:pipe/copperpipe_side",
 				"y": 180
 			}
 		},
@@ -103,7 +103,7 @@
 				"west": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_none",
+				"model": "electrodynamics:pipe/copperpipe_none",
 				"y": 270
 			}
 		},
@@ -119,7 +119,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_side",
+				"model": "electrodynamics:pipe/copperpipe_side",
 				"y": 270
 			}
 		},
@@ -128,7 +128,7 @@
 				"east": "none"
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_none",
+				"model": "electrodynamics:pipe/copperpipe_none",
 				"y": 90
 			}
 		},
@@ -144,7 +144,7 @@
 				]
 			},
 			"apply": {
-				"model": "electrodynamics:pipe/steelpipe_side",
+				"model": "electrodynamics:pipe/copperpipe_side",
 				"y": 90
 			}
 		}

@@ -100,7 +100,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 			ItemStack stack = player.getItemInHand(handIn);
 			if (CapabilityUtils.hasFluidItemCap(stack)) {
 				if (generic.hasComponent(ComponentType.FluidHandler)) {
-					
+
 					AbstractFluidHandler<?> handler = generic.getComponent(ComponentType.FluidHandler);
 					boolean isBucket = stack.getItem() instanceof BucketItem;
 					// first try to drain the item
@@ -147,21 +147,21 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 				player.awardStat(Stats.INTERACT_WITH_FURNACE);
 				return InteractionResult.CONSUME;
 			} else if (stack.getItem() instanceof ItemUpgrade upgrade && generic.hasComponent(ComponentType.Inventory)) {
-				
+
 				ComponentInventory inv = generic.getComponent(ComponentType.Inventory);
-				//null check for safety
+				// null check for safety
 				if (inv != null && inv.upgrades() > 0) {
 					int upgradeIndex = inv.getUpgradeSlotStartIndex();
 					for (int i = 0; i < inv.upgrades(); i++) {
-						if(inv.canPlaceItem(upgradeIndex + i, stack)) {
+						if (inv.canPlaceItem(upgradeIndex + i, stack)) {
 							ItemStack upgradeStack = inv.getItem(upgradeIndex + i);
-							if(upgradeStack.isEmpty()) {
+							if (upgradeStack.isEmpty()) {
 								inv.setItem(upgradeIndex + i, stack.copy());
 								stack.shrink(stack.getCount());
 								return InteractionResult.CONSUME;
 							} else if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
 								int room = upgradeStack.getMaxStackSize() - upgradeStack.getCount();
-								if(room > 0) {
+								if (room > 0) {
 									int accepted = room > stack.getCount() ? stack.getCount() : room;
 									upgradeStack.grow(accepted);
 									stack.shrink(accepted);
@@ -171,7 +171,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 						}
 					}
 				}
-				
+
 			} else if (!(stack.getItem() instanceof IWrenchItem)) {
 				if (generic.hasComponent(ComponentType.ContainerProvider)) {
 					player.openMenu(generic.getComponent(ComponentType.ContainerProvider));
@@ -180,7 +180,7 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 				return InteractionResult.CONSUME;
 			}
 		}
-		
+
 		return InteractionResult.FAIL;
 	}
 

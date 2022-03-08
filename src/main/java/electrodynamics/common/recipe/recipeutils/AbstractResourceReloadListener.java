@@ -13,7 +13,7 @@ public abstract class AbstractResourceReloadListener extends SimplePreparableRel
 
 	protected int currGeneration = 0;
 	protected int lastKnownGeneration = -1;
-	
+
 	@Override
 	public Void prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
 		return null;
@@ -23,7 +23,7 @@ public abstract class AbstractResourceReloadListener extends SimplePreparableRel
 	public void apply(Void pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
 		currGeneration++;
 	}
-	
+
 	public abstract Set<Recipe<? extends ElectrodynamicsRecipe>> getRecipesByType(RecipeManager manager);
 
 }

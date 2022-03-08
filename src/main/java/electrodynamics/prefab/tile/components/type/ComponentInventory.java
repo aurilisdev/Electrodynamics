@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
@@ -67,7 +66,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	private int processors = 0;
 	private int processorInputs = 0;
 	private Consumer<ComponentInventory> onChanged;
-	
+
 	protected SubtypeItemUpgrade[] validUpgrades = SubtypeItemUpgrade.values();
 
 	public ComponentInventory(GenericTile holder) {
@@ -254,7 +253,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		//Electrodynamics.LOGGER.info(itemValidTest.test(index, stack, this));
+		// Electrodynamics.LOGGER.info(itemValidTest.test(index, stack, this));
 		return itemValidTest.test(index, stack, this);
 	}
 
@@ -330,12 +329,12 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public int upgrades() {
 		return upgrades;
 	}
-	
-	public ComponentInventory validUpgrades(SubtypeItemUpgrade...upgrades) {
+
+	public ComponentInventory validUpgrades(SubtypeItemUpgrade... upgrades) {
 		validUpgrades = upgrades;
 		return this;
 	}
-	
+
 	public SubtypeItemUpgrade[] validUpgrades() {
 		return validUpgrades;
 	}
@@ -572,7 +571,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		}
 		return false;
 	}
-	
+
 	public boolean isUpgradeValid(SubtypeItemUpgrade upgrade) {
 		for (SubtypeItemUpgrade subtype : validUpgrades) {
 			if (subtype == upgrade) {

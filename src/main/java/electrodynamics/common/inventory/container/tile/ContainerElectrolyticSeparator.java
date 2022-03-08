@@ -15,8 +15,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<TileElectrolyticSeparator> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] {SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed};
-	
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+
 	public ContainerElectrolyticSeparator(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory, inventorydata);
 	}

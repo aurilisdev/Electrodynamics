@@ -306,6 +306,7 @@
   "block.electrodynamics.wirelogisticssilver" : "Logistical Silver Wire",
   "block.electrodynamics.wirelogisticsgold" : "Logistical Gold Wire",
   "block.electrodynamics.wirelogisticssuperconductive" : "Logistical Superconductive Wire",
+  "block.electrodynamics.pipecopper" : "Copper Pipe",
   "block.electrodynamics.pipesteel" : "Steel Pipe",
   "block.electrodynamics.multisubnode" : "Multiblock Subnode",
   "block.electrodynamics.energizedalloyer" : "Energized Alloyer",
