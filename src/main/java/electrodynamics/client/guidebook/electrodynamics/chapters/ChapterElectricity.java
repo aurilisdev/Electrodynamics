@@ -156,8 +156,10 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l3"),
 			new TextWrapperObject(10, 70, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l4"),
-			new TextWrapperObject(10, 80, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l5"),
-			new TextWrapperObject(10, 90, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l6"),
+			new TextWrapperObject(30, 80, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l5-1"),
+			new TextWrapperObject(60, 80, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l5-2"),
+			new TextWrapperObject(30, 90, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l6-1"),
+			new TextWrapperObject(60, 90, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l6-2"),
 			new TextWrapperObject(10, 100, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l7")
 		})));
         

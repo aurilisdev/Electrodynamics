@@ -226,7 +226,20 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			font.draw(stack, pageNumber, refX + xShift, refY + 200, 4210752);
 			
 			for(TextWrapperObject text : page.getText()) {
-				Component component = text.componentInfo == null ? new TranslatableComponent(text.textKey) : new TranslatableComponent(text.textKey, text.componentInfo);
+				Component component;
+				if(text.componentInfo == null) {
+					if(text.formats == null) {
+						component = new TranslatableComponent(text.textKey);
+					} else {
+						component = new TranslatableComponent(text.textKey).withStyle(text.formats);
+					}
+				} else {
+					if(text.formats == null) {
+						component = new TranslatableComponent(text.textKey, text.componentInfo);
+					} else {
+						component = new TranslatableComponent(text.textKey, text.componentInfo).withStyle(text.formats);
+					}
+				}
 				font.draw(stack, component, refX + text.xOffset, refY + text.yOffset, text.color);
 			}
 		}
