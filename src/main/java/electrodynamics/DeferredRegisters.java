@@ -370,6 +370,7 @@ public class DeferredRegisters {
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.upgradetransformer), "|translate|tooltip.transformer.energyloss");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.batterybox), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lithiumbatterybox), "|translate|tooltip.machine.voltage.240");
+		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.carbynebatterybox), "|translate|tooltip.machine.voltage.480");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativepowersource), "|translate|tooltip.creativepowersource.joke");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.creativefluidsource), "|translate|tooltip.creativefluidsource.joke");
 		BlockItemDescriptable.addDescription(SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fluidvoid), "|translate|tooltip.fluidvoid");
