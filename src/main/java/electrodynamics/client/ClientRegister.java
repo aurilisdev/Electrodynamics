@@ -6,8 +6,8 @@ import java.util.List;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
+import electrodynamics.client.guidebook.ModuleElectrodynamics;
 import electrodynamics.client.guidebook.ScreenGuidebook;
-import electrodynamics.client.guidebook.electrodynamics.ModuleElectrodynamics;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.model.armor.types.ModelCombatArmor;

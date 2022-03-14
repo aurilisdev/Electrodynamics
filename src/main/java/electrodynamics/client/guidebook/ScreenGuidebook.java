@@ -6,15 +6,18 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.client.guidebook.components.Chapter;
-import electrodynamics.client.guidebook.components.Module;
-import electrodynamics.client.guidebook.components.Page;
-import electrodynamics.client.guidebook.components.Page.ChapterPage;
-import electrodynamics.client.guidebook.components.Page.ModulePage;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.ItemWrapperObject;
 import electrodynamics.client.guidebook.utils.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.components.Page;
+import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
+import electrodynamics.client.guidebook.utils.components.Page.ModulePage;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.button.ButtonGuidebook;
+import electrodynamics.prefab.screen.component.button.ButtonGuidebook.ButtonType;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
@@ -50,6 +53,9 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	
 	private PageButton forward;
 	private PageButton back;
+	
+	private ButtonGuidebook home;
+	private ButtonGuidebook chapters;
 	
 	public ScreenGuidebook(ContainerGuidebook screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
@@ -98,8 +104,16 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		back = new PageButton(guiWidth + 10, guiHeight + 200, false, (button) -> {
 	         this.pageBackward();
 	      }, true);
+		home = new ButtonGuidebook(guiWidth + 115, guiHeight + 202, (button) -> {
+	         this.goToModulePage();
+	      }, ButtonType.HOME);
+		chapters = new ButtonGuidebook(guiWidth + 50, guiHeight + 202, (button) -> {
+	         this.goToChapterPage();
+	      }, ButtonType.CHAPTERS);
 		addRenderableWidget(forward);
 		addRenderableWidget(back);
+		addRenderableWidget(home);
+		addRenderableWidget(chapters);
 	}
 	
 	private void initModuleButtons() {
@@ -152,12 +166,10 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	@Override
 	protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
 		Page page = getCurrentPage();
-		
 		updatePageArrowVis();
 		updateModuleButtonVis();
 		//this one may need to be reworked if it lags
 		updateChapterButtonVis();
-		
 		RenderingUtils.bindTexture(PAGE_TEXTURE);
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
@@ -185,6 +197,9 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			for(ImageWrapperObject image : page.getImages()) {
 				RenderingUtils.bindTexture(new ResourceLocation(image.location));
 				blit(stack, guiWidth + image.xOffset, guiHeight + image.yOffet, getBlitOffset(), image.uStart, image.vStart, image.width, image.height, image.imgheight, image.imgwidth);
+			}
+			for(ItemWrapperObject item : page.getItems()) {
+				RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset, guiHeight + item.yOffset, item.scale);
 			}
 		}
 
@@ -279,6 +294,18 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			movePage(-1);
         }
 		updatePageArrowVis();
+	}
+	
+	protected void goToChapterPage() {
+		int currModNumber = getCurrentModuleNumber();
+		if(currModNumber > -1) {
+			Module module = GUIDEBOOK_MODULES.get(currModNumber);
+			setPageNumber(module.getStartingPageNumber());
+		}
+	}
+	
+	protected void goToModulePage() {
+		setPageNumber(0);
 	}
 	
 	private int getPageCount() {

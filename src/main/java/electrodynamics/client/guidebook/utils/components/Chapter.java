@@ -1,4 +1,4 @@
-package electrodynamics.client.guidebook.components;
+package electrodynamics.client.guidebook.utils.components;
 
 import java.util.List;
 

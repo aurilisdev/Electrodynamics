@@ -1,10 +1,10 @@
-package electrodynamics.client.guidebook.components;
+package electrodynamics.client.guidebook.utils.components;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.client.guidebook.components.Page.ChapterPage;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
 
 /**
  * The Module is the most general section of the guidebook. A mod will define a Module and 

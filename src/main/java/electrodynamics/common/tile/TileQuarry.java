@@ -189,8 +189,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					if (tick.getTicks() % 4 == 0 && Constants.MAINTAIN_MINING_AREA) {
 						maintainMiningArea();
 					}
-					
-					if (complex.isPowered && ((int) complex.speed) > 0 && tick.getTicks() % ((int) complex.speed) == 0) {
+					boolean shouldSkip = false;
+					if (complex.isPowered && ((int) complex.speed) > 0 && ((tick.getTicks() % ((int) complex.speed) == 0) || (shouldSkip && tick.getTicks() % (int)TileMotorComplex.MAX_SPEED == 0))) {
 						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
 						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
@@ -269,8 +269,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
-
-								while (skipBlock(state) && blockSkip < MINE_SKIP) {
+								shouldSkip = true;
+								while (shouldSkip && blockSkip < MINE_SKIP) {
 									if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
 										lengthReverse = !lengthReverse;
 										if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
@@ -293,10 +293,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 									miningPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 									state = world.getBlockState(miningPos);
 									blockSkip++;
+									shouldSkip = skipBlock(state);
 								}
 								float strength = state.getDestroySpeed(world, miningPos);
 								tickDelayMiner = (int) strength;
-								if (!skipBlock(state) && strength >= 0) {
+								if (!shouldSkip && strength >= 0) {
 									posForClient = new BlockPos(miningPos.getX(), miningPos.getY(), miningPos.getZ());
 									// mineBlock(miningPos, state, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);

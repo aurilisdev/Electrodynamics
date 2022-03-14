@@ -1,14 +1,13 @@
-package electrodynamics.client.guidebook.electrodynamics.chapters;
+package electrodynamics.client.guidebook.chapters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import electrodynamics.api.References;
-import electrodynamics.client.guidebook.components.Chapter;
-import electrodynamics.client.guidebook.components.Page;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Page;
 
 public class ChapterElectricity extends Chapter {
 
@@ -18,9 +17,8 @@ public class ChapterElectricity extends Chapter {
 	protected List<Page> genPages() {
 		//DO NOT COMPRESS
 		List<Page> pages = new ArrayList<>();
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p1l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p1l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p1l3"),
@@ -36,11 +34,9 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p1l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p1l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p1l15")	
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p2l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p2l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p2l3"),
@@ -56,11 +52,9 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p2l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p2l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p2l15")
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p3l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p3l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p3l3"),
@@ -78,37 +72,35 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(65, 110, 4210752, "guidebook.electrodynamics.chapter.electricity.voltageval", 240),
 			new TextWrapperObject(65, 120, 4210752, "guidebook.electrodynamics.chapter.electricity.voltageval", 480),
 			new TextWrapperObject(65, 130, 4210752, "guidebook.electrodynamics.chapter.electricity.voltageval", 960)
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+		pages.add(new Page(new ImageWrapperObject[] {
 			new ImageWrapperObject(12, 45, 0, 0, 150, 79, 150, 79, References.ID + ":textures/screen/guidebook/120vmachines.png"),	
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 130, 4210752, "guidebook.electrodynamics.chapter.electricity.p4l1"),
 			new TextWrapperObject(10, 140, 4210752, "guidebook.electrodynamics.chapter.electricity.p4l2"),
 			new TextWrapperObject(10, 150, 4210752, "guidebook.electrodynamics.chapter.electricity.p4l3"),
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+		pages.add(new Page(new ImageWrapperObject[] {
 			new ImageWrapperObject(12, 45, 0, 0, 150, 79, 150, 79, References.ID + ":textures/screen/guidebook/240vmachines.png"),	
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 130, 4210752, "guidebook.electrodynamics.chapter.electricity.p5l1"),
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+		pages.add(new Page(new ImageWrapperObject[] {
 			new ImageWrapperObject(12, 45, 0, 0, 150, 79, 150, 79, References.ID + ":textures/screen/guidebook/480vmachines.png"),	
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 130, 4210752, "guidebook.electrodynamics.chapter.electricity.p6l1"),
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+		pages.add(new Page(new ImageWrapperObject[] {
 			new ImageWrapperObject(12, 45, 0, 0, 150, 79, 150, 79, References.ID + ":textures/screen/guidebook/960vmachines.png"),	
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 130, 4210752, "guidebook.electrodynamics.chapter.electricity.p7l1"),
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p8l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p8l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p8l3"),
@@ -119,19 +111,17 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 110, 4210752, "guidebook.electrodynamics.chapter.electricity.p8l8"),
 			new TextWrapperObject(10, 120, 4210752, "guidebook.electrodynamics.chapter.electricity.p8l9"),
 			new TextWrapperObject(10, 130, 4210752, "guidebook.electrodynamics.chapter.electricity.p8l10")
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+		pages.add(new Page(new ImageWrapperObject[] {
 			new ImageWrapperObject(12, 45, 0, 0, 150, 50, 150, 50, References.ID + ":textures/screen/guidebook/voltagetooltip1.png"),	
 			new ImageWrapperObject(12, 100, 0, 0, 150, 55, 150, 55, References.ID + ":textures/screen/guidebook/voltagetooltip2.png")	
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p9l1"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p9l2")
-		})));
+		}));
 		
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+        pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p10l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p10l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p10l3"),
@@ -147,11 +137,11 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p10l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p10l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p10l15")
-		})));
+		}));
         
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+        pages.add(new Page(new ImageWrapperObject[] {
         	new ImageWrapperObject(12, 110, 0, 0, 150, 79, 150, 79, References.ID + ":textures/screen/guidebook/energyio.png"),	
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l3"),
@@ -161,11 +151,9 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(30, 90, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l6-1"),
 			new TextWrapperObject(60, 90, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l6-2"),
 			new TextWrapperObject(10, 100, 4210752, "guidebook.electrodynamics.chapter.electricity.p11l7")
-		})));
+		}));
         
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+        pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p12l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p12l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p12l3"),
@@ -181,11 +169,9 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p12l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p12l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p12l15")
-		})));
+		}));
         
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+        pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p13l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p13l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p13l3"),
@@ -201,11 +187,9 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p13l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p13l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p13l15")
-		})));
+		}));
         
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+        pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p14l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p14l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p14l3"),
@@ -221,11 +205,9 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p14l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p14l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p14l15")
-		})));
+		}));
 		
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+        pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p15l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.electricity.p15l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p15l3"),
@@ -241,18 +223,16 @@ public class ChapterElectricity extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.electricity.p15l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.electricity.p15l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.electricity.p15l15")
-		})));
+		}));
         
-        pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+        pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.electricity.p16l1"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.electricity.p16l2"),
 			new TextWrapperObject(10, 70, 4210752, "guidebook.electrodynamics.chapter.electricity.p16l3"),
 			new TextWrapperObject(10, 80, 4210752, "guidebook.electrodynamics.chapter.electricity.p16l4"),
 			new TextWrapperObject(10, 90, 4210752, "guidebook.electrodynamics.chapter.electricity.p16l5"),
 			new TextWrapperObject(10, 100, 4210752, "guidebook.electrodynamics.chapter.electricity.p16l6"),
-		})));
+		}));
         
 		return pages;
 	}

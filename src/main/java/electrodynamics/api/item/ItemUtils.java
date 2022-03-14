@@ -7,6 +7,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
 public class ItemUtils {
 
@@ -31,6 +32,10 @@ public class ItemUtils {
 	@Nullable
 	public static Ingredient getIngredientFromTag(String location, String tag) {
 		return Ingredient.of(ItemTags.getAllTags().getTag(new ResourceLocation(location, tag)));
+	}
+	
+	public static Item fromBlock(Block block) {
+		return new ItemStack(block).getItem();
 	}
 
 }

@@ -1,14 +1,13 @@
-package electrodynamics.client.guidebook.electrodynamics.chapters;
+package electrodynamics.client.guidebook.chapters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import electrodynamics.api.References;
-import electrodynamics.client.guidebook.components.Chapter;
-import electrodynamics.client.guidebook.components.Page;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Page;
 
 public class ChapterFluids extends Chapter {
 
@@ -19,9 +18,7 @@ public class ChapterFluids extends Chapter {
 		//DO NOT COMPRESS
 		List<Page> pages = new ArrayList<>();
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.fluids.p1l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.fluids.p1l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.fluids.p1l3"),
@@ -39,22 +36,20 @@ public class ChapterFluids extends Chapter {
 			new TextWrapperObject(65, 170, 4210752, "guidebook.electrodynamics.chapter.fluids.p1l14-2"),
 			new TextWrapperObject(30, 180, 4210752, "guidebook.electrodynamics.chapter.fluids.p1l15-1"),
 			new TextWrapperObject(65, 180, 4210752, "guidebook.electrodynamics.chapter.fluids.p1l15-2")	
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
+		pages.add(new Page(new ImageWrapperObject[] {
 			new ImageWrapperObject(12, 55, 0, 0, 150, 79, 150, 79, References.ID + ":textures/screen/guidebook/fluidio.png"),		
-		}), Arrays.asList(new TextWrapperObject[] {
+		}, new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.fluids.p2l1"),
 			new TextWrapperObject(10, 140, 4210752, "guidebook.electrodynamics.chapter.fluids.p2l2"),
 			new TextWrapperObject(10, 150, 4210752, "guidebook.electrodynamics.chapter.fluids.p2l3"),
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.fluids.p2l4"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.fluids.p2l5"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.fluids.p2l6"),
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(10, 40, 4210752, "guidebook.electrodynamics.chapter.fluids.p3l1"),
 			new TextWrapperObject(10, 50, 4210752, "guidebook.electrodynamics.chapter.fluids.p3l2"),
 			new TextWrapperObject(10, 60, 4210752, "guidebook.electrodynamics.chapter.fluids.p3l3"),
@@ -70,11 +65,9 @@ public class ChapterFluids extends Chapter {
 			new TextWrapperObject(10, 160, 4210752, "guidebook.electrodynamics.chapter.fluids.p3l13"),
 			new TextWrapperObject(10, 170, 4210752, "guidebook.electrodynamics.chapter.fluids.p3l14"),
 			new TextWrapperObject(10, 180, 4210752, "guidebook.electrodynamics.chapter.fluids.p3l15")	
-		})));
+		}));
 		
-		pages.add(new Page(Arrays.asList(new ImageWrapperObject[] {
-				
-		}), Arrays.asList(new TextWrapperObject[] {
+		pages.add(new Page(new TextWrapperObject[] {
 			new TextWrapperObject(30, 40, 4210752, "guidebook.electrodynamics.chapter.fluids.p4l1-1"),
 			new TextWrapperObject(70, 40, 4210752, "guidebook.electrodynamics.chapter.fluids.p4l1-2"),
 			new TextWrapperObject(30, 50, 4210752, "guidebook.electrodynamics.chapter.fluids.p4l2-1"),
@@ -86,7 +79,7 @@ public class ChapterFluids extends Chapter {
 			new TextWrapperObject(10, 110, 4210752, "guidebook.electrodynamics.chapter.fluids.p4l7"),
 			new TextWrapperObject(10, 120, 4210752, "guidebook.electrodynamics.chapter.fluids.p4l8"),
 			new TextWrapperObject(10, 130, 4210752, "guidebook.electrodynamics.chapter.fluids.p4l9"),
-		})));
+		}));
 		
 		return pages;
 	}

@@ -1,9 +1,8 @@
 package electrodynamics.common.block;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.commons.compress.utils.Lists;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.tile.TileFrame;
@@ -40,7 +39,7 @@ public class BlockFrame extends GenericMachineBlock {
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootContext.Builder builder) {
-		return Lists.newArrayList();
+		return Collections.emptyList();
 	}
 
 	@Override

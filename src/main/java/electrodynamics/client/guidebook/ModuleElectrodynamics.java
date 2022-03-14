@@ -1,18 +1,18 @@
-package electrodynamics.client.guidebook.electrodynamics;
+package electrodynamics.client.guidebook;
 
 import java.util.ArrayList;
 import java.util.List;
 import electrodynamics.api.References;
-import electrodynamics.client.guidebook.components.Chapter;
-import electrodynamics.client.guidebook.components.Module;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterElectricity;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterFluids;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterGettingStarted;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterMachines;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterMisc;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterOre;
-import electrodynamics.client.guidebook.electrodynamics.chapters.ChapterTips;
+import electrodynamics.client.guidebook.chapters.ChapterElectricity;
+import electrodynamics.client.guidebook.chapters.ChapterFluids;
+import electrodynamics.client.guidebook.chapters.ChapterGettingStarted;
+import electrodynamics.client.guidebook.chapters.ChapterMachines;
+import electrodynamics.client.guidebook.chapters.ChapterMisc;
+import electrodynamics.client.guidebook.chapters.ChapterOre;
+import electrodynamics.client.guidebook.chapters.ChapterTips;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Module;
 
 public class ModuleElectrodynamics extends Module {
 
