@@ -14,5 +14,3 @@ https://www.curseforge.com/minecraft/mc-mods/nuclear-science
 https://www.curseforge.com/minecraft/mc-mods/physica-modular-forcefield-system
 ## Ballistix CurseForge page
 https://www.curseforge.com/minecraft/mc-mods/ballistix
-
-Modpack permission list: https://docs.google.com/spreadsheets/d/1L5j9d4VLD5U-IsB77o24luxfnnlFZzQYR-ZAyxIeNow/edit?usp=sharing
