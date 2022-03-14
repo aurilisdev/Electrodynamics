@@ -2,8 +2,6 @@ package electrodynamics.client.guidebook.utils.components;
 
 import java.util.List;
 
-import electrodynamics.client.guidebook.utils.ImageWrapperObject;
-
 /**
  * A Chapter is where all actual information is contained. A chapter can be as long or as short as
  * needed, and covers specific topics such as "Ores" or "Power Generation"
@@ -65,7 +63,7 @@ public abstract class Chapter {
 	
 	protected abstract List<Page> genPages();
 	
-	public abstract ImageWrapperObject getLogo();
+	public abstract Object getLogo();
 	
 	public abstract String getTitleKey();
 	

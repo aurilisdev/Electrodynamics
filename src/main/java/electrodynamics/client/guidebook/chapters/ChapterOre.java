@@ -3,8 +3,11 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
+import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.ItemWrapperObject;
 import electrodynamics.client.guidebook.utils.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Page;
@@ -12,7 +15,8 @@ import electrodynamics.common.block.subtype.SubtypeOre;
 
 public class ChapterOre extends Chapter {
 
-	private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 50, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oretin.png");
+	//private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 50, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oretin.png");
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(17, 60, 2.0F, ItemUtils.fromBlock(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeOre.tin)));
 	
 	@Override
 	protected List<Page> genPages() {
@@ -111,7 +115,7 @@ public class ChapterOre extends Chapter {
 	}
 
 	@Override
-	public ImageWrapperObject getLogo() {
+	public ItemWrapperObject getLogo() {
 		return LOGO;
 	}
 

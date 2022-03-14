@@ -189,9 +189,14 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			List<Chapter> chaptersForPage = currentModule.getChapterSubList(getCurrentPageNumber());
 			for(int i = 0; i < chaptersForPage.size(); i++) {
 				Chapter chapter = chaptersForPage.get(i);
-				ImageWrapperObject image = chapter.getLogo();
-				RenderingUtils.bindTexture(new ResourceLocation(image.location));
-				blit(stack, guiWidth + image.xOffset, guiHeight + image.yOffet + i * CHAPTER_SEPERATION, image.uStart, image.vStart, image.width, image.height, image.imgwidth, image.imgheight);
+				Object object = chapter.getLogo();
+				if(object instanceof ImageWrapperObject image) {
+					RenderingUtils.bindTexture(new ResourceLocation(image.location));
+					blit(stack, guiWidth + image.xOffset, guiHeight + image.yOffet + i * CHAPTER_SEPERATION, image.uStart, image.vStart, image.width, image.height, image.imgwidth, image.imgheight);
+				} else if (object instanceof ItemWrapperObject item) {
+					RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset, guiHeight + item.yOffset + i * CHAPTER_SEPERATION, item.scale);
+				}
+				
 			}
 		} else {
 			for(ImageWrapperObject image : page.getImages()) {

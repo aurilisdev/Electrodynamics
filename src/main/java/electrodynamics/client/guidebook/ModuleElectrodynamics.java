@@ -31,12 +31,12 @@ public class ModuleElectrodynamics extends Module {
 	@Override
 	protected List<Chapter> genChapters() {
 		List<Chapter> chapters = new ArrayList<>();
+		chapters.add(new ChapterGettingStarted());
 		chapters.add(new ChapterOre());
 		chapters.add(new ChapterElectricity());
 		chapters.add(new ChapterFluids());
 		chapters.add(new ChapterMachines());
 		chapters.add(new ChapterMisc());
-		chapters.add(new ChapterGettingStarted());
 		chapters.add(new ChapterTips());
 		return chapters;
 	}
