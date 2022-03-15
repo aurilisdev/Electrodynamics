@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Wire Mill",
+      "color" : "gold"
+    },
+    "description" : {
+      "text" : "Make a wire mill!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:wiremill"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasMill" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:wiremill" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasMill" ] ],
+  "rewards" : {
+    "experience" : 20
+  },
+  "parent" : "electrodynamics:coalgenerator"
+}

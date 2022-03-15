@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Raw Lead Ore",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Find some raw tin ore!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:raworelead"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasRawOreLead" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:raworelead" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasRawOreLead" ] ],
+  "rewards" : {
+    "experience" : 10
+  },
+  "parent" : "electrodynamics:ores"
+}

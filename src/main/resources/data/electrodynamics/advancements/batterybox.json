@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Battery Box",
+      "color" : "gold"
+    },
+    "description" : {
+      "text" : "Make a battery box!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:batterybox"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasBox" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:batterybox" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasBox" ] ],
+  "rewards" : {
+    "experience" : 30
+  },
+  "parent" : "electrodynamics:coalgenerator"
+}

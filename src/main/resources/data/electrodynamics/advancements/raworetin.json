@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Raw Tin Ore",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Find some raw tin ore!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:raworetin"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasRawTinOre" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:raworetin" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasRawTinOre" ] ],
+  "rewards" : {
+    "experience" : 10
+  },
+  "parent" : "electrodynamics:ores"
+}

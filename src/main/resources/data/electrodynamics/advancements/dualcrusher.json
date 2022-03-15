@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Dual Crushing",
+      "color" : "red"
+    },
+    "description" : {
+      "text" : "Make a double mineral crusher!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:mineralcrusherdouble"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasCrusher" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:mineralcrusherdouble" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasCrusher" ] ],
+  "rewards" : {
+    "experience" : 70
+  },
+  "parent" : "electrodynamics:mineralcrusher"
+}

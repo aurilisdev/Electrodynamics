@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Carbyne Battery Box",
+      "color" : "red"
+    },
+    "description" : {
+      "text" : "Make a carbyne battery box!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:carbynebatterybox"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasBox" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:carbynebatterybox" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasBox" ] ],
+  "rewards" : {
+    "experience" : 150
+  },
+  "parent" : "electrodynamics:lithiumbatterybox"
+}

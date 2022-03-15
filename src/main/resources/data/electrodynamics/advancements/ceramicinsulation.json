@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Ceramic Insulation",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Make some ceramic insulation"
+    },
+    "icon" : {
+      "item" : "electrodynamics:insulationceramic"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasCeramicInsulation" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:insulationceramic" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasCeramicInsulation" ] ],
+  "rewards" : {
+    "experience" : 30
+  },
+  "parent" : "electrodynamics:insulation"
+}

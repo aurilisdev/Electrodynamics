@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Triple Arc Furnace",
+      "color" : "red"
+    },
+    "description" : {
+      "text" : "Description"
+    },
+    "icon" : {
+      "item" : "electrodynamics:electricarcfurnacetriple"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasFurnace" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:electricarcfurnacetriple" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasFurnace" ] ],
+  "rewards" : {
+    "experience" : 150
+  },
+  "parent" : "electrodynamics:dualarcfurnace"
+}

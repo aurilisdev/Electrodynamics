@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Mineral Crusher",
+      "color" : "blue"
+    },
+    "description" : {
+      "text" : "Make a mineral crusher!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:mineralcrusher"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasCrusher" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:mineralcrusher" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasCrusher" ] ],
+  "rewards" : {
+    "experience" : 30
+  },
+  "parent" : "electrodynamics:coalgenerator"
+}

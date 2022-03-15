@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Upgrade Transformer",
+      "color" : "light_purple"
+    },
+    "description" : {
+      "text" : "Make an upgrade transformer!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:upgradetransformer"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasTransf" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:upgradetransformer" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasTransf" ] ],
+  "rewards" : {
+    "experience" : 25
+  },
+  "parent" : "electrodynamics:wiring"
+}

@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Downgrade Transformer",
+      "color" : "gold"
+    },
+    "description" : {
+      "text" : "Make a downgrade transformer"
+    },
+    "icon" : {
+      "item" : "electrodynamics:downgradetransformer"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasTransf" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:downgradetransformer" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasTransf" ] ],
+  "rewards" : {
+    "experience" : 25
+  },
+  "parent" : "electrodynamics:wiring"
+}

@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Insulated Wiring",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Make some insulated copper wire!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:wireinsulatedcopper"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasCopperInsulatedWire" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:wireinsulatedcopper" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasCopperInsulatedWire" ] ],
+  "rewards" : {
+    "experience" : 20
+  },
+  "parent" : "electrodynamics:insulation"
+}
