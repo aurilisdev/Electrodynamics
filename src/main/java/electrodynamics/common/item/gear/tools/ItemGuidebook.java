@@ -30,7 +30,7 @@ public class ItemGuidebook extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		tooltips.add(new TranslatableComponent("tooltip.info.guidebookuse").withStyle(ChatFormatting.LIGHT_PURPLE));
-		tooltips.add(new TranslatableComponent("tooltip.info.guidebooktemp").withStyle(ChatFormatting.BLUE));
+		//tooltips.add(new TranslatableComponent("tooltip.info.guidebooktemp").withStyle(ChatFormatting.BLUE));
 		super.appendHoverText(stack, world, tooltips, flag);
 	}
 

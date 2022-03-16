@@ -292,8 +292,9 @@ public class ClientRegister {
 		KeyBinds.registerKeys();
 		
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		
+		//ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
 		/*
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());

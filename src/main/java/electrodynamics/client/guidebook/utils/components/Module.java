@@ -101,9 +101,25 @@ public abstract class Module {
 		return chapterPages;
 	}
 	
+	public String getTitle() {
+		return "guidebook." + getTitleCat() + ".moduletitle";
+	}
+	
+	public boolean isCat(String cat) {
+		if(getTitleCat().equals(cat)) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @return should only return true if module is ModuleElectrodynamics; false otherwise
+	 */
+	public abstract boolean isFirst();
+	
 	public abstract ImageWrapperObject getLogo();
 	
-	public abstract String getTitleKey();
+	public abstract String getTitleCat();
 	
 	//this is called at init() and init() only
 	protected abstract List<Chapter> genChapters();

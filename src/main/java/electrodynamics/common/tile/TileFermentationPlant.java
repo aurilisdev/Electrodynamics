@@ -15,6 +15,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +28,7 @@ public class TileFermentationPlant extends GenericTile {
 
 	public TileFermentationPlant(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
@@ -36,6 +37,10 @@ public class TileFermentationPlant extends GenericTile {
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE)).process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK).requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
 		addComponent(new ComponentContainerProvider("container.fermentationplant").createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
+	}
+	
+	protected void tickServer(ComponentTickable tick) {
+		InventoryUtils.handleExpereinceUpgrade(this);
 	}
 
 	@Override

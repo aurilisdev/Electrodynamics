@@ -39,6 +39,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -169,6 +170,16 @@ public class ClientEvents {
 
 	public static void addRenderLocation(BlockPos pos) {
 		blocks.add(new Pair<>(System.currentTimeMillis(), pos));
+	}
+	
+	@SubscribeEvent
+	public static void wipeRenderHashes(ClientPlayerNetworkEvent.LoggedOutEvent event) {
+		Player player = event.getPlayer();
+		if(player != null) {
+			blocks.clear();
+			markerLines.clear();
+			quarryArm.clear();
+		}
 	}
 
 	@SubscribeEvent

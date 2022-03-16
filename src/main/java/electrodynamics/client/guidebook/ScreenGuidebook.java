@@ -1,6 +1,7 @@
 package electrodynamics.client.guidebook;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -66,10 +67,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	@Override
 	protected void init() {
 		if(!hasInitHappened) {
+			sortModules();
 			int pageOffset = GUIDEBOOK_STARTING_PAGE + (int) Math.ceil((double) GUIDEBOOK_MODULES.size() / (double) MODULES_PER_PAGE);
 			modulePageOffset = pageOffset;
 			for(Module module : GUIDEBOOK_MODULES) {
-				pageOffset += module.setPageNumbers(pageOffset);
+				pageOffset += module.setPageNumbers(pageOffset) - 1;
 			}
 			for (int i = 0; i < modulePageOffset; i++) {
 				GUIDEBOOK_PAGES.add(new ModulePage(i));
@@ -125,7 +127,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			List<Button> pageButtons = new ArrayList<>();
 			for(int j = 0; j < subModules.size(); j++) {
 				Module module = subModules.get(j);
-				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, new TranslatableComponent(module.getTitleKey()), (button) -> {
+				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, new TranslatableComponent(module.getTitle()), (button) -> {
 					this.setPageNumber(module.getStartingPageNumber());
 				}));
 			}
@@ -223,44 +225,47 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			font.draw(stack, modTitle, refX + xShift, refY + 16, 4210752);
 		} else if (page instanceof ChapterPage) {
 			Module currMod = getCurrentModule();
-			Component moduleTitle = new TranslatableComponent(currMod.getTitleKey()).withStyle(ChatFormatting.BOLD);
-			int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
-			font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
-			
-			Component chapTitle = new TranslatableComponent("guidebook.chapters").withStyle(ChatFormatting.UNDERLINE);
-			xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
-			font.draw(stack, chapTitle, refX + xShift, refY + 31, 4210752);
+			if(currMod != null) {
+				Component moduleTitle = new TranslatableComponent(currMod.getTitle()).withStyle(ChatFormatting.BOLD);
+				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
+				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
+				
+				Component chapTitle = new TranslatableComponent("guidebook.chapters").withStyle(ChatFormatting.UNDERLINE);
+				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
+				font.draw(stack, chapTitle, refX + xShift, refY + 31, 4210752);
+			}
 		} else {
 			Module currMod = getCurrentModule();
-			
-			Component moduleTitle = new TranslatableComponent(currMod.getTitleKey()).withStyle(ChatFormatting.BOLD);
-			int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
-			font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
-			
-			Component chapTitle = new TranslatableComponent(page.getChapterKey()).withStyle(ChatFormatting.UNDERLINE);
-			xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
-			font.draw(stack, chapTitle, refX + xShift, refY + 26, 4210752);
-			
-			Component pageNumber = new TextComponent(getCurrentPageNumber() + "");
-			xShift = (TEXTURE_WIDTH - font.width(pageNumber)) / 2;
-			font.draw(stack, pageNumber, refX + xShift, refY + 200, 4210752);
-			
-			for(TextWrapperObject text : page.getText()) {
-				Component component;
-				if(text.componentInfo == null) {
-					if(text.formats == null) {
-						component = new TranslatableComponent(text.textKey);
+			if(currMod != null) {
+				Component moduleTitle = new TranslatableComponent(currMod.getTitle()).withStyle(ChatFormatting.BOLD);
+				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
+				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
+				
+				Component chapTitle = new TranslatableComponent(page.getChapterKey()).withStyle(ChatFormatting.UNDERLINE);
+				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
+				font.draw(stack, chapTitle, refX + xShift, refY + 26, 4210752);
+				
+				Component pageNumber = new TextComponent(getCurrentPageNumber() + "");
+				xShift = (TEXTURE_WIDTH - font.width(pageNumber)) / 2;
+				font.draw(stack, pageNumber, refX + xShift, refY + 200, 4210752);
+				
+				for(TextWrapperObject text : page.getText()) {
+					Component component;
+					if(text.componentInfo == null) {
+						if(text.formats == null) {
+							component = new TranslatableComponent(text.textKey);
+						} else {
+							component = new TranslatableComponent(text.textKey).withStyle(text.formats);
+						}
 					} else {
-						component = new TranslatableComponent(text.textKey).withStyle(text.formats);
+						if(text.formats == null) {
+							component = new TranslatableComponent(text.textKey, text.componentInfo);
+						} else {
+							component = new TranslatableComponent(text.textKey, text.componentInfo).withStyle(text.formats);
+						}
 					}
-				} else {
-					if(text.formats == null) {
-						component = new TranslatableComponent(text.textKey, text.componentInfo);
-					} else {
-						component = new TranslatableComponent(text.textKey, text.componentInfo).withStyle(text.formats);
-					}
+					font.draw(stack, component, refX + text.xOffset, refY + text.yOffset, text.color);
 				}
-				font.draw(stack, component, refX + text.xOffset, refY + text.yOffset, text.color);
 			}
 		}
 	}
@@ -276,7 +281,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 	
 	private Module getCurrentModule() {
-		return GUIDEBOOK_MODULES.get(getCurrentModuleNumber());
+		int mod = getCurrentModuleNumber();
+		if(mod > -1) {
+			return GUIDEBOOK_MODULES.get(mod);
+		}
+		return null;
 	}
 	
 	private Page getCurrentPage() {
@@ -284,7 +293,43 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 
 	public static void addGuidebookModule(Module module) {
-		GUIDEBOOK_MODULES.add(module);
+		if(module.isFirst()) {
+			if(GUIDEBOOK_MODULES.isEmpty()) {
+				GUIDEBOOK_MODULES.add(module);
+			} else {
+				List<Module> temp = new ArrayList<>();
+				temp.addAll(GUIDEBOOK_MODULES);
+				GUIDEBOOK_MODULES = new ArrayList<>();
+				GUIDEBOOK_MODULES.add(module);
+				GUIDEBOOK_MODULES.addAll(temp);
+			}
+		} else {
+			GUIDEBOOK_MODULES.add(module);
+		}
+	}
+	
+	//You are really fucking around if you get this to crash...
+	private static void sortModules() {
+		List<Module> temp = new ArrayList<>();
+		temp.addAll(GUIDEBOOK_MODULES);
+		GUIDEBOOK_MODULES = new ArrayList<>();
+		GUIDEBOOK_MODULES.add(temp.get(0));
+		temp.remove(0);
+		List<String> cats = new ArrayList<>();
+		for(Module mod : temp) {
+			cats.add(mod.getTitleCat());
+		}
+		Collections.sort(cats);
+		for(String cat : cats) {
+			for(int i = 0; i < temp.size(); i++) {
+				Module mod = temp.get(i);
+				if(mod.isCat(cat)) {
+					GUIDEBOOK_MODULES.add(mod);
+					temp.remove(i);
+					break;
+				}
+			}
+		}
 	}
 	
 	protected void pageForward() {
@@ -302,9 +347,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 	
 	protected void goToChapterPage() {
-		int currModNumber = getCurrentModuleNumber();
-		if(currModNumber > -1) {
-			Module module = GUIDEBOOK_MODULES.get(currModNumber);
+		Module module = getCurrentModule();
+		if(module != null) {
 			setPageNumber(module.getStartingPageNumber());
 		}
 	}
@@ -360,13 +404,15 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			}
 		}
 		if(getCurrentPage() instanceof ChapterPage) {
-			Module currentModule = getCurrentModule();
 			int currModNumber = getCurrentModuleNumber();
-			List<Chapter> currChaps = currentModule.getChapters();
-			List<Button> chapButtons = CHAPTER_BUTTONS.get(currModNumber);
-			for(int i = 0; i < currChaps.size(); i++) {
-				if(currChaps.get(i).getChapterPageNumber() == getCurrentPageNumber()) {
-					chapButtons.get(i).visible = true;
+			if(currModNumber > -1) {
+				Module currentModule = GUIDEBOOK_MODULES.get(currModNumber);
+				List<Chapter> currChaps = currentModule.getChapters();
+				List<Button> chapButtons = CHAPTER_BUTTONS.get(currModNumber);
+				for(int i = 0; i < currChaps.size(); i++) {
+					if(currChaps.get(i).getChapterPageNumber() == getCurrentPageNumber()) {
+						chapButtons.get(i).visible = true;
+					}
 				}
 			}
 		}

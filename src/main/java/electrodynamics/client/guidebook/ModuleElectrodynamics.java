@@ -24,8 +24,8 @@ public class ModuleElectrodynamics extends Module {
 	}
 
 	@Override
-	public String getTitleKey() {
-		return "guidebook.electrodynamics.moduletitle";
+	public String getTitleCat() {
+		return References.ID;
 	}
 	
 	@Override
@@ -39,6 +39,11 @@ public class ModuleElectrodynamics extends Module {
 		chapters.add(new ChapterMisc());
 		chapters.add(new ChapterTips());
 		return chapters;
+	}
+
+	@Override
+	public boolean isFirst() {
+		return true;
 	}
 
 }
