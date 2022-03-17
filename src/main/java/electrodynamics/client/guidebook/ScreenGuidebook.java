@@ -100,18 +100,10 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private void initPageButtons() {
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
-		forward = new PageButton(guiWidth + 142, guiHeight + 200, true, button -> {
-			pageForward();
-		}, true);
-		back = new PageButton(guiWidth + 10, guiHeight + 200, false, button -> {
-			pageBackward();
-		}, true);
-		home = new ButtonGuidebook(guiWidth + 115, guiHeight + 202, button -> {
-			goToModulePage();
-		}, ButtonType.HOME);
-		chapters = new ButtonGuidebook(guiWidth + 50, guiHeight + 202, button -> {
-			goToChapterPage();
-		}, ButtonType.CHAPTERS);
+		forward = new PageButton(guiWidth + 142, guiHeight + 200, true, button -> pageForward(), true);
+		back = new PageButton(guiWidth + 10, guiHeight + 200, false, button -> pageBackward(), true);
+		home = new ButtonGuidebook(guiWidth + 115, guiHeight + 202, button -> goToModulePage(), ButtonType.HOME);
+		chapters = new ButtonGuidebook(guiWidth + 50, guiHeight + 202, button -> goToChapterPage(), ButtonType.CHAPTERS);
 		addRenderableWidget(forward);
 		addRenderableWidget(back);
 		addRenderableWidget(home);
@@ -127,9 +119,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			List<Button> pageButtons = new ArrayList<>();
 			for (int j = 0; j < subModules.size(); j++) {
 				Module module = subModules.get(j);
-				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, new TranslatableComponent(module.getTitle()), button -> {
-					setPageNumber(module.getStartingPageNumber());
-				}));
+				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, new TranslatableComponent(module.getTitle()), button -> setPageNumber(module.getStartingPageNumber())));
 			}
 			MODULE_BUTTONS.add(pageButtons);
 		}
@@ -149,9 +139,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 					if (index < currChapters.size()) {
 						chapter = currChapters.get(index);
 						int chapterNumber = chapter.getStartingPageNumber();
-						pageButtons.add(new Button(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, new TranslatableComponent(chapter.getTitleKey()), button -> {
-							setPageNumber(chapterNumber);
-						}));
+						pageButtons.add(new Button(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, new TranslatableComponent(chapter.getTitleKey()), button -> setPageNumber(chapterNumber)));
 						index++;
 					} else {
 						break;
