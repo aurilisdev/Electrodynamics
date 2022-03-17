@@ -44,6 +44,7 @@ import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerCarbyneBatteryBox;
@@ -546,6 +547,7 @@ public class DeferredRegisters {
 	public static final RegistryObject<MenuType<ContainerCoolantResavoir>> CONTAINER_COOLANTRESAVOIR = CONTAINERS.register("coolantresavoir", () -> new MenuType<>(ContainerCoolantResavoir::new));
 	public static final RegistryObject<MenuType<ContainerMotorComplex>> CONTAINER_MOTORCOMPLEX = CONTAINERS.register("motorcomplex", () -> new MenuType<>(ContainerMotorComplex::new));
 	public static final RegistryObject<MenuType<ContainerQuarry>> CONTAINER_QUARRY = CONTAINERS.register("quarry", () -> new MenuType<>(ContainerQuarry::new));
+	public static final RegistryObject<MenuType<ContainerGuidebook>> CONTAINER_GUIDEBOOK = CONTAINERS.register("guidebook", () -> new MenuType<>(ContainerGuidebook::new));
 
 	// Entities
 

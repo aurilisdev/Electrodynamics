@@ -21,6 +21,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,7 +56,7 @@ public class TileElectricFurnace extends GenericTile {
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).maxJoules(Constants.ELECTRICFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
 
 		int[] ints = new int[extra + 1];
@@ -69,6 +70,10 @@ public class TileElectricFurnace extends GenericTile {
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICFURNACE_USAGE_PER_TICK));
 		}
+	}
+	
+	protected void tickServer(ComponentTickable tick) {
+		InventoryUtils.handleExpereinceUpgrade(this);
 	}
 
 	protected void process(ComponentProcessor component) {

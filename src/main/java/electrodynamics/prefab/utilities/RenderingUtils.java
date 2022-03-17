@@ -2,6 +2,8 @@ package electrodynamics.prefab.utilities;
 
 import java.util.Random;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,15 +17,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -199,6 +208,45 @@ public class RenderingUtils {
 		builder.vertex(matrix4f, minX, minY, minZ).color(r, g, b, a).uv(uMax, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1, 0, 0).endVertex();
 		builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1, 0, 0).endVertex();
 
+	}
+	
+	public static void renderItemScaled(Item item, int x, int y, float scale) {
+		ItemStack stack = new ItemStack(item);
+		Minecraft minecraft = Minecraft.getInstance();
+		ItemRenderer itemRenderer = minecraft.getItemRenderer();
+		BakedModel model = itemRenderer.getModel(stack, (Level)null, (LivingEntity)null, 0);
+		TextureManager manager = minecraft.getTextureManager();
+	
+		manager.getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
+		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		PoseStack posestack = RenderSystem.getModelViewStack();
+		posestack.pushPose();
+		posestack.translate((double)x, (double)y, (double)(100.0F + itemRenderer.blitOffset));
+		posestack.translate(8.0D, 8.0D, 0.0D);
+		posestack.scale(1.0F, -1.0F, 1.0F);
+		posestack.scale(16.0F, 16.0F, 16.0F);
+		posestack.scale(scale, scale, scale);
+		RenderSystem.applyModelViewMatrix();
+		PoseStack posestack1 = new PoseStack();
+		MultiBufferSource.BufferSource buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
+		boolean flag = !model.usesBlockLight();
+		if (flag) {
+			Lighting.setupForFlatItems();
+		}
+
+		itemRenderer.render(stack, ItemTransforms.TransformType.GUI, false, posestack1, buffersource, 15728880, OverlayTexture.NO_OVERLAY, model);
+		buffersource.endBatch();
+		RenderSystem.enableDepthTest();
+		if (flag) {
+			Lighting.setupFor3DItems();
+		}
+
+		posestack.popPose();
+		RenderSystem.applyModelViewMatrix();
+	
 	}
 
 	public static void bindTexture(ResourceLocation resource) {

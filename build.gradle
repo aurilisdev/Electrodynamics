@@ -114,7 +114,7 @@ mixin {
     add sourceSets.main, "electrodynamics.refmap.json"
 }
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.18.1-39.0.88'
+	minecraft 'net.minecraftforge:forge:1.18.1-39.1.2'
 	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.101:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.101")
     

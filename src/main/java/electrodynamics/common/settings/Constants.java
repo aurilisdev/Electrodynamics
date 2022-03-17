@@ -100,8 +100,6 @@ public class Constants {
 	public static double QUARRY_USAGE_PER_TICK = 100.0;
 	@IntValue(def = 10)
 	public static int QUARRY_WATERUSAGE_PER_BLOCK = 10;
-	@IntValue(def = 300, comment = "the maximum height the quarry can be placed at; min is -55, max is 300")
-	public static int MAX_QUARRY_Y_HEIGHT = 300;
 	@IntValue(def = 64, comment = "max radius = 128, min radius = 2")
 	public static int MARKER_RADIUS = 64;
 	@IntValue(def = 1, comment = "max possible is 1 tick / block")

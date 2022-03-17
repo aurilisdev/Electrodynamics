@@ -7,7 +7,6 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenDO2OProcessor;
@@ -21,7 +20,6 @@ import electrodynamics.client.screen.tile.ScreenO2OProcessor;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
@@ -29,9 +27,6 @@ import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidR
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
-import electrodynamics.common.tile.TileTankHSLA;
-import electrodynamics.common.tile.TileTankReinforced;
-import electrodynamics.common.tile.TileTankSteel;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluid2item.specificmachines.ChemicalCrystallizerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines.ChemicalMixerRecipeCategory;
@@ -46,7 +41,6 @@ import electrodynamics.compatibility.jei.recipecategories.item2item.specificmach
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricArcFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
-import electrodynamics.compatibility.jei.utils.InfoItems;
 import electrodynamics.prefab.utilities.tile.CombustionFuelSource;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -79,7 +73,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	private static final int FULL_FLUID_SQUARE = 1600;
 
 	private static final String INFO_ITEM = "jei.info.item.";
-	private static final String INFO_BLOCK = "jei.info.block.";
 	private static final String INFO_FLUID = "jei.info.fluid.";
 
 	@Override
@@ -119,7 +112,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		InfoItems.addInfoItems();
 		Minecraft mc = Minecraft.getInstance();
 		ClientLevel world = Objects.requireNonNull(mc.level);
 		RecipeManager recipeManager = world.getRecipeManager();
@@ -223,25 +215,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	}
 
 	private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
-		for (ItemStack item : InfoItems.ITEMS) {
-			registration.addIngredientInfo(item, VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + item.getItem().toString()));
-		}
-
-		// Blocks
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankSteel.CAPACITY));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tankreinforced)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankReinforced.CAPACITY));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.tanksteel)), VanillaTypes.ITEM, new TranslatableComponent(INFO_BLOCK + "tank", TileTankHSLA.CAPACITY));
-
 		// Items
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "compositearmor"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.iteminput)), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "upgradeiteminput"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeItemUpgrade.itemoutput)), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "upgradeitemoutput"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_PLASMARAILGUN.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "railgunplasma"));
-		registration.addIngredientInfo(new ItemStack(DeferredRegisters.ITEM_KINETICRAILGUN.get()), VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "railgunkinetic"));
-
 		for (Item item : TileCoalGenerator.getValidItems()) {
 			ItemStack fuelStack = new ItemStack(item);
 			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM, new TranslatableComponent(INFO_ITEM + "coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));

@@ -6,7 +6,6 @@ import java.util.List;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -32,8 +31,6 @@ public class TileSeismicRelay extends GenericTile {
 	public List<BlockPos> clientLocs = new ArrayList<>();
 
 	public boolean cornerOnRight = false;
-
-	public static int MAX_Y_HEIGHT = Math.max(Math.min(Constants.MAX_QUARRY_Y_HEIGHT, 300), -55);
 
 	public TileSeismicRelay(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_SEISMICRELAY.get(), worldPosition, blockState);
@@ -98,7 +95,7 @@ public class TileSeismicRelay extends GenericTile {
 		for (int i = 0; i <= TileSeismicMarker.MAX_RADIUS; i++) {
 			blockPos = blockPos.relative(facing);
 			BlockEntity marker = level.getBlockEntity(blockPos);
-			if (marker != null && marker instanceof TileSeismicMarker seismic && i > 0 && seismic.getBlockPos().getY() >= -55 && seismic.getBlockPos().getY() <= 300) {
+			if (marker != null && marker instanceof TileSeismicMarker seismic && i > 0) {
 				return marker.getBlockPos();
 			}
 		}

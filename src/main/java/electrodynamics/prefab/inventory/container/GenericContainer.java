@@ -3,6 +3,7 @@ package electrodynamics.prefab.inventory.container;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.utilities.ContainerUtils;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,6 +23,14 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 
 	public int nextIndex() {
 		return nextIndex++;
+	}
+	
+	//Specialized constructor for screen with no player inv
+	protected GenericContainer(MenuType<?> type, int id, Inventory playerInv) {
+		super(type, id);
+		this.inventory = new SimpleContainer(0);
+		this.world = playerInv.player.level;
+		slotCount = 0;
 	}
 
 	protected GenericContainer(MenuType<?> type, int id, Inventory playerinv, Container inventory) {

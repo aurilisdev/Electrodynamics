@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 
 public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.improvedsolarcell };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.stator };
 
 	public ContainerWindmill(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));

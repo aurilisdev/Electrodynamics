@@ -75,7 +75,6 @@ public class ItemUpgrade extends Item {
 			double storedXp = stack.hasTag() ? stack.getTag().getDouble(NBTUtils.XP) : 0;
 			tooltip.add(new TranslatableComponent("tooltip.info.xpstored").withStyle(ChatFormatting.GRAY).append(new TextComponent(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
 			tooltip.add(new TranslatableComponent("tooltip.info.xpusage").withStyle(ChatFormatting.GRAY));
-			tooltip.add(new TranslatableComponent("tooltip.info.broken").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 
 		}
 		if (subtype == SubtypeItemUpgrade.range) {

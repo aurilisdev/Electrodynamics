@@ -25,7 +25,6 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
-import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -52,6 +51,7 @@ public class ComponentProcessor implements Component {
 
 	private List<ElectrodynamicsRecipe> cachedRecipes = new ArrayList<>();
 	private ElectrodynamicsRecipe recipe;
+	private double storedXp = 0.0;
 
 	public ComponentProcessor(GenericTile source) {
 		holder(source);
@@ -190,6 +190,14 @@ public class ComponentProcessor implements Component {
 
 	public void setRecipe(ElectrodynamicsRecipe recipe) {
 		this.recipe = recipe;
+	}
+	
+	public void setStoredXp(double val) {
+		storedXp = val;
+	}
+	
+	public double getStoredXp() {
+		return storedXp;
 	}
 
 	// Instead of checking all at once, we check one at a time; more efficient
@@ -493,7 +501,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
 				inputs.get(procNumber).get(slotOrientation.get(i)).shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 			}
-			dispenseExperience(inv, locRecipe.getXp(), holder);
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -539,7 +547,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp(), holder);
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -589,7 +597,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp(), holder);
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -633,7 +641,7 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp(), holder);
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
@@ -673,11 +681,11 @@ public class ComponentProcessor implements Component {
 			for (int i = 0; i < handler.getInputTankCount(); i++) {
 				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
 			}
-			dispenseExperience(inv, locRecipe.getXp(), holder);
+			dispenseExperience(inv, locRecipe.getXp());
 		}
 	}
 
-	private static void dispenseExperience(ComponentInventory inv, double experience, GenericTile holder) {
+	private void dispenseExperience(ComponentInventory inv, double experience) {
 		int start = inv.getUpgradeSlotStartIndex();
 		int count = inv.upgrades();
 		for (int i = start; i < start + count; i++) {
@@ -685,19 +693,11 @@ public class ComponentProcessor implements Component {
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					// TODO work god damn you
-					CompoundTag tag = stack.getOrCreateTag();
-					tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + experience);
-					inv.removeItem(i, 1);
-					inv.setItem(i, stack.copy());
-					// holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+					storedXp += experience;
+					break;
 				}
-				break;
 			}
 		}
-		/*
-		 * for (ItemStack stack : inv.getUpgradeContents()) { if (!stack.isEmpty()) { ItemUpgrade upgrade = (ItemUpgrade) stack.getItem(); if (upgrade.subtype == SubtypeItemUpgrade.experience) { DoubleStorage.addDouble(0, DoubleStorage.getDouble(0, stack) + experience, stack); } break; } }
-		 */
 	}
 
 	private static boolean roomInItemBiSlots(List<ItemStack> slots, ItemStack[] biproducts) {

@@ -19,6 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +48,7 @@ public class TileMineralCrusher extends GenericTile {
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2 * Math.pow(2, extra)));
 
 		int[] ints = new int[extra + 1];
@@ -61,6 +62,10 @@ public class TileMineralCrusher extends GenericTile {
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE)).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.MINERALCRUSHER_REQUIRED_TICKS).usage(Constants.MINERALCRUSHER_USAGE_PER_TICK));
 		}
+	}
+	
+	protected void tickServer(ComponentTickable tick) {
+		InventoryUtils.handleExpereinceUpgrade(this);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {

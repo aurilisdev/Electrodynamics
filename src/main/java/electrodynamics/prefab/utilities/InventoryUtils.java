@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 public class InventoryUtils {
+	
 	public static void addItemsToInventory(Container inv, List<ItemStack> items, int start, int count) {
 		for (ItemStack item : items) {
 			for (int index = start; index < start + count; index++) {
@@ -50,5 +58,30 @@ public class InventoryUtils {
 			}
 		}
 		return items;
+	}
+	
+	public static void handleExpereinceUpgrade(GenericTile tile) {
+		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		ComponentProcessor proc = tile.getComponent(ComponentType.Processor);
+		if(inv != null && proc != null) {
+			drainProcXp(inv, proc);
+		} else {
+			for(ComponentProcessor aproc : tile.getProcessors()) {
+				if(aproc != null) {
+					drainProcXp(inv, aproc);
+				}
+			}
+		}
+	}
+	
+	private static void drainProcXp(ComponentInventory inv, ComponentProcessor proc) {
+		for(ItemStack stack : inv.getUpgradeContents()) {
+			if(!stack.isEmpty() && (stack.getItem() instanceof ItemUpgrade upgrade) && upgrade.subtype == SubtypeItemUpgrade.experience) {
+				CompoundTag tag = stack.getOrCreateTag();
+				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + proc.getStoredXp());
+				proc.setStoredXp(0);
+				break;
+			}
+		}
 	}
 }

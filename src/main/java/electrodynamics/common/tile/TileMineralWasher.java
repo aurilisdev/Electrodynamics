@@ -17,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -32,7 +33,7 @@ public class TileMineralWasher extends GenericTile {
 
 	public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
 		super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 4).maxJoules(Constants.MINERALWASHER_USAGE_PER_TICK * 10));
@@ -40,6 +41,10 @@ public class TileMineralWasher extends GenericTile {
 		addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.values()).inputs(1).bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).validUpgrades(ContainerMineralWasher.VALID_UPGRADES).valid(machineValidator()).shouldSendInfo());
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).usage(Constants.MINERALWASHER_USAGE_PER_TICK).canProcess(component -> component.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE)).process(component -> component.processFluidItem2FluidRecipe(component)).requiredTicks(Constants.MINERALWASHER_REQUIRED_TICKS));
 		addComponent(new ComponentContainerProvider("container.mineralwasher").createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+	}
+	
+	protected void tickServer(ComponentTickable tick) {
+		InventoryUtils.handleExpereinceUpgrade(this);
 	}
 
 	@Override
