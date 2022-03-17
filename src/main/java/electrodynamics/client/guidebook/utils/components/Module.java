@@ -6,19 +6,6 @@ import java.util.List;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
 
-/**
- * The Module is the most general section of the guidebook. A mod will define a Module and 
- * add it to the Guidebook.
- * 
- * A Module must contain:
- * > Sections
- * > A logo : 800 x 800p
- * > A name
- * > A 1 line description of the mod
- * 
- * @author skip999
- *
- */
 public abstract class Module {
 
 	private List<Chapter> chapters;

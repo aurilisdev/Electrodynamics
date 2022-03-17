@@ -2,16 +2,6 @@ package electrodynamics.client.guidebook.utils.components;
 
 import java.util.List;
 
-/**
- * A Chapter is where all actual information is contained. A chapter can be as long or as short as
- * needed, and covers specific topics such as "Ores" or "Power Generation"
- * 
- * A Chapter will contain:
- * > Specific information about the top it is over
- * 
- * @author skip999
- *
- */
 public abstract class Chapter {
 	
 	private List<Page> pages;
