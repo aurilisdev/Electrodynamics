@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Electrodynamics",
+      "color" : "aqua"
+    },
+    "description" : {
+      "text" : "You have entered a world of electricity."
+    },
+    "icon" : {
+      "item" : "electrodynamics:downgradetransformer"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false,
+    "background" : "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria" : {
+    "HasCraftingTable" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "minecraft:crafting_table" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasCraftingTable" ] ],
+  "rewards" : {
+    "experience" : 10
+  }
+}

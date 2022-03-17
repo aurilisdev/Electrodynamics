@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Circuit Breaker",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Make a circuit breaker!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:circuitbreaker"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasBreaker" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:circuitbreaker" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasBreaker" ] ],
+  "rewards" : {
+    "experience" : 30
+  },
+  "parent" : "electrodynamics:wiring"
+}

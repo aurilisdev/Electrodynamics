@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Insulation",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Make some insulation!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:insulation"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasInsulation" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:insulation" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasInsulation" ] ],
+  "rewards" : {
+    "experience" : 20
+  },
+  "parent" : "electrodynamics:wiring"
+}
