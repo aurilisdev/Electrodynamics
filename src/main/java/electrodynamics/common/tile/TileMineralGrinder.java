@@ -63,7 +63,7 @@ public class TileMineralGrinder extends GenericTile {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE)).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS).usage(Constants.MINERALGRINDER_USAGE_PER_TICK));
 		}
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

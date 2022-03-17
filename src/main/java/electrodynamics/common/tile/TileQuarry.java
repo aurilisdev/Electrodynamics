@@ -130,7 +130,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private static final int MINE_SKIP = Math.max(Math.min(Constants.CLEARING_AIR_SKIP, 128), 0);
 
 	private int widthShiftMaintainMining = 0;
-	
+
 	private boolean cont = false;
 
 	/* CLIENT PARAMETERS */
@@ -153,7 +153,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	public boolean clientFinished = false;
 	public boolean clientHead = false;
-	
+
 	private boolean clientComplexIsPowered = false;
 
 	public TileQuarry(BlockPos pos, BlockState state) {
@@ -195,7 +195,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 						maintainMiningArea();
 					}
 					boolean shouldSkip = false;
-					if (complex.isPowered && ((int) complex.speed) > 0 && ((tick.getTicks() % ((int) complex.speed) == 0) || (shouldSkip && tick.getTicks() % (int)TileMotorComplex.MAX_SPEED == 0))) {
+					if (complex.isPowered && (int) complex.speed > 0 && (tick.getTicks() % (int) complex.speed == 0 || shouldSkip && tick.getTicks() % (int) TileMotorComplex.MAX_SPEED == 0)) {
 						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
 						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
@@ -276,7 +276,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 								BlockState state = world.getBlockState(miningPos);
 								int blockSkip = 0;
 								shouldSkip = true;
-								if(cont) {
+								if (cont) {
 									while (shouldSkip && blockSkip < MINE_SKIP) {
 										if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
 											lengthReverse = !lengthReverse;
@@ -308,7 +308,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 										posForClient = new BlockPos(miningPos.getX(), miningPos.getY(), miningPos.getZ());
 										electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 									}
-									if(shouldSkip) {
+									if (shouldSkip) {
 										if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
 											lengthReverse = !lengthReverse;
 											if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
@@ -330,7 +330,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 										}
 									}
 								}
-								
+
 							}
 						}
 					}
@@ -488,29 +488,25 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private List<Location> getArmFrames() {
 		List<Location> armFrames = new ArrayList<>();
 		if (clientMiningPos != null) {
-			if(clientComplexIsPowered) {
-				if (prevClientMiningPos != null) {
-					int numberOfFrames = (int) clientMiningSpeed;
-					if (numberOfFrames == 0) {
-						numberOfFrames = 1;
-					}
-					double deltaX = (clientMiningPos.x() - prevClientMiningPos.x()) / numberOfFrames;
-					double deltaY = (clientMiningPos.y() - prevClientMiningPos.y()) / numberOfFrames;
-					double deltaZ = (clientMiningPos.z() - prevClientMiningPos.z()) / numberOfFrames;
-					if (Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ) == 0) {
-						armFrames.add(clientMiningPos);
-					} else {
-						for (int i = 1; i <= numberOfFrames; i++) {
-							armFrames.add(new Location(prevClientMiningPos.x() + deltaX * i, prevClientMiningPos.y() + deltaY * i, prevClientMiningPos.z() + deltaZ * i));
-						}
-					}
-				} else {
+			if (clientComplexIsPowered && (prevClientMiningPos != null)) {
+				int numberOfFrames = (int) clientMiningSpeed;
+				if (numberOfFrames == 0) {
+					numberOfFrames = 1;
+				}
+				double deltaX = (clientMiningPos.x() - prevClientMiningPos.x()) / numberOfFrames;
+				double deltaY = (clientMiningPos.y() - prevClientMiningPos.y()) / numberOfFrames;
+				double deltaZ = (clientMiningPos.z() - prevClientMiningPos.z()) / numberOfFrames;
+				if (Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ) == 0) {
 					armFrames.add(clientMiningPos);
+				} else {
+					for (int i = 1; i <= numberOfFrames; i++) {
+						armFrames.add(new Location(prevClientMiningPos.x() + deltaX * i, prevClientMiningPos.y() + deltaY * i, prevClientMiningPos.z() + deltaZ * i));
+					}
 				}
 			} else {
 				armFrames.add(clientMiningPos);
 			}
-			
+
 		}
 		return armFrames;
 	}
@@ -531,10 +527,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			BlockState state = world.getBlockState(pos);
 			if (!skipBlock(state)) {
 				boolean canMine = world.destroyBlock(pos, false, getPlayer((ServerLevel) world)) || Constants.BYPASS_CLAIMS;
-				if(canMine) {
+				if (canMine) {
 					world.setBlockAndUpdate(pos, AIR);
 					world.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.5F, 1.0F);
-				}	
+				}
 			}
 		});
 		if (widthShiftMaintainMining == width) {
@@ -560,7 +556,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			BlockState state = world.getBlockState(pos);
 			if (!skipBlock(state)) {
 				boolean canMine = world.destroyBlock(pos, false, getPlayer((ServerLevel) world)) || Constants.BYPASS_CLAIMS;
-				if(canMine) {
+				if (canMine) {
 					world.setBlockAndUpdate(pos, AIR);
 					world.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.5F, 1.0F);
 				}
@@ -1083,7 +1079,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (placedBy != null) {
 			compound.putUUID("placedBy", placedBy);
 		}
-		
+
 		compound.putBoolean("continue", cont);
 
 		super.saveAdditional(compound);
@@ -1168,7 +1164,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (compound.contains("placedBy")) {
 			placedBy = compound.getUUID("placedBy");
 		}
-		
+
 		cont = compound.getBoolean("continue");
 
 		super.load(compound);

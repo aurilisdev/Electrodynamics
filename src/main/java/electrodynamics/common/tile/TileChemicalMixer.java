@@ -38,7 +38,7 @@ public class TileChemicalMixer extends GenericTile {
 		addComponent(new ComponentContainerProvider("container.chemicalmixer").createMenu((id, player) -> new ContainerChemicalMixer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

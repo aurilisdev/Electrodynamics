@@ -108,11 +108,11 @@ public class FluidUtilities {
 	public static void drainItem(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		AbstractFluidHandler<?> handler = tile.getComponent(ComponentType.FluidHandler);
-		//should stop the crashes now
-		if(handler != null) {
+		// should stop the crashes now
+		if (handler != null) {
 			FluidTank[] tanks = handler.getInputTanks();
 			List<ItemStack> buckets = inv.getInputBucketContents();
-			if(tanks.length >= buckets.size()) {
+			if (tanks.length >= buckets.size()) {
 				for (int i = 0; i < buckets.size(); i++) {
 					FluidTank tank = tanks[i];
 					ItemStack stack = buckets.get(i);
@@ -136,11 +136,11 @@ public class FluidUtilities {
 	public static void fillItem(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		AbstractFluidHandler<?> handler = tile.getComponent(ComponentType.FluidHandler);
-		//should stop the crashes now
-		if(handler != null) {
+		// should stop the crashes now
+		if (handler != null) {
 			FluidTank[] tanks = handler.getOutputTanks();
 			List<ItemStack> buckets = inv.getOutputBucketContents();
-			if(tanks.length >= buckets.size()) {
+			if (tanks.length >= buckets.size()) {
 				for (int i = 0; i < buckets.size(); i++) {
 					ItemStack stack = buckets.get(i);
 					FluidTank tank = tanks[i];

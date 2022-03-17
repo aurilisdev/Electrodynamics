@@ -171,11 +171,11 @@ public class ClientEvents {
 	public static void addRenderLocation(BlockPos pos) {
 		blocks.add(new Pair<>(System.currentTimeMillis(), pos));
 	}
-	
+
 	@SubscribeEvent
 	public static void wipeRenderHashes(ClientPlayerNetworkEvent.LoggedOutEvent event) {
 		Player player = event.getPlayer();
-		if(player != null) {
+		if (player != null) {
 			blocks.clear();
 			markerLines.clear();
 			quarryArm.clear();

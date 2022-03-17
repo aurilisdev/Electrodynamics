@@ -30,14 +30,14 @@ public class ItemGuidebook extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		tooltips.add(new TranslatableComponent("tooltip.info.guidebookuse").withStyle(ChatFormatting.LIGHT_PURPLE));
-		//tooltips.add(new TranslatableComponent("tooltip.info.guidebooktemp").withStyle(ChatFormatting.BLUE));
+		// tooltips.add(new TranslatableComponent("tooltip.info.guidebooktemp").withStyle(ChatFormatting.BLUE));
 		super.appendHoverText(stack, world, tooltips, flag);
 	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand handIn) {
-		if (world.isClientSide ) {
-			if(player.isShiftKeyDown()) {
+		if (world.isClientSide) {
+			if (player.isShiftKeyDown()) {
 				player.sendMessage(new TranslatableComponent("message.electrodynamics.guidebookclick").withStyle(ChatFormatting.BOLD, ChatFormatting.RED).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, LINK))), Util.NIL_UUID);
 				return InteractionResultHolder.pass(player.getItemInHand(handIn));
 			}
@@ -46,11 +46,9 @@ public class ItemGuidebook extends Item {
 		}
 		return super.use(world, player, handIn);
 	}
-	
+
 	public MenuProvider getMenuProvider(Level world, Player player) {
-		return new SimpleMenuProvider((id, inv, play) -> {
-			return new ContainerGuidebook(id, player.getInventory());
-		}, CONTAINER_TITLE);
+		return new SimpleMenuProvider((id, inv, play) -> new ContainerGuidebook(id, player.getInventory()), CONTAINER_TITLE);
 	}
 
 }

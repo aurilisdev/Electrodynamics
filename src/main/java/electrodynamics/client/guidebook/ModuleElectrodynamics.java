@@ -2,6 +2,7 @@ package electrodynamics.client.guidebook;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.chapters.ChapterElectricity;
 import electrodynamics.client.guidebook.chapters.ChapterFluids;
@@ -17,7 +18,7 @@ import electrodynamics.client.guidebook.utils.components.Module;
 public class ModuleElectrodynamics extends Module {
 
 	private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 38, 0, 0, 32, 32, 32, 32, References.ID + ":textures/screen/guidebook/electrodynamicslogo.png");
-	
+
 	@Override
 	public ImageWrapperObject getLogo() {
 		return LOGO;
@@ -27,7 +28,7 @@ public class ModuleElectrodynamics extends Module {
 	public String getTitleCat() {
 		return References.ID;
 	}
-	
+
 	@Override
 	protected List<Chapter> genChapters() {
 		List<Chapter> chapters = new ArrayList<>();

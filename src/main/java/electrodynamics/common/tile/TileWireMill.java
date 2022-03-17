@@ -56,7 +56,7 @@ public class TileWireMill extends GenericTile {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE)).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK));
 		}
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

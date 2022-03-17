@@ -38,7 +38,7 @@ public class TileChemicalCrystallizer extends GenericTile {
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.consumeBucket().canProcessFluid2ItemRecipe(component, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE)).process(component -> component.processFluid2ItemRecipe(component)).requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK));
 		addComponent(new ComponentContainerProvider("container.chemicalcrystallizer").createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

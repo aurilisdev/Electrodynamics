@@ -39,7 +39,7 @@ public class TileEnergizedAlloyer extends GenericTile {
 
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessEnergAlloy).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.ENERGIZEDALLOYER_REQUIRED_TICKS).usage(Constants.ENERGIZEDALLOYER_USAGE_PER_TICK));
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

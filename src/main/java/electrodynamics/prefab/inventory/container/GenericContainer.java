@@ -24,12 +24,12 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 	public int nextIndex() {
 		return nextIndex++;
 	}
-	
-	//Specialized constructor for screen with no player inv
+
+	// Specialized constructor for screen with no player inv
 	protected GenericContainer(MenuType<?> type, int id, Inventory playerInv) {
 		super(type, id);
-		this.inventory = new SimpleContainer(0);
-		this.world = playerInv.player.level;
+		inventory = new SimpleContainer(0);
+		world = playerInv.player.level;
 		slotCount = 0;
 	}
 

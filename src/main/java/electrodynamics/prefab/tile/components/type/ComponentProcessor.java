@@ -191,11 +191,11 @@ public class ComponentProcessor implements Component {
 	public void setRecipe(ElectrodynamicsRecipe recipe) {
 		this.recipe = recipe;
 	}
-	
+
 	public void setStoredXp(double val) {
 		storedXp = val;
 	}
-	
+
 	public double getStoredXp() {
 		return storedXp;
 	}

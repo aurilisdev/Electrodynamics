@@ -38,7 +38,7 @@ public class TileOxidationFurnace extends GenericTile {
 		addComponent(new ComponentContainerProvider("container.oxidationfurnace").createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(this::canProcessOxideFurn).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.OXIDATIONFURNACE_REQUIRED_TICKS).usage(Constants.OXIDATIONFURNACE_USAGE_PER_TICK));
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

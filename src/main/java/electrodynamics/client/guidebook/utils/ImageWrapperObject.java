@@ -11,10 +11,10 @@ public class ImageWrapperObject {
 	public int imgwidth;
 	public int imgheight;
 	public String location;
-	
+
 	public ImageWrapperObject(int xOffset, int yOffset, int uStart, int vStart, int width, int height, int imgheight, int imgwidth, String location) {
 		this.xOffset = xOffset;
-		this.yOffet = yOffset;
+		yOffet = yOffset;
 		this.uStart = uStart;
 		this.vStart = vStart;
 		this.width = width;
@@ -23,5 +23,5 @@ public class ImageWrapperObject {
 		this.imgheight = imgheight;
 		this.location = location;
 	}
-	
+
 }

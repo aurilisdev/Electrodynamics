@@ -38,7 +38,7 @@ public class TileFermentationPlant extends GenericTile {
 		addComponent(new ComponentContainerProvider("container.fermentationplant").createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
-	
+
 	protected void tickServer(ComponentTickable tick) {
 		InventoryUtils.handleExpereinceUpgrade(this);
 	}

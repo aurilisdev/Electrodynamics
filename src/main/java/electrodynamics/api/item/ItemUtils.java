@@ -33,7 +33,7 @@ public class ItemUtils {
 	public static Ingredient getIngredientFromTag(String location, String tag) {
 		return Ingredient.of(ItemTags.getAllTags().getTag(new ResourceLocation(location, tag)));
 	}
-	
+
 	public static Item fromBlock(Block block) {
 		return new ItemStack(block).getItem();
 	}

@@ -209,14 +209,14 @@ public class RenderingUtils {
 		builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1, 0, 0).endVertex();
 
 	}
-	
+
 	public static void renderItemScaled(Item item, int x, int y, float scale) {
 		ItemStack stack = new ItemStack(item);
 		Minecraft minecraft = Minecraft.getInstance();
 		ItemRenderer itemRenderer = minecraft.getItemRenderer();
-		BakedModel model = itemRenderer.getModel(stack, (Level)null, (LivingEntity)null, 0);
+		BakedModel model = itemRenderer.getModel(stack, (Level) null, (LivingEntity) null, 0);
 		TextureManager manager = minecraft.getTextureManager();
-	
+
 		manager.getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
 		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
 		RenderSystem.enableBlend();
@@ -224,7 +224,7 @@ public class RenderingUtils {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		PoseStack posestack = RenderSystem.getModelViewStack();
 		posestack.pushPose();
-		posestack.translate((double)x, (double)y, (double)(100.0F + itemRenderer.blitOffset));
+		posestack.translate(x, y, 100.0F + itemRenderer.blitOffset);
 		posestack.translate(8.0D, 8.0D, 0.0D);
 		posestack.scale(1.0F, -1.0F, 1.0F);
 		posestack.scale(16.0F, 16.0F, 16.0F);
@@ -246,7 +246,7 @@ public class RenderingUtils {
 
 		posestack.popPose();
 		RenderSystem.applyModelViewMatrix();
-	
+
 	}
 
 	public static void bindTexture(ResourceLocation resource) {

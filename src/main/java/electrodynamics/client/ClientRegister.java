@@ -290,20 +290,13 @@ public class ClientRegister {
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		KeyBinds.registerKeys();
-		
+
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		
-		//ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+
+		// ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
 		/*
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		*/
+		 * ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+		 */
 	}
 
 	@SubscribeEvent
