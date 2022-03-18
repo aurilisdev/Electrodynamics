@@ -6,8 +6,6 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.block.VoxelShapes;
-import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
@@ -30,9 +28,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -106,38 +101,5 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 	@Override
 	public HashSet<Subnode> getSubNodes() {
 		return BlockMachine.advancedsolarpanelsubnodes;
-	}
-
-	static {
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.0625, 0.0625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0.9375, 1, 0.0625, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9375, 0, 0.0625, 1, 0.0625, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.25, 0, 0.25, 0.75, 0.0625, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0.0625, 0.0625, 0.0625, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.0625, 0, 1, 0.125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.125, 0.125, 0.875, 0.1875, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.1875, 0.1875, 0.1875, 0.8125, 0.4375, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.375, 0.4375, 0.375, 0.625, 1.8125, 0.625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 1.8125, 0.3125, 0.6875, 2, 0.6875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.65375, 1.875, -0.73, 1.73, 1.9375, 1.73), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.73, 1.875, -0.73, 0.34625, 1.9375, 1.73), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.67875, 1.9375, -0.67875, -0.6275, 2, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.67875, 1.8125, -0.67875, -0.6275, 1.875, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.24375, 1.9375, -0.67875, 0.295, 2, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.24375, 1.8125, -0.67875, 0.295, 1.875, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.705, 1.9375, -0.67875, 0.75625, 2, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.705, 1.8125, -0.67875, 0.75625, 1.875, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.6275, 1.9375, -0.67875, 1.67875, 2, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.6275, 1.8125, -0.67875, 1.67875, 1.875, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.75625, 1.9375, 1.6275, 1.6275, 2, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.75625, 1.8125, 1.6275, 1.6275, 1.875, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.6275, 1.9375, 1.6275, 0.24375, 2, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.6275, 1.8125, 1.6275, 0.24375, 1.875, 1.67875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.6275, 1.9375, -0.67875, 0.24375, 2, -0.6275), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.6275, 1.8125, -0.67875, 0.24375, 1.875, -0.6275), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.75625, 1.9375, -0.67875, 1.6275, 2, -0.6275), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.75625, 1.8125, -0.67875, 1.6275, 1.875, -0.6275), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.advancedsolarpanel, shape, Direction.NORTH);
 	}
 }

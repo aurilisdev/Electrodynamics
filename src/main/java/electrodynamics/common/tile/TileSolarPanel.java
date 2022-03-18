@@ -80,4 +80,8 @@ public class TileSolarPanel extends GenericTile implements IElectricGenerator {
 		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
 		return TransferPack.ampsVoltage(getMultiplier() * Constants.SOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
+
+	static {
+		// TODO: Remember voxelshape!
+	}
 }

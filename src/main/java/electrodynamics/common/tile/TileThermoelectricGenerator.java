@@ -89,6 +89,6 @@ public class TileThermoelectricGenerator extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.375, 0.15625, 0.8125, 0.75, 0.1875, 0.921875), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.375, 0.809375, 0.8125, 0.75, 0.840625, 0.921875), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.515625, 0.1875, 0.765625, 0.796875, 0.8125, 0.984375), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.thermoelectricgenerator, shape, Direction.WEST);
+		VoxelShapes.registerShape(SubtypeMachine.thermoelectricgenerator, shape, Direction.EAST);
 	}
 }
