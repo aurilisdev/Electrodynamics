@@ -79,10 +79,10 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			for (Module module : GUIDEBOOK_MODULES) {
 				GUIDEBOOK_PAGES.addAll(module.getAllPages());
 			}
-			initModuleButtons();
 			hasInitHappened = true;
 		}
 		initChapterButtons();
+		initModuleButtons();
 		super.init();
 		initPageButtons();
 		for (List<Button> buttons : MODULE_BUTTONS) {
@@ -111,6 +111,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 
 	private void initModuleButtons() {
+		MODULE_BUTTONS.clear();
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
 		List<Module> subModules;
