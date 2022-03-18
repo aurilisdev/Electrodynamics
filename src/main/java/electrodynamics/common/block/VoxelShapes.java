@@ -12,7 +12,7 @@ public class VoxelShapes {
 
 	public static VoxelShape getShape(SubtypeMachine machine, Direction currentDirection) {
 		VoxelShape shape = Shapes.block();
-		VoxelShape[] shapes = shapesHashMap.getOrDefault(machine, new VoxelShape[4]);
+		VoxelShape[] shapes = shapesHashMap.getOrDefault(machine, new VoxelShape[6]);
 		shape = shapes[currentDirection.ordinal()] == null ? shape : shapes[currentDirection.ordinal()];
 		shapesHashMap.put(machine, shapes);
 		return shape;

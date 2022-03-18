@@ -169,11 +169,10 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 		shape = Shapes.join(shape, Shapes.box(0.9975, 0.0625, 0.125625, 1.075625, 0.125, 0.875625), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.9975, 0.75, 0.125625, 1.075625, 0.8125, 0.875625), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.9975, 0.125, 0.125625, 1.075625, 0.75, 0.188125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.075625, -0.1882325, 0.436356875, 1.294375, 1.0617675, 0.561356875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.075625, 0.3742675, -0.126143125, 1.294375, 0.4992675, 1.123856875), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(1.06, -0.125, 0.438125, 1.31, 1, 0.563125), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(1.06, 0.375, -0.061875, 1.31, 0.5, 1.063125), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.9975, 0.375, 0.438125, 1.3725, 0.5, 0.563125), BooleanOp.OR);
+
 		VoxelShapes.registerShape(SubtypeMachine.hydroelectricgenerator, shape, Direction.EAST);
 	}
 }
