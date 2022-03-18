@@ -27,6 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
@@ -349,6 +350,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private static void movePage(int number) {
 		currPageNumber += number;
+		currPageNumber = Mth.clamp(currPageNumber, 0, GUIDEBOOK_PAGES.size() - 1);
 	}
 
 	private static void setPageNumber(int number) {
