@@ -97,7 +97,6 @@ public class TileWireMill extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0, 0.6875, 0.9375, 0.125), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.5625, 0.6875, 0.9375, 0.6875), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.6875, 0.3125, 0.6875, 1, 0.625, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.375, 0.6203125, 0.6890625, 0.6359375, 1.0609375, 0.9359375), BooleanOp.OR);
 		VoxelShapes.registerShape(SubtypeMachine.wiremill, shape, Direction.EAST);
 	}
 }

@@ -76,7 +76,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 
 	static {
 		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0.0057870370370369795, 0, 0, 1.005787037037037, 0.1875, 1), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.0057870370370369795, 0, 0, 1.0, 0.1875, 1), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.318287037037037, 0.3125, 0.8125, 0.693287037037037, 0.6875, 0.9375), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.318287037037037, 0.3125, 0.0625, 0.693287037037037, 0.6875, 0.1875), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.443287037037037, 0.8125, 0.25, 0.568287037037037, 0.875, 0.375), BooleanOp.OR);
@@ -85,7 +85,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.0057870370370369795, 0.25, 0.25, 0.06828703703703698, 0.75, 0.75), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.255787037037037, 0.1875, 0.9375, 0.755787037037037, 0.75, 1), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.255787037037037, 0.1875, 0, 0.755787037037037, 0.75, 0.0625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.943287037037037, 0.1875, 0.25, 1.005787037037037, 0.75, 0.75), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.943287037037037, 0.1875, 0.25, 1.0, 0.75, 0.75), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.443287037037037, 0.125, 0.25, 0.568287037037037, 0.8125, 0.375), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.443287037037037, 0.1875, 0.625, 0.568287037037037, 0.8125, 0.75), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.255787037037037, 0.1875, 0.25, 0.693287037037037, 0.3125, 0.75), BooleanOp.OR);
@@ -103,7 +103,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.849537037037037, 0.1875, 0.25, 0.912037037037037, 0.5625, 0.3125), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.849537037037037, 0.1875, 0.125, 0.912037037037037, 0.25, 0.25), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.474537037037037, 0.1875, 0.125, 0.849537037037037, 0.25, 0.1875), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.electrolyticseparator, shape, Direction.EAST);
+		VoxelShapes.registerShape(SubtypeMachine.electrolyticseparator, shape, Direction.WEST);
 	}
 
 }
