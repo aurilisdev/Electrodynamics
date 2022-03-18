@@ -40,7 +40,7 @@ public class TileOxidationFurnace extends GenericTile {
 	}
 
 	protected void tickServer(ComponentTickable tick) {
-		InventoryUtils.handleExpereinceUpgrade(this);
+		InventoryUtils.handleExperienceUpgrade(this);
 	}
 
 	protected boolean canProcessOxideFurn(ComponentProcessor component) {

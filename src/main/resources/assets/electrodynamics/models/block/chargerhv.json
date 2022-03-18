@@ -669,7 +669,9 @@
 					"name": "base",
 					"origin": [8, 8, 8],
 					"color": 0,
-					"children": [0, 1,
+					"children": [
+						0,
+						1,
 						{
 							"name": "capleft",
 							"origin": [8, 8, 8],
@@ -712,7 +714,8 @@
 					"name": "cables",
 					"origin": [8, 8, 8],
 					"color": 0,
-					"children": [24,
+					"children": [
+						24,
 						{
 							"name": "capinput",
 							"origin": [8, 8, 8],

@@ -4,6 +4,8 @@ import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.block.VoxelShapes;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.settings.Constants;
@@ -29,6 +31,9 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileHydroelectricGenerator extends GenericTile implements IElectricGenerator {
 	protected CachedTileOutput output;
@@ -139,5 +144,36 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 	@Override
 	public TransferPack getProduced() {
 		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating ? multiplier : 0), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+	}
+
+	static {
+		VoxelShape shape = Shapes.empty();
+		shape = Shapes.join(shape, Shapes.box(0.06, 0.25, 0.250625, 0.9975, 0.375, 0.750625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.06, 0, 0.09125, 0.9975, 0.25, 0.90375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.56, 0.375, 0.438125, 0.9975, 0.5, 0.563125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.685, 0.375, 0.375625, 0.935, 0.5625, 0.625625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.8725, 0.317394375, 0.33602125, 0.935, 0.379894375, 0.39852125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.685, 0.317394375, 0.33602125, 0.7475, 0.379894375, 0.39852125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.685, 0.317394375, 0.60272875, 0.7475, 0.379894375, 0.66522875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.8725, 0.317394375, 0.60272875, 0.935, 0.379894375, 0.66522875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.06, 0.375, 0.250625, 0.4975, 0.75, 0.750625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(-0.0025, 0.25, 0.250625, 0.06, 0.75, 0.750625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.375625, 0.56, 0.5625, 0.625625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.313125, 0.56, 0.4375, 0.375625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.625625, 0.56, 0.4375, 0.688125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.294375, 0.125, 0.125625, 1.3725, 0.75, 0.188125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.294375, 0.75, 0.125625, 1.3725, 0.8125, 0.875625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.294375, 0.0625, 0.125625, 1.3725, 0.125, 0.875625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.294375, 0.125, 0.813125, 1.3725, 0.75, 0.875625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.9975, 0.125, 0.813125, 1.075625, 0.75, 0.875625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.9975, 0.0625, 0.125625, 1.075625, 0.125, 0.875625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.9975, 0.75, 0.125625, 1.075625, 0.8125, 0.875625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.9975, 0.125, 0.125625, 1.075625, 0.75, 0.188125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.075625, -0.1882325, 0.436356875, 1.294375, 1.0617675, 0.561356875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.075625, 0.3742675, -0.126143125, 1.294375, 0.4992675, 1.123856875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.06, -0.125, 0.438125, 1.31, 1, 0.563125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(1.06, 0.375, -0.061875, 1.31, 0.5, 1.063125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.9975, 0.375, 0.438125, 1.3725, 0.5, 0.563125), BooleanOp.OR);
+		VoxelShapes.registerShape(SubtypeMachine.hydroelectricgenerator, shape, Direction.EAST);
 	}
 }

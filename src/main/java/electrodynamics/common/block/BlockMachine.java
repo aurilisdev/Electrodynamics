@@ -12,6 +12,9 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.block.GenericMachineBlock;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -70,7 +73,13 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return machine.getCustomShape() != null ? machine.getCustomShape() : super.getShape(state, worldIn, pos, context);
+		BlockEntity entity = worldIn.getBlockEntity(pos);
+		if (entity instanceof GenericTile tile) {
+			if (tile.getComponent(ComponentType.Direction) instanceof ComponentDirection direc) {
+				return VoxelShapes.getShape(machine, direc.getDirection());
+			}
+		}
+		return super.getShape(state, worldIn, pos, context);
 	}
 
 	@Override

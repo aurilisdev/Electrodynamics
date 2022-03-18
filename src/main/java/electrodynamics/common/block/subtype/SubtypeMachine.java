@@ -61,8 +61,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public enum SubtypeMachine implements ISubtype {
 
@@ -94,9 +92,9 @@ public enum SubtypeMachine implements ISubtype {
 	carbynebatterybox(true, TileCarbyneBatteryBox.class, true),
 	oxidationfurnace(true, TileOxidationFurnace.class),
 	oxidationfurnacerunning(false, TileOxidationFurnace.class),
-	downgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
-	upgradetransformer(true, TileTransformer.class, false, Shapes.box(0, 0, 0, 1, 15.0 / 16.0, 1)),
-	solarpanel(true, TileSolarPanel.class, false, Shapes.box(0, 0, 0, 1, 9.0 / 16.0, 1)),
+	downgradetransformer(true, TileTransformer.class),
+	upgradetransformer(true, TileTransformer.class),
+	solarpanel(true, TileSolarPanel.class),
 	advancedsolarpanel(true, TileAdvancedSolarPanel.class),
 	electricpump(true, TileElectricPump.class),
 	thermoelectricgenerator(true, TileThermoelectricGenerator.class),
@@ -133,7 +131,6 @@ public enum SubtypeMachine implements ISubtype {
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;
 	private RenderShape type = RenderShape.MODEL;
-	private VoxelShape customShape = null;
 
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass) {
 		this.showInItemGroup = showInItemGroup;
@@ -145,11 +142,6 @@ public enum SubtypeMachine implements ISubtype {
 		if (customModel) {
 			type = RenderShape.ENTITYBLOCK_ANIMATED;
 		}
-	}
-
-	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel, VoxelShape shape) {
-		this(showInItemGroup, tileclass, customModel);
-		customShape = shape;
 	}
 
 	public RenderShape getRenderType() {
@@ -191,10 +183,6 @@ public enum SubtypeMachine implements ISubtype {
 	@Override
 	public boolean isItem() {
 		return false;
-	}
-
-	public VoxelShape getCustomShape() {
-		return customShape;
 	}
 
 	public boolean isPlayerStorable() {

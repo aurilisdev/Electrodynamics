@@ -60,7 +60,7 @@ public class InventoryUtils {
 		return items;
 	}
 
-	public static void handleExpereinceUpgrade(GenericTile tile) {
+	public static void handleExperienceUpgrade(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		ComponentProcessor proc = tile.getComponent(ComponentType.Processor);
 		if (inv != null && proc != null) {

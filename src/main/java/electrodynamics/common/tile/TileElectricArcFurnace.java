@@ -73,7 +73,7 @@ public class TileElectricArcFurnace extends GenericTile {
 	}
 
 	protected void tickServer(ComponentTickable tick) {
-		InventoryUtils.handleExpereinceUpgrade(this);
+		InventoryUtils.handleExperienceUpgrade(this);
 	}
 
 	protected void process(ComponentProcessor component) {

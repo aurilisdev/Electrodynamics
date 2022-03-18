@@ -7,6 +7,8 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.VoxelShapes;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
@@ -31,6 +33,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWindmill extends GenericTile implements IMultiblockTileNode, IElectricGenerator {
 	protected CachedTileOutput output;
@@ -128,5 +133,29 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 	@Override
 	public TransferPack getProduced() {
 		return TransferPack.ampsVoltage(generating * multiplier, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+	}
+
+	static {
+		VoxelShape shape = Shapes.empty();
+		shape = Shapes.join(shape, Shapes.box(0.125, 0.0625, 0.125, 0.875, 0.125, 0.875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.1875, 0.125, 0.1875, 0.8125, 0.1875, 0.8125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.0625, 0.6875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.8125, 0.875, 0.0625, 0.875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.0625, 0.1875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.8125, 0, 0.1875, 0.875, 0.0625, 0.8125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.1875, 0.1875, 0.0625, 0.8125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.375, 0.125, 0.328125, 0.625, 1.125, 0.671875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.3125, 0.125, 0.375, 0.6875, 1.125, 0.625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.3125, 0.125, 0.375, 0.375, 0.1875, 0.4375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.1875, 1.125, 0.3125, 0.8125, 1.5, 0.6875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.25, 1.1875, 0.25, 0.75, 1.4375, 0.75), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.8125, 1.1875, 0.375, 0.875, 1.4375, 0.625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.875, 1.25, 0.4375, 0.9375, 1.375, 0.5625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.93325, 1.25375, 0.445, 1.04325, 1.36375, 0.555), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.984428125, 1.296301875, -0.16, 1.000928125, 1.406301875, 1.16), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.98825, 1.24483125, -0.139156875, 1.00475, 1.35483125, 1.125843125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.9864325, 0.682816875, 0.38924625, 1.0029325, 1.892816875, 0.49924625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.975345625, 1.244470625, -0.147260625, 0.991845625, 1.354470625, 1.117739375), BooleanOp.OR);
+		VoxelShapes.registerShape(SubtypeMachine.windmill, shape, Direction.EAST);
 	}
 }

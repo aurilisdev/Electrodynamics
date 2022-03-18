@@ -40,7 +40,7 @@ public class TileReinforcedAlloyer extends GenericTile {
 	}
 
 	protected void tickServer(ComponentTickable tick) {
-		InventoryUtils.handleExpereinceUpgrade(this);
+		InventoryUtils.handleExperienceUpgrade(this);
 	}
 
 	protected boolean canProcessReinfAlloy(ComponentProcessor component) {
