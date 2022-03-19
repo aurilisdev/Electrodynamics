@@ -5,6 +5,8 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.block.VoxelShapes;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
@@ -23,6 +25,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileLathe extends GenericTile {
 
@@ -61,4 +66,37 @@ public class TileLathe extends GenericTile {
 		}
 	}
 
+	static {
+		VoxelShape shape = Shapes.empty();
+		shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.1875, 1), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0, 0.1875, 0.25, 0.125, 0.75, 0.75), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.25, 0.1875, 0.1875, 0.3125, 0.9375, 0.25), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.1875, 0.1875, 0.25, 0.25, 0.9375, 0.3125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.6875, 0.1875, 0.1875, 0.75, 0.9375, 0.25), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.75, 0.1875, 0.25, 0.8125, 0.9375, 0.3125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.6875, 0.1875, 0.75, 0.75, 0.9375, 0.8125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.75, 0.1875, 0.6875, 0.8125, 0.9375, 0.75), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.25, 0.1875, 0.75, 0.3125, 0.9375, 0.8125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.1875, 0.1875, 0.6875, 0.25, 0.9375, 0.75), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.25, 0.9375, 0.25, 0.75, 1, 0.75), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.40625, 0.875, 0.34375, 0.59375, 0.9375, 0.65625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.34375, 0.875, 0.40625, 0.40625, 0.9375, 0.59375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.59375, 0.875, 0.40625, 0.65625, 0.9375, 0.59375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.34375, 0.1875, 0.21875, 0.65625, 0.5625, 0.78125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.21875, 0.1875, 0.34375, 0.34375, 0.5625, 0.65625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.65625, 0.1875, 0.34375, 0.78125, 0.5625, 0.65625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.28125, 0.1875, 0.28125, 0.34375, 0.5625, 0.34375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.28125, 0.1875, 0.65625, 0.34375, 0.5625, 0.71875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.65625, 0.1875, 0.28125, 0.71875, 0.5625, 0.34375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.65625, 0.1875, 0.65625, 0.71875, 0.5625, 0.71875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.40625, 0.5625, 0.34375, 0.59375, 0.625, 0.65625), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.34375, 0.5625, 0.40625, 0.40625, 0.625, 0.59375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.59375, 0.5625, 0.40625, 0.65625, 0.625, 0.59375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.46875, 0.84375, 0.40625, 0.53125, 0.875, 0.59375), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.40625, 0.8421875, 0.46875, 0.59375, 0.875, 0.53125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.46875, 0.8328125, 0.46875, 0.53125, 0.8421875, 0.53125), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.4921874999999999, 0.8015625, 0.4921875000000001, 0.5078124999999999, 0.8578125, 0.5078125000000001), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.125, 0.1875, 0.125, 0.875, 0.25, 0.875), BooleanOp.OR);
+		VoxelShapes.registerShape(SubtypeMachine.lathe, shape, Direction.EAST);
+	}
 }
