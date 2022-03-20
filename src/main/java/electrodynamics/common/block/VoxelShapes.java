@@ -2,19 +2,25 @@ package electrodynamics.common.block;
 
 import java.util.HashMap;
 
+import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class VoxelShapes {
-	public static HashMap<SubtypeMachine, VoxelShape[]> shapesHashMap = new HashMap<>();
+	public static HashMap<Block, VoxelShape[]> shapesHashMap = new HashMap<>();
 
 	public static VoxelShape getShape(SubtypeMachine machine, Direction currentDirection) {
+		return getShape(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(machine), currentDirection);
+	}
+
+	public static VoxelShape getShape(Block block, Direction currentDirection) {
 		VoxelShape shape = Shapes.block();
-		VoxelShape[] shapes = shapesHashMap.getOrDefault(machine, new VoxelShape[6]);
+		VoxelShape[] shapes = shapesHashMap.getOrDefault(block, new VoxelShape[6]);
 		shape = shapes[currentDirection.ordinal()] == null ? shape : shapes[currentDirection.ordinal()];
-		shapesHashMap.put(machine, shapes);
+		shapesHashMap.put(block, shapes);
 		return shape;
 	}
 
@@ -32,13 +38,17 @@ public class VoxelShapes {
 	}
 
 	public static void registerShape(SubtypeMachine machine, VoxelShape shape, Direction baseDirection) {
+		registerShape(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(machine), shape, baseDirection);
+	}
+
+	public static void registerShape(Block block, VoxelShape shape, Direction baseDirection) {
 		VoxelShape[] shapes = new VoxelShape[6];
 		for (Direction dir : Direction.values()) {
 			if (dir.ordinal() > 1) {
 				shapes[dir.ordinal()] = rotateShape(baseDirection, dir, shape);
 			}
 		}
-		shapesHashMap.put(machine, shapes);
+		shapesHashMap.put(block, shapes);
 	}
 
 }

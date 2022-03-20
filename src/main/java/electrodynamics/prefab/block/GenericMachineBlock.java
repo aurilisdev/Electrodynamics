@@ -9,10 +9,12 @@ import javax.annotation.Nullable;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
+import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
@@ -42,6 +44,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -56,6 +60,17 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 		this.blockEntitySupplier = blockEntitySupplier;
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		BlockEntity entity = worldIn.getBlockEntity(pos);
+		if (entity instanceof GenericTile tile) {
+			if (tile.getComponent(ComponentType.Direction) instanceof ComponentDirection direc) {
+				return VoxelShapes.getShape(worldIn.getBlockState(pos).getBlock(), direc.getDirection());
+			}
+		}
+		return super.getShape(state, worldIn, pos, context);
 	}
 
 	@Override
