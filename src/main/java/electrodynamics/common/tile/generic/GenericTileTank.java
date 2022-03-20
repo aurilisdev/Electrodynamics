@@ -37,6 +37,7 @@ public class GenericTileTank extends GenericTile {
 		FluidUtilities.drainItem(this);
 		FluidUtilities.fillItem(this);
 		FluidUtilities.outputToPipe(this, handler.getOutputTanks(), AbstractFluidHandler.getDirectionalArray(handler.relativeOutputDirections));
+		FluidUtilities.outputToPipe(this, handler.getOutputTanks(), AbstractFluidHandler.getDirectionalArray(handler.outputDirections));
 
 		// Output to tank below
 		BlockPos pos = getBlockPos();
