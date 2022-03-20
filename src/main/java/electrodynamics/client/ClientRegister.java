@@ -23,6 +23,7 @@ import electrodynamics.client.render.tile.RenderChargerGeneric;
 import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
 import electrodynamics.client.render.tile.RenderCoolantResavoir;
+import electrodynamics.client.render.tile.RenderElectrolyticSeparator;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderLathe;
@@ -292,11 +293,6 @@ public class ClientRegister {
 		KeyBinds.registerKeys();
 
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-
-		// ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		/*
-		 * ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics()); ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
-		 */
 	}
 
 	@SubscribeEvent
@@ -330,6 +326,7 @@ public class ClientRegister {
 		event.registerBlockEntityRenderer(DeferredRegisters.TILE_TANKREINFORCED.get(), RenderTankGeneric::new);
 		event.registerBlockEntityRenderer(DeferredRegisters.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
 		event.registerBlockEntityRenderer(DeferredRegisters.TILE_MOTORCOMPLEX.get(), RenderMotorComplex::new);
+		event.registerBlockEntityRenderer(DeferredRegisters.TILE_ELECTROLYTICSEPARATOR.get(), RenderElectrolyticSeparator::new);
 	}
 
 	public static boolean shouldMultilayerRender(RenderType type) {
