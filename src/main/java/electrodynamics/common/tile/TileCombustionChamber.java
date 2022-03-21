@@ -43,7 +43,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 	private static IOptionalNamedTag<Fluid>[] FUELS;
 
 	static {
-		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.HYDROGEN, 1, 1);
+		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.HYDROGEN, 1000, 1);
 		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1);
 		FUELS = CombustionFuelSource.FUELS.keySet().toArray(new IOptionalNamedTag[0]);
 	}
