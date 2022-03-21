@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileCombustionChamber extends GenericTile implements IElectricGenerator {
 	public static final int TICKS_PER_MILLIBUCKET = 200;
-	public static final int TANK_CAPACITY = 100;
+	public static final int TANK_CAPACITY = 1000;
 	public boolean running;
 	public int burnTime;
 	private CachedTileOutput output;
