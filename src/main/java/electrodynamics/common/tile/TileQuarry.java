@@ -488,7 +488,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private List<Location> getArmFrames() {
 		List<Location> armFrames = new ArrayList<>();
 		if (clientMiningPos != null) {
-			if (clientComplexIsPowered && (prevClientMiningPos != null)) {
+			if (clientComplexIsPowered && prevClientMiningPos != null) {
 				int numberOfFrames = (int) clientMiningSpeed;
 				if (numberOfFrames == 0) {
 					numberOfFrames = 1;

@@ -12,9 +12,6 @@ import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.block.GenericMachineBlock;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
@@ -31,9 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
 
@@ -69,17 +64,6 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 				tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
 			}
 		}
-	}
-
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		BlockEntity entity = worldIn.getBlockEntity(pos);
-		if (entity instanceof GenericTile tile) {
-			if (tile.getComponent(ComponentType.Direction) instanceof ComponentDirection direc) {
-				return VoxelShapes.getShape(machine, direc.getDirection());
-			}
-		}
-		return super.getShape(state, worldIn, pos, context);
 	}
 
 	@Override
