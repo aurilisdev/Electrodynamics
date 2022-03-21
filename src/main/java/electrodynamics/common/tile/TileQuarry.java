@@ -195,7 +195,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 						maintainMiningArea();
 					}
 					boolean shouldSkip = false;
-					if (complex.isPowered && (int) complex.speed > 0 && (tick.getTicks() % (int) complex.speed == 0 || shouldSkip && tick.getTicks() % (int) TileMotorComplex.MAX_SPEED == 0)) {
+					if (complex.isPowered && ((int) complex.speed > 0 && (tick.getTicks() % (int) complex.speed == 0 || shouldSkip && tick.getTicks() % (int) TileMotorComplex.MAX_SPEED == 0))) {
 						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
 						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
