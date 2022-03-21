@@ -36,8 +36,8 @@ public class TileElectrolyticSeparator extends GenericTile {
 	public static final int MAX_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;
 
-	private static final Direction OXYGEN_DIRECTION = Direction.EAST;
-	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
+	private static final Direction OXYGEN_DIRECTION = Direction.WEST;
+	private static final Direction HYDROGEN_DIRECTION = Direction.EAST;
 
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
 		super(DeferredRegisters.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
