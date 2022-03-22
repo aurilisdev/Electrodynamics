@@ -175,10 +175,12 @@ repositories{
 	   	    name = "Progwml6 maven"
 	   	    url = "https://dvs1.progwml6.com/files/maven/"
 	  	}
+	  	/*
 	    maven {
 	       name = "ModMaven"
 	       url = "https://modmaven.k-4u.nl"
 	    }
+	    */
 }
 
 ext.gittagnew = 'v'+project.version

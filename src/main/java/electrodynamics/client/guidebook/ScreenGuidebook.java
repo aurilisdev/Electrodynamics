@@ -72,7 +72,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			int pageOffset = GUIDEBOOK_STARTING_PAGE + (int) Math.ceil((double) GUIDEBOOK_MODULES.size() / (double) MODULES_PER_PAGE);
 			modulePageOffset = pageOffset;
 			for (Module module : GUIDEBOOK_MODULES) {
-				pageOffset += module.setPageNumbers(pageOffset) - 1;
+				pageOffset += module.setPageNumbers(pageOffset);
 			}
 			for (int i = 0; i < modulePageOffset; i++) {
 				GUIDEBOOK_PAGES.add(new ModulePage(i));
