@@ -40,7 +40,7 @@ public abstract class Module {
 			}
 		}
 
-		return startingPageNumber;
+		return endingPageNumber - this.startingPageNumber;
 	}
 
 	public List<Page> getAllPages() {
