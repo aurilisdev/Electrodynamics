@@ -103,7 +103,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.849537037037037, 0.1875, 0.25, 0.912037037037037, 0.5625, 0.3125), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.849537037037037, 0.1875, 0.125, 0.912037037037037, 0.25, 0.25), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.474537037037037, 0.1875, 0.125, 0.849537037037037, 0.25, 0.1875), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.electrolyticseparator, shape, Direction.WEST);
+		VoxelShapes.registerShape(SubtypeMachine.electrolyticseparator, shape, Direction.EAST);
 	}
 
 }
