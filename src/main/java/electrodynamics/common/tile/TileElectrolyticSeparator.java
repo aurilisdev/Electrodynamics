@@ -36,15 +36,15 @@ public class TileElectrolyticSeparator extends GenericTile {
 	public static final int MAX_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;
 
-	private static final Direction OXYGEN_DIRECTION = Direction.WEST;
-	private static final Direction HYDROGEN_DIRECTION = Direction.EAST;
+	private static final Direction OXYGEN_DIRECTION = Direction.EAST;
+	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
 
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
 		super(DeferredRegisters.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
 		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).relativeInput(Direction.SOUTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true, true));
 		addComponent(new ComponentInventory(this).size(6).bucketInputs(1).bucketOutputs(2).upgrades(3).validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.consumeBucket().dispenseBucket().canProcessFluid2FluidRecipe(component, ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE)).process(component -> component.processFluid2FluidRecipe(component)).usage(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK).requiredTicks(Constants.ELECTROLYTICSEPARATOR_REQUIRED_TICKS));
