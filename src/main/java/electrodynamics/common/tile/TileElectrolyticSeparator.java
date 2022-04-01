@@ -45,7 +45,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
-		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).relativeInput(Direction.SOUTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true, true));
+		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).relativeInput(Direction.NORTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE, MAX_TANK_CAPACITY, true, true));
 		addComponent(new ComponentInventory(this).size(6).bucketInputs(1).bucketOutputs(2).upgrades(3).validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.consumeBucket().dispenseBucket().canProcessFluid2FluidRecipe(component, ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE)).process(component -> component.processFluid2FluidRecipe(component)).usage(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK).requiredTicks(Constants.ELECTROLYTICSEPARATOR_REQUIRED_TICKS));
 		addComponent(new ComponentContainerProvider("container.electrolyticseparator").createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
