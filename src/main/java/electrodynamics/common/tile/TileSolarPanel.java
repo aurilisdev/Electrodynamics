@@ -69,7 +69,7 @@ public class TileSolarPanel extends GenericTile implements IElectricGenerator {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
 		if (tickable.getTicks() % 20 == 0) {
-			output.update( worldPosition.relative(Direction.DOWN));
+			output.update(worldPosition.relative(Direction.DOWN));
 			generating = level.canSeeSky(worldPosition.offset(0, 1, 0));
 		}
 		if (tickable.getTicks() % 50 == 0) {
