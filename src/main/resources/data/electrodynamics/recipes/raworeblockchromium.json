@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"iii",
+		"iii",
+		"iii"
+	],
+	"key": {
+		"i": {
+			"tag": "forge:rawores/chromium"
+		}
+	},
+	"result": {
+		"item": "electrodynamics:raworeblockchromium",
+		"count": 1
+	}
+}

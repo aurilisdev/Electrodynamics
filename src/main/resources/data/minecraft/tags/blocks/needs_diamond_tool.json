@@ -14,6 +14,9 @@
 		"electrodynamics:resourceblockchromium",
 		"electrodynamics:resourceblocktitanium",
 		"electrodynamics:resourceblocktitaniumcarbide",
-		"electrodynamics:resourceblockhslasteel"
+		"electrodynamics:resourceblockhslasteel",
+		
+		"electrodynamics:raworeblockchromium",
+		"electrodynamics:raworeblocktitanium"
 	]
 }

@@ -90,6 +90,8 @@
 		"electrodynamics:raworeblocktin",
 		"electrodynamics:raworeblocklead",
 		"electrodynamics:raworeblocksilver",
+		"electrodynamics:raworeblockchromium",
+		"electrodynamics:raworeblocktitanium",
 		"electrodynamics:reinforcedalloyer",
 		"electrodynamics:reinforcedalloyerrunning",
 		"electrodynamics:resourceblockaluminum",

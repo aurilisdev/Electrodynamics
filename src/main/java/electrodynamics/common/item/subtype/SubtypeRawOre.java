@@ -5,7 +5,9 @@ import electrodynamics.api.ISubtype;
 public enum SubtypeRawOre implements ISubtype {
 	silver,
 	lead,
-	tin;
+	tin,
+	chromium,
+	titanium;
 
 	@Override
 	public String tag() {
