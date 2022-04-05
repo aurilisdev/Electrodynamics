@@ -7,7 +7,10 @@ public enum SubtypeRawOre implements ISubtype {
 	lead,
 	tin,
 	chromium,
-	titanium;
+	titanium,
+	vanadinite,
+	lepidolite,
+	fluorite;
 
 	@Override
 	public String tag() {

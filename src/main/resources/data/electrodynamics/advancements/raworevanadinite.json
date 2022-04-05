@@ -1,14 +1,14 @@
 {
   "display" : {
     "title" : {
-      "text" : "Raw Titanium Ore",
+      "text" : "Raw Vanadinite Crystals",
       "color" : "gray"
     },
     "description" : {
-      "text" : "Find some raw titanium ore!"
+      "text" : "Find some raw vanadinite crystals!"
     },
     "icon" : {
-      "item" : "electrodynamics:raworetitanium"
+      "item" : "electrodynamics:raworevanadinite"
     },
     "frame" : "task",
     "show_toast" : true,
@@ -20,7 +20,7 @@
       "trigger" : "minecraft:inventory_changed",
       "conditions" : {
         "items" : [ {
-          "items" : [ "electrodynamics:raworetitanium" ]
+          "items" : [ "electrodynamics:raworevanadinite" ]
         } ]
       }
     }

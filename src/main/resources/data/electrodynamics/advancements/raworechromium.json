@@ -16,7 +16,7 @@
     "hidden" : false
   },
   "criteria" : {
-    "HasRawOreLead" : {
+    "HasRawOre" : {
       "trigger" : "minecraft:inventory_changed",
       "conditions" : {
         "items" : [ {

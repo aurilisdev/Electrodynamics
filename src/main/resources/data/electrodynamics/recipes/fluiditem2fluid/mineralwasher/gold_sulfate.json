@@ -3,7 +3,7 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:ores/gold",
+			"tag": "forge:rawores/gold",
 			"count": 1
 		}
 	},

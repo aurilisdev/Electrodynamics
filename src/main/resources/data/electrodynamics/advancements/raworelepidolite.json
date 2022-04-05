@@ -1,14 +1,14 @@
 {
   "display" : {
     "title" : {
-      "text" : "Raw Titanium Ore",
+      "text" : "Raw Lepidolite Crystals",
       "color" : "gray"
     },
     "description" : {
-      "text" : "Find some raw titanium ore!"
+      "text" : "Find some raw lepidolite crystals!"
     },
     "icon" : {
-      "item" : "electrodynamics:raworetitanium"
+      "item" : "electrodynamics:raworelepidolite"
     },
     "frame" : "task",
     "show_toast" : true,
@@ -20,7 +20,7 @@
       "trigger" : "minecraft:inventory_changed",
       "conditions" : {
         "items" : [ {
-          "items" : [ "electrodynamics:raworetitanium" ]
+          "items" : [ "electrodynamics:raworelepidolite" ]
         } ]
       }
     }

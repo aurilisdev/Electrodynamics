@@ -3,7 +3,7 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:ores/lithium",
+			"tag": "forge:rawores/lepidolite",
 			"count": 1
 		}
 	},
