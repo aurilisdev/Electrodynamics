@@ -29,6 +29,11 @@ public class ComponentDirection implements Component {
 		return cachedDirection;
 	}
 
+	public void setDirection(Direction dir) {
+		cachedDirection = dir;
+		holder.getBlockState().setValue(GenericEntityBlock.FACING, dir);
+	}
+
 	@Override
 	public ComponentType getType() {
 		return ComponentType.Direction;

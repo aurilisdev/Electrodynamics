@@ -64,7 +64,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 		}
 		if (tickable.getTicks() % 40 == 0) {
-			output.update();
+			output.update(worldPosition.relative(facing.getOpposite()));
 		}
 		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
 		if (electro.getJoulesStored() > 0 && output.valid()) {

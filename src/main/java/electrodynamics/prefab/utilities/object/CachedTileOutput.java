@@ -32,7 +32,11 @@ public class CachedTileOutput {
 		return cache != null;
 	}
 
-	public void update() {
+	public void update(BlockPos pos) {
+		if (!this.pos.equals(pos)) {
+			cache = null;
+			this.pos = pos;
+		}
 		getSafe();
 	}
 

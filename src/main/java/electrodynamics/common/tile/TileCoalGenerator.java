@@ -64,10 +64,10 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	protected void tickServer(ComponentTickable tickable) {
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		if (output == null) {
-			output = new CachedTileOutput(level, new BlockPos(worldPosition).relative(direction.getDirection().getOpposite()));
+			output = new CachedTileOutput(level, worldPosition.relative(direction.getDirection().getOpposite()));
 		}
 		if (tickable.getTicks() % 20 == 0) {
-			output.update();
+			output.update( worldPosition.relative(direction.getDirection().getOpposite()));
 		}
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack fuel = inv.getItem(0);

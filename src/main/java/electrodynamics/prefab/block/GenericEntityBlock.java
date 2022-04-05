@@ -6,6 +6,7 @@ import java.util.List;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.core.BlockPos;
@@ -52,7 +53,14 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public void onRotate(ItemStack stack, BlockPos pos, Player player) {
 		if (player.level.getBlockState(pos).hasProperty(FACING)) {
-			player.level.setBlockAndUpdate(pos, rotate(player.level.getBlockState(pos), Rotation.CLOCKWISE_90));
+			BlockState state = rotate(player.level.getBlockState(pos), Rotation.CLOCKWISE_90);
+			if (player.level.getBlockEntity(pos) instanceof GenericTile tile) {
+				if (tile.hasComponent(ComponentType.Direction)) {
+					tile.<ComponentDirection>getComponent(ComponentType.Direction).setDirection(state.getValue(FACING));
+				}
+			}
+			player.level.setBlockAndUpdate(pos, state);
+			player.level.updateNeighborsAt(pos, this);
 		}
 	}
 

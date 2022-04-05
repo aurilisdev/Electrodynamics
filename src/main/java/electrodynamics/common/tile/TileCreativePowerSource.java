@@ -56,8 +56,9 @@ public class TileCreativePowerSource extends GenericTile {
 			}
 		}
 		if (tick.getTicks() % 40 == 0) {
-			for (CachedTileOutput cache : outputs) {
-				cache.update();
+			for (int i = 0; i < Direction.values().length; i++) {
+				CachedTileOutput cache = outputs.get(i);
+				cache.update(worldPosition.relative(Direction.values()[i]));
 			}
 		}
 		electro.voltage(outputValue.getSecond());

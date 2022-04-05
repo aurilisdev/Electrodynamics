@@ -66,7 +66,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 			output = new CachedTileOutput(level, worldPosition.relative(facing.getClockWise()));
 		}
 		if (tickable.getTicks() % 40 == 0) {
-			output.update();
+			output.update(worldPosition.relative(facing.getClockWise()));
 		}
 		if (tickable.getTicks() % 5 == 0) {
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();

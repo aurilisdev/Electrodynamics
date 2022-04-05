@@ -63,7 +63,7 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 		}
 
 		if (tickable.getTicks() % 40 == 0) {
-			output.update();
+			output.update(worldPosition.relative(Direction.DOWN));
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
 		if (isGenerating && output.valid()) {

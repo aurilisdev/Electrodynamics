@@ -73,7 +73,7 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
 		if (tickable.getTicks() % 40 == 0) {
-			output.update();
+			output.update(worldPosition.relative(Direction.DOWN));
 			generating = level.canSeeSky(worldPosition.offset(0, 1, 0));
 		}
 		if (tickable.getTicks() % 50 == 0) {

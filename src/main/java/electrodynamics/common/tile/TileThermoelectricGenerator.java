@@ -41,7 +41,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 		if (tickable.getTicks() % 60 == 0) {
 			Fluid fluid = level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getType();
 			hasHeat = fluid == Fluids.LAVA || fluid == Fluids.FLOWING_LAVA;
-			output.update();
+			output.update(worldPosition.relative(Direction.UP));
 		}
 		if (hasHeat && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE * level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getAmount() / 16.0, electro.getVoltage()), false);

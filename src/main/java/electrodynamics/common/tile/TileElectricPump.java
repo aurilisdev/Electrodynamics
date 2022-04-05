@@ -50,7 +50,7 @@ public class TileElectricPump extends GenericTile {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 
 		if (tickable.getTicks() % 20 == 0) {
-			output.update();
+			output.update(worldPosition.relative(direction));
 			FluidState state = level.getFluidState(worldPosition.relative(Direction.DOWN));
 			if (isGenerating != (state.isSource() && state.getType() == Fluids.WATER)) {
 				isGenerating = electro.getJoulesStored() > Constants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER;
