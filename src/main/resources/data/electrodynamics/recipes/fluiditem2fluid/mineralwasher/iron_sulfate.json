@@ -3,7 +3,7 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:rawores/iron",
+			"item": "minecraft:raw_iron",
 			"count": 1
 		}
 	},
