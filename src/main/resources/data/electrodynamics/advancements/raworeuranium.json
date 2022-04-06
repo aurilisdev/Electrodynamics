@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Raw Uranium Ore",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Find some raw uranium ore!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:raworeuranium"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasRawOre" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:raworeuranium" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasRawOre" ] ],
+  "rewards" : {
+    "experience" : 10
+  },
+  "parent" : "electrodynamics:ores"
+}
