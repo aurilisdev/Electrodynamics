@@ -10,7 +10,7 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "electrodynamics:deepslateorethorium",
+              "name": "electrodynamics:deepslateorethorianite",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",

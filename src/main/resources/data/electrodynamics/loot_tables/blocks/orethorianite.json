@@ -10,7 +10,7 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "electrodynamics:orethorium",
+              "name": "electrodynamics:orethorianite",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
