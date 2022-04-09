@@ -1,0 +1,33 @@
+{
+  "display" : {
+    "title" : {
+      "text" : "Raw Thorium Ore",
+      "color" : "gray"
+    },
+    "description" : {
+      "text" : "Find some raw thorium ore!"
+    },
+    "icon" : {
+      "item" : "electrodynamics:raworethorium"
+    },
+    "frame" : "task",
+    "show_toast" : true,
+    "announce_to_chat" : true,
+    "hidden" : false
+  },
+  "criteria" : {
+    "HasOre" : {
+      "trigger" : "minecraft:inventory_changed",
+      "conditions" : {
+        "items" : [ {
+          "items" : [ "electrodynamics:raworethorium" ]
+        } ]
+      }
+    }
+  },
+  "requirements" : [ [ "HasOre" ] ],
+  "rewards" : {
+    "experience" : 10
+  },
+  "parent" : "electrodynamics:ores"
+}

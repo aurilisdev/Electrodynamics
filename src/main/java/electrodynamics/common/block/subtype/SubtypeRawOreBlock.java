@@ -8,7 +8,8 @@ public enum SubtypeRawOreBlock implements ISubtype {
 	silver,
 	chromium,
 	titanium, 
-	uranium;
+	uranium,
+	thorium;
 
 	@Override
 	public String tag() {
