@@ -33,9 +33,9 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 def	version_minor="6"
-def	version_revision='2'
-def	minecraft_version='1.18.1'
-def	version_build='4'
+def	version_revision='3'
+def	minecraft_version='1.18.2'
+def	version_build='0'
 def	version_major='0'
 
 version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revision+'-'+version_build
@@ -49,7 +49,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     //mappings channel: 'official', version: '1.18.1' 
-    mappings channel: 'parchment', version: '2022.02.13-1.18.1'
+    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
     runs {
         client {
             workingDirectory project.file('run')
@@ -114,10 +114,10 @@ mixin {
     add sourceSets.main, "electrodynamics.refmap.json"
 }
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.18.1-39.1.2'
-	compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.101:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.4.1.101")
-    
+	minecraft 'net.minecraftforge:forge:1.18.2-40.0.45'
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.180:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.180")
+
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
