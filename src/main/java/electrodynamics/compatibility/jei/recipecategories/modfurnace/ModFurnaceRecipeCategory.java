@@ -66,7 +66,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 		RECIPE_GROUP = recipeGroup;
 		MOD_ID = modID;
 
-		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, inputMachine);
+		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;

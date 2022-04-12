@@ -86,7 +86,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	protected void setFluidInTank(FluidStack stack, int tank, boolean isInput) {
 		fluidTank.setFluid(stack);
 	}
-
+	
 	@Override
 	public ComponentFluidHandlerSimple setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids) {
 		tankCapacity = capacity;
@@ -100,13 +100,16 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	}
 
 	@Override
-	public ComponentFluidHandlerSimple setManualFluidTags(int inTankCount, int outTankCount, boolean input, boolean output, int capacity, TagKey<Fluid>[] inTags, TagKey<Fluid>... outTags) {
-		this.inTankCount = inTankCount;
-		this.outTankCount = outTankCount;
-		hasInput = input;
-		hasOutput = output;
-		inKeys = inTags;
-		outKeys = outTags;
+	public ComponentFluidHandlerSimple setInputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		inTankCount = count;
+		inKeys = tags;
+		inCapacity = capacity;
+		return this;
+	}
+
+	@Override
+	//we only need the one so we can ignore this one
+	public ComponentFluidHandlerSimple setOutputTags(int count,int capacity, TagKey<Fluid>... tags) {
 		return this;
 	}
 
@@ -174,14 +177,14 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 			for(TagKey<Fluid> key : inKeys) {
 				inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
 			}
-			setManualFluids(inTankCount, true, tankCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
+			setManualFluids(inTankCount, true, inCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
 		}
 		if (outKeys != null) {
 			List<Fluid> outputFluidHolder = new ArrayList<>();
 			for(TagKey<Fluid> key : outKeys) {
 				outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
 			}
-			setManualFluids(outTankCount, false, tankCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
+			setManualFluids(outTankCount, false, outCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
 		}
 	}
 }

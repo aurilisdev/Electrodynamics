@@ -43,6 +43,8 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	protected TagKey<Fluid>[] outKeys;
 	protected int inTankCount;
 	protected int outTankCount;
+	protected int inCapacity;
+	protected int outCapacity;
 
 	protected AbstractFluidHandler(GenericTile tile) {
 		holder(tile);
@@ -144,7 +146,9 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	public abstract AbstractFluidHandler<A> setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids);
 
-	public abstract AbstractFluidHandler<A> setManualFluidTags(int inTankCount, int outTankCount, boolean input, boolean output, int capacity, TagKey<Fluid>[] inTags, TagKey<Fluid>... outTags);
+	public abstract AbstractFluidHandler<A> setInputTags(int count, int capacity, TagKey<Fluid>... tags);
+	
+	public abstract AbstractFluidHandler<A> setOutputTags(int count, int capacity, TagKey<Fluid>... tags);
 
 	public abstract FluidStack getFluidInTank(int tank, boolean isInput);
 

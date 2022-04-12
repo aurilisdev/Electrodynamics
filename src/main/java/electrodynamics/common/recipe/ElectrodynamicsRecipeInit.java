@@ -28,7 +28,7 @@ public class ElectrodynamicsRecipeInit {
 
 	// Deferred Register
 	public static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, electrodynamics.api.References.ID);
-	public static DeferredRegister<RecipeType<? extends ElectrodynamicsRecipe>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE.key().getRegistryName(), electrodynamics.api.References.ID);
+	public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE.key(), electrodynamics.api.References.ID);
 	/* RECIPE TYPES */
 
 	// Item2Item

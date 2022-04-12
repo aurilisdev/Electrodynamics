@@ -75,7 +75,6 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 			burnTime = ForgeHooks.getBurnTime(fuel, null);
 			fuel.shrink(1);
 			maxBurnTime = burnTime;
-			// burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
 		}
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {

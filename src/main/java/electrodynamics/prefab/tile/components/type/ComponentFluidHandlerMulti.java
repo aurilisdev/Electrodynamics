@@ -179,13 +179,18 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 
 	@Override
-	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int inTankCount, int outTankCount, boolean input, boolean output, int capacity, TagKey<Fluid>[] inTags, TagKey<Fluid>... outTags) {
-		this.inTankCount = inTankCount;
-		this.outTankCount = outTankCount;
-		hasInput = input;
-		hasOutput = output;
-		inKeys = inTags;
-		outKeys = outTags;
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setInputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		inTankCount = count;
+		inKeys = tags;
+		inCapacity = capacity;
+		return this;
+	}
+
+	@Override
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setOutputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		outTankCount = count;
+		outKeys = tags;
+		outCapacity = capacity;
 		return this;
 	}
 
@@ -347,14 +352,14 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 				for(TagKey<Fluid> key : inKeys) {
 					inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
 				}
-				setManualFluids(inTankCount, true, tankCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
+				setManualFluids(inTankCount, true, inCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
 			}
 			if (outKeys != null) {
 				List<Fluid> outputFluidHolder = new ArrayList<>();
 				for(TagKey<Fluid> key : outKeys) {
 					outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
 				}
-				setManualFluids(outTankCount, false, tankCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
+				setManualFluids(outTankCount, false, outCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
 			}
 		}
 	}
