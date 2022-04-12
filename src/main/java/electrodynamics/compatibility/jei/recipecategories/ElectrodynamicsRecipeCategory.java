@@ -21,6 +21,7 @@ import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -75,7 +76,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
 
-		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, inputMachine);
+		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		ANIMATION_LENGTH = animationTime;
@@ -274,7 +275,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			wrapper = fluidInputs[i];
 			stack = inputs.get(i).get(0);
 			int height = (int) Math.ceil(stack.getAmount() / (float) wrapper.getAmount() * wrapper.getFluidTextHeight());
-			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredients(VanillaTypes.FLUID, inputs.get(i));
+			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredients(ForgeTypes.FLUID_STACK, inputs.get(i));
 		}
 	}
 
@@ -286,7 +287,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			wrapper = fluidOutputs[i];
 			stack = outputs.get(i);
 			int height = (int) Math.ceil(stack.getAmount() / (float) wrapper.getAmount() * wrapper.getFluidTextHeight());
-			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredient(VanillaTypes.FLUID, stack);
+			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredient(ForgeTypes.FLUID_STACK, stack);
 		}
 	}
 

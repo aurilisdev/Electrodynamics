@@ -41,7 +41,7 @@ public class TileLathe extends GenericTile {
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.LATHE_USAGE_PER_TICK * 20));
 		addComponent(new ComponentInventory(this).size(6).inputs(1).outputs(1).upgrades(3).processors(1).processorInputs(1).valid(machineValidator()).biproducts(1).shouldSendInfo());
 		addComponent(new ComponentContainerProvider("container.lathe").createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-		addProcessor(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.LATHE_TYPE.getRegister())).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.LATHE_REQUIRED_TICKS).usage(Constants.LATHE_USAGE_PER_TICK));
+		addProcessor(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.LATHE_TYPE.get())).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.LATHE_REQUIRED_TICKS).usage(Constants.LATHE_USAGE_PER_TICK));
 	}
 
 	protected void tickServer(ComponentTickable tick) {

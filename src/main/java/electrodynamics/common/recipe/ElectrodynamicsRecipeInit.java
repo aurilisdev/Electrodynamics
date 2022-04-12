@@ -17,7 +17,6 @@ import electrodynamics.common.recipe.categories.item2item.specificmachines.Oxida
 import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -29,28 +28,28 @@ public class ElectrodynamicsRecipeInit {
 
 	// Deferred Register
 	public static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, electrodynamics.api.References.ID);
-
+	public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE.key(), electrodynamics.api.References.ID);
 	/* RECIPE TYPES */
 
 	// Item2Item
-	public static final LateRecipeRegister<RecipeType<WireMillRecipe>> WIRE_MILL_TYPE = registerType(WireMillRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<MineralGrinderRecipe>> MINERAL_GRINDER_TYPE = registerType(MineralGrinderRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<MineralCrusherRecipe>> MINERAL_CRUSHER_TYPE = registerType(MineralCrusherRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<LatheRecipe>> LATHE_TYPE = registerType(LatheRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<OxidationFurnaceRecipe>> OXIDATION_FURNACE_TYPE = registerType(OxidationFurnaceRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<EnergizedAlloyerRecipe>> ENERGIZED_ALLOYER_TYPE = registerType(EnergizedAlloyerRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<ReinforcedAlloyerRecipe>> REINFORCED_ALLOYER_TYPE = registerType(ReinforcedAlloyerRecipe.RECIPE_ID);
+	public static final RegistryObject<RecipeType<WireMillRecipe>> WIRE_MILL_TYPE = RECIPE_TYPES.register(WireMillRecipe.RECIPE_GROUP, () -> new CustomRecipeType<WireMillRecipe>());
+	public static final RegistryObject<RecipeType<MineralGrinderRecipe>> MINERAL_GRINDER_TYPE = RECIPE_TYPES.register(MineralGrinderRecipe.RECIPE_GROUP, () -> new CustomRecipeType<MineralGrinderRecipe>());
+	public static final RegistryObject<RecipeType<MineralCrusherRecipe>> MINERAL_CRUSHER_TYPE = RECIPE_TYPES.register(MineralCrusherRecipe.RECIPE_GROUP, () -> new CustomRecipeType<MineralCrusherRecipe>());
+	public static final RegistryObject<RecipeType<LatheRecipe>> LATHE_TYPE = RECIPE_TYPES.register(LatheRecipe.RECIPE_GROUP, () -> new CustomRecipeType<LatheRecipe>());
+	public static final RegistryObject<RecipeType<OxidationFurnaceRecipe>> OXIDATION_FURNACE_TYPE = RECIPE_TYPES.register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> new CustomRecipeType<OxidationFurnaceRecipe>());
+	public static final RegistryObject<RecipeType<EnergizedAlloyerRecipe>> ENERGIZED_ALLOYER_TYPE = RECIPE_TYPES.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<EnergizedAlloyerRecipe>());
+	public static final RegistryObject<RecipeType<ReinforcedAlloyerRecipe>> REINFORCED_ALLOYER_TYPE = RECIPE_TYPES.register(ReinforcedAlloyerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ReinforcedAlloyerRecipe>());
 
 	// FluidItem2Fluid
-	public static final LateRecipeRegister<RecipeType<ChemicalMixerRecipe>> CHEMICAL_MIXER_TYPE = registerType(ChemicalMixerRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<FermentationPlantRecipe>> FERMENTATION_PLANT_TYPE = registerType(FermentationPlantRecipe.RECIPE_ID);
-	public static final LateRecipeRegister<RecipeType<MineralWasherRecipe>> MINERAL_WASHER_TYPE = registerType(MineralWasherRecipe.RECIPE_ID);
+	public static final RegistryObject<RecipeType<ChemicalMixerRecipe>> CHEMICAL_MIXER_TYPE = RECIPE_TYPES.register(ChemicalMixerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ChemicalMixerRecipe>());
+	public static final RegistryObject<RecipeType<FermentationPlantRecipe>> FERMENTATION_PLANT_TYPE = RECIPE_TYPES.register(FermentationPlantRecipe.RECIPE_GROUP, () -> new CustomRecipeType<FermentationPlantRecipe>());
+	public static final RegistryObject<RecipeType<MineralWasherRecipe>> MINERAL_WASHER_TYPE = RECIPE_TYPES.register(MineralWasherRecipe.RECIPE_GROUP, () -> new CustomRecipeType<MineralWasherRecipe>());
 
 	// Fluid2Item
-	public static final LateRecipeRegister<RecipeType<ChemicalCrystalizerRecipe>> CHEMICAL_CRYSTALIZER_TYPE = registerType(ChemicalCrystalizerRecipe.RECIPE_ID);
+	public static final RegistryObject<RecipeType<ChemicalCrystalizerRecipe>> CHEMICAL_CRYSTALIZER_TYPE = RECIPE_TYPES.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ChemicalCrystalizerRecipe>());
 
 	// Fluid2Fluid
-	public static final LateRecipeRegister<RecipeType<ElectrolyticSeparatorRecipe>> ELECTROLYTIC_SEPERATOR_TYPE = registerType(ElectrolyticSeparatorRecipe.RECIPE_ID);
+	public static final RegistryObject<RecipeType<ElectrolyticSeparatorRecipe>> ELECTROLYTIC_SEPERATOR_TYPE = RECIPE_TYPES.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ElectrolyticSeparatorRecipe>());
 
 	/* SERIALIZERS */
 
@@ -76,32 +75,11 @@ public class ElectrodynamicsRecipeInit {
 
 	/* Functional Methods */
 
-	public static <T extends RecipeType<?>> LateRecipeRegister<T> registerType(ResourceLocation recipeTypeId) {
-		return new LateRecipeRegister<>(recipeTypeId);
-	}
-
 	private static class CustomRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 		@Override
 		public String toString() {
 			return Registry.RECIPE_TYPE.getKey(this).toString();
 		}
 	}
-
-	public static class LateRecipeRegister<T extends RecipeType<?>> {
-		ResourceLocation recipeTypeId;
-
-		public LateRecipeRegister(ResourceLocation recipeTypeId) {
-			this.recipeTypeId = recipeTypeId;
-		}
-
-		private RecipeType<?> type;
-
-		public T getRegister() {
-			if (type == null) {
-				type = Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new CustomRecipeType<>());
-			}
-			return (T) type;
-		}
-
-	}
+	
 }

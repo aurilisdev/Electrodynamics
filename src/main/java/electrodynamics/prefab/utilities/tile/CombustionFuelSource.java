@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class CombustionFuelSource {
 
@@ -27,7 +28,7 @@ public class CombustionFuelSource {
 
 	public static CombustionFuelSource getSourceFromFluid(Fluid fluid) {
 		for (TagKey<Fluid> fluidTag : FUELS.keySet()) {
-			if (fluid.builtInRegistryHolder().is(fluidTag)) {
+			if (ForgeRegistries.FLUIDS.tags().getTag(fluidTag).contains(fluid)) {
 				return FUELS.get(fluidTag);
 			}
 		}

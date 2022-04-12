@@ -179,17 +179,19 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 
 	@Override
-	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int tanks, boolean isInput, int capacity, TagKey<Fluid>... tags) {
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setInputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		inTankCount = count;
+		inKeys = tags;
+		inCapacity = capacity;
+		return this;
+	}
 
-		List<Fluid> fluids = new ArrayList<>();
-		for (TagKey<Fluid> tag : tags) {
-			fluids.addAll(ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList());
-		}
-		Fluid[] arr = new Fluid[fluids.size()];
-		for (int i = 0; i < fluids.size(); i++) {
-			arr[i] = fluids.get(i);
-		}
-		return setManualFluids(tanks, isInput, capacity, arr);
+	@Override
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setOutputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		outTankCount = count;
+		outKeys = tags;
+		outCapacity = capacity;
+		return this;
 	}
 
 	@Override
@@ -344,6 +346,21 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 			}
 			setManualFluids(inTankCount, true, tankCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
 			setManualFluids(outTankCount, false, tankCapacity, outputFluidHohlder.toArray(new Fluid[inputFluidHolder.size()]));
+		} else {
+			if (inKeys != null) {
+				List<Fluid> inputFluidHolder = new ArrayList<>();
+				for(TagKey<Fluid> key : inKeys) {
+					inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+				}
+				setManualFluids(inTankCount, true, inCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
+			}
+			if (outKeys != null) {
+				List<Fluid> outputFluidHolder = new ArrayList<>();
+				for(TagKey<Fluid> key : outKeys) {
+					outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+				}
+				setManualFluids(outTankCount, false, outCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
+			}
 		}
 	}
 }

@@ -14,6 +14,7 @@ import electrodynamics.Electrodynamics;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
@@ -24,6 +25,9 @@ public class FluidIngredient extends Ingredient {
 
 	@Nonnull
 	private List<FluidStack> fluidStacks;
+	
+	private TagKey<Fluid> tag;
+	private int amount;
 
 	public FluidIngredient(FluidStack fluidStack) {
 		super(Stream.empty());
@@ -71,14 +75,9 @@ public class FluidIngredient extends Ingredient {
 	 */
 	private FluidIngredient(ResourceLocation resource, int amount) {
 		super(Stream.empty());
-		List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(resource)).stream().toList(); // TODO: Fix this
+		tag = FluidTags.create(resource);
+		this.amount = amount;
 		fluidStacks = new ArrayList<>();
-		for (Fluid fluid : fluids) {
-			fluidStacks.add(new FluidStack(fluid, amount));
-		}
-		if (fluidStacks.isEmpty()) {
-			throw new UnsupportedOperationException("No fluids returned from tag " + resource);
-		}
 	}
 
 	public static FluidIngredient deserialize(JsonObject jsonObject) {
@@ -103,7 +102,7 @@ public class FluidIngredient extends Ingredient {
 
 	public boolean testFluid(@Nullable FluidStack t) {
 		if (t != null) {
-			for (FluidStack stack : fluidStacks) {
+			for (FluidStack stack : getMatchingFluids()) {
 				if (t.getAmount() >= stack.getAmount()) {
 					if (t.getFluid().isSame(stack.getFluid())) {
 						return true;
@@ -147,6 +146,11 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	public List<FluidStack> getMatchingFluids() {
+		if (fluidStacks.isEmpty() && tag != null) {
+			ForgeRegistries.FLUIDS.tags().getTag(tag).forEach(h -> {
+				fluidStacks.add(new FluidStack(h, amount));
+			});
+		}
 		return fluidStacks;
 	}
 

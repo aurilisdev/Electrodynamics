@@ -32,7 +32,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 
-public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<AbstractCookingRecipe> {
+public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> implements IRecipeCategory<T> {
 
 	private GenericLabelWrapper[] LABELS;
 
@@ -54,19 +54,19 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
 
-	private Class<? extends AbstractCookingRecipe> RECIPE_CATEGORY_CLASS;
+	private Class<T> RECIPE_CATEGORY_CLASS;
 
 	private double JOULES;
 	private int VOLTAGE;
 
-	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<? extends AbstractCookingRecipe> recipeClass, int animTime, double joulesPerTick, int voltage) {
+	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeClass, int animTime, double joulesPerTick, int voltage) {
 
 		ANIMATION_LENGTH = animTime;
 
 		RECIPE_GROUP = recipeGroup;
 		MOD_ID = modID;
 
-		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, inputMachine);
+		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, inputMachine);
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;
@@ -76,7 +76,7 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 	}
 
 	@Override
-	public Class<? extends AbstractCookingRecipe> getRecipeClass() {
+	public Class<T> getRecipeClass() {
 		return RECIPE_CATEGORY_CLASS;
 	}
 
@@ -110,21 +110,6 @@ public abstract class ModFurnaceRecipeCategory implements IRecipeCategory<Abstra
 		}
 	}
 
-	/*
-	 * @Override public void setIngredients(AbstractCookingRecipe recipe, IIngredients ingredients) { ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe)); ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe)); }
-	 * 
-	 * @Override public void setRecipe(IRecipeLayout recipeLayout, AbstractCookingRecipe recipe, IIngredients ingredients) {
-	 * 
-	 * IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-	 * 
-	 * GenericItemSlotWrapper wrapper; for (int i = 0; i < inSlots.length; i++) { wrapper = inSlots[i]; guiItemStacks.init(i, true, wrapper.itemXStart(), wrapper.itemYStart()); }
-	 * 
-	 * int offset = inSlots.length;
-	 * 
-	 * for (int i = 0; i < outSlots.length; i++) { wrapper = outSlots[i]; guiItemStacks.init(i + offset, false, wrapper.itemXStart(), wrapper.itemYStart()); }
-	 * 
-	 * guiItemStacks.set(ingredients); }
-	 */
 	@Override
 	public void draw(AbstractCookingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(ANIMATION_LENGTH);

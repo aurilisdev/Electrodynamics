@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.item2item.specificmac
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.EnergizedAlloyerRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
 import electrodynamics.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
@@ -13,10 +14,11 @@ import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory {
+public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory<EnergizedAlloyerRecipe> {
 
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
@@ -40,9 +42,11 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory {
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
+	public static final RecipeType<EnergizedAlloyerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, EnergizedAlloyerRecipe.RECIPE_GROUP, EnergizedAlloyerRecipe.class);
+	
 	public EnergizedAlloyerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
-		ElectrodynamicsJEIPlugin.addDO2OClickArea(UID);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, EnergizedAlloyerRecipe.class, ANIM_TIME);
+		ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
 		setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
@@ -52,6 +56,11 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory {
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<EnergizedAlloyerRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 }

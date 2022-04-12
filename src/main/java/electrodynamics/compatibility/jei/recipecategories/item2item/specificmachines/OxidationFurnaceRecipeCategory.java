@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.item2item.specificmac
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
 import electrodynamics.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
@@ -13,10 +14,11 @@ import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory {
+public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory<OxidationFurnaceRecipe> {
 
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
@@ -40,9 +42,11 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory {
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
+	public static final RecipeType<OxidationFurnaceRecipe> RECIPE_TYPE = RecipeType.create(References.ID, OxidationFurnaceRecipe.RECIPE_GROUP, OxidationFurnaceRecipe.class);
+	
 	public OxidationFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
-		ElectrodynamicsJEIPlugin.addDO2OClickArea(UID);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, OxidationFurnaceRecipe.class, ANIM_TIME);
+		ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
 		setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
@@ -52,6 +56,11 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory {
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<OxidationFurnaceRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 }

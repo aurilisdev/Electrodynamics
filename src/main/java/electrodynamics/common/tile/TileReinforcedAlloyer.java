@@ -44,7 +44,7 @@ public class TileReinforcedAlloyer extends GenericTile {
 	}
 
 	protected boolean canProcessReinfAlloy(ComponentProcessor component) {
-		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.getRegister())) {
+		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get())) {
 			if (getBlockState().getBlock() == DeferredRegisters.getSafeBlock(SubtypeMachine.reinforcedalloyer)) {
 				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.reinforcedalloyerrunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}

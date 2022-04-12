@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
@@ -75,7 +76,6 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 			burnTime = ForgeHooks.getBurnTime(fuel, null);
 			fuel.shrink(1);
 			maxBurnTime = burnTime;
-			// burnTime = inv.getItem(0).getItem() == Items.COAL_BLOCK ? COAL_BURN_TIME * 9 : COAL_BURN_TIME;
 		}
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {
@@ -170,8 +170,9 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	}
 
 	public static List<Item> getValidItems() {
-		List<Item> items = ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList();
-		items.add(Items.CHARCOAL); // TODO: Check if this is neccesary?
+		List<Item> items = new ArrayList<>();
+		items.addAll(ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList());
+		items.add(Items.CHARCOAL); 
 		items.add(Blocks.COAL_BLOCK.asItem());
 		return items;
 	}

@@ -86,7 +86,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	protected void setFluidInTank(FluidStack stack, int tank, boolean isInput) {
 		fluidTank.setFluid(stack);
 	}
-
+	
 	@Override
 	public ComponentFluidHandlerSimple setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids) {
 		tankCapacity = capacity;
@@ -100,16 +100,17 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	}
 
 	@Override
-	public ComponentFluidHandlerSimple setManualFluidTags(int tankCount, boolean isInput, int capacity, TagKey<Fluid>... tags) {
-		List<Fluid> fluids = new ArrayList<>();
-		for (TagKey<Fluid> tag : tags) {
-			fluids.addAll(ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList());
-		}
-		Fluid[] arr = new Fluid[fluids.size()];
-		for (int i = 0; i < fluids.size(); i++) {
-			arr[i] = fluids.get(i);
-		}
-		return setManualFluids(tankCount, isInput, capacity, arr);
+	public ComponentFluidHandlerSimple setInputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		inTankCount = count;
+		inKeys = tags;
+		inCapacity = capacity;
+		return this;
+	}
+
+	@Override
+	//we only need the one so we can ignore this one
+	public ComponentFluidHandlerSimple setOutputTags(int count,int capacity, TagKey<Fluid>... tags) {
+		return this;
 	}
 
 	@Override
@@ -171,17 +172,19 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 
 	@Override
 	public void addFluids() {
-//	if (recipeType != null) {
-//	    Set<Recipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, getHolder().getLevel());
-//	    fluidTank = new FluidTank(tankCapacity);
-//	    for (Recipe<?> iRecipe : recipes) {
-//		if (hasInput) {
-//		    // implement this at a later date
-//		}
-//		if (hasOutput) {
-//		    // implement this at a later date
-//		}
-//	    }
-//	}
+		if (inKeys != null) {
+			List<Fluid> inputFluidHolder = new ArrayList<>();
+			for(TagKey<Fluid> key : inKeys) {
+				inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+			}
+			setManualFluids(inTankCount, true, inCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
+		}
+		if (outKeys != null) {
+			List<Fluid> outputFluidHolder = new ArrayList<>();
+			for(TagKey<Fluid> key : outKeys) {
+				outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+			}
+			setManualFluids(outTankCount, false, outCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
+		}
 	}
 }

@@ -15,14 +15,16 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
+public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory<BlastingRecipe> {
 
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
@@ -42,6 +44,8 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag() + "0";
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	
+	public static final RecipeType<BlastingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "mod_blasting", BlastingRecipe.class);
 
 	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME, Constants.ELECTRICARCFURNACE_USAGE_PER_TICK, 120);
@@ -55,6 +59,11 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<BlastingRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 	@Override

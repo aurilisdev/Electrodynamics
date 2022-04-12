@@ -16,7 +16,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipeCategory<FluidItem2ItemRecipe> {
+public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecipe> extends ElectrodynamicsRecipeCategory<T> {
 
 	/*
 	 * DOCUMENTATION NOTES:
@@ -24,30 +24,11 @@ public abstract class FluidItem2ItemRecipeCategory extends ElectrodynamicsRecipe
 	 * > Items supercede bucket slots in order > All biproducts will be included with the outputSlots field > All fluid bucket output slots will be incled with the outputSlots field
 	 */
 
-	protected FluidItem2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, int animTime) {
+	protected FluidItem2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, Class<T> recipeClass, int animTime) {
 
-		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, FluidItem2ItemRecipe.class, animTime);
+		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, recipeClass, animTime);
 	}
 
-	/*
-	 * @Override public void setIngredients(FluidItem2ItemRecipe recipe, IIngredients ingredients) { ingredients.setInputLists(VanillaTypes.ITEM, getItemInputs(recipe)); ingredients.setInputLists(VanillaTypes.FLUID, getFluidInputs(recipe)); ingredients.setOutputs(VanillaTypes.ITEM, getItemOutputs(recipe)); if (recipe.hasFluidBiproducts()) { ingredients.setOutputs(VanillaTypes.FLUID, Arrays.asList(recipe.getFullFluidBiStacks())); } }
-	 * 
-	 * @Override public void setRecipe(IRecipeLayout recipeLayout, FluidItem2ItemRecipe recipe, IIngredients ingredients) {
-	 * 
-	 * IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks(); IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
-	 * 
-	 * setItemInputs(guiItemStacks); setFluidInputs(guiFluidStacks, recipe.getFluidIngredients()); setItemOutputs(guiItemStacks); if (recipe.hasFluidBiproducts()) { setFluidOutputs(guiFluidStacks, recipe); }
-	 * 
-	 * guiItemStacks.set(ingredients); guiFluidStacks.set(ingredients);
-	 * 
-	 * }
-	 * 
-	 * @Override public void draw(FluidItem2ItemRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-	 * 
-	 * drawInputSlots(matrixStack); drawOutputSlots(matrixStack); drawStaticArrows(matrixStack); drawFluidInputs(matrixStack); if (recipe.hasFluidBiproducts()) { drawFluidOutputs(matrixStack); } drawAnimatedArrows(matrixStack);
-	 * 
-	 * // was +8 addDescriptions(matrixStack, recipe); }
-	 */
 	@Override
 	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
 		FluidItem2ItemRecipe recipe = (FluidItem2ItemRecipe) electro;
