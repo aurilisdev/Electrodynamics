@@ -59,6 +59,7 @@ public class Electrodynamics {
 		DeferredRegisters.FLUIDS.register(bus);
 		DeferredRegisters.ENTITIES.register(bus);
 		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
+		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	}
 

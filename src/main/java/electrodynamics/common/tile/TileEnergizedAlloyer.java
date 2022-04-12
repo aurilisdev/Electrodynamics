@@ -45,7 +45,7 @@ public class TileEnergizedAlloyer extends GenericTile {
 	}
 
 	protected boolean canProcessEnergAlloy(ComponentProcessor component) {
-		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.getRegister())) {
+		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get())) {
 			if (getBlockState().getBlock() == DeferredRegisters.getSafeBlock(SubtypeMachine.energizedalloyer)) {
 				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.energizedalloyerrunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}

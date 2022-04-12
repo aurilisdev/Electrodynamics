@@ -179,17 +179,14 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 
 	@Override
-	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int tanks, boolean isInput, int capacity, TagKey<Fluid>... tags) {
-
-		List<Fluid> fluids = new ArrayList<>();
-		for (TagKey<Fluid> tag : tags) {
-			fluids.addAll(ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList());
-		}
-		Fluid[] arr = new Fluid[fluids.size()];
-		for (int i = 0; i < fluids.size(); i++) {
-			arr[i] = fluids.get(i);
-		}
-		return setManualFluids(tanks, isInput, capacity, arr);
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int inTankCount, int outTankCount, boolean input, boolean output, int capacity, TagKey<Fluid>[] inTags, TagKey<Fluid>... outTags) {
+		this.inTankCount = inTankCount;
+		this.outTankCount = outTankCount;
+		hasInput = input;
+		hasOutput = output;
+		inKeys = inTags;
+		outKeys = outTags;
+		return this;
 	}
 
 	@Override
@@ -344,6 +341,21 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 			}
 			setManualFluids(inTankCount, true, tankCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
 			setManualFluids(outTankCount, false, tankCapacity, outputFluidHohlder.toArray(new Fluid[inputFluidHolder.size()]));
+		} else {
+			if (inKeys != null) {
+				List<Fluid> inputFluidHolder = new ArrayList<>();
+				for(TagKey<Fluid> key : inKeys) {
+					inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+				}
+				setManualFluids(inTankCount, true, tankCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
+			}
+			if (outKeys != null) {
+				List<Fluid> outputFluidHolder = new ArrayList<>();
+				for(TagKey<Fluid> key : outKeys) {
+					outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+				}
+				setManualFluids(outTankCount, false, tankCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
+			}
 		}
 	}
 }

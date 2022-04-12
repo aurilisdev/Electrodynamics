@@ -44,7 +44,7 @@ public class TileOxidationFurnace extends GenericTile {
 	}
 
 	protected boolean canProcessOxideFurn(ComponentProcessor component) {
-		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.getRegister())) {
+		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.get())) {
 			if (getBlockState().getBlock() == DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnace)) {
 				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}

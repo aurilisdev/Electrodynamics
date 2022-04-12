@@ -125,51 +125,51 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipes(electricArcFurnaceRecipes, ElectricArcFurnaceRecipeCategory.UID);
 
 		// Wire Mill
-		Set<Item2ItemRecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE.getRegister()));
+		Set<Item2ItemRecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE.get()));
 		registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
 
 		// Mineral Crusher
-		Set<Item2ItemRecipe> mineralCrusherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE.getRegister()));
+		Set<Item2ItemRecipe> mineralCrusherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE.get()));
 		registration.addRecipes(mineralCrusherRecipes, MineralCrusherRecipeCategory.UID);
 
 		// Mineral Grinder
-		Set<Item2ItemRecipe> mineralGrinderRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE.getRegister()));
+		Set<Item2ItemRecipe> mineralGrinderRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE.get()));
 		registration.addRecipes(mineralGrinderRecipes, MineralGrinderRecipeCategory.UID);
 
 		// Oxidation Furnace
-		Set<Item2ItemRecipe> oxidationFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.getRegister()));
+		Set<Item2ItemRecipe> oxidationFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.get()));
 		registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
 
 		// Energized Alloyer
-		Set<Item2ItemRecipe> energizedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.getRegister()));
+		Set<Item2ItemRecipe> energizedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get()));
 		registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
 
 		// Lathe
-		Set<Item2ItemRecipe> latheRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.LATHE_TYPE.getRegister()));
+		Set<Item2ItemRecipe> latheRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.LATHE_TYPE.get()));
 		registration.addRecipes(latheRecipes, LatheRecipeCategory.UID);
 
 		// Mineral Washer
-		Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.getRegister()));
+		Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get()));
 		registration.addRecipes(mineralWasherRecipes, MineralWasherRecipeCategory.UID);
 
 		// Chemical Crystallizer
-		Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE.getRegister()));
+		Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE.get()));
 		registration.addRecipes(chemicalCrystallizerRecipes, ChemicalCrystallizerRecipeCategory.UID);
 
 		// Chemical Mixer
-		Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE.getRegister()));
+		Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE.get()));
 		registration.addRecipes(chemicalMixerRecipes, ChemicalMixerRecipeCategory.UID);
 
 		// Fermentation Chamber
-		Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.getRegister()));
+		Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get()));
 		registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
 
 		// Reinforced Alloyer
-		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.getRegister()));
+		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get()));
 		registration.addRecipes(reinforcedAlloyerRecipes, ReinforcedAlloyerRecipeCategory.UID);
 
 		// Electrolytic Separator
-		Set<Fluid2FluidRecipe> electrolyticSeparatorRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.getRegister()));
+		Set<Fluid2FluidRecipe> electrolyticSeparatorRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get()));
 		registration.addRecipes(electrolyticSeparatorRecipes, ElectrolyticSeparatorRecipeCategory.UID);
 
 		electrodynamicsInfoTabs(registration);

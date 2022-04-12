@@ -55,7 +55,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, true, TANK_CAPACITY, FUELS).relativeInput(Direction.WEST));
+		addComponent(new ComponentFluidHandlerMulti(this).setManualFluidTags(1, 0, true, false, TANK_CAPACITY, FUELS, null).relativeInput(Direction.WEST));
 		addComponent(new ComponentContainerProvider("container.combustionchamber").createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
