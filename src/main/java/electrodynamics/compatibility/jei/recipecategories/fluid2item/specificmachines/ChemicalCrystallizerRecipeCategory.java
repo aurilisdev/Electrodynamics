@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2item.specificma
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluid2item.Fluid2ItemRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
@@ -13,10 +14,11 @@ import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory {
+public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory<ChemicalCrystalizerRecipe> {
 
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
@@ -41,8 +43,10 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
+	public static final RecipeType<ChemicalCrystalizerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ChemicalCrystalizerRecipe.RECIPE_GROUP, ChemicalCrystalizerRecipe.class);
+	
 	public ChemicalCrystallizerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ChemicalCrystalizerRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, IN_BUCKET_SLOT);
 		setOutputSlots(guiHelper, OUT_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);
@@ -53,6 +57,11 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<ChemicalCrystalizerRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 }

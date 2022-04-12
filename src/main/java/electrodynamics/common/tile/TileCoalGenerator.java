@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
@@ -169,8 +170,9 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	}
 
 	public static List<Item> getValidItems() {
-		List<Item> items = ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList();
-		items.add(Items.CHARCOAL); // TODO: Check if this is neccesary?
+		List<Item> items = new ArrayList<>();
+		items.addAll(ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList());
+		items.add(Items.CHARCOAL); 
 		items.add(Blocks.COAL_BLOCK.asItem());
 		return items;
 	}

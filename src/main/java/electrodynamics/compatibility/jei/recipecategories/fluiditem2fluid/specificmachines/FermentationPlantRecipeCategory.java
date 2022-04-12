@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.speci
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.FluidItem2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
@@ -13,10 +14,11 @@ import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCategory {
+public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCategory<FermentationPlantRecipe> {
 
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
@@ -43,8 +45,10 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
+	public static final RecipeType<FermentationPlantRecipe> RECIPE_TYPE = RecipeType.create(References.ID, FermentationPlantRecipe.RECIPE_GROUP, FermentationPlantRecipe.class);
+	
 	public FermentationPlantRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, FermentationPlantRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_BUCKET_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);
@@ -56,6 +60,11 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<FermentationPlantRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 }

@@ -15,14 +15,16 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 
-public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
+public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<SmeltingRecipe> {
 
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
@@ -44,6 +46,8 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
+	public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "smelting", SmeltingRecipe.class);
+	
 	public ElectricFurnaceRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
 		setInputSlots(guiHelper, INPUT_SLOT);
@@ -56,6 +60,11 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<SmeltingRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 	@Override

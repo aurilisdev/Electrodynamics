@@ -15,10 +15,10 @@ import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class Fluid2FluidRecipeCategory extends ElectrodynamicsRecipeCategory<Fluid2FluidRecipe> {
+public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends ElectrodynamicsRecipeCategory<T> {
 
-	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, int animationTime) {
-		super(guiHelper, modID, recipeGroup, inputMachine, wrapper, Fluid2FluidRecipe.class, animationTime);
+	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
+		super(guiHelper, modID, recipeGroup, inputMachine, wrapper, recipeCategoryClass, animationTime);
 	}
 
 	@Override

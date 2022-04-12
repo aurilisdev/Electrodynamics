@@ -3,9 +3,6 @@ package electrodynamics.compatibility.jei;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-
-import com.google.common.collect.ImmutableSet;
 
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
@@ -21,11 +18,18 @@ import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
-import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
-import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
+import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.EnergizedAlloyerRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralCrusherRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralGrinderRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipeCategory;
@@ -59,9 +63,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,8 +75,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @JeiPlugin
 public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
-	public static List<ResourceLocation> O2O_CLICK_AREAS = new ArrayList<>();
-	public static List<ResourceLocation> DO2O_CLICK_AREAS = new ArrayList<>();
+	public static List<mezz.jei.api.recipe.RecipeType<?>> O2O_CLICK_AREAS = new ArrayList<>();
+	public static List<mezz.jei.api.recipe.RecipeType<?>> DO2O_CLICK_AREAS = new ArrayList<>();
 
 	private static final int FULL_FLUID_SQUARE = 1600;
 
@@ -86,29 +91,29 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 
-		registration.addRecipeCatalyst(ElectricFurnaceRecipeCategory.INPUT_MACHINE, ElectricFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnacedouble)), ElectricFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnacetriple)), ElectricFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(WireMillRecipeCategory.INPUT_MACHINE, WireMillRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.wiremilldouble)), WireMillRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.wiremilltriple)), WireMillRecipeCategory.UID);
-		registration.addRecipeCatalyst(MineralCrusherRecipeCategory.INPUT_MACHINE, MineralCrusherRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrusherdouble)), MineralCrusherRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrushertriple)), MineralCrusherRecipeCategory.UID);
-		registration.addRecipeCatalyst(MineralGrinderRecipeCategory.INPUT_MACHINE, MineralGrinderRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralgrinderdouble)), MineralGrinderRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralgrindertriple)), MineralGrinderRecipeCategory.UID);
-		registration.addRecipeCatalyst(ElectricArcFurnaceRecipeCategory.INPUT_MACHINE, ElectricArcFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble)), ElectricArcFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple)), ElectricArcFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(OxidationFurnaceRecipeCategory.INPUT_MACHINE, OxidationFurnaceRecipeCategory.UID);
-		registration.addRecipeCatalyst(EnergizedAlloyerRecipeCategory.INPUT_MACHINE, EnergizedAlloyerRecipeCategory.UID);
-		registration.addRecipeCatalyst(LatheRecipeCategory.INPUT_MACHINE, LatheRecipeCategory.UID);
-		registration.addRecipeCatalyst(MineralWasherRecipeCategory.INPUT_MACHINE, MineralWasherRecipeCategory.UID);
-		registration.addRecipeCatalyst(ChemicalCrystallizerRecipeCategory.INPUT_MACHINE, ChemicalCrystallizerRecipeCategory.UID);
-		registration.addRecipeCatalyst(ChemicalMixerRecipeCategory.INPUT_MACHINE, ChemicalMixerRecipeCategory.UID);
-		registration.addRecipeCatalyst(FermentationPlantRecipeCategory.INPUT_MACHINE, FermentationPlantRecipeCategory.UID);
-		registration.addRecipeCatalyst(ReinforcedAlloyerRecipeCategory.INPUT_MACHINE, ReinforcedAlloyerRecipeCategory.UID);
+		registration.addRecipeCatalyst(ElectricFurnaceRecipeCategory.INPUT_MACHINE, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnacedouble)), ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnacetriple)), ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(WireMillRecipeCategory.INPUT_MACHINE, WireMillRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.wiremilldouble)), WireMillRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.wiremilltriple)), WireMillRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(MineralCrusherRecipeCategory.INPUT_MACHINE, MineralCrusherRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrusherdouble)), MineralCrusherRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrushertriple)), MineralCrusherRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(MineralGrinderRecipeCategory.INPUT_MACHINE, MineralGrinderRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralgrinderdouble)), MineralGrinderRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralgrindertriple)), MineralGrinderRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(ElectricArcFurnaceRecipeCategory.INPUT_MACHINE, ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble)), ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple)), ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(OxidationFurnaceRecipeCategory.INPUT_MACHINE, OxidationFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(EnergizedAlloyerRecipeCategory.INPUT_MACHINE, EnergizedAlloyerRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(LatheRecipeCategory.INPUT_MACHINE, LatheRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(MineralWasherRecipeCategory.INPUT_MACHINE, MineralWasherRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(ChemicalCrystallizerRecipeCategory.INPUT_MACHINE, ChemicalCrystallizerRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(ChemicalMixerRecipeCategory.INPUT_MACHINE, ChemicalMixerRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(FermentationPlantRecipeCategory.INPUT_MACHINE, FermentationPlantRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(ReinforcedAlloyerRecipeCategory.INPUT_MACHINE, ReinforcedAlloyerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(ElectrolyticSeparatorRecipeCategory.INPUT_MACHINE, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
 
 	}
@@ -120,55 +125,55 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		RecipeManager recipeManager = world.getRecipeManager();
 
 		// Electric Furnace
-		Set<AbstractCookingRecipe> electricFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.SMELTING));
-		registration.addRecipes(electricFurnaceRecipes, ElectricFurnaceRecipeCategory.UID);
+		List<SmeltingRecipe> electricFurnaceRecipes = recipeManager.getAllRecipesFor(RecipeType.SMELTING);
+		registration.addRecipes(ElectricFurnaceRecipeCategory.RECIPE_TYPE, electricFurnaceRecipes);
 
-		Set<AbstractCookingRecipe> electricArcFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(RecipeType.BLASTING));
-		registration.addRecipes(electricArcFurnaceRecipes, ElectricArcFurnaceRecipeCategory.UID);
+		List<BlastingRecipe> electricArcFurnaceRecipes = recipeManager.getAllRecipesFor(RecipeType.BLASTING);
+		registration.addRecipes(ElectricArcFurnaceRecipeCategory.RECIPE_TYPE, electricArcFurnaceRecipes);
 
 		// Wire Mill
-		Set<Item2ItemRecipe> wireMillRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE.get()));
-		registration.addRecipes(wireMillRecipes, WireMillRecipeCategory.UID);
+		List<WireMillRecipe> wireMillRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.WIRE_MILL_TYPE.get());
+		registration.addRecipes(WireMillRecipeCategory.RECIPE_TYPE, wireMillRecipes);
 
 		// Mineral Crusher
-		Set<Item2ItemRecipe> mineralCrusherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE.get()));
-		registration.addRecipes(mineralCrusherRecipes, MineralCrusherRecipeCategory.UID);
+		List<MineralCrusherRecipe> mineralCrusherRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_TYPE.get());
+		registration.addRecipes(MineralCrusherRecipeCategory.RECIPE_TYPE, mineralCrusherRecipes);
 
 		// Mineral Grinder
-		Set<Item2ItemRecipe> mineralGrinderRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE.get()));
-		registration.addRecipes(mineralGrinderRecipes, MineralGrinderRecipeCategory.UID);
+		List<MineralGrinderRecipe> mineralGrinderRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE.get());
+		registration.addRecipes(MineralGrinderRecipeCategory.RECIPE_TYPE, mineralGrinderRecipes);
 
 		// Oxidation Furnace
-		Set<Item2ItemRecipe> oxidationFurnaceRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.get()));
-		registration.addRecipes(oxidationFurnaceRecipes, OxidationFurnaceRecipeCategory.UID);
+		List<OxidationFurnaceRecipe> oxidationFurnaceRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.get());
+		registration.addRecipes(OxidationFurnaceRecipeCategory.RECIPE_TYPE, oxidationFurnaceRecipes);
 
 		// Energized Alloyer
-		Set<Item2ItemRecipe> energizedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get()));
-		registration.addRecipes(energizedAlloyerRecipes, EnergizedAlloyerRecipeCategory.UID);
+		List<EnergizedAlloyerRecipe> energizedAlloyerRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get());
+		registration.addRecipes(EnergizedAlloyerRecipeCategory.RECIPE_TYPE, energizedAlloyerRecipes);
 
 		// Lathe
-		Set<Item2ItemRecipe> latheRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.LATHE_TYPE.get()));
-		registration.addRecipes(latheRecipes, LatheRecipeCategory.UID);
+		List<LatheRecipe> latheRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.LATHE_TYPE.get());
+		registration.addRecipes(LatheRecipeCategory.RECIPE_TYPE, latheRecipes);
 
 		// Mineral Washer
-		Set<FluidItem2FluidRecipe> mineralWasherRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get()));
-		registration.addRecipes(mineralWasherRecipes, MineralWasherRecipeCategory.UID);
+		List<MineralWasherRecipe> mineralWasherRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get());
+		registration.addRecipes(MineralWasherRecipeCategory.RECIPE_TYPE, mineralWasherRecipes);
 
 		// Chemical Crystallizer
-		Set<Fluid2ItemRecipe> chemicalCrystallizerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE.get()));
-		registration.addRecipes(chemicalCrystallizerRecipes, ChemicalCrystallizerRecipeCategory.UID);
+		List<ChemicalCrystalizerRecipe> chemicalCrystallizerRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE.get());
+		registration.addRecipes(ChemicalCrystallizerRecipeCategory.RECIPE_TYPE, chemicalCrystallizerRecipes);
 
 		// Chemical Mixer
-		Set<FluidItem2FluidRecipe> chemicalMixerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE.get()));
-		registration.addRecipes(chemicalMixerRecipes, ChemicalMixerRecipeCategory.UID);
+		List<ChemicalMixerRecipe> chemicalMixerRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE.get());
+		registration.addRecipes(ChemicalMixerRecipeCategory.RECIPE_TYPE, chemicalMixerRecipes);
 
 		// Fermentation Chamber
-		Set<FluidItem2FluidRecipe> fermenterRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get()));
-		registration.addRecipes(fermenterRecipes, FermentationPlantRecipeCategory.UID);
+		List<FermentationPlantRecipe> fermenterRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get());
+		registration.addRecipes(FermentationPlantRecipeCategory.RECIPE_TYPE, fermenterRecipes);
 
 		// Reinforced Alloyer
-		Set<Item2ItemRecipe> reinforcedAlloyerRecipes = ImmutableSet.copyOf(recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get()));
-		registration.addRecipes(reinforcedAlloyerRecipes, ReinforcedAlloyerRecipeCategory.UID);
+		List<ReinforcedAlloyerRecipe> reinforcedAlloyerRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get());
+		registration.addRecipes(ReinforcedAlloyerRecipeCategory.RECIPE_TYPE, reinforcedAlloyerRecipes);
 
 		// Electrolytic Separator
 		List<ElectrolyticSeparatorRecipe> electrolyticSeparatorRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get());
@@ -203,17 +208,17 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 
-		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55, O2O_CLICK_AREAS.toArray(new ResourceLocation[O2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15, DO2O_CLICK_AREAS.toArray(new ResourceLocation[DO2O_CLICK_AREAS.size()]));
-		registry.addRecipeClickArea(ScreenElectricFurnace.class, 85, 35, 22, 15, ElectricFurnaceRecipeCategory.UID);
-		registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, 85, 25, 22, 35, ElectricFurnaceRecipeCategory.UID);
-		registry.addRecipeClickArea(ScreenElectricFurnaceTriple.class, 85, 25, 22, 55, ElectricFurnaceRecipeCategory.UID);
-		registry.addRecipeClickArea(ScreenChemicalMixer.class, 97, 31, 22, 15, ChemicalMixerRecipeCategory.UID);
-		registry.addRecipeClickArea(ScreenFermentationPlant.class, 97, 31, 22, 15, FermentationPlantRecipeCategory.UID);
-		registry.addRecipeClickArea(ScreenMineralWasher.class, 97, 31, 22, 15, MineralWasherRecipeCategory.UID);
-		registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 41, 35, 22, 15, ChemicalCrystallizerRecipeCategory.UID);
+		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15, DO2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[DO2O_CLICK_AREAS.size()]));
+		registry.addRecipeClickArea(ScreenElectricFurnace.class, 85, 35, 22, 15, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, 85, 25, 22, 35, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registry.addRecipeClickArea(ScreenElectricFurnaceTriple.class, 85, 25, 22, 55, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registry.addRecipeClickArea(ScreenChemicalMixer.class, 97, 31, 22, 15, ChemicalMixerRecipeCategory.RECIPE_TYPE);
+		registry.addRecipeClickArea(ScreenFermentationPlant.class, 97, 31, 22, 15, FermentationPlantRecipeCategory.RECIPE_TYPE);
+		registry.addRecipeClickArea(ScreenMineralWasher.class, 97, 31, 22, 15, MineralWasherRecipeCategory.RECIPE_TYPE);
+		registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 41, 35, 22, 15, ChemicalCrystallizerRecipeCategory.RECIPE_TYPE);
 		registry.addRecipeClickArea(ScreenElectrolyticSeparator.class, 38, 30, 22, 15, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
 	}
 
@@ -234,12 +239,12 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	}
 
-	public static void addO2OClickArea(ResourceLocation loc) {
-		O2O_CLICK_AREAS.add(loc);
+	public static void addO2OClickArea(mezz.jei.api.recipe.RecipeType<?> type) {
+		O2O_CLICK_AREAS.add(type);
 	}
 
-	public static void addDO2OClickArea(ResourceLocation loc) {
-		DO2O_CLICK_AREAS.add(loc);
+	public static void addDO2OClickArea(mezz.jei.api.recipe.RecipeType<?> type) {
+		DO2O_CLICK_AREAS.add(type);
 	}
 
 }

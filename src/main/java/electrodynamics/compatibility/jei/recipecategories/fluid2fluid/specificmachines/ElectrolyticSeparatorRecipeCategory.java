@@ -16,7 +16,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCategory {
+public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCategory<ElectrolyticSeparatorRecipe> {
 
 	// JEI Window Parameters
 	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
@@ -43,10 +43,10 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 	
-	public static RecipeType<ElectrolyticSeparatorRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ElectrolyticSeparatorRecipe.RECIPE_GROUP, ElectrolyticSeparatorRecipe.class);
+	public static final RecipeType<ElectrolyticSeparatorRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ElectrolyticSeparatorRecipe.RECIPE_GROUP, ElectrolyticSeparatorRecipe.class);
 
 	public ElectrolyticSeparatorRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ANIM_TIME);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ElectrolyticSeparatorRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, IN_BUCKET_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_BUCKET_SLOT, BIPRODUCT_BUCKET_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);
@@ -58,6 +58,11 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	@Override
 	public ResourceLocation getUid() {
 		return UID;
+	}
+	
+	@Override
+	public RecipeType<ElectrolyticSeparatorRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 }
