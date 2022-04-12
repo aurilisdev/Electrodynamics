@@ -35,7 +35,7 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory {
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.wiremill.tag() + "0";
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.wiremill));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.wiremill));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

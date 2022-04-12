@@ -14,7 +14,6 @@ import electrodynamics.Electrodynamics;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.SerializationTags;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
@@ -49,7 +48,7 @@ public class FluidIngredient extends Ingredient {
 	public FluidIngredient(ResourceLocation resourceLocation, int amount, boolean isTag) {
 		super(Stream.empty());
 		if (isTag) {
-			List<Fluid> fluids = FluidTags.getAllTags().getTag(resourceLocation).getValues();
+			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(resourceLocation)).stream().toList(); //TODO: Fix this
 			fluidStacks = new ArrayList<>();
 			for (Fluid fluid : fluids) {
 				fluidStacks.add(new FluidStack(fluid, amount));
@@ -72,7 +71,7 @@ public class FluidIngredient extends Ingredient {
 	 */
 	private FluidIngredient(ResourceLocation resource, int amount) {
 		super(Stream.empty());
-		List<Fluid> fluids = SerializationTags.getInstance().getOrEmpty(ForgeRegistries.Keys.FLUIDS).getTag(resource).getValues();
+		List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(resource)).stream().toList(); // TODO: Fix this
 		fluidStacks = new ArrayList<>();
 		for (Fluid fluid : fluids) {
 			fluidStacks.add(new FluidStack(fluid, amount));

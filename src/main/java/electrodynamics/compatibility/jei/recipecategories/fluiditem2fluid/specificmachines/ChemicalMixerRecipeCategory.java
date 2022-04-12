@@ -39,7 +39,7 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory {
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.chemicalmixer.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.chemicalmixer));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.chemicalmixer));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

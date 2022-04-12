@@ -36,7 +36,7 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory {
 
 	private static int ANIM_TIME = 50;
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electricarcfurnace));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnace));
 
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag() + "0";

@@ -36,7 +36,7 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory {
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.oxidationfurnace.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.oxidationfurnace));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnace));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

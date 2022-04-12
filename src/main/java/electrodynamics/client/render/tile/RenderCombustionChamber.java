@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RenderCombustionChamber implements BlockEntityRenderer<TileCombustionChamber> {
 	public RenderCombustionChamber(BlockEntityRendererProvider.Context context) {
@@ -29,7 +30,7 @@ public class RenderCombustionChamber implements BlockEntityRenderer<TileCombusti
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		if (prog > 0) {
 			BakedModel ibakedmodel;
-			if (ElectrodynamicsTags.Fluids.ETHANOL.getValues().contains(fuel.getFluid())) {
+			if (ForgeRegistries.FLUIDS.tags().getTag(ElectrodynamicsTags.Fluids.ETHANOL).contains(fuel.getFluid())) {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_COMBUSTIONCHAMBERETHANOL);
 			} else {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_COMBUSTIONCHAMBERHYDROGEN);

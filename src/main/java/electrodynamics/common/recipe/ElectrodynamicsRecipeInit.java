@@ -33,24 +33,24 @@ public class ElectrodynamicsRecipeInit {
 	/* RECIPE TYPES */
 
 	// Item2Item
-	public static final RecipeType<WireMillRecipe> WIRE_MILL_TYPE = registerType(WireMillRecipe.RECIPE_ID);
-	public static final RecipeType<MineralGrinderRecipe> MINERAL_GRINDER_TYPE = registerType(MineralGrinderRecipe.RECIPE_ID);
-	public static final RecipeType<MineralCrusherRecipe> MINERAL_CRUSHER_TYPE = registerType(MineralCrusherRecipe.RECIPE_ID);
-	public static final RecipeType<LatheRecipe> LATHE_TYPE = registerType(LatheRecipe.RECIPE_ID);
-	public static final RecipeType<OxidationFurnaceRecipe> OXIDATION_FURNACE_TYPE = registerType(OxidationFurnaceRecipe.RECIPE_ID);
-	public static final RecipeType<EnergizedAlloyerRecipe> ENERGIZED_ALLOYER_TYPE = registerType(EnergizedAlloyerRecipe.RECIPE_ID);
-	public static final RecipeType<ReinforcedAlloyerRecipe> REINFORCED_ALLOYER_TYPE = registerType(ReinforcedAlloyerRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<WireMillRecipe>> WIRE_MILL_TYPE = registerType(WireMillRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<MineralGrinderRecipe>> MINERAL_GRINDER_TYPE = registerType(MineralGrinderRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<MineralCrusherRecipe>> MINERAL_CRUSHER_TYPE = registerType(MineralCrusherRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<LatheRecipe>> LATHE_TYPE = registerType(LatheRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<OxidationFurnaceRecipe>> OXIDATION_FURNACE_TYPE = registerType(OxidationFurnaceRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<EnergizedAlloyerRecipe>> ENERGIZED_ALLOYER_TYPE = registerType(EnergizedAlloyerRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<ReinforcedAlloyerRecipe>> REINFORCED_ALLOYER_TYPE = registerType(ReinforcedAlloyerRecipe.RECIPE_ID);
 
 	// FluidItem2Fluid
-	public static final RecipeType<ChemicalMixerRecipe> CHEMICAL_MIXER_TYPE = registerType(ChemicalMixerRecipe.RECIPE_ID);
-	public static final RecipeType<FermentationPlantRecipe> FERMENTATION_PLANT_TYPE = registerType(FermentationPlantRecipe.RECIPE_ID);
-	public static final RecipeType<MineralWasherRecipe> MINERAL_WASHER_TYPE = registerType(MineralWasherRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<ChemicalMixerRecipe>> CHEMICAL_MIXER_TYPE = registerType(ChemicalMixerRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<FermentationPlantRecipe>> FERMENTATION_PLANT_TYPE = registerType(FermentationPlantRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<MineralWasherRecipe>> MINERAL_WASHER_TYPE = registerType(MineralWasherRecipe.RECIPE_ID);
 
 	// Fluid2Item
-	public static final RecipeType<ChemicalCrystalizerRecipe> CHEMICAL_CRYSTALIZER_TYPE = registerType(ChemicalCrystalizerRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<ChemicalCrystalizerRecipe>> CHEMICAL_CRYSTALIZER_TYPE = registerType(ChemicalCrystalizerRecipe.RECIPE_ID);
 
 	// Fluid2Fluid
-	public static final RecipeType<ElectrolyticSeparatorRecipe> ELECTROLYTIC_SEPERATOR_TYPE = registerType(ElectrolyticSeparatorRecipe.RECIPE_ID);
+	public static final LateRecipeRegister<RecipeType<ElectrolyticSeparatorRecipe>> ELECTROLYTIC_SEPERATOR_TYPE = registerType(ElectrolyticSeparatorRecipe.RECIPE_ID);
 
 	/* SERIALIZERS */
 
@@ -76,8 +76,8 @@ public class ElectrodynamicsRecipeInit {
 
 	/* Functional Methods */
 
-	public static <T extends RecipeType<?>> T registerType(ResourceLocation recipeTypeId) {
-		return (T) Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new CustomRecipeType<>());
+	public static <T extends RecipeType<?>> LateRecipeRegister<T> registerType(ResourceLocation recipeTypeId) {
+		return new LateRecipeRegister<>(recipeTypeId);
 	}
 
 	private static class CustomRecipeType<T extends Recipe<?>> implements RecipeType<T> {
@@ -87,4 +87,21 @@ public class ElectrodynamicsRecipeInit {
 		}
 	}
 
+	public static class LateRecipeRegister<T extends RecipeType<?>> {
+		ResourceLocation recipeTypeId;
+
+		public LateRecipeRegister(ResourceLocation recipeTypeId) {
+			this.recipeTypeId = recipeTypeId;
+		}
+
+		private RecipeType<?> type;
+
+		public T getRegister() {
+			if (type == null) {
+				type = Registry.register(Registry.RECIPE_TYPE, recipeTypeId, new CustomRecipeType<>());
+			}
+			return (T) type;
+		}
+
+	}
 }

@@ -39,7 +39,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory {
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.mineralwasher.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.mineralwasher));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.mineralwasher));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

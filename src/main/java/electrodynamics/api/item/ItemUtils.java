@@ -2,8 +2,6 @@ package electrodynamics.api.item;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -31,7 +29,9 @@ public class ItemUtils {
 	 */
 	@Nullable
 	public static Ingredient getIngredientFromTag(String location, String tag) {
-		return Ingredient.of(ItemTags.getAllTags().getTag(new ResourceLocation(location, tag)));
+//		return Ingredient.of(ItemTags.getAllTags().getTag(new ResourceLocation(location, tag)));
+		// TODO: Fix this
+		return Ingredient.EMPTY;
 	}
 
 	public static Item fromBlock(Block block) {

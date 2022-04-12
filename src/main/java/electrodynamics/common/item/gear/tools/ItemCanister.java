@@ -17,6 +17,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -140,8 +140,8 @@ public class ItemCanister extends Item {
 		return Pair.of(TAG_NAMES, whitelisted);
 	}
 
-	public static void addTag(Tags.IOptionalNamedTag<Fluid> tag) {
-		TAG_NAMES.add(tag.getName());
+	public static void addTag(TagKey<Fluid> tag) {
+		TAG_NAMES.add(tag.location());
 	}
 
 }

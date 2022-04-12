@@ -96,11 +96,11 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	protected Item getDefaultItem() {
 		switch (number) {
 		case 0:
-			return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.steel);
+			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.steel).get();
 		case 1:
-			return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.stainlesssteel);
+			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.stainlesssteel).get();
 		case 2:
-			return DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeRod.hslasteel);
+			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.hslasteel).get();
 		default:
 			return super.getDefaultItem();
 		}

@@ -20,7 +20,7 @@ public class SlotUpgrade extends SlotGeneric {
 
 		items = new ArrayList<>();
 		for (SubtypeItemUpgrade upg : upgrades) {
-			items.add(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(upg));
+			items.add(DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(upg).get());
 		}
 	}
 

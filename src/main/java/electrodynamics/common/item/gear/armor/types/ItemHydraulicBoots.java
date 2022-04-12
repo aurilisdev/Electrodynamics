@@ -156,7 +156,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
-		tags.add(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID.getName());
+		tags.add(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID.location());
 		fluids.add(DeferredRegisters.fluidHydraulic);
 		return Pair.of(tags, fluids);
 	}

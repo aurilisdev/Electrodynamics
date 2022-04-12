@@ -1,11 +1,9 @@
 package electrodynamics.prefab.item;
 
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -13,18 +11,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemMultiDigger extends DiggerItem {
-	protected final Set<Tag<Block>> set;
+	protected final TagKey<Block> set;
 
-	public ItemMultiDigger(float damage, float speed, Tier tier, Set<Tag<Block>> set, Properties prop) {
-		super(damage, speed, tier, (Tag<Block>) set.toArray()[0], prop);
+	public ItemMultiDigger(float damage, float speed, Tier tier, TagKey<Block> set, Properties prop) {
+		super(damage, speed, tier, set, prop);
 		this.set = set;
 	}
 
 	protected boolean checkState(BlockState state) {
-		for (Tag<Block> tag : set) {
-			if (state.is(tag)) {
-				return true;
-			}
+		if (state.is(set)) {
+			return true;
 		}
 		return false;
 	}

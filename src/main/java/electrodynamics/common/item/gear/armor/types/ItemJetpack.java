@@ -232,7 +232,7 @@ public class ItemJetpack extends ArmorItem {
 	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
-		tags.add(ElectrodynamicsTags.Fluids.HYDROGEN.getName());
+		tags.add(ElectrodynamicsTags.Fluids.HYDROGEN.location());
 		fluids.add(DeferredRegisters.fluidHydrogen);
 		return Pair.of(tags, fluids);
 	}

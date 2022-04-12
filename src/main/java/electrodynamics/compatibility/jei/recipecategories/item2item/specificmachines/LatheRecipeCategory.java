@@ -35,7 +35,7 @@ public class LatheRecipeCategory extends Item2ItemRecipeCategory {
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.lathe.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.lathe));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.lathe));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

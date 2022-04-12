@@ -13,6 +13,6 @@ public class ItemGroupElectrodynamics extends CreativeModeTab {
 
 	@Override
 	public ItemStack makeIcon() {
-		return new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.downgradetransformer));
+		return new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.downgradetransformer));
 	}
 }

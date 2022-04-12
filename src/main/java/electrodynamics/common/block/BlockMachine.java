@@ -161,7 +161,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	}
 
 	private static ItemStack getMachine(SubtypeMachine inputMachine) {
-		return new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(inputMachine));
+		return new ItemStack(DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(inputMachine).get());
 	}
 
 	@Override

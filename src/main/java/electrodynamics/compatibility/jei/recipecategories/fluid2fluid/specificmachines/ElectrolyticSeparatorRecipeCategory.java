@@ -37,7 +37,7 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.electrolyticseparator.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.electrolyticseparator));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.electrolyticseparator));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

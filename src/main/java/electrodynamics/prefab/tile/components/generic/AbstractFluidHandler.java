@@ -14,9 +14,9 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -139,7 +139,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	public abstract AbstractFluidHandler<A> setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids);
 
-	public abstract AbstractFluidHandler<A> setManualFluidTags(int tankCount, boolean isInput, int capacity, Tags.IOptionalNamedTag<Fluid>... tags);
+	public abstract AbstractFluidHandler<A> setManualFluidTags(int tankCount, boolean isInput, int capacity, TagKey<Fluid>... tags);
 
 	public abstract FluidStack getFluidInTank(int tank, boolean isInput);
 

@@ -6,7 +6,6 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,15 +35,16 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 	public boolean isFluidValid(int tank, FluidStack stack) {
 		// check tags first
 		for (ResourceLocation loc : tags) {
-			for (Fluid fluid : FluidTags.getAllTags().getTag(loc).getValues()) {
-				// filter out flowing fluids
-				if (fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
-					return false;
-				}
-				if (fluid.isSame(stack.getFluid())) {
-					return true;
-				}
-			}
+//			for (Fluid fluid : FluidTags.getAllTags().getTag(loc).getValues()) {
+//				// filter out flowing fluids
+//				if (fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+//					return false;
+//				}
+//				if (fluid.isSame(stack.getFluid())) {
+//					return true;
+//				}
+//			}
+			// TODO: Fix this
 		}
 		// next check specific fluids
 		for (Fluid fluid : fluids) {
@@ -90,14 +90,15 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 	public ArrayList<Fluid> getWhitelistedFluids() {
 		ArrayList<Fluid> valid = new ArrayList<>();
 		ArrayList<Fluid> unique = new ArrayList<>();
-		for (ResourceLocation loc : tags) {
-			List<Fluid> fluids = FluidTags.getAllTags().getTag(loc).getValues();
-			for (Fluid fluid : fluids) {
-				if (!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
-					valid.add(fluid);
-				}
-			}
-		}
+//		for (ResourceLocation loc : tags) {
+//			List<Fluid> fluids = FluidTags.getAllTags().getTag(loc).getValues();
+//			for (Fluid fluid : fluids) {
+//				if (!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+//					valid.add(fluid);
+//				}
+//			}
+//		}
+		// TODO: Fix this
 		for (Fluid fluid : fluids) {
 			if (!valid.contains(fluid)) {
 				unique.add(fluid);

@@ -2,8 +2,6 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 
-import com.google.common.collect.Sets;
-
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
@@ -30,8 +28,10 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	private final ElectricItemProperties properties;
 
 	public ItemElectricDrill(ElectricItemProperties properties) {
-		super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE), properties.durability(0));
+//		super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE), properties.durability(0));
+		super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_PICKAXE, properties.durability(0));
 		this.properties = properties;
+		// TODO: Reimplement shovel as well here
 	}
 
 	@Override

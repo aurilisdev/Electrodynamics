@@ -254,7 +254,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlock(pos, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
+		Scheduler.schedule(5, () -> world.setBlock(pos, DeferredRegisters.getSafeBlock(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
 	}
 
 	@Override

@@ -42,13 +42,13 @@ public class InteractionHandler {
 				SubtypeWire wire = wireBlock.wire;
 				if (item == Items.SHEARS) {
 					if (wire.ceramic) {
-						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf(wire.name().replace("ceramic", ""))).defaultBlockState(), player.level, event.getPos()));
+						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf(wire.name().replace("ceramic", ""))).defaultBlockState(), player.level, event.getPos()));
 						ItemStack insu = new ItemStack(DeferredRegisters.ITEM_CERAMICINSULATION.get());
 						if (!player.addItem(insu)) {
 							player.level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), insu));
 						}
 					} else if (wire.insulated && !wire.highlyinsulated) {
-						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf(wire.name().replace(wire.logistical ? "logistics" : "insulated", ""))).defaultBlockState(), player.level, event.getPos()));
+						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf(wire.name().replace(wire.logistical ? "logistics" : "insulated", ""))).defaultBlockState(), player.level, event.getPos()));
 						ItemStack insu = new ItemStack(DeferredRegisters.ITEM_INSULATION.get());
 						if (!player.addItem(insu)) {
 							player.level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), insu));
@@ -57,12 +57,12 @@ public class InteractionHandler {
 				} else if (item == DeferredRegisters.ITEM_INSULATION.get()) {
 					if (!wire.insulated && !wire.logistical) {
 						player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
-						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("insulated" + wire.name())).defaultBlockState(), player.level, event.getPos()));
+						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf("insulated" + wire.name())).defaultBlockState(), player.level, event.getPos()));
 						stack.shrink(1);
 					}
 				} else if (item == DeferredRegisters.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical && !wire.highlyinsulated) {
 					player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
-					player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeWire.valueOf("ceramic" + wire.name())).defaultBlockState(), player.level, event.getPos()));
+					player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf("ceramic" + wire.name())).defaultBlockState(), player.level, event.getPos()));
 					stack.shrink(1);
 				}
 			}

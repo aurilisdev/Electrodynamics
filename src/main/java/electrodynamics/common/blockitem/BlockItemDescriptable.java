@@ -3,6 +3,7 @@ package electrodynamics.common.blockitem;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Supplier;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -26,7 +27,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class BlockItemDescriptable extends BlockItem {
 	private static HashMap<Block, HashSet<String>> descriptionMappings = new HashMap<>();
 
-	private final Block block;
+	private final Supplier<Block> block;
+
+	private static boolean initialized;
 
 	public static void addDescription(Block block, String description) {
 		HashSet<String> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block) : new HashSet<>();
@@ -36,9 +39,14 @@ public class BlockItemDescriptable extends BlockItem {
 		gotten.add(description);
 	}
 
-	public BlockItemDescriptable(Block block, Properties builder) {
-		super(block, builder);
+	public BlockItemDescriptable(Supplier<Block> block, Properties builder) {
+		super(block.get(), builder);
 		this.block = block;
+	}
+
+	@Override
+	public Block getBlock() {
+		return block.get();
 	}
 
 	@Override
@@ -61,7 +69,11 @@ public class BlockItemDescriptable extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		HashSet<String> gotten = descriptionMappings.get(block);
+		if(!initialized) {
+			initialized = true;
+			ItemDescriptions.setup();
+		}
+		HashSet<String> gotten = descriptionMappings.get(block.get());
 		if (gotten != null) {
 			for (String s : gotten) {
 				boolean translate = s.contains("|translate|");

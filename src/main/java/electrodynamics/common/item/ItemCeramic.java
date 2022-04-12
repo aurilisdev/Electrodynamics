@@ -28,7 +28,7 @@ public class ItemCeramic extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if (!worldIn.isClientSide) {
-			if (ItemStack.isSame(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEM_MAPPINGS.get(SubtypeCeramic.plate)))) {
+			if (ItemStack.isSame(playerIn.getItemInHand(handIn), new ItemStack(DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCeramic.plate).get()))) {
 				List<ItemStack> armorPieces = new ArrayList<>();
 				playerIn.getArmorSlots().forEach(armorPieces::add);
 

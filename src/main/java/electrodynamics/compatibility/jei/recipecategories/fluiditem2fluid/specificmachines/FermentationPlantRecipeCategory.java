@@ -39,7 +39,7 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.fermentationplant.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(SubtypeMachine.fermentationplant));
+	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.fermentationplant));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

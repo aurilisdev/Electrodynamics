@@ -17,43 +17,43 @@ import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.Tags;
 
 public class ElectrodynamicsTags {
 
-	public static List<Tags.IOptionalNamedTag<Fluid>> FLUID_TAGS = new ArrayList<>();
+	public static List<TagKey<Fluid>> FLUID_TAGS = new ArrayList<>();
 
 	public static void init() {
 		Fluids.init();
 	}
 
-	public static List<Tags.IOptionalNamedTag<Fluid>> getFluidTags() {
+	public static List<TagKey<Fluid>> getFluidTags() {
 		return FLUID_TAGS;
 	}
 
 	// Only the Tag objects should ever be visible from this class!
 	public static class Fluids {
 
-		public static final Tags.IOptionalNamedTag<Fluid> SULFURIC_ACID = forgeTag(FluidSulfuricAcid.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> ETHANOL = forgeTag(FluidEthanol.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN_FLUORIDE = forgeTag(FluidHydrogenFluoride.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> POLYETHLYENE = forgeTag(FluidPolyethylene.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> COPPER_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.copper.name());
-		public static final Tags.IOptionalNamedTag<Fluid> TIN_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.tin.name());
-		public static final Tags.IOptionalNamedTag<Fluid> SILVER_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.silver.name());
-		public static final Tags.IOptionalNamedTag<Fluid> LEAD_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.lead.name());
-		public static final Tags.IOptionalNamedTag<Fluid> VANADIUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.vanadium.name());
-		public static final Tags.IOptionalNamedTag<Fluid> IRON_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.iron.name());
-		public static final Tags.IOptionalNamedTag<Fluid> GOLD_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.gold.name());
-		public static final Tags.IOptionalNamedTag<Fluid> LITHIUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.lithium.name());
-		public static final Tags.IOptionalNamedTag<Fluid> MOLYBDENUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.molybdenum.name());
-		public static final Tags.IOptionalNamedTag<Fluid> NETHERITE_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.netherite.name());
-		public static final Tags.IOptionalNamedTag<Fluid> CLAY = forgeTag(FluidClay.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> CONCRETE = forgeTag(FluidConcrete.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> OXYGEN = forgeTag(FluidOxygen.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> HYDROGEN = forgeTag(FluidHydrogen.FORGE_TAG);
-		public static final Tags.IOptionalNamedTag<Fluid> HYDRAULIC_FLUID = forgeTag(FluidHydraulic.FORGE_TAG);
+		public static final TagKey<Fluid> SULFURIC_ACID = forgeTag(FluidSulfuricAcid.FORGE_TAG);
+		public static final TagKey<Fluid> ETHANOL = forgeTag(FluidEthanol.FORGE_TAG);
+		public static final TagKey<Fluid> HYDROGEN_FLUORIDE = forgeTag(FluidHydrogenFluoride.FORGE_TAG);
+		public static final TagKey<Fluid> POLYETHLYENE = forgeTag(FluidPolyethylene.FORGE_TAG);
+		public static final TagKey<Fluid> COPPER_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.copper.name());
+		public static final TagKey<Fluid> TIN_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.tin.name());
+		public static final TagKey<Fluid> SILVER_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.silver.name());
+		public static final TagKey<Fluid> LEAD_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.lead.name());
+		public static final TagKey<Fluid> VANADIUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.vanadium.name());
+		public static final TagKey<Fluid> IRON_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.iron.name());
+		public static final TagKey<Fluid> GOLD_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.gold.name());
+		public static final TagKey<Fluid> LITHIUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.lithium.name());
+		public static final TagKey<Fluid> MOLYBDENUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.molybdenum.name());
+		public static final TagKey<Fluid> NETHERITE_SULF = forgeTag(FluidSulfate.FORGE_TAG + SubtypeSulfateFluid.netherite.name());
+		public static final TagKey<Fluid> CLAY = forgeTag(FluidClay.FORGE_TAG);
+		public static final TagKey<Fluid> CONCRETE = forgeTag(FluidConcrete.FORGE_TAG);
+		public static final TagKey<Fluid> OXYGEN = forgeTag(FluidOxygen.FORGE_TAG);
+		public static final TagKey<Fluid> HYDROGEN = forgeTag(FluidHydrogen.FORGE_TAG);
+		public static final TagKey<Fluid> HYDRAULIC_FLUID = forgeTag(FluidHydraulic.FORGE_TAG);
 
 		private static void init() {
 			FLUID_TAGS.add(SULFURIC_ACID);
@@ -97,8 +97,8 @@ public class ElectrodynamicsTags {
 			ItemCanister.addTag(HYDRAULIC_FLUID);
 		}
 
-		private static Tags.IOptionalNamedTag<Fluid> forgeTag(String name) {
-			return FluidTags.createOptional(new ResourceLocation("forge", name));
+		private static TagKey<Fluid> forgeTag(String name) {
+			return FluidTags.create(new ResourceLocation("forge", name));
 		}
 
 	}

@@ -10,10 +10,11 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFluidHandlerMulti> {
 
@@ -178,11 +179,11 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 	}
 
 	@Override
-	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int tanks, boolean isInput, int capacity, IOptionalNamedTag<Fluid>... tags) {
+	public AbstractFluidHandler<ComponentFluidHandlerMulti> setManualFluidTags(int tanks, boolean isInput, int capacity, TagKey<Fluid>... tags) {
 
 		List<Fluid> fluids = new ArrayList<>();
-		for (IOptionalNamedTag<Fluid> tag : tags) {
-			fluids.addAll(tag.getValues());
+		for (TagKey<Fluid> tag : tags) {
+			fluids.addAll(ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList());
 		}
 		Fluid[] arr = new Fluid[fluids.size()];
 		for (int i = 0; i < fluids.size(); i++) {

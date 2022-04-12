@@ -27,9 +27,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileCombustionChamber extends GenericTile implements IElectricGenerator {
@@ -40,12 +40,12 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 	private CachedTileOutput output;
 	private double multiplier = 1;
 
-	private static IOptionalNamedTag<Fluid>[] FUELS;
+	private static TagKey<Fluid>[] FUELS;
 
 	static {
 		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.HYDROGEN, 1000, 1);
 		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1);
-		FUELS = CombustionFuelSource.FUELS.keySet().toArray(new IOptionalNamedTag[0]);
+		FUELS = CombustionFuelSource.FUELS.keySet().toArray(new TagKey[0]);
 	}
 
 	public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {

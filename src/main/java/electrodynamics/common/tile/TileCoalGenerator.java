@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.DeferredRegisters;
@@ -26,16 +25,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class TileCoalGenerator extends GenericTile implements IElectricGenerator {
 	// public static final int COAL_BURN_TIME = 1000;
@@ -88,7 +88,8 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 				update = true;
 			}
 			if (update) {
-				level.setBlock(worldPosition, DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 3);
+				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
+						.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 3);
 			}
 		}
 		if (heat.get() > 27 && output.valid()) {
@@ -169,13 +170,9 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	}
 
 	public static List<Item> getValidItems() {
-		List<Item> items = new ArrayList<>(ItemTags.COALS.getValues());
-		items.add(Items.CHARCOAL);
-		items.addAll(ItemTags.getAllTags().getTag(new ResourceLocation("forge", "storage_blocks/coal")).getValues());
-		// Suggested additions
-		/*
-		 * items.add(Items.BLAZE_ROD); items.addAll(ItemTags.PLANKS.getValues()); items.addAll(ItemTags.LOGS_THAT_BURN.getValues()); items.addAll(ItemTags.WOODEN_BUTTONS.getValues()); items.addAll(ItemTags.WOODEN_DOORS.getValues()); items.addAll(ItemTags.WOODEN_FENCES.getValues()); items.addAll(ItemTags.WOODEN_PRESSURE_PLATES.getValues()); items.addAll(ItemTags.WOODEN_SLABS.getValues()); items.addAll(ItemTags.WOODEN_STAIRS.getValues()); items.addAll(ItemTags.WOODEN_TRAPDOORS.getValues());
-		 */
+		List<Item> items = ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList();
+		items.add(Items.CHARCOAL); // TODO: Check if this is neccesary?
+		items.add(Blocks.COAL_BLOCK.asItem());
 		return items;
 	}
 }
