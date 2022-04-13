@@ -28,10 +28,8 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	private final ElectricItemProperties properties;
 
 	public ItemElectricDrill(ElectricItemProperties properties) {
-//		super(4, -2.4f, ElectricItemTier.DRILL, Sets.newHashSet(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE), properties.durability(0));
-		super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_PICKAXE, properties.durability(0));
+		super(4, -2.4f, ElectricItemTier.DRILL, properties.durability(0), BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE);
 		this.properties = properties;
-		// TODO: Reimplement shovel as well here
 	}
 
 	@Override

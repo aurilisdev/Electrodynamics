@@ -11,19 +11,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemMultiDigger extends DiggerItem {
-	protected final TagKey<Block> set;
+	protected final TagKey<Block>[] sets;
 
-	public ItemMultiDigger(float damage, float speed, Tier tier, TagKey<Block> set, Properties prop) {
-		super(damage, speed, tier, set, prop);
-		this.set = set;
+	public ItemMultiDigger(float damage, float speed, Tier tier, Properties prop, TagKey<Block>... sets) {
+		super(damage, speed, tier, sets[0], prop);
+		this.sets = sets;
 	}
 
 	protected boolean checkState(BlockState state) {
-		if (state.is(set)) {
-			return true;
+		for (TagKey<Block> set : sets) {
+			if (state.is(set)) {
+				return true;
+			}
 		}
 		return false;
+
 	}
+
 
 	@Deprecated(forRemoval = true)
 	// FORGE: Use stack sensitive variant below
