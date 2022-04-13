@@ -6,10 +6,12 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapEmpty {
 
@@ -35,16 +37,15 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 	public boolean isFluidValid(int tank, FluidStack stack) {
 		// check tags first
 		for (ResourceLocation loc : tags) {
-//			for (Fluid fluid : FluidTags.getAllTags().getTag(loc).getValues()) {
-//				// filter out flowing fluids
-//				if (fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
-//					return false;
-//				}
-//				if (fluid.isSame(stack.getFluid())) {
-//					return true;
-//				}
-//			}
-			// TODO: Fix this
+			for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList()) {
+				// filter out flowing fluids
+				if (fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+					return false;
+				}
+				if (fluid.isSame(stack.getFluid())) {
+					return true;
+				}
+			}
 		}
 		// next check specific fluids
 		for (Fluid fluid : fluids) {

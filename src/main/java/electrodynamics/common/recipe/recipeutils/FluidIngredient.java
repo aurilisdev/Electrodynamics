@@ -52,7 +52,7 @@ public class FluidIngredient extends Ingredient {
 	public FluidIngredient(ResourceLocation resourceLocation, int amount, boolean isTag) {
 		super(Stream.empty());
 		if (isTag) {
-			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(resourceLocation)).stream().toList(); //TODO: Fix this
+			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(resourceLocation)).stream().toList();
 			fluidStacks = new ArrayList<>();
 			for (Fluid fluid : fluids) {
 				fluidStacks.add(new FluidStack(fluid, amount));
