@@ -32,24 +32,24 @@ public class ElectrodynamicsRecipeInit {
 	/* RECIPE TYPES */
 
 	// Item2Item
-	public static final RegistryObject<RecipeType<WireMillRecipe>> WIRE_MILL_TYPE = RECIPE_TYPES.register(WireMillRecipe.RECIPE_GROUP, () -> new CustomRecipeType<WireMillRecipe>());
-	public static final RegistryObject<RecipeType<MineralGrinderRecipe>> MINERAL_GRINDER_TYPE = RECIPE_TYPES.register(MineralGrinderRecipe.RECIPE_GROUP, () -> new CustomRecipeType<MineralGrinderRecipe>());
-	public static final RegistryObject<RecipeType<MineralCrusherRecipe>> MINERAL_CRUSHER_TYPE = RECIPE_TYPES.register(MineralCrusherRecipe.RECIPE_GROUP, () -> new CustomRecipeType<MineralCrusherRecipe>());
-	public static final RegistryObject<RecipeType<LatheRecipe>> LATHE_TYPE = RECIPE_TYPES.register(LatheRecipe.RECIPE_GROUP, () -> new CustomRecipeType<LatheRecipe>());
-	public static final RegistryObject<RecipeType<OxidationFurnaceRecipe>> OXIDATION_FURNACE_TYPE = RECIPE_TYPES.register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> new CustomRecipeType<OxidationFurnaceRecipe>());
-	public static final RegistryObject<RecipeType<EnergizedAlloyerRecipe>> ENERGIZED_ALLOYER_TYPE = RECIPE_TYPES.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<EnergizedAlloyerRecipe>());
-	public static final RegistryObject<RecipeType<ReinforcedAlloyerRecipe>> REINFORCED_ALLOYER_TYPE = RECIPE_TYPES.register(ReinforcedAlloyerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ReinforcedAlloyerRecipe>());
+	public static final RegistryObject<RecipeType<WireMillRecipe>> WIRE_MILL_TYPE = RECIPE_TYPES.register(WireMillRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<MineralGrinderRecipe>> MINERAL_GRINDER_TYPE = RECIPE_TYPES.register(MineralGrinderRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<MineralCrusherRecipe>> MINERAL_CRUSHER_TYPE = RECIPE_TYPES.register(MineralCrusherRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<LatheRecipe>> LATHE_TYPE = RECIPE_TYPES.register(LatheRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<OxidationFurnaceRecipe>> OXIDATION_FURNACE_TYPE = RECIPE_TYPES.register(OxidationFurnaceRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<EnergizedAlloyerRecipe>> ENERGIZED_ALLOYER_TYPE = RECIPE_TYPES.register(EnergizedAlloyerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<ReinforcedAlloyerRecipe>> REINFORCED_ALLOYER_TYPE = RECIPE_TYPES.register(ReinforcedAlloyerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
 
 	// FluidItem2Fluid
-	public static final RegistryObject<RecipeType<ChemicalMixerRecipe>> CHEMICAL_MIXER_TYPE = RECIPE_TYPES.register(ChemicalMixerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ChemicalMixerRecipe>());
-	public static final RegistryObject<RecipeType<FermentationPlantRecipe>> FERMENTATION_PLANT_TYPE = RECIPE_TYPES.register(FermentationPlantRecipe.RECIPE_GROUP, () -> new CustomRecipeType<FermentationPlantRecipe>());
-	public static final RegistryObject<RecipeType<MineralWasherRecipe>> MINERAL_WASHER_TYPE = RECIPE_TYPES.register(MineralWasherRecipe.RECIPE_GROUP, () -> new CustomRecipeType<MineralWasherRecipe>());
+	public static final RegistryObject<RecipeType<ChemicalMixerRecipe>> CHEMICAL_MIXER_TYPE = RECIPE_TYPES.register(ChemicalMixerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<FermentationPlantRecipe>> FERMENTATION_PLANT_TYPE = RECIPE_TYPES.register(FermentationPlantRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
+	public static final RegistryObject<RecipeType<MineralWasherRecipe>> MINERAL_WASHER_TYPE = RECIPE_TYPES.register(MineralWasherRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
 
 	// Fluid2Item
-	public static final RegistryObject<RecipeType<ChemicalCrystalizerRecipe>> CHEMICAL_CRYSTALIZER_TYPE = RECIPE_TYPES.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ChemicalCrystalizerRecipe>());
+	public static final RegistryObject<RecipeType<ChemicalCrystalizerRecipe>> CHEMICAL_CRYSTALIZER_TYPE = RECIPE_TYPES.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
 
 	// Fluid2Fluid
-	public static final RegistryObject<RecipeType<ElectrolyticSeparatorRecipe>> ELECTROLYTIC_SEPERATOR_TYPE = RECIPE_TYPES.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> new CustomRecipeType<ElectrolyticSeparatorRecipe>());
+	public static final RegistryObject<RecipeType<ElectrolyticSeparatorRecipe>> ELECTROLYTIC_SEPERATOR_TYPE = RECIPE_TYPES.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> new CustomRecipeType<>());
 
 	/* SERIALIZERS */
 
