@@ -3,7 +3,7 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0": {
-			"tag": "forge:rawores/silver",
+			"tag": "forge:raw_materials/silver",
 			"count": 1
 		}
 	},

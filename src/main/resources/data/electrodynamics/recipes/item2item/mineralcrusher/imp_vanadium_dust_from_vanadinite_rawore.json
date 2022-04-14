@@ -3,7 +3,7 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0":{
-	        "tag":"forge:rawores/vanadinite",
+	        "tag":"forge:raw_materials/vanadinite",
 	        "count":1
 	    }
 	},

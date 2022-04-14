@@ -3,7 +3,7 @@
 	"iteminputs":{
 		"count" : 1,
 		"0": {
-			"tag": "forge:rawores/lepidolite",
+			"tag": "forge:raw_materials/lepidolite",
 			"count": 1
 		}
 	},

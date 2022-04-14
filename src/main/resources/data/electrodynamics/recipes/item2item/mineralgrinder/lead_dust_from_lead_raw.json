@@ -3,7 +3,7 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0":{
-	        "tag":"forge:rawores/lead",
+	        "tag":"forge:raw_materials/lead",
 	        "count":1
 	    }
 	},
