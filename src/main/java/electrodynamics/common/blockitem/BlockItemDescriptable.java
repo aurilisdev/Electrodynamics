@@ -6,13 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.mojang.datafixers.util.Pair;
+
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import mezz.jei.core.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -75,7 +76,7 @@ public class BlockItemDescriptable extends BlockItem {
 		if (!initialized) {
 			initialized = true;
 			for (Pair<Supplier<Block>, String> pair : cachedDescriptions) {
-				createDescription(pair.first().get(), pair.second());
+				createDescription(pair.getFirst().get(), pair.getSecond());
 			}
 		}
 		HashSet<String> gotten = descriptionMappings.get(block.get());
