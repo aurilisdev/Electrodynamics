@@ -4,7 +4,6 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -27,7 +26,7 @@ public class MineralWasherRecipe extends FluidItem2FluidRecipe {
 
 	@Override
 	public RecipeType<?> getType() {
-		return Registry.RECIPE_TYPE.get(RECIPE_ID);
+		return ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get();
 	}
 
 }

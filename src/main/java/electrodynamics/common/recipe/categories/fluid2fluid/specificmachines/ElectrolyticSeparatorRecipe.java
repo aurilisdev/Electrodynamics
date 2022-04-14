@@ -4,7 +4,6 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -27,7 +26,7 @@ public class ElectrolyticSeparatorRecipe extends Fluid2FluidRecipe {
 
 	@Override
 	public RecipeType<?> getType() {
-		return Registry.RECIPE_TYPE.get(RECIPE_ID);
+		return ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get();
 	}
 
 }
