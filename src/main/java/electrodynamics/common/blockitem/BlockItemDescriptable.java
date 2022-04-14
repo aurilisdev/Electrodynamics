@@ -1,5 +1,6 @@
 package electrodynamics.common.blockitem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import mezz.jei.core.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -26,12 +28,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BlockItemDescriptable extends BlockItem {
 	private static HashMap<Block, HashSet<String>> descriptionMappings = new HashMap<>();
+	private static List<Pair<Supplier<Block>, String>> cachedDescriptions = new ArrayList<>();
 
 	private final Supplier<Block> block;
 
 	private static boolean initialized;
 
-	public static void addDescription(Block block, String description) {
+	private static void createDescription(Block block, String description) {
 		HashSet<String> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block) : new HashSet<>();
 		if (!descriptionMappings.containsKey(block)) {
 			descriptionMappings.put(block, gotten);
@@ -69,9 +72,11 @@ public class BlockItemDescriptable extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if(!initialized) {
+		if (!initialized) {
 			initialized = true;
-			ItemDescriptions.setup();
+			for (Pair<Supplier<Block>, String> pair : cachedDescriptions) {
+				createDescription(pair.first().get(), pair.second());
+			}
 		}
 		HashSet<String> gotten = descriptionMappings.get(block.get());
 		if (gotten != null) {
@@ -95,5 +100,9 @@ public class BlockItemDescriptable extends BlockItem {
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 		return stack.hasTag() && stack.getTag().getDouble("joules") > 0 ? 1 : super.getItemStackLimit(stack);
+	}
+
+	public static void addDescription(Supplier<Block> block, String description) {
+		cachedDescriptions.add(new Pair<>(block, description));
 	}
 }

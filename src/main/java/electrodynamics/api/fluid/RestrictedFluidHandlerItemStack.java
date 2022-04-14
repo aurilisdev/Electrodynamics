@@ -91,15 +91,14 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 	public ArrayList<Fluid> getWhitelistedFluids() {
 		ArrayList<Fluid> valid = new ArrayList<>();
 		ArrayList<Fluid> unique = new ArrayList<>();
-//		for (ResourceLocation loc : tags) {
-//			List<Fluid> fluids = FluidTags.getAllTags().getTag(loc).getValues();
-//			for (Fluid fluid : fluids) {
-//				if (!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
-//					valid.add(fluid);
-//				}
-//			}
-//		}
-		// TODO: Fix this
+		for (ResourceLocation loc : tags) {
+			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList();
+			for (Fluid fluid : fluids) {
+				if (!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+					valid.add(fluid);
+				}
+			}
+		}
 		for (Fluid fluid : fluids) {
 			if (!valid.contains(fluid)) {
 				unique.add(fluid);
