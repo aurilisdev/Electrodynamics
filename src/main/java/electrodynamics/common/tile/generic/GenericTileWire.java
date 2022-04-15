@@ -120,28 +120,37 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		}
 	}
 
+	private boolean isQueued = false;
+
 	@Override
 	public void refreshNetwork() {
-		if (!level.isClientSide) {
-			updateAdjacent();
-			ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
-			for (Direction dir : Direction.values()) {
-				BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
-				if (facing instanceof IConductor c && c.getNetwork() instanceof ElectricNetwork el) {
-					foundNetworks.add(el);
-				}
-			}
-			if (!foundNetworks.isEmpty() && getNetwork(false) == null) {
-				if (foundNetworks.size() > 1) {
-					foundNetworks.get(0).conductorSet.add(this);
-					electricNetwork = foundNetworks.get(0);
-					foundNetworks.remove(0);
-					for (ElectricNetwork network : foundNetworks) {
-						electricNetwork.merge(network);
+		if (level != null) {
+			isQueued = false;
+			if (!level.isClientSide) {
+				updateAdjacent();
+				ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
+				for (Direction dir : Direction.values()) {
+					BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
+					if (facing instanceof IConductor c && c.getNetwork() instanceof ElectricNetwork el) {
+						foundNetworks.add(el);
 					}
 				}
+				if (!foundNetworks.isEmpty() && getNetwork(false) == null) {
+					if (foundNetworks.size() > 1) {
+						foundNetworks.get(0).conductorSet.add(this);
+						electricNetwork = foundNetworks.get(0);
+						foundNetworks.remove(0);
+						for (ElectricNetwork network : foundNetworks) {
+							electricNetwork.merge(network);
+						}
+					}
+				}
+				getNetwork().refresh();
 			}
-			getNetwork().refresh();
+		} else if (!isQueued) {
+			// For some reason the world was null?
+			isQueued = true;
+			Scheduler.schedule(20, () -> refreshNetwork());
 		}
 	}
 
