@@ -93,7 +93,7 @@ public class Constants {
 	@IntValue(def = 200)
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	@DoubleValue(def = 100)
-	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 100;
+	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 200;
 	@DoubleValue(def = 100)
 	public static double MOTORCOMPLEX_USAGE_PER_TICK = 100.0;
 	@DoubleValue(def = 100)
