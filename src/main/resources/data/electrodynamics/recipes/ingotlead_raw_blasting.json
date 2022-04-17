@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:blasting",
 	"ingredient": {
-		"tag": "forge:rawores/lead"
+		"tag": "forge:raw_materials/lead"
 	},
 	"result": "electrodynamics:ingotlead",
 	"experience": 0.1,

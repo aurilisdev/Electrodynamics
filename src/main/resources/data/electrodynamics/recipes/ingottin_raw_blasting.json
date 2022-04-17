@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:blasting",
 	"ingredient": {
-		"tag": "forge:rawores/tin"
+		"tag": "forge:raw_materials/tin"
 	},
 	"result": "electrodynamics:ingottin",
 	"experience": 0.1,

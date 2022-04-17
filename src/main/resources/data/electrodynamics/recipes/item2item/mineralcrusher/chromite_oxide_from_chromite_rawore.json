@@ -3,7 +3,7 @@
 	"iteminputs" : {
 		"count" : 1,
 		"0":{
-	        "tag":"forge:rawores/chromium",
+	        "tag":"forge:raw_materials/chromium",
 	        "count":1
 	    }
 	},
