@@ -25,7 +25,7 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 	protected int getScaledLevel() {
 		IFluidTank tank = fluidInfoHandler.getTank();
 		if (tank != null) {
-			if (tank.getFluidAmount() > 0) {
+			if (tank.getFluidAmount() > 0 && tank.getCapacity() > 0) {
 				return tank.getFluidAmount() * (HEIGHT - 2) / tank.getCapacity();
 			}
 		}
