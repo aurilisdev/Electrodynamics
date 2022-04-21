@@ -30,19 +30,19 @@ import net.minecraft.world.level.block.state.BlockState;
 public enum SubtypeItemUpgrade implements ISubtype {
 	basiccapacity((holder, processor, upgrade) -> {
 		if (holder instanceof TileBatteryBox box) {
-			box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(2.25, 3));
-			box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 2);
+			box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 1.5, Math.pow(1.5, 3));
+			box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier * 2, 2);
 		}
 	}, 2),
 	basicspeed((holder, processor, upgrade) -> {
 		if (processor != null) {
-			processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(2.25, 3));
+			processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(1.5, 3));
 		}
 	}, 3),
 	advancedcapacity((holder, processor, upgrade) -> {
 		if (holder instanceof TileBatteryBox box) {
 			box.currentCapacityMultiplier = Math.min(box.currentCapacityMultiplier * 2.25, Math.pow(2.25, 3));
-			box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier, 4);
+			box.currentVoltageMultiplier = Math.max(box.currentVoltageMultiplier * 4, 4);
 		}
 	}, 4),
 	advancedspeed((holder, processor, upgrade) -> {
