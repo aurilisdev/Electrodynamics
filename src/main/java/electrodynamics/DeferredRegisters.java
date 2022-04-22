@@ -141,7 +141,6 @@ import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.common.tile.TileEnergizedAlloyer;
 import electrodynamics.common.tile.TileFermentationPlant;
 import electrodynamics.common.tile.TileFluidVoid;
-import electrodynamics.common.tile.TileFrame;
 import electrodynamics.common.tile.TileHydroelectricGenerator;
 import electrodynamics.common.tile.TileLathe;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
@@ -537,7 +536,6 @@ public class DeferredRegisters {
 	public static final RegistryObject<BlockEntityType<TileQuarry>> TILE_QUARRY = TILES.register(SubtypeMachine.quarry.tag(), () -> new BlockEntityType<>(TileQuarry::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.quarry)), null));
 	public static final RegistryObject<BlockEntityType<TileCoolantResavoir>> TILE_COOLANTRESAVOIR = TILES.register(SubtypeMachine.coolantresavoir.tag(), () -> new BlockEntityType<>(TileCoolantResavoir::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.coolantresavoir)), null));
 	public static final RegistryObject<BlockEntityType<TileMotorComplex>> TILE_MOTORCOMPLEX = TILES.register(SubtypeMachine.motorcomplex.tag(), () -> new BlockEntityType<>(TileMotorComplex::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.motorcomplex)), null));
-	public static final RegistryObject<BlockEntityType<TileFrame>> TILE_FRAME = TILES.register("frame", () -> new BlockEntityType<>(TileFrame::new, Sets.newHashSet(blockFrame, blockFrameCorner), null));
 	public static final RegistryObject<BlockEntityType<TileLogisticalManager>> TILE_LOGISTICALMANAGER = TILES.register("logisticalmanager", () -> new BlockEntityType<>(TileLogisticalManager::new, Sets.newHashSet(blockLogisticalManager), null));
 
 	// Containers

@@ -12,12 +12,14 @@ import com.mojang.datafixers.util.Pair;
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
+import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -31,7 +33,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -101,7 +102,7 @@ public class ClientEvents {
 
 	public static HashMap<BlockPos, List<AABB>> markerLines = new HashMap<>();
 
-	public static HashMap<BlockPos, List<AABB>> quarryArm = new HashMap<>();
+	public static HashMap<BlockPos, QuarryArmDataHolder> quarryArm = new HashMap<>();
 
 	@SubscribeEvent
 	public static void renderSelectedBlocks(RenderLevelLastEvent event) {
@@ -141,7 +142,7 @@ public class ClientEvents {
 		float v1Frame = cornerFrame.getV1();
 		float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
 
-		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("electrodynamics:block/resource/resourceblocktitanium"));
+		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(SubtypeDrillHead.titanium.blockTextureLoc);
 		float u0Titanium = titanium.getU0();
 		float u1Titanium = titanium.getU1();
 		float v0Titanium = titanium.getV0();
@@ -150,16 +151,29 @@ public class ClientEvents {
 
 		VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
 
-		quarryArm.forEach((pos, list) -> {
-			for (int i = 0; i < list.size(); i++) {
-				AABB aabb = list.get(i);
+		quarryArm.forEach((pos, data) -> {
+			data.armParts.forEach(aabb -> {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
-				if (i < list.size() - 2) {
-					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
-				} else {
-					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
-				}
+				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
+				matrix.popPose();
+			});
+			data.titaniumParts.forEach(aabb -> {
+				matrix.pushPose();
+				matrix.translate(-camera.x, -camera.y, -camera.z);
+				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
+				matrix.popPose();
+			});
+			if(data.headType != null) {
+				matrix.pushPose();
+				matrix.translate(-camera.x, -camera.y, -camera.z);
+				TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType.blockTextureLoc);
+				float u0Head = headText.getU0();
+				float u1Head = headText.getU1();
+				float v0Head = headText.getV0();
+				float v1Head = headText.getV1();
+				float[] colorsHead = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
+				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, data.drillHead, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
 				matrix.popPose();
 			}
 		});

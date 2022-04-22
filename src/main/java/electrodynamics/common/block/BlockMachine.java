@@ -10,6 +10,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
+import electrodynamics.common.tile.TileQuarry;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.utilities.ElectricityUtils;
@@ -141,9 +142,14 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		BlockEntity tile = worldIn.getBlockEntity(pos);
+		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING)) && tile instanceof TileQuarry quarry) {
+			if (quarry.hasCorners()) {
+				quarry.handleFramesDecay();
+			}
+		}
 		boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
 		if (hasMultiBlock()) {
-			BlockEntity tile = worldIn.getBlockEntity(pos);
 			if (tile instanceof IMultiblockTileNode multi) {
 				multi.onNodeReplaced(worldIn, pos, !update);
 			}

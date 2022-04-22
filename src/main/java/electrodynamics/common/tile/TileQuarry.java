@@ -7,8 +7,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.tuple.Triple;
-
 import electrodynamics.DeferredRegisters;
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -32,6 +30,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.prefab.utilities.object.Location;
+import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -82,8 +81,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private boolean prevIsCorner = false;
 
-	private List<Triple<BlockPos, Direction, Boolean>> brokenFrames = new ArrayList<>();
-	private BlockPos lastFixed = null;
 	private boolean lastIsCorner = false;
 
 	private static final int CLEAR_SKIP = Math.max(Math.min(Constants.CLEARING_AIR_SKIP, 128), 0);
@@ -121,6 +118,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	public double quarryPowerUsage = 0;
 	private boolean isPowered = false;
 	private boolean hasHead = false;
+	private SubtypeDrillHead currHead = null;
 
 	private boolean hasItemVoid = false;
 	private int fortuneLevel = 0;
@@ -153,6 +151,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	public boolean clientFinished = false;
 	public boolean clientHead = false;
+	private SubtypeDrillHead clientHeadType = null;
 
 	private boolean clientComplexIsPowered = false;
 
@@ -173,6 +172,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			GenericMachineBlock.IPLAYERSTORABLE_MAP.remove(pos);
 		}
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+		// Delay it one tick big brain time
+		if ((tick.getTicks() + 1) % 5 == 0) {
+			checkComponents();
+		}
 		if (hasComponents) {
 			hasHandledDecay = false;
 			if (hasRing) {
@@ -181,16 +184,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				if (tick.getTicks() % 4 == 0) {
 					cleanRing();
 				}
-				if (lastFixed != null) {
-					TileFrame frame = (TileFrame) world.getBlockEntity(lastFixed);
-					frame.setQuarryPos(getBlockPos());
-					frame.setCorner(lastIsCorner);
-					lastFixed = null;
+				if ((tick.getTicks() + 1) % 20 == 0) {
+					maintainRing();
 				}
-				if (!brokenFrames.isEmpty()) {
-					fixBrokenFrames();
-					// it only will mine if the frame is 100% intact and clear
-				} else if (!isFinished && !areComponentsNull()) {
+				if (!isFinished && !areComponentsNull()) {
 					if (tick.getTicks() % 4 == 0 && Constants.MAINTAIN_MINING_AREA) {
 						maintainMiningArea();
 					}
@@ -270,7 +267,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 										cont = mineBlock(miningPos, miningState, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 									}
 								}
-								Electrodynamics.LOGGER.info(cont);
 								miningPos = new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL);
 
 								BlockState state = world.getBlockState(miningPos);
@@ -348,9 +344,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		} else if (hasCorners() && !hasHandledDecay && isAreaCleared) {
 			handleFramesDecay();
 		}
-		if (tick.getTicks() % 5 == 0) {
-			checkComponents();
-		}
 
 	}
 
@@ -377,16 +370,18 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			AABB top;
 			AABB center;
 			List<AABB> downArms = new ArrayList<>();
-			AABB downHead;
+			AABB headHolder;
+			AABB downHead = null;
 
-			List<AABB> boxes = new ArrayList<>();
+			List<AABB> arms = new ArrayList<>();
+			List<AABB> titanium = new ArrayList<>();
 
 			double x = loc.x();
 			double z = loc.z();
 			double y = startCentered.getY() + 0.5;
 
-			double deltaY = startCentered.getY() - loc.y() - 1;
-
+			double deltaY = startCentered.getY() - loc.y() - 1.2;
+			
 			int wholeSegmentCount = (int) (deltaY / Y_ARM_SEGMENT_LENGTH);
 			double remainder = deltaY / Y_ARM_SEGMENT_LENGTH - wholeSegmentCount;
 			for (int i = 0; i < wholeSegmentCount; i++) {
@@ -394,9 +389,13 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			}
 			int wholeOffset = wholeSegmentCount * Y_ARM_SEGMENT_LENGTH;
 			downArms.add(new AABB(x + 0.25, y - wholeOffset, z + 0.25, x + 0.75, y - wholeOffset - Y_ARM_SEGMENT_LENGTH * remainder, z + 0.75));
+			
+			headHolder = new AABB(x + 0.20, y - deltaY, z + 0.20, x + 0.8, y - deltaY - 0.2, z + 0.8);
+			Electrodynamics.LOGGER.info(clientHeadType);
 
-			downHead = new AABB(x + 0.3125, y - deltaY, z + 0.3125, x + 0.6875, y - deltaY - 0.5, z + 0.6875);
-
+			downHead = new AABB(x + 0.3125, y - deltaY - 0.2, z + 0.3125, x + 0.6875, y - deltaY - 0.5 - 0.2, z + 0.6875);
+			
+			
 			center = new AABB(x + 0.1875, y + 0.325, z + 0.1875, x + 0.8125, y - 0.325, z + 0.8125);
 
 			Direction facing = ((ComponentDirection) getComponent(ComponentType.Direction)).getDirection().getOpposite();
@@ -430,14 +429,15 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					top = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthTop + 0.25);
 				}
 
-				boxes.add(left);
-				boxes.add(right);
-				boxes.add(bottom);
-				boxes.add(top);
-				boxes.addAll(downArms);
-				boxes.add(center);
-				boxes.add(downHead);
-
+				arms.add(left);
+				arms.add(right);
+				arms.add(bottom);
+				arms.add(top);
+				arms.addAll(downArms);
+				
+				titanium.add(center);
+				if(headHolder != null) titanium.add(headHolder);
+				
 				break;
 			case EAST, WEST:
 
@@ -468,20 +468,21 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					top = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthTop + 0.75, y + 0.25, z + 0.75);
 				}
 
-				boxes.add(left);
-				boxes.add(right);
-				boxes.add(bottom);
-				boxes.add(top);
-				boxes.addAll(downArms);
-				boxes.add(center);
-				boxes.add(downHead);
-
+				arms.add(left);
+				arms.add(right);
+				arms.add(bottom);
+				arms.add(top);
+				arms.addAll(downArms);
+				
+				titanium.add(center);
+				if(headHolder != null) titanium.add(headHolder);
+				
 				break;
 			default:
 				break;
 			}
 			storedArmFrames.remove(0);
-			ClientEvents.quarryArm.put(pos, boxes);
+			ClientEvents.quarryArm.put(pos, new QuarryArmDataHolder(arms, titanium, downHead, clientHeadType));
 		}
 	}
 
@@ -573,11 +574,13 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		boolean sucess = world.destroyBlock(pos, false, player);
 		if (sucess) {
 			SubtypeDrillHead head = ((ItemDrillHead) drillHead.getItem()).head;
+			currHead = head;
 			if (!head.isUnbreakable) {
 				int durabilityUsed = (int) (Math.ceil(strength) / (unbreakingLevel + 1.0F));
 				if (drillHead.getDamageValue() + durabilityUsed >= drillHead.getMaxDamage()) {
 					world.playSound(null, getBlockPos(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 					drillHead.shrink(1);
+					currHead = null;
 				} else {
 					drillHead.setDamageValue(drillHead.getDamageValue() + durabilityUsed);
 				}
@@ -672,28 +675,63 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			}
 		}
 	}
-
-	private void fixBrokenFrames() {
+	
+	private void maintainRing() {
 		Level world = getLevel();
-		Triple<BlockPos, Direction, Boolean> blockInfo = brokenFrames.get(0);
-		if (Boolean.TRUE.equals(blockInfo.getRight())) {
-			world.setBlockAndUpdate(blockInfo.getLeft(), DeferredRegisters.blockFrameCorner.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
-		} else {
-			world.setBlockAndUpdate(blockInfo.getLeft(), DeferredRegisters.blockFrame.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE).setValue(GenericEntityBlock.FACING, blockInfo.getMiddle()));
+		BlockPos frontOfQuarry = corners.get(0);
+		BlockPos foqFar = corners.get(1);
+		BlockPos foqCorner = corners.get(2);
+		BlockPos farCorner = corners.get(3);
+		for (BlockPos pos : corners) {
+			BlockState state = world.getBlockState(pos);
+			if(state.isAir() || !state.is(DeferredRegisters.blockFrameCorner)) {
+				world.setBlockAndUpdate(pos, DeferredRegisters.blockFrameCorner.defaultBlockState());
+			}
 		}
-		world.playSound(null, blockInfo.getLeft(), SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 0.5F, 1.0F);
-		lastFixed = blockInfo.getLeft();
-		lastIsCorner = blockInfo.getRight();
-		brokenFrames.remove(0);
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite();
+		switch (facing) {
+		case EAST:
+			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.EAST));
+			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.WEST));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.NORTH));
+			break;
+		case WEST:
+			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.WEST));
+			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.EAST));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.NORTH));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
+			break;
+		case SOUTH:
+			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
+			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.NORTH));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.EAST));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.WEST));
+			break;
+		case NORTH:
+			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.NORTH));
+			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.EAST));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.WEST));
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private static void maintainState(Level world, BlockPos pos, Direction facing) {
+		BlockState state = world.getBlockState(pos);
+		if (state.isAir() || !state.is(DeferredRegisters.blockFrame) && !state.is(DeferredRegisters.blockFrameCorner)) {
+			world.setBlockAndUpdate(pos, DeferredRegisters.blockFrame.defaultBlockState().setValue(GenericEntityBlock.FACING, facing).setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
+			world.playSound(null, pos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 0.5F, 1.0F);
+		}
 	}
 
 	private void checkRing() {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		if (electro.getJoulesStored() >= Constants.QUARRY_USAGE_PER_TICK && hasCorners()) {
 			electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK);
-			brokenFrames.clear();
 			BlockState cornerState = DeferredRegisters.blockFrameCorner.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE);
-			BlockPos quarryPos = getBlockPos();
 			Level world = getLevel();
 			BlockPos frontOfQuarry = corners.get(0);
 			BlockPos foqFar = corners.get(1);
@@ -701,9 +739,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			BlockPos farCorner = corners.get(3);
 			Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite();
 			if (prevPos != null) {
-				TileFrame frame = (TileFrame) world.getBlockEntity(prevPos);
-				frame.setQuarryPos(quarryPos);
-				frame.setCorner(prevIsCorner);
 				if (hasAllStrips()) {
 					hasRing = true;
 					prevPos = null;
@@ -901,11 +936,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		return hasBottomStrip && hasTopStrip && hasLeftStrip && hasRightStrip;
 	}
 
-	public void addBroken(Triple<BlockPos, Direction, Boolean> frameInfo) {
-		brokenFrames.add(frameInfo);
-	}
-
-	private boolean hasCorners() {
+	public boolean hasCorners() {
 		return corners.size() > 3;
 	}
 
@@ -947,6 +978,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		nbt.putBoolean("isFinished", isFinished);
 		nbt.putBoolean("hasHead", hasHead);
+		
+		if(currHead != null) {
+			nbt.putString("headType", currHead.toString().toLowerCase());
+		}
 	}
 
 	private void readPacket(CompoundTag nbt) {
@@ -991,14 +1026,21 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		clientFinished = nbt.getBoolean("isFinished");
 		clientHead = nbt.getBoolean("hasHead");
+		
+		if(nbt.contains("headType")) {
+			clientHeadType = SubtypeDrillHead.valueOf(nbt.getString("headType").toLowerCase());
+		} else {
+			clientHeadType = null;
+		}
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.putBoolean("hasComponents", hasComponents);
 		compound.putBoolean("hasRing", hasRing);
 
-		compound.putBoolean("bottomStrip", hasBottomStrip);
+	 	compound.putBoolean("bottomStrip", hasBottomStrip);
 		compound.putBoolean("topStrip", hasTopStrip);
 		compound.putBoolean("leftStrip", hasLeftStrip);
 		compound.putBoolean("rightStrip", hasRightStrip);
@@ -1015,23 +1057,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		compound.putBoolean("prevIsCorner", prevIsCorner);
-
-		compound.putInt("brokenSize", brokenFrames.size());
-		for (int i = 0; i < brokenFrames.size(); i++) {
-			Triple<BlockPos, Direction, Boolean> blockInfo = brokenFrames.get(i);
-			compound.putInt("frameX" + i, blockInfo.getLeft().getX());
-			compound.putInt("frameY" + i, blockInfo.getLeft().getY());
-			compound.putInt("frameZ" + i, blockInfo.getLeft().getZ());
-			compound.putString("direction" + i, blockInfo.getMiddle().getName().toLowerCase());
-			compound.putBoolean("isCorner" + i, blockInfo.getRight());
-		}
-
-		if (lastFixed != null) {
-			compound.putInt("fixedX", lastFixed.getX());
-			compound.putInt("fixedY", lastFixed.getY());
-			compound.putInt("fixedZ", lastFixed.getZ());
-		}
-
 		compound.putBoolean("lastIsCorner", lastIsCorner);
 
 		compound.putInt("cornerSize", corners.size());
@@ -1045,7 +1070,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		compound.putBoolean("hasDecayed", hasHandledDecay);
 
 		compound.putBoolean("onRight", cornerOnRight);
-		compound.putBoolean("areaClear", isAreaCleared);
+		compound.putBoolean("areaClear", false);
 
 		compound.putInt("heightShiftCA", heightShiftCA);
 		compound.putInt("widthShiftCA", widthShiftCA);
@@ -1081,12 +1106,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		compound.putBoolean("continue", cont);
-
-		super.saveAdditional(compound);
 	}
 
 	@Override
 	public void load(CompoundTag compound) {
+		super.load(compound);
 		hasComponents = compound.getBoolean("hasComponents");
 		hasRing = compound.getBoolean("hasRing");
 
@@ -1108,22 +1132,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		prevIsCorner = compound.getBoolean("prevIsCorner");
-
-		brokenFrames = new ArrayList<>();
-		int size = compound.getInt("brokenSize");
-		for (int i = 0; i < size; i++) {
-			BlockPos pos = new BlockPos(compound.getInt("frameX" + i), compound.getInt("frameY" + i), compound.getInt("frameZ" + i));
-			Direction direction = Direction.byName(compound.getString("direction" + i));
-			Boolean bool = compound.getBoolean("isCorner" + i);
-			brokenFrames.add(Triple.of(pos, direction, bool));
-		}
-
-		if (compound.contains("fixedX")) {
-			lastFixed = new BlockPos(compound.getInt("fixedX"), compound.getInt("fixedY"), compound.getInt("fixedZ"));
-		} else {
-			lastFixed = null;
-		}
 		lastIsCorner = compound.getBoolean("lastIsCorner");
+		
 		corners = new ArrayList<>();
 		int cornerSize = compound.getInt("cornerSize");
 		for (int i = 0; i < cornerSize; i++) {
@@ -1167,14 +1177,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		cont = compound.getBoolean("continue");
 
-		super.load(compound);
 	}
 
 	@Override
 	public void setRemoved() {
-		if (hasCorners() && isAreaCleared) {
-			handleFramesDecay();
-		}
 		if (getLevel().isClientSide) {
 			ClientEvents.quarryArm.remove(getBlockPos());
 		}
@@ -1182,7 +1188,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	// it is assumed that the block has marker corners when you call this method
-	private void handleFramesDecay() {
+	public void handleFramesDecay() {
 		miningPos = null;
 		posForClient = null;
 		hasHandledDecay = true;
@@ -1209,11 +1215,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private static void updateState(Level world, BlockPos pos) {
-		BlockEntity entity = world.getBlockEntity(pos);
-		if (entity != null && entity instanceof TileFrame frame) {
-			frame.setNoNotify();
-			frame.setQuarryPos(null);
-		}
 		BlockState state = world.getBlockState(pos);
 		if (state.is(DeferredRegisters.blockFrame) || state.is(DeferredRegisters.blockFrameCorner)) {
 			world.setBlockAndUpdate(pos, state.setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.TRUE));
