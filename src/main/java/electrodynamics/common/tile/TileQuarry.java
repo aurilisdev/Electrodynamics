@@ -693,26 +693,26 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		case EAST:
 			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.EAST));
 			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.WEST));
-			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
-			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.NORTH));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.NORTH : Direction.SOUTH));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.SOUTH : Direction.NORTH));
 			break;
 		case WEST:
 			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.WEST));
 			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.EAST));
-			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.NORTH));
-			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.SOUTH : Direction.NORTH));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.NORTH : Direction.SOUTH));
 			break;
 		case SOUTH:
 			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
 			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.NORTH));
-			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.EAST));
-			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.WEST));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.EAST : Direction.WEST));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.WEST : Direction.EAST));
 			break;
 		case NORTH:
 			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.NORTH));
 			BlockPos.betweenClosedStream(farCorner, foqFar).forEach(pos -> maintainState(world, pos, Direction.SOUTH));
-			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, Direction.EAST));
-			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, Direction.WEST));
+			BlockPos.betweenClosedStream(foqCorner, farCorner).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.WEST : Direction.EAST));
+			BlockPos.betweenClosedStream(frontOfQuarry, foqFar).forEach(pos -> maintainState(world, pos, cornerOnRight ? Direction.EAST : Direction.WEST));
 			break;
 		default:
 			break;
