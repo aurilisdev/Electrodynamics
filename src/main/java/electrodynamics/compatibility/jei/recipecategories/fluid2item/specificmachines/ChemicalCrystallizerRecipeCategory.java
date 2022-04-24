@@ -44,7 +44,7 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<ChemicalCrystalizerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ChemicalCrystalizerRecipe.RECIPE_GROUP, ChemicalCrystalizerRecipe.class);
-	
+
 	public ChemicalCrystallizerRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ChemicalCrystalizerRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, IN_BUCKET_SLOT);
@@ -58,7 +58,7 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<ChemicalCrystalizerRecipe> getRecipeType() {
 		return RECIPE_TYPE;

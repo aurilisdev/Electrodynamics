@@ -164,7 +164,7 @@ public class ClientEvents {
 				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
 				matrix.popPose();
 			});
-			if(data.headType != null) {
+			if (data.headType != null) {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
 				TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType.blockTextureLoc);

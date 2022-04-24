@@ -150,7 +150,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		} else if (!isQueued) {
 			// For some reason the world was null?
 			isQueued = true;
-			Scheduler.schedule(20, () -> refreshNetwork());
+			Scheduler.schedule(20, this::refreshNetwork);
 		}
 	}
 

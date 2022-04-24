@@ -43,7 +43,7 @@ public class ReinforcedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Rei
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<ReinforcedAlloyerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ReinforcedAlloyerRecipe.RECIPE_GROUP, ReinforcedAlloyerRecipe.class);
-	
+
 	public ReinforcedAlloyerRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ReinforcedAlloyerRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
@@ -57,7 +57,7 @@ public class ReinforcedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Rei
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<ReinforcedAlloyerRecipe> getRecipeType() {
 		return RECIPE_TYPE;

@@ -25,7 +25,7 @@ public class FluidIngredient extends Ingredient {
 
 	@Nonnull
 	private List<FluidStack> fluidStacks;
-	
+
 	private TagKey<Fluid> tag;
 	private int amount;
 

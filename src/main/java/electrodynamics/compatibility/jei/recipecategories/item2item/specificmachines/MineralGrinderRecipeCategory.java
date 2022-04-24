@@ -42,7 +42,7 @@ public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<Minera
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<MineralGrinderRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralGrinderRecipe.RECIPE_GROUP, MineralGrinderRecipe.class);
-	
+
 	public MineralGrinderRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, MineralGrinderRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
@@ -56,7 +56,7 @@ public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<Minera
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<MineralGrinderRecipe> getRecipeType() {
 		return RECIPE_TYPE;

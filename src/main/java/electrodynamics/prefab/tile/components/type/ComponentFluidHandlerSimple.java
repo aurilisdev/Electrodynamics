@@ -86,7 +86,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	protected void setFluidInTank(FluidStack stack, int tank, boolean isInput) {
 		fluidTank.setFluid(stack);
 	}
-	
+
 	@Override
 	public ComponentFluidHandlerSimple setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids) {
 		tankCapacity = capacity;
@@ -100,7 +100,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	}
 
 	@Override
-	public ComponentFluidHandlerSimple setInputTags(int count,int capacity, TagKey<Fluid>... tags) {
+	public ComponentFluidHandlerSimple setInputTags(int count, int capacity, TagKey<Fluid>... tags) {
 		inTankCount = count;
 		inKeys = tags;
 		inCapacity = capacity;
@@ -108,8 +108,8 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	}
 
 	@Override
-	//we only need the one so we can ignore this one
-	public ComponentFluidHandlerSimple setOutputTags(int count,int capacity, TagKey<Fluid>... tags) {
+	// we only need the one so we can ignore this one
+	public ComponentFluidHandlerSimple setOutputTags(int count, int capacity, TagKey<Fluid>... tags) {
 		return this;
 	}
 
@@ -174,14 +174,14 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	public void addFluids() {
 		if (inKeys != null) {
 			List<Fluid> inputFluidHolder = new ArrayList<>();
-			for(TagKey<Fluid> key : inKeys) {
+			for (TagKey<Fluid> key : inKeys) {
 				inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
 			}
 			setManualFluids(inTankCount, true, inCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
 		}
 		if (outKeys != null) {
 			List<Fluid> outputFluidHolder = new ArrayList<>();
-			for(TagKey<Fluid> key : outKeys) {
+			for (TagKey<Fluid> key : outKeys) {
 				outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
 			}
 			setManualFluids(outTankCount, false, outCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));

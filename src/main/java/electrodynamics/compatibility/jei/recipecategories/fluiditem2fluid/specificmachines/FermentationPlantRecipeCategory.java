@@ -46,7 +46,7 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<FermentationPlantRecipe> RECIPE_TYPE = RecipeType.create(References.ID, FermentationPlantRecipe.RECIPE_GROUP, FermentationPlantRecipe.class);
-	
+
 	public FermentationPlantRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, FermentationPlantRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
@@ -61,7 +61,7 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<FermentationPlantRecipe> getRecipeType() {
 		return RECIPE_TYPE;

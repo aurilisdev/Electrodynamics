@@ -46,7 +46,7 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory<C
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<ChemicalMixerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ChemicalMixerRecipe.RECIPE_GROUP, ChemicalMixerRecipe.class);
-	
+
 	public ChemicalMixerRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ChemicalMixerRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
@@ -61,7 +61,7 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory<C
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<ChemicalMixerRecipe> getRecipeType() {
 		return RECIPE_TYPE;

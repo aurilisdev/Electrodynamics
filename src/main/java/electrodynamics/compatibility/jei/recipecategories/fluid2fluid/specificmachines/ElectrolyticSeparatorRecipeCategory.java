@@ -42,7 +42,7 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.electrolyticseparator));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
-	
+
 	public static final RecipeType<ElectrolyticSeparatorRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ElectrolyticSeparatorRecipe.RECIPE_GROUP, ElectrolyticSeparatorRecipe.class);
 
 	public ElectrolyticSeparatorRecipeCategory(IGuiHelper guiHelper) {
@@ -59,7 +59,7 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<ElectrolyticSeparatorRecipe> getRecipeType() {
 		return RECIPE_TYPE;

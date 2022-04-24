@@ -46,7 +46,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<MineralWasherRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralWasherRecipe.RECIPE_GROUP, MineralWasherRecipe.class);
-	
+
 	public MineralWasherRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, MineralWasherRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
@@ -61,7 +61,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<MineralWasherRecipe> getRecipeType() {
 		return RECIPE_TYPE;

@@ -44,7 +44,7 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory<B
 	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag() + "0";
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
-	
+
 	public static final RecipeType<BlastingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "mod_blasting", BlastingRecipe.class);
 
 	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
@@ -60,7 +60,7 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory<B
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<BlastingRecipe> getRecipeType() {
 		return RECIPE_TYPE;

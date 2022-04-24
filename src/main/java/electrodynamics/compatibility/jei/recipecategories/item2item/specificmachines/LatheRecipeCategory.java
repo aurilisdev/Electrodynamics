@@ -42,7 +42,7 @@ public class LatheRecipeCategory extends Item2ItemRecipeCategory<LatheRecipe> {
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<LatheRecipe> RECIPE_TYPE = RecipeType.create(References.ID, LatheRecipe.RECIPE_GROUP, LatheRecipe.class);
-	
+
 	public LatheRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, LatheRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
@@ -56,7 +56,7 @@ public class LatheRecipeCategory extends Item2ItemRecipeCategory<LatheRecipe> {
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<LatheRecipe> getRecipeType() {
 		return RECIPE_TYPE;

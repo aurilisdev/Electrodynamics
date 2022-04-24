@@ -28,7 +28,6 @@ public class ItemMultiDigger extends DiggerItem {
 
 	}
 
-
 	@Deprecated(forRemoval = true)
 	// FORGE: Use stack sensitive variant below
 	// ONLY ADDED CAUSE IT EXISTS IN THE DiggerItem.class!!!

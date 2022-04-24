@@ -42,7 +42,7 @@ public class MineralCrusherRecipeCategory extends Item2ItemRecipeCategory<Minera
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<MineralCrusherRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralCrusherRecipe.RECIPE_GROUP, MineralCrusherRecipe.class);
-	
+
 	public MineralCrusherRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, MineralCrusherRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
@@ -56,7 +56,7 @@ public class MineralCrusherRecipeCategory extends Item2ItemRecipeCategory<Minera
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<MineralCrusherRecipe> getRecipeType() {
 		return RECIPE_TYPE;

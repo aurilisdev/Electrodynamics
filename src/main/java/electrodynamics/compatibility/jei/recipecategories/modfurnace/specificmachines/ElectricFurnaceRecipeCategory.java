@@ -47,7 +47,7 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<Smel
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "smelting", SmeltingRecipe.class);
-	
+
 	public ElectricFurnaceRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
 		setInputSlots(guiHelper, INPUT_SLOT);
@@ -61,7 +61,7 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<Smel
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<SmeltingRecipe> getRecipeType() {
 		return RECIPE_TYPE;

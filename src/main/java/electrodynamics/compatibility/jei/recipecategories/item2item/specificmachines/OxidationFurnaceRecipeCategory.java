@@ -43,7 +43,7 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory<Oxid
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<OxidationFurnaceRecipe> RECIPE_TYPE = RecipeType.create(References.ID, OxidationFurnaceRecipe.RECIPE_GROUP, OxidationFurnaceRecipe.class);
-	
+
 	public OxidationFurnaceRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, OxidationFurnaceRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
@@ -57,7 +57,7 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory<Oxid
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<OxidationFurnaceRecipe> getRecipeType() {
 		return RECIPE_TYPE;

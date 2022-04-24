@@ -88,8 +88,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 				update = true;
 			}
 			if (update) {
-				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING))
-						.setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 3);
+				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(burnTime > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 3);
 			}
 		}
 		if (heat.get() > 27 && output.valid()) {
@@ -170,9 +169,8 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	}
 
 	public static List<Item> getValidItems() {
-		List<Item> items = new ArrayList<>();
-		items.addAll(ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList());
-		items.add(Items.CHARCOAL); 
+		List<Item> items = new ArrayList<>(ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList());
+		items.add(Items.CHARCOAL);
 		items.add(Blocks.COAL_BLOCK.asItem());
 		return items;
 	}

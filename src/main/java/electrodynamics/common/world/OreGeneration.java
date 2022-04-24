@@ -47,8 +47,7 @@ public class OreGeneration {
 				BlockState oreDeepslateDefault = DeferredRegisters.getSafeBlock(SubtypeOreDeepslate.values()[ore.ordinal()]).defaultBlockState();
 				List<TargetBlockState> targetBlockStates = List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, oreDefault), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, oreDeepslateDefault));
 				Holder<ConfiguredFeature<OreConfiguration, ?>> feature = FeatureUtils.register(ore.tag(), Feature.ORE, new OreConfiguration(targetBlockStates, ore.veinSize));
-				Holder<PlacedFeature> placed = PlacementUtils.register(ore.tag(), feature, CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(),
-						HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome());
+				Holder<PlacedFeature> placed = PlacementUtils.register(ore.tag(), feature, CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome());
 				FEATURES.add(placed);
 			}
 		}

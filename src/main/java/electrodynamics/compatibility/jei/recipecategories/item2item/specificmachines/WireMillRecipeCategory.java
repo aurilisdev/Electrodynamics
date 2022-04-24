@@ -42,7 +42,7 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillReci
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<WireMillRecipe> RECIPE_TYPE = RecipeType.create(References.ID, WireMillRecipe.RECIPE_GROUP, WireMillRecipe.class);
-	
+
 	public WireMillRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, WireMillRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
@@ -56,7 +56,7 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillReci
 	public ResourceLocation getUid() {
 		return UID;
 	}
-	
+
 	@Override
 	public RecipeType<WireMillRecipe> getRecipeType() {
 		return RECIPE_TYPE;

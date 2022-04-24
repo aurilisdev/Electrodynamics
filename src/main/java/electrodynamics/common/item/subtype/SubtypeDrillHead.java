@@ -17,7 +17,7 @@ public enum SubtypeDrillHead implements ISubtype {
 	SubtypeDrillHead(int durability, boolean unbreakable) {
 		this.durability = durability;
 		isUnbreakable = unbreakable;
-		blockTextureLoc =  new ResourceLocation("electrodynamics:block/resource/resourceblock" + this.toString().toLowerCase());
+		blockTextureLoc = new ResourceLocation("electrodynamics:block/resource/resourceblock" + toString().toLowerCase());
 	}
 
 	@Override
