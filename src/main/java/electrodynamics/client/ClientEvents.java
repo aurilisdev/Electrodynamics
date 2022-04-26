@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
@@ -237,9 +238,11 @@ public class ClientEvents {
 	public static void jetpackSoundHandler(PlayerEvent.StartTracking event) {
 		Entity entity = event.getTarget();
 		if(entity instanceof Player player) {
+			Electrodynamics.LOGGER.info("fired");
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
-				Minecraft.getInstance().getSoundManager().play(new TickableSoundJetpack(player));
+				Electrodynamics.LOGGER.info("fired");
+				Minecraft.getInstance().getSoundManager().playDelayed(new TickableSoundJetpack(player.getUUID()), 1);
 			}
 		}
 	}

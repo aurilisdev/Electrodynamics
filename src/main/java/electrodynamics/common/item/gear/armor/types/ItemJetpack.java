@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
@@ -14,7 +12,6 @@ import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
-import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
@@ -35,9 +32,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -92,18 +86,6 @@ public class ItemJetpack extends ArmorItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
-	}
-	
-	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-		Multimap<Attribute, AttributeModifier> superMap = super.getAttributeModifiers(slot, stack);
-		if(stack.getOrCreateTag().getBoolean(NBTUtils.USED) && slot == EquipmentSlot.CHEST) {
-			ArrayListMultimap<Attribute, AttributeModifier> returnMap = ArrayListMultimap.create();
-			returnMap.putAll(superMap);
-			returnMap.put(Attributes.MOVEMENT_SPEED, ElectrodynamicsAttributeModifiers.JETPACK_SPEED);
-			return returnMap;
-		}
-		return superMap;
 	}
 
 	@Override

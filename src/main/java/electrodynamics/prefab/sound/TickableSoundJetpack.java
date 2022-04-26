@@ -1,6 +1,9 @@
 package electrodynamics.prefab.sound;
 
+import java.util.UUID;
+
 import electrodynamics.DeferredRegisters;
+import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
@@ -15,11 +18,13 @@ import net.minecraft.world.item.ItemStack;
 public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 
 	private static final int MAX_DISTANCE = 10;
+	private UUID originId;
 	private Player originPlayer;
 	
-	public TickableSoundJetpack(Player originPlayer) {
+	public TickableSoundJetpack(UUID originPlayer) {
 		super(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS);
-		this.originPlayer = originPlayer;
+		Electrodynamics.LOGGER.info("created");
+		this.originId = originPlayer;
 		this.volume = 0.5F;
 		this.pitch = 1.0F;
 		this.looping = true;
@@ -27,7 +32,9 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 	
 	@Override
 	public void tick() {
+		originPlayer = Minecraft.getInstance().level.getPlayerByUUID(originId);
 		if(checkStop()) {
+			Electrodynamics.LOGGER.info("stopped");
 			stop();
 			return;
 		} 
@@ -50,7 +57,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 	}
 	
 	protected boolean checkStop() {
-		if(originPlayer.isRemoved()) {
+		if(originPlayer == null || originPlayer.isRemoved()) {
 			return true;
 		}
 		ItemStack jetpack = originPlayer.getItemBySlot(EquipmentSlot.CHEST);

@@ -3,11 +3,8 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.prefab.sound.TickableSoundJetpack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class PacketJetpackEquipedSound {
@@ -21,14 +18,7 @@ public class PacketJetpackEquipedSound {
 	public static void handle(PacketJetpackEquipedSound message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			ClientLevel world = minecraft.level;
-			if (world != null && minecraft.player != null) {
-				Player origin = minecraft.level.getPlayerByUUID(message.player);
-				if(origin != null) {
-					minecraft.getSoundManager().play(new TickableSoundJetpack(origin));
-				}
-			}
+			BarrierMethods.handlePacketJetpackEquipedSound(message.player);
 		});
 		ctx.setPacketHandled(true);
 	}
