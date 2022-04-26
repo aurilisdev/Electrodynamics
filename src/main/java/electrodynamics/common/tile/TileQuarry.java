@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.tile.IPlayerStorable;
 import electrodynamics.client.ClientEvents;
@@ -391,7 +390,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			downArms.add(new AABB(x + 0.25, y - wholeOffset, z + 0.25, x + 0.75, y - wholeOffset - Y_ARM_SEGMENT_LENGTH * remainder, z + 0.75));
 
 			headHolder = new AABB(x + 0.20, y - deltaY, z + 0.20, x + 0.8, y - deltaY - 0.2, z + 0.8);
-			Electrodynamics.LOGGER.info(clientHeadType);
 
 			downHead = new AABB(x + 0.3125, y - deltaY - 0.2, z + 0.3125, x + 0.6875, y - deltaY - 0.5 - 0.2, z + 0.6875);
 

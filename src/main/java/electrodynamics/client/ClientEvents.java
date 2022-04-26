@@ -18,6 +18,7 @@ import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
+import electrodynamics.prefab.sound.TickableSoundJetpackNonOwner;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import net.minecraft.ChatFormatting;
@@ -33,6 +34,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -44,6 +46,7 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -228,6 +231,17 @@ public class ClientEvents {
 			}
 		}
 
+	}
+	
+	@SubscribeEvent
+	public static void jetpackSoundHandler(PlayerEvent.StartTracking event) {
+		Entity entity = event.getTarget();
+		if(entity instanceof Player player) {
+			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+				Minecraft.getInstance().getSoundManager().playDelayed(new TickableSoundJetpackNonOwner(player), 1);
+			}
+		}
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.client.ClientRegister;
@@ -20,6 +19,7 @@ import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +30,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,6 +53,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.network.PacketDistributor;
 
 public class ItemJetpack extends ArmorItem {
 
@@ -60,9 +63,11 @@ public class ItemJetpack extends ArmorItem {
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
+	public static final double TERMINAL_X_VELOCITY = 1;
+	public static final double TERMINAL_Z_VELOCITY = 1;
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
-
+	
 	public ItemJetpack() {
 		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
@@ -135,6 +140,15 @@ public class ItemJetpack extends ArmorItem {
 		super.onArmorTick(stack, world, player);
 		armorTick(stack, world, player);
 	}
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
+		InteractionResultHolder<ItemStack> superResult = super.use(pLevel, pPlayer, pHand);
+		if(!pLevel.isClientSide && superResult.getResult() == InteractionResult.SUCCESS) {
+			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(null);
+		}
+		return superResult; 
+	}
 
 	protected static void armorTick(ItemStack stack, Level world, Player player) {
 		if (world.isClientSide) {
@@ -146,16 +160,16 @@ public class ItemJetpack extends ArmorItem {
 				if (enoughFuel) {
 					if (mode == 0 && isDown) {
 						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
-						sendPacket(player, true);
 						renderParticles(world, player);
+						sendPacket(player, true);
 					} else if (mode == 1 && isDown) {
 						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
-						sendPacket(player, true);
 						renderParticles(world, player);
+						sendPacket(player, true);
 					} else if (mode == 1 && player.fallDistance > 0) {
 						hoverWithJetpack(player);
-						sendPacket(player, true);
 						renderParticles(world, player);
+						sendPacket(player, true);
 					} else {
 						sendPacket(player, false);
 					}
@@ -167,19 +181,15 @@ public class ItemJetpack extends ArmorItem {
 			}
 		} else {
 			CompoundTag tag = stack.getOrCreateTag();
-			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
 			boolean hasRan = tag.getBoolean(NBTUtils.USED);
+			tag.putBoolean(NBTUtils.PLAYING_SOUND, tag.getBoolean(NBTUtils.PLAYING_SOUND));
 			if (hasRan) {
-				int ticks = tag.getInt(NBTUtils.TIMER);
-				handleSound(ticks, player);
 				drainHydrogen(stack);
 				player.resetFallDistance();
-			}
-			if (tag.getInt(NBTUtils.TIMER) > 100) {
-				tag.putInt(NBTUtils.TIMER, 0);
-			}
+			} 
 		}
 	}
+	
 
 	@Override
 	public boolean canBeDepleted() {
@@ -238,34 +248,42 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	protected static void moveWithJetpack(double speed, double termVelocity, Player player) {
-		Vec3 currMovement = player.getDeltaMovement();
+		Vec3 lookVector = player.getLookAngle();
 
-		double ySum = currMovement.y + speed;
+		int signX = (int) Math.ceil(Math.signum(lookVector.x));
+		double newX = signX * Math.min(Math.abs(lookVector.x * 2), TERMINAL_X_VELOCITY);
+		
+		int signZ = (int) Math.ceil(Math.signum(lookVector.z));
+		double newZ = signZ * Math.min(Math.abs(lookVector.z * 2), TERMINAL_Z_VELOCITY);
+		
+		double ySum = player.getDeltaMovement().y + speed;
 		double absY = Math.min(Math.abs(ySum), termVelocity);
 		double newY = Math.signum(ySum) * absY;
-		currMovement = new Vec3(currMovement.x, newY, currMovement.z);
+		Vec3 currMovement = new Vec3(newX, newY, newZ);
+		
 
 		player.setDeltaMovement(currMovement);
 		player.resetFallDistance();
 	}
 
 	protected static void hoverWithJetpack(Player player) {
-		if (player.isShiftKeyDown()) {
-			Vec3 currMovement = player.getDeltaMovement();
-			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
-			player.setDeltaMovement(currMovement);
-		} else {
-			Vec3 currMovement = player.getDeltaMovement();
-			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
-			player.setDeltaMovement(currMovement);
-		}
-		player.resetFallDistance();
-	}
+		Vec3 currMovement = player.getDeltaMovement();
+		Vec3 lookVector = player.getLookAngle();
 
-	protected static void handleSound(int ticks, Player player) {
-		if (ticks % 10 == 0) {
-			player.playNotifySound(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS, 1, 1);
+		boolean isMoving = Minecraft.getInstance().options.keyUp.isDown();
+		
+		int signX = (int) Math.ceil(Math.signum(lookVector.x));
+		double newX = signX * Math.min(Math.abs(lookVector.x * 2), TERMINAL_X_VELOCITY);
+		
+		int signZ = (int) Math.ceil(Math.signum(lookVector.z));
+		double newZ = signZ * Math.min(Math.abs(lookVector.z * 2), TERMINAL_Z_VELOCITY);
+		if (player.isShiftKeyDown()) {
+			currMovement = new Vec3(isMoving ? newX : currMovement.x, -0.3, isMoving ? newZ : currMovement.z);
+		} else {
+			currMovement = new Vec3(isMoving ? newX : currMovement.x, 0, isMoving ? newZ : currMovement.z);
 		}
+		player.setDeltaMovement(currMovement);
+		player.resetFallDistance();
 	}
 
 	protected static void renderParticles(Level world, Entity entity) {

@@ -33,7 +33,7 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketModeSwitchServer.class, PacketModeSwitchServer::encode, PacketModeSwitchServer::decode, PacketModeSwitchServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketJetpackFlightServer.class, PacketJetpackFlightServer::encode, PacketJetpackFlightServer::decode, PacketJetpackFlightServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketToggleOnServer.class, PacketToggleOnServer::encode, PacketToggleOnServer::decode, PacketToggleOnServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-		CHANNEL.registerMessage(disc++, PacketAddClientRenderInfo.class, PacketAddClientRenderInfo::encode, PacketAddClientRenderInfo::decode, PacketAddClientRenderInfo::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketAddClientRenderInfo.class, PacketAddClientRenderInfo::encode, PacketAddClientRenderInfo::decode, PacketAddClientRenderInfo::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));	
 	}
 
 	public static String getPlayerInformation(String username) {
