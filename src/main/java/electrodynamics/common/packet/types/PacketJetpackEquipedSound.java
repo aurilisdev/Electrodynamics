@@ -3,7 +3,7 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.prefab.sound.TickableSoundJetpackNonOwner;
+import electrodynamics.prefab.sound.TickableSoundJetpack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
@@ -26,7 +26,7 @@ public class PacketJetpackEquipedSound {
 			if (world != null && minecraft.player != null) {
 				Player origin = minecraft.level.getPlayerByUUID(message.player);
 				if(origin != null) {
-					minecraft.getSoundManager().playDelayed(new TickableSoundJetpackNonOwner(origin), 1);
+					minecraft.getSoundManager().play(new TickableSoundJetpack(origin));
 				}
 			}
 		});

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import electrodynamics.api.References;
 import electrodynamics.common.packet.types.PacketAddClientRenderInfo;
+import electrodynamics.common.packet.types.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
 import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
@@ -34,6 +35,7 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketJetpackFlightServer.class, PacketJetpackFlightServer::encode, PacketJetpackFlightServer::decode, PacketJetpackFlightServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketToggleOnServer.class, PacketToggleOnServer::encode, PacketToggleOnServer::decode, PacketToggleOnServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketAddClientRenderInfo.class, PacketAddClientRenderInfo::encode, PacketAddClientRenderInfo::decode, PacketAddClientRenderInfo::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));	
+		CHANNEL.registerMessage(disc++, PacketJetpackEquipedSound.class, PacketJetpackEquipedSound::encode, PacketJetpackEquipedSound::decode, PacketJetpackEquipedSound::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));	
 	}
 
 	public static String getPlayerInformation(String username) {

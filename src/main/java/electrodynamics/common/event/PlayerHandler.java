@@ -8,21 +8,26 @@ import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class PlayerHandler {
@@ -77,4 +82,27 @@ public class PlayerHandler {
 			}
 		}
 	}
+	
+	@SubscribeEvent
+	public static void jetpackEquipedHandler(LivingEquipmentChangeEvent event) {
+		Entity entity = event.getEntity();
+		if(entity instanceof Player player) {
+			ItemStack chest = event.getTo();
+			if(event.getFrom().isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+				NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new PacketJetpackEquipedSound(player.getUUID()));
+			}
+		}
+	}
+	
+	/*
+	@SubscribeEvent
+	public static void jetpackOwnerSoundHandler(PlayerLoggedInEvent event) {
+		Player player = event.getPlayer();
+		if(player instanceof ServerPlayer server) {
+			Electrodynamics.LOGGER.info("logged in fired");
+			NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+		}
+		
+	}
+	*/
 }

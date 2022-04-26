@@ -18,7 +18,7 @@ import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
-import electrodynamics.prefab.sound.TickableSoundJetpackNonOwner;
+import electrodynamics.prefab.sound.TickableSoundJetpack;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import net.minecraft.ChatFormatting;
@@ -239,7 +239,7 @@ public class ClientEvents {
 		if(entity instanceof Player player) {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
-				Minecraft.getInstance().getSoundManager().playDelayed(new TickableSoundJetpackNonOwner(player), 1);
+				Minecraft.getInstance().getSoundManager().play(new TickableSoundJetpack(player));
 			}
 		}
 	}

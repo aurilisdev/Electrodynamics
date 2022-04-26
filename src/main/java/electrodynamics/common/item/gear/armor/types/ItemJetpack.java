@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.DeferredRegisters;
@@ -12,6 +14,7 @@ import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
+import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
@@ -19,7 +22,6 @@ import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,12 +32,12 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -53,7 +55,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.network.PacketDistributor;
 
 public class ItemJetpack extends ArmorItem {
 
@@ -63,8 +64,6 @@ public class ItemJetpack extends ArmorItem {
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
-	public static final double TERMINAL_X_VELOCITY = 1;
-	public static final double TERMINAL_Z_VELOCITY = 1;
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
 	
@@ -93,6 +92,18 @@ public class ItemJetpack extends ArmorItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
+	}
+	
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+		Multimap<Attribute, AttributeModifier> superMap = super.getAttributeModifiers(slot, stack);
+		if(stack.getOrCreateTag().getBoolean(NBTUtils.USED) && slot == EquipmentSlot.CHEST) {
+			ArrayListMultimap<Attribute, AttributeModifier> returnMap = ArrayListMultimap.create();
+			returnMap.putAll(superMap);
+			returnMap.put(Attributes.MOVEMENT_SPEED, ElectrodynamicsAttributeModifiers.JETPACK_SPEED);
+			return returnMap;
+		}
+		return superMap;
 	}
 
 	@Override
@@ -140,15 +151,6 @@ public class ItemJetpack extends ArmorItem {
 		super.onArmorTick(stack, world, player);
 		armorTick(stack, world, player);
 	}
-	
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-		InteractionResultHolder<ItemStack> superResult = super.use(pLevel, pPlayer, pHand);
-		if(!pLevel.isClientSide && superResult.getResult() == InteractionResult.SUCCESS) {
-			PacketDistributor.TRACKING_ENTITY_AND_SELF.with(null);
-		}
-		return superResult; 
-	}
 
 	protected static void armorTick(ItemStack stack, Level world, Player player) {
 		if (world.isClientSide) {
@@ -166,7 +168,8 @@ public class ItemJetpack extends ArmorItem {
 						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
 						renderParticles(world, player);
 						sendPacket(player, true);
-					} else if (mode == 1 && player.fallDistance > 0) {
+						
+					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
 						hoverWithJetpack(player);
 						renderParticles(world, player);
 						sendPacket(player, true);
@@ -248,18 +251,12 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	protected static void moveWithJetpack(double speed, double termVelocity, Player player) {
-		Vec3 lookVector = player.getLookAngle();
-
-		int signX = (int) Math.ceil(Math.signum(lookVector.x));
-		double newX = signX * Math.min(Math.abs(lookVector.x * 2), TERMINAL_X_VELOCITY);
-		
-		int signZ = (int) Math.ceil(Math.signum(lookVector.z));
-		double newZ = signZ * Math.min(Math.abs(lookVector.z * 2), TERMINAL_Z_VELOCITY);
+		Vec3 movement = player.getDeltaMovement();
 		
 		double ySum = player.getDeltaMovement().y + speed;
 		double absY = Math.min(Math.abs(ySum), termVelocity);
 		double newY = Math.signum(ySum) * absY;
-		Vec3 currMovement = new Vec3(newX, newY, newZ);
+		Vec3 currMovement = new Vec3(movement.x, newY, movement.z);
 		
 
 		player.setDeltaMovement(currMovement);
@@ -268,19 +265,11 @@ public class ItemJetpack extends ArmorItem {
 
 	protected static void hoverWithJetpack(Player player) {
 		Vec3 currMovement = player.getDeltaMovement();
-		Vec3 lookVector = player.getLookAngle();
 
-		boolean isMoving = Minecraft.getInstance().options.keyUp.isDown();
-		
-		int signX = (int) Math.ceil(Math.signum(lookVector.x));
-		double newX = signX * Math.min(Math.abs(lookVector.x * 2), TERMINAL_X_VELOCITY);
-		
-		int signZ = (int) Math.ceil(Math.signum(lookVector.z));
-		double newZ = signZ * Math.min(Math.abs(lookVector.z * 2), TERMINAL_Z_VELOCITY);
 		if (player.isShiftKeyDown()) {
-			currMovement = new Vec3(isMoving ? newX : currMovement.x, -0.3, isMoving ? newZ : currMovement.z);
+			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
 		} else {
-			currMovement = new Vec3(isMoving ? newX : currMovement.x, 0, isMoving ? newZ : currMovement.z);
+			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
 		}
 		player.setDeltaMovement(currMovement);
 		player.resetFallDistance();
