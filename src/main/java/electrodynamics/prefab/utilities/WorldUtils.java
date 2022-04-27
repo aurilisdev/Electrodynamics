@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -181,5 +182,9 @@ public class WorldUtils {
 			chunkCache.put(cp, level.getChunk(pos.getX() >> 4, pos.getZ() >> 4));
 		}
 		return chunkCache.get(cp);
+	}
+	
+	public static double distanceBetweenPositions(BlockPos a, BlockPos b) {
+		return Mth.sqrt((float)(Mth.square(a.getX() - b.getX()) + Mth.square(a.getY() - b.getY()) + Mth.square(a.getZ() - b.getZ())));
 	}
 }

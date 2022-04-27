@@ -44,6 +44,8 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/combatarmor.png";
 
 	private final ElectricItemProperties properties;
+	
+	public static final float OFFSET = 0.2F;
 
 	public ItemCombatArmor(Properties properties, EquipmentSlot slot) {
 		super(ItemCompositeArmor.CompositeArmor.COMPOSITE_ARMOR, slot, properties);
@@ -194,7 +196,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			ItemNightVisionGoggles.armorTick(stack, world, player);
 			break;
 		case CHEST:
-			ItemJetpack.armorTick(stack, world, player);
+			ItemJetpack.armorTick(stack, world, player, OFFSET, true);
 			break;
 		case LEGS:
 			ItemServoLeggings.armorTick(stack, world, player);

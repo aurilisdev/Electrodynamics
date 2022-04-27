@@ -11,6 +11,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.condition.ConfigCondition;
+import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
@@ -61,6 +62,7 @@ public class Electrodynamics {
 		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
 		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
+		ElectrodynamicsAttributeModifiers.init();
 	}
 
 	@SubscribeEvent
