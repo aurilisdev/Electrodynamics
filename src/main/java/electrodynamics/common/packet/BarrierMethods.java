@@ -20,7 +20,7 @@ public class BarrierMethods {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientLevel world = minecraft.level;
 		if (world != null) {
-			minecraft.getSoundManager().playDelayed(new TickableSoundJetpack(messageId), 1);
+			minecraft.getSoundManager().play(new TickableSoundJetpack(messageId));
 		}
 	}
 	

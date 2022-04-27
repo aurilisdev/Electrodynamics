@@ -28,6 +28,9 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 		this.volume = 0.5F;
 		this.pitch = 1.0F;
 		this.looping = true;
+		this.relative = true;
+		this.originPlayer = Minecraft.getInstance().level.getPlayerByUUID(originId);
+		
 	}
 	
 	@Override
@@ -36,14 +39,16 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 		if(checkStop()) {
 			Electrodynamics.LOGGER.info("stopped");
 			stop();
-			return;
 		} 
+		this.looping = true;
 		this.volume = getPlayedVolume();
+		this.pitch = 1.0F;
 	}
 	
 	public float getPlayedVolume() {
 		ItemStack jetpack = originPlayer.getItemBySlot(EquipmentSlot.CHEST);
-		if(jetpack.getOrCreateTag().getBoolean(NBTUtils.USED)) {
+		Electrodynamics.LOGGER.info(jetpack.hasTag());
+		if(jetpack.hasTag() && jetpack.getTag().getBoolean(NBTUtils.USED)) {
 			double distance = WorldUtils.distanceBetweenPositions(originPlayer.blockPosition(), Minecraft.getInstance().player.blockPosition());
 			if(distance > 0 && distance <= MAX_DISTANCE) {
 				return (float) (0.5F / distance);
@@ -69,6 +74,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 

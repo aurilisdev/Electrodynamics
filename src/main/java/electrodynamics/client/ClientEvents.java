@@ -242,7 +242,7 @@ public class ClientEvents {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
 				Electrodynamics.LOGGER.info("fired");
-				Minecraft.getInstance().getSoundManager().playDelayed(new TickableSoundJetpack(player.getUUID()), 1);
+				Minecraft.getInstance().getSoundManager().play(new TickableSoundJetpack(player.getUUID()));
 			}
 		}
 	}
