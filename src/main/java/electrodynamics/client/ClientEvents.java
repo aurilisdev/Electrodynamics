@@ -238,10 +238,10 @@ public class ClientEvents {
 	public static void jetpackSoundHandler(PlayerEvent.StartTracking event) {
 		Entity entity = event.getTarget();
 		if(entity instanceof Player player) {
-			Electrodynamics.LOGGER.info("fired");
+			Electrodynamics.LOGGER.info("fired " + Minecraft.getInstance().player.getName());
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
-				Electrodynamics.LOGGER.info("fired");
+				Electrodynamics.LOGGER.info("fired " + Minecraft.getInstance().player.getName());
 				Minecraft.getInstance().getSoundManager().play(new TickableSoundJetpack(player.getUUID()));
 			}
 		}
