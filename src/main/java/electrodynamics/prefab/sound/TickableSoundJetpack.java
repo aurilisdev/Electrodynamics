@@ -33,6 +33,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 		originPlayer = Minecraft.getInstance().level.getPlayerByUUID(originId);
 		if (checkStop()) {
 			stop();
+			return;
 		}
 		volume = getPlayedVolume();
 		pitch = 1.0F;
