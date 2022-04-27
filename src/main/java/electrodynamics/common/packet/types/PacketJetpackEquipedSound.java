@@ -8,13 +8,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class PacketJetpackEquipedSound {
-	
+
 	private final UUID player;
-	
+
 	public PacketJetpackEquipedSound(UUID uuid) {
 		player = uuid;
 	}
-	
+
 	public static void handle(PacketJetpackEquipedSound message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {

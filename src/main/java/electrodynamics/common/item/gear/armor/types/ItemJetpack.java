@@ -63,9 +63,9 @@ public class ItemJetpack extends ArmorItem {
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
-	
+
 	public static final float OFFSET = 0.1F;
-	
+
 	public ItemJetpack() {
 		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
@@ -155,7 +155,7 @@ public class ItemJetpack extends ArmorItem {
 						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true);
-						
+
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
 						hoverWithJetpack(player);
 						renderClientParticles(world, player, particleZ);
@@ -177,10 +177,9 @@ public class ItemJetpack extends ArmorItem {
 				drainHydrogen(stack);
 				NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new PacketRenderJetpackParticles(player.getUUID(), isCombat));
 				player.resetFallDistance();
-			} 
+			}
 		}
 	}
-	
 
 	@Override
 	public boolean canBeDepleted() {
@@ -240,12 +239,11 @@ public class ItemJetpack extends ArmorItem {
 
 	protected static void moveWithJetpack(double speed, double termVelocity, Player player) {
 		Vec3 movement = player.getDeltaMovement();
-		
+
 		double ySum = player.getDeltaMovement().y + speed;
 		double absY = Math.min(Math.abs(ySum), termVelocity);
 		double newY = Math.signum(ySum) * absY;
 		Vec3 currMovement = new Vec3(movement.x, newY, movement.z);
-		
 
 		player.setDeltaMovement(currMovement);
 		player.resetFallDistance();
@@ -279,11 +277,11 @@ public class ItemJetpack extends ArmorItem {
 		double y = worldPosition.y + (player.isShiftKeyDown() ? 0.5 : 0.8);
 		for (int i = 0; i < 10; i++) {
 			world.addParticle(ParticleTypes.FLAME, xRight, y, zRight, 0, -2D, 0);
-			//world.sendParticles(ParticleTypes.FLAME, xRight, y , zRight, 0, 0.0D, -2D, 0.0D, 2D);
+			// world.sendParticles(ParticleTypes.FLAME, xRight, y , zRight, 0, 0.0D, -2D, 0.0D, 2D);
 		}
 		for (int i = 0; i < 10; i++) {
 			world.addParticle(ParticleTypes.FLAME, xLeft, y, zLeft, 0, -2D, 0);
-			//world.sendParticles(ParticleTypes.FLAME, xLeft, y, zLeft, 0, 0.0D, -2D, 0.0D, 2D);
+			// world.sendParticles(ParticleTypes.FLAME, xLeft, y, zLeft, 0, 0.0D, -2D, 0.0D, 2D);
 		}
 	}
 
@@ -299,12 +297,12 @@ public class ItemJetpack extends ArmorItem {
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
 	}
-	
+
 	// we need to do this based upon some testing I did
 	private static float processDeg(float deg) {
-		if(deg > 180) {
+		if (deg > 180) {
 			return deg - 360;
-		} else if(deg < 180) {
+		} else if (deg < 180) {
 			return deg + 360;
 		} else {
 			return deg;

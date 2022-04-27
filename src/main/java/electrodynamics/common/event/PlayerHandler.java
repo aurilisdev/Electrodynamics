@@ -85,42 +85,34 @@ public class PlayerHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void jetpackEquipedHandler(LivingEquipmentChangeEvent event) {
 		Entity entity = event.getEntity();
-		if(event.getSlot() == EquipmentSlot.CHEST && entity instanceof Player player) {
+		if (event.getSlot() == EquipmentSlot.CHEST && entity instanceof Player player) {
 			ItemStack chest = event.getTo();
-			if(event.getFrom().isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+			if (event.getFrom().isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
 				NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new PacketJetpackEquipedSound(player.getUUID()));
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void jetpackSoundHandler(PlayerEvent.StartTracking event) {
 		Entity entity = event.getTarget();
-		if(entity instanceof Player player) {
+		if (entity instanceof Player player) {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+			if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
 				ServerPlayer server = (ServerPlayer) event.getPlayer();
 				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 			}
 		}
 	}
-	
+
 	/*
-	@SubscribeEvent
-	public static void jetpackOwnerSoundHandler(PlayerLoggedInEvent event) {
-		Player player = event.getPlayer();
-		if(player instanceof ServerPlayer server) {
-			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
-				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
-			}
-		}
-		
-	}
-	*/
-	
+	 * @SubscribeEvent public static void jetpackOwnerSoundHandler(PlayerLoggedInEvent event) { Player player = event.getPlayer(); if(player instanceof ServerPlayer server) { ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST); if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) { NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } }
+	 * 
+	 * }
+	 */
+
 }

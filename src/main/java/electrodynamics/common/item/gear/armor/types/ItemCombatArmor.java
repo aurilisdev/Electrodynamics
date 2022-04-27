@@ -44,7 +44,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/combatarmor.png";
 
 	private final ElectricItemProperties properties;
-	
+
 	public static final float OFFSET = 0.2F;
 
 	public ItemCombatArmor(Properties properties, EquipmentSlot slot) {

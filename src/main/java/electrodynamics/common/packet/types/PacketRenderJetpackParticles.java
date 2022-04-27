@@ -11,12 +11,12 @@ public class PacketRenderJetpackParticles {
 
 	private final UUID player;
 	private final boolean isCombat;
-	
+
 	public PacketRenderJetpackParticles(UUID uuid, boolean combat) {
 		player = uuid;
 		isCombat = combat;
 	}
-	
+
 	public static void handle(PacketRenderJetpackParticles message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
@@ -33,5 +33,5 @@ public class PacketRenderJetpackParticles {
 	public static PacketRenderJetpackParticles decode(FriendlyByteBuf buf) {
 		return new PacketRenderJetpackParticles(buf.readUUID(), buf.readBoolean());
 	}
-	
+
 }

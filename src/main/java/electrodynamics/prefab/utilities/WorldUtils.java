@@ -183,8 +183,8 @@ public class WorldUtils {
 		}
 		return chunkCache.get(cp);
 	}
-	
+
 	public static double distanceBetweenPositions(BlockPos a, BlockPos b) {
-		return Mth.sqrt((float)(Mth.square(a.getX() - b.getX()) + Mth.square(a.getY() - b.getY()) + Mth.square(a.getZ() - b.getZ())));
+		return Mth.sqrt(Mth.square(a.getX() - b.getX()) + Mth.square(a.getY() - b.getY()) + Mth.square(a.getZ() - b.getZ()));
 	}
 }
