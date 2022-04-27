@@ -3,7 +3,6 @@ package electrodynamics.prefab.sound;
 import java.util.UUID;
 
 import electrodynamics.DeferredRegisters;
-import electrodynamics.Electrodynamics;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
@@ -23,31 +22,24 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 	
 	public TickableSoundJetpack(UUID originPlayer) {
 		super(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS);
-		Electrodynamics.LOGGER.info("created");
 		this.originId = originPlayer;
 		this.volume = 0.5F;
 		this.pitch = 1.0F;
 		this.looping = true;
-		this.relative = true;
-		this.originPlayer = Minecraft.getInstance().level.getPlayerByUUID(originId);
-		
 	}
 	
 	@Override
 	public void tick() {
 		originPlayer = Minecraft.getInstance().level.getPlayerByUUID(originId);
 		if(checkStop()) {
-			Electrodynamics.LOGGER.info("stopped");
 			stop();
 		} 
-		this.looping = true;
 		this.volume = getPlayedVolume();
 		this.pitch = 1.0F;
 	}
 	
 	public float getPlayedVolume() {
 		ItemStack jetpack = originPlayer.getItemBySlot(EquipmentSlot.CHEST);
-		Electrodynamics.LOGGER.info(jetpack.hasTag());
 		if(jetpack.hasTag() && jetpack.getTag().getBoolean(NBTUtils.USED)) {
 			double distance = WorldUtils.distanceBetweenPositions(originPlayer.blockPosition(), Minecraft.getInstance().player.blockPosition());
 			if(distance > 0 && distance <= MAX_DISTANCE) {

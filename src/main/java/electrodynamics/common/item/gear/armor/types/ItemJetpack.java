@@ -144,16 +144,16 @@ public class ItemJetpack extends ArmorItem {
 				if (enoughFuel) {
 					if (mode == 0 && isDown) {
 						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
-						renderParticles(world, player);
+						//renderParticles(world, player);
 						sendPacket(player, true);
 					} else if (mode == 1 && isDown) {
 						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
-						renderParticles(world, player);
+						//renderParticles(world, player);
 						sendPacket(player, true);
 						
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
 						hoverWithJetpack(player);
-						renderParticles(world, player);
+						//renderParticles(world, player);
 						sendPacket(player, true);
 					} else {
 						sendPacket(player, false);
@@ -169,6 +169,7 @@ public class ItemJetpack extends ArmorItem {
 			boolean hasRan = tag.getBoolean(NBTUtils.USED);
 			tag.putBoolean(NBTUtils.PLAYING_SOUND, tag.getBoolean(NBTUtils.PLAYING_SOUND));
 			if (hasRan) {
+				renderParticles(world, player);
 				drainHydrogen(stack);
 				player.resetFallDistance();
 			} 

@@ -10,7 +10,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
  * Apparently with packets, certain class calls cannot be called within the packet itself 
  * because Java
  * 
- * SoundInstance for example is an exclusivly client class only
+ * SoundInstance for example is an exclusively client class only
  * 
  * Place methods that need to use those here 
  */
