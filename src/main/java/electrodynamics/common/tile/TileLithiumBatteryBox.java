@@ -41,7 +41,7 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false).getJoules());
 		}
 		currentCapacityMultiplier = 1;
-		int currentVoltageMultiplier = 1;
+		currentVoltageMultiplier = 1;
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {
