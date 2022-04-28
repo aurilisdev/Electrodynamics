@@ -10,7 +10,7 @@ import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.prefab.block.GenericMachineBlock;
+import electrodynamics.common.block.BlockMachine;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -59,12 +59,10 @@ public class BlockItemDescriptable extends BlockItem {
 		InteractionResult result = super.place(p);
 		if (stack.hasTag()) {
 			double joules = stack.getTag().getDouble("joules");
-			if (block instanceof GenericMachineBlock) {
-				BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos());
-				if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) {
-					ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic);
-					electrodynamic.setJoulesStored(joules);
-				}
+			BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos());
+			if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) {
+				ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic);
+				electrodynamic.setJoulesStored(joules);
 			}
 		}
 		return result;
@@ -74,7 +72,7 @@ public class BlockItemDescriptable extends BlockItem {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (!initialized) {
-			initialized = true;
+			BlockItemDescriptable.initialized = true;
 			for (Pair<Supplier<Block>, String> pair : cachedDescriptions) {
 				createDescription(pair.getFirst().get(), pair.getSecond());
 			}
