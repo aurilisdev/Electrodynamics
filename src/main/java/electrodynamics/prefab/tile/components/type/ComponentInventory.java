@@ -131,6 +131,13 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return this;
 	}
 
+	public ComponentInventory universalSlots(Integer... slots) {
+		for (Direction faceDirection : Direction.values()) {
+			faceSlots(faceDirection, slots);
+		}
+		return this;
+	}
+
 	public ComponentInventory setMachineSlots(int extra) {
 		if (biproducts > 0) {
 			// extra outputs
