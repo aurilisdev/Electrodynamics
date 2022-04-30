@@ -30,7 +30,6 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	public HashSet<Direction> relativeInputDirections = new HashSet<>();
 	public HashSet<Direction> outputDirections = new HashSet<>();
 	public HashSet<Direction> inputDirections = new HashSet<>();
-	public Direction lastDirection = null;
 
 	protected RecipeType<AbstractFluidRecipe> recipeType;
 	protected int tankCapacity;
@@ -104,7 +103,6 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		lastDirection = side;
 		if (capability != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return false;
 		}
@@ -120,22 +118,17 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-		lastDirection = facing;
 		return hasCapability(capability, facing) ? (LazyOptional<T>) LazyOptional.of(() -> this) : LazyOptional.empty();
 	}
 
 	@Override
 	public int fill(FluidStack resource, FluidAction action) {
-		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction) ? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : Direction.UP, lastDirection);
-		boolean canFill = inputDirections.contains(lastDirection) || getHolder().hasComponent(ComponentType.Direction) && relativeInputDirections.contains(relative);
-		return canFill && resource != null && getValidInputFluids().contains(resource.getFluid()) ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
+		return resource != null && getValidInputFluids().contains(resource.getFluid()) ? getTankFromFluid(resource.getFluid(), true).fill(resource, action) : 0;
 	}
 
 	@Override
 	public FluidStack drain(FluidStack resource, FluidAction action) {
-		Direction relative = BlockEntityUtils.getRelativeSide(getHolder().hasComponent(ComponentType.Direction) ? getHolder().<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : Direction.UP, lastDirection);
-		boolean canDrain = outputDirections.contains(lastDirection) || getHolder().hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(relative);
-		return canDrain && resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
+		return resource != null ? getTankFromFluid(resource.getFluid(), false).drain(resource, action) : FluidStack.EMPTY;
 	}
 
 	protected abstract void addFluidTank(Fluid fluid, boolean isInput);

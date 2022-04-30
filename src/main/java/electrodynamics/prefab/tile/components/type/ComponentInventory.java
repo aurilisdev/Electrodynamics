@@ -44,7 +44,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	protected HashSet<Player> viewing = new HashSet<>();
 	protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
 	protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
-	protected Direction lastDirection = null;
 	protected int inventorySize;
 	protected Function<Direction, Collection<Integer>> getSlotsFunction;
 	protected boolean shouldSendInfo;
@@ -188,7 +187,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		lastDirection = side;
 		return (side == null || directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))) && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
@@ -276,7 +274,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, Direction direction) {
-		lastDirection = direction;
 		ArrayList<Integer> test = new ArrayList<>();
 		for (int i : getSlotsForFace(direction)) {
 			test.add(i);
@@ -286,7 +283,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-		lastDirection = direction;
 		ArrayList<Integer> test = new ArrayList<>();
 		for (int i : getSlotsForFace(direction)) {
 			test.add(i);

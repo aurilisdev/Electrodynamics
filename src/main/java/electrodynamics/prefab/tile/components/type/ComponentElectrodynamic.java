@@ -49,7 +49,6 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected double joules = 0;
 	protected DoubleSupplier getJoules = () -> joules;
 	protected BooleanSupplier hasCapability = () -> true;
-	private Direction lastReturnedSide = Direction.UP;
 
 	public ComponentElectrodynamic(GenericTile source) {
 		holder(source);
@@ -95,7 +94,6 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		lastReturnedSide = side;
 		if (capability != ElectrodynamicsCapabilities.ELECTRODYNAMIC || !hasCapability.getAsBoolean()) {
 			return false;
 		}
@@ -111,24 +109,17 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		lastReturnedSide = side;
 		return hasCapability(capability, side) ? (LazyOptional<T>) LazyOptional.of(() -> this) : LazyOptional.empty();
 	}
 
 	@Override
 	public TransferPack extractPower(TransferPack transfer, boolean debug) {
-		if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
-			return functionExtractPower.apply(transfer, debug);
-		}
-		return TransferPack.EMPTY;
+		return functionExtractPower.apply(transfer, debug);
 	}
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
-			return functionReceivePower.apply(transfer, debug);
-		}
-		return TransferPack.EMPTY;
+		return functionReceivePower.apply(transfer, debug);
 	}
 
 	public ComponentElectrodynamic joules(double joules) {
