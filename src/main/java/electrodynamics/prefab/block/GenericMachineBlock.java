@@ -214,12 +214,14 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		ItemStack stack = new ItemStack(this);
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
-			double joules = el.getJoulesStored();
-			if (joules > 0) {
-				stack.getOrCreateTag().putDouble("joules", joules);
-			}
-		});
+		if (tile != null) {
+			tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
+				double joules = el.getJoulesStored();
+				if (joules > 0) {
+					stack.getOrCreateTag().putDouble("joules", joules);
+				}
+			});
+		}
 		return Arrays.asList(stack);
 	}
 
