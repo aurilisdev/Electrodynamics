@@ -2,6 +2,8 @@ package physica;
 
 import java.lang.reflect.Method;
 
+import dan200.computercraft.api.ComputerCraftAPI;
+import li.cil.oc.api.Driver;
 import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.Loader;
@@ -13,12 +15,36 @@ import physica.api.core.electricity.IElectricityReceiver;
 import physica.api.core.load.IContent;
 import physica.api.core.load.LoadPhase;
 import physica.core.common.configuration.ConfigCore;
+import physica.core.common.integration.CCPeripheral;
+import physica.core.common.integration.OCDriver;
 import physica.core.common.waila.HUDHandlerIElectricityHandler;
 
 public class ModIntegration implements IContent {
 	@Override
 	public void register(LoadPhase phase)
 	{
+		if (phase == LoadPhase.Initialize) {
+			if (Loader.isModLoaded("OpenComputers")) {
+				PhysicaAPI.logger.info("Attemping to integrate Physica with OpenComputers");
+				try {
+					Driver.add(new OCDriver());
+				} catch (Exception e) {
+					e.printStackTrace();
+					PhysicaAPI.logger.info("Failed to integrate Physica with OpenComputers");
+				}
+			}
+
+			if (Loader.isModLoaded("ComputerCraft")) {
+				PhysicaAPI.logger.info("Attemping to integrate Physica with ComputerCraft");
+				try {
+					ComputerCraftAPI.registerPeripheralProvider(new CCPeripheral.CCPeripheralProvider());
+				} catch (Exception e) {
+					e.printStackTrace();
+					PhysicaAPI.logger.info("Failed to integrate Physica with ComputerCraft");
+				}
+			}
+		}
+
 		if (phase == LoadPhase.OnStartup)
 		{
 			if (Loader.isModLoaded("Waila"))

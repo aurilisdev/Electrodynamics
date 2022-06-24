@@ -21,6 +21,7 @@ import physica.api.core.PhysicaAPI;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.core.common.CoreBlockRegister;
+import physica.core.common.integration.IComputerIntegration;
 import physica.library.location.GridLocation;
 import physica.library.tile.TileBaseContainer;
 import physica.nuclear.NuclearReferences;
@@ -31,7 +32,7 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.inventory.ContainerFissionReactor;
 import physica.nuclear.common.radiation.RadiationSystem;
 
-public class TileFissionReactor extends TileBaseContainer implements IGuiInterface {
+public class TileFissionReactor extends TileBaseContainer implements IGuiInterface, IComputerIntegration {
 
 	public static final int		SLOT_INPUT				= 0;
 	public static final int		MELTDOWN_TEMPERATURE	= 4407;
@@ -272,23 +273,23 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 			return;
 		}
 		setInventorySlotContents(SLOT_INPUT, null);
-		GridLocation currentLocation = new GridLocation(loc.xCoord, loc.yCoord, loc.zCoord); 
-		final int size = 10; 
-		for (int i = -size; i <= size; i++) { 
-			for (int j = -size; j <= size; j++) { 
-				for (int k = -size; k <= size; k++) { 
-					if (loc.getDistanceSquared(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k) >= size * size) { 
-						continue; 
-					} 
-					currentLocation.set(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k); 
-					Block block = currentLocation.getBlock(World()); 
-					if (block == Blocks.water || block == Blocks.flowing_water) { 
-						currentLocation.setBlockAirNonUpdate(World()); 
-					} 
-				} 
-			} 
-		} 
-		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, size, true); 
+		GridLocation currentLocation = new GridLocation(loc.xCoord, loc.yCoord, loc.zCoord);
+		final int size = 10;
+		for (int i = -size; i <= size; i++) {
+			for (int j = -size; j <= size; j++) {
+				for (int k = -size; k <= size; k++) {
+					if (loc.getDistanceSquared(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k) >= size * size) {
+						continue;
+					}
+					currentLocation.set(loc.xCoord + i, loc.yCoord + j, loc.zCoord + k);
+					Block block = currentLocation.getBlock(World());
+					if (block == Blocks.water || block == Blocks.flowing_water) {
+						currentLocation.setBlockAirNonUpdate(World());
+					}
+				}
+			}
+		}
+		World().createExplosion(null, loc.xCoord, loc.yCoord, loc.zCoord, size, true);
 		World().setBlock(loc.xCoord, loc.yCoord, loc.zCoord, NuclearBlockRegister.blockMeltedReactor);
 	}
 
@@ -510,4 +511,38 @@ public class TileFissionReactor extends TileBaseContainer implements IGuiInterfa
 		return true;
 	}
 
+	@Override
+	public String[] methods()
+	{
+		return new String[]{"getInsertion", "getTemperature", "getRodType"};
+	}
+
+	@Override
+	public Object[] invoke(int method, Object[] args) throws Exception
+	{
+		switch(method) {
+			case 0:
+				return new Object[]{this.getInsertion()};
+			case 1:
+				return new Object[]{this.getTemperature()};
+			case 2:
+				if (!this.hasFuelRod()) {
+					return null;
+				} else if (this.isLowEnriched()) {
+					return new Object[]{"low_enriched"};
+				} else if (this.isHighEnriched()) {
+					return new Object[]{"high_enriched"};
+				} else {
+					return null;
+				}
+			default:
+				throw new NoSuchMethodException();
+		}
+	}
+
+	@Override
+	public String getComponentName()
+	{
+		return "fission_reactor";
+	}
 }
