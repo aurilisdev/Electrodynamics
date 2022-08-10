@@ -187,7 +187,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public void registerCategories(IRecipeCategoryRegistration registration) {
 
 		IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
-
 		registration.addRecipeCategories(new ElectricFurnaceRecipeCategory(guiHelper));
 		registration.addRecipeCategories(new ElectricArcFurnaceRecipeCategory(guiHelper));
 		registration.addRecipeCategories(new WireMillRecipeCategory(guiHelper));
@@ -207,7 +206,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
-
 		registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
 		registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
