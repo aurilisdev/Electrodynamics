@@ -65,7 +65,10 @@ public class PlayerHandler {
 	}
 
 	private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
-		return ItemStack.isSameIgnoreDurability(set1.get(0), set2[3]) && ItemStack.isSameIgnoreDurability(set1.get(1), set2[2]) && ItemStack.isSameIgnoreDurability(set1.get(2), set2[1]) && ItemStack.isSameIgnoreDurability(set1.get(3), set2[0]);
+		if (set1.size() >= 3) {
+			return ItemStack.isSameIgnoreDurability(set1.get(0), set2[3]) && ItemStack.isSameIgnoreDurability(set1.get(1), set2[2]) && ItemStack.isSameIgnoreDurability(set1.get(2), set2[1]) && ItemStack.isSameIgnoreDurability(set1.get(3), set2[0]);
+		}
+		return false;
 	}
 
 	@SubscribeEvent
