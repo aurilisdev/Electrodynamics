@@ -1,23 +1,29 @@
 buildscript {
     repositories {
-		maven { url = 'https://maven.cil.li/' }
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        maven { url = 'https://maven.parchmentmc.org' }
-	  	maven {
-	   	    name = "Progwml6 maven"
-	   	    url = "https://dvs1.progwml6.com/files/maven/"
-	  	}
         mavenCentral()
+        maven {
+        	url = "https://maven.covers1624.net/"
+        }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            name = 'CodeChicken'
+            url = "http://chickenbones.net/maven/"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'codechicken:CodeChickenCore:1.7.10-1.0.4.35:dev'
-        classpath 'codechicken:CodeChickenLib:1.7.10-1.1.3.136:dev'
-        classpath 'codechicken:NotEnoughItems:1.7.10-1.0.4.107:dev'
+        classpath 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
+        classpath 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
+        classpath 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
     }
 }
-
 apply plugin: 'forge'
 
 sourceSets {
@@ -76,15 +82,15 @@ minecraft {
 
 repositories {
     maven {
-        name = 'codechicken'
-        url = 'https://maven.cil.li/'
+        name = 'CodeChicken'
+        url = 'http://chickenbones.net/maven/'
     }
 }
 
 dependencies {
-    compile 'codechicken:CodeChickenCore:1.7.10-1.0.4.35:dev'
-    compile 'codechicken:CodeChickenLib:1.7.10-1.1.3.136:dev'
-    compile 'codechicken:NotEnoughItems:1.7.10-1.0.4.107:dev'
+    compile 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
+    compile 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
+    compile 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
 }
 
 processResources {
