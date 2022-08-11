@@ -8,9 +8,9 @@ import physica.library.client.render.TessellatorWrapper;
 
 @SideOnly(Side.CLIENT)
 public class GroupObject {
-	public String				name;
-	public ArrayList<ModelFace>	faces	= new ArrayList<>();
-	public int					glDrawingMode;
+	public String name;
+	public ArrayList<ModelFace> faces = new ArrayList<>();
+	public int glDrawingMode;
 
 	public GroupObject() {
 		this("");
@@ -25,10 +25,8 @@ public class GroupObject {
 		this.glDrawingMode = glDrawingMode;
 	}
 
-	public void render()
-	{
-		if (faces.size() > 0)
-		{
+	public void render() {
+		if (faces.size() > 0) {
 			TessellatorWrapper tessellator = TessellatorWrapper.instance;
 			tessellator.startDrawing(glDrawingMode);
 			render(tessellator);
@@ -36,12 +34,9 @@ public class GroupObject {
 		}
 	}
 
-	public void render(TessellatorWrapper tessellator)
-	{
-		if (faces.size() > 0)
-		{
-			for (ModelFace face : faces)
-			{
+	public void render(TessellatorWrapper tessellator) {
+		if (faces.size() > 0) {
+			for (ModelFace face : faces) {
 				face.addFaceForRender(tessellator);
 			}
 		}

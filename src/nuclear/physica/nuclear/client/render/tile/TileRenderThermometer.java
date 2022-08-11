@@ -14,10 +14,8 @@ import physica.nuclear.common.tile.TileThermometer;
 @SideOnly(Side.CLIENT)
 public class TileRenderThermometer extends TileEntitySpecialRenderer {
 
-	public void renderTileAt(TileThermometer tile, double x, double y, double z, float deltaFrame)
-	{
-		for (int side = 2; side < 6; side++)
-		{
+	public void renderTileAt(TileThermometer tile, double x, double y, double z, float deltaFrame) {
+		for (int side = 2; side < 6; side++) {
 			TileEntity entity = tile.getWorldObj().getTileEntity(tile.xCoord, tile.yCoord + 1, tile.zCoord);
 			int temp = Math.round(entity instanceof TileFissionReactor ? ((TileFissionReactor) entity).getTemperature() : 0);
 			GL11.glPushMatrix();
@@ -47,6 +45,8 @@ public class TileRenderThermometer extends TileEntitySpecialRenderer {
 				GL11.glTranslatef(0.0F, 1.0F, 1.0F);
 				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
+				break;
+			default:
 				break;
 
 			}
@@ -88,8 +88,7 @@ public class TileRenderThermometer extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame)
-	{
+	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame) {
 		renderTileAt((TileThermometer) tile, x, y, z, deltaFrame);
 	}
 }

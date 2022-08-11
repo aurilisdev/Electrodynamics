@@ -20,22 +20,18 @@ import physica.library.network.IPacket;
 public class PacketChannelInboundHandler extends SimpleChannelInboundHandler<IPacket> {
 
 	@Override
-	public boolean acceptInboundMessage(Object msg) throws Exception
-	{
+	public boolean acceptInboundMessage(Object msg) throws Exception {
 		return msg instanceof IPacket;
 	}
 
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
-	{
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		super.channelRead(ctx, msg);
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, IPacket packet) throws Exception
-	{
-		try
-		{
+	protected void channelRead0(ChannelHandlerContext ctx, IPacket packet) throws Exception {
+		try {
 			INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
 
 			switch (FMLCommonHandler.instance().getEffectiveSide()) {
@@ -48,8 +44,7 @@ public class PacketChannelInboundHandler extends SimpleChannelInboundHandler<IPa
 			default:
 				break;
 			}
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			PhysicaAPI.logger.error("Failed to handle packet " + packet, e);
 		}
 	}

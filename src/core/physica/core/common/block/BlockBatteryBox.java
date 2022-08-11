@@ -26,13 +26,13 @@ import physica.library.block.BlockBaseContainer;
 
 public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
 	@SideOnly(Side.CLIENT)
-	private IIcon	machineSide;
+	private IIcon machineSide;
 	@SideOnly(Side.CLIENT)
-	private IIcon	iconFacing;
+	private IIcon iconFacing;
 	@SideOnly(Side.CLIENT)
-	private IIcon	machineOutput;
+	private IIcon machineOutput;
 	@SideOnly(Side.CLIENT)
-	private IIcon	machineInput;
+	private IIcon machineInput;
 
 	public BlockBatteryBox() {
 		super(Material.iron);
@@ -46,8 +46,7 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister reg)
-	{
+	public void registerBlockIcons(IIconRegister reg) {
 		blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
 		machineOutput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineoutput");
 		machineInput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineinput");
@@ -55,31 +54,25 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	@Override
-	public int getRenderColor(int meta)
-	{
+	public int getRenderColor(int meta) {
 		return EnumBatteryBox.values()[meta].getRenderColor();
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
-	{
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
 		return getRenderColor(world.getBlockMetadata(x, y, z));
 	}
 
 	@Override
-	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
-	{
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side) {
 
 		TileEntity tile = access.getTileEntity(x, y, z);
-		if (tile instanceof TileBatteryBox)
-		{
+		if (tile instanceof TileBatteryBox) {
 			TileBatteryBox generator = (TileBatteryBox) tile;
 			Face facing = generator.getFacing();
-			if (side == facing.getOpposite().getRelativeSide(Face.EAST).ordinal())
-			{
+			if (side == facing.getOpposite().getRelativeSide(Face.EAST).ordinal()) {
 				return machineOutput;
-			} else if (side == facing.getOpposite().getRelativeSide(Face.WEST).ordinal())
-			{
+			} else if (side == facing.getOpposite().getRelativeSide(Face.WEST).ordinal()) {
 				return machineInput;
 			}
 		}
@@ -87,66 +80,59 @@ public class BlockBatteryBox extends BlockBaseContainer implements IBaseUtilitie
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta)
-	{
+	public IIcon getIcon(int side, int meta) {
 		return side <= 1 ? blockIcon : side == 4 ? machineInput : side == 5 ? machineOutput : iconFacing;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileBatteryBox();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(new ItemStack(this, 1, 0), "SSS", "BBB", "SSS", 'S', "ingotSteel", 'B', "phyBattery");
 		addRecipe(new ItemStack(this, 1, 1), "BTB", "WWW", "BAB", 'T', new ItemStack(this, 1, 0), 'A', "circuitAdvanced", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, 0), 'B', "phyBattery");
 		addRecipe(new ItemStack(this, 1, 2), "BEB", "TWT", "BEB", 'T', new ItemStack(this, 1, 1), 'E', "circuitElite", 'W', new ItemStack(CoreBlockRegister.blockCable, 1, EnumConductorType.superconductor.ordinal()), 'B', "phyBattery");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
-	{
-		for (EnumBatteryBox type : EnumBatteryBox.values())
-		{
+	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+		for (EnumBatteryBox type : EnumBatteryBox.values()) {
 			list.add(new ItemStack(item, 1, type.ordinal()));
 		}
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
-	{
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
 		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 3);
 	}
 
 	@Override
-	public int damageDropped(int metadata)
-	{
+	public int damageDropped(int metadata) {
 		return metadata;
 	}
 
 	public enum EnumBatteryBox {
-		BASIC(5000000, 16777215), ADVANCED(20000000, (255 & 0xFF) << 24 | (155 & 0xFF) << 16 | (171 & 0xFF) << 8 | (185 & 0xFF) << 0), ELITE(80000000, (255 & 0xFF) << 24 | (101 & 0xFF) << 16 | (111 & 0xFF) << 8 | (119 & 0xFF) << 0);
-		private int	capacity;
-		private int	renderColor;
+		BASIC(5000000, 16777215),
+		ADVANCED(20000000, (255 & 0xFF) << 24 | (155 & 0xFF) << 16 | (171 & 0xFF) << 8 | (185 & 0xFF) << 0),
+		ELITE(80000000, (255 & 0xFF) << 24 | (101 & 0xFF) << 16 | (111 & 0xFF) << 8 | (119 & 0xFF) << 0);
 
-		private EnumBatteryBox(int capacity, int renderColor) {
+		private int capacity;
+		private int renderColor;
+
+		EnumBatteryBox(int capacity, int renderColor) {
 			this.capacity = capacity;
 			this.renderColor = renderColor;
 		}
 
-		public int getCapacity()
-		{
+		public int getCapacity() {
 			return capacity;
 		}
 
-		public int getRenderColor()
-		{
+		public int getRenderColor() {
 			return renderColor;
 		}
 

@@ -21,20 +21,17 @@ public class BlockRadioisotopeGenerator extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileRadioisotopeGenerator();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateLead", 'E', "circuitAdvanced");
 	}
 
 	@Override
-	public String getSide()
-	{
+	public String getSide() {
 		return "Nuclear";
 	}
 }

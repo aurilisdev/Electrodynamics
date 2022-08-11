@@ -25,20 +25,18 @@ import physica.library.network.IPacket;
  */
 public class PacketSystem implements IContent {
 
-	public static PacketSystem					INSTANCE	= new PacketSystem("physicapacketsystem");
+	public static PacketSystem INSTANCE = new PacketSystem("physicapacketsystem");
 
-	public final String							channel;
-	protected EnumMap<Side, FMLEmbeddedChannel>	channelEnumMap;
+	public final String channel;
+	protected EnumMap<Side, FMLEmbeddedChannel> channelEnumMap;
 
 	public PacketSystem(String channel) {
 		this.channel = channel;
 	}
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.Initialize)
-		{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.Initialize) {
 			channelEnumMap = NetworkRegistry.INSTANCE.newChannel(channel, new PacketEncoderDecoderHandler(), new PacketChannelInboundHandler());
 		}
 	}
@@ -46,120 +44,92 @@ public class PacketSystem implements IContent {
 	/**
 	 * sends to all clients connected to the server
 	 *
-	 * @param packet
-	 *            the packet to send.
+	 * @param packet the packet to send.
 	 */
-	public void sendToAll(IPacket packet)
-	{
+	public void sendToAll(IPacket packet) {
 		// Null check is for JUnit
-		if (channelEnumMap != null)
-		{
+		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
 			channelEnumMap.get(Side.SERVER).writeAndFlush(packet);
-		} else
-		{
+		} else {
 			PhysicaAPI.logger.error("Packet sent to all");
 		}
 	}
 
-	public void sendToAllAround(IPacket message, NetworkRegistry.TargetPoint point)
-	{
+	public void sendToAllAround(IPacket message, NetworkRegistry.TargetPoint point) {
 		// Null check is for JUnit
-		if (channelEnumMap != null)
-		{
+		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
 			channelEnumMap.get(Side.SERVER).writeAndFlush(message);
-		} else
-		{
+		} else {
 			PhysicaAPI.logger.error("Packet sent to target point: " + point);
 		}
 	}
 
-	public void sendToAllAround(IPacket message, TileEntity tile)
-	{
+	public void sendToAllAround(IPacket message, TileEntity tile) {
 		sendToAllAround(message, tile, 64);
 	}
 
-	public void sendToAllAround(IPacket message, TileEntity tile, double range)
-	{
+	public void sendToAllAround(IPacket message, TileEntity tile, double range) {
 		sendToAllAround(message, tile.getWorldObj(), new GridLocation(tile), range);
 	}
 
-	public void sendToAllAround(IPacket message, World world, GridLocation loc, double range)
-	{
-		if (world != null)
-		{
+	public void sendToAllAround(IPacket message, World world, GridLocation loc, double range) {
+		if (world != null) {
 			sendToAllAround(message, new NetworkRegistry.TargetPoint(world.provider.dimensionId, loc.xCoord, loc.yCoord, loc.zCoord, range));
 		}
 	}
 
 	/**
-	 * @param packet
-	 *            the packet to send to the players in the dimension
-	 * @param dimId
-	 *            the dimension ID to send to.
+	 * @param packet the packet to send to the players in the dimension
+	 * @param dimId  the dimension ID to send to.
 	 */
-	public void sendToAllInDimension(IPacket packet, int dimId)
-	{
+	public void sendToAllInDimension(IPacket packet, int dimId) {
 		// Null check is for JUnit
-		if (channelEnumMap != null)
-		{
+		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimId);
 			channelEnumMap.get(Side.SERVER).writeAndFlush(packet);
-		} else
-		{
+		} else {
 			PhysicaAPI.logger.error("Packet sent to dim[" + dimId + "]");
 		}
 	}
 
-	public void sendToAllInDimension(IPacket packet, World world)
-	{
+	public void sendToAllInDimension(IPacket packet, World world) {
 		sendToAllInDimension(packet, world.provider.dimensionId);
 	}
 
 	/**
-	 * @param packet
-	 *            the packet to send to the player
-	 * @param player
-	 *            the player MP object
+	 * @param packet the packet to send to the player
+	 * @param player the player MP object
 	 */
-	public void sendToPlayer(IPacket packet, EntityPlayerMP player)
-	{
+	public void sendToPlayer(IPacket packet, EntityPlayerMP player) {
 		// Null check is for JUnit
-		if (channelEnumMap != null)
-		{
+		if (channelEnumMap != null) {
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
 			channelEnumMap.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
 			channelEnumMap.get(Side.SERVER).writeAndFlush(packet);
-		} else
-		{
+		} else {
 			PhysicaAPI.logger.error("Packet sent to player[" + player + "]");
 		}
 	}
 
-	public void sendToServer(IPacket packet)
-	{
+	public void sendToServer(IPacket packet) {
 		// Null check is for JUnit
-		if (channelEnumMap != null)
-		{
-			if (channelEnumMap.get(Side.CLIENT) != null)
-			{
+		if (channelEnumMap != null) {
+			if (channelEnumMap.get(Side.CLIENT) != null) {
 				channelEnumMap.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
 				channelEnumMap.get(Side.CLIENT).writeAndFlush(packet);
-			} else
-			{
+			} else {
 				PhysicaAPI.logger.error("PacketManager#sendToServer(packet): Attempted to fire client to server packet on server, this is not allowed. Packet = " + packet);
 			}
-		} else
-		{
+		} else {
 			PhysicaAPI.logger.error("PacketManager#sendToServer(packet): Channel enum map is empty, can't send packet. Packet = " + packet);
 		}
 	}
 
-	public Packet toMCPacket(IPacket packet)
-	{
+	public Packet toMCPacket(IPacket packet) {
 		return channelEnumMap.get(FMLCommonHandler.instance().getEffectiveSide()).generatePacketFrom(packet);
 	}
 }

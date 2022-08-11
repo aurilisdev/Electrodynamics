@@ -15,40 +15,31 @@ import physica.library.tile.TileBase;
 
 public class TileFulmination extends TileBase implements IElectricityProvider {
 
-	public static int	MAX_ENERGY_STORED	= 500000;
-	private int			energyStored;
+	public static int MAX_ENERGY_STORED = 500000;
+	private int energyStored;
 
-	public int getElectricityStored()
-	{
+	public int getElectricityStored() {
 		return energyStored;
 	}
 
 	@Override
-	public void setElectricityStored(int energy)
-	{
+	public void setElectricityStored(int energy) {
 		energyStored = Math.min(energy, MAX_ENERGY_STORED);
 	}
 
 	@Override
-	public void updateServer(int ticks)
-	{
+	public void updateServer(int ticks) {
 		super.updateServer(ticks);
-		if (!FulminationEventHandler.INSTANCE.isRegistered(this))
-		{
+		if (!FulminationEventHandler.INSTANCE.isRegistered(this)) {
 			FulminationEventHandler.INSTANCE.register(this);
 		}
 		GridLocation loc = getLocation();
-		if (energyStored > 0 && ticks % 20 == 0)
-		{
-			for (Face dir : Face.VALID)
-			{
+		if (energyStored > 0 && ticks % 20 == 0) {
+			for (Face dir : Face.VALID) {
 				TileEntity tile = World().getTileEntity(loc.xCoord + dir.offsetX, loc.yCoord + dir.offsetY, loc.zCoord + dir.offsetZ);
-				if (tile != null)
-				{
-					if (AbstractionLayer.Electricity.isElectricReceiver(tile))
-					{
-						if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite()))
-						{
+				if (tile != null) {
+					if (AbstractionLayer.Electricity.isElectricReceiver(tile)) {
+						if (AbstractionLayer.Electricity.canConnectElectricity(tile, dir.getOpposite())) {
 							energyStored -= AbstractionLayer.Electricity.receiveElectricity(tile, dir.getOpposite(), energyStored, false);
 						}
 					}
@@ -58,59 +49,50 @@ public class TileFulmination extends TileBase implements IElectricityProvider {
 	}
 
 	@Override
-	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
-	{
+	public void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
 		super.writeSynchronizationPacket(dataList, player);
 		dataList.add(energyStored);
 	}
 
 	@Override
-	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
-	{
+	public void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
 		super.readSynchronizationPacket(buf, player);
 		energyStored = buf.readInt();
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag)
-	{
+	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setInteger("energyStored", energyStored);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		energyStored = tag.getInteger("energyStored");
 	}
 
 	@Override
-	public int getElectricCapacity(Face from)
-	{
+	public int getElectricCapacity(Face from) {
 		return MAX_ENERGY_STORED;
 	}
 
 	@Override
-	public boolean canConnectElectricity(Face from)
-	{
+	public boolean canConnectElectricity(Face from) {
 		return true;
 	}
 
 	@Override
-	public int extractElectricity(Face from, int maxExtract, boolean simulate)
-	{
+	public int extractElectricity(Face from, int maxExtract, boolean simulate) {
 		int value = Math.min(5000, energyStored);
-		if (!simulate)
-		{
+		if (!simulate) {
 			energyStored -= value;
 		}
 		return value;
 	}
 
 	@Override
-	public int getElectricityStored(Face from)
-	{
+	public int getElectricityStored(Face from) {
 		return energyStored;
 	}
 }

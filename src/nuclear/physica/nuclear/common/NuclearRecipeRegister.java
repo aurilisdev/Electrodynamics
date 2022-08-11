@@ -17,14 +17,10 @@ import physica.nuclear.common.tile.TileChemicalExtractor;
 public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.OnStartup)
-		{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.OnStartup) {
 			// 1 Gram Antimatter cell
-			addShapeless(NuclearItemRegister.itemAntimatterCell1Gram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
-					NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram,
-					NuclearItemRegister.itemAntimatterCell125Milligram);
+			addShapeless(NuclearItemRegister.itemAntimatterCell1Gram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram, NuclearItemRegister.itemAntimatterCell125Milligram);
 
 			// Hazmat Suit
 			addRecipe(NuclearItemRegister.itemHazmatHelmet, "SSS", "BAB", "SCS", 'A', Items.leather_helmet, 'C', "circuitBasic", 'S', Blocks.wool, 'B', "plateSteel");
@@ -57,8 +53,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 			RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(800, new ItemStack(NuclearItemRegister.itemUranium238), 1750));
 			RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(1600, new ItemStack(NuclearItemRegister.itemYellowcake), 2000));
 			RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(2400, "oreUraniumPhysica", 1250));
-			if (OreDictionary.doesOreNameExist("oreUranium"))
-			{
+			if (OreDictionary.doesOreNameExist("oreUranium")) {
 				RecipeSystem.registerRecipe(TileChemicalBoiler.class, new ChemicalBoilerRecipe(2400, "oreUranium", 1250));
 			}
 
@@ -67,8 +62,7 @@ public class NuclearRecipeRegister implements IContent, IBaseUtilities {
 			RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(4800, new ItemStack(CoreItemRegister.itemEmptyCell), new ItemStack(NuclearItemRegister.itemHeavyWaterCell)));
 			RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(4800, new ItemStack(NuclearItemRegister.itemHeavyWaterCell), new ItemStack(NuclearItemRegister.itemDeuteriumCell)));
 			RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(1600, "oreUraniumPhysica", new ItemStack(NuclearItemRegister.itemYellowcake, 1)));
-			if (OreDictionary.doesOreNameExist("oreUranium"))
-			{
+			if (OreDictionary.doesOreNameExist("oreUranium")) {
 				RecipeSystem.registerRecipe(TileChemicalExtractor.class, new ChemicalExtractorRecipe(1600, "oreUranium", new ItemStack(NuclearItemRegister.itemYellowcake, 1)));
 			}
 		}

@@ -14,10 +14,8 @@ import physica.library.recipe.RecipeSystem;
 public class CoreRecipeRegister implements IContent, IBaseUtilities {
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.OnStartup)
-		{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.OnStartup) {
 			// Motor
 			addRecipe(CoreItemRegister.itemMotor, "RSR", "SIS", "RSR", 'R', Items.redstone, 'S', "ingotSteel", 'I', "ingotCopper");
 

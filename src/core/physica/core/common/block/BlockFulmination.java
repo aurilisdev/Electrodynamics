@@ -27,20 +27,17 @@ public class BlockFulmination extends Block implements ITileEntityProvider, IBas
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata)
-	{
+	public boolean hasTileEntity(int metadata) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
-	{
+	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileFulmination();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(CoreBlockRegister.blockFulmination, "OSO", "SCS", "OSO", 'O', Blocks.obsidian, 'C', "circuitAdvanced", 'S', "plateSteel");
 	}
 

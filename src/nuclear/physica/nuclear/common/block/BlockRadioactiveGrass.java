@@ -24,9 +24,9 @@ import physica.nuclear.common.radiation.RadiationSystem;
 public class BlockRadioactiveGrass extends BlockGrass {
 
 	@SideOnly(Side.CLIENT)
-	private IIcon	topIcon;
+	private IIcon topIcon;
 	@SideOnly(Side.CLIENT)
-	private IIcon	snowVersion;
+	private IIcon snowVersion;
 
 	public BlockRadioactiveGrass() {
 		setCreativeTab(NuclearTabRegister.nuclearPhysicsTab);
@@ -39,14 +39,10 @@ public class BlockRadioactiveGrass extends BlockGrass {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World world, int x, int y, int z, Random random)
-	{
-		if (random.nextFloat() < 0.1667)
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				if (random.nextFloat() < 0.666)
-				{
+	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+		if (random.nextFloat() < 0.1667) {
+			for (int i = 0; i < 2; i++) {
+				if (random.nextFloat() < 0.666) {
 					world.spawnParticle("reddust", x + random.nextDouble() * 3 - 1.5, y + random.nextDouble() * 3 - 1.5, z + random.nextDouble() * 3 - 1.5, 0.01f, 1, 0.01f);
 				}
 			}
@@ -54,65 +50,52 @@ public class BlockRadioactiveGrass extends BlockGrass {
 	}
 
 	@Override
-	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
-	{
+	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable) {
 		EnumPlantType plantType = plantable.getPlantType(world, x, y + 1, z);
 		return plantType == EnumPlantType.Plains;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public IIcon getIcon(int side, int meta)
-	{
+	public IIcon getIcon(int side, int meta) {
 		return side == 1 ? topIcon : side == 0 ? Blocks.dirt.getBlockTextureFromSide(side) : blockIcon;
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand)
-	{
-		if (!world.isRemote)
-		{
-			if (world.rand.nextFloat() < 0.666f)
-			{
+	public void updateTick(World world, int x, int y, int z, Random rand) {
+		if (!world.isRemote) {
+			if (world.rand.nextFloat() < 0.666f) {
 				RadiationSystem.spreadRadioactiveBlock(world, x, y, z);
 			}
 		}
 	}
 
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity ent)
-	{
-		if (ent instanceof EntityLivingBase)
-		{
+	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
+		if (ent instanceof EntityLivingBase) {
 			int meta = world.getBlockMetadata(x, y, z);
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 2.5f, meta, 1, 1);
 		}
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
-	{
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
 		return Blocks.grass.colorMultiplier(world, x, y, z) - 10;
 	}
 
 	@Override
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
-	{
+	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
 		return Blocks.dirt.getItemDropped(0, p_149650_2_, p_149650_3_);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-	{
-		if (side == 1)
-		{
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+		if (side == 1) {
 			return topIcon;
-		} else if (side == 0)
-		{
+		} else if (side == 0) {
 			return Blocks.dirt.getBlockTextureFromSide(side);
-		} else
-		{
+		} else {
 			Material material = world.getBlock(x, y + 1, z).getMaterial();
 			return material != Material.snow && material != Material.craftedSnow ? blockIcon : snowVersion;
 		}
@@ -120,8 +103,7 @@ public class BlockRadioactiveGrass extends BlockGrass {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{
+	public void registerBlockIcons(IIconRegister p_149651_1_) {
 		blockIcon = p_149651_1_.registerIcon(getTextureName() + "_side");
 		topIcon = p_149651_1_.registerIcon(getTextureName() + "_top");
 		snowVersion = p_149651_1_.registerIcon("grass_side_snowed");

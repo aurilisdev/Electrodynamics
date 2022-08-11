@@ -19,8 +19,8 @@ import physica.nuclear.common.tile.TileChemicalBoiler;
 @SideOnly(Side.CLIENT)
 public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> implements IBaseUtilities {
 
-	public Rectangle	AREA_WATER_TANK	= new Rectangle(8, 18, meterWidth, meterHeight);
-	public Rectangle	AREA_HEX_TANK	= new Rectangle(xSize - 8 - meterWidth, 18, meterWidth, meterHeight);
+	public Rectangle AREA_WATER_TANK = new Rectangle(8, 18, meterWidth, meterHeight);
+	public Rectangle AREA_HEX_TANK = new Rectangle(xSize - 8 - meterWidth, 18, meterWidth, meterHeight);
 
 	public GuiChemicalBoiler(EntityPlayer player, TileChemicalBoiler host) {
 		super(new ContainerChemicalBoiler(player, host), host);
@@ -28,16 +28,14 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 		addToolTip(new ToolTipTank(AREA_WATER_TANK, "gui.chemicalBoiler.water_tank", host.getWaterTank()));
 		addToolTip(new ToolTipTank(AREA_HEX_TANK, "gui.chemicalBoiler.hex_tank", host.getHexTank()));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: " + (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting" : host.canProcess() ? "Insufficient power" : "Invalid input"), 8, 73);
 		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getPowerUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
@@ -45,8 +43,7 @@ public class GuiChemicalBoiler extends GuiContainerBase<TileChemicalBoiler> impl
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_WATER_TANK.x, AREA_WATER_TANK.y, host.getWaterTank());
 		drawFluidTank(AREA_HEX_TANK.x, AREA_HEX_TANK.y, host.getHexTank());

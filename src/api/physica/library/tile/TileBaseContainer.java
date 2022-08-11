@@ -8,36 +8,30 @@ public abstract class TileBaseContainer extends TileBaseRotateable implements IT
 	private ItemStack[] _inventoryArray;
 
 	@Override
-	public ItemStack[] getInventoryArray()
-	{
-		if (_inventoryArray == null)
-		{
+	public ItemStack[] getInventoryArray() {
+		if (_inventoryArray == null) {
 			_inventoryArray = new ItemStack[getSizeInventory()];
 		}
 		return _inventoryArray;
 	}
 
 	@Override
-	public void nullifyInventoryArray()
-	{
+	public void nullifyInventoryArray() {
 		_inventoryArray = null;
 	}
 
 	@Override
-	public final boolean canExtractItem(int slot, ItemStack stack, int side)
-	{
+	public final boolean canExtractItem(int slot, ItemStack stack, int side) {
 		return ITileBaseContainer.super.canExtractItem(slot, stack, side);
 	}
 
 	@Override
-	public final boolean canInsertItem(int slot, ItemStack stack, int side)
-	{
+	public final boolean canInsertItem(int slot, ItemStack stack, int side) {
 		return ITileBaseContainer.super.canInsertItem(slot, stack, side);
 	}
 
 	@Override
-	public final int[] getAccessibleSlotsFromSide(int side)
-	{
+	public final int[] getAccessibleSlotsFromSide(int side) {
 		return ITileBaseContainer.super.getAccessibleSlotsFromSide(side);
 	}
 

@@ -27,22 +27,17 @@ public class BlockSiren extends Block implements IBaseUtilities, IRecipeRegister
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "SNS", "NAN", "SNS", 'S', "plateSteel", 'N', Blocks.noteblock, 'A', "circuitBasic");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
-	{
-		if (!world.isRemote)
-		{
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+		if (!world.isRemote) {
 			int pitch = world.getBlockMetadata(x, y, z);
-			if (player.isSneaking())
-			{
+			if (player.isSneaking()) {
 				pitch--;
-			} else
-			{
+			} else {
 				pitch++;
 			}
 			pitch = Math.max(pitch % 16, 0);
@@ -53,14 +48,12 @@ public class BlockSiren extends Block implements IBaseUtilities, IRecipeRegister
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata)
-	{
+	public boolean hasTileEntity(int metadata) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int metadata)
-	{
+	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileSiren();
 	}
 }

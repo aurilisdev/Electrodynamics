@@ -33,21 +33,17 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
-	{
+	public void registerBlockIcons(IIconRegister register) {
 		blockIcon = register.registerIcon(getTextureName());
 		blockIconOff = register.registerIcon(getTextureName() + "off");
 	}
 
 	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-	{
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileReactorControlPanel)
-		{
+		if (tile instanceof TileReactorControlPanel) {
 			TileReactorControlPanel control = (TileReactorControlPanel) tile;
-			if (control.getFacing().ordinal() == side)
-			{
+			if (control.getFacing().ordinal() == side) {
 				return control.reactor == null ? blockIconOff : blockIcon;
 			}
 		}
@@ -55,24 +51,20 @@ public class BlockReactorControlPanel extends BlockBaseContainer implements IBas
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		if (side == 4)
-		{
+	public IIcon getIcon(int side, int meta) {
+		if (side == 4) {
 			return super.getIcon(side, meta);
 		}
 		return CoreBlockRegister.blockLead.getIcon(side, 0);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileReactorControlPanel();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "IPI", "PCP", "IPI", 'I', CoreBlockRegister.blockLead, 'P', "plateLead", 'C', "circuitElite");
 	}
 

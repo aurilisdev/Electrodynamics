@@ -8,9 +8,9 @@ import net.minecraft.client.model.ModelRenderer;
 @SideOnly(Side.CLIENT)
 public class ModelCube extends ModelBase {
 
-	public static final ModelCube	INSTANCE	= new ModelCube();
+	public static final ModelCube INSTANCE = new ModelCube();
 
-	private ModelRenderer			cube;
+	private ModelRenderer cube;
 
 	public ModelCube() {
 		cube = new ModelRenderer(this);
@@ -20,8 +20,7 @@ public class ModelCube extends ModelBase {
 		cube.mirror = true;
 	}
 
-	public void render()
-	{
+	public void render() {
 		float f = 0.0625F;
 		cube.render(f);
 	}

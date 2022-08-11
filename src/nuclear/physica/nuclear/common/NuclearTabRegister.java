@@ -11,15 +11,11 @@ public class NuclearTabRegister implements IContent {
 	public static CreativeTabs nuclearPhysicsTab;
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.CreativeTabRegister)
-		{
-			nuclearPhysicsTab = new CreativeTabs(NuclearReferences.DOMAIN + "NuclearPhysics")
-			{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.CreativeTabRegister) {
+			nuclearPhysicsTab = new CreativeTabs(NuclearReferences.DOMAIN + "NuclearPhysics") {
 				@Override
-				public Item getTabIconItem()
-				{
+				public Item getTabIconItem() {
 					return NuclearItemRegister.itemHazmatHelmet;
 				}
 			};

@@ -5,21 +5,21 @@ import java.util.Set;
 
 public class Permission {
 
-	public static Set<Permission>	LIST						= new HashSet<>();
+	public static Set<Permission> LIST = new HashSet<>();
 
-	public static Permission		BLOCK_ALTER					= new Permission(0, "Block Alter");
+	public static Permission BLOCK_ALTER = new Permission(0, "Block Alter");
 
-	public static Permission		BLOCK_ACCESS				= new Permission(1, "Block Access");
+	public static Permission BLOCK_ACCESS = new Permission(1, "Block Access");
 
-	public static Permission		SECURITY_CENTER_CONFIGURE	= new Permission(2, "Configure Identifier");
+	public static Permission SECURITY_CENTER_CONFIGURE = new Permission(2, "Configure Identifier");
 
-	public static Permission		BYPASS_INTERDICTION_MATRIX	= new Permission(3, "Bypass Matrix");
+	public static Permission BYPASS_INTERDICTION_MATRIX = new Permission(3, "Bypass Matrix");
 
-	public static Permission		BYPASS_CONFISCATION			= new Permission(4, "Bypass Confiscation");
+	public static Permission BYPASS_CONFISCATION = new Permission(4, "Bypass Confiscation");
 
-	public int						id;
+	public int id;
 
-	public String					name;
+	public String name;
 
 	public Permission(int id, String name) {
 		this.id = id;
@@ -27,18 +27,14 @@ public class Permission {
 		LIST.add(this);
 	}
 
-	public static Set<Permission> getPermissions()
-	{
+	public static Set<Permission> getPermissions() {
 		return LIST;
 	}
 
-	public static Permission getPermission(int id)
-	{
+	public static Permission getPermission(int id) {
 		Permission perm = null;
-		for (Permission permission : LIST)
-		{
-			if (permission.id == id)
-			{
+		for (Permission permission : LIST) {
+			if (permission.id == id) {
 				perm = permission;
 			}
 		}

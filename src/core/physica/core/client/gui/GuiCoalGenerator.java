@@ -19,18 +19,14 @@ public class GuiCoalGenerator extends GuiContainerBase<TileCoalGenerator> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		String displayText = "";
-		if (host.generate <= 0.0D)
-		{
+		if (host.generate <= 0.0D) {
 			displayText = "Not Generating";
-		} else if (host.generate < 100.0D)
-		{
+		} else if (host.generate < 100.0D) {
 			displayText = "Required Heat: " + (int) (host.generate / 100.0D * 100.0D) + "%";
-		} else
-		{
+		} else {
 			drawString("Generating", 70, 33, 4210752);
 			displayText = ElectricityDisplay.getDisplay(host.generate - 100, Unit.WATT);
 		}

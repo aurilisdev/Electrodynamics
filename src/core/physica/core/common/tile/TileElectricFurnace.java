@@ -26,190 +26,149 @@ import physica.library.tile.TileBasePoweredContainer;
 
 public class TileElectricFurnace extends TileBasePoweredContainer implements IGuiInterface, IMachineTile {
 
-	public static final int		TICKS_REQUIRED			= 100;
-	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(1000, Unit.WATT, Unit.RF);
-	public static final int		SLOT_ENERGY				= 0;
-	public static final int		SLOT_INPUT				= 1;
-	public static final int		SLOT_OUTPUT				= 2;
-	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
-	private static final int[]	ACCESSIBLE_SLOTS_UP		= new int[] { SLOT_INPUT };
+	public static final int TICKS_REQUIRED = 100;
+	public static final int POWER_USAGE = ElectricityUtilities.convertEnergy(1000, Unit.WATT, Unit.RF);
+	public static final int SLOT_ENERGY = 0;
+	public static final int SLOT_INPUT = 1;
+	public static final int SLOT_OUTPUT = 2;
+	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
+	private static final int[] ACCESSIBLE_SLOTS_UP = new int[] { SLOT_INPUT };
 
-	protected int				operatingTicks			= 0;
+	protected int operatingTicks = 0;
 
 	@Override
-	public boolean isRunning()
-	{
+	public boolean isRunning() {
 		return operatingTicks > 0;
 	}
 
 	@Override
-	public void updateServer(int ticks)
-	{
+	public void updateServer(int ticks) {
 		super.updateServer(ticks);
-		if (hasEnoughEnergy())
-		{
+		if (hasEnoughEnergy()) {
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
 			ItemStack input = getStackInSlot(SLOT_INPUT);
-			if (canProcess(output, input))
-			{
-				if (operatingTicks < TICKS_REQUIRED)
-				{
+			if (canProcess(output, input)) {
+				if (operatingTicks < TICKS_REQUIRED) {
 					operatingTicks++;
-				} else
-				{
+				} else {
 					process(input, output);
 					operatingTicks = 0;
 				}
 				extractEnergy();
-			} else
-			{
+			} else {
 				operatingTicks = 0;
 			}
-			drainBattery(SLOT_ENERGY);
-		} else
-		{
-			drainBattery(SLOT_ENERGY);
 		}
+		drainBattery(SLOT_ENERGY);
 	}
 
-	public boolean canProcess(ItemStack output, ItemStack input)
-	{
-		if (input == null)
-		{
+	public boolean canProcess(ItemStack output, ItemStack input) {
+		if ((input == null) || (FurnaceRecipes.smelting().getSmeltingResult(input) == null)) {
 			return false;
 		}
-		if (FurnaceRecipes.smelting().getSmeltingResult(input) == null)
-		{
-			return false;
-		}
-		if (output != null)
-		{
-			if (!output.isItemEqual(FurnaceRecipes.smelting().getSmeltingResult(input)))
-			{
+		if (output != null) {
+			if (!output.isItemEqual(FurnaceRecipes.smelting().getSmeltingResult(input))) {
 				return false;
 			}
-			if (output.stackSize + (getBlockMetadata() == EnumElectricFurnace.INDUSTRIAL.ordinal() ? 2 : 1) > 64)
-			{
+			if (output.stackSize + (getBlockMetadata() == EnumElectricFurnace.INDUSTRIAL.ordinal() ? 2 : 1) > 64) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private void process(ItemStack input, ItemStack output)
-	{
+	private void process(ItemStack input, ItemStack output) {
 		ItemStack resultItemStack = FurnaceRecipes.smelting().getSmeltingResult(input);
 		int stackSize = 1;
-		if (getBlockMetadata() == EnumElectricFurnace.INDUSTRIAL.ordinal())
-		{
+		if (getBlockMetadata() == EnumElectricFurnace.INDUSTRIAL.ordinal()) {
 			boolean isOre = false;
-			for (int id : OreDictionary.getOreIDs(input))
-			{
-				if (OreDictionary.getOreName(id).startsWith("ore"))
-				{
+			for (int id : OreDictionary.getOreIDs(input)) {
+				if (OreDictionary.getOreName(id).startsWith("ore")) {
 					isOre = true;
 					break;
 				}
 			}
-			if (isOre)
-			{
-				for (int id : OreDictionary.getOreIDs(resultItemStack))
-				{
-					if (OreDictionary.getOreName(id).startsWith("ingot"))
-					{
+			if (isOre) {
+				for (int id : OreDictionary.getOreIDs(resultItemStack)) {
+					if (OreDictionary.getOreName(id).startsWith("ingot")) {
 						stackSize = 2;
 						break;
 					}
 				}
 			}
 		}
-		if (output == null)
-		{
+		if (output == null) {
 			ItemStack finalStack = resultItemStack.copy();
 			finalStack.stackSize = stackSize;
 			setInventorySlotContents(SLOT_OUTPUT, finalStack);
-		} else if (output.isItemEqual(resultItemStack))
-		{
+		} else if (output.isItemEqual(resultItemStack)) {
 			output.stackSize += stackSize;
 		}
 		input.stackSize--;
-		if (input.stackSize <= 0)
-		{
+		if (input.stackSize <= 0) {
 			setInventorySlotContents(SLOT_INPUT, null);
 		}
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
-	{
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(operatingTicks);
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
-	{
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
 		super.readClientGuiPacket(buf, player);
 		int prevOperatingTicks = operatingTicks;
 		operatingTicks = buf.readInt();
-		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0)
-		{
+		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0) {
 			GridLocation loc = getLocation();
 			World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 		}
 	}
 
-	public int getOperatingTicks()
-	{
+	public int getOperatingTicks() {
 		return operatingTicks;
 	}
 
 	@Override
-	public int getSizeInventory()
-	{
+	public int getSizeInventory() {
 		return 3;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemStack)
-	{
+	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
 		return slot == SLOT_INPUT ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(itemStack) : false;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
-	{
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
 		return new GuiElectricFurnace(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player)
-	{
+	public Container getServerGuiElement(int id, EntityPlayer player) {
 		return new ContainerElectricFurnace(player, this);
 	}
 
 	@Override
-	public int getPowerUsage()
-	{
+	public int getPowerUsage() {
 		return POWER_USAGE * 3;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromFace(Face face)
-	{
+	public int[] getAccessibleSlotsFromFace(Face face) {
 		return face == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : face == Face.UP ? ACCESSIBLE_SLOTS_UP : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, Face face)
-	{
+	public boolean canInsertItem(int slot, ItemStack stack, Face face) {
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, Face face)
-	{
+	public boolean canExtractItem(int slot, ItemStack stack, Face face) {
 		return slot == SLOT_OUTPUT;
 	}
 

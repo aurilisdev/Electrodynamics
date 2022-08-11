@@ -7,5 +7,5 @@ package defense.api;
  */
 public interface IEntityExplosion {
 
-	public void endExplosion();
+	void endExplosion();
 }

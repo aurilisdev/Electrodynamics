@@ -19,16 +19,14 @@ public class SlotFluidHolder extends SlotBase {
 	}
 
 	@Override
-	protected void drawIcon(Gui gui, int x, int y)
-	{
+	protected void drawIcon(Gui gui, int x, int y) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(GuiContainerBase.GUI_COMPONENTS);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.drawTexturedModalRect(x, y, 0, 18 * 2, 18, 18);
 	}
 
 	@Override
-	public ToolTip getToolTip()
-	{
+	public ToolTip getToolTip() {
 		return toolTipBase;
 	}
 }

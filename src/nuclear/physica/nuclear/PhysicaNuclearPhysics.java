@@ -36,20 +36,19 @@ import physica.proxy.CommonProxy;
 public class PhysicaNuclearPhysics {
 
 	@SidedProxy(clientSide = "physica.proxy.ClientProxy", serverSide = "physica.proxy.ServerProxy")
-	public static CommonProxy			sidedProxy;
-	public static ContentLoader			proxyLoader	= new ContentLoader();
+	public static CommonProxy sidedProxy;
+	public static ContentLoader proxyLoader = new ContentLoader();
 
 	@Instance(NuclearReferences.NAME)
-	public static PhysicaNuclearPhysics	INSTANCE;
+	public static PhysicaNuclearPhysics INSTANCE;
 	@Metadata(NuclearReferences.DOMAIN)
-	public static ModMetadata			metadata;
+	public static ModMetadata metadata;
 
-	public static File					configFolder;
-	public static ConfigNuclearPhysics	config;
+	public static File configFolder;
+	public static ConfigNuclearPhysics config;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + NuclearReferences.DOMAIN);
 		proxyLoader.addContent(sidedProxy);
@@ -61,8 +60,7 @@ public class PhysicaNuclearPhysics {
 		proxyLoader.addContent(new NuclearItemRegister());
 		proxyLoader.addContent(new NuclearEntityRegister());
 
-		if (event.getSide() == Side.CLIENT)
-		{
+		if (event.getSide() == Side.CLIENT) {
 			proxyLoader.addContent(new NuclearClientRegister());
 			RoentgenOverlay overlay = new RoentgenOverlay();
 			MinecraftForge.EVENT_BUS.register(overlay);
@@ -89,8 +87,7 @@ public class PhysicaNuclearPhysics {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
+	public void init(FMLInitializationEvent event) {
 		proxyLoader.callRegister(LoadPhase.Initialize);
 		proxyLoader.callRegister(LoadPhase.EntityRegister);
 		proxyLoader.callRegister(LoadPhase.FluidRegister);
@@ -98,15 +95,13 @@ public class PhysicaNuclearPhysics {
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	public void postInit(FMLPostInitializationEvent event) {
 		proxyLoader.callRegister(LoadPhase.PostInitialize);
 		System.out.println("Radiation potion id: " + PotionRadiation.INSTANCE.id); // To initialize the potion...
 	}
 
 	@EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
+	public void loadComplete(FMLLoadCompleteEvent event) {
 		proxyLoader.callRegister(LoadPhase.OnStartup);
 		IRecipeRegister.callRegister("Nuclear");
 	}

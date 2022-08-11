@@ -14,14 +14,13 @@ import physica.core.common.CoreTabRegister;
 
 public class ItemMetaHolder extends ItemUpdateable {
 
-	public ArrayList<String>	subItems	= new ArrayList<>();
+	public ArrayList<String> subItems = new ArrayList<>();
 	@SideOnly(Side.CLIENT)
-	public IIcon[]				subIcons;
-	public String				textureFolder;
-	public final String			prefix;
+	public IIcon[] subIcons;
+	public String textureFolder;
+	public final String prefix;
 
-	public ItemMetaHolder setTextureFolder(String textureFolder)
-	{
+	public ItemMetaHolder setTextureFolder(String textureFolder) {
 		this.textureFolder = textureFolder;
 		return this;
 	}
@@ -37,40 +36,32 @@ public class ItemMetaHolder extends ItemUpdateable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register)
-	{
+	public void registerIcons(IIconRegister register) {
 		subIcons = new IIcon[subItems.size()];
-		for (int i = 0; i < subItems.size(); i++)
-		{
+		for (int i = 0; i < subItems.size(); i++) {
 			subIcons[i] = register.registerIcon(prefix + textureFolder + "/" + subItems.get(i).toLowerCase());
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int meta)
-	{
+	public IIcon getIconFromDamage(int meta) {
 		return subIcons[meta];
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack)
-	{
+	public String getUnlocalizedName(ItemStack stack) {
 		return "item." + subItems.get(stack.getItemDamage());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List list)
-	{
-		for (int i = 0; i < subItems.size(); i++)
-		{
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
+		for (int i = 0; i < subItems.size(); i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
-	public ItemMetaHolder addSubItem(String name)
-	{
+	public ItemMetaHolder addSubItem(String name) {
 		subItems.add(name);
 		return this;
 	}

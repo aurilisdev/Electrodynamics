@@ -29,15 +29,13 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-	{
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-	{
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		float minX = 0;
 		float minY = 0;
 		float minZ = 0;
@@ -45,8 +43,7 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 		float maxY = 1;
 		float maxZ = 1;
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileNeutronCaptureChamber)
-		{
+		if (tile instanceof TileNeutronCaptureChamber) {
 			TileNeutronCaptureChamber neutronChamber = (TileNeutronCaptureChamber) tile;
 			minY = 0.05f;
 			maxY = 0.95f;
@@ -85,15 +82,11 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
-	{
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item) {
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (Face dir : Face.VALID)
-		{
-			if (dir.ordinal() > 1)
-			{
-				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor)
-				{
+		for (Face dir : Face.VALID) {
+			if (dir.ordinal() > 1) {
+				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor) {
 					tile.setFacing(dir.getOpposite());
 				}
 			}
@@ -101,27 +94,23 @@ public class BlockNeutronCaptureChamber extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
-	{
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
 		Face dir = Face.getOrientation(side).getOpposite();
 		return side > 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileNeutronCaptureChamber();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "SSS", "SGC", "SSS", 'S', "plateSteel", 'G', new ItemStack(Blocks.glass), 'C', CoreItemRegister.itemEmptyCell);
 	}
 
 	@Override
-	public String getSide()
-	{
+	public String getSide() {
 		return "Nuclear";
 	}
 

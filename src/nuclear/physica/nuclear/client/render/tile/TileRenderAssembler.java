@@ -21,26 +21,24 @@ import physica.nuclear.common.tile.TileQuantumAssembler;
 @SideOnly(Side.CLIENT)
 public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler> implements IBaseUtilities {
 
-	protected static final ResourceLocation	enderDragonCrystalBeamTextures	= new ResourceLocation("textures/entity/endercrystal/endercrystal_beam.png");
-	protected static final RenderItem		renderItem						= (RenderItem) RenderManager.instance.getEntityClassRenderObject(EntityItem.class);
+	protected static final ResourceLocation enderDragonCrystalBeamTextures = new ResourceLocation("textures/entity/endercrystal/endercrystal_beam.png");
+	protected static final RenderItem renderItem = (RenderItem) RenderManager.instance.getEntityClassRenderObject(EntityItem.class);
 
 	public TileRenderAssembler(String objFile, String textureFile) {
 		super(objFile, textureFile, NuclearReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
 	}
 
-	protected float		current		= 0, lastOperating = 0;
-	protected boolean	goesDown	= false;
+	protected float current = 0, lastOperating = 0;
+	protected boolean goesDown = false;
 
 	@Override
-	public void renderTileAt(TileQuantumAssembler tile, double x, double y, double z, float deltaFrame)
-	{
+	public void renderTileAt(TileQuantumAssembler tile, double x, double y, double z, float deltaFrame) {
 		super.renderTileAt(tile, x, y, z, deltaFrame);
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y + 0.4, z + 0.5);
 		GL11.glScalef(0.25f, 0.25f, 0.25f);
 		EntityItem entity = tile.getEntityItem();
-		if (entity != null)
-		{
+		if (entity != null) {
 			entity.getEntityItem().stackSize = Math.max(1, Math.min(5, entity.getEntityItem().stackSize));
 			entity.age = 1;
 			entity.hoverStart = 0;
@@ -48,13 +46,11 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 			float down = 4f;
 			float forward = 0.125f;
 			GL11.glScalef(1 / down, 0.333f, 1 / down);
-			if (tile.getOperatingTicks() > 0)
-			{
+			if (tile.getOperatingTicks() > 0) {
 				GridLocation loc = tile.getLocation();
 				double centerX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down, centerY = loc.yCoord + 0.4 * down, centerZ = loc.zCoord + tile.getFacing().offsetX * down * forward + 0.5 * down;
 
-				double targetX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333, targetY = loc.yCoord + 0.9 * down * 2,
-						targetZ = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333;
+				double targetX = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333, targetY = loc.yCoord + 0.9 * down * 2, targetZ = loc.xCoord + tile.getFacing().offsetX * down * forward + 0.5 * down + tile.getWorldObj().rand.nextFloat() / down - 1 / down / 1.333;
 
 				double relX = tile.getFacing().offsetX * down * forward, relY = 0.6 + tile.getWorldObj().rand.nextFloat() / down, relZ = tile.getFacing().offsetZ * down * forward;
 				float dirX = (float) (targetX - centerX);
@@ -71,14 +67,12 @@ public class TileRenderAssembler extends TileRenderObjModel<TileQuantumAssembler
 				bindTexture(enderDragonCrystalBeamTextures);
 				GL11.glColor3d(1F, 0.0F, 0.0F);
 				GL11.glShadeModel(GL11.GL_SMOOTH);
-				for (int i = 0; i < 5; i++)
-				{
+				for (int i = 0; i < 5; i++) {
 					float u1 = -(tile.getOperatingTicks() * deltaFrame * tile.getWorldObj().rand.nextFloat() * (i + 1) * 0.005F);
 					float u2 = MathHelper.sqrt_float(dirX * dirX + dirY * dirY + dirZ * dirZ) / 32.0F + u1;
 					tessellator.startDrawing(5);
 					byte total = 8;
-					for (int j = 0; j <= total; ++j)
-					{
+					for (int j = 0; j <= total; ++j) {
 						float xCorner = 0.2F * (MathHelper.sin(j % total * (float) Math.PI * 2.0F / total) * 0.75F);
 						float yCorner = 0.2F * (MathHelper.cos(j % total * (float) Math.PI * 2.0F / total) * 0.75F);
 						float u = j % total * 1.0F / total;

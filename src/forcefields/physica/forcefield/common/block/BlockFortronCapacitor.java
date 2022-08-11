@@ -21,20 +21,17 @@ public class BlockFortronCapacitor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileFortronCapacitor();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "MFM", "FCF", "MFM", 'C', "phyBattery", 'F', ForcefieldItemRegister.itemFocusMatrix, 'M', "plateSteel");
 	}
 
 	@Override
-	public String getSide()
-	{
+	public String getSide() {
 		return "Forcefields";
 	}
 }

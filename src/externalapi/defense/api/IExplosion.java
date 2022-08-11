@@ -8,14 +8,13 @@ package defense.api;
 public interface IExplosion {
 
 	/** Called to initiate the explosion. */
-	public void explode();
+	void explode();
 
 	/** @return The radius of effect of the explosion. */
-	public float getRadius();
+	float getRadius();
 
 	/**
-	 * @return The energy emitted by this explosive. In Joules and approximately
-	 *         based off of a real life equivalent.
+	 * @return The energy emitted by this explosive. In Joules and approximately based off of a real life equivalent.
 	 */
-	public long getEnergy();
+	long getEnergy();
 }

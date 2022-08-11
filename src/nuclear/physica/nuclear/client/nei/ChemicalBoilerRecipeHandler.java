@@ -32,32 +32,27 @@ import physica.nuclear.common.tile.TileChemicalBoiler;
 public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	@Override
-	public String getRecipeName()
-	{
+	public String getRecipeName() {
 		return "Chemical Boiler";
 	}
 
-	public String getRecipeID()
-	{
+	public String getRecipeID() {
 		return "Physica.ChemicalBoiler";
 	}
 
 	@Override
-	public Class<GuiChemicalBoiler> getGuiClass()
-	{
+	public Class<GuiChemicalBoiler> getGuiClass() {
 		return GuiChemicalBoiler.class;
 	}
 
 	@Override
-	public void onUpdate()
-	{
+	public void onUpdate() {
 		super.onUpdate();
 		cycleticks += TileChemicalBoiler.TICKS_REQUIRED / 50;
 	}
 
 	@Override
-	public void drawBackground(int i)
-	{
+	public void drawBackground(int i) {
 		recipe theRecipe = (recipe) arecipes.get(i);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -76,14 +71,12 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public int recipiesPerPage()
-	{
+	public int recipiesPerPage() {
 		return 2;
 	}
 
 	@Override
-	public void drawExtras(int recipe)
-	{
+	public void drawExtras(int recipe) {
 		mc.renderEngine.bindTexture(GUI_COMPONENTS);
 		drawDoubleProgressBar(30, 24, 18, 15, 22, 15, TileChemicalBoiler.TICKS_REQUIRED, 0, true);
 		drawDoubleProgressBar(118, 24, 18, 15, 22, 15, TileChemicalBoiler.TICKS_REQUIRED, 0, false);
@@ -91,29 +84,12 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadCraftingRecipes(String outputId, Object... results)
-	{
-		if (outputId.equals(getRecipeID()))
-		{
-			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class))
-			{
-				if (newRecipe.getInput() != null)
-				{
+	public void loadCraftingRecipes(String outputId, Object... results) {
+		if (outputId.equals(getRecipeID()) || ("fluid".equals(outputId) && results[0] instanceof FluidStack && ((FluidStack) results[0]).getFluid() == NuclearFluidRegister.LIQUID_HE)) {
+			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class)) {
+				if (newRecipe.getInput() != null) {
 					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
-				} else
-				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
-				}
-			}
-		} else if (outputId.equals("fluid") && results[0] instanceof FluidStack && ((FluidStack) results[0]).getFluid() == NuclearFluidRegister.LIQUID_HE)
-		{
-			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class))
-			{
-				if (newRecipe.getInput() != null)
-				{
-					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
-				} else
-				{
+				} else {
 					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 				}
 			}
@@ -121,50 +97,38 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadUsageRecipes(String inputId, Object... ingredients)
-	{
-		if (inputId.equals("item") && ingredients[0] instanceof ItemStack && RecipeSystem.getRecipe(TileChemicalBoiler.class, (ItemStack) ingredients[0]) != null)
-		{
+	public void loadUsageRecipes(String inputId, Object... ingredients) {
+		if ("item".equals(inputId) && ingredients[0] instanceof ItemStack && RecipeSystem.getRecipe(TileChemicalBoiler.class, (ItemStack) ingredients[0]) != null) {
 			ChemicalBoilerRecipe newRecipe = RecipeSystem.getRecipe(TileChemicalBoiler.class, (ItemStack) ingredients[0]);
-			if (newRecipe.getInput() != null)
-			{
+			if (newRecipe.getInput() != null) {
 				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
-			} else
-			{
+			} else {
 				arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 			}
-		} else if (inputId.equals("fluid") && ingredients[0] instanceof FluidStack && ((FluidStack) ingredients[0]).getFluid() == FluidRegistry.WATER)
-		{
-			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class))
-			{
-				if (newRecipe.getInput() != null)
-				{
+		} else if ("fluid".equals(inputId) && ingredients[0] instanceof FluidStack && ((FluidStack) ingredients[0]).getFluid() == FluidRegistry.WATER) {
+			for (ChemicalBoilerRecipe newRecipe : RecipeSystem.<ChemicalBoilerRecipe>getHandleRecipes(TileChemicalBoiler.class)) {
+				if (newRecipe.getInput() != null) {
 					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getInput().getItem()));
-				} else
-				{
+				} else {
 					arecipes.add(new recipe(newRecipe.getWaterUse(), newRecipe.getHexafluorideGenerated(), newRecipe.getOredict()));
 				}
 			}
-		} else
-		{
+		} else {
 			super.loadUsageRecipes(inputId, ingredients);
 		}
 	}
 
 	@Override
-	public java.util.List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
-	{
+	public java.util.List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe) {
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
 
 		recipe theRecipe = (recipe) arecipes.get(recipe);
 
-		if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-		{
+		if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 			currenttip.add("Water: " + theRecipe.waterAmount + "/5000ml");
-		} else if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-		{
+		} else if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 			currenttip.add("Hexafluoride: " + theRecipe.hexaAmount + "/5000ml");
 		}
 
@@ -172,38 +136,30 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadTransferRects()
-	{
+	public void loadTransferRects() {
 		transferRects.add(new RecipeTransferRect(new Rectangle(30, 24, 22, 15), getRecipeID(), new Object[0]));
 		transferRects.add(new RecipeTransferRect(new Rectangle(118, 24, 22, 15), getRecipeID(), new Object[0]));
 	}
 
 	@Override
-	public boolean mouseClicked(GuiRecipe gui, int button, int recipe)
-	{
+	public boolean mouseClicked(GuiRecipe gui, int button, int recipe) {
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
 
-		if (button == 0)
-		{
-			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+		if (button == 0) {
+			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiCraftingRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
-			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiCraftingRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(FluidRegistry.WATER, 1000) });
 				return true;
 			}
-		} else if (button == 1)
-		{
-			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+		} else if (button == 1) {
+			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiUsageRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
-			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiUsageRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(FluidRegistry.WATER, 1000) });
 				return true;
 			}
@@ -212,30 +168,23 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe)
-	{
+	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe) {
 		Point point = GuiDraw.getMousePosition();
 		Point offset = gui.getRecipePosition(recipe);
 		Point relMouse = new Point(point.x - (gui.width - 176) / 2 - offset.x, point.y - (gui.height - 166) / 2 - offset.y);
-		if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
-		{
-			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+		if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
+			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiCraftingRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
-			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiCraftingRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(FluidRegistry.WATER, 1000) });
 				return true;
 			}
-		} else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
-		{
-			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+		} else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
+			if (relMouse.x > 145 && relMouse.x < 145 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiUsageRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(NuclearFluidRegister.LIQUID_HE, 1000) });
 				return true;
-			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight)
-			{
+			} else if (relMouse.x > 8 && relMouse.x < 8 + meterWidth && relMouse.y > 8 && relMouse.y < 8 + meterHeight) {
 				GuiUsageRecipe.openRecipeGui("fluid", new Object[] { new FluidStack(FluidRegistry.WATER, 1000) });
 				return true;
 			}
@@ -246,14 +195,13 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 
 	class recipe extends TemplateRecipeHandler.CachedRecipe {
 
-		public int		waterAmount;
-		public int		hexaAmount;
-		public Item		iteminput;
-		public String	oreDict;
+		public int waterAmount;
+		public int hexaAmount;
+		public Item iteminput;
+		public String oreDict;
 
 		@Override
-		public PositionedStack getResult()
-		{
+		public PositionedStack getResult() {
 			return null;
 		}
 
@@ -270,20 +218,16 @@ public class ChemicalBoilerRecipeHandler extends PhysicaRecipeHandlerBase {
 		}
 
 		@Override
-		public PositionedStack getIngredient()
-		{
+		public PositionedStack getIngredient() {
 			return new PositionedStack(new ItemStack(iteminput), 89, 14);
 		}
 
 		@Override
-		public List<PositionedStack> getIngredients()
-		{
+		public List<PositionedStack> getIngredients() {
 			List<PositionedStack> ingredients = new ArrayList<>();
-			if (oreDict != null)
-			{
+			if (oreDict != null) {
 				ingredients.add(new PositionedStack(OreDictionary.getOres(oreDict), 89, 14));
-			} else
-			{
+			} else {
 				ingredients.add(new PositionedStack(new ItemStack(iteminput), 89, 14));
 			}
 			return getCycledIngredients(cycleticks / TileChemicalBoiler.TICKS_REQUIRED, ingredients);

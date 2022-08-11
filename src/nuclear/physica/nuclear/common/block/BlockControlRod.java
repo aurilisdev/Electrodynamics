@@ -24,32 +24,27 @@ public class BlockControlRod extends Block implements IBaseUtilities, IRecipeReg
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "ISI", "IAI", "ISI", 'I', "plateIron", 'S', "plateSteel", 'A', "circuitAdvanced");
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
-	{
+	public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
 		return true;
 	}
 
 	@Override
-	public int getRenderBlockPass()
-	{
+	public int getRenderBlockPass() {
 		return 0;
 	}
 
 	@Override
-	public boolean renderAsNormalBlock()
-	{
+	public boolean renderAsNormalBlock() {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube() {
 		return false;
 	}
 

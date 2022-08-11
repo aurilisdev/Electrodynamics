@@ -21,8 +21,7 @@ public class BlockLead extends BlockCompressed implements IBaseUtilities, IRecip
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "IPI", "IPI", "IPI", 'I', "ingotLead", 'P', "plateLead");
 	}
 }

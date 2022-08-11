@@ -22,56 +22,47 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer, IMekWr
 	}
 
 	@Override
-	public boolean isFull3D()
-	{
+	public boolean isFull3D() {
 		return true;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ)
-	{
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 		return true;
 	}
 
 	@Override
-	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
-	{
+	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
 		return true;
 	}
 
 	@Override
-	public boolean canUseWrench(EntityPlayer player, int x, int y, int z)
-	{
+	public boolean canUseWrench(EntityPlayer player, int x, int y, int z) {
 		return true;
 	}
 
 	@Override
-	public boolean canWrench(EntityPlayer player, int x, int y, int z)
-	{
+	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
 		return true;
 	}
 
 	@Override
-	public void wrenchUsed(EntityPlayer player, int x, int y, int z)
-	{
+	public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
 		player.swingItem();
 	}
 
 	@Override
-	public boolean isUsable(ItemStack itemStack, EntityLivingBase entity, int x, int y, int z)
-	{
+	public boolean isUsable(ItemStack itemStack, EntityLivingBase entity, int x, int y, int z) {
 		return true;
 	}
 
 	@Override
-	public void toolUsed(ItemStack item, EntityLivingBase entity, int x, int y, int z)
-	{
+	public void toolUsed(ItemStack item, EntityLivingBase entity, int x, int y, int z) {
 		entity.swingItem();
 	}
 
 	@Override
-	public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z)
-	{
+	public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z) {
 		return true;
 	}
 

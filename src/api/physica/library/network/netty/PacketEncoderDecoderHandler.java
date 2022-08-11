@@ -15,49 +15,38 @@ import physica.library.network.packet.PacketTile;
  */
 public class PacketEncoderDecoderHandler extends FMLIndexedMessageToMessageCodec<IPacket> {
 
-	public boolean	silenceStackTrace	= false;
-	private int		nextID				= 0;
+	public boolean silenceStackTrace = false;
+	private int nextID = 0;
 
 	public PacketEncoderDecoderHandler() {
 		addPacket(PacketTile.class);
 	}
 
-	public void addPacket(Class<? extends IPacket> clazz)
-	{
+	public void addPacket(Class<? extends IPacket> clazz) {
 		addDiscriminator(nextID++, clazz);
 	}
 
 	@Override
-	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket packet)
-	{
-		try
-		{
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket packet) {
+		try {
 			packet.decodeInto(ctx, source);
-		} catch (Exception e)
-		{
-			if (!silenceStackTrace)
-			{
+		} catch (Exception e) {
+			if (!silenceStackTrace) {
 				PhysicaAPI.logger.error("Failed to decode packet " + packet, e);
-			} else
-			{
+			} else {
 				PhysicaAPI.logger.error("Failed to decode packet " + packet + " Exception: " + e.getMessage());
 			}
 		}
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext ctx, IPacket packet, ByteBuf target) throws Exception
-	{
-		try
-		{
+	public void encodeInto(ChannelHandlerContext ctx, IPacket packet, ByteBuf target) throws Exception {
+		try {
 			packet.encodeInto(ctx, target);
-		} catch (Exception e)
-		{
-			if (!silenceStackTrace)
-			{
+		} catch (Exception e) {
+			if (!silenceStackTrace) {
 				PhysicaAPI.logger.error("Failed to encode packet " + packet, e);
-			} else
-			{
+			} else {
 				PhysicaAPI.logger.error("Failed to encode packet " + packet + " Exception: " + e.getMessage());
 			}
 		}

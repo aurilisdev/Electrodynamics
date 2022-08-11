@@ -16,22 +16,18 @@ public class ItemRenderTurbine extends ItemRenderObjModel {
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-	{
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glScaled(0.0925, 0.0525, 0.0925);
-		if (type.equals(ItemRenderType.INVENTORY))
-		{
+		if (ItemRenderType.INVENTORY.equals(type)) {
 			GL11.glTranslatef(-0.5f, -0.8f, -0.5f);
 			GL11.glRotatef(180f, 0, 1, 0);
-		} else if (type.equals(ItemRenderType.EQUIPPED_FIRST_PERSON))
-		{
+		} else if (ItemRenderType.EQUIPPED_FIRST_PERSON.equals(type)) {
 			GL11.glRotatef(45f, 0, 1, 0);
 			GL11.glTranslatef(1f, 12f, 9f);
-		} else if (type.equals(ItemRenderType.EQUIPPED))
-		{
+		} else if (ItemRenderType.EQUIPPED.equals(type)) {
 			GL11.glTranslatef(8f, 10f, 8f);
 		}
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(model_texture);

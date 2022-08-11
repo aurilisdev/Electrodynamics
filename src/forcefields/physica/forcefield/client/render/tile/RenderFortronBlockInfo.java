@@ -7,11 +7,11 @@ import physica.api.core.tile.ITileBase;
 @SideOnly(Side.CLIENT)
 public class RenderFortronBlockInfo {
 
-	private ITileBase	tile;
-	private double		x;
-	private double		y;
-	private double		z;
-	private double		delta;
+	private ITileBase tile;
+	private double x;
+	private double y;
+	private double z;
+	private double delta;
 
 	public RenderFortronBlockInfo(ITileBase tile, double x, double y, double z, double delta) {
 		this.tile = tile;
@@ -21,28 +21,23 @@ public class RenderFortronBlockInfo {
 		this.delta = delta;
 	}
 
-	public ITileBase getTile()
-	{
+	public ITileBase getTile() {
 		return tile;
 	}
 
-	public double getX()
-	{
+	public double getX() {
 		return x;
 	}
 
-	public double getY()
-	{
+	public double getY() {
 		return y;
 	}
 
-	public double getZ()
-	{
+	public double getZ() {
 		return z;
 	}
 
-	public double getDeltaFrame()
-	{
+	public double getDeltaFrame() {
 		return delta;
 	}
 

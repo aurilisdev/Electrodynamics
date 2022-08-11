@@ -24,8 +24,7 @@ public class TileRenderCentrifuge extends TileRenderObjModel<TileGasCentrifuge> 
 	}
 
 	@Override
-	public void renderTileAt(TileGasCentrifuge tile, double x, double y, double z, float deltaFrame)
-	{
+	public void renderTileAt(TileGasCentrifuge tile, double x, double y, double z, float deltaFrame) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -46,13 +45,10 @@ public class TileRenderCentrifuge extends TileRenderObjModel<TileGasCentrifuge> 
 
 		bindTexture(resourceTexture);
 		wavefrontObject.render();
-		if (tile.getOperatingTicks() > 0)
-		{
-			if (tile.hasEnoughEnergy())
-			{
+		if (tile.getOperatingTicks() > 0) {
+			if (tile.hasEnoughEnergy()) {
 				GL11.glRotatef(tile.getTicksRunning() * 24 % 360, 0.0f, 1, 0.0f);
-			} else
-			{
+			} else {
 				GL11.glRotatef(tile.getOperatingTicks() * 24 % 360, 0.0f, 1, 0.0f);
 			}
 		}

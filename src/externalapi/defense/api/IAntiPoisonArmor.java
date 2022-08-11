@@ -4,8 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
 /**
- * Apply this to all item armors and it will prevent the player from receiving a
- * specific type of poison.
+ * Apply this to all item armors and it will prevent the player from receiving a specific type of poison.
  */
 public interface IAntiPoisonArmor {
 
@@ -14,7 +13,7 @@ public interface IAntiPoisonArmor {
 	 * @type - The type of poison given to this entity
 	 * @return - Returns true if this armor prevents poison from the player.
 	 */
-	public boolean isProtectedFromPoison(ItemStack itemStack, EntityLivingBase entityLiving, String type);
+	boolean isProtectedFromPoison(ItemStack itemStack, EntityLivingBase entityLiving, String type);
 
 	/**
 	 * Called when this piece of armor protects a player from a specific poison.
@@ -22,8 +21,8 @@ public interface IAntiPoisonArmor {
 	 * @itemStack - The item stack this armor is in.
 	 * @type - The type of poison given to this entity
 	 */
-	public void onProtectFromPoison(ItemStack itemStack, EntityLivingBase entityLiving, String type);
+	void onProtectFromPoison(ItemStack itemStack, EntityLivingBase entityLiving, String type);
 
 	/** Basically the slot on the entity of 0-3 */
-	public int getArmorType();
+	int getArmorType();
 }

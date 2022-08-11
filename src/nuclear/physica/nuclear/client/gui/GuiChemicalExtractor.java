@@ -27,27 +27,21 @@ public class GuiChemicalExtractor extends GuiContainerBase<TileChemicalExtractor
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 		addToolTip(new ToolTipTank(AREA_WATER_TANK, "gui.chemicalExtractor.water_tank", host.getTank()));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		drawString(
-				"Status: " + (host.getOperatingTicks() > 1 ? "Running"
-						: host.getOperatingTicks() == 1 ? "Starting" : host.canProcess(host.getStackInSlot(TileChemicalExtractor.SLOT_OUTPUT), host.getStackInSlot(TileChemicalExtractor.SLOT_INPUT)) ? "Insufficient power" : "Invalid input"),
-				8, 73);
+		drawString("Status: " + (host.getOperatingTicks() > 1 ? "Running" : host.getOperatingTicks() == 1 ? "Starting" : host.canProcess(host.getStackInSlot(TileChemicalExtractor.SLOT_OUTPUT), host.getStackInSlot(TileChemicalExtractor.SLOT_INPUT)) ? "Insufficient power" : "Invalid input"), 8, 73);
 		drawString("Usage: " + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy(host.getPowerUsage(), Unit.RF, Unit.WATT), Unit.WATT), 8, 83);
 		drawStringCentered(StatCollector.translateToLocal("tile." + NuclearReferences.PREFIX + "chemicalExtractor.gui"), xSize / 2, 5);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawFluidTank(AREA_WATER_TANK.x, AREA_WATER_TANK.y, host.getTank());
 		renderFurnaceCookArrow(36, 36, host.getOperatingTicks(), TileChemicalExtractor.TICKS_REQUIRED);

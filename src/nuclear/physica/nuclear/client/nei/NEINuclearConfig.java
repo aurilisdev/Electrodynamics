@@ -12,8 +12,7 @@ import physica.nuclear.client.gui.GuiParticleAccelerator;
 public class NEINuclearConfig implements IConfigureNEI {
 
 	@Override
-	public void loadConfig()
-	{
+	public void loadConfig() {
 		API.registerRecipeHandler(new ChemicalBoilerRecipeHandler());
 		API.registerUsageHandler(new ChemicalBoilerRecipeHandler());
 		API.registerRecipeHandler(new ChemicalExtractorRecipeHandler());
@@ -33,14 +32,12 @@ public class NEINuclearConfig implements IConfigureNEI {
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return PhysicaNuclearPhysics.metadata.name;
 	}
 
 	@Override
-	public String getVersion()
-	{
+	public String getVersion() {
 		return PhysicaNuclearPhysics.metadata.version;
 	}
 }

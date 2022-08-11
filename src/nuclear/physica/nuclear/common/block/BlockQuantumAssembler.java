@@ -23,21 +23,17 @@ public class BlockQuantumAssembler extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileQuantumAssembler();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
-		addRecipe(this, "CPC", "QTQ", "CPC", 'C', "circuitElite", 'Q', NuclearItemRegister.itemEmptyQuantumCell, 'P',
-				new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'T', new ItemStack(NuclearBlockRegister.blockCentrifuge));
+	public void registerRecipes() {
+		addRecipe(this, "CPC", "QTQ", "CPC", 'C', "circuitElite", 'Q', NuclearItemRegister.itemEmptyQuantumCell, 'P', new ItemStack(NuclearBlockRegister.blockElectromagnet, 1, BlockElectromagnet.EnumElectromagnet.CONTAINMENT_NORMAL.ordinal()), 'T', new ItemStack(NuclearBlockRegister.blockCentrifuge));
 	}
 
 	@Override
-	public String getSide()
-	{
+	public String getSide() {
 		return "Nuclear";
 	}
 }

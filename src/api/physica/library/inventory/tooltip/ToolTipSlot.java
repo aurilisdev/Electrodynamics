@@ -14,8 +14,7 @@ public class ToolTipSlot extends ToolTip {
 	}
 
 	@Override
-	public boolean shouldShow()
-	{
+	public boolean shouldShow() {
 		return !slot.getHasStack();
 	}
 }

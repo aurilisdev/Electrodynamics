@@ -19,64 +19,50 @@ import physica.nuclear.PhysicaNuclearPhysics;
 public class CommandPhysica extends CommandBase {
 
 	@Override
-	public String getCommandName()
-	{
+	public String getCommandName() {
 		return CoreReferences.DOMAIN;
 	}
 
 	@Override
-	public List<String> getCommandAliases()
-	{
+	public List<String> getCommandAliases() {
 		return Arrays.asList("phys");
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender)
-	{
+	public String getCommandUsage(ICommandSender sender) {
 		return "/" + getCommandName();
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args)
-	{
-		if (args.length == 0)
-		{
+	public void processCommand(ICommandSender sender, String[] args) {
+		if (args.length == 0) {
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.GOLD + CoreReferences.NAME + EnumChatFormatting.DARK_GRAY + "]"));
 			sender.addChatMessage(new ChatComponentText(" A Mod focused around science and technology that introduces many new machines/blocks and items into the game"));
 			sender.addChatMessage(new ChatComponentText(" Developed by aurilisdev"));
 			sender.addChatMessage(new ChatComponentText(" Website: github.com/Aurilisdev/" + CoreReferences.NAME));
 			sender.addChatMessage(new ChatComponentText(" Version: " + CoreReferences.VERSION));
-		} else if (args[0].equalsIgnoreCase("reload"))
-		{
+		} else if ("reload".equalsIgnoreCase(args[0])) {
 			Physica.config.register(LoadPhase.ConfigRegister);
-			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
-			{
+			if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics")) {
 				PhysicaNuclearPhysics.config.register(LoadPhase.ConfigRegister);
 			}
-			if (Loader.isModLoaded(CoreReferences.DOMAIN + "forcefields"))
-			{
+			if (Loader.isModLoaded(CoreReferences.DOMAIN + "forcefields")) {
 				PhysicaForcefields.config.register(LoadPhase.ConfigRegister);
 			}
 			sender.addChatMessage(new ChatComponentText("Physica configs reloaded successfully"));
-		} else if (args[0].equalsIgnoreCase("item"))
-		{
-			if (sender instanceof EntityPlayer)
-			{
+		} else if ("item".equalsIgnoreCase(args[0])) {
+			if (sender instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) sender;
 				ItemStack itemStack = player.getCurrentEquippedItem();
-				if (itemStack != null)
-				{
+				if (itemStack != null) {
 					sender.addChatMessage(new ChatComponentText(itemStack.getItem().getUnlocalizedName()));
-				} else
-				{
+				} else {
 					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "You are not holding anything in your hand!"));
 				}
-			} else
-			{
+			} else {
 				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command must be executed in game"));
 			}
-		} else
-		{
+		} else {
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Unknown Physica sub-command"));
 		}
 	}

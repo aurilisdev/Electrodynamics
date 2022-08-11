@@ -17,65 +17,56 @@ import net.minecraft.world.World;
 public interface IExplosive extends ITier {
 
 	/** @return Gets the explosive's ID. */
-	public int getID();
+	int getID();
 
 	/** @return The unique name key in the language file. */
-	public String getUnlocalizedName();
+	String getUnlocalizedName();
 
 	/**
-	 * @return Gets the specific translated name of the block versions of the
-	 *         explosive.
+	 * @return Gets the specific translated name of the block versions of the explosive.
 	 */
-	public String getExplosiveName();
+	String getExplosiveName();
 
 	/**
-	 * @return Gets the specific translated name of the grenade versions of the
-	 *         explosive.
+	 * @return Gets the specific translated name of the grenade versions of the explosive.
 	 */
-	public String getGrenadeName();
+	String getGrenadeName();
 
 	/**
-	 * @return Gets the specific translated name of the missile versions of the
-	 *         explosive.
+	 * @return Gets the specific translated name of the missile versions of the explosive.
 	 */
-	public String getMissileName();
+	String getMissileName();
 
 	/**
-	 * @return Gets the specific translated name of the minecart versions of the
-	 *         explosive.
+	 * @return Gets the specific translated name of the minecart versions of the explosive.
 	 */
-	public String getMinecartName();
+	String getMinecartName();
 
 	/** @return The tier of the explosive. */
 	@Override
-	public int getTier();
+	int getTier();
 
 	/**
 	 * Creates a new explosion at a given location.
 	 *
-	 * @param world
-	 *            The world in which the explosion takes place.
-	 * @param x
-	 *            The X-Coord
-	 * @param y
-	 *            The Y-Coord
-	 * @param z
-	 *            The Z-Coord
-	 * @param entity
-	 *            Entity that caused the explosion.
+	 * @param world  The world in which the explosion takes place.
+	 * @param x      The X-Coord
+	 * @param y      The Y-Coord
+	 * @param z      The Z-Coord
+	 * @param entity Entity that caused the explosion.
 	 */
-	public void createExplosion(World world, double x, double y, double z, Entity entity);
+	void createExplosion(World world, double x, double y, double z, Entity entity);
 
 	@SideOnly(Side.CLIENT)
-	public ModelBase getBlockModel();
+	ModelBase getBlockModel();
 
 	@SideOnly(Side.CLIENT)
-	public ModelMissileBase getMissileModel();
+	ModelMissileBase getMissileModel();
 
 	@SideOnly(Side.CLIENT)
-	public ResourceLocation getBlockResource();
+	ResourceLocation getBlockResource();
 
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon();
+	IIcon getIcon();
 
 }

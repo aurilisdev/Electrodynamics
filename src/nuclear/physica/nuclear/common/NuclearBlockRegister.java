@@ -52,36 +52,34 @@ import physica.nuclear.common.tile.TileTurbine;
 
 public class NuclearBlockRegister implements IContent {
 
-	public static BlockParticleAccelerator		blockParticleAccelerator;
-	public static BlockQuantumAssembler			blockQuantumAssembler;
-	public static BlockGasCentrifuge			blockCentrifuge;
-	public static BlockChemicalBoiler			blockChemicalBoiler;
-	public static BlockChemicalExtractor		blockChemicalExtractor;
-	public static BlockFissionReactor			blockFissionReactor;
-	public static BlockNeutronCaptureChamber	blockNeutronCaptureChamber;
-	public static BlockFusionReactor			blockFusionReactor;
-	public static BlockRadioisotopeGenerator	blockRadioisotopeGenerator;
-	public static BlockTurbine					blockTurbine;
-	public static BlockSiren					blockSiren;
+	public static BlockParticleAccelerator blockParticleAccelerator;
+	public static BlockQuantumAssembler blockQuantumAssembler;
+	public static BlockGasCentrifuge blockCentrifuge;
+	public static BlockChemicalBoiler blockChemicalBoiler;
+	public static BlockChemicalExtractor blockChemicalExtractor;
+	public static BlockFissionReactor blockFissionReactor;
+	public static BlockNeutronCaptureChamber blockNeutronCaptureChamber;
+	public static BlockFusionReactor blockFusionReactor;
+	public static BlockRadioisotopeGenerator blockRadioisotopeGenerator;
+	public static BlockTurbine blockTurbine;
+	public static BlockSiren blockSiren;
 
-	public static BlockElectromagnet			blockElectromagnet;
-	public static BlockThermometer				blockThermometer;
-	public static BlockControlRod				blockControlRod;
-	public static BlockUraniumOre				blockUraniumOre;
-	public static BlockPlasma					blockPlasma;
-	public static BlockInsertableControlRod		blockInsertableControlRod;
-	public static BlockReactorControlPanel		blockReactorControlPanel;
+	public static BlockElectromagnet blockElectromagnet;
+	public static BlockThermometer blockThermometer;
+	public static BlockControlRod blockControlRod;
+	public static BlockUraniumOre blockUraniumOre;
+	public static BlockPlasma blockPlasma;
+	public static BlockInsertableControlRod blockInsertableControlRod;
+	public static BlockReactorControlPanel blockReactorControlPanel;
 
-	public static BlockMeltedReactor			blockMeltedReactor;
-	public static BlockRadioactiveGrass			blockRadioactiveGrass;
-	public static BlockRadioactiveStone			blockRadioactiveStone;
-	public static BlockRadioactiveDirt			blockRadioactiveDirt;
+	public static BlockMeltedReactor blockMeltedReactor;
+	public static BlockRadioactiveGrass blockRadioactiveGrass;
+	public static BlockRadioactiveStone blockRadioactiveStone;
+	public static BlockRadioactiveDirt blockRadioactiveDirt;
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.RegisterObjects)
-		{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.RegisterObjects) {
 			AbstractionLayer.Registering.registerBlock(blockElectromagnet = new BlockElectromagnet(), ItemBlockMetadata.class, "electromagnet");
 			AbstractionLayer.Registering.registerBlock(blockPlasma = new BlockPlasma(), "plasma");
 			AbstractionLayer.Registering.registerTileEntity(TilePlasma.class, NuclearReferences.PREFIX + "plasma");
@@ -128,18 +126,12 @@ public class NuclearBlockRegister implements IContent {
 			AbstractionLayer.Registering.registerOre("blockRadioactiveStone", new ItemStack(blockRadioactiveStone, 1, 15));
 			AbstractionLayer.Registering.registerOre("blockRadioactiveGrass", new ItemStack(blockRadioactiveGrass, 1, 15));
 
-			ItemBlockDescriptable.addDescription(blockParticleAccelerator, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileParticleAccelerator.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockQuantumAssembler, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileQuantumAssembler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockCentrifuge, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileGasCentrifuge.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockChemicalBoiler, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalBoiler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockChemicalExtractor, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalExtractor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockFusionReactor, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileFusionReactor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockParticleAccelerator, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileParticleAccelerator.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockQuantumAssembler, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileQuantumAssembler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockCentrifuge, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileGasCentrifuge.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockChemicalBoiler, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalBoiler.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockChemicalExtractor, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileChemicalExtractor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockFusionReactor, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileFusionReactor.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
 
 			ItemBlockDescriptable.addDescriptionShifted(blockParticleAccelerator, 0, "Accelerates particles to high speeds", "in order to produce new exotic", "forms of matter.");
 			ItemBlockDescriptable.addDescriptionShifted(blockQuantumAssembler, 0, "Assembles matter from dark matter", "using a template object.");

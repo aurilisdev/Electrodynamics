@@ -20,11 +20,9 @@ public class ItemRenderConstructor extends ItemRenderObjModel {
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-	{
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		super.renderItem(type, item, data);
-		if (type == ItemRenderType.INVENTORY)
-		{
+		if (type == ItemRenderType.INVENTORY) {
 			GL11.glPushMatrix();
 			GL11.glTranslated(0.5D, 0.85D, 0.5D);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);

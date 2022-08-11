@@ -34,25 +34,23 @@ import physica.library.item.ItemBlockMetadata;
 
 public class CoreBlockRegister implements IContent {
 
-	public static BlockInfiniteEnergy	blockInfEnergy;
-	public static BlockFulmination		blockFulmination;
-	public static BlockBlastFurnace		blockBlastFurnace;
-	public static BlockCoalGenerator	blockCoalGenerator;
-	public static BlockElectricFurnace	blockElectricFurnace;
-	public static BlockCircuitPress		blockCircuitPress;
-	public static BlockBatteryBox		blockBatteryBox;
-	public static BlockEnergyCable		blockCable;
-	public static BlockLead				blockLead;
-	public static BlockOre				blockTinOre;
-	public static BlockOre				blockCopperOre;
-	public static BlockOre				blockLeadOre;
-	public static BlockOre				blockSilverOre;
+	public static BlockInfiniteEnergy blockInfEnergy;
+	public static BlockFulmination blockFulmination;
+	public static BlockBlastFurnace blockBlastFurnace;
+	public static BlockCoalGenerator blockCoalGenerator;
+	public static BlockElectricFurnace blockElectricFurnace;
+	public static BlockCircuitPress blockCircuitPress;
+	public static BlockBatteryBox blockBatteryBox;
+	public static BlockEnergyCable blockCable;
+	public static BlockLead blockLead;
+	public static BlockOre blockTinOre;
+	public static BlockOre blockCopperOre;
+	public static BlockOre blockLeadOre;
+	public static BlockOre blockSilverOre;
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.RegisterObjects)
-		{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.RegisterObjects) {
 			AbstractionLayer.Registering.registerBlock(blockCoalGenerator = new BlockCoalGenerator(), ItemBlockDescriptable.class, "coalGenerator");
 			AbstractionLayer.Registering.registerTileEntity(TileCoalGenerator.class, CoreReferences.PREFIX + "coalGenerator");
 			AbstractionLayer.Registering.registerBlock(blockBatteryBox = new BlockBatteryBox(), ItemBlockMetadata.class, "batteryBox");
@@ -79,37 +77,19 @@ public class CoreBlockRegister implements IContent {
 			AbstractionLayer.Registering.registerOre("oreCopper", blockCopperOre);
 			AbstractionLayer.Registering.registerOre("oreSilver", blockSilverOre);
 
-			for (EnumConductorType en : EnumConductorType.values())
-			{
-				if (en == EnumConductorType.superconductor)
-				{
-					ItemBlockDescriptable.addDescription(blockCable, en.ordinal(),
-							EnumChatFormatting.GREEN + "Max Power: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy((double) en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
-							EnumChatFormatting.GREEN + "Max Voltage:" + EnumChatFormatting.GRAY + " infinite");
-				} else
-				{
-					ItemBlockDescriptable.addDescription(blockCable, en.ordinal(),
-							EnumChatFormatting.GREEN + "Max Power: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy((double) en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT),
-							EnumChatFormatting.GREEN + "Max Voltage: " + EnumChatFormatting.GRAY + en.getVoltage() + " V");
+			for (EnumConductorType en : EnumConductorType.values()) {
+				if (en == EnumConductorType.superconductor) {
+					ItemBlockDescriptable.addDescription(blockCable, en.ordinal(), EnumChatFormatting.GREEN + "Max Power: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy((double) en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), EnumChatFormatting.GREEN + "Max Voltage:" + EnumChatFormatting.GRAY + " infinite");
+				} else {
+					ItemBlockDescriptable.addDescription(blockCable, en.ordinal(), EnumChatFormatting.GREEN + "Max Power: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy((double) en.getTransferRate(), Unit.RF, Unit.WATT), Unit.WATT), EnumChatFormatting.GREEN + "Max Voltage: " + EnumChatFormatting.GRAY + en.getVoltage() + " V");
 				}
 				ItemBlockDescriptable.addDescriptionShifted(blockCable, en.ordinal(), "Transfers energy from a source to", "different receivers in an energy", "network.");
 			}
-			ItemBlockDescriptable.addDescription(blockBatteryBox, 0,
-					EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.BASIC.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
-					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.BASIC.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockBatteryBox, 1,
-					EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.ADVANCED.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
-					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.ADVANCED.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockBatteryBox, 2,
-					EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY
-							+ ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.ELITE.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR),
-					EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.ELITE.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockElectricFurnace, 0,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
-			ItemBlockDescriptable.addDescription(blockElectricFurnace, 1,
-					EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE * 3, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockBatteryBox, 0, EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.BASIC.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR), EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.BASIC.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockBatteryBox, 1, EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.ADVANCED.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR), EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.ADVANCED.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockBatteryBox, 2, EnumChatFormatting.GREEN + "Capacity: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) EnumBatteryBox.ELITE.getCapacity(), Unit.WATT, Unit.WATTHOUR), Unit.WATTHOUR), EnumChatFormatting.GREEN + "Power Transfer: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(EnumBatteryBox.ELITE.getCapacity() / 500, Unit.WATT, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockElectricFurnace, 0, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE, Unit.RF, Unit.WATT), Unit.WATT));
+			ItemBlockDescriptable.addDescription(blockElectricFurnace, 1, EnumChatFormatting.GREEN + "Power Usage: " + EnumChatFormatting.GRAY + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(TileElectricFurnace.POWER_USAGE * 3, Unit.RF, Unit.WATT), Unit.WATT));
 			ItemBlockDescriptable.addDescriptionShifted(blockBatteryBox, 0, "A block that can be used to store electricity.");
 			ItemBlockDescriptable.addDescriptionShifted(blockBatteryBox, 1, "A block that can be used to store electricity.");
 			ItemBlockDescriptable.addDescriptionShifted(blockBatteryBox, 2, "A block that can be used to store electricity.");

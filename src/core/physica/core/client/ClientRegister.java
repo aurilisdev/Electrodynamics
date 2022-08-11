@@ -20,18 +20,13 @@ import physica.library.client.render.TileRenderObjModel;
 @SideOnly(Side.CLIENT)
 public class ClientRegister implements IContent {
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.ClientRegister)
-		{
-			ClientRegistry.bindTileEntitySpecialRenderer(TileInfiniteEnergy.class,
-					new TileRenderObjModel<TileInfiniteEnergy>("infenergy.obj", "infenergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
-			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockInfEnergy),
-					new ItemRenderObjModel("infenergy.obj", "infenergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.ClientRegister) {
+			ClientRegistry.bindTileEntitySpecialRenderer(TileInfiniteEnergy.class, new TileRenderObjModel<TileInfiniteEnergy>("infenergy.obj", "infenergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockInfEnergy), new ItemRenderObjModel("infenergy.obj", "infenergy.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileBlastFurnace.class, new TileRenderBlastFurnace("blastfurnace.obj", "blastfurnace.png"));
-			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockBlastFurnace),
-					new ItemRenderObjModel("blastfurnace.obj", "blastfurnace.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
+			MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CoreBlockRegister.blockBlastFurnace), new ItemRenderObjModel("blastfurnace.obj", "blastfurnace.png", CoreReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY));
 
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEnergyCable.class, new TileRenderEnergyCable());
 		}

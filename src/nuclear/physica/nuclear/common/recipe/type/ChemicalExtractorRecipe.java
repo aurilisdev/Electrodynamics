@@ -17,8 +17,7 @@ public class ChemicalExtractorRecipe extends RecipeSystemTemplate {
 		this.waterRequired = waterRequired;
 	}
 
-	public int getWaterUse()
-	{
+	public int getWaterUse() {
 		return waterRequired;
 	}
 

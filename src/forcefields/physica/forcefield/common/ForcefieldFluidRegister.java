@@ -14,22 +14,18 @@ public class ForcefieldFluidRegister implements IContent {
 	public static Fluid LIQUID_FORTRON = new Fluid(ForcefieldReferences.PREFIX + "fortron").setGaseous(true).setTemperature(20);
 
 	@Override
-	public void register(LoadPhase phase)
-	{
-		if (phase == LoadPhase.FluidRegister)
-		{
+	public void register(LoadPhase phase) {
+		if (phase == LoadPhase.FluidRegister) {
 			FluidRegistry.registerFluid(LIQUID_FORTRON);
 			LIQUID_FORTRON = FluidRegistry.getFluid(ForcefieldReferences.PREFIX + "fortron");
 		}
 	}
 
-	public static void textureStitchEventPre(Pre event)
-	{
+	public static void textureStitchEventPre(Pre event) {
 		event.map.registerIcon(ForcefieldReferences.PREFIX + "fluids/fortron");
 	}
 
-	public static void textureStitchEventPost(Post event)
-	{
+	public static void textureStitchEventPost(Post event) {
 		IIcon icon = event.map.getTextureExtry(ForcefieldReferences.PREFIX + "fluids/fortron");
 		LIQUID_FORTRON.setIcons(icon);
 	}

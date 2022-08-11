@@ -25,20 +25,17 @@ public class TileRenderControlRod extends TileRenderObjModel<TileInsertableContr
 	}
 
 	@Override
-	public void renderTileAt(TileInsertableControlRod tile, double x, double y, double z, float deltaFrame)
-	{
+	public void renderTileAt(TileInsertableControlRod tile, double x, double y, double z, float deltaFrame) {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5 - (tile.getFacing() == Face.UP ? 1 - (100 - tile.getInsertion()) / 120.0 : -1 + (100 - tile.getInsertion()) / 120.0), z + 0.5);
 		GL11.glScaled(0.0625, 0.0625, 0.0625);
-		if (tile.getFacing() == Face.DOWN)
-		{
+		if (tile.getFacing() == Face.DOWN) {
 			GL11.glRotatef(180, 1, 0, 0);
 		}
 		bindTexture(resourceTexture);
 		wavefrontObject.render();
 		modelRods.render();
-		if (tile.getFacing() == Face.DOWN)
-		{
+		if (tile.getFacing() == Face.DOWN) {
 			GL11.glRotatef(-180, -1, 0, 0);
 		}
 		GL11.glScaled(1 / 0.0625, 1 / 0.0625, 1 / 0.0625);

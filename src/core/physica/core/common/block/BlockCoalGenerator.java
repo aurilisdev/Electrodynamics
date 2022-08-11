@@ -22,11 +22,11 @@ import physica.library.block.BlockBaseContainer;
 
 public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
 	@SideOnly(Side.CLIENT)
-	private IIcon	iconFacing;
+	private IIcon iconFacing;
 	@SideOnly(Side.CLIENT)
-	private IIcon	iconFacingRunning;
+	private IIcon iconFacingRunning;
 	@SideOnly(Side.CLIENT)
-	private IIcon	machineOutput;
+	private IIcon machineOutput;
 
 	public BlockCoalGenerator() {
 		super(Material.iron);
@@ -40,8 +40,7 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister reg)
-	{
+	public void registerBlockIcons(IIconRegister reg) {
 		blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
 		machineOutput = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineoutput");
 		iconFacing = reg.registerIcon(getTextureName() + "facing");
@@ -49,24 +48,19 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z)
-	{
+	public int getLightValue(IBlockAccess world, int x, int y, int z) {
 		TileCoalGenerator tile = (TileCoalGenerator) world.getTileEntity(x, y, z);
 		return tile.generate > 0 ? Blocks.lava.getLightValue() : 0;
 	}
 
 	@Override
-	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
-	{
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side) {
 		TileEntity tile = access.getTileEntity(x, y, z);
-		if (tile instanceof TileCoalGenerator)
-		{
+		if (tile instanceof TileCoalGenerator) {
 			Face facing = ((TileCoalGenerator) tile).getFacing();
-			if (side == facing.ordinal())
-			{
+			if (side == facing.ordinal()) {
 				return ((TileCoalGenerator) tile).generate > 0 ? iconFacingRunning : iconFacing;
-			} else if (side == facing.getOpposite().ordinal())
-			{
+			} else if (side == facing.getOpposite().ordinal()) {
 				return machineOutput;
 			}
 		}
@@ -74,10 +68,8 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		if (side == 4)
-		{
+	public IIcon getIcon(int side, int meta) {
+		if (side == 4) {
 			return iconFacing;
 		}
 		return blockIcon;
@@ -85,50 +77,48 @@ public class BlockCoalGenerator extends BlockBaseContainer implements IBaseUtili
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
-	{
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileCoalGenerator)
-		{
+		if (tile instanceof TileCoalGenerator) {
 			TileCoalGenerator generator = (TileCoalGenerator) tile;
-			if (generator.generate > 0)
-			{
+			if (generator.generate > 0) {
 				int ordinal = generator.getFacing().ordinal();
 				float xLoc = x + 0.5F;
 				float yLoc = y + 4.0f / 16.0f + rand.nextFloat() * 6.0F / 16.0F;
 				float zLoc = z + 0.5F;
 				float offset1 = 0.52F;
 				float offset2 = rand.nextFloat() * 0.6F - 0.3F;
-				if (ordinal == 4)
-				{
+				switch (ordinal) {
+				case 4:
 					world.spawnParticle("smoke", xLoc - offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", xLoc - offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
-				} else if (ordinal == 5)
-				{
+					break;
+				case 5:
 					world.spawnParticle("smoke", xLoc + offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", xLoc + offset1, yLoc, zLoc + offset2, 0.0D, 0.0D, 0.0D);
-				} else if (ordinal == 2)
-				{
+					break;
+				case 2:
 					world.spawnParticle("smoke", xLoc + offset2, yLoc, zLoc - offset1, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", xLoc + offset2, yLoc, zLoc - offset1, 0.0D, 0.0D, 0.0D);
-				} else if (ordinal == 3)
-				{
+					break;
+				case 3:
 					world.spawnParticle("smoke", xLoc + offset2, yLoc, zLoc + offset1, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", xLoc + offset2, yLoc, zLoc + offset1, 0.0D, 0.0D, 0.0D);
+					break;
+				default:
+					break;
 				}
 			}
 		}
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileCoalGenerator();
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "ISI", "CFC", "SSS", 'F', Blocks.furnace, 'I', Items.iron_ingot, 'S', "ingotSteel", 'C', Blocks.cobblestone);
 	}
 

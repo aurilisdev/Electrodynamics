@@ -21,8 +21,7 @@ public class GuiBiometricIdentifier extends GuiContainerBase<TileBiometricIdenti
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 		addToolTip(8, 64, (int) ("Rights".length() * 4.8D), 12, "Assign rights to the card under this text");
 		addButton(new GuiButton(Permission.BLOCK_ACCESS.id + 1, width / 2 - 40, height / 2 - 100, "Access".length() * 8, 20, "Access"));
@@ -33,16 +32,14 @@ public class GuiBiometricIdentifier extends GuiContainerBase<TileBiometricIdenti
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Rights", 8, 64);
 		drawStringCentered(StatCollector.translateToLocal("tile." + ForcefieldReferences.PREFIX + "biometricIdentifier.gui"), xSize / 2, 5);
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button)
-	{
+	protected void actionPerformed(GuiButton button) {
 		super.actionPerformed(button);
 		host.actionPerformed(Permission.getPermission(button.id - 1), Side.CLIENT);
 	}

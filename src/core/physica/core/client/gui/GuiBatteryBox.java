@@ -22,8 +22,7 @@ public class GuiBatteryBox extends GuiContainerBase<TileBatteryBox> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Inventory", 8, 73);
 		String display = ElectricityDisplay.getDisplayShort(ElectricityUtilities.convertEnergy((double) host.getElectricityStored(Face.UNKNOWN), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR) + " of";

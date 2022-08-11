@@ -28,21 +28,18 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileInsertableControlRod();
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-	{
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-	{
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		float minX = 0.25f;
 		float minY = 0;
 		float minZ = 0.25f;
@@ -50,15 +47,12 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 		float maxY = 1;
 		float maxZ = 0.75f;
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileInsertableControlRod)
-		{
+		if (tile instanceof TileInsertableControlRod) {
 			TileInsertableControlRod controlRod = (TileInsertableControlRod) tile;
 			Face dir = controlRod.getFacing().getOpposite();
-			if (dir == Face.DOWN)
-			{
+			if (dir == Face.DOWN) {
 				maxY = (float) (0.25f + (100 - controlRod.getInsertion()) / 120.0);
-			} else
-			{
+			} else {
 				minY = 1 - (float) (0.25f + (100 - controlRod.getInsertion()) / 120.0);
 				maxY = 1;
 			}
@@ -67,50 +61,39 @@ public class BlockInsertableControlRod extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
-	{
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item) {
 		IRotatable tile = (IRotatable) world.getTileEntity(x, y, z);
-		for (Face dir : Face.VALID)
-		{
-			if (dir.ordinal() <= 1)
-			{
-				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor)
-				{
-					if (!(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod))
-					{
+		for (Face dir : Face.VALID) {
+			if (dir.ordinal() <= 1) {
+				if (world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor) {
+					if (!(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod)) {
 						tile.setFacing(dir.getOpposite());
 					}
 				}
-			} else
-			{
+			} else {
 				break;
 			}
 		}
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
-	{
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
 		Face dir = Face.getOrientation(side).getOpposite();
-		return side <= 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor
-				&& !(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod);
+		return side <= 1 && super.canPlaceBlockOnSide(world, x, y, z, side) && world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileFissionReactor && !(world.getTileEntity(x + dir.offsetX, y + dir.offsetY * 2, z + dir.offsetZ) instanceof TileInsertableControlRod);
 	}
 
 	@Override
-	public void registerRecipes()
-	{
+	public void registerRecipes() {
 		addRecipe(this, "SMS", "IAI", "SSS", 'I', NuclearBlockRegister.blockControlRod, 'S', "plateSteel", 'A', "circuitElite", 'M', "motor");
 	}
 
 	@Override
-	public boolean canRotate(int ordinal)
-	{
+	public boolean canRotate(int ordinal) {
 		return false;
 	}
 
 	@Override
-	public String getSide()
-	{
+	public String getSide() {
 		return "Nuclear";
 	}
 }

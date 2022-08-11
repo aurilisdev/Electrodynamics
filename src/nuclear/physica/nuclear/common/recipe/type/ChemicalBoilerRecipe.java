@@ -5,8 +5,8 @@ import physica.library.recipe.RecipeSystemTemplate;
 
 public class ChemicalBoilerRecipe extends RecipeSystemTemplate {
 
-	private int	waterRequired;
-	private int	hexaFluorideGenerated;
+	private int waterRequired;
+	private int hexaFluorideGenerated;
 
 	public ChemicalBoilerRecipe(int waterRequired, ItemStack inputItem, int hexaFluorideGenerated) {
 		super("", inputItem, null);
@@ -20,13 +20,11 @@ public class ChemicalBoilerRecipe extends RecipeSystemTemplate {
 		this.hexaFluorideGenerated = hexaFluorideGenerated;
 	}
 
-	public int getWaterUse()
-	{
+	public int getWaterUse() {
 		return waterRequired;
 	}
 
-	public int getHexafluorideGenerated()
-	{
+	public int getHexafluorideGenerated() {
 		return hexaFluorideGenerated;
 	}
 

@@ -39,20 +39,19 @@ import physica.proxy.CommonProxy;
 public class Physica {
 
 	@SidedProxy(clientSide = "physica.proxy.ClientProxy", serverSide = "physica.proxy.ServerProxy")
-	public static CommonProxy	sidedProxy;
-	public static ContentLoader	proxyLoader	= new ContentLoader();
+	public static CommonProxy sidedProxy;
+	public static ContentLoader proxyLoader = new ContentLoader();
 
 	@Instance(CoreReferences.NAME)
-	public static Physica		INSTANCE;
+	public static Physica INSTANCE;
 	@Metadata(CoreReferences.DOMAIN)
-	public static ModMetadata	metadata;
+	public static ModMetadata metadata;
 
-	public static File			configFolder;
-	public static ConfigCore	config;
+	public static File configFolder;
+	public static ConfigCore config;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	public void preInit(FMLPreInitializationEvent event) {
 		INSTANCE = this;
 		configFolder = new File(event.getModConfigurationDirectory(), "/" + CoreReferences.DOMAIN);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, sidedProxy);
@@ -65,8 +64,7 @@ public class Physica {
 		proxyLoader.addContent(new CoreBlockRegister());
 		proxyLoader.addContent(new CoreItemRegister());
 
-		if (event.getSide() == Side.CLIENT)
-		{
+		if (event.getSide() == Side.CLIENT) {
 			proxyLoader.addContent(new ClientRegister());
 		}
 
@@ -96,8 +94,7 @@ public class Physica {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
+	public void init(FMLInitializationEvent event) {
 		proxyLoader.callRegister(LoadPhase.Initialize);
 		proxyLoader.callRegister(LoadPhase.EntityRegister);
 		proxyLoader.callRegister(LoadPhase.FluidRegister);
@@ -105,21 +102,18 @@ public class Physica {
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	public void postInit(FMLPostInitializationEvent event) {
 		proxyLoader.callRegister(LoadPhase.PostInitialize);
 	}
 
 	@EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event)
-	{
+	public void loadComplete(FMLLoadCompleteEvent event) {
 		proxyLoader.callRegister(LoadPhase.OnStartup);
 		IRecipeRegister.callRegister("Core");
 	}
 
 	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event)
-	{
+	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandPhysica());
 	}
 }

@@ -22,8 +22,8 @@ import physica.library.client.render.TileRenderObjModel;
 @SideOnly(Side.CLIENT)
 public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> extends TileRenderObjModel<T> {
 
-	protected ResourceLocation				model_texture2;
-	public static final ResourceLocation	previewTexture	= new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcepreviewtexture.png");
+	protected ResourceLocation model_texture2;
+	public static final ResourceLocation previewTexture = new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/forcepreviewtexture.png");
 
 	public TileRenderFortronBlock(String objFile) {
 		super(objFile, "fortronmachinebase.png", ForcefieldReferences.DOMAIN, CoreReferences.MODEL_DIRECTORY, CoreReferences.MODEL_TEXTURE_DIRECTORY);
@@ -31,8 +31,7 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 	}
 
 	@Override
-	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame)
-	{
+	public void renderTileAt(T tile, double x, double y, double z, float deltaFrame) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -41,19 +40,16 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 		wavefrontObject.render();
 		GL11.glScaled(1 / 0.0625f, 1 / 0.0625f, 1 / 0.0625f);
 		GL11.glTranslated(-(x + 0.5), -(y + 0.5), -(z + 0.5));
-		if (!(tile instanceof TileFortronFieldConstructor) && tile.isActivated() && tile.canSendBeam())
-		{
+		if (!(tile instanceof TileFortronFieldConstructor) && tile.isActivated() && tile.canSendBeam()) {
 			ForcefieldRenderHandler.renderSet.add(new RenderFortronBlockInfo(tile, x, y, z, deltaFrame));
 		}
 		GL11.glPopMatrix();
-		if (tile instanceof TileFortronFieldConstructor)
-		{
+		if (tile instanceof TileFortronFieldConstructor) {
 			ForcefieldRenderHandler.renderSet.add(new RenderFortronBlockInfo(tile, x, y, z, deltaFrame));
 			GL11.glPushMatrix();
 			GL11.glTranslated(x + 0.5D, y + 1.35D, z + 0.5D);
 			int mode = ((TileFortronFieldConstructor) tile).getProjectorMode();
-			if (mode != -1)
-			{
+			if (mode != -1) {
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 				GL11.glShadeModel(7425);
 				GL11.glEnable(3042);
@@ -67,17 +63,19 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 				GL11.glTranslatef(0.0F, (float) Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, 0.0F);
 				GL11.glRotatef(36.0F + tile.getTicksRunning() * 4L, 0.0F, 1.0F, 1.0F);
 				GL11.glRotatef(tile.getTicksRunning(), 0.0F, 1.0F, 0.0F);
-				if (mode == 0 || mode == 1)
-				{
+				switch (mode) {
+				case 0:
+				case 1: {
 					Sphere sphere = new Sphere();
 					sphere.setTextureFlag(true);
 					sphere.draw(0.3f, 30, 30);
-				} else if (mode == 2)
-				{
+					break;
+				}
+				case 2:
 					GL11.glScalef(0.5F, 0.5F, 0.5F);
 					ModelCube.INSTANCE.render();
-				} else if (mode == 3)
-				{
+					break;
+				case 3: {
 					TessellatorWrapper tessellator = TessellatorWrapper.instance;
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 					float height = 0.4F;
@@ -105,7 +103,10 @@ public class TileRenderFortronBlock<T extends IInvFortronTile & ITileBase> exten
 					GL11.glVertex2f(100 + 200, 100 + 200);
 					GL11.glVertex2f(100, 100 + 200);
 					GL11.glEnd();
-
+					break;
+				}
+				default:
+					break;
 				}
 				GL11.glShadeModel(7424);
 				GL11.glDisable(2848);

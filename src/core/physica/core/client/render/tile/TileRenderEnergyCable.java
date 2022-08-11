@@ -19,22 +19,19 @@ import physica.library.client.render.TessellatorWrapper;
 @SideOnly(Side.CLIENT)
 public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
-	public static final ResourceLocation[]	model_texture	= new ResourceLocation[EnumConductorType.values().length];
+	public static final ResourceLocation[] model_texture = new ResourceLocation[EnumConductorType.values().length];
 
-	public static final float				pixel			= 1 / 16f;
-	public static final float				pixelElevenTwo	= 11 * pixel / 2;
-	public static final float				texPixel		= 1 / 32f;
-	static
-	{
-		for (EnumConductorType type : EnumConductorType.values())
-		{
+	public static final float pixel = 1 / 16f;
+	public static final float pixelElevenTwo = 11 * pixel / 2;
+	public static final float texPixel = 1 / 32f;
+	static {
+		for (EnumConductorType type : EnumConductorType.values()) {
 			model_texture[type.ordinal()] = new ResourceLocation(CoreReferences.DOMAIN, CoreReferences.MODEL_TEXTURE_DIRECTORY + type.getName() + "cable.png");
 		}
 	}
 
 	@Override
-	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame)
-	{
+	public final void renderTileEntityAt(TileEntity tile, double x, double y, double z, float deltaFrame) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -47,65 +44,49 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 		int connections = 0;
 		int differentLocations = 0;
 		Face last = Face.UNKNOWN;
-		for (Face dir : Face.VALID)
-		{
+		for (Face dir : Face.VALID) {
 			TileEntity sideTile = tile.getWorldObj().getTileEntity(tile.xCoord + dir.offsetX, tile.yCoord + dir.offsetY, tile.zCoord + dir.offsetZ);
-			if (AbstractionLayer.Electricity.canConnectElectricity(sideTile, dir.getOpposite()))
-			{
+			if (AbstractionLayer.Electricity.canConnectElectricity(sideTile, dir.getOpposite())) {
 				drawConnection(dir);
-				if (sideTile.getBlockMetadata() == meta && sideTile instanceof TileEnergyCable)
-				{
+				if (sideTile.getBlockMetadata() == meta && sideTile instanceof TileEnergyCable) {
 					connections++;
-				} else
-				{
+				} else {
 					differentLocations++;
 				}
-				if (!finished)
-				{
-					if (isCross)
-					{
-						if (dir != last.getOpposite())
-						{
+				if (!finished) {
+					if (isCross) {
+						if (dir != last.getOpposite()) {
 							isCross = false;
 							finished = true;
 						}
-					} else
-					{
+					} else {
 						last = dir;
 						isCross = true;
 					}
 				}
 			}
 		}
-		if (isCross && connections != 1 && differentLocations <= 0)
-		{
+		if (isCross && connections != 1 && differentLocations <= 0) {
 			GL11.glTranslated(last.offsetX * pixelElevenTwo, last.offsetY * pixelElevenTwo, last.offsetZ * pixelElevenTwo);
 			drawConnection(last.getOpposite());
-		} else
-		{
+		} else {
 			drawCore();
 		}
 		GL11.glPopAttrib();
 		GL11.glPopMatrix();
 	}
 
-	public static void drawConnection(Face direction)
-	{
+	public static void drawConnection(Face direction) {
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == Face.DOWN)
-		{
+		if (direction == Face.DOWN) {
 			GL11.glRotatef(180, 1, 0, 0);
-		} else if (direction == Face.NORTH)
-		{
+		} else if (direction == Face.NORTH) {
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == Face.SOUTH)
-		{
+		} else if (direction == Face.SOUTH) {
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == Face.EAST)
-		{
+		} else if (direction == Face.EAST) {
 			GL11.glRotatef(-90, 0, 0, 1);
-		} else if (direction == Face.WEST)
-		{
+		} else if (direction == Face.WEST) {
 			GL11.glRotatef(90, 0, 0, 1);
 		}
 		GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
@@ -136,27 +117,21 @@ public class TileRenderEnergyCable extends TileEntitySpecialRenderer {
 
 		tess.draw();
 		GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-		if (direction == Face.DOWN)
-		{
+		if (direction == Face.DOWN) {
 			GL11.glRotatef(-180, 1, 0, 0);
-		} else if (direction == Face.NORTH)
-		{
+		} else if (direction == Face.NORTH) {
 			GL11.glRotatef(90, 1, 0, 0);
-		} else if (direction == Face.SOUTH)
-		{
+		} else if (direction == Face.SOUTH) {
 			GL11.glRotatef(-90, 1, 0, 0);
-		} else if (direction == Face.EAST)
-		{
+		} else if (direction == Face.EAST) {
 			GL11.glRotatef(90, 0, 0, 1);
-		} else if (direction == Face.WEST)
-		{
+		} else if (direction == Face.WEST) {
 			GL11.glRotatef(-90, 0, 0, 1);
 		}
 		GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
 	}
 
-	public static void drawCore()
-	{
+	public static void drawCore() {
 		TessellatorWrapper tess = TessellatorWrapper.instance;
 		tess.startDrawingQuads();
 		float fiveTex = 5 * texPixel;
