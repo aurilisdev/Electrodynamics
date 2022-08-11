@@ -1,5 +1,8 @@
 package li.cil.oc.api.detail;
 
+import java.util.Collection;
+import java.util.Set;
+
 import li.cil.oc.api.driver.Block;
 import li.cil.oc.api.driver.Converter;
 import li.cil.oc.api.driver.EnvironmentProvider;
@@ -12,9 +15,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Collection;
-import java.util.Set;
 
 public interface DriverAPI {
     /**

@@ -1,7 +1,7 @@
 package li.cil.oc.api.driver.item;
 
-import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.driver.Item;
+import li.cil.oc.api.network.EnvironmentHost;
 import net.minecraft.item.ItemStack;
 
 /**

@@ -22,10 +22,7 @@ public final class TurtleCommandResult
         {
             return s_success;
         }
-        else
-        {
-            return new TurtleCommandResult( true, null, results );
-        }
+		return new TurtleCommandResult( true, null, results );
     }
 
     public static TurtleCommandResult failure()
@@ -39,10 +36,7 @@ public final class TurtleCommandResult
         {
             return s_emptyFailure;
         }
-        else
-        {
-            return new TurtleCommandResult( false, errorMessage, null );
-        }
+		return new TurtleCommandResult( false, errorMessage, null );
     }
 
     private final boolean m_success;

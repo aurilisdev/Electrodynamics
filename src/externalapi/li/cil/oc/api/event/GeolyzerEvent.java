@@ -1,11 +1,11 @@
 package li.cil.oc.api.event;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
 import li.cil.oc.api.network.EnvironmentHost;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This event is fired by the geolyzer block/upgrade.
@@ -107,7 +107,7 @@ public abstract class GeolyzerEvent extends Event {
         /**
          * The retrieved data for the block being scanned.
          */
-        public final Map<String, Object> data = new HashMap<String, Object>();
+        public final Map<String, Object> data = new HashMap<>();
 
         public Analyze(EnvironmentHost host, Map<?, ?> options, int x, int y, int z) {
             super(host, options);

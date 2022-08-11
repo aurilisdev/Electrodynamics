@@ -1,6 +1,5 @@
 package li.cil.oc.api.internal;
 
-import li.cil.oc.api.network.EnvironmentHost;
 import net.minecraft.util.Vec3;
 
 /**
@@ -16,7 +15,7 @@ import net.minecraft.util.Vec3;
  * i.e. without having to link against internal classes. This also means
  * that <em>you should not implement this</em>.
  */
-public interface Drone extends Agent, EnvironmentHost, Rotatable, Tiered {
+public interface Drone extends Agent, Tiered {
     /**
      * Get the current target coordinates of the drone.
      */

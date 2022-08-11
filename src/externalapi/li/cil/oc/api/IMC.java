@@ -1,11 +1,12 @@
 package li.cil.oc.api;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * This is a pure utility class to more comfortably register things that can
@@ -21,7 +22,6 @@ import org.apache.commons.lang3.tuple.Pair;
  * copy this class while keeping the package name, to avoid conflicts if this
  * class gets updated.
  */
-@SuppressWarnings("unused")
 public final class IMC {
     /**
      * Register a callback that is used as a filter for assembler templates.

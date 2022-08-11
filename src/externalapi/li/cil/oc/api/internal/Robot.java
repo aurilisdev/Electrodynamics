@@ -2,7 +2,6 @@ package li.cil.oc.api.internal;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.Environment;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -29,7 +28,7 @@ import net.minecraftforge.fluids.IFluidHandler;
  * <br>
  * This interface is <em>not meant to be implemented</em>, just used.
  */
-public interface Robot extends Agent, Environment, EnvironmentHost, Tiered, ISidedInventory, IFluidHandler {
+public interface Robot extends Agent, Environment, Tiered, ISidedInventory, IFluidHandler {
     /**
      * The number of built-in components in this robot.
      */

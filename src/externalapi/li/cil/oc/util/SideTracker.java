@@ -1,9 +1,9 @@
 package li.cil.oc.util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-
 import java.util.Collections;
 import java.util.Set;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public final class SideTracker {
     private static final Set<Thread> serverThreads = Collections.newSetFromMap(new java.util.WeakHashMap<Thread, Boolean>());

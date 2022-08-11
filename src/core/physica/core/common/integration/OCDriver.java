@@ -1,16 +1,16 @@
 package physica.core.common.integration;
 
+import java.util.Arrays;
+
 import li.cil.oc.api.driver.NamedBlock;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.ManagedPeripheral;
 import li.cil.oc.api.prefab.DriverSidedTileEntity;
 import li.cil.oc.api.prefab.ManagedEnvironment;
-import li.cil.oc.api.network.ManagedPeripheral;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Arrays;
 
 public class OCDriver extends DriverSidedTileEntity {
     @Override

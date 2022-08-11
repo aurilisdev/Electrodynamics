@@ -1,15 +1,14 @@
 package li.cil.oc.api.prefab;
 
+import java.util.HashMap;
+import java.util.TreeMap;
+
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-
-import java.util.HashMap;
-import java.util.TreeMap;
 
 public class ItemStackArrayValue extends AbstractValue {
 
@@ -21,7 +20,7 @@ public class ItemStackArrayValue extends AbstractValue {
 	private static final String ARRAY_KEY = "Array";
 	private static final String INDEX_KEY = "Index";
 
-	private static final HashMap<Object,Object> emptyMap = new HashMap<Object,Object>();
+	private static final HashMap<Object,Object> emptyMap = new HashMap<>();
 
 	public ItemStackArrayValue(ItemStack[] arr){
 		if (arr != null){
@@ -123,13 +122,14 @@ public class ItemStackArrayValue extends AbstractValue {
 
 	@Callback(doc="function():table -- Returns ALL the stack in the this.array. Memory intensive.")
 	public Object[] getAll(Context context, Arguments arguments) throws Exception {
-		TreeMap<Integer,Object> map = new TreeMap<Integer,Object>();
+		TreeMap<Integer,Object> map = new TreeMap<>();
 		for (int i=0; i<this.array.length; i++){
 			map.put(i, this.array[i] != null ? this.array[i] : emptyMap);
 		}
 		return new Object[] { map };
 	}
 
+	@Override
 	public String toString(){
 		return "{ItemStack Array}";
 	}

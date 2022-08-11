@@ -1,14 +1,13 @@
 package li.cil.oc.api.machine;
 
-import li.cil.oc.api.network.ManagedEnvironment;
-
 import java.util.Map;
+
+import li.cil.oc.api.network.ManagedEnvironment;
 
 /**
  * This interface allows interacting with a Machine obtained via the factory
  * method {@link li.cil.oc.api.Machine#create(MachineHost)}.
  */
-@SuppressWarnings("unused")
 public interface Machine extends ManagedEnvironment, Context {
     /**
      * The owner of the machine, usually a tile entity hosting the machine.

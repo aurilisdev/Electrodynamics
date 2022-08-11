@@ -1,10 +1,10 @@
 package li.cil.oc.api.driver.item;
 
+import java.util.Set;
+
 import li.cil.oc.api.event.RobotRenderEvent;
 import li.cil.oc.api.internal.Robot;
 import net.minecraft.item.ItemStack;
-
-import java.util.Set;
 
 /**
  * This interface can be implemented by items to allow custom rendering of

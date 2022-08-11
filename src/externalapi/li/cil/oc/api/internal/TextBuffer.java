@@ -2,7 +2,6 @@ package li.cil.oc.api.internal;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import li.cil.oc.api.Persistable;
 import li.cil.oc.api.network.ManagedEnvironment;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -20,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
  *     final TextBuffer buffer = (TextBuffer) li.cil.oc.api.Driver.driverFor(stack).createEnvironment(stack, this);
  * </pre>
  */
-public interface TextBuffer extends ManagedEnvironment, Persistable {
+public interface TextBuffer extends ManagedEnvironment {
     /**
      * Controls how much energy the buffer will consume per tick.
      * <br>

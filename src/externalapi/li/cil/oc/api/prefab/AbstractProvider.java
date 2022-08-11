@@ -67,8 +67,7 @@ public abstract class AbstractProvider implements BehaviorProvider {
     public Behavior readFromNBT(EntityPlayer player, NBTTagCompound nbt) {
         if (id.equals(nbt.getString("provider"))) {
             return readBehaviorFromNBT(player, nbt);
-        } else {
-            return null;
         }
+		return null;
     }
 }

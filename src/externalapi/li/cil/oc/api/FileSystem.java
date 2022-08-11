@@ -1,7 +1,7 @@
 package li.cil.oc.api;
 
-import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.fs.Label;
+import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.ManagedEnvironment;
 
 /**

@@ -8,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 // This is a template implementation of methods injected into classes that are
 // marked for component functionality. These methods will be copied into tile
 // entities marked as simple components as necessary by the class transformer.
-@SuppressWarnings("unused")
 public abstract class SimpleEnvironment extends TileEntity implements SimpleComponentImpl {
     @Override
     public Node node() {
@@ -63,23 +62,28 @@ public abstract class SimpleEnvironment extends TileEntity implements SimpleComp
     // This way they are always guaranteed to be present, so we can simply call
     // them through an interface, and need no runtime reflection.
 
-    public void validate_OpenComputers() {
+    @Override
+	public void validate_OpenComputers() {
         super.validate();
     }
 
-    public void invalidate_OpenComputers() {
+    @Override
+	public void invalidate_OpenComputers() {
         super.invalidate();
     }
 
-    public void onChunkUnload_OpenComputers() {
+    @Override
+	public void onChunkUnload_OpenComputers() {
         super.onChunkUnload();
     }
 
-    public void readFromNBT_OpenComputers(NBTTagCompound nbt) {
+    @Override
+	public void readFromNBT_OpenComputers(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
     }
 
-    public void writeToNBT_OpenComputers(NBTTagCompound nbt) {
+    @Override
+	public void writeToNBT_OpenComputers(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
     }
 }

@@ -1,9 +1,9 @@
 package li.cil.oc.api;
 
+import java.util.concurrent.Callable;
+
 import li.cil.oc.api.detail.ItemInfo;
 import net.minecraft.item.ItemStack;
-
-import java.util.concurrent.Callable;
 
 /**
  * Access to item definitions for all blocks and items provided by
