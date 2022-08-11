@@ -33,11 +33,11 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult p_230299_1_) {
-		BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
+	protected void onHitBlock(BlockHitResult hit) {
+		BlockState state = level.getBlockState(hit.getBlockPos());
 		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
 			if (!level.isClientSide) {
-				level.explode(null, p_230299_1_.getBlockPos().getX(), p_230299_1_.getBlockPos().getY(), p_230299_1_.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
+				level.explode(null, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
 			}
 			remove(Entity.RemovalReason.DISCARDED);
 		}
@@ -53,14 +53,18 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 			remove(Entity.RemovalReason.DISCARDED);
 		}
 		if (level.isClientSide) {
-			level.addParticle(new DustParticleOptions(new Vector3f(0.8f, 0, 0.8f), 5), getX(), getY(), getZ(), 0, 0, 0);
+			for (int i = 0; i < 10; i++)
+				level.addParticle(new DustParticleOptions(new Vector3f(1.8f, 0, 0.8f),4), getX(), getY(), getZ(), 0, 0, 0);
 		}
 	}
 
 	@Override
-	public void onHitEntity(EntityHitResult p_213868_1_) {
-		p_213868_1_.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
-		super.onHitEntity(p_213868_1_);
+	public void onHitEntity(EntityHitResult hit) {
+		hit.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
+		if (!level.isClientSide) {
+			level.explode(null, hit.getLocation().x(), hit.getLocation().y(), hit.getLocation().z(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
+		}
+		super.onHitEntity(hit);
 	}
 
 }
