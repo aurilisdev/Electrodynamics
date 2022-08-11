@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
 import physica.api.nuclear.IElectromagnet;
+import physica.core.common.integration.IComputerIntegration;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.location.GridLocation;
@@ -24,7 +25,7 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 import physica.nuclear.common.entity.EntityParticle;
 import physica.nuclear.common.inventory.ContainerParticleAccelerator;
 
-public class TileParticleAccelerator extends TileBasePoweredContainer implements IGuiInterface, IElectromagnet {
+public class TileParticleAccelerator extends TileBasePoweredContainer implements IGuiInterface, IElectromagnet, IComputerIntegration {
 
 	public static final int		SLOT_INPUTCELLS					= 0;
 	public static final int		SLOT_INPUTMATTER				= 1;
@@ -370,6 +371,11 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		return (float) velocity;
 	}
 
+	public float getParticleMaxVelocity()
+	{
+		return ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED;
+	}
+
 	public long getSessionUse()
 	{
 		return currentSessionUse;
@@ -413,4 +419,51 @@ public class TileParticleAccelerator extends TileBasePoweredContainer implements
 		this.particle = particle;
 	}
 
+	public String getStatus()
+	{
+		switch (this.getAcceleratorStatus()) {
+			case Disabled:
+				return "disabled";
+			case Idle:
+				return "idle";
+			case Accelerating:
+				return "accelerating";
+			case Done:
+				return "done";
+			case Ready:
+				return "ready";
+			case Failure:
+				return "failure";
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public String getComponentName() {
+		return "particle_accelerator";
+	}
+
+	@Override
+	public String[] methods()
+	{
+		return new String[]{"getStatus", "getAntimatterAmount", "getParticleMaxVelocity", "getParticleVelocity"};
+	}
+
+	@Override
+	public Object[] invoke(int method, Object[] args) throws Exception
+	{
+		switch (method) {
+			case 0:
+				return new Object[]{this.getStatus()};
+			case 1:
+				return new Object[]{this.getAntimatterAmount()};
+			case 2:
+				return new Object[]{this.getParticleMaxVelocity()};
+			case 3:
+				return new Object[]{this.getParticleVelocity()};
+			default:
+				throw new NoSuchMethodException();
+		}
+	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import physica.api.core.abstraction.Face;
+import physica.core.common.integration.IComputerIntegration;
 import physica.library.energy.ElectricityUtilities;
 import physica.library.energy.base.Unit;
 import physica.library.location.GridLocation;
@@ -16,7 +17,7 @@ import physica.library.tile.TileBasePoweredContainer;
 import physica.nuclear.common.NuclearBlockRegister;
 import physica.nuclear.common.NuclearItemRegister;
 
-public class TileFusionReactor extends TileBasePoweredContainer {
+public class TileFusionReactor extends TileBasePoweredContainer implements IComputerIntegration {
 
 	public static final float	PLASMA_SPAWN_STRENGTH	= 13;
 	public static final int		MAX_DEUTERIUM			= 1024;
@@ -209,4 +210,25 @@ public class TileFusionReactor extends TileBasePoweredContainer {
 		return 2;
 	}
 
+	@Override
+	public String getComponentName() {
+		return "fusion_reactor";
+	}
+
+	@Override
+	public String[] methods()
+	{
+		return new String[]{"isRunning"};
+	}
+
+	@Override
+	public Object[] invoke(int method, Object[] args) throws Exception
+	{
+		switch (method) {
+			case 0:
+				return new Object[]{this.isRunning()};
+			default:
+				throw new NoSuchMethodException();
+		}
+	}
 }

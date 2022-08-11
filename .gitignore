@@ -35,6 +35,7 @@ usernamecache.json
 screenshots/
 *.log
 asm/
+!src/**/asm
 \.ReAuth\.cfg
 shaderpacks/
 Working Directory/

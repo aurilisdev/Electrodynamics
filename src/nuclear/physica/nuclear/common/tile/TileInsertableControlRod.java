@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import physica.api.core.abstraction.Face;
 import physica.api.core.inventory.IGuiInterface;
+import physica.core.common.integration.IComputerIntegration;
 import physica.library.inventory.ContainerBase;
 import physica.library.location.GridLocation;
 import physica.library.network.IPacket;
@@ -23,7 +24,7 @@ import physica.library.network.packet.PacketTile;
 import physica.library.tile.TileBaseRotateable;
 import physica.nuclear.client.gui.GuiInsertableControlRod;
 
-public class TileInsertableControlRod extends TileBaseRotateable implements IGuiInterface {
+public class TileInsertableControlRod extends TileBaseRotateable implements IGuiInterface, IComputerIntegration {
 
 	public static final int	CONTROL_ROD_PACKET_ID	= 8;
 	private int				insertion				= 100;
@@ -109,6 +110,11 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 		return insertion;
 	}
 
+	public void setInsertion(int value)
+	{
+		insertion = Math.max(0, Math.min(100, value));
+	}
+
 	public void actionPerformed(int amount, Side side)
 	{
 		if (side == Side.CLIENT)
@@ -128,4 +134,33 @@ public class TileInsertableControlRod extends TileBaseRotateable implements IGui
 		}
 	}
 
+	@Override
+	public String getComponentName() {
+		return "fission_control_rod";
+	}
+
+	@Override
+	public String[] methods()
+	{
+		return new String[]{"setInsertion", "getInsertion"};
+	}
+
+	@Override
+	public Object[] invoke(int method, Object[] args) throws Exception
+	{
+		switch (method) {
+			case 0:
+				if (args.length <= 0) {
+					return new Object[]{"1st argument is required and must be a number."};
+				} else if (!(args[0] instanceof Double)) {
+					return new Object[]{"Expected integer for 1st argument, got "+args[0].getClass().getName()};
+				}
+				this.setInsertion(((Double) args[0]).intValue());
+				return new Object[]{};
+			case 1:
+				return new Object[]{this.getInsertion()};
+			default:
+				throw new NoSuchMethodException();
+		}
+	}
 }
