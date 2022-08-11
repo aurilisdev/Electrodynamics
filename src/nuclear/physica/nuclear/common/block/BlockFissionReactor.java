@@ -27,35 +27,46 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void registerRecipes()
+	{
 		addRecipe(this, "PEP", "MCM", "PEP", 'M', "motor", 'P', "plateSteel", 'C', CoreItemRegister.itemEmptyCell, 'E', "circuitElite");
 	}
 
 	@Override
-	public String getSide() {
+	public String getSide()
+	{
 		return "Nuclear";
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
-		if (player.getHeldItem() != null && (player.getHeldItem().getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || player.getHeldItem().getItem() == NuclearItemRegister.itemLowEnrichedFuelCell)) {
-			if (player.getHeldItem().stackSize == 1) {
-				if (world.getTileEntity(x, y, z) instanceof TileFissionReactor) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
+		if (player.getHeldItem() != null && (player.getHeldItem().getItem() == NuclearItemRegister.itemHighEnrichedFuelCell || player.getHeldItem().getItem() == NuclearItemRegister.itemLowEnrichedFuelCell))
+		{
+			if (player.getHeldItem().stackSize == 1)
+			{
+				if (world.getTileEntity(x, y, z) instanceof TileFissionReactor)
+				{
 					TileFissionReactor reactor = (TileFissionReactor) world.getTileEntity(x, y, z);
-					if (!reactor.hasFuelRod()) {
+					if (!reactor.hasFuelRod())
+					{
 						reactor.setInventorySlotContents(TileFissionReactor.SLOT_INPUT, player.getHeldItem());
 						player.inventory.mainInventory[player.inventory.currentItem] = null;
 						return true;
 					}
 				}
 			}
-		} else if (player.getHeldItem() != null && player.getHeldItem().getItem() == Item.getItemFromBlock(NuclearBlockRegister.blockNeutronCaptureChamber)) {
+		} else if (player.getHeldItem() != null && player.getHeldItem().getItem() == Item.getItemFromBlock(NuclearBlockRegister.blockNeutronCaptureChamber))
+		{
 			return false;
-		} else if (player.getHeldItem() == null && player.isSneaking()) {
+		} else if (player.getHeldItem() == null && player.isSneaking())
+		{
 
-			if (world.getTileEntity(x, y, z) instanceof TileFissionReactor) {
+			if (world.getTileEntity(x, y, z) instanceof TileFissionReactor)
+			{
 				TileFissionReactor reactor = (TileFissionReactor) world.getTileEntity(x, y, z);
-				if (reactor.hasFuelRod()) {
+				if (reactor.hasFuelRod())
+				{
 					player.inventory.mainInventory[player.inventory.currentItem] = reactor.getStackInSlot(TileFissionReactor.SLOT_INPUT);
 					reactor.setInventorySlotContents(TileFissionReactor.SLOT_INPUT, null);
 					return true;
@@ -66,11 +77,14 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
+	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileFissionReactor) {
+		if (tile instanceof TileFissionReactor)
+		{
 			TileFissionReactor reactor = (TileFissionReactor) tile;
-			if (reactor.hasFuelRod()) {
+			if (reactor.hasFuelRod())
+			{
 				reactor.performMeltdown();
 			}
 		}
@@ -78,7 +92,8 @@ public class BlockFissionReactor extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileFissionReactor();
 	}
 }

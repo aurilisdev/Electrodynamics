@@ -12,13 +12,17 @@ import physica.api.core.electricity.IElectricityProvider;
 
 public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseContainer {
 
-	default void drainBattery(int slot) {
-		if (receiveElectricity(Face.UNKNOWN, 1, true) > 0) {
+	default void drainBattery(int slot)
+	{
+		if (receiveElectricity(Face.UNKNOWN, 1, true) > 0)
+		{
 			ItemStack itemStack = getStackInSlot(slot);
 
-			if (AbstractionLayer.Electricity.isItemElectric(itemStack)) {
+			if (AbstractionLayer.Electricity.isItemElectric(itemStack))
+			{
 				int power = AbstractionLayer.Electricity.getElectricityStored(itemStack);
-				if (power > 0) {
+				if (power > 0)
+				{
 					power = AbstractionLayer.Electricity.extractElectricity(itemStack, power, true);
 					AbstractionLayer.Electricity.extractElectricity(itemStack, receiveElectricity(Face.UNKNOWN, power, false), false);
 					setInventorySlotContents(slot, itemStack);
@@ -27,12 +31,16 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 		}
 	}
 
-	default void fillBattery(int slot) {
-		if (this instanceof IElectricityProvider) {
-			if (getElectricityStored(Face.UNKNOWN) > 0) {
+	default void fillBattery(int slot)
+	{
+		if (this instanceof IElectricityProvider)
+		{
+			if (getElectricityStored(Face.UNKNOWN) > 0)
+			{
 				ItemStack itemStack = getStackInSlot(slot);
 
-				if (AbstractionLayer.Electricity.isItemElectric(itemStack)) {
+				if (AbstractionLayer.Electricity.isItemElectric(itemStack))
+				{
 					int powerEjectable = getElectricityStored(Face.UNKNOWN);
 					powerEjectable = AbstractionLayer.Electricity.receiveElectricity(itemStack, powerEjectable, true);
 					AbstractionLayer.Electricity.receiveElectricity(itemStack, ((IElectricityProvider) this).extractElectricity(Face.UNKNOWN, powerEjectable, false), false);
@@ -42,39 +50,45 @@ public interface ITileBasePoweredContainer extends ITileBasePowered, ITileBaseCo
 	}
 
 	@Override
-	default void handleWriteToNBT(NBTTagCompound nbt) {
+	default void handleWriteToNBT(NBTTagCompound nbt)
+	{
 		ITileBaseContainer.super.handleWriteToNBT(nbt);
 		ITileBasePowered.super.handleWriteToNBT(nbt);
 	}
 
 	@Override
-	default void handleReadFromNBT(NBTTagCompound nbt) {
+	default void handleReadFromNBT(NBTTagCompound nbt)
+	{
 		ITileBaseContainer.super.handleReadFromNBT(nbt);
 		ITileBasePowered.super.handleReadFromNBT(nbt);
 	}
 
 	@Override
-	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		ITileBasePowered.super.writeSynchronizationPacket(dataList, player);
 		ITileBaseContainer.super.writeSynchronizationPacket(dataList, player);
 		writeClientGuiPacket(dataList, player);
 	}
 
 	@Override
-	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		ITileBasePowered.super.readSynchronizationPacket(buf, player);
 		ITileBaseContainer.super.readSynchronizationPacket(buf, player);
 		readClientGuiPacket(buf, player);
 	}
 
 	@Override
-	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		ITileBaseContainer.super.writeClientGuiPacket(dataList, player);
 		dataList.add(getElectricityStored());
 	}
 
 	@Override
-	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	default void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		ITileBaseContainer.super.readClientGuiPacket(buf, player);
 		setElectricityStored(buf.readInt());
 	}

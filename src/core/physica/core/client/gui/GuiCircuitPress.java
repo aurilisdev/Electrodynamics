@@ -17,14 +17,16 @@ public class GuiCircuitPress extends GuiContainerBase<TileCircuitPress> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Inventory", 8, 73);
 		drawStringCentered(StatCollector.translateToLocal("tile." + CoreReferences.PREFIX + "circuitPress.gui"), xSize / 2, 5);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 
 		renderFurnaceCookArrow(80, 35, host.getOperatingTicks(), TileCircuitPress.TICKS_REQUIRED);

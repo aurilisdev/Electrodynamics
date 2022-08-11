@@ -15,33 +15,46 @@ import physica.nuclear.common.configuration.ConfigNuclearPhysics;
 public class ItemUpdateDarkMatter implements IItemUpdate, IBaseUtilities {
 
 	@Override
-	public void onEntityItemUpdate(ItemStack stack, EntityItem entity) {
+	public void onEntityItemUpdate(ItemStack stack, EntityItem entity)
+	{
 		World world = entity.worldObj;
-		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase())) {
+		if (ConfigNuclearPhysics.PROTECTED_WORLDS.contains(world.getWorldInfo().getWorldName().toLowerCase()))
+		{
 			return;
 		}
-		if (rand.nextFloat() * 400 < entity.ticksExisted) {
-			for (int i = 0; i < rand.nextFloat() * entity.ticksExisted / 80; i++) {
+		if (rand.nextFloat() * 400 < entity.ticksExisted)
+		{
+			for (int i = 0; i < rand.nextFloat() * entity.ticksExisted / 80; i++)
+			{
 				float distance = (float) Math.sin(entity.ticksExisted / 40 - entity.ticksExisted);
-				world.spawnParticle("smoke", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5, switchRandom(distance) / 5);
-				if (rand.nextFloat() * 400 < entity.ticksExisted) {
-					if (rand.nextFloat() < 0.016667) {
+				world.spawnParticle("smoke", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5,
+						switchRandom(distance) / 5);
+				if (rand.nextFloat() * 400 < entity.ticksExisted)
+				{
+					if (rand.nextFloat() < 0.016667)
+					{
 						distance = distance / 3 * (entity.ticksExisted / 400);
-						world.spawnParticle("portal", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5, switchRandom(distance) / 5);
+						world.spawnParticle("portal", entity.posX + switchRandom(distance), entity.posY + switchRandom(distance), entity.posZ + switchRandom(distance), switchRandom(distance) / 5, switchRandom(distance) / 5,
+								switchRandom(distance) / 5);
 					}
 				}
 			}
 		}
-		if (entity.ticksExisted > 1500 + rand.nextInt(entity.ticksExisted)) {
-			if (!world.isRemote) {
+		if (entity.ticksExisted > 1500 + rand.nextInt(entity.ticksExisted))
+		{
+			if (!world.isRemote)
+			{
 				float radius = rand.nextFloat() * 3 + 1.75f;
 				AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(entity.posX - radius, entity.posY - radius, entity.posZ - radius, entity.posX + radius, entity.posY + radius, entity.posZ + radius);
 				List<Entity> entitiesNearby = world.getEntitiesWithinAABB(Entity.class, bounds);
 
-				if (entitiesNearby.size() > 1) {
+				if (entitiesNearby.size() > 1)
+				{
 					entitiesNearby.remove(entity);
-					for (Entity selected : entitiesNearby) {
-						if (rand.nextFloat() < 0.16667) {
+					for (Entity selected : entitiesNearby)
+					{
+						if (rand.nextFloat() < 0.16667)
+						{
 							selected.setInPortal();
 						}
 					}

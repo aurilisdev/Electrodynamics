@@ -21,17 +21,20 @@ public class BlockBiometricIdentifier extends BlockBaseContainerModelled {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileBiometricIdentifier();
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void registerRecipes()
+	{
 		addRecipe(this, "FMF", "CMC", "FMF", 'C', ForcefieldItemRegister.itemIdentifcationCard, 'M', "circuitElite", 'F', "plateSteel");
 	}
 
 	@Override
-	public String getSide() {
+	public String getSide()
+	{
 		return "Forcefields";
 	}
 }

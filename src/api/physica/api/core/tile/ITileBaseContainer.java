@@ -16,15 +16,19 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	int[] ACCESSIBLE_SLOTS_NONE = new int[] {};
 
 	@Override
-	default ItemStack getStackInSlot(int slot) {
+	default ItemStack getStackInSlot(int slot)
+	{
 		return getInventoryArray()[slot];
 	}
 
 	@Override
-	default ItemStack decrStackSize(int slot, int amount) {
-		if (getInventoryArray()[slot] != null) {
+	default ItemStack decrStackSize(int slot, int amount)
+	{
+		if (getInventoryArray()[slot] != null)
+		{
 			ItemStack itemstack;
-			if (getInventoryArray()[slot].stackSize <= amount) {
+			if (getInventoryArray()[slot].stackSize <= amount)
+			{
 				itemstack = getInventoryArray()[slot];
 				getInventoryArray()[slot] = null;
 				markDirty();
@@ -32,7 +36,8 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 				return itemstack;
 			}
 			itemstack = getInventoryArray()[slot].splitStack(amount);
-			if (getInventoryArray()[slot].stackSize == 0) {
+			if (getInventoryArray()[slot].stackSize == 0)
+			{
 				getInventoryArray()[slot] = null;
 			}
 			markDirty();
@@ -43,8 +48,10 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default ItemStack getStackInSlotOnClosing(int slot) {
-		if (getInventoryArray()[slot] != null) {
+	default ItemStack getStackInSlotOnClosing(int slot)
+	{
+		if (getInventoryArray()[slot] != null)
+		{
 			ItemStack itemstack = getInventoryArray()[slot];
 			getInventoryArray()[slot] = null;
 			onInventoryChanged();
@@ -54,50 +61,61 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default void setInventorySlotContents(int slot, ItemStack stack) {
+	default void setInventorySlotContents(int slot, ItemStack stack)
+	{
 		getInventoryArray()[slot] = stack;
 		onInventoryChanged();
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
+		if (stack != null && stack.stackSize > getInventoryStackLimit())
+		{
 			stack.stackSize = getInventoryStackLimit();
 		}
 	}
 
-	default void onInventoryChanged() {
+	default void onInventoryChanged()
+	{
 		markDirty();
 	}
 
 	@Override
-	default String getInventoryName() {
+	default String getInventoryName()
+	{
 		return "container.physica.base";
 	}
 
 	@Override
-	default boolean hasCustomInventoryName() {
+	default boolean hasCustomInventoryName()
+	{
 		return false;
 	}
 
 	@Override
-	default void handleReadFromNBT(NBTTagCompound nbt) {
+	default void handleReadFromNBT(NBTTagCompound nbt)
+	{
 		ITileBase.super.handleReadFromNBT(nbt);
 		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 		nullifyInventoryArray();
-		for (int index = 0; index < nbttaglist.tagCount(); ++index) {
+		for (int index = 0; index < nbttaglist.tagCount(); ++index)
+		{
 			NBTTagCompound save = nbttaglist.getCompoundTagAt(index);
 			int slotIndex = save.getByte("Slot") & 255;
 
-			if (slotIndex >= 0 && slotIndex < getInventoryArray().length) {
+			if (slotIndex >= 0 && slotIndex < getInventoryArray().length)
+			{
 				getInventoryArray()[slotIndex] = ItemStack.loadItemStackFromNBT(save);
 			}
 		}
 	}
 
 	@Override
-	default void handleWriteToNBT(NBTTagCompound nbt) {
+	default void handleWriteToNBT(NBTTagCompound nbt)
+	{
 		ITileBase.super.handleWriteToNBT(nbt);
 		NBTTagList nbttaglist = new NBTTagList();
-		for (int slotIndex = 0; slotIndex < getInventoryArray().length; ++slotIndex) {
-			if (getInventoryArray()[slotIndex] != null) {
+		for (int slotIndex = 0; slotIndex < getInventoryArray().length; ++slotIndex)
+		{
+			if (getInventoryArray()[slotIndex] != null)
+			{
 				NBTTagCompound save = new NBTTagCompound();
 				save.setByte("Slot", (byte) slotIndex);
 				getInventoryArray()[slotIndex].writeToNBT(save);
@@ -108,14 +126,16 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player) {
+	default void readSynchronizationPacket(ByteBuf buf, EntityPlayer player)
+	{
 		ITileBase.super.readSynchronizationPacket(buf, player);
 		readClientGuiPacket(buf, player);
 		handleReadFromNBT(ByteBufUtils.readTag(buf));
 	}
 
 	@Override
-	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player) {
+	default void writeSynchronizationPacket(List<Object> dataList, EntityPlayer player)
+	{
 		ITileBase.super.writeSynchronizationPacket(dataList, player);
 		writeClientGuiPacket(dataList, player);
 		NBTTagCompound tag = new NBTTagCompound();
@@ -124,56 +144,67 @@ public interface ITileBaseContainer extends ITileBase, ISidedInventory {
 	}
 
 	@Override
-	default int getInventoryStackLimit() {
+	default int getInventoryStackLimit()
+	{
 		return 64;
 	}
 
 	@Override
-	default boolean isUseableByPlayer(EntityPlayer player) {
+	default boolean isUseableByPlayer(EntityPlayer player)
+	{
 		return This().getWorldObj().getTileEntity(This().xCoord, This().yCoord, This().zCoord) != this ? false : player.getDistanceSq(This().xCoord + 0.5D, This().yCoord + 0.5D, This().zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
-	default void openInventory() {
+	default void openInventory()
+	{
 	}
 
 	@Override
-	default void closeInventory() {
+	default void closeInventory()
+	{
 	}
 
 	@Override
-	default boolean isItemValidForSlot(int slot, ItemStack stack) {
+	default boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return false;
 	}
 
-	ItemStack[] getInventoryArray();
+	abstract ItemStack[] getInventoryArray();
 
-	void nullifyInventoryArray();
+	abstract void nullifyInventoryArray();
 
 	@Override
-	default boolean canExtractItem(int slot, ItemStack stack, int side) {
+	default boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
 		return canExtractItem(slot, stack, Face.Parse(side));
 	}
 
 	@Override
-	default boolean canInsertItem(int slot, ItemStack stack, int side) {
+	default boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
 		return canInsertItem(slot, stack, Face.Parse(side));
 	}
 
 	@Override
-	default int[] getAccessibleSlotsFromSide(int side) {
+	default int[] getAccessibleSlotsFromSide(int side)
+	{
 		return getAccessibleSlotsFromFace(Face.Parse(side));
 	}
 
-	default boolean canExtractItem(int slot, ItemStack stack, Face face) {
+	default boolean canExtractItem(int slot, ItemStack stack, Face face)
+	{
 		return false;
 	}
 
-	default boolean canInsertItem(int slot, ItemStack stack, Face face) {
+	default boolean canInsertItem(int slot, ItemStack stack, Face face)
+	{
 		return false;
 	}
 
-	default int[] getAccessibleSlotsFromFace(Face face) {
+	default int[] getAccessibleSlotsFromFace(Face face)
+	{
 		return ACCESSIBLE_SLOTS_NONE;
 	}
 

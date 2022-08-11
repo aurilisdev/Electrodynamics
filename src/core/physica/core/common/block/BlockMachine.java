@@ -22,14 +22,14 @@ import physica.library.tile.TileBaseRotateable;
 
 public abstract class BlockMachine extends BlockBaseContainer implements IBaseUtilities, IRecipeRegister {
 	@SideOnly(Side.CLIENT)
-	private IIcon iconFacing;
+	private IIcon						iconFacing;
 	@SideOnly(Side.CLIENT)
-	private IIcon iconFacingRunning;
+	private IIcon						iconFacingRunning;
 	@SideOnly(Side.CLIENT)
-	private IIcon iconBottom;
+	private IIcon						iconBottom;
 	@SideOnly(Side.CLIENT)
-	private IIcon iconTop;
-	private Class<? extends TileEntity> tileClazz;
+	private IIcon						iconTop;
+	private Class<? extends TileEntity>	tileClazz;
 
 	public BlockMachine(String name, Class<? extends TileBaseRotateable> tileClazz) {
 		super(Material.iron);
@@ -45,28 +45,36 @@ public abstract class BlockMachine extends BlockBaseContainer implements IBaseUt
 
 	public boolean hazard;
 
-	public BlockMachine setHazard(boolean hazard) {
+	public BlockMachine setHazard(boolean hazard)
+	{
 		this.hazard = hazard;
 		return this;
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister reg) {
-		if (hazard) {
+	public void registerBlockIcons(IIconRegister reg)
+	{
+		if (hazard)
+		{
 			blockIcon = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machinesidehazmat");
 			iconTop = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
 			iconBottom = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machinebottomhazmat");
-		} else {
+			iconFacing = reg.registerIcon(getTextureName() + "facing");
+			iconFacingRunning = reg.registerIcon(getTextureName() + "facingrunning");
+		} else
+		{
 			blockIcon = iconTop = iconBottom = reg.registerIcon(CoreReferences.PREFIX_TEXTURE_MACHINE + "machineside");
+			iconFacing = reg.registerIcon(getTextureName() + "facing");
+			iconFacingRunning = reg.registerIcon(getTextureName() + "facingrunning");
 		}
-		iconFacing = reg.registerIcon(getTextureName() + "facing");
-		iconFacingRunning = reg.registerIcon(getTextureName() + "facingrunning");
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+	public int getLightValue(IBlockAccess world, int x, int y, int z)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof IMachineTile) {
+		if (tile instanceof IMachineTile)
+		{
 			return ((IMachineTile) tile).isRunning() ? Blocks.lava.getLightValue() : 0;
 		}
 		return 0;
@@ -74,26 +82,34 @@ public abstract class BlockMachine extends BlockBaseContainer implements IBaseUt
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof IMachineTile) {
+		if (tile instanceof IMachineTile)
+		{
 			IMachineTile machine = (IMachineTile) tile;
-			if (machine.isRunning()) {
+			if (machine.isRunning())
+			{
 				world.spawnParticle("smoke", x + rand.nextFloat(), y + rand.nextFloat(), z + rand.nextFloat(), 0.0D, 0.025D, 0.0D);
 			}
 		}
 	}
 
 	@Override
-	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side) {
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
+	{
 		TileEntity tile = access.getTileEntity(x, y, z);
-		if (tileClazz.isInstance(tile) && tile instanceof IMachineTile) {
+		if (tileClazz.isInstance(tile) && tile instanceof IMachineTile)
+		{
 			Face facing = ((TileBaseRotateable) tile).getFacing();
-			if (side == facing.ordinal()) {
+			if (side == facing.ordinal())
+			{
 				return ((IMachineTile) tile).isRunning() ? iconFacingRunning : iconFacing;
-			} else if (side == Face.DOWN.ordinal()) {
+			} else if (side == Face.DOWN.ordinal())
+			{
 				return iconBottom;
-			} else if (side == Face.UP.ordinal()) {
+			} else if (side == Face.UP.ordinal())
+			{
 				return iconTop;
 			}
 		}
@@ -101,25 +117,29 @@ public abstract class BlockMachine extends BlockBaseContainer implements IBaseUt
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		switch (side) {
-		case 4:
+	public IIcon getIcon(int side, int meta)
+	{
+		if (side == 4)
+		{
 			return iconFacing;
-		case 0:
+		} else if (side == 0)
+		{
 			return iconBottom;
-		case 1:
+		} else if (side == 1)
+		{
 			return iconTop;
-		default:
-			break;
 		}
 		return blockIcon;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		try {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
+		try
+		{
 			return tileClazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException e)
+		{
 			e.printStackTrace();
 		}
 		return null;

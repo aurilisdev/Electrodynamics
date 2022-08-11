@@ -14,18 +14,22 @@ public class NuclearFluidRegister implements IContent {
 	public static Fluid LIQUID_HE = new Fluid(NuclearReferences.PREFIX + "uranium_hexafluoride").setGaseous(true).setTemperature(35);
 
 	@Override
-	public void register(LoadPhase phase) {
-		if (phase == LoadPhase.FluidRegister) {
+	public void register(LoadPhase phase)
+	{
+		if (phase == LoadPhase.FluidRegister)
+		{
 			FluidRegistry.registerFluid(LIQUID_HE);
 			LIQUID_HE = FluidRegistry.getFluid(NuclearReferences.PREFIX + "uranium_hexafluoride");
 		}
 	}
 
-	public static void textureStitchEventPre(Pre event) {
+	public static void textureStitchEventPre(Pre event)
+	{
 		event.map.registerIcon(NuclearReferences.PREFIX + "fluids/uranium_hexafluoride");
 	}
 
-	public static void textureStitchEventPost(Post event) {
+	public static void textureStitchEventPost(Post event)
+	{
 		IIcon icon = event.map.getTextureExtry(NuclearReferences.PREFIX + "fluids/uranium_hexafluoride");
 		LIQUID_HE.setIcons(icon);
 	}

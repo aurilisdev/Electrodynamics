@@ -21,21 +21,25 @@ import physica.nuclear.common.NuclearItemRegister;
 public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 
 	@Override
-	public String getRecipeName() {
+	public String getRecipeName()
+	{
 		return "Particle Accelerator";
 	}
 
-	public String getRecipeID() {
+	public String getRecipeID()
+	{
 		return "Physica.ParticleAccelerator";
 	}
 
 	@Override
-	public Class<GuiParticleAccelerator> getGuiClass() {
+	public Class<GuiParticleAccelerator> getGuiClass()
+	{
 		return GuiParticleAccelerator.class;
 	}
 
 	@Override
-	public void drawBackground(int i) {
+	public void drawBackground(int i)
+	{
 		recipe theRecipe = (recipe) arecipes.get(i);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -52,53 +56,69 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 	}
 
 	@Override
-	public void loadCraftingRecipes(String outputId, Object... results) {
-		if ("item".equals(outputId) && results[0] instanceof ItemStack) {
-			if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemAntimatterCell125Milligram) {
-				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125, "To generate antimatter, you must accelerate any matter in a particle accelerator. An antimatter cell is generated when the amount of antimatter in the accelerator is at least 125mg."));
-			} else if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemDarkmatterCell) {
-				arecipes.add(new recipe(NuclearItemRegister.itemEmptyQuantumCell, NuclearItemRegister.itemDarkmatterCell, 100, "To generate dark matter, you must collide two particles while there is 100 mg of antimatter in the accelerator, this will have a chance of creating a dark matter cell."));
+	public void loadCraftingRecipes(String outputId, Object... results)
+	{
+		if (outputId.equals("item") && results[0] instanceof ItemStack)
+		{
+			if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemAntimatterCell125Milligram)
+			{
+				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125,
+						"To generate antimatter, you must accelerate any matter in a particle accelerator. An antimatter cell is generated when the amount of antimatter in the accelerator is at least 125mg."));
+			} else if (((ItemStack) results[0]).getItem() == NuclearItemRegister.itemDarkmatterCell)
+			{
+				arecipes.add(new recipe(NuclearItemRegister.itemEmptyQuantumCell, NuclearItemRegister.itemDarkmatterCell, 100,
+						"To generate dark matter, you must collide two particles while there is 100 mg of antimatter in the accelerator, this will have a chance of creating a dark matter cell."));
 			}
 		}
 	}
 
 	@Override
-	public void loadUsageRecipes(String inputId, Object... ingredients) {
-		if ("item".equals(inputId) && ingredients[0] instanceof ItemStack) {
-			if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyElectromagneticCell) {
-				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125, "To generate antimatter, you must accelerate any matter in a particle accelerator. An antimatter cell is generated when the amount of antimatter in the accelerator is at least 125mg."));
-			} else if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyQuantumCell) {
-				arecipes.add(new recipe(NuclearItemRegister.itemEmptyQuantumCell, NuclearItemRegister.itemDarkmatterCell, 100, "To generate dark matter, you must collide two particles while there is 100 mg of antimatter in the accelerator, this will have a chance of creating a dark matter cell."));
+	public void loadUsageRecipes(String inputId, Object... ingredients)
+	{
+		if (inputId.equals("item") && ingredients[0] instanceof ItemStack)
+		{
+			if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyElectromagneticCell)
+			{
+				arecipes.add(new recipe(NuclearItemRegister.itemEmptyElectromagneticCell, NuclearItemRegister.itemAntimatterCell125Milligram, 125,
+						"To generate antimatter, you must accelerate any matter in a particle accelerator. An antimatter cell is generated when the amount of antimatter in the accelerator is at least 125mg."));
+			} else if (((ItemStack) ingredients[0]).getItem() == NuclearItemRegister.itemEmptyQuantumCell)
+			{
+				arecipes.add(new recipe(NuclearItemRegister.itemEmptyQuantumCell, NuclearItemRegister.itemDarkmatterCell, 100,
+						"To generate dark matter, you must collide two particles while there is 100 mg of antimatter in the accelerator, this will have a chance of creating a dark matter cell."));
 			}
 		}
 	}
 
 	@Override
-	public int recipiesPerPage() {
+	public int recipiesPerPage()
+	{
 		return 2;
 	}
 
 	class recipe extends CachedRecipe {
 
-		List<PositionedStack> other = new ArrayList<>();
-		ItemStack itemInput;
-		ItemStack itemOutput;
-		int antiMatterAmount;
-		String text;
+		List<PositionedStack>	other	= new ArrayList<>();
+		ItemStack				itemInput;
+		ItemStack				itemOutput;
+		int						antiMatterAmount;
+		String					text;
 
 		@Override
-		public PositionedStack getResult() {
+		public PositionedStack getResult()
+		{
 			return new PositionedStack(itemOutput, 138, 40);
 		}
 
 		@Override
-		public PositionedStack getOtherStack() {
+		public PositionedStack getOtherStack()
+		{
 			return getCycledIngredients(cycleticks / 20, other).get(0);
 		}
 
 		recipe(Item Input, Item Output, int AntiMatterAmount, String Text) {
 			List<ItemStack> items = new ArrayList<>();
-			for (Object item : Item.itemRegistry) {
+			for (Object item : Item.itemRegistry)
+			{
 				items.add(new ItemStack((Item) item));
 			}
 
@@ -110,7 +130,8 @@ public class ParticleAcceleratorRecipehelper extends PhysicaRecipeHandlerBase {
 		}
 
 		@Override
-		public PositionedStack getIngredient() {
+		public PositionedStack getIngredient()
+		{
 			return new PositionedStack(itemInput, 118, 40);
 		}
 	}

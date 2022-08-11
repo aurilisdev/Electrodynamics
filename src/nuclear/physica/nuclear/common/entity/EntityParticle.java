@@ -28,14 +28,14 @@ import physica.nuclear.common.tile.TileParticleAccelerator;
 
 public class EntityParticle extends Entity implements IEntityAdditionalSpawnData {
 
-	private static int movementTicketUpdateId = 20;
+	private static int	movementTicketUpdateId	= 20;
 
-	public Ticket updateTicket;
-	private boolean didCollide;
-	private int hostLocationX;
+	public Ticket		updateTicket;
+	private boolean		didCollide;
+	private int			hostLocationX;
 	private int hostLocationY;
 	private int hostLocationZ;
-	private Face movementDirection = Face.NORTH;
+	private Face		movementDirection		= Face.NORTH;
 
 	public EntityParticle(World world) {
 		super(world);
@@ -55,11 +55,13 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean isInRangeToRenderDist(double distance)
+	{
 		return true;
 	}
 
-	protected void accelerateParticle(float acceleration) {
+	protected void accelerateParticle(float acceleration)
+	{
 		double accelerationX = movementDirection.offsetX * acceleration;
 		double accelerationY = movementDirection.offsetY * acceleration;
 		double accelerationZ = movementDirection.offsetZ * acceleration;
@@ -68,13 +70,18 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		motionZ = Math.min(motionZ + accelerationZ, ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED + 0.1);
 	}
 
-	public static boolean canSpawnParticle(World world, int x, int y, int z) {
-		if (world.isAirBlock(x, y, z)) {
+	public static boolean canSpawnParticle(World world, int x, int y, int z)
+	{
+		if (world.isAirBlock(x, y, z))
+		{
 			int electromagnetCount = 0;
-			for (Face side : Face.VALID) {
-				if (isElectromagnet(world, x, y, z, side)) {
+			for (Face side : Face.VALID)
+			{
+				if (isElectromagnet(world, x, y, z, side))
+				{
 					electromagnetCount++;
-					if (electromagnetCount >= 4) {
+					if (electromagnetCount >= 4)
+					{
 						return true;
 					}
 				}
@@ -83,12 +90,14 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		return false;
 	}
 
-	public static boolean isElectromagnet(World world, int x, int y, int z, Face facing) {
+	public static boolean isElectromagnet(World world, int x, int y, int z, Face facing)
+	{
 		return world.getBlock(x + facing.offsetX, y + facing.offsetY, z + facing.offsetZ) instanceof IElectromagnet;
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf data) {
+	public void writeSpawnData(ByteBuf data)
+	{
 		data.writeInt(hostLocationX);
 		data.writeInt(hostLocationY);
 		data.writeInt(hostLocationZ);
@@ -96,7 +105,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf data) {
+	public void readSpawnData(ByteBuf data)
+	{
 		hostLocationX = data.readInt();
 		hostLocationY = data.readInt();
 		hostLocationZ = data.readInt();
@@ -104,37 +114,47 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate()
+	{
 		TileEntity tile = worldObj.getTileEntity(hostLocationX, hostLocationY, hostLocationZ);
-		if (tile instanceof TileParticleAccelerator) {
+		if (tile instanceof TileParticleAccelerator)
+		{
 			int flPosX = (int) Math.floor(posX);
 			int flPosY = (int) Math.floor(posY);
 			int flPosZ = (int) Math.floor(posZ);
 			TileParticleAccelerator accelerator = (TileParticleAccelerator) tile;
-			if (ConfigNuclearPhysics.ENABLE_PARTICLE_CHUNKLOADING) {
+			if (ConfigNuclearPhysics.ENABLE_PARTICLE_CHUNKLOADING)
+			{
 				ForgeChunkManager.forceChunk(updateTicket, new ChunkCoordIntPair((int) posX >> 4, (int) posZ >> 4));
 			}
-			if (ticksExisted % 10 == 0) {
+			if (ticksExisted % 10 == 0)
+			{
 				worldObj.playSound(posX, posY, posZ, NuclearReferences.PREFIX + "block.accelerator", 1, (float) (0.6 + 0.4 * (getTotalVelocity() / ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED)), true);
 			}
 			double acceleration = 0.002;
-			if (accelerator.getParticle() == null) {
+			if (accelerator.getParticle() == null)
+			{
 				accelerator.setParticle(this);
 			}
-			if (accelerator.getSessionUse() > Measurement.GIGA.value) {
+			if (accelerator.getSessionUse() > Measurement.GIGA.value)
+			{
 				setDead();
 				return;
 			}
-			if (!worldObj.isRemote) {
+			if (!worldObj.isRemote)
+			{
 				dataWatcher.updateObject(movementTicketUpdateId, (byte) movementDirection.ordinal());
-			} else {
+			} else
+			{
 				movementDirection = Face.getOrientation(dataWatcher.getWatchableObjectByte(movementTicketUpdateId));
-				if (rand.nextFloat() < 2) {
+				if (rand.nextFloat() < 2)
+				{
 					worldObj.spawnParticle("portal", posX, posY - 1, posZ, motionX, motionY, motionZ);
 					worldObj.spawnParticle("smoke", posX, posY, posZ, motionX, motionY, motionZ);
 				}
 			}
-			if (isElectromagnet(worldObj, flPosX, flPosY, flPosZ, movementDirection)) {
+			if (isElectromagnet(worldObj, flPosX, flPosY, flPosZ, movementDirection))
+			{
 				acceleration = turn();
 				motionX = 0;
 				motionY = 0;
@@ -148,40 +168,51 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 			lastTickPosZ = posZ;
 			moveEntity(motionX, motionY, motionZ);
 			setPosition(posX, posY, posZ);
-			if (lastTickPosX == posX && lastTickPosY == posY && lastTickPosZ == posZ && getTotalVelocity() <= 0 && ticksExisted > 1) {
+			if (lastTickPosX == posX && lastTickPosY == posY && lastTickPosZ == posZ && getTotalVelocity() <= 0 && ticksExisted > 1)
+			{
 				setDead();
 			}
 
-			if (ConfigNuclearPhysics.ENABLE_PARTICLE_COLLISION) {
+			if (ConfigNuclearPhysics.ENABLE_PARTICLE_COLLISION)
+			{
 				float radius = 0.85F;
-				if (getDistance(lastCheckX, lastCheckY, lastCheckZ) > radius / 6) {
+				if (getDistance(lastCheckX, lastCheckY, lastCheckZ) > radius / 6)
+				{
 					lastCheckX = posX;
 					lastCheckY = posY;
 					lastCheckZ = posZ;
 					boolean withParticle = false;
 					int amount = 0;
-					List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(posX - radius * 1.5, posY - radius * 1.5, posZ - radius * 1.5, posX + radius * 1.5, posY + radius * 1.5, posZ + radius * 1.5));
-					for (Entity entity : entities) {
-						if (getDistanceToEntity(entity) < radius) {
+					List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+							AxisAlignedBB.getBoundingBox(posX - radius * 1.5, posY - radius * 1.5, posZ - radius * 1.5, posX + radius * 1.5, posY + radius * 1.5, posZ + radius * 1.5));
+					for (Entity entity : entities)
+					{
+						if (getDistanceToEntity(entity) < radius)
+						{
 							amount++;
-							if (entity instanceof EntityParticle && entity != this) {
+							if (entity instanceof EntityParticle && entity != this)
+							{
 								((EntityParticle) entity).onParticleSmash(this);
 								onParticleSmash((EntityParticle) entity);
 								withParticle = true;
-							} else {
+							} else
+							{
 								entity.attackEntityFrom(DamageSourceRadiation.INSTANCE, 3.5f);
 							}
 						}
 					}
-					if (!withParticle && amount > 1) {
+					if (!withParticle && amount > 1)
+					{
 						handleCollisionWithEntity();
 					}
 				}
 			}
-			if (ticksExisted % 2 == 0 && !canSpawnParticle(worldObj, flPosX, flPosY, flPosZ)) {
+			if (ticksExisted % 2 == 0 && !canSpawnParticle(worldObj, flPosX, flPosY, flPosZ))
+			{
 				handleCollisionWithEntity();
 			}
-		} else {
+		} else
+		{
 			setDead();
 		}
 	}
@@ -190,29 +221,36 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	public double lastCheckY;
 	public double lastCheckZ;
 
-	private void onParticleSmash(EntityParticle entityParticle) {
+	private void onParticleSmash(EntityParticle entityParticle)
+	{
 		int radius = (int) ((getTotalVelocity() + entityParticle.getTotalVelocity()) * 2.5f);
-		if (!worldObj.isRemote) {
+		if (!worldObj.isRemote)
+		{
 			entityParticle.setDead();
 			worldObj.createExplosion(this, posX, posY, posZ, ticksExisted > 20 ? (float) (getTotalVelocity() + entityParticle.getTotalVelocity()) * 1.5f : 0, true);
-			if (getTotalVelocity() + entityParticle.getTotalVelocity() > ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED / 2) {
+			if (getTotalVelocity() + entityParticle.getTotalVelocity() > ConfigNuclearPhysics.ANTIMATTER_CREATION_SPEED / 2)
+			{
 				didCollide = true;
 			}
 			setDead();
 		}
 
 		AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(posX - radius, posY - radius, posZ - radius, posX + radius, posY + radius, posZ + radius);
-		for (EntityLivingBase living : (List<EntityLivingBase>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bounds)) {
+		for (EntityLivingBase living : (List<EntityLivingBase>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bounds))
+		{
 			living.attackEntityFrom(DamageSourceRadiation.INSTANCE, Math.max(1, radius - living.getDistanceToEntity(this)));
 		}
 	}
 
 	@Override
-	protected void entityInit() {
+	protected void entityInit()
+	{
 		dataWatcher.addObject(movementTicketUpdateId, (byte) EnumFacing.SOUTH.ordinal());
-		if (updateTicket == null) {
+		if (updateTicket == null)
+		{
 			updateTicket = ForgeChunkManager.requestTicket(Physica.INSTANCE, worldObj, Type.ENTITY);
-			if (updateTicket != null) {
+			if (updateTicket != null)
+			{
 				updateTicket.getModData();
 				updateTicket.bindEntity(this);
 			}
@@ -220,7 +258,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag) {
+	protected void readEntityFromNBT(NBTTagCompound tag)
+	{
 		hostLocationX = tag.getInteger("tileLocationX");
 		hostLocationY = tag.getInteger("tileLocationY");
 		hostLocationZ = tag.getInteger("tileLocationZ");
@@ -228,7 +267,8 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag) {
+	protected void writeEntityToNBT(NBTTagCompound tag)
+	{
 		tag.setDouble("tileLocationX", hostLocationX);
 		tag.setDouble("tileLocationY", hostLocationY);
 		tag.setDouble("tileLocationZ", hostLocationZ);
@@ -236,33 +276,42 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
-	public void applyEntityCollision(Entity entity) {
-		if (entity != this) {
+	public void applyEntityCollision(Entity entity)
+	{
+		if (entity != this)
+		{
 			handleCollisionWithEntity();
 		}
 	}
 
 	@Override
-	public void setDead() {
+	public void setDead()
+	{
 		super.setDead();
 		ForgeChunkManager.releaseTicket(updateTicket);
 	}
 
-	public double turn() {
+	public double turn()
+	{
 		Face leftDirection = movementDirection.getRelativeSide(Face.WEST);
 		Face rightDirection = movementDirection.getRelativeSide(Face.EAST);
 		Face upDirection = movementDirection.getRelativeSide(Face.UP);
 		Face downDirection = movementDirection.getRelativeSide(Face.DOWN);
 
-		if (worldObj.isAirBlock((int) Math.floor(posX + leftDirection.offsetX), (int) Math.floor(posY + leftDirection.offsetY), (int) Math.floor(posZ + leftDirection.offsetZ))) {
+		if (worldObj.isAirBlock((int) Math.floor(posX + leftDirection.offsetX), (int) Math.floor(posY + leftDirection.offsetY), (int) Math.floor(posZ + leftDirection.offsetZ)))
+		{
 			movementDirection = leftDirection;
-		} else if (worldObj.isAirBlock((int) Math.floor(posX + rightDirection.offsetX), (int) Math.floor(posY + rightDirection.offsetY), (int) Math.floor(posZ + rightDirection.offsetZ))) {
+		} else if (worldObj.isAirBlock((int) Math.floor(posX + rightDirection.offsetX), (int) Math.floor(posY + rightDirection.offsetY), (int) Math.floor(posZ + rightDirection.offsetZ)))
+		{
 			movementDirection = rightDirection;
-		} else if (worldObj.isAirBlock((int) Math.floor(posX + upDirection.offsetX), (int) Math.floor(posY + upDirection.offsetY), (int) Math.floor(posZ + upDirection.offsetZ))) {
+		} else if (worldObj.isAirBlock((int) Math.floor(posX + upDirection.offsetX), (int) Math.floor(posY + upDirection.offsetY), (int) Math.floor(posZ + upDirection.offsetZ)))
+		{
 			movementDirection = upDirection;
-		} else if (worldObj.isAirBlock((int) Math.floor(posX + downDirection.offsetX), (int) Math.floor(posY + downDirection.offsetY), (int) Math.floor(posZ + downDirection.offsetZ))) {
+		} else if (worldObj.isAirBlock((int) Math.floor(posX + downDirection.offsetX), (int) Math.floor(posY + downDirection.offsetY), (int) Math.floor(posZ + downDirection.offsetZ)))
+		{
 			movementDirection = downDirection;
-		} else {
+		} else
+		{
 			setDead();
 			return 0;
 		}
@@ -271,24 +320,29 @@ public class EntityParticle extends Entity implements IEntityAdditionalSpawnData
 		return getTotalVelocity() * 0.9075f;
 	}
 
-	private void handleCollisionWithEntity() {
-		if (!worldObj.isRemote) {
+	private void handleCollisionWithEntity()
+	{
+		if (!worldObj.isRemote)
+		{
 			worldObj.createExplosion(this, posX, posY, posZ, (float) (ticksExisted > 20 ? getTotalVelocity() * 2.5F : 0), true);
 		}
 		int radius = (int) (getTotalVelocity() * 1.5);
 		AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(posX - radius, posY - radius, posZ - radius, posX + radius, posY + radius, posZ + radius);
 
-		for (EntityLivingBase living : (List<EntityLivingBase>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bounds)) {
+		for (EntityLivingBase living : (List<EntityLivingBase>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bounds))
+		{
 			living.attackEntityFrom(DamageSourceRadiation.INSTANCE, Math.max(1, radius - living.getDistanceToEntity(this)));
 		}
 		setDead();
 	}
 
-	public double getTotalVelocity() {
+	public double getTotalVelocity()
+	{
 		return Math.abs(motionX) + Math.abs(motionY) + Math.abs(motionZ);
 	}
 
-	public boolean didCollide() {
+	public boolean didCollide()
+	{
 		return didCollide;
 	}
 

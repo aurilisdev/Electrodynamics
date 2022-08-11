@@ -19,57 +19,64 @@ public class BlockElectricFurnace extends BlockMachine {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void registerRecipes()
+	{
 		addRecipe(this, "SSS", "SCS", "SMS", 'S', "ingotSteel", 'C', "circuitAdvanced", 'M', "motor");
 		addRecipe(new ItemStack(this, 1, EnumElectricFurnace.INDUSTRIAL.ordinal()), "SSS", "MCM", "SMS", 'S', "plateSteel", 'C', new ItemStack(this, 1, EnumElectricFurnace.NORMAL.ordinal()), 'M', "circuitElite");
 	}
 
 	@Override
-	public int getRenderColor(int par1) {
+	public int getRenderColor(int par1)
+	{
 		return EnumElectricFurnace.values()[par1].getRenderColor();
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
+	{
 		return getRenderColor(world.getBlockMetadata(x, y, z));
 	}
 
 	@Override
-	public int damageDropped(int metadata) {
+	public int damageDropped(int metadata)
+	{
 		return metadata;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (EnumElectricFurnace type : EnumElectricFurnace.values()) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
+	{
+		for (EnumElectricFurnace type : EnumElectricFurnace.values())
+		{
 			list.add(new ItemStack(item, 1, type.ordinal()));
 		}
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
+	{
 		super.onBlockPlacedBy(world, x, y, z, entity, itemStack);
 		world.setBlockMetadataWithNotify(x, y, z, itemStack.getItemDamage(), 3);
 	}
 
 	public enum EnumElectricFurnace {
-		NORMAL(1000, 16777215),
-		INDUSTRIAL(2500, (255 & 0xFF) << 24 | (145 & 0xFF) << 16 | (161 & 0xFF) << 8 | 175 & 0xFF);
+		NORMAL(1000, 16777215), INDUSTRIAL(2500, (255 & 0xFF) << 24 | (145 & 0xFF) << 16 | (161 & 0xFF) << 8 | 175 & 0xFF);
+		private int	usage;
+		private int	renderColor;
 
-		private int usage;
-		private int renderColor;
-
-		EnumElectricFurnace(int usage, int renderColor) {
+		private EnumElectricFurnace(int usage, int renderColor) {
 			this.usage = usage;
 			this.renderColor = renderColor;
 		}
 
-		public int getUsage() {
+		public int getUsage()
+		{
 			return usage;
 		}
 
-		public int getRenderColor() {
+		public int getRenderColor()
+		{
 			return renderColor;
 		}
 	}

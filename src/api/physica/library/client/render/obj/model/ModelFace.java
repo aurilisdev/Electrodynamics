@@ -7,17 +7,20 @@ import physica.library.client.render.TessellatorWrapper;
 
 @SideOnly(Side.CLIENT)
 public class ModelFace {
-	public Vertex[] vertices;
-	public Vertex[] vertexNormals;
-	public Vertex faceNormal;
-	public TextureCoordinate[] textureCoordinates;
+	public Vertex[]				vertices;
+	public Vertex[]				vertexNormals;
+	public Vertex				faceNormal;
+	public TextureCoordinate[]	textureCoordinates;
 
-	public void addFaceForRender(TessellatorWrapper tessellator) {
+	public void addFaceForRender(TessellatorWrapper tessellator)
+	{
 		addFaceForRender(tessellator, 0.0005F);
 	}
 
-	public void addFaceForRender(TessellatorWrapper tessellator, float textureOffset) {
-		if (faceNormal == null) {
+	public void addFaceForRender(TessellatorWrapper tessellator, float textureOffset)
+	{
+		if (faceNormal == null)
+		{
 			faceNormal = calculateFaceNormal();
 		}
 
@@ -26,8 +29,10 @@ public class ModelFace {
 		float averageU = 0F;
 		float averageV = 0F;
 
-		if (textureCoordinates != null && textureCoordinates.length > 0) {
-			for (TextureCoordinate textureCoordinate : textureCoordinates) {
+		if (textureCoordinates != null && textureCoordinates.length > 0)
+		{
+			for (TextureCoordinate textureCoordinate : textureCoordinates)
+			{
 				averageU += textureCoordinate.u;
 				averageV += textureCoordinate.v;
 			}
@@ -38,27 +43,33 @@ public class ModelFace {
 
 		float offsetU, offsetV;
 
-		for (int i = 0; i < vertices.length; ++i) {
+		for (int i = 0; i < vertices.length; ++i)
+		{
 
-			if (textureCoordinates != null && textureCoordinates.length > 0) {
+			if (textureCoordinates != null && textureCoordinates.length > 0)
+			{
 				offsetU = textureOffset;
 				offsetV = textureOffset;
 
-				if (textureCoordinates[i].u > averageU) {
+				if (textureCoordinates[i].u > averageU)
+				{
 					offsetU = -offsetU;
 				}
-				if (textureCoordinates[i].v > averageV) {
+				if (textureCoordinates[i].v > averageV)
+				{
 					offsetV = -offsetV;
 				}
 
 				tessellator.addVertexWithUV(vertices[i].x, vertices[i].y, vertices[i].z, textureCoordinates[i].u + offsetU, textureCoordinates[i].v + offsetV);
-			} else {
+			} else
+			{
 				tessellator.addVertex(vertices[i].x, vertices[i].y, vertices[i].z);
 			}
 		}
 	}
 
-	public Vertex calculateFaceNormal() {
+	public Vertex calculateFaceNormal()
+	{
 		Vec3 v1 = Vec3.createVectorHelper(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y, vertices[1].z - vertices[0].z);
 		Vec3 v2 = Vec3.createVectorHelper(vertices[2].x - vertices[0].x, vertices[2].y - vertices[0].y, vertices[2].z - vertices[0].z);
 		Vec3 normalVector = null;

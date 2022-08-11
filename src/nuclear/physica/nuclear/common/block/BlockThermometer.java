@@ -39,29 +39,35 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	}
 
 	@Override
-	public boolean hasTileEntity() {
+	public boolean hasTileEntity()
+	{
 		return true;
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void registerRecipes()
+	{
 		addRecipe(this, "SSS", "SWS", "SSS", 'S', "ingotSteel", 'W', "circuitAdvanced");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xHit, float yHit, float zHit)
+	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
-		if (player.isSneaking()) {
+		if (player.isSneaking())
+		{
 			int meta = world.getBlockMetadata(x, y, z);
 			world.setBlockMetadataWithNotify(x, y, z, meta = meta == 0 ? 1 : meta == 1 ? 2 : meta == 2 ? 3 : meta == 3 ? 4 : 0, 2);
 			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
 			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
-		} else if (tile instanceof TileFissionReactor) {
+		} else if (tile instanceof TileFissionReactor)
+		{
 			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: " + IBaseUtilities.roundPreciseStatic((double) ((TileFissionReactor) tile).getTemperature(), 2) + "C");
 			int meta = world.getBlockMetadata(x, y, z);
 			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
 			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 100, "Signal at: " + temp + ".0C");
-		} else {
+		} else
+		{
 			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 99, "Heat: 15.0C");
 			int meta = world.getBlockMetadata(x, y, z);
 			String temp = meta == 0 ? "4500" : meta == 1 ? "4000" : meta == 2 ? "3500" : meta == 3 ? "3000" : "2500";
@@ -71,39 +77,48 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 	}
 
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(World world)
+	{
 		return 1;
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
 		world.notifyBlocksOfNeighborChange(x, y, z, this);
 	}
 
 	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
-		if (tile instanceof TileFissionReactor) {
+		if (tile instanceof TileFissionReactor)
+		{
 			world.notifyBlocksOfNeighborChange(x, y, z, this);
 		}
 	}
 
 	@Override
-	public boolean canProvidePower() {
+	public boolean canProvidePower()
+	{
 		return true;
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
+	{
 		return isProvidingStrongPower(world, x, y, z, side);
 	}
 
 	@Override
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
+	{
 		TileEntity tile = world.getTileEntity(x, y + 1, z);
-		if (tile instanceof TileFissionReactor) {
+		if (tile instanceof TileFissionReactor)
+		{
 			int meta = world.getBlockMetadata(x, y, z);
-			if (((TileFissionReactor) tile).getTemperature() > (meta == 0 ? 4500 : meta == 1 ? 4000 : meta == 2 ? 3500 : meta == 3 ? 3000 : 2500) - 25) {
+			if (((TileFissionReactor) tile).getTemperature() > (meta == 0 ? 4500 : meta == 1 ? 4000 : meta == 2 ? 3500 : meta == 3 ? 3000 : 2500) - 25)
+			{
 				return 15;
 			}
 		}
@@ -112,24 +127,28 @@ public class BlockThermometer extends Block implements IBaseUtilities, IRecipeRe
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister)
+	{
 		super.registerBlockIcons(iconRegister);
 		iconTop = iconRegister.registerIcon(NuclearReferences.PREFIX + "thermometertop");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int metadata) {
+	public IIcon getIcon(int side, int metadata)
+	{
 		return side == 0 || side == 1 ? iconTop : super.getIcon(side, metadata);
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean renderAsNormalBlock()
+	{
 		return false;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta)
+	{
 		return new TileThermometer();
 	}
 }

@@ -9,5 +9,5 @@ public interface IAntiPoisonBlock {
 	 *
 	 * @return
 	 */
-	boolean isPoisonPrevention(World par1World, int x, int y, int z, String type);
+	public boolean isPoisonPrevention(World par1World, int x, int y, int z, String type);
 }

@@ -27,10 +27,14 @@ public class BlockRadioactiveDirt extends Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-		if (random.nextFloat() < 0.1667) {
-			for (int i = 0; i < 2; i++) {
-				if (random.nextFloat() < 0.666) {
+	public void randomDisplayTick(World world, int x, int y, int z, Random random)
+	{
+		if (random.nextFloat() < 0.1667)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				if (random.nextFloat() < 0.666)
+				{
 					world.spawnParticle("reddust", x + random.nextDouble() * 3 - 1.5, y + random.nextDouble() * 3 - 1.5, z + random.nextDouble() * 3 - 1.5, 0.01f, 1, 0.01f);
 				}
 			}
@@ -38,17 +42,22 @@ public class BlockRadioactiveDirt extends Block {
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
-		if (!world.isRemote) {
-			if (world.rand.nextFloat() < 0.45f) {
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
+		if (!world.isRemote)
+		{
+			if (world.rand.nextFloat() < 0.45f)
+			{
 				RadiationSystem.spreadRadioactiveBlock(world, x, y, z);
 			}
 		}
 	}
 
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity ent) {
-		if (ent instanceof EntityLivingBase) {
+	public void onEntityWalking(World world, int x, int y, int z, Entity ent)
+	{
+		if (ent instanceof EntityLivingBase)
+		{
 			int meta = world.getBlockMetadata(x, y, z);
 			RadiationSystem.applyRontgenEntity((EntityLivingBase) ent, meta / 2.5f, meta, 1, 1);
 		}

@@ -17,20 +17,25 @@ public class TileConductor extends TileEntity implements IConductor {
 	public ElectricNetwork energyNetwork;
 
 	@Override
-	public boolean canUpdate() {
+	public boolean canUpdate()
+	{
 		return false;
 	}
 
 	@Override
-	public ElectricNetwork getNetwork() {
+	public ElectricNetwork getNetwork()
+	{
 		return getNetwork(true);
 	}
 
-	public TileEntity[] getConnectedCables(TileEntity tileEntity) {
+	public TileEntity[] getConnectedCables(TileEntity tileEntity)
+	{
 		TileEntity[] cables = { null, null, null, null, null, null };
-		for (Face orientation : Face.VALID) {
+		for (Face orientation : Face.VALID)
+		{
 			TileEntity cable = new GridLocation(tileEntity).OffsetFace(orientation).getTile(tileEntity.getWorldObj());
-			if (cable instanceof IConductor) {
+			if (cable instanceof IConductor)
+			{
 				cables[orientation.ordinal()] = cable;
 			}
 		}
@@ -38,23 +43,29 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public ElectricNetwork getNetwork(boolean createIfNull) {
-		if (energyNetwork == null && createIfNull) {
+	public ElectricNetwork getNetwork(boolean createIfNull)
+	{
+		if (energyNetwork == null && createIfNull)
+		{
 			TileEntity[] adjacentCables = getConnectedCables(this);
 			HashSet<ElectricNetwork> connectedNets = new HashSet<>();
-			for (TileEntity cable : adjacentCables) {
-				if (cable instanceof IConductor && ((IConductor) cable).getNetwork(false) != null) {
+			for (TileEntity cable : adjacentCables)
+			{
+				if (cable instanceof IConductor && ((IConductor) cable).getNetwork(false) != null)
+				{
 					connectedNets.add(((IConductor) cable).getNetwork());
 				}
 			}
-			if (connectedNets.size() == 0) {
+			if (connectedNets.size() == 0)
+			{
 				energyNetwork = new ElectricNetwork(new IConductor[] { this });
-			} else {
-				if (connectedNets.size() == 1) {
-					energyNetwork = (ElectricNetwork) connectedNets.toArray()[0];
-				} else {
-					energyNetwork = new ElectricNetwork(connectedNets);
-				}
+			} else if (connectedNets.size() == 1)
+			{
+				energyNetwork = (ElectricNetwork) connectedNets.toArray()[0];
+				energyNetwork.conductorSet.add(this);
+			} else
+			{
+				energyNetwork = new ElectricNetwork(connectedNets);
 				energyNetwork.conductorSet.add(this);
 			}
 		}
@@ -62,27 +73,35 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public void invalidate() {
-		if (!worldObj.isRemote) {
+	public void invalidate()
+	{
+		if (!worldObj.isRemote)
+		{
 			getNetwork().split(this);
 		}
 		super.invalidate();
 	}
 
 	@Override
-	public void setNetwork(ElectricNetwork network) {
-		if (network != energyNetwork) {
+	public void setNetwork(ElectricNetwork network)
+	{
+		if (network != energyNetwork)
+		{
 			removeFromNetwork();
 			energyNetwork = network;
 		}
 	}
 
 	@Override
-	public void refreshNetwork() {
-		if (!worldObj.isRemote) {
-			for (Face side : Face.VALID) {
+	public void refreshNetwork()
+	{
+		if (!worldObj.isRemote)
+		{
+			for (Face side : Face.VALID)
+			{
 				TileEntity tileEntity = new GridLocation(this).OffsetFace(side).getTile(worldObj);
-				if (tileEntity instanceof IConductor) {
+				if (tileEntity instanceof IConductor)
+				{
 					getNetwork().merge(((IConductor) tileEntity).getNetwork());
 				}
 			}
@@ -91,30 +110,37 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public void removeFromNetwork() {
-		if (energyNetwork != null) {
+	public void removeFromNetwork()
+	{
+		if (energyNetwork != null)
+		{
 			energyNetwork.removeCable(this);
 		}
 	}
 
 	@Override
-	public void fixNetwork() {
+	public void fixNetwork()
+	{
 		getNetwork().fixMessedUpNetwork(this);
 	}
 
 	@Override
-	public int getElectricCapacity(Face from) {
+	public int getElectricCapacity(Face from)
+	{
 		return getCableType().getTransferRate();
 	}
 
 	@Override
-	public EnumConductorType getCableType() {
+	public EnumConductorType getCableType()
+	{
 		return EnumConductorType.values()[Math.max(0, Math.min(EnumConductorType.values().length - 1, getBlockMetadata()))];
 	}
 
 	@Override
-	public int receiveElectricity(Face from, int maxReceive, boolean simulate) {
-		if (simulate) {
+	public int receiveElectricity(Face from, int maxReceive, boolean simulate)
+	{
+		if (simulate)
+		{
 			return 0;
 		}
 		ArrayList<TileEntity> ignored = new ArrayList<>();
@@ -123,23 +149,27 @@ public class TileConductor extends TileEntity implements IConductor {
 	}
 
 	@Override
-	public boolean canConnectElectricity(Face from) {
+	public boolean canConnectElectricity(Face from)
+	{
 		return true;
 	}
 
 	@Override
-	public void onChunkUnload() {
+	public void onChunkUnload()
+	{
 		invalidate();
 		ElectricNetworkRegistry.getInstance().pruneEmptyNetworks();
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox()
+	{
 		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
 	}
 
 	@Override
-	public void destroyNodeViolently() {
+	public void destroyNodeViolently()
+	{
 		worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
 	}
 }

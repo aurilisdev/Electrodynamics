@@ -19,7 +19,8 @@ public class GuiNeutronCaptureChamber extends GuiContainerBase<TileNeutronCaptur
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Progress: " + (int) (host.getOperatingTicks() * 100 / TileNeutronCaptureChamber.TICKS_REQUIRED) + "%", 86, 73);
 		ItemStack input = host.getStackInSlot(TileNeutronCaptureChamber.SLOT_INPUT);
@@ -30,7 +31,8 @@ public class GuiNeutronCaptureChamber extends GuiContainerBase<TileNeutronCaptur
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		renderFurnaceCookArrow(38 + (118 - 38) / 2 - 3, 36, host.getOperatingTicks(), TileNeutronCaptureChamber.TICKS_REQUIRED);
 	}

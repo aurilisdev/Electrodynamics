@@ -20,53 +20,68 @@ import physica.nuclear.common.items.update.ItemUpdateAntimatter;
 
 public class FulminationEventHandler {
 
-	public static final FulminationEventHandler INSTANCE = new FulminationEventHandler();
-	private static final Set<TileFulmination> set = new HashSet<>();
+	public static final FulminationEventHandler	INSTANCE	= new FulminationEventHandler();
+	private static final Set<TileFulmination>	set			= new HashSet<>();
 
-	public void register(TileFulmination tile) {
-		if (!set.contains(tile)) {
+	public void register(TileFulmination tile)
+	{
+		if (!set.contains(tile))
+		{
 			set.add(tile);
 		}
 	}
 
-	public boolean isRegistered(TileFulmination tile) {
+	public boolean isRegistered(TileFulmination tile)
+	{
 		return set.contains(tile);
 	}
 
-	public void unregister(TileFulmination tile) {
+	public void unregister(TileFulmination tile)
+	{
 		set.remove(tile);
 	}
 
 	@SubscribeEvent
-	public void onPreExplosion(PostExplosionEvent event) {
-		if (event.explosion != null) {
+	public void onPreExplosion(PostExplosionEvent event)
+	{
+		if (event.explosion != null)
+		{
 			float size = event.explosion.explosionSize;
 			onExplosionImpl(event.iExplosion.getEnergy(), size, event.world, event.x, event.y, event.z);
 		}
 	}
 
 	@SubscribeEvent
-	public void onExplosionEvent(resonant.api.explosion.ExplosionEvent event) {
-		if (event.explosion != null) {
+	public void onExplosionEvent(resonant.api.explosion.ExplosionEvent event)
+	{
+		if (event.explosion != null)
+		{
 			float size = event.explosion.explosionSize;
 			onExplosionImpl(event.iExplosion.getEnergy(), size, event.world, event.x, event.y, event.z);
 		}
 	}
 
-	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z) {
+	private static void onExplosionImpl(long energy, float size, World world, double x, double y, double z)
+	{
 		energy *= 5;
-		if (size > 0 && energy > 0) {
+		if (size > 0 && energy > 0)
+		{
 			Iterator<TileFulmination> iterator = set.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				TileFulmination tile = iterator.next();
-				if (tile.isInvalid()) {
+				if (tile.isInvalid())
+				{
 					iterator.remove();
-				} else if (!tile.isInvalid() && world == tile.getWorldObj()) {
+				} else if (!tile.isInvalid() && world == tile.getWorldObj())
+				{
 					double distance = tile.getDistanceFrom(x, y, z);
-					if (distance <= size && distance > 0) {
+					if (distance <= size && distance > 0)
+					{
 						double electricity = Math.min(energy, energy / (distance / size));
 						GridLocation loc = tile.getLocation();
-						electricity = Math.max(electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, loc.xCoord, loc.yCoord, loc.zCoord)) * electricity, 0.0D);
+						electricity = Math
+								.max(electricity - world.getBlockDensity(Vec3.createVectorHelper(x, y, z), CoreBlockRegister.blockFulmination.getCollisionBoundingBoxFromPool(world, loc.xCoord, loc.yCoord, loc.zCoord)) * electricity, 0.0D);
 						tile.setElectricityStored((int) (tile.getElectricityStored() + electricity));
 					}
 				}
@@ -75,14 +90,18 @@ public class FulminationEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onExplosion(ExplosionEvent.Detonate event) {
+	public void onExplosion(ExplosionEvent.Detonate event)
+	{
 		double energy = event.explosion.explosionSize * 50;
-		if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics")) {
-			if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram) {
+		if (Loader.isModLoaded(CoreReferences.DOMAIN + "nuclearphysics"))
+		{
+			if (event.explosion.exploder instanceof EntityItem && ((EntityItem) event.explosion.exploder).getEntityItem().getItem() == NuclearItemRegister.itemAntimatterCell1Gram)
+			{
 				energy *= ItemUpdateAntimatter.FULMINATION_ANTIMATTER_ENERGY_SCALE;
 			}
 		}
-		if (event.explosion != null) {
+		if (event.explosion != null)
+		{
 			onExplosionImpl((long) energy, event.explosion.explosionSize, event.world, event.explosion.explosionX, event.explosion.explosionY, event.explosion.explosionZ);
 		}
 	}

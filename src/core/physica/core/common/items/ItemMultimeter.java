@@ -26,25 +26,35 @@ public class ItemMultimeter extends Item {
 	}
 
 	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+	{
 
 		TileEntity tile = world.getTileEntity(x, y, z);
 		Face dir = Face.getOrientation(side);
-		if (tile instanceof IConductor) {
-			if (!world.isRemote) {
+		if (tile instanceof IConductor)
+		{
+			if (!world.isRemote)
+			{
 				IConductor conductor = (IConductor) tile;
 				player.addChatMessage(new ChatComponentText("Network Stats"));
 				player.addChatMessage(new ChatComponentText(" - Conductors: " + conductor.getNetwork().conductorSet.size()));
 				player.addChatMessage(new ChatComponentText(" - Acceptors: " + conductor.getNetwork().acceptorInputMap.size()));
 				int voltage = conductor.getNetwork().getSafeVoltageLevel();
 				player.addChatMessage(new ChatComponentText(" - Safe voltage level: " + (voltage < 0 ? "infinite voltage" : voltage + " V")));
-				player.addChatMessage(new ChatComponentText(" - Power Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(conductor.getNetwork().getEnergyTransmittedLastTick(), Unit.RF, Unit.WATT), Unit.WATT) + " / " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(conductor.getNetwork().getMaxPowerTransfer(), Unit.RF, Unit.WATT), Unit.WATT)));
+				player.addChatMessage(new ChatComponentText(" - Power Transfer: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(conductor.getNetwork().getEnergyTransmittedLastTick(), Unit.RF, Unit.WATT), Unit.WATT)
+						+ " / " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(conductor.getNetwork().getMaxPowerTransfer(), Unit.RF, Unit.WATT), Unit.WATT)));
 			}
-		} else if (AbstractionLayer.Electricity.isElectricProvider(tile)) {
-			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 210, "Power Provider Stats", " - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR) + " / " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricCapacity(tile, dir), Unit.RF, Unit.WATT), Unit.WATT), " - Side Output: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.extractElectricity(tile, dir, Integer.MAX_VALUE, true), Unit.RF, Unit.WATT), Unit.WATT));
+		} else if (AbstractionLayer.Electricity.isElectricProvider(tile))
+		{
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 210, "Power Provider Stats",
+					" - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR) + " / "
+							+ ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricCapacity(tile, dir), Unit.RF, Unit.WATT), Unit.WATT),
+					" - Side Output: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.extractElectricity(tile, dir, Integer.MAX_VALUE, true), Unit.RF, Unit.WATT), Unit.WATT));
 			return true;
-		} else if (AbstractionLayer.Electricity.isElectricReceiver(tile)) {
-			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 200, "Power Receiver Stats", " - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR));
+		} else if (AbstractionLayer.Electricity.isElectricReceiver(tile))
+		{
+			ChatUtilities.addSpamlessMessages(Integer.MAX_VALUE - 200, "Power Receiver Stats",
+					" - Energy Stored: " + ElectricityDisplay.getDisplay(ElectricityUtilities.convertEnergy(AbstractionLayer.Electricity.getElectricityStored(tile, dir), Unit.RF, Unit.WATTHOUR), Unit.WATTHOUR));
 			return true;
 		}
 		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);

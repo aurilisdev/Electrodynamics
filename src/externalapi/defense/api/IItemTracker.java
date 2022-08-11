@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public interface IItemTracker {
 
-	void setTrackingEntity(ItemStack itemStack, Entity entity);
+	public void setTrackingEntity(ItemStack itemStack, Entity entity);
 
-	Entity getTrackingEntity(World worldObj, ItemStack itemStack);
+	public Entity getTrackingEntity(World worldObj, ItemStack itemStack);
 }

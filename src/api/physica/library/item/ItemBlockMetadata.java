@@ -13,17 +13,20 @@ public class ItemBlockMetadata extends ItemBlockDescriptable {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack) {
+	public String getUnlocalizedName(ItemStack itemStack)
+	{
 		return super.getUnlocalizedName(itemStack) + "." + itemStack.getItemDamage();
 	}
 
 	@Override
-	public int getMetadata(int metadata) {
+	public int getMetadata(int metadata)
+	{
 		return metadata;
 	}
 
 	@Override
-	public IIcon getIconFromDamage(int damage) {
+	public IIcon getIconFromDamage(int damage)
+	{
 		return field_150939_a.getIcon(0, damage);
 	}
 }

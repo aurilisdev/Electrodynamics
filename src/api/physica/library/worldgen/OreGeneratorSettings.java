@@ -5,12 +5,12 @@ import net.minecraft.init.Blocks;
 
 public class OreGeneratorSettings {
 
-	public int minGenerateHeight;
-	public int maxGenerateHeight;
-	public int amountPerChunk;
-	public int amountPerBranch;
+	public int		minGenerateHeight;
+	public int		maxGenerateHeight;
+	public int		amountPerChunk;
+	public int		amountPerBranch;
 
-	public Block replaceBlock = Blocks.stone;
+	public Block	replaceBlock	= Blocks.stone;
 
 	public OreGeneratorSettings(int min, int max, int amountPerBranch, int amountPerChunk) {
 		minGenerateHeight = min;

@@ -12,22 +12,26 @@ import physica.library.item.ItemMetaHolder;
 
 public class CoreItemRegister implements IContent {
 
-	public static ItemDescriptable itemEmptyCell;
-	public static ItemMetaHolder itemMetaCircuit;
-	public static ItemMetaHolder itemMetaPlate;
-	public static ItemMetaHolder itemMetaIngot;
-	public static ItemMetaHolder itemMetaBlend;
-	public static ItemDescriptable itemMotor;
-	public static ItemWrench itemWrench;
-	public static ItemBattery itemBattery;
-	public static ItemMultimeter itemMultimeter;
+	public static ItemDescriptable	itemEmptyCell;
+	public static ItemMetaHolder	itemMetaCircuit;
+	public static ItemMetaHolder	itemMetaPlate;
+	public static ItemMetaHolder	itemMetaIngot;
+	public static ItemMetaHolder	itemMetaBlend;
+	public static ItemDescriptable	itemMotor;
+	public static ItemWrench		itemWrench;
+	public static ItemBattery		itemBattery;
+	public static ItemMultimeter	itemMultimeter;
 
 	@Override
-	public void register(LoadPhase phase) {
-		if (phase == LoadPhase.RegisterObjects) {
+	public void register(LoadPhase phase)
+	{
+		if (phase == LoadPhase.RegisterObjects)
+		{
 			AbstractionLayer.Registering.registerItem(itemMetaCircuit = new ItemMetaHolder("circuit_basic", CoreReferences.PREFIX).addSubItem("circuit_advanced").addSubItem("circuit_elite"), "item.metaCircuit");
 			AbstractionLayer.Registering.registerItem(itemMetaPlate = new ItemMetaHolder("plateIron", CoreReferences.PREFIX).addSubItem("plateSteel").addSubItem("plateLead"), "item.metaPlate");
-			AbstractionLayer.Registering.registerItem(itemMetaIngot = new ItemMetaHolder("ingotTin", CoreReferences.PREFIX).addSubItem("ingotCopper").addSubItem("ingotSteel").addSubItem("ingotLead").addSubItem("ingotSilver").addSubItem("ingotSuperConductive"), "item.metaIngot");
+			AbstractionLayer.Registering.registerItem(
+					itemMetaIngot = new ItemMetaHolder("ingotTin", CoreReferences.PREFIX).addSubItem("ingotCopper").addSubItem("ingotSteel").addSubItem("ingotLead").addSubItem("ingotSilver").addSubItem("ingotSuperConductive"),
+					"item.metaIngot");
 			AbstractionLayer.Registering.registerItem(itemMetaBlend = new ItemMetaHolder("blendSuperConductive", CoreReferences.PREFIX), "item.metaBlend");
 			AbstractionLayer.Registering.registerItem(itemWrench = new ItemWrench(), itemWrench.getUnlocalizedName());
 			AbstractionLayer.Registering.registerItem(itemMotor = (ItemDescriptable) new ItemDescriptable(CoreReferences.PREFIX, "motor").setMaxStackSize(64), itemMotor.getUnlocalizedName());

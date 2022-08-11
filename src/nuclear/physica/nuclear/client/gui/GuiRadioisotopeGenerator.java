@@ -19,7 +19,8 @@ public class GuiRadioisotopeGenerator extends GuiContainerBase<TileRadioisotopeG
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString(host.generate > 0 ? "Generating" : "Not Generating", 70, 33, 4210752);
 		drawString(ElectricityDisplay.getDisplay(host.generate, Unit.WATT), 70, 45);
@@ -28,7 +29,8 @@ public class GuiRadioisotopeGenerator extends GuiContainerBase<TileRadioisotopeG
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 	}
 }

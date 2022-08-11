@@ -18,9 +18,12 @@ public class ItemGeigerCounter extends ItemElectric {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5) {
-		if (entity instanceof EntityPlayer) {
-			if (((EntityPlayer) entity).inventory.getCurrentItem() == stack) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5)
+	{
+		if (entity instanceof EntityPlayer)
+		{
+			if (((EntityPlayer) entity).inventory.getCurrentItem() == stack)
+			{
 				extractElectricity(stack, getElectricCapacity(stack) / 250000, false);
 			}
 		}

@@ -25,7 +25,8 @@ public class GuiInterdictionMatrix extends GuiContainerBase<TileInterdictionMatr
 	}
 
 	@Override
-	public void initGui() {
+	public void initGui()
+	{
 		super.initGui();
 		addToolTip(new ToolTipTank(new Rectangle(8, 115, electricityMeterWidth, electricityMeterHeight), "gui.interdictionMatrix.fortron_tank", host.getFortronTank()));
 		addButton(new GuiButton(1, width / 2 - 80, height / 2 - 102, "Toggle".length() * 8, 20, "Toggle"));
@@ -34,14 +35,19 @@ public class GuiInterdictionMatrix extends GuiContainerBase<TileInterdictionMatr
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(GuiButton button)
+	{
 		super.actionPerformed(button);
 		host.actionPerformed(button.id, Side.CLIENT);
-		if (button.id == 2) {
-			for (Object obj : inventorySlots.inventorySlots) {
-				if (obj instanceof SlotBase) {
+		if (button.id == 2)
+		{
+			for (Object obj : inventorySlots.inventorySlots)
+			{
+				if (obj instanceof SlotBase)
+				{
 					SlotBase base = (SlotBase) obj;
-					if (base.getSlotIndex() >= TileInterdictionMatrix.SLOT_STARTBANLIST) {
+					if (base.getSlotIndex() >= TileInterdictionMatrix.SLOT_STARTBANLIST)
+					{
 						base.setBaseColor(host.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY).setEdgeColor(host.isBlackList ? Color.DARK_GRAY.darker() : Color.GRAY);
 					}
 				}
@@ -52,7 +58,8 @@ public class GuiInterdictionMatrix extends GuiContainerBase<TileInterdictionMatr
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Status: " + (host.isActivated() ? "Active" : "Disabled"), 8, 29);
 		drawString("Frequency: " + host.getFrequency(), 8, 93);
@@ -64,7 +71,8 @@ public class GuiInterdictionMatrix extends GuiContainerBase<TileInterdictionMatr
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		drawElectricity(8, 120, (float) host.getFortronTank().getFluidAmount() / host.getMaxFortron());
 	}

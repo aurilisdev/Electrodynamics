@@ -21,7 +21,8 @@ public class ItemDescriptable extends ItemUpdateable {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean par4)
+	{
 		lines.addAll(lineList);
 	}
 }

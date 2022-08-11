@@ -32,25 +32,30 @@ import physica.nuclear.common.inventory.ContainerCentrifuge;
 
 public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiInterface, IFluidHandler {
 
-	public static final int TICKS_REQUIRED = 2400;
-	public static final int SLOT_ENERGY = 0;
-	public static final int POWER_USAGE = ElectricityUtilities.convertEnergy(3000, Unit.WATT, Unit.RF);
-	public static final int SLOT_OUTPUT1 = 1;
-	public static final int SLOT_OUTPUT2 = 2;
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT1, SLOT_OUTPUT2 };
+	public static final int		TICKS_REQUIRED			= 2400;
+	public static final int		SLOT_ENERGY				= 0;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(3000, Unit.WATT, Unit.RF);
+	public static final int		SLOT_OUTPUT1			= 1;
+	public static final int		SLOT_OUTPUT2			= 2;
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT1, SLOT_OUTPUT2 };
 
-	protected FluidTank tank = new FluidTank(new FluidStack(NuclearFluidRegister.LIQUID_HE, 0), 5000);
+	protected FluidTank			tank					= new FluidTank(new FluidStack(NuclearFluidRegister.LIQUID_HE, 0), 5000);
 
-	protected int operatingTicks = 0;
+	protected int				operatingTicks			= 0;
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
-		if (hasEnoughEnergy()) {
-			if (canProcess()) {
-				if (operatingTicks < TICKS_REQUIRED) {
+		if (hasEnoughEnergy())
+		{
+			if (canProcess())
+			{
+				if (operatingTicks < TICKS_REQUIRED)
+				{
 					operatingTicks++;
-				} else {
+				} else
+				{
 					process();
 					operatingTicks = 0;
 				}
@@ -59,41 +64,53 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 			Face direction = getFacing().getOpposite();
 			GridLocation loc = getLocation();
 			TileEntity tile = World().getTileEntity(loc.xCoord + direction.offsetX, loc.yCoord + direction.offsetY, loc.zCoord + direction.offsetZ);
-			if (tile instanceof TileChemicalBoiler) {
+			if (tile instanceof TileChemicalBoiler)
+			{
 				TileChemicalBoiler boiler = (TileChemicalBoiler) tile;
-				if (boiler.hexaTank.getFluidAmount() > 0 && tank.getFluidAmount() < tank.getCapacity()) {
+				if (boiler.hexaTank.getFluidAmount() > 0 && tank.getFluidAmount() < tank.getCapacity())
+				{
 					tank.fill(boiler.hexaTank.drain(Math.min(10, boiler.hexaTank.getFluidAmount()), true), true);
 				}
 			}
 			drainBattery(SLOT_ENERGY);
-		} else {
+		} else
+		{
 			drainBattery(SLOT_ENERGY);
 			operatingTicks = 0;
 		}
 	}
 
-	public boolean canProcess() {
-		if ((getStackInSlot(SLOT_OUTPUT1) != null && getStackInSlot(SLOT_OUTPUT1).stackSize == getStackInSlot(SLOT_OUTPUT1).getMaxStackSize()) || (getStackInSlot(SLOT_OUTPUT2) != null && getStackInSlot(SLOT_OUTPUT2).stackSize == getStackInSlot(SLOT_OUTPUT2).getMaxStackSize())) {
+	public boolean canProcess()
+	{
+		if (getStackInSlot(SLOT_OUTPUT1) != null && getStackInSlot(SLOT_OUTPUT1).stackSize == getStackInSlot(SLOT_OUTPUT1).getMaxStackSize())
+		{
+			return false;
+		} else if (getStackInSlot(SLOT_OUTPUT2) != null && getStackInSlot(SLOT_OUTPUT2).stackSize == getStackInSlot(SLOT_OUTPUT2).getMaxStackSize())
+		{
 			return false;
 		}
 		return tank.getFluid() != null && tank.getFluid().getFluid() == NuclearFluidRegister.LIQUID_HE && tank.getFluidAmount() >= 2500;
 	}
 
-	private void process() {
+	private void process()
+	{
 		tank.drain(2500, true);
 		boolean isEnriched = World().rand.nextFloat() > 0.828f;
 		int slot = isEnriched ? SLOT_OUTPUT1 : SLOT_OUTPUT2;
 		ItemStack itemStack = getStackInSlot(slot);
-		if (itemStack != null) {
+		if (itemStack != null)
+		{
 			itemStack.stackSize++;
 			setInventorySlotContents(slot, itemStack);
-		} else {
+		} else
+		{
 			setInventorySlotContents(slot, new ItemStack(isEnriched ? NuclearItemRegister.itemUranium235 : NuclearItemRegister.itemUranium238));
 		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt)
+	{
 		super.writeToNBT(nbt);
 		NBTTagCompound compound = new NBTTagCompound();
 		tank.writeToNBT(compound);
@@ -101,107 +118,127 @@ public class TileGasCentrifuge extends TileBasePoweredContainer implements IGuiI
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(NBTTagCompound nbt)
+	{
 		super.readFromNBT(nbt);
 		NBTTagCompound compound = (NBTTagCompound) nbt.getTag("Tank");
 		tank.readFromNBT(compound);
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(operatingTicks);
 		dataList.add(tank.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		operatingTicks = buf.readInt();
 		tank.readFromNBT(ByteBufUtils.readTag(buf));
 	}
 
-	public int getOperatingTicks() {
+	public int getOperatingTicks()
+	{
 		return operatingTicks;
 	}
 
-	public FluidTank getTank() {
+	public FluidTank getTank()
+	{
 		return tank;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 3;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return stack == null ? false : slot == SLOT_ENERGY ? AbstractionLayer.Electricity.isItemElectric(stack) : slot == SLOT_OUTPUT1 || slot == SLOT_OUTPUT2 ? false : false;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiCentrifuge(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerCentrifuge(player, this);
 	}
 
 	@Override
-	public boolean canConnectElectricity(Face from) {
+	public boolean canConnectElectricity(Face from)
+	{
 		return from == Face.DOWN || from == Face.UP;
 	}
 
 	@Override
-	public int getPowerUsage() {
+	public int getPowerUsage()
+	{
 		return POWER_USAGE;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromFace(Face side) {
+	public int[] getAccessibleSlotsFromFace(Face side)
+	{
 		return side == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, Face side) {
+	public boolean canInsertItem(int slot, ItemStack stack, Face side)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, Face side) {
+	public boolean canExtractItem(int slot, ItemStack stack, Face side)
+	{
 		return true;
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	{
 		return tank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+	{
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+	{
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(ForgeDirection from, Fluid fluid)
+	{
 		return from.ordinal() == getFacing().getOpposite().ordinal() && fluid == NuclearFluidRegister.LIQUID_HE;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	{
 		return from.ordinal() == getFacing().getOpposite().ordinal() && fluid == NuclearFluidRegister.LIQUID_HE;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(ForgeDirection from)
+	{
 		return from.ordinal() == getFacing().getOpposite().ordinal() ? new FluidTankInfo[] { tank.getInfo() } : new FluidTankInfo[] {};
 	}
 }

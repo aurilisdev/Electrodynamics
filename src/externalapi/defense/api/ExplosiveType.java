@@ -11,8 +11,10 @@ public enum ExplosiveType {
 	/** An explosive in vehicle form such as a minecart. */
 	VEHICLE;
 
-	public static ExplosiveType get(int id) {
-		if (id >= 0 && id < ExplosiveType.values().length) {
+	public static ExplosiveType get(int id)
+	{
+		if (id >= 0 && id < ExplosiveType.values().length)
+		{
 			return ExplosiveType.values()[id];
 		}
 

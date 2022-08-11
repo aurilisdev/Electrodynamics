@@ -21,15 +21,18 @@ public class GuiElectricFurnace extends GuiContainerBase<TileElectricFurnace> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		drawString("Inventory", 8, 73);
 		drawString("Smelting:", 10, 28, 4210752);
 		drawString("Battery:", 10, 53, 4210752);
 		String displayText = "";
-		if (host.getOperatingTicks() > 0) {
+		if (host.getOperatingTicks() > 0)
+		{
 			displayText = "Smelting";
-		} else {
+		} else
+		{
 			displayText = "Idle";
 		}
 		drawString("Status: " + displayText, 82, 47, 4210752);
@@ -38,7 +41,8 @@ public class GuiElectricFurnace extends GuiContainerBase<TileElectricFurnace> {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
+	{
 		super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		renderFurnaceCookArrow(79, 25, host.getOperatingTicks(), TileElectricFurnace.TICKS_REQUIRED);
 	}

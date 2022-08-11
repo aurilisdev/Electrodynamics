@@ -3,7 +3,8 @@ package defense.api;
 import net.minecraft.world.World;
 
 /**
- * Applied to all blocks that has a custom reaction to EMPs. Blocks not TileEntities.
+ * Applied to all blocks that has a custom reaction to EMPs. Blocks not
+ * TileEntities.
  *
  * @author Calclavia
  */
@@ -12,9 +13,12 @@ public interface IEMPBlock {
 	/**
 	 * Called when this block gets attacked by EMP.
 	 *
-	 * @param world        - The world object.
-	 * @param position     - The position.
-	 * @param empExplosive - The explosion
+	 * @param world
+	 *            - The world object.
+	 * @param position
+	 *            - The position.
+	 * @param empExplosive
+	 *            - The explosion
 	 */
-	void onEMP(World world, int x, int y, int z, IExplosion empExplosive);
+	public void onEMP(World world, int x, int y, int z, IExplosion empExplosive);
 }

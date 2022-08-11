@@ -24,44 +24,55 @@ import physica.nuclear.common.inventory.ContainerRadioisotopeGenerator;
 
 public class TileRadioisotopeGenerator extends TileBaseContainer implements IGuiInterface, IElectricityProvider {
 
-	public static final int SLOT_INPUT = 0;
-	private static final int[] ACCESSIBLE_SLOTS = new int[] { SLOT_INPUT };
-	public int generate;
-	private TileEntity[] cachedOutputs = new TileEntity[2];
+	public static final int		SLOT_INPUT			= 0;
+	private static final int[]	ACCESSIBLE_SLOTS	= new int[] { SLOT_INPUT };
+	public int					generate;
+	private TileEntity[]		cachedOutputs		= new TileEntity[2];
 
 	@Override
-	public boolean canConnectElectricity(Face from) {
+	public boolean canConnectElectricity(Face from)
+	{
 		return from.ordinal() < 2;
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
 		generate = getStackInSlot(SLOT_INPUT) == null ? 0 : getStackInSlot(SLOT_INPUT).stackSize * (ElectricityUtilities.convertEnergy(64, Unit.WATT, Unit.RF) / getInventoryStackLimit());
-		if (generate > 0) {
+		if (generate > 0)
+		{
 			int validReceivers = 0;
-			for (int index = 0; index < cachedOutputs.length; index++) {
+			for (int index = 0; index < cachedOutputs.length; index++)
+			{
 				TileEntity cachedOutput = cachedOutputs[index];
 				Face out = Face.getOrientation(index);
-				if (cachedOutput == null || cachedOutput.isInvalid()) {
+				if (cachedOutput == null || cachedOutput.isInvalid())
+				{
 					cachedOutput = null;
 					GridLocation loc = getLocation();
 					TileEntity outputTile = World().getTileEntity(loc.xCoord + out.offsetX, loc.yCoord + out.offsetY, loc.zCoord + out.offsetZ);
-					if (AbstractionLayer.Electricity.isElectricReceiver(outputTile)) {
+					if (AbstractionLayer.Electricity.isElectricReceiver(outputTile))
+					{
 						cachedOutputs[index] = outputTile;
 					}
 				}
-				if (cachedOutput != null) {
-					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite())) {
+				if (cachedOutput != null)
+				{
+					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
+					{
 						validReceivers++;
 					}
 				}
 			}
-			if (validReceivers > 0) {
+			if (validReceivers > 0)
+			{
 				int index = 0;
-				for (TileEntity cachedOutput : cachedOutputs) {
+				for (TileEntity cachedOutput : cachedOutputs)
+				{
 					Face out = Face.getOrientation(index);
-					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite())) {
+					if (AbstractionLayer.Electricity.canConnectElectricity(cachedOutput, out.getOpposite()))
+					{
 						AbstractionLayer.Electricity.receiveElectricity(cachedOutput, out.getOpposite(), generate / validReceivers, false);
 					}
 					index++;
@@ -71,65 +82,77 @@ public class TileRadioisotopeGenerator extends TileBaseContainer implements IGui
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(generate);
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		generate = buf.readInt();
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
 		return OreDictionaryUtilities.isSameOre(stack, "oreUranium") || OreDictionaryUtilities.isSameOre(stack, "oreUraniumPhysica");
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromFace(Face face) {
+	public int[] getAccessibleSlotsFromFace(Face face)
+	{
 		return face == Face.UP || face == Face.DOWN ? ACCESSIBLE_SLOTS : ACCESSIBLE_SLOTS_NONE;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, Face face) {
+	public boolean canInsertItem(int slot, ItemStack item, Face face)
+	{
 		return (face == Face.UP || face == Face.DOWN) && isItemValidForSlot(slot, item);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, Face face) {
+	public boolean canExtractItem(int slot, ItemStack item, Face face)
+	{
 		return face == Face.UP || face == Face.DOWN;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 1;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiRadioisotopeGenerator(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerRadioisotopeGenerator(player, this);
 	}
 
 	@Override
-	public int getElectricityStored(Face from) {
+	public int getElectricityStored(Face from)
+	{
 		return generate;
 	}
 
 	@Override
-	public int extractElectricity(Face from, int maxExtract, boolean simulate) {
+	public int extractElectricity(Face from, int maxExtract, boolean simulate)
+	{
 		return from == getFacing().getOpposite() ? getElectricityStored(from) : 0;
 	}
 
 	@Override
-	public int getElectricCapacity(Face from) {
+	public int getElectricCapacity(Face from)
+	{
 		return ElectricityUtilities.convertEnergy(640, Unit.WATT, Unit.RF);
 	}
 }

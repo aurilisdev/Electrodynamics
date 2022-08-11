@@ -26,17 +26,19 @@ import physica.library.location.VectorLocation;
 @SideOnly(Side.CLIENT)
 public class ForcefieldRenderHandler {
 
-	public static List<RenderFortronBlockInfo> renderSet = new ArrayList<>();
-	public static ResourceLocation location = new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png");
+	public static List<RenderFortronBlockInfo>	renderSet	= new ArrayList<>();
+	public static ResourceLocation				location	= new ResourceLocation(ForcefieldReferences.DOMAIN, CoreReferences.TEXTURE_DIRECTORY + "blocks/fluids/fortron.png");
 
 	@SubscribeEvent
-	public void renderLast(RenderWorldLastEvent event) {
+	public void renderLast(RenderWorldLastEvent event)
+	{
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(1, 1);
 		Minecraft.getMinecraft().renderEngine.bindTexture(location);
 		TessellatorWrapper.instance.startDrawingQuads();
 		GL11.glColor4f(0.9f, 1, 0.8f, 1f);
-		for (RenderFortronBlockInfo render : renderSet) {
+		for (RenderFortronBlockInfo render : renderSet)
+		{
 			IInvFortronTile tile = (IInvFortronTile) render.getTile();
 			double x = render.getX();
 			double y = render.getY();
@@ -49,9 +51,11 @@ public class ForcefieldRenderHandler {
 			float zz = (float) (player.prevPosZ + (player.posZ - player.prevPosZ) * render.getDeltaFrame() - EntityFX.interpPosZ);
 			VectorLocation playerPos = new VectorLocation(xx, yy, zz);
 
-			for (ITileBase base : tile.getFortronConnections()) {
+			for (ITileBase base : tile.getFortronConnections())
+			{
 				TileEntity baseTile = (TileEntity) base;
-				if (baseTile instanceof IInvFortronTile) {
+				if (baseTile instanceof IInvFortronTile)
+				{
 					double diffX = baseTile.xCoord - tile.This().xCoord;
 					double diffY = baseTile.yCoord - tile.This().yCoord;
 					double diffZ = baseTile.zCoord - tile.This().zCoord;
@@ -59,8 +63,10 @@ public class ForcefieldRenderHandler {
 					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
 				}
 			}
-			if (tile instanceof TileFortronFieldConstructor) {
-				if (((TileFortronFieldConstructor) tile).getProjectorMode() >= 0) {
+			if (tile instanceof TileFortronFieldConstructor)
+			{
+				if (((TileFortronFieldConstructor) tile).getProjectorMode() >= 0)
+				{
 					start.set((float) x + 0.05, (float) y + 0.45f, (float) z + 0.05);
 					poolObject.set(start.x + 0.5, start.y + 0.85 + Math.sin(Math.toRadians(tile.getTicksRunning() * 3L)) / 7.0F, start.z + 0.5);
 					addBeamToTesselator(start, poolObject, playerPos, 0.05f);
@@ -81,7 +87,8 @@ public class ForcefieldRenderHandler {
 		renderSet.clear();
 	}
 
-	public static void addBeamToTesselator(VectorLocation Start, VectorLocation End, VectorLocation Player, float width) {
+	public static void addBeamToTesselator(VectorLocation Start, VectorLocation End, VectorLocation Player, float width)
+	{
 		Start.sub(Player);
 		double cachedX = Player.x;
 		double cachedY = Player.y;

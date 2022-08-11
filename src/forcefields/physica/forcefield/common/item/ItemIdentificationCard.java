@@ -25,11 +25,14 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase hitter) {
-		if (target instanceof EntityPlayer) {
+	public boolean hitEntity(ItemStack itemStack, EntityLivingBase target, EntityLivingBase hitter)
+	{
+		if (target instanceof EntityPlayer)
+		{
 			setUsername(itemStack, target.getCommandSenderName());
 			setUniqueId(itemStack, target.getUniqueID());
-			if (hitter instanceof EntityPlayer) {
+			if (hitter instanceof EntityPlayer)
+			{
 				notifyIdentificationChange((EntityPlayer) hitter, target.getCommandSenderName());
 			}
 		}
@@ -37,60 +40,75 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-		if (getUsername(itemStack) != null && !getUsername(itemStack).isEmpty()) {
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b)
+	{
+		if (getUsername(itemStack) != null && !getUsername(itemStack).isEmpty())
+		{
 			info.add("Username: " + getUsername(itemStack));
-		} else {
+		} else
+		{
 			info.add("Unidentified");
 		}
 		String tooltip = "";
 		boolean isFirst = true;
-		for (Permission permission : Permission.getPermissions()) {
-			if (hasPermission(itemStack, permission)) {
-				if (!isFirst) {
+		for (Permission permission : Permission.getPermissions())
+		{
+			if (hasPermission(itemStack, permission))
+			{
+				if (!isFirst)
+				{
 					tooltip = tooltip + ", ";
 				}
 				isFirst = false;
 				tooltip = tooltip + permission.name;
 			}
 		}
-		if (!isFirst) {
+		if (!isFirst)
+		{
 			info.add(tooltip);
 		}
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
+	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
+	{
 		setUsername(itemStack, entityPlayer.getCommandSenderName());
 		setUniqueId(itemStack, entityPlayer.getUniqueID());
-		if (!world.isRemote) {
+		if (!world.isRemote)
+		{
 			notifyIdentificationChange(entityPlayer, entityPlayer.getCommandSenderName());
 		}
 		return itemStack;
 	}
 
-	public void notifyIdentificationChange(EntityPlayer sender, String username) {
+	public void notifyIdentificationChange(EntityPlayer sender, String username)
+	{
 		sender.addChatMessage(new ChatComponentText("Identification card linked to player: " + username));
 	}
 
 	@Override
-	public void setUsername(ItemStack itemStack, String username) {
+	public void setUsername(ItemStack itemStack, String username)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
 		nbtTagCompound.setString("username", username);
 	}
 
 	@Override
-	public void setUniqueId(ItemStack itemStack, UUID uniqueId) {
+	public void setUniqueId(ItemStack itemStack, UUID uniqueId)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
 		nbtTagCompound.setLong("uuid_least", uniqueId.getLeastSignificantBits());
 		nbtTagCompound.setLong("uuid_most", uniqueId.getMostSignificantBits());
 	}
 
 	@Override
-	public String getUsername(ItemStack itemStack) {
+	public String getUsername(ItemStack itemStack)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
-		if (nbtTagCompound != null) {
-			if (!nbtTagCompound.getString("username").isEmpty()) {
+		if (nbtTagCompound != null)
+		{
+			if (!nbtTagCompound.getString("username").isEmpty())
+			{
 				return nbtTagCompound.getString("username");
 			}
 		}
@@ -98,12 +116,15 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public UUID getUniqueId(ItemStack itemStack) {
+	public UUID getUniqueId(ItemStack itemStack)
+	{
 		NBTTagCompound nbtTagCompound = getSafeTagCompound(itemStack);
-		if (nbtTagCompound != null) {
+		if (nbtTagCompound != null)
+		{
 			long least = nbtTagCompound.getLong("uuid_least");
 			long most = nbtTagCompound.getLong("uuid_most");
-			if (least != 0 && most != 0) {
+			if (least != 0 && most != 0)
+			{
 				return new UUID(most, least);
 			}
 		}
@@ -111,18 +132,22 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean hasPermission(ItemStack itemStack, Permission permission) {
+	public boolean hasPermission(ItemStack itemStack, Permission permission)
+	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null || nbt == null) {
+		if (permission == null || nbt == null)
+		{
 			return true;
 		}
 		return nbt.getBoolean(NBT_PERM_PREFIX + permission.id);
 	}
 
 	@Override
-	public boolean addPermission(ItemStack itemStack, Permission permission) {
+	public boolean addPermission(ItemStack itemStack, Permission permission)
+	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null || nbt == null) {
+		if (permission == null || nbt == null)
+		{
 			return false;
 		}
 		nbt.setBoolean(NBT_PERM_PREFIX + permission.id, true);
@@ -130,18 +155,23 @@ public class ItemIdentificationCard extends Item implements ICardIdentification 
 	}
 
 	@Override
-	public boolean removePermission(ItemStack itemStack, Permission permission) {
+	public boolean removePermission(ItemStack itemStack, Permission permission)
+	{
 		NBTTagCompound nbt = getSafeTagCompound(itemStack);
-		if (permission == null || nbt == null) {
+		if (permission == null || nbt == null)
+		{
 			return false;
 		}
 		nbt.setBoolean(NBT_PERM_PREFIX + permission.id, false);
 		return false;
 	}
 
-	public NBTTagCompound getSafeTagCompound(ItemStack itemStack) {
-		if (itemStack != null) {
-			if (itemStack.getTagCompound() == null) {
+	public NBTTagCompound getSafeTagCompound(ItemStack itemStack)
+	{
+		if (itemStack != null)
+		{
+			if (itemStack.getTagCompound() == null)
+			{
 				itemStack.setTagCompound(new NBTTagCompound());
 			}
 			return itemStack.getTagCompound();

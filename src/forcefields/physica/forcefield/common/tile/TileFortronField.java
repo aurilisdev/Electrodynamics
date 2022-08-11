@@ -17,9 +17,12 @@ public class TileFortronField extends TileBase {
 		sendDescPacket();
 	}
 
-	public void setConstructor(TileFortronFieldConstructor constructor) {
-		if (isServer()) {
-			if (constructor != null) {
+	public void setConstructor(TileFortronFieldConstructor constructor)
+	{
+		if (isServer())
+		{
+			if (constructor != null)
+			{
 				constructorCoord = constructor.getLocation();
 				constructor.activeFields.add(this);
 				fieldColor = constructor.fieldColorMultiplier();
@@ -27,20 +30,25 @@ public class TileFortronField extends TileBase {
 		}
 	}
 
-	public GridLocation getConstructorCoord() {
+	public GridLocation getConstructorCoord()
+	{
 		return constructorCoord;
 	}
 
-	public boolean isForcefieldActive() {
+	public boolean isForcefieldActive()
+	{
 		TileEntity tile = constructorCoord.getTile(World());
-		if (!(tile instanceof TileFortronFieldConstructor)) {
+		if (!(tile instanceof TileFortronFieldConstructor))
+		{
 			return false;
 		}
 		TileFortronFieldConstructor constructor = (TileFortronFieldConstructor) tile;
-		if (constructor.getTicksRunning() <= 1) {
+		if (constructor.getTicksRunning() <= 1)
+		{
 			return true;
 		}
-		if (!constructor.isActivated || constructor.isDestroying) {
+		if (!constructor.isActivated || constructor.isDestroying)
+		{
 			return false;
 		}
 		return true;
@@ -48,18 +56,21 @@ public class TileFortronField extends TileBase {
 
 	public int fieldColor = PhysicaForcefields.DEFAULT_COLOR;
 
-	public boolean isValidField() {
+	public boolean isValidField()
+	{
 		TileEntity constructor = constructorCoord.getTile(World());
 		return constructor instanceof TileFortronFieldConstructor && ((TileFortronFieldConstructor) constructor).isActivated();
 	}
 
 	@Override
-	public boolean canUpdate() {
+	public boolean canUpdate()
+	{
 		return false;
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
+	public Packet getDescriptionPacket()
+	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
 		GridLocation loc = getLocation();
@@ -67,26 +78,30 @@ public class TileFortronField extends TileBase {
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+	{
 		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(NBTTagCompound tag)
+	{
 		super.writeToNBT(tag);
 		constructorCoord.writeToNBT(tag, "constructorCoord");
 		tag.setInteger("fieldColor", fieldColor);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(NBTTagCompound tag)
+	{
 		super.readFromNBT(tag);
 		constructorCoord.readFromNBT(tag, "constructorCoord");
 		fieldColor = tag.getInteger("fieldColor");
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		GridLocation loc = getLocation();
 		return loc.xCoord * 2 * loc.yCoord * loc.zCoord;
 	}

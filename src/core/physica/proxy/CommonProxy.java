@@ -9,12 +9,13 @@ import physica.api.core.load.IContent;
 
 public class CommonProxy implements IGuiHandler, IContent {
 
-	public static final int TILE_GUI_ID = 5000;
-	public static final int ENTITY_GUI_ID = 5001;
-	public static final int SLOT_GUI_ID = 5002;
+	public static final int	TILE_GUI_ID		= 5000;
+	public static final int	ENTITY_GUI_ID	= 5001;
+	public static final int	SLOT_GUI_ID		= 5002;
 
 	@Override
-	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+	{
 		switch (id) {
 		case TILE_GUI_ID:
 			return world.getTileEntity(x, y, z) instanceof IGuiInterface ? ((IGuiInterface) world.getTileEntity(x, y, z)).getClientGuiElement(id, player) : null;
@@ -29,7 +30,8 @@ public class CommonProxy implements IGuiHandler, IContent {
 	}
 
 	@Override
-	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+	{
 		switch (id) {
 		case TILE_GUI_ID:
 			return world.getTileEntity(x, y, z) instanceof IGuiInterface ? ((IGuiInterface) world.getTileEntity(x, y, z)).getServerGuiElement(id, player) : null;

@@ -11,12 +11,16 @@ public class CoreTabRegister implements IContent {
 	public static CreativeTabs coreTab;
 
 	@Override
-	public void register(LoadPhase phase) {
-		if (phase == LoadPhase.CreativeTabRegister) {
-			coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core") {
+	public void register(LoadPhase phase)
+	{
+		if (phase == LoadPhase.CreativeTabRegister)
+		{
+			coreTab = new CreativeTabs(CoreReferences.DOMAIN + "Core")
+			{
 
 				@Override
-				public Item getTabIconItem() {
+				public Item getTabIconItem()
+				{
 					return CoreItemRegister.itemWrench;
 				}
 			};

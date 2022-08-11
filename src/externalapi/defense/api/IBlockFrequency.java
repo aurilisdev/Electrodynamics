@@ -11,12 +11,13 @@ public interface IBlockFrequency {
 	/**
 	 * @return The frequency of this object.
 	 */
-	int getFrequency();
+	public int getFrequency();
 
 	/**
 	 * Sets the frequency
 	 *
-	 * @param frequency - The frequency of this object.
+	 * @param frequency
+	 *            - The frequency of this object.
 	 */
-	void setFrequency(int frequency);
+	public void setFrequency(int frequency);
 }

@@ -12,12 +12,13 @@ public interface ITier {
 	 *
 	 * @return - The tier
 	 */
-	int getTier();
+	public int getTier();
 
 	/**
 	 * Sets the tier of the object
 	 *
-	 * @param tier - The tier to be set
+	 * @param tier
+	 *            - The tier to be set
 	 */
-	void setTier(int tier);
+	public void setTier(int tier);
 }

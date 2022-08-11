@@ -7,5 +7,5 @@ package defense.api;
  */
 public interface IExplosiveIgnore {
 
-	boolean canIgnore(IExplosion explosion);
+	public boolean canIgnore(IExplosion explosion);
 }

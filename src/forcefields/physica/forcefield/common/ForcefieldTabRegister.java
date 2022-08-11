@@ -11,12 +11,16 @@ public class ForcefieldTabRegister implements IContent {
 	public static CreativeTabs forcefieldTab;
 
 	@Override
-	public void register(LoadPhase phase) {
-		if (phase == LoadPhase.CreativeTabRegister) {
-			forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield") {
+	public void register(LoadPhase phase)
+	{
+		if (phase == LoadPhase.CreativeTabRegister)
+		{
+			forcefieldTab = new CreativeTabs(ForcefieldReferences.DOMAIN + "Forcefield")
+			{
 
 				@Override
-				public Item getTabIconItem() {
+				public Item getTabIconItem()
+				{
 					return Item.getItemFromBlock(ForcefieldBlockRegister.blockFortronConstructor);
 				}
 			};

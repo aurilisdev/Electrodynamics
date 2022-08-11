@@ -1,10 +1,10 @@
 package resonant.api.explosion;
 
-public interface IExplosion {
+public abstract interface IExplosion {
 
-	void explode();
+	public abstract void explode();
 
-	float getRadius();
+	public abstract float getRadius();
 
-	long getEnergy();
+	public abstract long getEnergy();
 }

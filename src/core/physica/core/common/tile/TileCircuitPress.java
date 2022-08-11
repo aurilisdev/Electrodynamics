@@ -25,103 +25,128 @@ import physica.library.util.OreDictionaryUtilities;
 
 public class TileCircuitPress extends TileBasePoweredContainer implements IGuiInterface, IMachineTile {
 
-	public static final int SLOT_INPUT = 0;
-	public static final int SLOT_INPUT2 = 1;
-	public static final int SLOT_OUTPUT = 2;
+	public static final int		SLOT_INPUT				= 0;
+	public static final int		SLOT_INPUT2				= 1;
+	public static final int		SLOT_OUTPUT				= 2;
 
-	private static final int[] ACCESSIBLE_SLOTS_TOP = new int[] { SLOT_INPUT };
-	private static final int[] ACCESSIBLE_SLOTS_DOWN = new int[] { SLOT_OUTPUT };
-	private static final int[] ACCESSIBLE_SLOTS_SIDES = new int[] { SLOT_INPUT2 };
+	private static final int[]	ACCESSIBLE_SLOTS_TOP	= new int[] { SLOT_INPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_DOWN	= new int[] { SLOT_OUTPUT };
+	private static final int[]	ACCESSIBLE_SLOTS_SIDES	= new int[] { SLOT_INPUT2 };
 
-	public static final int TICKS_REQUIRED = 80;
-	public static final int POWER_USAGE = ElectricityUtilities.convertEnergy(1000, Unit.WATT, Unit.RF);
+	public static final int		TICKS_REQUIRED			= 80;
+	public static final int		POWER_USAGE				= ElectricityUtilities.convertEnergy(1000, Unit.WATT, Unit.RF);
 
-	protected int operatingTicks = 0;
+	protected int				operatingTicks			= 0;
 
 	@Override
-	public boolean isRunning() {
+	public boolean isRunning()
+	{
 		return operatingTicks > 0;
 	}
 
 	@Override
-	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player) {
+	public void writeClientGuiPacket(List<Object> dataList, EntityPlayer player)
+	{
 		super.writeClientGuiPacket(dataList, player);
 		dataList.add(operatingTicks);
 	}
 
 	@Override
-	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player) {
+	public void readClientGuiPacket(ByteBuf buf, EntityPlayer player)
+	{
 		super.readClientGuiPacket(buf, player);
 		int prevOperatingTicks = operatingTicks;
 		operatingTicks = buf.readInt();
-		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0) {
+		if (prevOperatingTicks == 0 && operatingTicks > 0 || prevOperatingTicks > 0 && operatingTicks == 0)
+		{
 			GridLocation loc = getLocation();
 			World().updateLightByType(EnumSkyBlock.Block, loc.xCoord, loc.yCoord, loc.zCoord);
 		}
 	}
 
-	public int getOperatingTicks() {
+	public int getOperatingTicks()
+	{
 		return operatingTicks;
 	}
 
 	@Override
-	public void updateServer(int ticks) {
+	public void updateServer(int ticks)
+	{
 		super.updateServer(ticks);
-		if (hasEnoughEnergy()) {
+		if (hasEnoughEnergy())
+		{
 			ItemStack output = getStackInSlot(SLOT_OUTPUT);
 			ItemStack input = getStackInSlot(SLOT_INPUT);
 			ItemStack input2 = getStackInSlot(SLOT_INPUT2);
-			if (canProcess(output, input, input2)) {
-				if (operatingTicks < TICKS_REQUIRED) {
+			if (canProcess(output, input, input2))
+			{
+				if (operatingTicks < TICKS_REQUIRED)
+				{
 					operatingTicks++;
-				} else {
+				} else
+				{
 					process(input, input2, output);
 					operatingTicks = 0;
 				}
 				extractEnergy();
-			} else {
+			} else
+			{
 				operatingTicks = 0;
 			}
 		}
 	}
 
-	public boolean canProcess(ItemStack output, ItemStack input, ItemStack input2) {
+	public boolean canProcess(ItemStack output, ItemStack input, ItemStack input2)
+	{
 		if (input == null || input2 == null || output != null && output.stackSize >= output.getMaxStackSize()) // This only supports one as the item stacksize in the recipe output
 		{
 			return false;
 		}
 		CircuitPressRecipeHandler currentRecipe = RecipeSystem.<CircuitPressRecipeHandler>getRecipe(getClass(), input);
-		if (currentRecipe != null) {
+		if (currentRecipe != null)
+		{
 			return OreDictionaryUtilities.isSameOre(input, currentRecipe.getOredict()) && OreDictionaryUtilities.isSameOre(input2, currentRecipe.getOredict2()) && (output == null || currentRecipe.getOutput().isItemEqual(output));
 		}
 		return false;
 	}
 
-	private void process(ItemStack input, ItemStack input2, ItemStack output) {
-		if (output == null) {
+	private void process(ItemStack input, ItemStack input2, ItemStack output)
+	{
+		if (output == null)
+		{
 			output = RecipeSystem.<CircuitPressRecipeHandler>getRecipe(getClass(), input).getOutput().copy();
-		} else {
+		} else
+		{
 			output.stackSize++;
 		}
 		setInventorySlotContents(SLOT_OUTPUT, output);
 		input.stackSize--;
-		if (input.stackSize <= 0) {
+		if (input.stackSize <= 0)
+		{
 			setInventorySlotContents(SLOT_INPUT, null);
 		}
 		input2.stackSize--;
-		if (input2.stackSize <= 0) {
+		if (input2.stackSize <= 0)
+		{
 			setInventorySlotContents(SLOT_INPUT2, null);
 		}
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		if (slot == SLOT_OUTPUT || stack == null) {
-		} else if (slot == SLOT_INPUT) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack)
+	{
+		if (slot == SLOT_OUTPUT || stack == null)
+		{
+			return false;
+		} else if (slot == SLOT_INPUT)
+		{
 			return RecipeSystem.isRecipeInput(getClass(), stack);
-		} else if (slot == SLOT_INPUT2) {
-			for (CircuitPressRecipeHandler recipe : RecipeSystem.<CircuitPressRecipeHandler>getHandleRecipes(getClass())) {
-				if (OreDictionaryUtilities.isSameOre(stack, recipe.getOredict2())) {
+		} else if (slot == SLOT_INPUT2)
+		{
+			for (CircuitPressRecipeHandler recipe : RecipeSystem.<CircuitPressRecipeHandler>getHandleRecipes(getClass()))
+			{
+				if (OreDictionaryUtilities.isSameOre(stack, recipe.getOredict2()))
+				{
 					return true;
 				}
 			}
@@ -130,38 +155,45 @@ public class TileCircuitPress extends TileBasePoweredContainer implements IGuiIn
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromFace(Face face) {
+	public int[] getAccessibleSlotsFromFace(Face face)
+	{
 		return face == Face.DOWN ? ACCESSIBLE_SLOTS_DOWN : face == Face.UP ? ACCESSIBLE_SLOTS_TOP : ACCESSIBLE_SLOTS_SIDES;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, Face face) {
+	public boolean canInsertItem(int slot, ItemStack stack, Face face)
+	{
 		return isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, Face face) {
+	public boolean canExtractItem(int slot, ItemStack stack, Face face)
+	{
 		return true;
 	}
 
 	@Override
-	public int getPowerUsage() {
+	public int getPowerUsage()
+	{
 		return POWER_USAGE;
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getSizeInventory()
+	{
 		return 3;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getClientGuiElement(int id, EntityPlayer player) {
+	public GuiScreen getClientGuiElement(int id, EntityPlayer player)
+	{
 		return new GuiCircuitPress(player, this);
 	}
 
 	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player) {
+	public Container getServerGuiElement(int id, EntityPlayer player)
+	{
 		return new ContainerCircuitPress(player, this);
 	}
 }

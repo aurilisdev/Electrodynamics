@@ -4,19 +4,19 @@ import physica.api.core.electricity.IElectricityReceiver;
 import physica.library.net.energy.ElectricNetwork;
 
 public interface IConductor extends IElectricityReceiver {
-	ElectricNetwork getNetwork();
+	public ElectricNetwork getNetwork();
 
-	ElectricNetwork getNetwork(boolean createIfNull);
+	public ElectricNetwork getNetwork(boolean createIfNull);
 
-	EnumConductorType getCableType();
+	public EnumConductorType getCableType();
 
-	void setNetwork(ElectricNetwork network);
+	public void setNetwork(ElectricNetwork network);
 
-	void refreshNetwork();
+	public void refreshNetwork();
 
-	void removeFromNetwork();
+	public void removeFromNetwork();
 
-	void fixNetwork();
+	public void fixNetwork();
 
-	void destroyNodeViolently();
+	public void destroyNodeViolently();
 }
