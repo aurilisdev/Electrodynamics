@@ -34,6 +34,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		} else {
 			gunStack = playerIn.getOffhandItem();
 		}
+		
 		if (!worldIn.isClientSide) {
 			ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
 
