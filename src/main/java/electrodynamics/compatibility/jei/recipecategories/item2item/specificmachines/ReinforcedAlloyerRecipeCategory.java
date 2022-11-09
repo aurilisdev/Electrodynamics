@@ -53,7 +53,6 @@ public class ReinforcedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Rei
 		setLabels(POWER_LABEL, ITEM_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

@@ -8,7 +8,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextSupplier;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,7 +30,7 @@ public class ScreenComponentSlot extends ScreenComponent {
 	}
 
 	public ScreenComponentSlot(final IScreenWrapper gui, final int x, final int y, Slot slot) {
-		this(EnumSlotType.NORMAL, gui, x, y, () -> slot.getItem().isEmpty() ? new TextComponent("") : slot.getItem().getHoverName());
+		this(EnumSlotType.NORMAL, gui, x, y, () -> slot.getItem().isEmpty() ? Component.literal("") : slot.getItem().getHoverName());
 	}
 
 	public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y, Slot slot) {

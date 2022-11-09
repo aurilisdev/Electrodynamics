@@ -10,6 +10,7 @@ import electrodynamics.prefab.utilities.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 	private Player originPlayer;
 
 	public TickableSoundJetpack(UUID originPlayer) {
-		super(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS);
+		super(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS, RandomSource.create());
 		originId = originPlayer;
 		volume = 0.5F;
 		pitch = 1.0F;

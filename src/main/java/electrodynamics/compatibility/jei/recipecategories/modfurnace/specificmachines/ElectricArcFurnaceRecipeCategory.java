@@ -56,7 +56,6 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory<B
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

@@ -52,7 +52,6 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillReci
 		setLabels(POWER_LABEL, ITEM_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

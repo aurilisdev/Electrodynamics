@@ -11,7 +11,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -70,7 +70,7 @@ public class ScreenComponentCountdown extends ScreenComponentInfo {
 	private List<? extends FormattedCharSequence> getTooltips() {
 		List<FormattedCharSequence> tips = new ArrayList<>();
 		if (progressInfoHandler != null) {
-			tips.add(new TranslatableComponent(langKey, (int) (100 * progressInfoHandler.getAsDouble()) + "%").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+			tips.add(Component.translatable(langKey, (int) (100 * progressInfoHandler.getAsDouble()) + "%").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 		}
 		return tips;
 	}

@@ -17,8 +17,6 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -32,7 +30,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 
@@ -51,10 +49,10 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 			@Override
-			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
 				ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ClientRegister.SERVO_LEGGINGS.bakeRoot());
 
@@ -100,8 +98,8 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		tooltip.add(Component.translatable("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
+		tooltip.add(Component.translatable("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 		staticAppendTooltips(stack, world, tooltip, flagIn);
 	}
 
@@ -109,27 +107,27 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
 			if (tag.getBoolean(NBTUtils.ON)) {
-				tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+				tooltip.add(Component.translatable("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 			} else {
-				tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+				tooltip.add(Component.translatable("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
 			Component modeTip = switch (tag.getInt(NBTUtils.MODE)) {
-			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.servolegs.step").withStyle(ChatFormatting.GREEN));
-			case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.servolegs.both").withStyle(ChatFormatting.AQUA));
-			case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.servolegs.speed").withStyle(ChatFormatting.GREEN));
-			case 3 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.servolegs.none").withStyle(ChatFormatting.RED));
-			default -> new TextComponent("");
+			case 0 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.step").withStyle(ChatFormatting.GREEN));
+			case 1 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.both").withStyle(ChatFormatting.AQUA));
+			case 2 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.speed").withStyle(ChatFormatting.GREEN));
+			case 3 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.none").withStyle(ChatFormatting.RED));
+			default -> Component.literal("");
 			};
 			tooltip.add(modeTip);
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
-			tooltip.add(new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.servolegs.none").withStyle(ChatFormatting.RED)));
+			tooltip.add(Component.translatable("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+			tooltip.add(Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.none").withStyle(ChatFormatting.RED)));
 		}
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowdedIn(group)) {
+		if (allowedIn(group)) {
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);

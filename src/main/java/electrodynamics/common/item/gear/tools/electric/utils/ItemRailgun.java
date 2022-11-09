@@ -9,8 +9,6 @@ import electrodynamics.prefab.item.TemperateItemProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -35,10 +33,10 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		ItemRailgun railgun = (ItemRailgun) stack.getItem();
-		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railguntemp").withStyle(ChatFormatting.YELLOW).append(new TextComponent(railgun.getTemperatureStored(stack) + " C")));
-		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railgunmaxtemp").withStyle(ChatFormatting.YELLOW).append(new TextComponent(overheatTemperature + " C")));
+		tooltip.add(Component.translatable("tooltip.electrodynamics.railguntemp").withStyle(ChatFormatting.YELLOW).append(Component.literal(railgun.getTemperatureStored(stack) + " C")));
+		tooltip.add(Component.translatable("tooltip.electrodynamics.railgunmaxtemp").withStyle(ChatFormatting.YELLOW).append(Component.literal(overheatTemperature + " C")));
 		if (railgun.getTemperatureStored(stack) >= getOverheatTemp()) {
-			tooltip.add(new TranslatableComponent("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+			tooltip.add(Component.translatable("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 		}
 	}
 

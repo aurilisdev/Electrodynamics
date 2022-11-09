@@ -24,9 +24,9 @@ public class InteractionHandler {
 
 	@SubscribeEvent
 	public static void onPlayerInteract(RightClickBlock event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if (!player.level.isClientSide) {
-			BlockState state = event.getWorld().getBlockState(event.getPos());
+			BlockState state = event.getLevel().getBlockState(event.getPos());
 			Block block = state.getBlock();
 			ItemStack stack = event.getItemStack();
 			Item item = stack.getItem();

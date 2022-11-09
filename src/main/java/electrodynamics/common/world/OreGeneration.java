@@ -2,7 +2,6 @@ package electrodynamics.common.world;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
@@ -15,11 +14,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -30,9 +28,6 @@ import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
@@ -53,20 +48,30 @@ public class OreGeneration {
 		}
 	}
 
-	@SubscribeEvent
-	public static void gen(BiomeLoadingEvent event) {
-		BiomeGenerationSettingsBuilder gen = event.getGeneration();
-		if (event.getCategory() != BiomeCategory.NETHER && event.getCategory() != BiomeCategory.THEEND) {
-			for (Holder<PlacedFeature> feature : FEATURES) {
-				gen.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, feature);
-			}
-		}
-	}
+	// TODO: Replace this method for every single ore in the game with a json file in the folder
+	// electrodyjnamics.forge.biome_modifier
+	// add_<orename>.json
+	// format:
+//	{
+//		"type": "forge:add_features",
+//		"biomes": "minecraft:is_overworld",
+//		"features": "electrodynamics:<fromcode: ore.tag()>",
+//		"step": "underground_ores"
+//	}
+//	@SubscribeEvent
+//	public static void gen(Biome event) {
+//		BiomeGenerationSettingsBuilder gen = event.getGeneration();
+//		if (event.getCategory() != BiomeCategory.NETHER && event.getCategory() != BiomeCategory.THEEND) {
+//			for (Holder<PlacedFeature> feature : FEATURES) {
+//				gen.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, feature);
+//			}
+//		}
+//	}
 
-	public static void generateSulfurAround(Random rand, BlockPos pos, WorldGenLevel level) {
+	public static void generateSulfurAround(RandomSource random, BlockPos pos, WorldGenLevel level) {
 		for (Direction direction : Direction.values()) {
 			BlockPos offset = pos.offset(direction.getNormal());
-			if (rand.nextFloat() < 0.3) {
+			if (random.nextFloat() < 0.3) {
 				if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
 					level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOre.sulfur).defaultBlockState(), 3);
 				}

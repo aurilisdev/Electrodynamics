@@ -9,7 +9,6 @@ import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePowerSource> {
@@ -42,14 +41,14 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		int i = (width - imageWidth) / 2;
 		int j = (height - imageHeight) / 2;
-		voltage = new EditBox(font, i + 85, j + 31, 46, 13, new TranslatableComponent("container.creativepowersource.voltage"));
+		voltage = new EditBox(font, i + 85, j + 31, 46, 13, Component.translatable("container.creativepowersource.voltage"));
 		voltage.setTextColor(-1);
 		voltage.setTextColorUneditable(-1);
 		voltage.setBordered(false);
 		voltage.setMaxLength(6);
 		voltage.setResponder(this::setVoltage);
 
-		power = new EditBox(font, i + 85, j + 31 + 18, 46, 13, new TranslatableComponent("container.creativepowersource.power"));
+		power = new EditBox(font, i + 85, j + 31 + 18, 46, 13, Component.translatable("container.creativepowersource.power"));
 		power.setTextColor(-1);
 		power.setTextColorUneditable(-1);
 		power.setBordered(false);
@@ -112,10 +111,10 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
-		font.draw(stack, new TranslatableComponent("gui.creativepowersource.voltage"), 40, 31, 4210752);
-		font.draw(stack, new TranslatableComponent("gui.creativepowersource.power"), 40, 49, 4210752);
-		font.draw(stack, new TranslatableComponent("gui.creativepowersource.voltunit"), 131, 31, 4210752);
-		font.draw(stack, new TranslatableComponent("gui.creativepowersource.powerunit"), 131, 49, 4210752);
+		font.draw(stack, Component.translatable("gui.creativepowersource.voltage"), 40, 31, 4210752);
+		font.draw(stack, Component.translatable("gui.creativepowersource.power"), 40, 49, 4210752);
+		font.draw(stack, Component.translatable("gui.creativepowersource.voltunit"), 131, 31, 4210752);
+		font.draw(stack, Component.translatable("gui.creativepowersource.powerunit"), 131, 49, 4210752);
 	}
 
 }

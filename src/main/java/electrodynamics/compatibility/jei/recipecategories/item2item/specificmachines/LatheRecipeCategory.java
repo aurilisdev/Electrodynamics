@@ -52,7 +52,6 @@ public class LatheRecipeCategory extends Item2ItemRecipeCategory<LatheRecipe> {
 		setLabels(POWER_LABEL, ITEM_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

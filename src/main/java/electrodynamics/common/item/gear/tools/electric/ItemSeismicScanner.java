@@ -17,7 +17,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -40,7 +39,7 @@ import net.minecraftforge.network.NetworkDirection;
 
 public class ItemSeismicScanner extends ItemElectric {
 
-	private static final Component CONTAINER_TITLE = new TranslatableComponent("container.seismicscanner");
+	private static final Component CONTAINER_TITLE =Component.translatable("container.seismicscanner");
 	private final ElectricItemProperties properties;
 
 	public static final int SLOT_COUNT = 1;
@@ -69,20 +68,20 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
-		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.use"));
-		tooltips.add(new TranslatableComponent("tooltip.seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
-		boolean onCooldown = stack.hasTag() ? stack.getTag().getInt(NBTUtils.TIMER) > 0 : false;
+		tooltips.add(Component.translatable("tooltip.seismicscanner.use"));
+		tooltips.add(Component.translatable("tooltip.seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
+		boolean onCooldown = stack.hasTag() && stack.getTag().getInt(NBTUtils.TIMER) > 0;
 		if (onCooldown) {
-			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
+			tooltips.add(Component.translatable("tooltip.seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
 		} else {
-			tooltips.add(new TranslatableComponent("tooltip.seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
+			tooltips.add(Component.translatable("tooltip.seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 		}
 
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowdedIn(group)) {
+		if (allowedIn(group)) {
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);

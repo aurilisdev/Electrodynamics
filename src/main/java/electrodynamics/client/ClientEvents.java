@@ -31,8 +31,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -41,9 +39,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.InputEvent.Key;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,8 +50,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvents {
 
 	@SubscribeEvent
-	public static void renderRailgunTooltip(RenderGameOverlayEvent.Post event) {
-		if (ElementType.ALL.equals(event.getType())) {
+	public static void renderRailgunTooltip(RenderGuiOverlayEvent.Post event) {
 			Player player = Minecraft.getInstance().player;
 			ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
 			ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
@@ -64,16 +60,15 @@ public class ClientEvents {
 			} else if (gunStackOffHand.getItem() instanceof ItemRailgun) {
 				renderHeatToolTip(event, gunStackOffHand);
 			}
-		}
 	}
 
-	private static void renderHeatToolTip(RenderGameOverlayEvent.Post event, ItemStack stack) {
+	private static void renderHeatToolTip(RenderGuiOverlayEvent.Post event, ItemStack stack) {
 		Minecraft minecraft = Minecraft.getInstance();
 		ItemRailgun railgun = (ItemRailgun) stack.getItem();
 		double temperature = railgun.getTemperatureStored(stack);
 		String correction = "";
 
-		event.getMatrixStack().pushPose();
+		event.getPoseStack().pushPose();
 
 		if (temperature < 10) {
 			correction = "00";
@@ -83,20 +78,20 @@ public class ClientEvents {
 			correction = "";
 		}
 
-		Component currTempText = new TranslatableComponent("tooltip.electrodynamics.railguntemp", new TextComponent(temperature + correction + " C")).withStyle(ChatFormatting.YELLOW);
-		Component maxTempText = new TranslatableComponent("tooltip.electrodynamics.railgunmaxtemp", new TextComponent(railgun.getMaxTemp() + " C")).withStyle(ChatFormatting.YELLOW);
+		Component currTempText = Component.translatable("tooltip.electrodynamics.railguntemp", Component.literal(temperature + correction + " C")).withStyle(ChatFormatting.YELLOW);
+		Component maxTempText = Component.translatable("tooltip.electrodynamics.railgunmaxtemp", Component.literal(railgun.getMaxTemp() + " C")).withStyle(ChatFormatting.YELLOW);
 
-		GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, currTempText, 55, 2, 0);
-		GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, maxTempText, 48, 11, 0);
+		GuiComponent.drawCenteredString(event.getPoseStack(), minecraft.font, currTempText, 55, 2, 0);
+		GuiComponent.drawCenteredString(event.getPoseStack(), minecraft.font, maxTempText, 48, 11, 0);
 
 		if (temperature >= railgun.getOverheatTemp()) {
-			Component overheatWarn = new TranslatableComponent("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-			GuiComponent.drawCenteredString(event.getMatrixStack(), minecraft.font, overheatWarn, 70, 20, 0);
+			Component overheatWarn = Component.translatable("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
+			GuiComponent.drawCenteredString(event.getPoseStack(), minecraft.font, overheatWarn, 70, 20, 0);
 		}
 
 		minecraft.getTextureManager().bindForSetup(GuiComponent.GUI_ICONS_LOCATION);
 
-		event.getMatrixStack().popPose();
+		event.getPoseStack().popPose();
 	}
 
 	private static HashSet<Pair<Long, BlockPos>> blocks = new HashSet<>();
@@ -187,7 +182,7 @@ public class ClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void wipeRenderHashes(ClientPlayerNetworkEvent.LoggedOutEvent event) {
+	public static void wipeRenderHashes(ClientPlayerNetworkEvent.LoggingOut event) {
 		Player player = event.getPlayer();
 		if (player != null) {
 			blocks.clear();
@@ -197,7 +192,7 @@ public class ClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void keyPressEvents(KeyInputEvent event) {
+	public static void keyPressEvents(Key event) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Player player = minecraft.player;
 		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {

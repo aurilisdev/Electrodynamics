@@ -57,7 +57,6 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

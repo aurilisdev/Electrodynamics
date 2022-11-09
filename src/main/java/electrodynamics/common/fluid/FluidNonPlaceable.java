@@ -2,7 +2,6 @@ package electrodynamics.common.fluid;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -13,31 +12,32 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
 
 public abstract class FluidNonPlaceable extends Fluid {
 
 	private final java.util.function.Supplier<RegistryObject<Item>> itemSupplier;
-	private String modID;
-	private String fluidName;
-	private int color = 0;
+//	private String modID;
+//	private String fluidName;
+//	private int color = 0;
 
-	public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
+	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
 		this.itemSupplier = itemSupplier;
 	}
 
-	public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
+	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
 		this.itemSupplier = itemSupplier;
-		this.modID = modID;
-		this.fluidName = fluidName;
+//		this.modID = modID;
+//		this.fluidName = fluidName;
 	}
 
-	public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName, int color) {
+	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName, int color) {
 		this.itemSupplier = itemSupplier;
-		this.modID = modID;
-		this.fluidName = fluidName;
-		this.color = color;
+//		this.modID = modID;
+//		this.fluidName = fluidName;
+//		this.color = color;
 	}
 
 	@Override
@@ -91,12 +91,17 @@ public abstract class FluidNonPlaceable extends Fluid {
 	}
 
 	@Override
-	protected FluidAttributes createAttributes() {
-		if (color == 0) {
-			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).build(this);
-		}
-		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).color(color).build(this);
+	public FluidType getFluidType() {
+		return ForgeMod.EMPTY_TYPE.get(); // TODO: Change this so its different in all the fluids
 	}
+// TODO: Fix fluid attributes
+//	@Override
+//	protected FluidAttributes createAttributes() {
+//		if (color == 0) {
+//			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).build(this);
+//		}
+//		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).color(color).build(this);
+//	}
 
 	@Override
 	public VoxelShape getShape(FluidState p_215664_1_, BlockGetter p_215664_2_, BlockPos p_215664_3_) {

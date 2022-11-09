@@ -25,8 +25,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -46,7 +44,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -72,10 +70,10 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 			@Override
-			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
 				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ClientRegister.JETPACK.bakeRoot());
 
@@ -95,7 +93,7 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowdedIn(tab)) {
+		if (allowedIn(tab)) {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				ItemStack full = new ItemStack(this);
@@ -116,20 +114,20 @@ public class ItemJetpack extends ArmorItem {
 
 	protected static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
-			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
+			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip.add(Component.literal(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
 			int mode = stack.getTag().getInt(NBTUtils.MODE);
 			Component modeTip = switch (mode) {
-			case 0 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
-			case 1 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
-			case 2 -> new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
-			default -> new TextComponent("");
+			case 0 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
+			case 1 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
+			case 2 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
+			default -> Component.literal("");
 			};
 			tooltip.add(modeTip);
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
+			tooltip.add(Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
 		}
 	}
 

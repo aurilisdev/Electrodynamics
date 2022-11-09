@@ -22,14 +22,10 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 	public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity, Pair<List<ResourceLocation>, List<Fluid>> whitelistedFluids) {
 		super(container, emptyContainer, capacity);
 		tags = new ArrayList<>();
-		whitelistedFluids.getFirst().forEach(h -> {
-			tags.add(h);
-		});
+		whitelistedFluids.getFirst().forEach(h -> tags.add(h));
 
 		fluids = new ArrayList<>();
-		whitelistedFluids.getSecond().forEach(h -> {
-			fluids.add(h);
-		});
+		whitelistedFluids.getSecond().forEach(h -> fluids.add(h));
 
 	}
 
@@ -39,7 +35,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 		for (ResourceLocation loc : tags) {
 			for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList()) {
 				// filter out flowing fluids
-				if (fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+				if (fluid.builtInRegistryHolder().key().location().toString().toLowerCase().contains("flow")) {
 					return false;
 				}
 				if (fluid.isSame(stack.getFluid())) {
@@ -94,7 +90,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 		for (ResourceLocation loc : tags) {
 			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList();
 			for (Fluid fluid : fluids) {
-				if (!fluid.getRegistryName().toString().toLowerCase().contains("flow")) {
+				if (!fluid.builtInRegistryHolder().key().location().toString().toLowerCase().contains("flow")) {
 					valid.add(fluid);
 				}
 			}

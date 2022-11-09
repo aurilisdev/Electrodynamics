@@ -17,8 +17,6 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
@@ -70,7 +68,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 			}
 
-			list.add(new TranslatableComponent("gui.genericcharger.chargeperc", new TextComponent(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			list.add(Component.translatable("gui.genericcharger.chargeperc", Component.literal(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
 			if (chargeCapable < 33) {
 				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.RED));
@@ -85,7 +83,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	}
 
 	private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
-		return new TranslatableComponent("gui.genericcharger.chargecapable", new TextComponent(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
+		return Component.translatable("gui.genericcharger.chargecapable", Component.literal(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 }

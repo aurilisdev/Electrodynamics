@@ -4,8 +4,13 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import electrodynamics.api.References;
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+@EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = { Dist.CLIENT })
 public class KeyBinds {
 
 	// Category
@@ -21,17 +26,19 @@ public class KeyBinds {
 	private KeyBinds() {
 	}
 
-	public static void registerKeys() {
-		jetpackAscend = registerKey("jetpackascend", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_SPACE);
-		switchJetpackMode = registerKey("jetpackmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_M);
-		toggleNvgs = registerKey("togglenvgs", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_N);
-		switchServoLeggingsMode = registerKey("servoleggingsmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_L);
-		toggleServoLeggings = registerKey("toggleservoleggings", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_K);
+	@SubscribeEvent
+	public static void keyEVent(RegisterKeyMappingsEvent event) {
+		jetpackAscend = registerKey("jetpackascend", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_SPACE, event);
+		switchJetpackMode = registerKey("jetpackmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_M, event);
+		toggleNvgs = registerKey("togglenvgs", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_N, event);
+		switchServoLeggingsMode = registerKey("servoleggingsmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_L, event);
+		toggleServoLeggings = registerKey("toggleservoleggings", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_K, event);
+
 	}
 
-	private static KeyMapping registerKey(String name, String category, int keyCode) {
+	private static KeyMapping registerKey(String name, String category, int keyCode, RegisterKeyMappingsEvent event) {
 		final var key = new KeyMapping("key." + References.ID + "." + name, keyCode, category);
-		ClientRegistry.registerKeyBinding(key);
+		event.register(key);
 		return key;
 	}
 

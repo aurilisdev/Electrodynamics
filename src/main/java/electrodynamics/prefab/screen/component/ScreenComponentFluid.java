@@ -2,10 +2,7 @@ package electrodynamics.prefab.screen.component;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -39,7 +36,8 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
 			if (!fluidStack.isEmpty()) {
-				RenderingUtils.color(fluidStack.getFluid().getAttributes().getColor());
+				// TODO: Fix fluid attributes
+				// RenderingUtils.color(fluidStack.getFluid().getAttributes().getColor());
 			}
 		}
 	}
@@ -49,7 +47,9 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		IFluidTank tank = fluidInfoHandler.getTank();
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
-			return fluidStack.getFluid().getAttributes().getStillTexture();
+			// TODO: Fix fluid attributes
+
+//			return fluidStack.getFluid().getAttributes().getStillTexture();
 		}
 		return resource;
 	}
@@ -60,7 +60,7 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
 			if (fluidStack.getAmount() > 0) {
-				return new TranslatableComponent(fluidStack.getTranslationKey()).append(new TextComponent(" " + tank.getFluidAmount() + " mB"));
+				return Component.translatable(fluidStack.getTranslationKey()).append(Component.literal(" " + tank.getFluidAmount() + " mB"));
 			}
 		}
 		return FluidStack.EMPTY.getDisplayName();

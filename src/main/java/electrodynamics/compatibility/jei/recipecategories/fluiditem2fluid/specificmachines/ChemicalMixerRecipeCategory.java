@@ -57,7 +57,6 @@ public class ChemicalMixerRecipeCategory extends FluidItem2FluidRecipeCategory<C
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

@@ -2,8 +2,7 @@ package electrodynamics.compatibility.jei.utils.label;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class GenericLabelWrapper {
 
@@ -37,7 +36,7 @@ public class GenericLabelWrapper {
 		return "jei.guilabel." + NAME;
 	}
 
-	public BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
-		return new TranslatableComponent(getLocation());
+	public Component getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
+		return Component.translatable(getLocation());
 	}
 }

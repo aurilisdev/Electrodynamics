@@ -55,7 +55,6 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

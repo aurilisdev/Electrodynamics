@@ -26,6 +26,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -33,7 +34,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -69,7 +69,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	private ArrowAnimatedWrapper[] animArrows = new ArrowAnimatedWrapper[0];
 	private ScreenObjectWrapper[] staticArrows = new ScreenObjectWrapper[0];
 
-	public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
+	protected ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
 
 		RECIPE_GROUP = recipeGroup;
 		MOD_ID = modID;
@@ -82,14 +82,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		ANIMATION_LENGTH = animationTime;
 	}
 
-	@Override
 	public Class<T> getRecipeClass() {
 		return RECIPE_CATEGORY_CLASS;
 	}
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("container." + RECIPE_GROUP);
+		return Component.translatable("container." + RECIPE_GROUP);
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	@Override
-	public void draw(ElectrodynamicsRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(ElectrodynamicsRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
 		drawInputSlots(matrixStack);
 		drawOutputSlots(matrixStack);
 		drawStaticArrows(matrixStack);

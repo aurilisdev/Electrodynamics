@@ -37,7 +37,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	@Override
 	public void saveToNBT(CompoundTag nbt) {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("FluidName", fluidTank.getFluid().getRawFluid().getRegistryName().toString());
+		tag.putString("FluidName", fluidTank.getFluid().getRawFluid().builtInRegistryHolder().key().location().toString());
 		tag.putInt("Amount", fluidTank.getFluid().getAmount());
 		if (fluidTank.getFluid().getTag() != null) {
 			tag.put("Tag", fluidTank.getFluid().getTag());

@@ -4,7 +4,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.common.tile.network.TileWire;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
@@ -26,7 +26,7 @@ public class ItemMultimeter extends Item {
 				finalString += ChatFormatter.getChatDisplay(net.getActiveVoltage(), DisplayUnit.VOLTAGE) + ", ";
 				finalString += ChatFormatter.getChatDisplay(net.getActiveTransmitted() * 20, DisplayUnit.WATT) + ", ";
 				finalString += ChatFormatter.getChatDisplay(net.getResistance(), DisplayUnit.RESISTANCE) + " ( -" + Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100) + "% " + ChatFormatter.getChatDisplay(net.getLastEnergyLoss() * 20, DisplayUnit.WATT) + " )";
-				context.getPlayer().displayClientMessage(new TextComponent(finalString), true);
+				context.getPlayer().displayClientMessage(Component.literal(finalString), true);
 			}
 		}
 		return super.useOn(context);

@@ -15,8 +15,6 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -81,23 +79,23 @@ public class BlockItemDescriptable extends BlockItem {
 			for (String s : gotten) {
 				boolean translate = s.contains("|translate|");
 				if (translate) {
-					tooltip.add(new TranslatableComponent(s.replace("|translate|", "")).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.translatable(s.replace("|translate|", "")).withStyle(ChatFormatting.GRAY));
 				} else {
-					tooltip.add(new TextComponent(s).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(s).withStyle(ChatFormatting.GRAY));
 				}
 			}
 		}
 		if (stack.hasTag()) {
 			double joules = stack.getTag().getDouble("joules");
 			if (joules > 0) {
-				tooltip.add(new TextComponent("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
+				tooltip.add(Component.literal("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
 			}
 		}
 	}
 
 	@Override
-	public int getItemStackLimit(ItemStack stack) {
-		return stack.hasTag() && stack.getTag().getDouble("joules") > 0 ? 1 : super.getItemStackLimit(stack);
+	public int getMaxStackSize(ItemStack stack) {
+		return stack.hasTag() && stack.getTag().getDouble("joules") > 0 ? 1 : super.getMaxStackSize(stack);
 	}
 
 	public static void addDescription(Supplier<Block> block, String description) {

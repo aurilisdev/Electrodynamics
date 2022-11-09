@@ -54,7 +54,6 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

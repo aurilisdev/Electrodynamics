@@ -2,8 +2,6 @@ package electrodynamics.prefab.tile.components.type;
 
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 public class ComponentName implements Component {
 	protected boolean translation;
@@ -19,7 +17,7 @@ public class ComponentName implements Component {
 	}
 
 	public net.minecraft.network.chat.Component getName() {
-		return translation ? new TranslatableComponent(name) : new TextComponent(name);
+		return translation ? net.minecraft.network.chat.Component.translatable(name) : net.minecraft.network.chat.Component.literal(name);
 	}
 
 	@Override

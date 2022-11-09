@@ -53,7 +53,6 @@ public class OxidationFurnaceRecipeCategory extends Item2ItemRecipeCategory<Oxid
 		setLabels(POWER_LABEL, ITEM_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

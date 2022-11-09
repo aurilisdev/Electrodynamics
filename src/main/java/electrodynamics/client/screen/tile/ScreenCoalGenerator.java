@@ -18,8 +18,6 @@ import electrodynamics.prefab.screen.component.ScreenComponentTemperature;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,9 +42,9 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileCoalGenerator box = menu.getHostFromIntArray();
 		if (box != null) {
-			list.add(new TranslatableComponent("gui.coalgenerator.timeleft", new TextComponent(box.clientBurnTime / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.temperature", new TextComponent(ChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.heat", new TextComponent(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(Component.translatable("gui.coalgenerator.timeleft", Component.literal(box.clientBurnTime / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(Component.translatable("gui.machine.temperature", Component.literal(ChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(Component.translatable("gui.machine.heat", Component.literal(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -57,10 +55,10 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		TileCoalGenerator box = menu.getHostFromIntArray();
 		if (box != null) {
 			TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((box.clientHeat - 27.0) / (3000.0 - 27.0), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-			font.draw(matrixStack, new TranslatableComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
-			font.draw(matrixStack, new TranslatableComponent("gui.machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
-			font.draw(matrixStack, new TranslatableComponent("gui.machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
-			font.draw(matrixStack, new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
+			font.draw(matrixStack, Component.translatable("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
+			font.draw(matrixStack, Component.translatable("gui.machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
+			font.draw(matrixStack, Component.translatable("gui.machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
+			font.draw(matrixStack, Component.translatable("gui.machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
 		}
 	}
 }

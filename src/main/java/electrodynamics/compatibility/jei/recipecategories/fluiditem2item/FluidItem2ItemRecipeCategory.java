@@ -36,7 +36,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
 			List<FluidStack> fluids = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
-				if (!stack.getFluid().getRegistryName().toString().toLowerCase().contains("flow")) {
+				if (!stack.getFluid().builtInRegistryHolder().key().location().toString().toLowerCase().contains("flow")) {
 					fluids.add(stack);
 				}
 			}

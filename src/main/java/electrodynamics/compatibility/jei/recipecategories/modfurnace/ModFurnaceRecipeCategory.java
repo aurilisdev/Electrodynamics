@@ -20,6 +20,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -27,7 +28,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
@@ -59,7 +59,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 	private double JOULES;
 	private int VOLTAGE;
 
-	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeClass, int animTime, double joulesPerTick, int voltage) {
+	protected ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeClass, int animTime, double joulesPerTick, int voltage) {
 
 		ANIMATION_LENGTH = animTime;
 
@@ -75,14 +75,13 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 		VOLTAGE = voltage;
 	}
 
-	@Override
 	public Class<T> getRecipeClass() {
 		return RECIPE_CATEGORY_CLASS;
 	}
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("container." + RECIPE_GROUP);
+		return Component.translatable("container." + RECIPE_GROUP);
 	}
 
 	@Override
@@ -111,7 +110,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 	}
 
 	@Override
-	public void draw(AbstractCookingRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(AbstractCookingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
 		List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(ANIMATION_LENGTH);
 		IDrawableStatic image;
 		ScreenObjectWrapper wrapper;
@@ -152,9 +151,9 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 
 	public void addDescriptions(PoseStack stack) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		TranslatableComponent text;
+		Component text;
 		for (GenericLabelWrapper wrap : LABELS) {
-			text = new TranslatableComponent("jei.guilabel.power", VOLTAGE, JOULES * 20 / 1000.0);
+			text = Component.translatable("jei.guilabel.power", VOLTAGE, JOULES * 20 / 1000.0);
 			fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
 		}
 	}

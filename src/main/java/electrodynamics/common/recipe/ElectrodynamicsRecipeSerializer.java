@@ -16,9 +16,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsRecipe> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsRecipe> implements RecipeSerializer<T> {
 
 	private static final String COUNT = "count";
 	private static final String ITEM_INPUTS = "iteminputs";

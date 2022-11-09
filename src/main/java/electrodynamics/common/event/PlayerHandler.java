@@ -50,7 +50,7 @@ public class PlayerHandler {
 		ItemStack[] combatArmor = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMBATHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMBATLEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get()) };
 
 		List<ItemStack> armorPieces = new ArrayList<>();
-		event.getEntityLiving().getArmorSlots().forEach(armorPieces::add);
+		event.getEntity().getArmorSlots().forEach(armorPieces::add);
 
 		if (compareArmor(armorPieces, compositeArmor) || compareArmor(armorPieces, combatArmor)) {
 			ItemStack stack = armorPieces.get(2);
@@ -59,7 +59,7 @@ public class PlayerHandler {
 			if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 				event.setAmount((float) Math.sqrt(event.getAmount()));
 				tag.putInt(NBTUtils.PLATES, stored - 1);
-				event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
+				event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
 	}
@@ -77,13 +77,13 @@ public class PlayerHandler {
 		if (source.isFall()) {
 			ItemStack hydraulicBoots = new ItemStack(DeferredRegisters.ITEM_HYDRAULICBOOTS.get());
 			ItemStack combatBoots = new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get());
-			ItemStack playerBoots = event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET);
+			ItemStack playerBoots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
 			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) || ItemUtils.testItems(combatBoots.getItem(), playerBoots.getItem())) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
 				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
 					event.setCanceled(true);
 					playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
-					event.getEntityLiving().getCommandSenderWorld().playSound(null, event.getEntityLiving().blockPosition(), SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+					event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 				}
 			}
 		}
@@ -106,7 +106,7 @@ public class PlayerHandler {
 		if (entity instanceof Player player) {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
-				ServerPlayer server = (ServerPlayer) event.getPlayer();
+				ServerPlayer server = (ServerPlayer) event.getEntity();
 				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 			}
 		}

@@ -6,8 +6,7 @@ import java.util.List;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 public class BiproductPercentWrapper extends GenericLabelWrapper {
 
@@ -19,16 +18,16 @@ public class BiproductPercentWrapper extends GenericLabelWrapper {
 	}
 
 	@Override
-	public BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
+	public Component getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
 		if (isFluid) {
 			// for future use
 		} else if (recipe.hasItemBiproducts()) {
 			List<GenericLabelWrapper> labels = Arrays.asList(category.LABELS);
 			int biPos = labels.indexOf(this) - category.itemBiLabelFirstIndex;
 			ProbableItem item = recipe.getItemBiproducts()[biPos];
-			return new TextComponent(item.getChance() * 100 + "%");
+			return Component.literal(item.getChance() * 100 + "%");
 		}
-		return new TextComponent("");
+		return Component.literal("");
 	}
 
 }

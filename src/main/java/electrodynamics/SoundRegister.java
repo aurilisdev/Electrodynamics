@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 
 public class SoundRegister {
@@ -37,7 +36,7 @@ public class SoundRegister {
 	public static final RegistryObject<SoundEvent> SOUND_JETPACK = SOUNDS.register("jetpack", supplier(new SoundEvent(new ResourceLocation(References.ID + ":jetpack"))));
 	public static final RegistryObject<SoundEvent> SOUND_MOTORRUNNING = SOUNDS.register("motorrunning", supplier(new SoundEvent(new ResourceLocation(References.ID + ":motorrunning"))));
 
-	private static <T extends IForgeRegistryEntry<T>> Supplier<? extends T> supplier(T entry) {
+	private static <T> Supplier<? extends T> supplier(T entry) {
 		return () -> entry;
 	}
 }

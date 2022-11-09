@@ -53,7 +53,6 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Ener
 		setLabels(POWER_LABEL, ITEM_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

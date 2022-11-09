@@ -2,8 +2,7 @@ package electrodynamics.compatibility.jei.utils.label;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class PowerLabelWrapper extends GenericLabelWrapper {
 
@@ -17,7 +16,7 @@ public class PowerLabelWrapper extends GenericLabelWrapper {
 	}
 
 	@Override
-	public BaseComponent getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
-		return new TranslatableComponent(getLocation(), voltage, wattage);
+	public Component getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
+		return Component.translatable(getLocation(), voltage, wattage);
 	}
 }

@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -52,7 +51,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowdedIn(group)) {
+		if (allowedIn(group)) {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				for (Fluid liq : getWhitelistedFluids().getSecond()) {
@@ -78,8 +77,8 @@ public class ItemCanister extends Item {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
 				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
 					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-					tooltip.add(new TextComponent(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
-					tooltip.add(new TextComponent(cap.getFluid().getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY));
+					tooltip.add(Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(cap.getFluid().getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY));
 				}
 			});
 		}
@@ -131,7 +130,7 @@ public class ItemCanister extends Item {
 		List<Fluid> whitelisted = new ArrayList<>();
 		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
 
-			if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null && fluid.getBucket().getRegistryName().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().getRegistryName())) {
+			if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
 				whitelisted.add(fluid);
 			}
 		}

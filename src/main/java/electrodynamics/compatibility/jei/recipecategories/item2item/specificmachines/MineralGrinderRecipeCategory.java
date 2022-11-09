@@ -52,7 +52,6 @@ public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<Minera
 		setLabels(POWER_LABEL, ITEM_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

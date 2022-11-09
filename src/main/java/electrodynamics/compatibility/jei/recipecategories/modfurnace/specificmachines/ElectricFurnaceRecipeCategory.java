@@ -57,7 +57,6 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<Smel
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

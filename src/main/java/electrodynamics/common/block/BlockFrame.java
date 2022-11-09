@@ -2,7 +2,6 @@ package electrodynamics.common.block;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -10,6 +9,7 @@ import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
@@ -79,7 +79,7 @@ public class BlockFrame extends Block {
 	}
 
 	@Override
-	public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
+	public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
 		pLevel.setBlockAndUpdate(pPos, Blocks.AIR.defaultBlockState());
 	}
 

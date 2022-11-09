@@ -53,7 +53,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 		ListTag inputList = new ListTag();
 		for (FluidTank tank : inputTanks) {
 			CompoundTag tag = new CompoundTag();
-			tag.putString("FluidName", tank.getFluid().getRawFluid().getRegistryName().toString());
+			tag.putString("FluidName", tank.getFluid().getRawFluid().builtInRegistryHolder().key().location().toString());
 			tag.putInt("Amount", tank.getFluid().getAmount());
 
 			if (tank.getFluid().getTag() != null) {
@@ -68,7 +68,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 		ListTag outputList = new ListTag();
 		for (FluidTank tank : outputTanks) {
 			CompoundTag tag = new CompoundTag();
-			tag.putString("FluidName", tank.getFluid().getRawFluid().getRegistryName().toString());
+			tag.putString("FluidName", tank.getFluid().getRawFluid().builtInRegistryHolder().key().location().toString());
 			tag.putInt("Amount", tank.getFluid().getAmount());
 
 			if (tank.getFluid().getTag() != null) {

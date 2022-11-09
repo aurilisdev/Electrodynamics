@@ -57,7 +57,6 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 		setLabels(POWER_LABEL);
 	}
 
-	@Override
 	public ResourceLocation getUid() {
 		return UID;
 	}

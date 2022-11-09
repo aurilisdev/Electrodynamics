@@ -18,7 +18,6 @@ import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -134,7 +133,7 @@ public class GenericTile extends BlockEntity implements Nameable {
 
 	@Override
 	public net.minecraft.network.chat.Component getName() {
-		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName() : new TextComponent(References.ID + ".default.tile.name");
+		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName() : net.minecraft.network.chat.Component.literal(References.ID + ".default.tile.name");
 	}
 
 	@Override
