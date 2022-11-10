@@ -3,7 +3,7 @@ package electrodynamics.common.world;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.settings.OreConfig;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -18,10 +18,10 @@ public class OreGeneration {
 				BlockPos offset = pos.offset(direction.getNormal());
 				if (random.nextFloat() < 0.3) {
 					if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
-						level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOre.sulfur).defaultBlockState(), 3);
+						level.setBlock(offset, ElectrodynamicsRegisters.getSafeBlock(SubtypeOre.sulfur).defaultBlockState(), 3);
 					}
 					if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
-						level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
+						level.setBlock(offset, ElectrodynamicsRegisters.getSafeBlock(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
 					}
 				}
 			}

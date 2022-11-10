@@ -92,20 +92,20 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 
 		registration.addRecipeCatalyst(ElectricFurnaceRecipeCategory.INPUT_MACHINE, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnacedouble)), ElectricFurnaceRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnacetriple)), ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricfurnacedouble)), ElectricFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricfurnacetriple)), ElectricFurnaceRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(WireMillRecipeCategory.INPUT_MACHINE, WireMillRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.wiremilldouble)), WireMillRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.wiremilltriple)), WireMillRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.wiremilldouble)), WireMillRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.wiremilltriple)), WireMillRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(MineralCrusherRecipeCategory.INPUT_MACHINE, MineralCrusherRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrusherdouble)), MineralCrusherRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrushertriple)), MineralCrusherRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.mineralcrusherdouble)), MineralCrusherRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.mineralcrushertriple)), MineralCrusherRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(MineralGrinderRecipeCategory.INPUT_MACHINE, MineralGrinderRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralgrinderdouble)), MineralGrinderRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.mineralgrindertriple)), MineralGrinderRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.mineralgrinderdouble)), MineralGrinderRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.mineralgrindertriple)), MineralGrinderRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(ElectricArcFurnaceRecipeCategory.INPUT_MACHINE, ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble)), ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple)), ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble)), ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple)), ElectricArcFurnaceRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(OxidationFurnaceRecipeCategory.INPUT_MACHINE, OxidationFurnaceRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(EnergizedAlloyerRecipeCategory.INPUT_MACHINE, EnergizedAlloyerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(LatheRecipeCategory.INPUT_MACHINE, LatheRecipeCategory.RECIPE_TYPE);

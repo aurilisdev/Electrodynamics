@@ -18,7 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,12 +46,12 @@ public class TileOxidationFurnace extends GenericTile {
 
 	protected boolean canProcessOxideFurn(ComponentProcessor component) {
 		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.OXIDATION_FURNACE_TYPE.get())) {
-			if (getBlockState().getBlock() == DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnace)) {
-				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+			if (getBlockState().getBlock() == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.oxidationfurnace)) {
+				level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.oxidationfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}
 			return true;
-		} else if (getBlockState().getBlock() == DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnacerunning)) {
-			level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.oxidationfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+		} else if (getBlockState().getBlock() == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.oxidationfurnacerunning)) {
+			level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.oxidationfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 		}
 		return false;
 	}

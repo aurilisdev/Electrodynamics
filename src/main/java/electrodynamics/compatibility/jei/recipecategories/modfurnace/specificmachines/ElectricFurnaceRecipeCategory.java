@@ -14,7 +14,7 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
@@ -42,7 +42,7 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<Smel
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.electricfurnace.tag() + "0";
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.electricfurnace));
+	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricfurnace));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

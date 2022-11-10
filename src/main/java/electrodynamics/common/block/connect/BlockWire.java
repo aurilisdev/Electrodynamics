@@ -16,7 +16,7 @@ import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -254,7 +254,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlock(pos, DeferredRegisters.getSafeBlock(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
+		Scheduler.schedule(5, () -> world.setBlock(pos, ElectrodynamicsRegisters.getSafeBlock(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +37,7 @@ public class MineralCrusherRecipeCategory extends Item2ItemRecipeCategory<Minera
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.mineralcrusher.tag() + "0";
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(DeferredRegisters.getSafeBlock(SubtypeMachine.mineralcrusher));
+	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.mineralcrusher));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

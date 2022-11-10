@@ -31,7 +31,7 @@ public class ElectrodynamicsFeatures {
 		// Ore Generation
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			if (OreConfig.oresToSpawn.contains(ore.name())) {
-				Supplier<List<OreConfiguration.TargetBlockState>> targetSupplier = Suppliers.memoize(() -> List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, DeferredRegisters.getSafeBlock(ore).defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, DeferredRegisters.getSafeBlock(SubtypeOreDeepslate.values()[ore.ordinal()]).defaultBlockState())));
+				Supplier<List<OreConfiguration.TargetBlockState>> targetSupplier = Suppliers.memoize(() -> List.of(OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, ElectrodynamicsRegisters.getSafeBlock(ore).defaultBlockState()), OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, ElectrodynamicsRegisters.getSafeBlock(SubtypeOreDeepslate.values()[ore.ordinal()]).defaultBlockState())));
 				Supplier<ConfiguredFeature<?, ?>> featureSupplier = () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(targetSupplier.get(), ore.veinSize));
 				RegistryObject<ConfiguredFeature<?, ?>> registered = CONFIGURED_FEATURES.register(ore.tag(), featureSupplier);
 				Supplier<PlacedFeature> placedSupplier = () -> new PlacedFeature(registered.getHolder().get(), List.of(CountPlacement.of((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(ore.minY), VerticalAnchor.absolute(ore.maxY)), BiomeFilter.biome()));

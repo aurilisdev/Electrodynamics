@@ -11,12 +11,12 @@ import electrodynamics.client.guidebook.utils.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 
 public class ChapterOre extends Chapter {
 
 	// private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 50, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oretin.png");
-	private static final ItemWrapperObject LOGO = new ItemWrapperObject(17, 60, 2.0F, ItemUtils.fromBlock(DeferredRegisters.getSafeBlock(SubtypeOre.tin)));
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(17, 60, 2.0F, ItemUtils.fromBlock(ElectrodynamicsRegisters.getSafeBlock(SubtypeOre.tin)));
 
 	@Override
 	protected List<Page> genPages() {

@@ -22,7 +22,7 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsRegisters;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -101,12 +101,12 @@ public class TileElectricArcFurnace extends GenericTile {
 		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed) {
 			if (timeSinceChange > 40) {
 				Block bl = getBlockState().getBlock();
-				if (bl == DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnace)) {
-					level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-				} else if (bl == DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble)) {
-					level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedoublerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-				} else if (bl == DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple)) {
-					level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriplerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+				if (bl == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnace)) {
+					level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+				} else if (bl == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble)) {
+					level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedoublerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+				} else if (bl == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple)) {
+					level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriplerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 				}
 				timeSinceChange = 0;
 			}
@@ -133,12 +133,12 @@ public class TileElectricArcFurnace extends GenericTile {
 		} else if (timeSinceChange > 40) {
 			timeSinceChange = 0;
 			Block bl = getBlockState().getBlock();
-			if (bl == DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacerunning)) {
-				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-			} else if (bl == DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedoublerunning)) {
-				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-			} else if (bl == DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriplerunning)) {
-				level.setBlock(worldPosition, DeferredRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+			if (bl == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacerunning)) {
+				level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+			} else if (bl == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedoublerunning)) {
+				level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacedouble).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+			} else if (bl == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriplerunning)) {
+				level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.electricarcfurnacetriple).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}
 		}
 
