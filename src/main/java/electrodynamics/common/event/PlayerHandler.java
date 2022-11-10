@@ -3,7 +3,6 @@ package electrodynamics.common.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.item.ItemUtils;
@@ -12,6 +11,7 @@ import electrodynamics.common.packet.types.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -46,8 +46,8 @@ public class PlayerHandler {
 
 	@SubscribeEvent
 	public static void takeDamageWithArmor(LivingHurtEvent event) {
-		ItemStack[] compositeArmor = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()) };
-		ItemStack[] combatArmor = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMBATHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMBATLEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get()) };
+		ItemStack[] compositeArmor = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
+		ItemStack[] combatArmor = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
 
 		List<ItemStack> armorPieces = new ArrayList<>();
 		event.getEntity().getArmorSlots().forEach(armorPieces::add);
@@ -75,8 +75,8 @@ public class PlayerHandler {
 	public static void hydraulicFallDamage(LivingHurtEvent event) {
 		DamageSource source = event.getSource();
 		if (source.isFall()) {
-			ItemStack hydraulicBoots = new ItemStack(DeferredRegisters.ITEM_HYDRAULICBOOTS.get());
-			ItemStack combatBoots = new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get());
+			ItemStack hydraulicBoots = new ItemStack(ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get());
+			ItemStack combatBoots = new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
 			ItemStack playerBoots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
 			if (ItemUtils.testItems(hydraulicBoots.getItem(), playerBoots.getItem()) || ItemUtils.testItems(combatBoots.getItem(), playerBoots.getItem())) {
 				int fluidRequired = (int) Math.log10(event.getAmount());
@@ -94,7 +94,7 @@ public class PlayerHandler {
 		Entity entity = event.getEntity();
 		if (event.getSlot() == EquipmentSlot.CHEST && entity instanceof Player player) {
 			ItemStack chest = event.getTo();
-			if (event.getFrom().isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+			if (event.getFrom().isEmpty() && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
 				NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new PacketJetpackEquipedSound(player.getUUID()));
 			}
 		}
@@ -105,17 +105,16 @@ public class PlayerHandler {
 		Entity entity = event.getTarget();
 		if (entity instanceof Player player) {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
+			if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
 				ServerPlayer server = (ServerPlayer) event.getEntity();
 				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 			}
 		}
 	}
 
+	// TODO: Why was this commented?
 	/*
-	 * @SubscribeEvent public static void jetpackOwnerSoundHandler(PlayerLoggedInEvent event) { Player player = event.getPlayer(); if(player instanceof ServerPlayer server) { ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST); if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) { NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } }
-	 * 
-	 * }
+	 * @SubscribeEvent public static void jetpackOwnerSoundHandler(PlayerLoggedInEvent event) { Player player = event.getPlayer(); if(player instanceof ServerPlayer server) { ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST); if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) { NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } } }
 	 */
 
 }

@@ -1,12 +1,12 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileQuarry;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,7 +19,7 @@ public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid };
 
 	public ContainerQuarry(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerQuarry(int id, Inventory playerinv) {

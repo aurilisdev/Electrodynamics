@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
@@ -17,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +43,7 @@ public class TileMotorComplex extends GenericTile {
 	public boolean clientPowered = false;
 
 	public TileMotorComplex(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_MOTORCOMPLEX.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), pos, state);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));

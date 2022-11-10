@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
@@ -20,6 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,7 +37,7 @@ public class TileMineralCrusher extends GenericTile {
 	}
 
 	public TileMineralCrusher(int extra, BlockPos pos, BlockState state) {
-		super(extra == 1 ? DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get() : extra == 2 ? DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get() : DeferredRegisters.TILE_MINERALCRUSHER.get(), pos, state);
+		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_MINERALCRUSHER.get(), pos, state);
 
 		int processorInputs = 1;
 		int processorCount = extra + 1;
@@ -69,7 +69,7 @@ public class TileMineralCrusher extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
+		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
 		if (has) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			if (level.random.nextDouble() < 0.15) {
@@ -88,7 +88,7 @@ public class TileMineralCrusher extends GenericTile {
 					double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.4, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D);
 				}
-				int amount = getType() == DeferredRegisters.TILE_MINERALCRUSHERDOUBLE.get() ? 2 : getType() == DeferredRegisters.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
+				int amount = getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? 2 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
 				for (int in = 0; in < amount; in++) {
 					ComponentInventory inv = getComponent(ComponentType.Inventory);
 					ItemStack stack = inv.getInputContents().get(getProcessor(in).getProcessorNumber()).get(0);

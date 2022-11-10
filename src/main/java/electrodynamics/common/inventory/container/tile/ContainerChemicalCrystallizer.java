@@ -1,11 +1,11 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +23,7 @@ public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<T
 	}
 
 	public ContainerChemicalCrystallizer(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_CHEMICALCRYSTALLIZER.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALCRYSTALLIZER.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerChemicalCrystallizer(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

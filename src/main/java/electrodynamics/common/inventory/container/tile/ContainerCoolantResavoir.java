@@ -1,9 +1,9 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.TileCoolantResavoir;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,7 +13,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 public class ContainerCoolantResavoir extends GenericContainerBlockEntity<TileCoolantResavoir> {
 
 	public ContainerCoolantResavoir(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_COOLANTRESAVOIR.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_COOLANTRESAVOIR.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerCoolantResavoir(int id, Inventory playerinv) {

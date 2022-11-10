@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.network.TileLogisticalWire;
@@ -17,6 +16,7 @@ import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.DeferredRegisters;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

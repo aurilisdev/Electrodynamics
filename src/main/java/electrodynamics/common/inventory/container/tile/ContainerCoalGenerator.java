@@ -1,9 +1,9 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +22,7 @@ public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoal
 	}
 
 	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	@Override

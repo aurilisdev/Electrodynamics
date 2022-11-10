@@ -1,9 +1,9 @@
 package electrodynamics.common.fluid.types.gas;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
 import electrodynamics.common.fluid.types.SimpleWaterBasedFluidType;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraftforge.fluids.FluidType;
 
 public class FluidOxygen extends FluidNonPlaceable {
@@ -13,7 +13,7 @@ public class FluidOxygen extends FluidNonPlaceable {
 	private final FluidType type;
 
 	public FluidOxygen() {
-		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
+		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
 		type = new SimpleWaterBasedFluidType(References.ID, "oxygen");
 	}
 

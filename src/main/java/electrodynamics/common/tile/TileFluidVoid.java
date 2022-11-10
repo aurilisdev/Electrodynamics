@@ -3,7 +3,6 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -14,6 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BucketItem;
@@ -39,7 +39,7 @@ public class TileFluidVoid extends GenericTile {
 	}
 
 	public TileFluidVoid(BlockPos worldPos, BlockState blockState) {
-		super(DeferredRegisters.TILE_FLUIDVOID.get(), worldPos, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_FLUIDVOID.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());

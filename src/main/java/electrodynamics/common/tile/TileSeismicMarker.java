@@ -3,11 +3,11 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientEvents;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,7 +18,7 @@ public class TileSeismicMarker extends GenericTile {
 	public static final int MAX_RADIUS = Math.max(Math.min(Constants.MARKER_RADIUS, 128), 2);
 
 	public TileSeismicMarker(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_SEISMICMARKER.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_SEISMICMARKER.get(), pos, state);
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 	}
 

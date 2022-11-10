@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.Constants;
@@ -12,6 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +26,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 	protected boolean hasHeat = false;
 
 	public TileThermoelectricGenerator(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.UP));

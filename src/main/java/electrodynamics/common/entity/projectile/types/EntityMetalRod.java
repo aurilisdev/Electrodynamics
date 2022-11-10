@@ -1,10 +1,11 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.registers.ElectrodynamicsEntities;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,16 +31,16 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	private int number = 0;
 
 	public EntityMetalRod(EntityType<? extends ThrowableItemProjectile> type, Level world) {
-		super(DeferredRegisters.ENTITY_METALROD.get(), world);
+		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), world);
 	}
 
 	public EntityMetalRod(LivingEntity entity, Level world, int number) {
-		super(DeferredRegisters.ENTITY_METALROD.get(), entity, world);
+		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), entity, world);
 		this.number = number;
 	}
 
 	public EntityMetalRod(double x, double y, double z, Level worldIn, int number) {
-		super(DeferredRegisters.ENTITY_METALROD.get(), x, y, z, worldIn);
+		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), x, y, z, worldIn);
 		this.number = number;
 	}
 
@@ -76,31 +77,31 @@ public class EntityMetalRod extends EntityCustomProjectile {
 
 	// It bugs for some reason if I don't have the break
 	@Override
-	public void onHitEntity(EntityHitResult p_213868_1_) {
+	public void onHitEntity(EntityHitResult hit) {
 		switch (number) {
 		case 0:
-			p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
+			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
 			break;
 		case 1:
-			p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
+			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
 			break;
 		case 2:
-			p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
+			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
 			break;
 		default:
 		}
-		super.onHitEntity(p_213868_1_);
+		super.onHitEntity(hit);
 	}
 
 	@Override
 	protected Item getDefaultItem() {
 		switch (number) {
 		case 0:
-			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.steel).get();
+			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.steel).get();
 		case 1:
-			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.stainlesssteel).get();
+			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.stainlesssteel).get();
 		case 2:
-			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.hslasteel).get();
+			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.hslasteel).get();
 		default:
 			return super.getDefaultItem();
 		}

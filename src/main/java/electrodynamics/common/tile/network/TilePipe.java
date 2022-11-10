@@ -1,9 +1,9 @@
 package electrodynamics.common.tile.network;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.tile.generic.GenericTilePipe;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,7 +12,7 @@ public class TilePipe extends GenericTilePipe {
 	public double transmit = 0;
 
 	public TilePipe(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_PIPE.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_PIPE.get(), pos, state);
 	}
 
 	public SubtypePipe pipe = null;

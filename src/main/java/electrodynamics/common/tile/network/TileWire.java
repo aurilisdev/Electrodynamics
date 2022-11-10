@@ -1,9 +1,9 @@
 package electrodynamics.common.tile.network;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.generic.GenericTileWire;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -13,7 +13,7 @@ public class TileWire extends GenericTileWire {
 	public double transmit = 0;
 
 	public TileWire(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_WIRE.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_WIRE.get(), pos, state);
 	}
 
 	public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType, BlockPos pos, BlockState state) {

@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
@@ -21,6 +20,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -40,7 +40,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
 
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
-		super(DeferredRegisters.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());

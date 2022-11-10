@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
@@ -17,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +41,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	protected CachedTileOutput output;
 
 	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		this(DeferredRegisters.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
+		this(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
 	}
 
 	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {

@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
@@ -22,6 +21,7 @@ import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.prefab.utilities.tile.CombustionFuelSource;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -49,7 +49,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 	}
 
 	public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_COMBUSTIONCHAMBER.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_COMBUSTIONCHAMBER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));

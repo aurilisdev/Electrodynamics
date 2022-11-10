@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -16,6 +15,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +27,7 @@ public class TileFermentationPlant extends GenericTile {
 	public static final int MAX_TANK_CAPACITY = 5000;
 
 	public TileFermentationPlant(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());

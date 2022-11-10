@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -18,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -44,7 +44,7 @@ public class TileSolarPanel extends GenericTile implements IElectricGenerator {
 	}
 
 	public TileSolarPanel(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_SOLARPANEL.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_SOLARPANEL.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentDirection());

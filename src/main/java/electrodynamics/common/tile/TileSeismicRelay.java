@@ -3,7 +3,6 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.prefab.tile.GenericTile;
@@ -13,6 +12,8 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -33,11 +34,11 @@ public class TileSeismicRelay extends GenericTile {
 	public boolean cornerOnRight = false;
 
 	public TileSeismicRelay(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_SEISMICRELAY.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_SEISMICRELAY.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentInventory(this).size(1).outputs(1).valid((slot, stack, i) -> ItemUtils.testItems(stack.getItem(), DeferredRegisters.ITEM_SEISMICMARKER.get())));
+		addComponent(new ComponentInventory(this).size(1).outputs(1).valid((slot, stack, i) -> ItemUtils.testItems(stack.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())));
 		addComponent(new ComponentContainerProvider("container.seismicrelay").createMenu((id, player) -> new ContainerSeismicRelay(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -95,7 +96,7 @@ public class TileSeismicRelay extends GenericTile {
 		for (int i = 0; i <= TileSeismicMarker.MAX_RADIUS; i++) {
 			blockPos = blockPos.relative(facing);
 			BlockEntity marker = level.getBlockEntity(blockPos);
-			if (marker != null && marker instanceof TileSeismicMarker seismic && i > 0) {
+			if (marker instanceof TileSeismicMarker && i > 0) {
 				return marker.getBlockPos();
 			}
 		}
@@ -106,11 +107,11 @@ public class TileSeismicRelay extends GenericTile {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack input = inv.getOutputContents().get(0);
 		if (input.isEmpty()) {
-			inv.setItem(0, new ItemStack(DeferredRegisters.ITEM_SEISMICMARKER.get(), markerLocs.size()).copy());
+			inv.setItem(0, new ItemStack(ElectrodynamicsItems.ITEM_SEISMICMARKER.get(), markerLocs.size()).copy());
 			for (BlockPos pos : markerLocs) {
 				getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			}
-		} else if (ItemUtils.testItems(input.getItem(), DeferredRegisters.ITEM_SEISMICMARKER.get())) {
+		} else if (ItemUtils.testItems(input.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())) {
 			int room = input.getMaxStackSize() - input.getCount();
 			int accepted = room > markerLocs.size() ? markerLocs.size() : room;
 			input.grow(accepted);

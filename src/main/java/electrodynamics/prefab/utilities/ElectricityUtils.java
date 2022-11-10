@@ -1,11 +1,11 @@
 package electrodynamics.prefab.utilities;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +22,7 @@ public class ElectricityUtils {
 	public static void electrecuteEntity(Entity entityIn, TransferPack transfer) {
 		if (transfer.getVoltage() <= 960.0) {
 			for (ItemStack armor : entityIn.getArmorSlots()) {
-				if (armor.getItem() == DeferredRegisters.ITEM_RUBBERBOOTS.get()) {
+				if (armor.getItem() == ElectrodynamicsItems.ITEM_RUBBERBOOTS.get()) {
 					float damage = (float) transfer.getAmps() / 10.0f;
 					if (Math.random() < damage) {
 						int integerDamage = (int) Math.max(1, damage);

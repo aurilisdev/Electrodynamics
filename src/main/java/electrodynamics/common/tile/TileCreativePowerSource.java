@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -17,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +31,7 @@ public class TileCreativePowerSource extends GenericTile {
 	protected List<CachedTileOutput> outputs;
 
 	public TileCreativePowerSource(BlockPos worldPos, BlockState blockState) {
-		super(DeferredRegisters.TILE_CREATIVEPOWERSOURCE.get(), worldPos, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_CREATIVEPOWERSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::writePacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket).guiPacketWriter(this::writePacket));
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).output(Direction.UP).output(Direction.NORTH).output(Direction.SOUTH).output(Direction.EAST).output(Direction.WEST));

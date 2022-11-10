@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
@@ -21,6 +20,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,7 +36,7 @@ public class TileWireMill extends GenericTile {
 	}
 
 	public TileWireMill(int extra, BlockPos worldPosition, BlockState blockState) {
-		super(extra == 1 ? DeferredRegisters.TILE_WIREMILLDOUBLE.get() : extra == 2 ? DeferredRegisters.TILE_WIREMILLTRIPLE.get() : DeferredRegisters.TILE_WIREMILL.get(), worldPosition, blockState);
+		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_WIREMILLDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_WIREMILLTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_WIREMILL.get(), worldPosition, blockState);
 		int processorInputs = 1;
 		int processorCount = extra + 1;
 		int inputCount = processorInputs * (extra + 1);
@@ -67,7 +67,7 @@ public class TileWireMill extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == DeferredRegisters.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == DeferredRegisters.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
+		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
 		if (has) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.5 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);

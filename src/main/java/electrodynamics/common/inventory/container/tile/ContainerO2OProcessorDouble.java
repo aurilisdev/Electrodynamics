@@ -1,10 +1,10 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,7 +20,7 @@ public class ContainerO2OProcessorDouble extends GenericContainerBlockEntity<Gen
 	}
 
 	public ContainerO2OProcessorDouble(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_O2OPROCESSORDOUBLE.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_O2OPROCESSORDOUBLE.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerO2OProcessorDouble(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

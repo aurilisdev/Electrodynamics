@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -129,7 +129,7 @@ public class ItemCanister extends Item {
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		List<Fluid> whitelisted = new ArrayList<>();
 		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-			if (fluid.getBucket() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
+			if (fluid.getBucket() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
 				whitelisted.add(fluid);
 			}
 		}

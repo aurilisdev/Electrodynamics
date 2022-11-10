@@ -1,6 +1,5 @@
 package electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
@@ -13,6 +12,7 @@ import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.registers.DeferredRegisters;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;

@@ -3,7 +3,6 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
@@ -12,6 +11,7 @@ import electrodynamics.client.guidebook.utils.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.registers.DeferredRegisters;
 
 public class ChapterOre extends Chapter {
 

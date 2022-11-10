@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.prefab.tile.GenericTile;
@@ -8,6 +7,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileLogisticalManager extends GenericTile {
 
 	public TileLogisticalManager(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_LOGISTICALMANAGER.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALMANAGER.get(), pos, state);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 	}

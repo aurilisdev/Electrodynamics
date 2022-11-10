@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
 import electrodynamics.common.item.ItemUpgrade;
@@ -14,6 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +31,7 @@ public class TileCobblestoneGenerator extends GenericTile {
 	private boolean isPowered;
 
 	public TileCobblestoneGenerator(BlockPos worldPos, BlockState blockState) {
-		super(DeferredRegisters.TILE_COBBLESTONEGENERATOR.get(), worldPos, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_COBBLESTONEGENERATOR.get(), worldPos, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));

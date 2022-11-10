@@ -3,12 +3,12 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ public class PacketToggleOnServer {
 				switch (message.type) {
 				case NVGS:
 					ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-					if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
+					if (ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
 						CompoundTag tag = playerHead.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 						if (((IItemElectric) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
@@ -51,7 +51,7 @@ public class PacketToggleOnServer {
 					break;
 				case SERVOLEGGINGS:
 					ItemStack playerLegs = player.getItemBySlot(EquipmentSlot.LEGS);
-					if (ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(playerLegs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+					if (ItemUtils.testItems(playerLegs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(playerLegs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = playerLegs.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 						player.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);

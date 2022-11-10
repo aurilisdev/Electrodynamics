@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.network.ElectricNetwork;
 import electrodynamics.prefab.tile.GenericTile;
@@ -11,6 +10,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +24,7 @@ public class TileMultimeterBlock extends GenericTile {
 	public CachedTileOutput input;
 
 	public TileMultimeterBlock(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_MULTIMETERBLOCK.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_MULTIMETERBLOCK.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).customPacketReader(this::readPacket));

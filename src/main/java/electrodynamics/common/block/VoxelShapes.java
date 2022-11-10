@@ -2,8 +2,8 @@ package electrodynamics.common.block;
 
 import java.util.HashMap;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.registers.DeferredRegisters;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;

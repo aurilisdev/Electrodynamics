@@ -3,9 +3,9 @@ package electrodynamics.common.multiblock;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.prefab.utilities.object.Location;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +25,7 @@ public interface IMultiblockTileNode {
 			Block inBlock = inState.getBlock();
 			if (update) {
 				if (inState.getMaterial().isReplaceable()) {
-					world.setBlockAndUpdate(offset, DeferredRegisters.multi.defaultBlockState());
+					world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState());
 				}
 				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
 				if (subnode != null) {

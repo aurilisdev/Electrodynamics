@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -48,7 +48,7 @@ public class ItemCompositeArmor extends ArmorItem {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()) };
+				ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);

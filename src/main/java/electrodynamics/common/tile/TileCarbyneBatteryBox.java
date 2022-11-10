@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.inventory.container.tile.ContainerCarbyneBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
@@ -14,6 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileCarbyneBatteryBox extends TileBatteryBox {
 
 	public TileCarbyneBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_CARBYNEBATTERYBOX.get(), 359.0 * (4 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000, worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_CARBYNEBATTERYBOX.get(), 359.0 * (4 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000, worldPosition, blockState);
 		forceComponent(new ComponentContainerProvider("container.carbynebatterybox").createMenu((id, player) -> new ContainerCarbyneBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

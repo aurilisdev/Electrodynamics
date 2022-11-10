@@ -2,9 +2,9 @@ package electrodynamics.common.entity.projectile.types;
 
 import com.mojang.math.Vector3f;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
+import electrodynamics.registers.ElectrodynamicsEntities;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -25,11 +25,11 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	}
 
 	public EntityEnergyBlast(LivingEntity entity, Level world) {
-		super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), entity, world);
+		super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), entity, world);
 	}
 
 	public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
-		super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
+		super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
 	}
 
 	@Override

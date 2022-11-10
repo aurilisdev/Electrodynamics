@@ -3,13 +3,13 @@ package electrodynamics.client.render.tile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -44,11 +44,11 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.translate(0.5, 0.2, 0.5);
 		ComponentFluidHandlerMulti multi = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler);
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
-		float prog = (multi.getTankFromFluid(Fluids.WATER, true).getFluidAmount() + multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount()) / (float) TileChemicalMixer.MAX_TANK_CAPACITY;
+		float prog = (multi.getTankFromFluid(Fluids.WATER, true).getFluidAmount() + multi.getTankFromFluid(ElectrodynamicsFluids.fluidSulfuricAcid, true).getFluidAmount()) / (float) TileChemicalMixer.MAX_TANK_CAPACITY;
 		if (prog > 0) {
 			matrixStackIn.scale(1, prog / 16.0f, 1);
 			matrixStackIn.translate(0, prog / 8.0, 0);
-			if (multi.getTankFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getFluidAmount() > 0) {
+			if (multi.getTankFromFluid(ElectrodynamicsFluids.fluidSulfuricAcid, true).getFluidAmount() > 0) {
 				ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERSULFURICACID);
 			}
 			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);

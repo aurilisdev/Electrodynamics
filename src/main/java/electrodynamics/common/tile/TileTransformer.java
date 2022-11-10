@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -12,6 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -26,7 +26,7 @@ public class TileTransformer extends GenericTile {
 	public boolean locked = false;
 
 	public TileTransformer(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_TRANSFORMER.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_TRANSFORMER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
 	}

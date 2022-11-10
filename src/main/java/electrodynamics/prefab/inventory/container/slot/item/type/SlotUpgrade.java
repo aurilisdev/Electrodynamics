@@ -3,10 +3,10 @@ package electrodynamics.prefab.inventory.container.slot.item.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +20,7 @@ public class SlotUpgrade extends SlotGeneric {
 
 		items = new ArrayList<>();
 		for (SubtypeItemUpgrade upg : upgrades) {
-			items.add(DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(upg).get());
+			items.add(ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(upg).get());
 		}
 	}
 

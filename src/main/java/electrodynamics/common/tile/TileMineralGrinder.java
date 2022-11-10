@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
@@ -20,6 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,7 +37,7 @@ public class TileMineralGrinder extends GenericTile {
 	}
 
 	public TileMineralGrinder(int extra, BlockPos pos, BlockState state) {
-		super(extra == 1 ? DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get() : extra == 2 ? DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() : DeferredRegisters.TILE_MINERALGRINDER.get(), pos, state);
+		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_MINERALGRINDERDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_MINERALGRINDERTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_MINERALGRINDER.get(), pos, state);
 
 		int processorInputs = 1;
 		int processorCount = extra + 1;
@@ -69,7 +69,7 @@ public class TileMineralGrinder extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
+		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_MINERALGRINDERDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALGRINDERTRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
 		if (has) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
@@ -77,7 +77,7 @@ public class TileMineralGrinder extends GenericTile {
 			if (tickable.getTicks() % 200 == 0) {
 				SoundAPI.playSound(SoundRegister.SOUND_MINERALGRINDER.get(), SoundSource.BLOCKS, 0.5f, 1, worldPosition);
 			}
-			int amount = getType() == DeferredRegisters.TILE_MINERALGRINDERDOUBLE.get() ? 2 : getType() == DeferredRegisters.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 1;
+			int amount = getType() == ElectrodynamicsBlockTypes.TILE_MINERALGRINDERDOUBLE.get() ? 2 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALGRINDERTRIPLE.get() ? 3 : 1;
 			for (int i = 0; i < amount; i++) {
 				ComponentInventory inv = getComponent(ComponentType.Inventory);
 				ItemStack stack = inv.getInputContents().get(getProcessor(i).getProcessorNumber()).get(0);

@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.client.ClientRegister;
@@ -14,6 +13,7 @@ import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -154,7 +154,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 		List<ResourceLocation> tags = new ArrayList<>();
 		List<Fluid> fluids = new ArrayList<>();
 		tags.add(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID.location());
-		fluids.add(DeferredRegisters.fluidHydraulic);
+		fluids.add(ElectrodynamicsFluids.fluidHydraulic);
 		return Pair.of(tags, fluids);
 	}
 

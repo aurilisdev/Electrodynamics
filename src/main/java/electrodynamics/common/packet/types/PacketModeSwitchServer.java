@@ -3,10 +3,10 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -35,7 +35,7 @@ public class PacketModeSwitchServer {
 				switch (message.mode) {
 				case JETPACK:
 					ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
-					if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+					if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 						CompoundTag tag = chest.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 2) {
@@ -49,7 +49,7 @@ public class PacketModeSwitchServer {
 					break;
 				case SERVOLEGS:
 					ItemStack legs = serverPlayer.getItemBySlot(EquipmentSlot.LEGS);
-					if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+					if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = legs.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
 						if (curMode < 3) {

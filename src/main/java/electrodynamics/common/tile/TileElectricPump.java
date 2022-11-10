@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
@@ -15,6 +14,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +32,7 @@ public class TileElectricPump extends GenericTile {
 	private boolean isGenerating;
 
 	public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
 		addComponent(new ComponentElectrodynamic(this).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).input(Direction.UP));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));

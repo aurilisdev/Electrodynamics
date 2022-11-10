@@ -2,7 +2,6 @@ package electrodynamics.common.tile;
 
 import com.mojang.math.Vector3f;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -18,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -32,7 +32,7 @@ public class TileMineralWasher extends GenericTile {
 	public static final int MAX_TANK_CAPACITY = 5000;
 
 	public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_MINERALWASHER.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_MINERALWASHER.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());

@@ -1,10 +1,10 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPowerSetting;
 import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +21,7 @@ public class ContainerCreativePowerSource extends GenericContainerBlockEntity<Ti
 	}
 
 	public ContainerCreativePowerSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_CREATIVEPOWERSOURCE.get(), id, playerinv, new SimpleContainer(), inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEPOWERSOURCE.get(), id, playerinv, new SimpleContainer(), inventorydata);
 	}
 
 	public ContainerCreativePowerSource(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

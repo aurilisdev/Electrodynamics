@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
@@ -20,6 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -44,7 +44,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 	public double multiplier;
 
 	public TileHydroelectricGenerator(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler().guiPacketReader(this::readNBT).guiPacketWriter(this::writeNBT));

@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.generic;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.block.VoxelShapes;
@@ -15,6 +14,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -107,7 +107,7 @@ public abstract class GenericTileCharger extends GenericTile {
 			if (!battery.isEmpty() && battery.getItem() instanceof IItemElectric electricItem) {
 				battVoltage = electricItem.getElectricProperties().receive.getVoltage();
 				if (battVoltage < machineVoltage) {
-					inv.setItem(i + 1, new ItemStack(DeferredRegisters.SLAG.get()).copy());
+					inv.setItem(i + 1, new ItemStack(ElectrodynamicsItems.SLAG.get()).copy());
 					getLevel().playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1F, 1F);
 				} else if (battVoltage > machineVoltage) {
 					electro.overVoltage(TransferPack.joulesVoltage(electro.getJoulesStored(), battVoltage));

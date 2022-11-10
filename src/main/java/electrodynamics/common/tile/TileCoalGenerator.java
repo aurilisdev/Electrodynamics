@@ -3,7 +3,6 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -22,6 +21,8 @@ import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -53,7 +54,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	private double multiplier = 1;
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_COALGENERATOR.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
@@ -15,6 +14,7 @@ import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
@@ -167,7 +167,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	}
 
 	private static ItemStack getMachine(SubtypeMachine inputMachine) {
-		return new ItemStack(DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(inputMachine).get());
+		return new ItemStack(ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(inputMachine).get());
 	}
 
 	@Override

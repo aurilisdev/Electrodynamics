@@ -1,7 +1,7 @@
 package electrodynamics.common.tab;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.registers.DeferredRegisters;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 

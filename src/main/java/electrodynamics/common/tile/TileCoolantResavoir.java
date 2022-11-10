@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
@@ -12,6 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class TileCoolantResavoir extends GenericTile {
 
 	public TileCoolantResavoir(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_COOLANTRESAVOIR.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_COOLANTRESAVOIR.get(), pos, state);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());

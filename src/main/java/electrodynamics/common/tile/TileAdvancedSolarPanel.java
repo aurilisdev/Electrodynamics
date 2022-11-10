@@ -2,7 +2,6 @@ package electrodynamics.common.tile;
 
 import java.util.HashSet;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
@@ -22,6 +21,7 @@ import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -49,7 +49,7 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 	}
 
 	public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));

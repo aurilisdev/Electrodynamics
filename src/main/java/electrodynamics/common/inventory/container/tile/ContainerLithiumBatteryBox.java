@@ -1,10 +1,10 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.TileLithiumBatteryBox;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotCharging;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +18,7 @@ public class ContainerLithiumBatteryBox extends GenericContainerBlockEntity<Tile
 	}
 
 	public ContainerLithiumBatteryBox(int id, Inventory pinv, Container inv, ContainerData data) {
-		super(DeferredRegisters.CONTAINER_LITHIUMBATTERYBOX.get(), id, pinv, inv, data);
+		super(ElectrodynamicsMenuTypes.CONTAINER_LITHIUMBATTERYBOX.get(), id, pinv, inv, data);
 	}
 
 	@Override

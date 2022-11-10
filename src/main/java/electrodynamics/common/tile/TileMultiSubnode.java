@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.prefab.tile.GenericTile;
@@ -8,6 +7,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.Location;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,7 +20,7 @@ public class TileMultiSubnode extends GenericTile {
 	public VoxelShape shapeCache;
 
 	public TileMultiSubnode(BlockPos worldPosition, BlockState blockState) {
-		super(DeferredRegisters.TILE_MULTI.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_MULTI.get(), worldPosition, blockState);
 		addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
 	}
 

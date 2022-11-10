@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -15,6 +14,7 @@ import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -63,7 +63,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-				ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMBATHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMBATCHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMBATLEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMBATBOOTS.get()) };
+				ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);

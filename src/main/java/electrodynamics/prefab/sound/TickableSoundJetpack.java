@@ -2,11 +2,11 @@ package electrodynamics.prefab.sound;
 
 import java.util.UUID;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundSource;
@@ -62,8 +62,8 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 		if (jetpack.isEmpty()) {
 			return true;
 		}
-		if (!ItemUtils.testItems(jetpack.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-			if (!ItemUtils.testItems(jetpack.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+		if (!ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())) {
+			if (!ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 				return true;
 			}
 		}

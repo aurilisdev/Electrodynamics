@@ -1,6 +1,5 @@
 package electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.specificmachines;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
@@ -13,6 +12,7 @@ import electrodynamics.compatibility.jei.utils.gui.fluid.DefaultFluidGaugeWrappe
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.registers.DeferredRegisters;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;

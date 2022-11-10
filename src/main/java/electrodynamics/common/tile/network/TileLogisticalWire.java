@@ -1,7 +1,7 @@
 package electrodynamics.common.tile.network;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -9,7 +9,7 @@ public class TileLogisticalWire extends TileWire {
 	public boolean isPowered = false;
 
 	public TileLogisticalWire(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_LOGISTICALWIRE.get(), pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), pos, state);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 	}
 

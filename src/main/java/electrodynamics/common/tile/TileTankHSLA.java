@@ -1,7 +1,7 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.tile.generic.GenericTileTank;
+import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -11,7 +11,7 @@ public class TileTankHSLA extends GenericTileTank {
 	private static String name = "hsla";
 
 	public TileTankHSLA(BlockPos pos, BlockState state) {
-		super(DeferredRegisters.TILE_TANKHSLA.get(), CAPACITY, name, pos, state);
+		super(ElectrodynamicsBlockTypes.TILE_TANKHSLA.get(), CAPACITY, name, pos, state);
 	}
 
 }

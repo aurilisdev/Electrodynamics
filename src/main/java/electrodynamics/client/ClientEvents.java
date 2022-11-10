@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
@@ -20,6 +19,7 @@ import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -197,28 +197,28 @@ public class ClientEvents {
 		Player player = minecraft.player;
 		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+			if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
 			}
 		}
 
 		if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
 			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-			if (ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), DeferredRegisters.ITEM_COMBATHELMET.get())) {
+			if (ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
 			}
 		}
 
 		if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchServoLeggingsMode.isDown()) {
 			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+			if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
 			}
 		}
 
 		if (KeyBinds.toggleServoLeggings.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleServoLeggings.isDown()) {
 			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), DeferredRegisters.ITEM_COMBATLEGGINGS.get())) {
+			if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.SERVOLEGGINGS));
 			}
 		}

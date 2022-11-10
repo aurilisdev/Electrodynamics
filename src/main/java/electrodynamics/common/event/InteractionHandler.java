@@ -1,11 +1,12 @@
 package electrodynamics.common.event;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.tile.IWrenchable;
+import electrodynamics.registers.DeferredRegisters;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,24 +44,24 @@ public class InteractionHandler {
 				if (item == Items.SHEARS) {
 					if (wire.ceramic) {
 						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf(wire.name().replace("ceramic", ""))).defaultBlockState(), player.level, event.getPos()));
-						ItemStack insu = new ItemStack(DeferredRegisters.ITEM_CERAMICINSULATION.get());
+						ItemStack insu = new ItemStack(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get());
 						if (!player.addItem(insu)) {
 							player.level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), insu));
 						}
 					} else if (wire.insulated && !wire.highlyinsulated) {
 						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf(wire.name().replace(wire.logistical ? "logistics" : "insulated", ""))).defaultBlockState(), player.level, event.getPos()));
-						ItemStack insu = new ItemStack(DeferredRegisters.ITEM_INSULATION.get());
+						ItemStack insu = new ItemStack(ElectrodynamicsItems.ITEM_INSULATION.get());
 						if (!player.addItem(insu)) {
 							player.level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), insu));
 						}
 					}
-				} else if (item == DeferredRegisters.ITEM_INSULATION.get()) {
+				} else if (item == ElectrodynamicsItems.ITEM_INSULATION.get()) {
 					if (!wire.insulated && !wire.logistical) {
 						player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
 						player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf("insulated" + wire.name())).defaultBlockState(), player.level, event.getPos()));
 						stack.shrink(1);
 					}
-				} else if (item == DeferredRegisters.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical && !wire.highlyinsulated) {
+				} else if (item == ElectrodynamicsItems.ITEM_CERAMICINSULATION.get() && wire.insulated && !wire.ceramic && !wire.logistical && !wire.highlyinsulated) {
 					player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
 					player.level.setBlockAndUpdate(event.getPos(), Block.updateFromNeighbourShapes(DeferredRegisters.getSafeBlock(SubtypeWire.valueOf("ceramic" + wire.name())).defaultBlockState(), player.level, event.getPos()));
 					stack.shrink(1);
