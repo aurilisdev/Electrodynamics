@@ -1,6 +1,6 @@
 {
   "type" : "forge:add_features",
-  "biomes" : "minecraft:is_overworld",
+  "biomes" : "#minecraft:is_overworld",
   "features" : "electrodynamics:orethorianite",
   "step" : "underground_ores"
 }

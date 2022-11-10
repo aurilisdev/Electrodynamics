@@ -49,6 +49,7 @@ public class Electrodynamics {
 		ConfigurationHandler.registerConfig(OreConfig.class);
 		// MUST GO BEFORE BLOCKS!!!!
 		ElectrodynamicsBlockStates.init();
+		OreGeneration.registerOres();
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		SoundRegister.SOUNDS.register(bus);
 		DeferredRegisters.BLOCKS.register(bus);
@@ -57,6 +58,9 @@ public class Electrodynamics {
 		DeferredRegisters.CONTAINERS.register(bus);
 		DeferredRegisters.FLUIDS.register(bus);
 		DeferredRegisters.ENTITIES.register(bus);
+		DeferredRegisters.FLUID_TYPES.register(bus);
+		DeferredRegisters.CONFIGURED_FEATURES.register(bus);
+		DeferredRegisters.PLACED_FEATURES.register(bus);
 		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
 		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
@@ -65,7 +69,6 @@ public class Electrodynamics {
 
 	@SubscribeEvent
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
-		OreGeneration.registerOres();
 		NetworkHandler.init();
 		ElectrodynamicsTags.init();
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
@@ -75,7 +78,7 @@ public class Electrodynamics {
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		ElectrodynamicsCapabilities.register(event);
-		
+
 	}
 
 //	@SubscribeEvent
