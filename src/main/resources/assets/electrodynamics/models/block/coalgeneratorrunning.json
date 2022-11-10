@@ -2,6 +2,7 @@
 	"parent": "block/cube_all",
 	"credit": "aurilisdev",
 	"ambientocclusion": "false",
+	"render_type": "cutout",
 	"texture_size": [
 		64,
 		64

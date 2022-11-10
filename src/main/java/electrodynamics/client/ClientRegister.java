@@ -74,12 +74,10 @@ import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenTankGeneric;
 import electrodynamics.client.screen.tile.ScreenWindmill;
-import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -274,19 +272,6 @@ public class ClientRegister {
 		MenuScreens.register(DeferredRegisters.CONTAINER_QUARRY.get(), ScreenQuarry::new);
 		MenuScreens.register(DeferredRegisters.CONTAINER_GUIDEBOOK.get(), ScreenGuidebook::new);
 
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.coalgeneratorrunning), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.wiremill), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.fermentationplant), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.combustionchamber), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.mineralwasher), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.chemicalcrystallizer), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.circuitbreaker), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.combustionchamber), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.coolantresavoir), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.tanksteel), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.tankhsla), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.getSafeBlock(SubtypeMachine.tankreinforced), ClientRegister::shouldMultilayerRender);
-		ItemBlockRenderTypes.setRenderLayer(DeferredRegisters.multi, RenderType.cutout());
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(DeferredRegisters.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 

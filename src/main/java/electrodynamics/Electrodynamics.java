@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
@@ -19,9 +18,6 @@ import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.world.OreGeneration;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -34,7 +30,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
@@ -71,8 +66,7 @@ public class Electrodynamics {
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
 		NetworkHandler.init();
 		ElectrodynamicsTags.init();
-		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
-
+		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
 	}
 
 	@SubscribeEvent
@@ -89,11 +83,6 @@ public class Electrodynamics {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onClientSetup(FMLClientSetupEvent event) {
-		for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
-			if (block.get() instanceof BlockCustomGlass) {
-				ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
-			}
-		}
 		ClientRegister.setup();
 	}
 }
