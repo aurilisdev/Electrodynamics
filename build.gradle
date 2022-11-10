@@ -3,6 +3,8 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = "https://modmaven.dev" }
+   		maven { url = "https://dvs1.progwml6.com/files/maven/" }
         jcenter()
         mavenCentral()
     }
@@ -109,9 +111,9 @@ mixin {
 }
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.19.2-43.1.52'
-    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271")
-
+    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.271"))
+    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271"))
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
