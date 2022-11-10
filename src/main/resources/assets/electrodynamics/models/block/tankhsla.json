@@ -1,14 +1,15 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent" : "minecraft:block/cube_all",
   "credit" : "aurilisdev",
   "texture_size" : [ 64, 64 ],
   "textures" : {
     "1" : "electrodynamics:model/tankhsla",
-    "particle": "electrodynamics:model/tankhsla"
+    "particle" : "electrodynamics:model/tankhsla"
   },
-  "loader" : "forge:multi-layer",
-  "layers" : {
+  "loader" : "forge:composite",
+  "children" : {
     "solid" : {
+      "render_type" : "minecraft:solid",
       "parent" : "block/cube_all",
       "textures" : {
         "1" : "electrodynamics:model/tankhsla"
@@ -262,6 +263,7 @@
       } ]
     },
     "translucent" : {
+      "render_type": "minecraft:translucent",
       "parent" : "block/cube_all",
       "textures" : {
         "1" : "electrodynamics:model/tankhsla"

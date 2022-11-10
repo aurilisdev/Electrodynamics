@@ -34,9 +34,10 @@
 			"children": [43]
 		}
 	],
-	"loader": "forge:multi-layer",
-	"layers": {
+	"loader": "forge:composite",
+	"children": {
 		"solid": {
+			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
 				"1": "electrodynamics:model/chemicalcrystallizer",
@@ -556,6 +557,7 @@
 			]
 		},
 		"translucent": {
+			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
 				"1": "electrodynamics:model/chemicalcrystallizer",

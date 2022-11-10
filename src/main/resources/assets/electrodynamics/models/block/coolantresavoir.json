@@ -97,9 +97,10 @@
 			]
 		}
 	],
-	"loader": "forge:multi-layer",
-	"layers" : {
-		"solid" : {
+	"loader": "forge:composite",
+	"children": {
+		"solid": {
+			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
 				"0": "electrodynamics:model/coolantresavoir",
@@ -1538,6 +1539,7 @@
 			]
 		},
 		"translucent": {
+			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
 				"0": "electrodynamics:model/coolantresavoir",

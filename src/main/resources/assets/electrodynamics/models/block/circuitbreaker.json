@@ -29,9 +29,10 @@
 			"children": [27]
 		}
 	],
-	"loader": "forge:multi-layer",
-	"layers": {
+	"loader": "forge:composite",
+	"children": {
 		"solid": {
+			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
 				"0": "electrodynamics:model/circuitbreaker",
@@ -354,6 +355,7 @@
 			]
 		},
 		"translucent": {
+			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
 				"0": "electrodynamics:model/circuitbreaker",
