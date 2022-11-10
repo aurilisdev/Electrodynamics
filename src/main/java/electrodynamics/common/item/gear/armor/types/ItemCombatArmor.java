@@ -33,9 +33,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
@@ -175,7 +175,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			break;
 		case FEET:
 			if (!CapabilityUtils.isFluidItemNull()) {
-				stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip.add(Component.literal(h.getFluidInTank(0).getAmount() + " / " + ItemHydraulicBoots.MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
+				stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(Component.literal(h.getFluidInTank(0).getAmount() + " / " + ItemHydraulicBoots.MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
 			}
 			break;
 		default:

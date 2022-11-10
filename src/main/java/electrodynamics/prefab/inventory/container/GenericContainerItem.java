@@ -10,8 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public abstract class GenericContainerItem extends GenericContainer {
@@ -42,7 +42,7 @@ public abstract class GenericContainerItem extends GenericContainer {
 		for (int k = 0; k < 9; ++k) {
 			int index = k;
 			ItemStack stack = playerinv.getItem(index);
-			LazyOptional<IItemHandler> cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			LazyOptional<IItemHandler> cap = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
 			if (cap.isPresent()) {
 				if (cap.resolve().get() == handler) {
 					addSlot(new SlotNoModification(playerinv, k, 8 + k * 18, 142 + playerInvOffset));
@@ -58,14 +58,14 @@ public abstract class GenericContainerItem extends GenericContainer {
 		if (type == ClickType.SWAP) {
 			Inventory playerinv = pl.getInventory();
 			ItemStack stack = playerinv.getItem(slot);
-			LazyOptional<IItemHandler> cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			LazyOptional<IItemHandler> cap = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
 			if (cap.isPresent()) {
 				if (cap.resolve().get() == handler) {
 					return;
 				}
 			}
 			stack = playerinv.getItem(craft);
-			cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			cap = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
 			if (cap.isPresent()) {
 				if (cap.resolve().get() == handler) {
 					return;
@@ -78,7 +78,7 @@ public abstract class GenericContainerItem extends GenericContainer {
 	@Override
 	public boolean stillValid(Player player) {
 		ItemStack stack = player.getUseItem();
-		LazyOptional<IItemHandler> cap = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		LazyOptional<IItemHandler> cap = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
 		if (cap.isPresent()) {
 			if (cap.resolve().get() != handler) {
 				return false;

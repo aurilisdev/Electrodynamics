@@ -24,8 +24,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTile implements IEnergyStorage {
@@ -115,7 +115,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		if (electro.hasCapability(capability, face)) {
 			return electro.getCapability(capability, face);
 		}
-		if (capability == CapabilityEnergy.ENERGY && (face == facing || face == facing.getOpposite())) {
+		if (capability == ForgeCapabilities.ENERGY && (face == facing || face == facing.getOpposite())) {
 			return (LazyOptional<T>) LazyOptional.of(() -> this);
 		}
 		return super.getCapability(capability, face);

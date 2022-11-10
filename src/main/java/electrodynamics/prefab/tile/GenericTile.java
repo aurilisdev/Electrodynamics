@@ -25,10 +25,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GenericTile extends BlockEntity implements Nameable {
 	private Component[] components = new Component[ComponentType.values().length];
@@ -141,10 +140,10 @@ public class GenericTile extends BlockEntity implements Nameable {
 		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
 			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
 		}
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && components[ComponentType.FluidHandler.ordinal()] != null) {
+		if (cap == ForgeCapabilities.FLUID_HANDLER && components[ComponentType.FluidHandler.ordinal()] != null) {
 			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
 		}
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && components[ComponentType.Inventory.ordinal()] != null) {
+		if (cap == ForgeCapabilities.ITEM_HANDLER && components[ComponentType.Inventory.ordinal()] != null) {
 			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
 		}
 		return super.getCapability(cap, side);

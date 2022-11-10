@@ -17,9 +17,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -104,7 +104,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		if (capability != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+		if (capability != ForgeCapabilities.ITEM_HANDLER) {
 			return false;
 		}
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {

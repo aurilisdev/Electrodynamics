@@ -32,9 +32,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -74,7 +74,7 @@ public class ItemCanister extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
-			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
 				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
 					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
 					tooltip.add(Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
@@ -87,7 +87,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
+		return (int) Math.round(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
@@ -95,7 +95,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
 	}
 
 	@Override
@@ -129,8 +129,7 @@ public class ItemCanister extends Item {
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		List<Fluid> whitelisted = new ArrayList<>();
 		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-
-			if (fluid.getBucket() != null && DeferredRegisters.ITEM_CANISTERREINFORCED.get() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
+			if (fluid.getBucket() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(DeferredRegisters.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
 				whitelisted.add(fluid);
 			}
 		}

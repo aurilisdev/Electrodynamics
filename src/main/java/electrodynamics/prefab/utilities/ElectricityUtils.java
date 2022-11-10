@@ -14,8 +14,8 @@ import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricityUtils {
@@ -49,7 +49,7 @@ public class ElectricityUtils {
 
 	public static boolean isElectricReceiver(BlockEntity tile, Direction dir) {
 		if (tile != null) {
-			if (tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).isPresent() || tile.getCapability(CapabilityEnergy.ENERGY, dir).isPresent()) {
+			if (tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).isPresent() || tile.getCapability(ForgeCapabilities.ENERGY, dir).isPresent()) {
 				return true;
 			}
 		}
@@ -67,7 +67,7 @@ public class ElectricityUtils {
 				ICapabilityElectrodynamic handler = cap.resolve().get();
 				return handler.receivePower(transfer, debug);
 			}
-			LazyOptional<IEnergyStorage> cap2 = tile.getCapability(CapabilityEnergy.ENERGY, direction);
+			LazyOptional<IEnergyStorage> cap2 = tile.getCapability(ForgeCapabilities.ENERGY, direction);
 			if (cap2.isPresent()) {
 				IEnergyStorage handler = cap2.resolve().get();
 				TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());

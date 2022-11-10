@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -41,7 +41,7 @@ public class FluidUtilities {
 
 	public static boolean isFluidReceiver(BlockEntity acceptor, Direction dir) {
 		if (acceptor != null) {
-			if (acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir).isPresent()) {
+			if (acceptor.getCapability(ForgeCapabilities.FLUID_HANDLER, dir).isPresent()) {
 				return true;
 			}
 		}
@@ -54,7 +54,7 @@ public class FluidUtilities {
 
 	public static Integer receiveFluid(BlockEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
 		if (isFluidReceiver(acceptor, direction)) {
-			LazyOptional<IFluidHandler> cap = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
+			LazyOptional<IFluidHandler> cap = acceptor.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
 			if (cap.isPresent()) {
 				IFluidHandler handler = cap.resolve().get();
 				boolean canPass = false;
@@ -84,7 +84,7 @@ public class FluidUtilities {
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
 			if (faceTile != null) {
 				boolean electroPipe = faceTile instanceof GenericTilePipe;
-				LazyOptional<IFluidHandler> cap = faceTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
+				LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
 				if (cap.isPresent()) {
 					IFluidHandler fHandler = cap.resolve().get();
 					for (FluidTank fluidTank : tanks) {

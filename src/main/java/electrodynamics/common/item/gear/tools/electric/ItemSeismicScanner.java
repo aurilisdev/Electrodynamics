@@ -30,9 +30,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkDirection;
@@ -115,7 +115,7 @@ public class ItemSeismicScanner extends ItemElectric {
 			CompoundTag tag = scanner.getOrCreateTag();
 			boolean isTimerUp = tag.getInt(NBTUtils.TIMER) <= 0;
 			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
-			ItemStack ore = scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
+			ItemStack ore = scanner.getCapability(ForgeCapabilities.ITEM_HANDLER).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
 			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
 				extractPower(scanner, properties.extract.getJoules(), false);
 				tag.putInt(NBTUtils.TIMER, COOLDOWN_SECONDS * 20);
@@ -136,7 +136,7 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
 		return new SimpleMenuProvider((id, inv, play) -> {
-			LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+			LazyOptional<IItemHandler> capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
 			IItemHandler handler = new ItemStackHandler();
 			if (capability.isPresent()) {
 				handler = capability.resolve().get();

@@ -1,6 +1,7 @@
 package electrodynamics;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Sets;
@@ -284,8 +285,8 @@ public class DeferredRegisters {
 		FLUID_TYPES.register("fluidclay", supplier(() -> fluidClay.getFluidType()));
 		FLUID_TYPES.register("fluidconcrete", supplier(() -> fluidCement.getFluidType()));
 		FLUID_TYPES.register("fluidhydraulic", supplier(() -> fluidHydraulic.getFluidType()));
-		for (SubtypeSulfateFluid mineralFluid : mineralFluidMap.keySet()) {
-			FLUID_TYPES.register("fluidsulfate" + mineralFluid.name(), supplier(() -> mineralFluidMap.get(mineralFluid).get().getFluidType()));
+		for (Entry<SubtypeSulfateFluid, RegistryObject<Fluid>> entry : mineralFluidMap.entrySet()) {
+			FLUID_TYPES.register("fluidsulfate" + entry.getKey().name(), supplier(() -> entry.getValue().get().getFluidType()));
 		}
 		// Gasses
 		FLUIDS.register("fluidoxygen", supplier(() -> fluidOxygen = new FluidOxygen()));
