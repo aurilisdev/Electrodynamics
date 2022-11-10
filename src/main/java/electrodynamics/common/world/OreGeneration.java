@@ -45,14 +45,16 @@ public class OreGeneration {
 	}
 
 	public static void generateSulfurAround(RandomSource random, BlockPos pos, WorldGenLevel level) {
-		for (Direction direction : Direction.values()) {
-			BlockPos offset = pos.offset(direction.getNormal());
-			if (random.nextFloat() < 0.3) {
-				if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
-					level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOre.sulfur).defaultBlockState(), 3);
-				}
-				if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
-					level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
+		if (OreConfig.oresToSpawn.contains(SubtypeOre.sulfur.name())) {
+			for (Direction direction : Direction.values()) {
+				BlockPos offset = pos.offset(direction.getNormal());
+				if (random.nextFloat() < 0.3) {
+					if (level.getBlockState(offset).getBlock() == Blocks.STONE) {
+						level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOre.sulfur).defaultBlockState(), 3);
+					}
+					if (level.getBlockState(offset).getBlock() == Blocks.DEEPSLATE) {
+						level.setBlock(offset, DeferredRegisters.getSafeBlock(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
+					}
 				}
 			}
 		}
