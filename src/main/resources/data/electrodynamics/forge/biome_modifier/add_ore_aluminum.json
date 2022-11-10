@@ -1,0 +1,6 @@
+{
+  "type" : "forge:add_features",
+  "biomes" : "minecraft:is_overworld",
+  "features" : "electrodynamics:orealuminum",
+  "step" : "underground_ores"
+}
