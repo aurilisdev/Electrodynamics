@@ -34,7 +34,7 @@ public class ConfigCondition implements ICondition {
 		public void write(JsonObject json, ConfigCondition value) {
 			// for data gen
 		}
- 
+
 		@Override
 		public ConfigCondition read(JsonObject json) {
 			// specify config fields

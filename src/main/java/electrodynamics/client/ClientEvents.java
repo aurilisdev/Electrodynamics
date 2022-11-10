@@ -51,15 +51,15 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGuiOverlayEvent.Post event) {
-			Player player = Minecraft.getInstance().player;
-			ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
-			ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
+		Player player = Minecraft.getInstance().player;
+		ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
+		ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
 
-			if (gunStackMainHand.getItem() instanceof ItemRailgun) {
-				renderHeatToolTip(event, gunStackMainHand);
-			} else if (gunStackOffHand.getItem() instanceof ItemRailgun) {
-				renderHeatToolTip(event, gunStackOffHand);
-			}
+		if (gunStackMainHand.getItem() instanceof ItemRailgun) {
+			renderHeatToolTip(event, gunStackMainHand);
+		} else if (gunStackOffHand.getItem() instanceof ItemRailgun) {
+			renderHeatToolTip(event, gunStackOffHand);
+		}
 	}
 
 	private static void renderHeatToolTip(RenderGuiOverlayEvent.Post event, ItemStack stack) {

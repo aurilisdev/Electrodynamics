@@ -39,7 +39,7 @@ import net.minecraftforge.network.NetworkDirection;
 
 public class ItemSeismicScanner extends ItemElectric {
 
-	private static final Component CONTAINER_TITLE =Component.translatable("container.seismicscanner");
+	private static final Component CONTAINER_TITLE = Component.translatable("container.seismicscanner");
 	private final ElectricItemProperties properties;
 
 	public static final int SLOT_COUNT = 1;

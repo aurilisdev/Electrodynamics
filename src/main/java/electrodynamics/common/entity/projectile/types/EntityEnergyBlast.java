@@ -53,8 +53,9 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 			remove(Entity.RemovalReason.DISCARDED);
 		}
 		if (level.isClientSide) {
-			for (int i = 0; i < 10; i++)
-				level.addParticle(new DustParticleOptions(new Vector3f(1.8f, 0, 0.8f),4), getX(), getY(), getZ(), 0, 0, 0);
+			for (int i = 0; i < 10; i++) {
+				level.addParticle(new DustParticleOptions(new Vector3f(1.8f, 0, 0.8f), 4), getX(), getY(), getZ(), 0, 0, 0);
+			}
 		}
 	}
 
