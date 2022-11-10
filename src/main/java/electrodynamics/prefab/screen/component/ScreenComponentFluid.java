@@ -2,10 +2,12 @@ package electrodynamics.prefab.screen.component;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -36,8 +38,8 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
 			if (!fluidStack.isEmpty()) {
-				// TODO: Fix fluid attributes
-				// RenderingUtils.color(fluidStack.getFluid().getAttributes().getColor());
+				IClientFluidTypeExtensions extensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+				RenderingUtils.color(extensions.getTintColor(fluidStack));
 			}
 		}
 	}
@@ -47,9 +49,8 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		IFluidTank tank = fluidInfoHandler.getTank();
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
-			// TODO: Fix fluid attributes
-
-//			return fluidStack.getFluid().getAttributes().getStillTexture();
+			IClientFluidTypeExtensions extensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+			return extensions.getStillTexture();
 		}
 		return resource;
 	}

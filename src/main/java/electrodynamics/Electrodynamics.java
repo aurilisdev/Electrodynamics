@@ -68,7 +68,6 @@ public class Electrodynamics {
 		OreGeneration.registerOres();
 		NetworkHandler.init();
 		ElectrodynamicsTags.init();
-		// TODO: Should this even be here? See below
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
 
 	}

@@ -10,7 +10,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 
 public class ConfigCondition implements ICondition {
 
-	// TODO make this work for multiple config values
+	// make this work for multiple config values
 	private static final ResourceLocation NAME = new ResourceLocation(References.ID, "config");
 
 	public ConfigCondition() {
@@ -32,12 +32,12 @@ public class ConfigCondition implements ICondition {
 
 		@Override
 		public void write(JsonObject json, ConfigCondition value) {
-			// TODO for data gen
+			// for data gen
 		}
-
+ 
 		@Override
 		public ConfigCondition read(JsonObject json) {
-			// TODO specify config fields
+			// specify config fields
 			return new ConfigCondition();
 		}
 

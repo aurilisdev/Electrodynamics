@@ -185,6 +185,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -197,6 +198,7 @@ public class DeferredRegisters {
 	public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, References.ID);
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, References.ID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
+	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, References.ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, References.ID);
 	public static BlockMultiSubnode multi;
 	public static BlockSeismicMarker blockSeismicMarker;
@@ -211,9 +213,19 @@ public class DeferredRegisters {
 	public static FluidClay fluidClay;
 	public static FluidConcrete fluidCement;
 	public static FluidHydraulic fluidHydraulic;
+	public static HashMap<SubtypeSulfateFluid, RegistryObject<Fluid>> mineralFluidMap = new HashMap<>();
+	public static FluidType fluidTypeEthanol;
+	public static FluidType fluidTypeSulfuricAcid;
+	public static FluidType fluidTypeHydrogenFluoride;
+	public static FluidType fluidTypePolyethylene;
+	public static FluidType fluidTypeClay;
+	public static FluidType fluidTypeCement;
+	public static FluidType fluidTypeHydraulic;
 	// gasses
 	public static FluidOxygen fluidOxygen;
 	public static FluidHydrogen fluidHydrogen;
+	public static FluidType fluiTypedOxygen;
+	public static FluidType fluidTypeHydrogen;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -257,11 +269,23 @@ public class DeferredRegisters {
 		FLUIDS.register("fluidconcrete", supplier(() -> fluidCement = new FluidConcrete()));
 		FLUIDS.register("fluidhydraulic", supplier(() -> fluidHydraulic = new FluidHydraulic()));
 		for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
-			FLUIDS.register("fluidsulfate" + mineral.name(), supplier(() -> new FluidSulfate(mineral)));
+			mineralFluidMap.put(mineral, FLUIDS.register("fluidsulfate" + mineral.name(), supplier(() -> new FluidSulfate(mineral))));
+		}
+		FLUID_TYPES.register("fluidethanol", supplier(() -> fluidEthanol.getFluidType()));
+		FLUID_TYPES.register("fluidsulfuricacid", supplier(() -> fluidSulfuricAcid.getFluidType()));
+		FLUID_TYPES.register("fluidhydrogenfluoride", supplier(() -> fluidHydrogenFluoride.getFluidType()));
+		FLUID_TYPES.register("fluidpolyethylene", supplier(() -> fluidPolyethylene.getFluidType()));
+		FLUID_TYPES.register("fluidclay", supplier(() -> fluidClay.getFluidType()));
+		FLUID_TYPES.register("fluidconcrete", supplier(() -> fluidCement.getFluidType()));
+		FLUID_TYPES.register("fluidhydraulic", supplier(() -> fluidHydraulic.getFluidType()));
+		for (SubtypeSulfateFluid mineralFluid : mineralFluidMap.keySet()) {
+			FLUID_TYPES.register("fluidsulfate" + mineralFluid.name(), supplier(() -> mineralFluidMap.get(mineralFluid).get().getFluidType()));
 		}
 		// Gasses
 		FLUIDS.register("fluidoxygen", supplier(() -> fluidOxygen = new FluidOxygen()));
 		FLUIDS.register("fluidhydrogen", supplier(() -> fluidHydrogen = new FluidHydrogen()));
+		FLUID_TYPES.register("fluidoxygen", supplier(() -> fluidOxygen.getFluidType()));
+		FLUID_TYPES.register("fluidhydrogen", supplier(() -> fluidHydrogen.getFluidType()));
 	}
 
 	private static void registerSubtypeItem(ISubtype[] array) {

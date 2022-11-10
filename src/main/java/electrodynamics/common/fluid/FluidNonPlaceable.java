@@ -12,32 +12,14 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.RegistryObject;
 
 public abstract class FluidNonPlaceable extends Fluid {
 
 	private final java.util.function.Supplier<RegistryObject<Item>> itemSupplier;
-//	private String modID;
-//	private String fluidName;
-//	private int color = 0;
 
 	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
 		this.itemSupplier = itemSupplier;
-	}
-
-	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
-		this.itemSupplier = itemSupplier;
-//		this.modID = modID;
-//		this.fluidName = fluidName;
-	}
-
-	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName, int color) {
-		this.itemSupplier = itemSupplier;
-//		this.modID = modID;
-//		this.fluidName = fluidName;
-//		this.color = color;
 	}
 
 	@Override
@@ -91,20 +73,7 @@ public abstract class FluidNonPlaceable extends Fluid {
 	}
 
 	@Override
-	public FluidType getFluidType() {
-		return ForgeMod.EMPTY_TYPE.get(); // TODO: Change this so its different in all the fluids
-	}
-// TODO: Fix fluid attributes
-//	@Override
-//	protected FluidAttributes createAttributes() {
-//		if (color == 0) {
-//			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).build(this);
-//		}
-//		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).color(color).build(this);
-//	}
-
-	@Override
-	public VoxelShape getShape(FluidState p_215664_1_, BlockGetter p_215664_2_, BlockPos p_215664_3_) {
+	public VoxelShape getShape(FluidState state, BlockGetter getter, BlockPos pos) {
 		return Shapes.block();
 	}
 }

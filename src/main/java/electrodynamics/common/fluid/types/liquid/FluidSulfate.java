@@ -1,8 +1,11 @@
 package electrodynamics.common.fluid.types.liquid;
 
 import electrodynamics.DeferredRegisters;
+import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
+import electrodynamics.common.fluid.types.SimpleWaterBasedFluidType;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
+import net.minecraftforge.fluids.FluidType;
 
 public class FluidSulfate extends FluidNonPlaceable {
 
@@ -13,12 +16,13 @@ public class FluidSulfate extends FluidNonPlaceable {
 	public FluidSulfate(SubtypeSulfateFluid mineral) {
 		super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED);
 		this.mineral = mineral;
+		type = new SimpleWaterBasedFluidType(References.ID, mineral.name() + "sulfate");
 	}
 
-// TODO: Fix fluid attributes
-//	@Override
-//	protected FluidAttributes createAttributes() {
-//		return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate"), new ResourceLocation(References.ID + ":fluid/" + mineral.name() + "sulfate")).translationKey("fluid.electrodynamics.sulfate" + mineral.name()).build(this);
-//	}
+	private final FluidType type;
 
+	@Override
+	public FluidType getFluidType() {
+		return type;
+	}
 }
