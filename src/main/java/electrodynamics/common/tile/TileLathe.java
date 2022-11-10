@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
@@ -20,6 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -60,7 +60,7 @@ public class TileLathe extends GenericTile {
 			}
 			double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
 			if (progress == 1) {
-				SoundAPI.playSound(SoundRegister.SOUND_LATHEPLAYING.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
+				SoundAPI.playSound(ElectrodynamicsSounds.SOUND_LATHEPLAYING.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
 			}
 			clientRunningTicks++;
 		}

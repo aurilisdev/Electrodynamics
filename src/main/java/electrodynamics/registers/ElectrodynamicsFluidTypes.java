@@ -1,6 +1,6 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.ElectrodynamicsRegisters.supplier;
+import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidCement;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidClay;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidEthanol;

@@ -1,11 +1,11 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -63,7 +63,7 @@ public class EntityMetalRod extends EntityCustomProjectile {
 				if (state.getDestroySpeed(level, p_230299_1_.getBlockPos()) < 50f && !ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
 					level.removeBlock(p_230299_1_.getBlockPos(), false);
 				}
-				level.playSound(null, p_230299_1_.getBlockPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
+				level.playSound(null, p_230299_1_.getBlockPos(), ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
 			}
 			remove(Entity.RemovalReason.DISCARDED);
 		}

@@ -353,7 +353,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		BlockPos pos = getBlockPos();
 		ClientEvents.quarryArm.remove(pos);
 		if (hasClientCorners() && clientMiningPos != null) {
-			if (storedArmFrames.size() == 0) {
+			if (storedArmFrames.isEmpty()) {
 				storedArmFrames = getArmFrames();
 			}
 			Location loc = storedArmFrames.get(0);
@@ -688,7 +688,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			}
 		}
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite();
-		Direction dir1, dir2;
+		Direction dir1;
+		Direction dir2;
 		switch (facing) {
 		case EAST:
 			BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> maintainState(world, pos, Direction.EAST));

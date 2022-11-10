@@ -17,7 +17,7 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
-import electrodynamics.registers.ElectrodynamicsRegisters;
+import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -45,7 +45,7 @@ public class Electrodynamics {
 		// MUST GO BEFORE BLOCKS!!!!
 		ElectrodynamicsBlockStates.init();
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		ElectrodynamicsRegisters.register(bus);
+		UnifiedElectrodynamicsRegister.register(bus);
 		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
 		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);

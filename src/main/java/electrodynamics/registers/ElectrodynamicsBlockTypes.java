@@ -1,6 +1,6 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.ElectrodynamicsRegisters.getSafeBlock;
+import static electrodynamics.registers.UnifiedElectrodynamicsRegister.getSafeBlock;
 
 import com.google.common.collect.Sets;
 

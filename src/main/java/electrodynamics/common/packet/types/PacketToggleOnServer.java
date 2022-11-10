@@ -3,12 +3,12 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -42,9 +42,9 @@ public class PacketToggleOnServer {
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
 						if (((IItemElectric) playerHead.getItem()).getJoulesStored(playerHead) >= ItemNightVisionGoggles.JOULES_PER_TICK) {
 							if (tag.getBoolean(NBTUtils.ON)) {
-								player.playNotifySound(SoundRegister.SOUND_NIGHTVISIONGOGGLESON.get(), SoundSource.PLAYERS, 1, 1);
+								player.playNotifySound(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESON.get(), SoundSource.PLAYERS, 1, 1);
 							} else {
-								player.playNotifySound(SoundRegister.SOUND_NIGHTVISIONGOGGLESOFF.get(), SoundSource.PLAYERS, 1, 1);
+								player.playNotifySound(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESOFF.get(), SoundSource.PLAYERS, 1, 1);
 							}
 						}
 					}
@@ -54,7 +54,7 @@ public class PacketToggleOnServer {
 					if (ItemUtils.testItems(playerLegs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(playerLegs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = playerLegs.getOrCreateTag();
 						tag.putBoolean(NBTUtils.ON, !tag.getBoolean(NBTUtils.ON));
-						player.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
+						player.playNotifySound(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
 					}
 					break;
 				default:

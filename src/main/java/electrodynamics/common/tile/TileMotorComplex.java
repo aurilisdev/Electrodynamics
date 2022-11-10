@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
@@ -17,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -90,7 +90,7 @@ public class TileMotorComplex extends GenericTile {
 
 	private void tickClient(ComponentTickable tick) {
 		if (tick.getTicks() % 20 == 0 && clientPowered) {
-			SoundAPI.playSound(SoundRegister.SOUND_MOTORRUNNING.get(), SoundSource.BLOCKS, 1.0F, 1.0F, worldPosition);
+			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), SoundSource.BLOCKS, 1.0F, 1.0F, worldPosition);
 		}
 	}
 

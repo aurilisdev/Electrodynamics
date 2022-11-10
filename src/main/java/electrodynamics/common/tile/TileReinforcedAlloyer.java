@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -18,7 +17,8 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
-import electrodynamics.registers.ElectrodynamicsRegisters;
+import electrodynamics.registers.UnifiedElectrodynamicsRegister;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,12 +46,12 @@ public class TileReinforcedAlloyer extends GenericTile {
 
 	protected boolean canProcessReinfAlloy(ComponentProcessor component) {
 		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get())) {
-			if (getBlockState().getBlock() == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.reinforcedalloyer)) {
-				level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.reinforcedalloyerrunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+			if (getBlockState().getBlock() == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.reinforcedalloyer)) {
+				level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.reinforcedalloyerrunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 			}
 			return true;
-		} else if (getBlockState().getBlock() == ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.reinforcedalloyerrunning)) {
-			level.setBlock(worldPosition, ElectrodynamicsRegisters.getSafeBlock(SubtypeMachine.reinforcedalloyer).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+		} else if (getBlockState().getBlock() == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.reinforcedalloyerrunning)) {
+			level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.reinforcedalloyer).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
 		}
 		return false;
 	}
@@ -67,7 +67,7 @@ public class TileReinforcedAlloyer extends GenericTile {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
 		if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
-			SoundAPI.playSound(SoundRegister.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 		}
 	}
 

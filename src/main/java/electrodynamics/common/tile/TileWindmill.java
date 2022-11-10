@@ -2,7 +2,6 @@ package electrodynamics.common.tile;
 
 import java.util.HashSet;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.BlockMachine;
@@ -23,6 +22,7 @@ import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -94,7 +94,7 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 
 	protected void tickClient(ComponentTickable tickable) {
 		if (isGenerating && tickable.getTicks() % 180 == 0) {
-			SoundAPI.playSound(SoundRegister.SOUND_WINDMILL.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_WINDMILL.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 		}
 	}
 

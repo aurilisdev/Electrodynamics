@@ -1,6 +1,5 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
@@ -20,6 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -81,7 +81,7 @@ public class TileMineralCrusher extends GenericTile {
 			}
 			double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
 			if (progress == 1) {
-				SoundAPI.playSound(SoundRegister.SOUND_MINERALCRUSHER.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
+				SoundAPI.playSound(ElectrodynamicsSounds.SOUND_MINERALCRUSHER.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
 			} else if (progress < 0.3) {
 				for (int i = 0; i < 5; i++) {
 					double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;

@@ -1,11 +1,11 @@
 package electrodynamics.common.item.gear.tools.electric;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -47,10 +47,10 @@ public class ItemRailgunPlasma extends ItemRailgun {
 				worldIn.addFreshEntity(projectile);
 
 				railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
-				worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNPLASMA.get(), SoundSource.PLAYERS, 1, 1);
+				worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA.get(), SoundSource.PLAYERS, 1, 1);
 				railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
 			} else {
-				worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+				worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
 		return InteractionResultHolder.pass(gunStack);

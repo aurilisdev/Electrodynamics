@@ -1,6 +1,6 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.ElectrodynamicsRegisters.supplier;
+import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
 
 import java.util.HashMap;
 

@@ -3,10 +3,10 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -44,7 +44,7 @@ public class PacketModeSwitchServer {
 							curMode = 0;
 						}
 						tag.putInt(NBTUtils.MODE, curMode);
-						serverPlayer.playNotifySound(SoundRegister.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
+						serverPlayer.playNotifySound(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE.get(), SoundSource.PLAYERS, 1, 1);
 					}
 					break;
 				case SERVOLEGS:
@@ -58,7 +58,7 @@ public class PacketModeSwitchServer {
 							curMode = 0;
 						}
 						tag.putInt(NBTUtils.MODE, curMode);
-						serverPlayer.playNotifySound(SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+						serverPlayer.playNotifySound(ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 					}
 					break;
 				default:

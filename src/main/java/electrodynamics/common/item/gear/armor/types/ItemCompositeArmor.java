@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -156,7 +156,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 		@Override
 		public SoundEvent getEquipSound() {
-			return SoundRegister.SOUND_EQUIPHEAVYARMOR.get();
+			return ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get();
 		}
 
 		@Override

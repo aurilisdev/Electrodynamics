@@ -3,13 +3,13 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -60,10 +60,10 @@ public class ItemRailgunKinetic extends ItemRailgun {
 				}
 
 				if (projectile == null) {
-					worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+					worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 				} else {
 					railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
-					worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC.get(), SoundSource.PLAYERS, 1, 1);
+					worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC.get(), SoundSource.PLAYERS, 1, 1);
 					projectile.setItem(ammoStack);
 					projectile.setNoGravity(true);
 					projectile.setOwner(playerIn);
@@ -75,7 +75,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 					ammoStack.shrink(1);
 				}
 			} else {
-				worldIn.playSound(null, playerIn.blockPosition(), SoundRegister.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+				worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
 		return InteractionResultHolder.pass(gunStack);

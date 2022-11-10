@@ -1,4 +1,4 @@
-package electrodynamics;
+package electrodynamics.registers;
 
 import com.google.common.base.Supplier;
 
@@ -9,7 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class SoundRegister {
+public class ElectrodynamicsSounds {
 	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, References.ID);
 	public static final RegistryObject<SoundEvent> SOUND_HUM = SOUNDS.register("hum", supplier(new SoundEvent(new ResourceLocation(References.ID + ":hum"))));
 	public static final RegistryObject<SoundEvent> SOUND_MINERALCRUSHER = SOUNDS.register("mineralcrusher", supplier(new SoundEvent(new ResourceLocation(References.ID + ":mineralcrusher"))));

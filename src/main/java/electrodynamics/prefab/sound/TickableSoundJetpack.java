@@ -2,11 +2,11 @@ package electrodynamics.prefab.sound;
 
 import java.util.UUID;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 	private Player originPlayer;
 
 	public TickableSoundJetpack(UUID originPlayer) {
-		super(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS, RandomSource.create());
+		super(ElectrodynamicsSounds.SOUND_JETPACK.get(), SoundSource.PLAYERS, RandomSource.create());
 		originId = originPlayer;
 		volume = 0.5F;
 		pitch = 1.0F;

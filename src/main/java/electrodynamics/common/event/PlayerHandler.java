@@ -3,7 +3,6 @@ package electrodynamics.common.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.packet.NetworkHandler;
@@ -12,6 +11,7 @@ import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -59,7 +59,7 @@ public class PlayerHandler {
 			if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 				event.setAmount((float) Math.sqrt(event.getAmount()));
 				tag.putInt(NBTUtils.PLATES, stored - 1);
-				event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), SoundRegister.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
+				event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public class PlayerHandler {
 				if (playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
 					event.setCanceled(true);
 					playerBoots.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
-					event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), SoundRegister.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+					event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 				}
 			}
 		}
