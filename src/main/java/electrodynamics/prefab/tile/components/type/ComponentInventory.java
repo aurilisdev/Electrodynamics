@@ -28,6 +28,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class ComponentInventory implements Component, WorldlyContainer {
@@ -47,6 +48,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	protected int inventorySize;
 	protected Function<Direction, Collection<Integer>> getSlotsFunction;
 	protected boolean shouldSendInfo;
+	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = SidedInvWrapper.create(this, Direction.values());
 
 	/*
 	 * IMPORTANT DEFINITIONS:
@@ -192,7 +194,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		return hasCapability(capability, side) ? (LazyOptional<T>) LazyOptional.of(() -> new SidedInvWrapper(this, side)) : LazyOptional.empty();
+		return hasCapability(capability, side) ? (LazyOptional<T>) sideWrappers[side.ordinal()] : LazyOptional.empty();
 	}
 
 	@Override
