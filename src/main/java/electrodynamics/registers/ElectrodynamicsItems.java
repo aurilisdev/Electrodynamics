@@ -7,7 +7,6 @@ import java.util.HashMap;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -19,7 +18,6 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.item.ItemCeramic;
-import electrodynamics.common.item.ItemDescriptable;
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
@@ -75,7 +73,6 @@ public class ElectrodynamicsItems {
 		registerSubtypeBlockItem(SubtypeMachine.values());
 		registerSubtypeBlockItem(SubtypeGlass.values());
 		registerSubtypeBlockItem(SubtypeResourceBlock.values());
-		registerSubtypeBlockItem(SubtypeConcrete.values());
 		for (SubtypeWire subtype : SubtypeWire.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemWire((BlockWire) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
@@ -106,7 +103,6 @@ public class ElectrodynamicsItems {
 		ITEMS.register("compositeplating", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("compositeplatingraw", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 		ITEMS.register("molybdenumfertilizer", supplier(() -> new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("concretemix", supplier(() -> new ItemDescriptable(new Item.Properties().stacksTo(64).tab(References.CORETAB), "tooltip.info.concretejoke")));
 		ITEMS.register("frame", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64))));
 		ITEMS.register("framecorner", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64))));
 		ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));

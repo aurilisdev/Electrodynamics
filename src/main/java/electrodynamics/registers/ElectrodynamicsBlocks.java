@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
-import electrodynamics.common.block.BlockConcrete;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockFrame;
@@ -19,7 +18,6 @@ import electrodynamics.common.block.BlockResource;
 import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -67,9 +65,6 @@ public class ElectrodynamicsBlocks {
 		}
 		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockResource(subtype), subtype)));
-		}
-		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockConcrete(subtype), subtype)));
 		}
 		BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
 		BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));

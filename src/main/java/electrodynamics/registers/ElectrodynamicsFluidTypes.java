@@ -1,6 +1,5 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.ElectrodynamicsFluids.fluidCement;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidClay;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidEthanol;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidHydraulic;
@@ -31,7 +30,6 @@ public class ElectrodynamicsFluidTypes {
 	public static FluidType fluidTypeHydrogenFluoride;
 	public static FluidType fluidTypePolyethylene;
 	public static FluidType fluidTypeClay;
-	public static FluidType fluidTypeCement;
 	public static FluidType fluidTypeHydraulic;
 	// gasses
 
@@ -45,7 +43,6 @@ public class ElectrodynamicsFluidTypes {
 		FLUID_TYPES.register("fluidhydrogenfluoride", supplier(() -> fluidHydrogenFluoride.getFluidType()));
 		FLUID_TYPES.register("fluidpolyethylene", supplier(() -> fluidPolyethylene.getFluidType()));
 		FLUID_TYPES.register("fluidclay", supplier(() -> fluidClay.getFluidType()));
-		FLUID_TYPES.register("fluidconcrete", supplier(() -> fluidCement.getFluidType()));
 		FLUID_TYPES.register("fluidhydraulic", supplier(() -> fluidHydraulic.getFluidType()));
 		for (Entry<SubtypeSulfateFluid, RegistryObject<Fluid>> entry : mineralFluidMap.entrySet()) {
 			FLUID_TYPES.register("fluidsulfate" + entry.getKey().name(), supplier(() -> entry.getValue().get().getFluidType()));
