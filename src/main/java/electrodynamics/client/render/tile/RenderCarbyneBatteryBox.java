@@ -21,7 +21,7 @@ public class RenderCarbyneBatteryBox implements BlockEntityRenderer<TileCarbyneB
 	@Override
 	public void render(TileCarbyneBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel;
-		int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
+		int stored = (int) (tileEntityIn.clientJoules.getValue() / tileEntityIn.clientMaxJoulesStored.getValue() * 6);
 		ibakedmodel = switch (stored) {
 		case 0 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CARBYNEBATTERYBOX);
 		case 1 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CARBYNEBATTERYBOX2);

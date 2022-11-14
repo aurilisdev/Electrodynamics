@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types;
 import java.util.function.Supplier;
 
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.IUpdateableTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import net.minecraft.client.Minecraft;
@@ -19,11 +18,6 @@ public class PacketUpdateTile {
 	private final CompoundTag updateTag;
 	private final BlockPos pos;
 	private boolean isGUI;
-
-	public PacketUpdateTile(IUpdateableTile tile, boolean isGUI) {
-		this(tile.getTile().getBlockPos(), isGUI ? tile.writeGUIPacket() : tile.writeCustomPacket(), isGUI);
-		this.isGUI = isGUI;
-	}
 
 	public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI, CompoundTag base) {
 		this(pos, base, isGUI);
@@ -49,13 +43,7 @@ public class PacketUpdateTile {
 			ClientLevel world = Minecraft.getInstance().level;
 			if (world != null) {
 				BlockEntity tile = world.getBlockEntity(message.pos);
-				if (tile instanceof IUpdateableTile updateable) {
-					if (message.isGUI) {
-						updateable.readGUIPacket(message.updateTag);
-					} else {
-						updateable.readCustomPacket(message.updateTag);
-					}
-				} else if (tile instanceof GenericTile generic) {
+				if (tile instanceof GenericTile generic) {
 					if (generic.hasComponent(ComponentType.PacketHandler)) {
 						ComponentPacketHandler handler = generic.getComponent(ComponentType.PacketHandler);
 						if (message.isGUI) {

@@ -6,6 +6,8 @@ import java.util.List;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
@@ -29,12 +31,22 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 
-public class GenericTile extends BlockEntity implements Nameable {
+public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private Component[] components = new Component[ComponentType.values().length];
 	private ComponentProcessor[] processors = new ComponentProcessor[5];
+	private PropertyManager propertyManager = new PropertyManager();
+
+	protected <T> Property<T> property(Property<T> prop) {
+		return propertyManager.addProperty(prop);
+	}
 
 	public boolean hasComponent(ComponentType type) {
 		return components[type.ordinal()] != null;
+	}
+
+	@Override
+	public PropertyManager getPropertyManager() {
+		return propertyManager;
 	}
 
 	public <T extends Component> T getComponent(ComponentType type) {

@@ -11,6 +11,7 @@ import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.packet.types.PacketPowerSetting;
 import electrodynamics.common.packet.types.PacketRenderJetpackParticles;
+import electrodynamics.common.packet.types.PacketSendUpdateProperties;
 import electrodynamics.common.packet.types.PacketServerUpdateTile;
 import electrodynamics.common.packet.types.PacketSpawnSmokeParticle;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
@@ -28,6 +29,7 @@ public class NetworkHandler {
 
 	public static void init() {
 		CHANNEL.registerMessage(disc++, PacketUpdateTile.class, PacketUpdateTile::encode, PacketUpdateTile::decode, PacketUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketSendUpdateProperties.class, PacketSendUpdateProperties::encode, PacketSendUpdateProperties::decode, PacketSendUpdateProperties::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketSpawnSmokeParticle.class, PacketSpawnSmokeParticle::encode, PacketSpawnSmokeParticle::decode, PacketSpawnSmokeParticle::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketPlayerInformation.class, PacketPlayerInformation::encode, PacketPlayerInformation::decode, PacketPlayerInformation::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketServerUpdateTile.class, PacketServerUpdateTile::encode, PacketServerUpdateTile::decode, PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));

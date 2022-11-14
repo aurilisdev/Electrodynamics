@@ -3,6 +3,7 @@ package electrodynamics.prefab.tile.components.type;
 import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.PacketSendUpdateProperties;
 import electrodynamics.common.packet.types.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
@@ -86,6 +87,16 @@ public class ComponentPacketHandler implements Component {
 		if (world instanceof ServerLevel level) {
 			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 		}
+	}
+
+	public void sendProperties() {
+		PacketSendUpdateProperties packet = new PacketSendUpdateProperties(holder);
+		Level world = holder.getLevel();
+		BlockPos pos = holder.getBlockPos();
+		if (world instanceof ServerLevel level) {
+			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+		}
+		holder.getPropertyManager().clean();
 	}
 
 	public void sendGuiPacketToTracking() {

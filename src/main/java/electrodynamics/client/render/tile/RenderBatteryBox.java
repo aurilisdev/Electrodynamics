@@ -21,7 +21,7 @@ public class RenderBatteryBox implements BlockEntityRenderer<TileBatteryBox> {
 	@Override
 	public void render(TileBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel;
-		int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
+		int stored = (int) (tileEntityIn.clientJoules.getValue() / tileEntityIn.clientMaxJoulesStored.getValue() * 6);
 		ibakedmodel = switch (stored) {
 		case 0 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX);
 		case 1 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_BATTERYBOX2);

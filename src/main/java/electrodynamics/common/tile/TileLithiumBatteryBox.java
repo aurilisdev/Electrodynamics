@@ -8,7 +8,6 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
@@ -36,12 +35,12 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
+		receiveLimitLeft.set(powerOutput.getValue() * currentCapacityMultiplier.getValue());
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false).getJoules());
+			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.getValue() * currentCapacityMultiplier.getValue()), electro.getVoltage()), false).getJoules());
 		}
-		currentCapacityMultiplier = 1;
-		currentVoltageMultiplier = 1;
+		currentCapacityMultiplier.setClean(1);
+		currentVoltageMultiplier.setClean(1);
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {
@@ -49,13 +48,10 @@ public class TileLithiumBatteryBox extends TileBatteryBox {
 				}
 			}
 		}
-		electro.maxJoules(maxJoules * currentCapacityMultiplier);
-		electro.voltage(240.0 * currentVoltageMultiplier);
+		electro.maxJoules(maxJoules.getValue() * currentCapacityMultiplier.getValue());
+		electro.voltage(240.0 * currentVoltageMultiplier.getValue());
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 			electro.joules(electro.getMaxJoulesStored());
-		}
-		if (tickable.getTicks() % 50 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 		}
 		electro.drainElectricItem(3);
 	}
