@@ -104,7 +104,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		if (capability != ForgeCapabilities.ITEM_HANDLER) {
+		if (capability != ForgeCapabilities.FLUID_HANDLER) {
 			return false;
 		}
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {
