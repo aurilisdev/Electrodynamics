@@ -49,7 +49,6 @@ public class UnifiedElectrodynamicsRegister {
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.chargerhv), "|translate|tooltip.machine.voltage.480");
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.fermentationplant), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricpump), "|translate|tooltip.machine.voltage.120");
-		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.cobblestonegenerator), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electrolyticseparator), "|translate|tooltip.machine.voltage.240");
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricarcfurnace), "|translate|tooltip.machine.voltage.120");
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricarcfurnacedouble), "|translate|tooltip.machine.voltage.240");

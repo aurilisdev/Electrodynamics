@@ -10,7 +10,6 @@ import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
-import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
@@ -68,7 +67,6 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerSolarPanel>> CONTAINER_SOLARPANEL = MENU_TYPES.register("solarpanel", () -> new MenuType<>(ContainerSolarPanel::new));
 	public static final RegistryObject<MenuType<ContainerWindmill>> CONTAINER_WINDMILL = MENU_TYPES.register("windmill", () -> new MenuType<>(ContainerWindmill::new));
 	public static final RegistryObject<MenuType<ContainerHydroelectricGenerator>> CONTAINER_HYDROELECTRICGENERATOR = MENU_TYPES.register("hydroelectricgenerator", () -> new MenuType<>(ContainerHydroelectricGenerator::new));
-	public static final RegistryObject<MenuType<ContainerCobblestoneGenerator>> CONTAINER_COBBLESTONEGENERATOR = MENU_TYPES.register("cobblestonegenerator", () -> new MenuType<>(ContainerCobblestoneGenerator::new));
 	public static final RegistryObject<MenuType<ContainerCreativePowerSource>> CONTAINER_CREATIVEPOWERSOURCE = MENU_TYPES.register("creativepowersource", () -> new MenuType<>(ContainerCreativePowerSource::new));
 	public static final RegistryObject<MenuType<ContainerCreativeFluidSource>> CONTAINER_CREATIVEFLUIDSOURCE = MENU_TYPES.register("creativefluidsource", () -> new MenuType<>(ContainerCreativeFluidSource::new));
 	public static final RegistryObject<MenuType<ContainerFluidVoid>> CONTAINER_FLUIDVOID = MENU_TYPES.register("fluidvoid", () -> new MenuType<>(ContainerFluidVoid::new));

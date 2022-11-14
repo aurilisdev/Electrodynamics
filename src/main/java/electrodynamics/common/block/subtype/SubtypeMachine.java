@@ -14,7 +14,6 @@ import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
-import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileCoolantResavoir;
 import electrodynamics.common.tile.TileCreativeFluidSource;
@@ -118,7 +117,6 @@ public enum SubtypeMachine implements ISubtype {
 	tanksteel(true, TileTankSteel.class),
 	tankreinforced(true, TileTankReinforced.class),
 	tankhsla(true, TileTankHSLA.class),
-	cobblestonegenerator(true, TileCobblestoneGenerator.class),
 	creativepowersource(true, TileCreativePowerSource.class),
 	creativefluidsource(true, TileCreativeFluidSource.class),
 	fluidvoid(true, TileFluidVoid.class),
