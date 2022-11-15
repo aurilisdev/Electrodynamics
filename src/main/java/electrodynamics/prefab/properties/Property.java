@@ -13,7 +13,7 @@ public class Property<T> {
 		this.type = type;
 	}
 
-	public T getValue() {
+	public T get() {
 		return rawValue;
 	}
 

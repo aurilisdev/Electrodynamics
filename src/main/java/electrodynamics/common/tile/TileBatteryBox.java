@@ -49,7 +49,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		powerOutput = property(new Property<Double>(PropertyType.Double)).set(output);
 		maxJoules = property(new Property<Double>(PropertyType.Double)).set(max);
 		clientMaxJoulesStored = property(new Property<Double>(PropertyType.Double)).set(max);
-		receiveLimitLeft = property(new Property<Double>(PropertyType.Double)).set(output * currentCapacityMultiplier.getValue());
+		receiveLimitLeft = property(new Property<Double>(PropertyType.Double)).set(output * currentCapacityMultiplier.get());
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
@@ -67,9 +67,9 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		receiveLimitLeft.set(powerOutput.getValue() * currentCapacityMultiplier.getValue());
+		receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.getValue() * currentCapacityMultiplier.getValue()), electro.getVoltage()), false).getJoules());
+			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
 		}
 		currentCapacityMultiplier.set(1.0, true);
 		currentVoltageMultiplier.set(1.0, true);
@@ -80,8 +80,8 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 				}
 			}
 		}
-		electro.maxJoules(maxJoules.getValue() * currentCapacityMultiplier.getValue());
-		electro.voltage(120.0 * currentVoltageMultiplier.getValue());
+		electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
+		electro.voltage(120.0 * currentVoltageMultiplier.get());
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 			electro.joules(electro.getMaxJoulesStored());
 		}

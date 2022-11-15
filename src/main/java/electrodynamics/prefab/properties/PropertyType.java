@@ -12,7 +12,7 @@ public enum PropertyType {
 	CompoundTag;
 
 	public void write(Property<?> prop, FriendlyByteBuf buf) {
-		Object val = prop.getValue();
+		Object val = prop.get();
 		switch (this) {
 		case Boolean:
 			buf.writeBoolean((Boolean) val);

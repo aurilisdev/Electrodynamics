@@ -35,9 +35,9 @@ public class TileCarbyneBatteryBox extends TileBatteryBox {
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		receiveLimitLeft.set(powerOutput.getValue() * currentCapacityMultiplier.getValue());
+		receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.getValue() * currentCapacityMultiplier.getValue()), electro.getVoltage()), false).getJoules());
+			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
 		}
 		currentCapacityMultiplier.set(1, true);
 		currentVoltageMultiplier.set(1, true);
@@ -48,8 +48,8 @@ public class TileCarbyneBatteryBox extends TileBatteryBox {
 				}
 			}
 		}
-		electro.maxJoules(maxJoules.getValue() * currentCapacityMultiplier.getValue());
-		electro.voltage(480.0 * currentVoltageMultiplier.getValue());
+		electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
+		electro.voltage(480.0 * currentVoltageMultiplier.get());
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 			electro.joules(electro.getMaxJoulesStored());
 		}

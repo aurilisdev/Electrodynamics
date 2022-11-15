@@ -10,6 +10,8 @@ import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -35,17 +37,17 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 
 	public TargetValue currentRotation = new TargetValue(0);
 	protected CachedTileOutput output;
-	private boolean generating = false;
-	private double multiplier = 1;
+	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean)).set(false);
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double)).set(1.0);
 
 	@Override
 	public double getMultiplier() {
-		return multiplier;
+		return multiplier.get();
 	}
 
 	@Override
 	public void setMultiplier(double val) {
-		multiplier = val;
+		multiplier.set(val);
 	}
 
 	public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
@@ -74,12 +76,12 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 		}
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(Direction.DOWN));
-			generating = level.canSeeSky(worldPosition.offset(0, 1, 0));
+			generating.set(level.canSeeSky(worldPosition.offset(0, 1, 0)));
 		}
 		if (tickable.getTicks() % 50 == 0) {
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
-		if (level.isDay() && generating && output.valid()) {
+		if (level.isDay() && generating.get() == Boolean.TRUE && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
 		}
 	}
