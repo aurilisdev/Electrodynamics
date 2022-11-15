@@ -17,6 +17,24 @@ public class Property<T> {
 	}
 
 	public T get() {
+		if (rawValue == null) {
+			switch (type) { // Fix some possible crashes
+			case Boolean:
+				return (T) Boolean.FALSE;
+			case Byte:
+				return (T) (Byte) (byte) 0;
+			case CompoundTag:
+				break;
+			case Double:
+				return (T) (Double) 0.0;
+			case Float:
+				return (T) (Float) 0.0f;
+			case Integer:
+				return (T) (Integer) 0;
+			default:
+				break;
+			}
+		}
 		return rawValue;
 	}
 
@@ -51,8 +69,8 @@ public class Property<T> {
 		} else {
 			verify(updated);
 		}
-		value = (T) updated;
-		rawValue = (T) updated;
+		value = (T) type.attemptCast(updated);
+		rawValue = value;
 		return this;
 	}
 

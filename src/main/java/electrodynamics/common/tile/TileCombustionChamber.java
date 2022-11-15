@@ -6,6 +6,8 @@ import electrodynamics.common.inventory.container.tile.ContainerCombustionChambe
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -25,7 +27,6 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,10 +36,10 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class TileCombustionChamber extends GenericTile implements IElectricGenerator {
 	public static final int TICKS_PER_MILLIBUCKET = 200;
 	public static final int TANK_CAPACITY = 1000;
-	public boolean running;
-	public int burnTime;
-	private CachedTileOutput output;
+	public Property<Boolean> running = property(new Property<Boolean>(PropertyType.Boolean, "running")).set(false).save();
+	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime")).set(0).save();
 	private double multiplier = 1;
+	private CachedTileOutput output;
 
 	private static TagKey<Fluid>[] FUELS;
 
@@ -52,7 +53,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 		super(ElectrodynamicsBlockTypes.TILE_COMBUSTIONCHAMBER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentFluidHandlerMulti(this).setInputTags(1, TANK_CAPACITY, FUELS).relativeInput(Direction.WEST));
@@ -74,62 +75,37 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
 		FluidUtilities.drainItem(this);
 		FluidTank tank = handler.getInputTanks()[0];
-		if (burnTime <= 0) {
-			running = false;
+		if (burnTime.get() <= 0) {
+			running.set(false);
 			if (tank.getFluidAmount() > 0) {
 				CombustionFuelSource source = CombustionFuelSource.getSourceFromFluid(tank.getFluid().getFluid());
 				tank.getFluid().shrink(source.getFluidUsage());
 				multiplier = source.getPowerMultiplier();
-				running = true;
-				burnTime = TICKS_PER_MILLIBUCKET;
+				running.set(true);
+				burnTime.set(TICKS_PER_MILLIBUCKET);
 			}
 		} else {
-			running = true;
+			running.set(true);
 		}
-		if (burnTime > 0) {
-			--burnTime;
+		if (burnTime.get() > 0) {
+			burnTime.set(burnTime.get() - 1);
 		}
-		if (running && burnTime > 0 && output.valid()) {
+		if (running.get() && burnTime.get() > 0 && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), facing.getClockWise().getOpposite(), getProduced(), false);
 		}
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (running && level.random.nextDouble() < 0.15) {
+		if (running.get() && level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble(), worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
-		if (running && tickable.getTicks() % 100 == 0) {
+		if (running.get() && tickable.getTicks() % 100 == 0) {
 			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_COMBUSTIONCHAMBER.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 		}
 	}
 
-	protected void createPacket(CompoundTag nbt) {
-		nbt.putInt("burnTime", burnTime);
-		nbt.putBoolean("running", running);
-	}
-
-	protected void readPacket(CompoundTag nbt) {
-		burnTime = nbt.getInt("burnTime");
-		running = nbt.getBoolean("running");
-	}
-
-	@Override
-	public void saveAdditional(CompoundTag compound) {
-		compound.putInt("burnTime", burnTime);
-		compound.putBoolean("running", running);
-		super.saveAdditional(compound);
-	}
-
-	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
-		burnTime = compound.getInt("burnTime");
-		running = compound.getBoolean("running");
-	}
-
 	@Override
 	public void setMultiplier(double val) {
-
 	}
 
 	@Override

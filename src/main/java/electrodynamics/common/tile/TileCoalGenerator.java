@@ -17,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
@@ -45,14 +46,15 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	protected CachedTileOutput output;
 	protected TransferPack currentOutput = TransferPack.EMPTY;
 	public TargetValue heat = new TargetValue(property(new Property<Double>(PropertyType.Double, "heat")).set(27.0).save());
-	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime")).set(0.0).save();
-	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime")).set(0.0).save();
+	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime")).set(0).save();
+	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime")).set(0).save();
 	public double clientMaxBurnTime;
 	private double multiplier = 1;
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
 		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));

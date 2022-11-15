@@ -54,6 +54,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
+//TODO: Make this use the property system...
 public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private static final int CAPACITY = 10000;
@@ -192,8 +193,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 						maintainMiningArea();
 					}
 					boolean shouldSkip = false;
-					if (complex.isPowered && (int) complex.speed > 0 && (tick.getTicks() % (int) complex.speed == 0 || shouldSkip && tick.getTicks() % (int) TileMotorComplex.MAX_SPEED == 0)) {
-						int fluidUse = (int) (complex.powerMultiplier * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
+					if (complex.isPowered.get() && complex.speed.get().intValue() > 0 && (tick.getTicks() % complex.speed.get().intValue() == 0 || shouldSkip && tick.getTicks() % (int) TileMotorComplex.MAX_SPEED == 0)) {
+						int fluidUse = (int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 						ComponentInventory inv = getComponent(ComponentType.Inventory);
 						hasHead = inv.getItem(0).getItem() instanceof ItemDrillHead;
 						if (inv.areOutputsEmpty() && resavoir.hasEnoughFluid(fluidUse) && hasHead) {
@@ -974,8 +975,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			}
 		}
 		if (complex != null) {
-			nbt.putDouble("clientMiningSpeed", complex.speed + tickDelayMiner);
-			nbt.putBoolean("clientComplexIsPowered", complex.isPowered);
+			nbt.putDouble("clientMiningSpeed", complex.speed.get() + tickDelayMiner);
+			nbt.putBoolean("clientComplexIsPowered", complex.isPowered.get());
 		}
 		nbt.putBoolean("clientVoid", hasItemVoid);
 		nbt.putInt("clientFortune", fortuneLevel);

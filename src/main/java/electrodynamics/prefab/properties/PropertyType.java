@@ -110,4 +110,38 @@ public enum PropertyType {
 		}
 		prop.set(val);
 	}
+
+	Object attemptCast(Object updated) {
+		// This is done so we remove some issues between different number types.
+		switch (this) {
+		case Boolean:
+			return updated;
+		case Byte:
+			if (updated instanceof Number) {
+				return (byte) ((Number) updated).byteValue();
+			}
+			break;
+		case CompoundTag:
+			return updated;
+		case Double:
+			if (updated instanceof Number) {
+				return (double) ((Number) updated).doubleValue();
+			}
+			break;
+		case Float:
+			if (updated instanceof Number) {
+				return (float) ((Number) updated).floatValue();
+			}
+			break;
+		case Integer:
+			if (updated instanceof Number) {
+				return (int) ((Number) updated).intValue();
+			}
+			break;
+		default:
+			break;
+		}
+		return updated;
+
+	}
 }

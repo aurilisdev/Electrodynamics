@@ -736,7 +736,7 @@ public class ComponentProcessor implements Component {
 
 	@Nullable
 	private ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		if (cachedRecipes.size() == 0) {
+		if (cachedRecipes.isEmpty()) {
 			cachedRecipes = ElectrodynamicsRecipe.findRecipesbyType((RecipeType<ElectrodynamicsRecipe>) typeIn, pr.getHolder().getLevel());
 		}
 		return ElectrodynamicsRecipe.getRecipe(pr, cachedRecipes);

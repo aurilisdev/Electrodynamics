@@ -26,13 +26,13 @@ public class PacketSendUpdateProperties {
 	public PacketSendUpdateProperties(BlockPos pos, ArrayList<Property<?>> dirtyProperties) {
 		this.pos = pos;
 		this.dirtyProperties = dirtyProperties;
-		this.objects = null;
+		objects = null;
 	}
 
 	public PacketSendUpdateProperties(BlockPos pos, ArrayList<Object> values, boolean object) {
 		this.pos = pos;
-		this.dirtyProperties = null;
-		this.objects = values;
+		dirtyProperties = null;
+		objects = values;
 	}
 
 	public static void handle(PacketSendUpdateProperties message, Supplier<Context> context) {

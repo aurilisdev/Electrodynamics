@@ -91,6 +91,11 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	@Override
 	public void load(CompoundTag compound) {
 		super.load(compound);
+		for (Property<?> prop : propertyManager.getProperties()) {
+			if (prop.shouldSave()) {
+				prop.getType().load(prop, compound);
+			}
+		}
 		for (Component component : components) {
 			if (component != null) {
 				component.holder(this);
@@ -107,10 +112,8 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	@Override
 	public void saveAdditional(CompoundTag compound) {
-		for(Property<?> prop : propertyManager.getProperties())
-		{
-			if(prop.shouldSave())
-			{
+		for (Property<?> prop : propertyManager.getProperties()) {
+			if (prop.shouldSave()) {
 				prop.getType().save(prop, compound);
 			}
 		}

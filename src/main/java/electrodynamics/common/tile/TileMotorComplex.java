@@ -7,6 +7,8 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -19,7 +21,6 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,18 +35,14 @@ public class TileMotorComplex extends GenericTile {
 	// 1 tick per block
 	public static final double MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
 
-	public double speed = 1;
-	public double clientSpeed = 1;
-	public double powerMultiplier = 1;
-	public double clientMultiplier = 1;
-
-	public boolean isPowered = false;
-	public boolean clientPowered = false;
+	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed")).set(1.0);
+	public Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier")).set(1.0);
+	public Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered")).set(false);
 
 	public TileMotorComplex(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), pos, state);
 		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.MOTORCOMPLEX_USAGE_PER_TICK * 1000));
 		addComponent(new ComponentInventory(this).size(3).upgrades(3).validUpgrades(ContainerMotorComplex.VALID_UPGRADES).valid(machineValidator()));
@@ -56,8 +53,8 @@ public class TileMotorComplex extends GenericTile {
 		if (tick.getTicks() % 5 == 0) {
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
-		speed = DEFAULT_SPEED;
-		powerMultiplier = 1;
+		speed.set(DEFAULT_SPEED);
+		powerMultiplier.set(1);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		// comes out to roughly 128 kW; max speed still needs to be obtainable in survival...
 		for (ItemStack stack : inv.getUpgradeContents()) {
@@ -65,12 +62,12 @@ public class TileMotorComplex extends GenericTile {
 				for (int i = 0; i < stack.getCount(); i++) {
 					switch (((ItemUpgrade) stack.getItem()).subtype) {
 					case basicspeed:
-						speed = Math.max(speed *= 0.8, MAX_SPEED);
-						powerMultiplier *= 3;
+						speed.set(Math.max(speed.set(speed.get() * 0.8).get(), MAX_SPEED));
+						powerMultiplier.set(powerMultiplier.get() * 3);
 						break;
 					case advancedspeed:
-						speed = Math.max(speed *= 0.5, MAX_SPEED);
-						powerMultiplier *= 2;
+						speed.set(Math.max(speed.set(speed.get() * 0.5).get(), MAX_SPEED));
+						powerMultiplier.set(powerMultiplier.get() * 2);
 						break;
 					default:
 						break;
@@ -80,30 +77,18 @@ public class TileMotorComplex extends GenericTile {
 		}
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 
-		if (electro.getJoulesStored() >= Constants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier) {
-			electro.joules(electro.getJoulesStored() - Constants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier);
-			isPowered = true;
+		if (electro.getJoulesStored() >= Constants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier.get()) {
+			electro.joules(electro.getJoulesStored() - Constants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier.get());
+			isPowered.set(true);
 		} else {
-			isPowered = false;
+			isPowered.set(false);
 		}
 	}
 
 	private void tickClient(ComponentTickable tick) {
-		if (tick.getTicks() % 20 == 0 && clientPowered) {
+		if (tick.getTicks() % 20 == 0 && isPowered.get()) {
 			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), SoundSource.BLOCKS, 1.0F, 1.0F, worldPosition);
 		}
-	}
-
-	private void createPacket(CompoundTag nbt) {
-		nbt.putDouble("speed", speed);
-		nbt.putDouble("multiplier", powerMultiplier);
-		nbt.putBoolean("isPowered", isPowered);
-	}
-
-	private void readPacket(CompoundTag nbt) {
-		clientSpeed = nbt.getDouble("speed");
-		clientMultiplier = nbt.getDouble("multiplier");
-		clientPowered = nbt.getBoolean("isPowered");
 	}
 
 	static {

@@ -5,6 +5,8 @@ import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -18,7 +20,6 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -29,14 +30,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileElectricPump extends GenericTile {
-	private boolean isGenerating;
+	private Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating")).set(false);
 
 	public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
 		addComponent(new ComponentElectrodynamic(this).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).input(Direction.UP));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::writeNBT).customPacketReader(this::readNBT));
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerMulti(this).setManualFluids(1, false, 0, Fluids.WATER).relativeOutput(Direction.EAST));
 	}
 
@@ -52,28 +53,19 @@ public class TileElectricPump extends GenericTile {
 		if (tickable.getTicks() % 20 == 0) {
 			output.update(worldPosition.relative(direction));
 			FluidState state = level.getFluidState(worldPosition.relative(Direction.DOWN));
-			if (isGenerating != (state.isSource() && state.getType() == Fluids.WATER)) {
-				isGenerating = electro.getJoulesStored() > Constants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER;
+			if (isGenerating.get() != (state.isSource() && state.getType() == Fluids.WATER)) {
+				isGenerating.set(electro.getJoulesStored() > Constants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER);
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 			}
 		}
-		if (isGenerating && output.valid()) {
+		if (isGenerating.get() == Boolean.TRUE && output.valid()) {
 			electro.joules(electro.getJoulesStored() - Constants.ELECTRICPUMP_USAGE_PER_TICK);
 			FluidUtilities.receiveFluid(output.getSafe(), direction.getOpposite(), new FluidStack(Fluids.WATER, 200), false);
 		}
 	}
 
-	public void writeNBT(CompoundTag nbt) {
-		nbt.putBoolean("isGenerating", isGenerating);
-
-	}
-
-	public void readNBT(CompoundTag nbt) {
-		isGenerating = nbt.getBoolean("isGenerating");
-	}
-
 	protected void tickClient(ComponentTickable tickable) {
-		if (isGenerating) {
+		if (isGenerating.get()) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}

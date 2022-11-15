@@ -30,7 +30,7 @@ public class PropertyManager {
 
 	public void clean() {
 		isDirty = false;
-		properties.forEach(prop -> prop.clean());
+		properties.forEach(Property::clean);
 	}
 
 	public void update(int indexOf, Object value) {

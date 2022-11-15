@@ -32,7 +32,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		TileMotorComplex motor = menu.getHostFromIntArray();
 		if (motor != null) {
 			ComponentElectrodynamic electro = motor.getComponent(ComponentType.Electrodynamic);
-			list.add(Component.translatable("gui.machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(Constants.MOTORCOMPLEX_USAGE_PER_TICK * motor.clientMultiplier * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(Component.translatable("gui.machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(Constants.MOTORCOMPLEX_USAGE_PER_TICK * motor.powerMultiplier.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(Component.translatable("gui.machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
@@ -43,8 +43,8 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		super.renderLabels(stack, x, y);
 		int blocksPerTick = 0;
 		TileMotorComplex motor = menu.getHostFromIntArray();
-		if (motor != null && motor.clientPowered) {
-			blocksPerTick = (int) motor.clientSpeed;
+		if (motor != null && motor.isPowered.get()) {
+			blocksPerTick = motor.speed.get().intValue();
 		}
 		font.draw(stack, Component.translatable("gui.motorcomplex.speed", blocksPerTick), 30, 40, 4210752);
 	}
