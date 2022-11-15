@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import electrodynamics.common.tile.TileMultiSubnode;
-import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,11 +28,11 @@ public interface IMultiblockTileNode {
 				}
 				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
 				if (subnode != null) {
-					subnode.nodePos = new Location(pos);
+					subnode.nodePos.set(pos);
 				}
 			} else if (inBlock instanceof IMultiblockSubnode) {
 				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
-				if (subnode != null && subnode.nodePos.toBlockPos().equals(pos)) {
+				if (subnode != null && subnode.nodePos.get().equals(pos)) {
 					world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
 				}
 			}

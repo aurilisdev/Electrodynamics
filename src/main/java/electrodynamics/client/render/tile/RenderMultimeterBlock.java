@@ -42,7 +42,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				Component displayNameIn = Component.literal("Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, DisplayUnit.WATT, 2));
+				Component displayNameIn = Component.literal("Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules.get() * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -71,7 +71,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				Component displayNameIn = Component.literal("Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, DisplayUnit.VOLTAGE, 2));
+				Component displayNameIn = Component.literal("Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage.get(), DisplayUnit.VOLTAGE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -100,7 +100,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				Component displayNameIn = Component.literal("Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, DisplayUnit.RESISTANCE, 2));
+				Component displayNameIn = Component.literal("Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance.get(), DisplayUnit.RESISTANCE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);
@@ -129,7 +129,7 @@ public class RenderMultimeterBlock implements BlockEntityRenderer<TileMultimeter
 				default:
 					break;
 				}
-				Component displayNameIn = Component.literal("Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, DisplayUnit.WATT, 2));
+				Component displayNameIn = Component.literal("Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss.get() * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
 				float scale = 0.0215f / (fontrenderer.width(displayNameIn) / 32f);
 				matrixStackIn.scale(-scale, -scale, -scale);

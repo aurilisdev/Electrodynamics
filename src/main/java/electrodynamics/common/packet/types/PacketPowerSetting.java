@@ -2,8 +2,6 @@ package electrodynamics.common.packet.types;
 
 import java.util.function.Supplier;
 
-import com.mojang.datafixers.util.Pair;
-
 import electrodynamics.common.tile.TileCreativePowerSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,7 +28,8 @@ public class PacketPowerSetting {
 			if (world != null) {
 				TileCreativePowerSource tile = (TileCreativePowerSource) world.getBlockEntity(message.pos);
 				if (tile != null) {
-					tile.outputValue = Pair.of(message.voltage, message.power);
+					tile.voltage.set(message.voltage);
+					tile.power.set(message.power);
 				}
 			}
 		});

@@ -99,9 +99,9 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		if (needsUpdate) {
 			needsUpdate = false;
 			TileCreativePowerSource source = menu.getHostFromIntArray();
-			if (source != null && source.outputValue != null) {
-				voltage.setValue("" + source.outputValue.getFirst());
-				power.setValue("" + source.outputValue.getSecond());
+			if (source != null) {
+				voltage.setValue("" + source.voltage.get());
+				power.setValue("" + source.power.get());
 			}
 		}
 		voltage.render(matrixStack, mouseX, mouseY, partialTicks);

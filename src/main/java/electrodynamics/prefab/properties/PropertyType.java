@@ -1,5 +1,6 @@
 package electrodynamics.prefab.properties;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -9,7 +10,8 @@ public enum PropertyType {
 	Integer,
 	Float,
 	Double,
-	CompoundTag;
+	CompoundTag,
+	BlockPos;
 
 	public void write(Property<?> prop, FriendlyByteBuf buf) {
 		Object val = prop.get();
@@ -32,6 +34,9 @@ public enum PropertyType {
 		case Integer:
 			buf.writeInt((Integer) val);
 			break;
+		case BlockPos:
+			buf.writeBlockPos((BlockPos) val);
+			break;
 		default:
 			break;
 		}
@@ -52,6 +57,8 @@ public enum PropertyType {
 			return buf.readFloat();
 		case Integer:
 			return buf.readInt();
+		case BlockPos:
+			return buf.readBlockPos();
 		default:
 			break;
 		}
@@ -79,6 +86,12 @@ public enum PropertyType {
 		case Integer:
 			tag.putInt(prop.getName(), (Integer) val);
 			break;
+		case BlockPos:
+			net.minecraft.core.BlockPos pos = (net.minecraft.core.BlockPos) val;
+			tag.putInt(prop.getName() + "X", pos.getX());
+			tag.putInt(prop.getName() + "Y", pos.getY());
+			tag.putInt(prop.getName() + "Z", pos.getZ());
+			break;
 		default:
 			break;
 		}
@@ -105,6 +118,9 @@ public enum PropertyType {
 		case Integer:
 			val = tag.getInt(prop.getName());
 			break;
+		case BlockPos:
+			val = new BlockPos(tag.getInt(prop.getName() + "X"), tag.getInt(prop.getName() + "Y"), tag.getInt(prop.getName() + "Z"));
+			break;
 		default:
 			break;
 		}
@@ -114,15 +130,11 @@ public enum PropertyType {
 	Object attemptCast(Object updated) {
 		// This is done so we remove some issues between different number types.
 		switch (this) {
-		case Boolean:
-			return updated;
 		case Byte:
 			if (updated instanceof Number) {
 				return (byte) ((Number) updated).byteValue();
 			}
 			break;
-		case CompoundTag:
-			return updated;
 		case Double:
 			if (updated instanceof Number) {
 				return (double) ((Number) updated).doubleValue();
