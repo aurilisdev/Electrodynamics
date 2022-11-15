@@ -2,16 +2,18 @@ package electrodynamics.prefab.utilities.object;
 
 import com.electronwill.nightconfig.core.conversion.InvalidValueException;
 
+import electrodynamics.prefab.properties.Property;
+
 public class TargetValue {
-	private double val;
+	private Property<Double> val;
 	private double target;
 	private double acceleration;
 
-	public TargetValue(double val) {
+	public TargetValue(Property<Double> val) {
 		this.val = val;
 	}
 
-	public double get() {
+	public Property<Double> getValue() {
 		return val;
 	}
 
@@ -20,15 +22,15 @@ public class TargetValue {
 			throw new InvalidValueException("Negative acceleration is not supported");
 		}
 		this.target = target;
-		this.acceleration = val < target && acceleration > 1 ? acceleration : 1 / acceleration;
+		this.acceleration = val.get() < target && acceleration > 1 ? acceleration : 1 / acceleration;
 		boolean aimsUp = this.acceleration > 1;
-		double valAcc = val * this.acceleration;
-		val = aimsUp ? valAcc > target ? target : valAcc : valAcc < target ? target : valAcc;
+		double valAcc = val.get() * this.acceleration;
+		val.set(aimsUp ? valAcc > target ? target : valAcc : valAcc < target ? target : valAcc);
 		return this;
 	}
 
 	public TargetValue rangeParameterize(double starttarget, double endtarget, double currentTarget, double value, int ticks) {
-		val = value;
+		val.set(value);
 		target = currentTarget;
 		acceleration = Math.pow(endtarget / starttarget, 1.0 / ticks);
 		return this;
@@ -39,7 +41,7 @@ public class TargetValue {
 	}
 
 	public void set(double val) {
-		this.val = val;
+		this.val.set(val);
 	}
 
 }

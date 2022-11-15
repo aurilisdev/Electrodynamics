@@ -33,10 +33,10 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	public final Property<Double> powerOutput;
 	public final Property<Double> maxJoules;
 	public Property<Double> clientMaxJoulesStored;
-	public Property<Double> currentCapacityMultiplier = property(new Property<Double>(PropertyType.Double)).set(1.0);
-	public Property<Double> currentVoltageMultiplier = property(new Property<Double>(PropertyType.Double)).set(1.0);
-	public Property<Double> clientVoltage = property(new Property<Double>(PropertyType.Double)).set(120.0);
-	public Property<Double> clientJoules = property(new Property<Double>(PropertyType.Double)).set(0.0);
+	public Property<Double> currentCapacityMultiplier = property(new Property<Double>(PropertyType.Double, "currentCapacityMultiplier")).set(1.0);
+	public Property<Double> currentVoltageMultiplier = property(new Property<Double>(PropertyType.Double, "currentVoltageMultiplier")).set(1.0);
+	public Property<Double> clientVoltage = property(new Property<Double>(PropertyType.Double, "clientVoltage")).set(120.0);
+	public Property<Double> clientJoules = property(new Property<Double>(PropertyType.Double, "clientJoules")).set(0.0);
 	protected Property<Double> receiveLimitLeft;
 	protected CachedTileOutput output;
 
@@ -46,10 +46,10 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {
 		super(type, worldPosition, blockState);
-		powerOutput = property(new Property<Double>(PropertyType.Double)).set(output);
-		maxJoules = property(new Property<Double>(PropertyType.Double)).set(max);
-		clientMaxJoulesStored = property(new Property<Double>(PropertyType.Double)).set(max);
-		receiveLimitLeft = property(new Property<Double>(PropertyType.Double)).set(output * currentCapacityMultiplier.get());
+		powerOutput = property(new Property<Double>(PropertyType.Double, "powerOutput")).set(output);
+		maxJoules = property(new Property<Double>(PropertyType.Double, "maxJoules")).set(max);
+		clientMaxJoulesStored = property(new Property<Double>(PropertyType.Double, "clientMaxJoulesStored")).set(max);
+		receiveLimitLeft = property(new Property<Double>(PropertyType.Double, "receiveLimitLeft")).set(output * currentCapacityMultiplier.get());
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());

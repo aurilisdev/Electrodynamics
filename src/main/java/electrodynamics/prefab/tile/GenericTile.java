@@ -107,6 +107,13 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	@Override
 	public void saveAdditional(CompoundTag compound) {
+		for(Property<?> prop : propertyManager.getProperties())
+		{
+			if(prop.shouldSave())
+			{
+				prop.getType().save(prop, compound);
+			}
+		}
 		for (Component component : components) {
 			if (component != null) {
 				component.holder(this);

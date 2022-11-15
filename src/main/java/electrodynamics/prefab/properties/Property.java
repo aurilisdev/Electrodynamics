@@ -6,11 +6,14 @@ public class Property<T> {
 	private PropertyManager manager;
 	private final PropertyType type;
 	private boolean isDirty = false;
+	private boolean shouldSave = false;
+	private String name;
 	private T value;
 	private T rawValue;
 
-	public Property(PropertyType type) {
+	public Property(PropertyType type, String name) {
 		this.type = type;
+		this.name = name;
 	}
 
 	public T get() {
@@ -19,6 +22,10 @@ public class Property<T> {
 
 	public PropertyType getType() {
 		return type;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public boolean isDirty() {
@@ -54,5 +61,14 @@ public class Property<T> {
 			isDirty = true;
 			manager.setDirty();
 		}
+	}
+
+	public Property<T> save() {
+		shouldSave = true;
+		return this;
+	}
+
+	public boolean shouldSave() {
+		return shouldSave;
 	}
 }

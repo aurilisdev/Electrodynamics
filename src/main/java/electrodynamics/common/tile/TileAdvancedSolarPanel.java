@@ -35,10 +35,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTileNode, IElectricGenerator {
 
-	public TargetValue currentRotation = new TargetValue(0);
 	protected CachedTileOutput output;
-	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean)).set(false);
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double)).set(1.0);
+	public TargetValue currentRotation = new TargetValue(property(new Property<Double>(PropertyType.Double, "currentRotation")).set(0.0));
+	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean, "generating")).set(false);
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier")).set(1.0);
 
 	@Override
 	public double getMultiplier() {
