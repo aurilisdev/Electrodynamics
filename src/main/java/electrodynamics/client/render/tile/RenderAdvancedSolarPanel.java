@@ -24,9 +24,9 @@ public class RenderAdvancedSolarPanel implements BlockEntityRenderer<TileAdvance
 		matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 		long time = tileEntityIn.getLevel().getLevelData().getDayTime();
 		if (time < 13000 || time > 23000) {
-			tileEntityIn.currentRotation.set(tileEntityIn.currentRotation.get() + (time / 24000.0 * Math.PI * 2 - Math.PI / 2.0 - tileEntityIn.currentRotation.get()) / 40.0);
+			tileEntityIn.currentRotation.set(tileEntityIn.currentRotation.getValue().get() + (time / 24000.0 * Math.PI * 2 - Math.PI / 2.0 - tileEntityIn.currentRotation.getValue().get()) / 40.0);
 		}
-		matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -tileEntityIn.currentRotation.get(), false));
+		matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -tileEntityIn.currentRotation.getValue().get(), false));
 		matrixStackIn.scale(2, 2, 2);
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_ADVSOLARTOP);
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
