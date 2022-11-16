@@ -60,7 +60,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
 		BlockEntity tile = level.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
 			BlockState core = level.getBlockState(subnode.nodePos.get());
 			return new ItemStack(core.getBlock());
 		}
@@ -70,7 +70,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
 			worldIn.getBlockState(subnode.nodePos.get()).getBlock().use(worldIn.getBlockState(subnode.nodePos.get()), worldIn, subnode.nodePos.get(), player, handIn, hit);
 		}
 		return InteractionResult.SUCCESS;
@@ -84,7 +84,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	@Override
 	public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		BlockEntity tile = blockAccess.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
 			return blockAccess.getBlockState(subnode.nodePos.get()).getBlock().getDirectSignal(blockAccess.getBlockState(subnode.nodePos.get()), blockAccess, subnode.nodePos.get(), side);
 		}
 		return super.getDirectSignal(blockState, blockAccess, pos, side);
@@ -93,7 +93,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	@Override
 	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		BlockEntity tile = blockAccess.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
 			return blockAccess.getBlockState(subnode.nodePos.get()).getBlock().getSignal(blockAccess.getBlockState(subnode.nodePos.get()), blockAccess, subnode.nodePos.get(), side);
 		}
 		return super.getSignal(blockState, blockAccess, pos, side);
@@ -102,7 +102,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockSub
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos != null) {
+		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
 			worldIn.destroyBlock(subnode.nodePos.get(), true);
 		}
 		super.onRemove(state, worldIn, pos, newState, isMoving);

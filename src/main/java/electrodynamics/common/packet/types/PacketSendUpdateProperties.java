@@ -42,9 +42,10 @@ public class PacketSendUpdateProperties {
 			if (world != null) {
 				BlockEntity tile = world.getBlockEntity(message.pos);
 				if (tile instanceof IPropertyHolderTile holder) {
-					for (Object object : message.objects) {
-						if (object != null) {
-							holder.getPropertyManager().update(message.objects.indexOf(object), object);
+					for (int index = 0; index < message.objects.size(); index++) {
+						Object obj = message.objects.get(index);
+						if (obj != null) {
+							holder.getPropertyManager().update(index, obj);
 						}
 					}
 				}

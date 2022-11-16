@@ -35,7 +35,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.pushPose();
 		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
-		matrixStackIn.mulPose(new Quaternion(0, (tileEntityIn.clientTicks + (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10, 0, true));
+		matrixStackIn.mulPose(new Quaternion(0, (tileEntityIn.clientTicks + (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? partialTicks : 0)) * 10, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 

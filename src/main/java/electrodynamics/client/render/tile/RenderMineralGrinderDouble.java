@@ -19,7 +19,7 @@ public class RenderMineralGrinderDouble implements BlockEntityRenderer<TileMiner
 
 	@Override
 	public void render(TileMineralGrinder tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		double progress = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks > 0 ? partialTicks : 0)) * 10;
+		double progress = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks.get() > 0 ? partialTicks : 0)) * 10;
 		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALGRINDERWHEEL);
 		matrixStackIn.pushPose();
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);

@@ -98,7 +98,7 @@ public class TileElectricFurnace extends GenericTile {
 
 	protected boolean canProcess(ComponentProcessor component) {
 		timeSinceChange++;
-		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed) {
+		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed.get()) {
 			if (timeSinceChange > 40) {
 				Block bl = getBlockState().getBlock();
 				if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnace)) {
@@ -146,7 +146,7 @@ public class TileElectricFurnace extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks + getProcessor(1).operatingTicks + getProcessor(2).operatingTicks > 0 : getProcessor(0).operatingTicks > 0;
+		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
 		if (has && level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();

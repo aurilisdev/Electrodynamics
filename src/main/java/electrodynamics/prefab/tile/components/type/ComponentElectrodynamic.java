@@ -10,6 +10,8 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ItemElectric;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -17,7 +19,6 @@ import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
@@ -44,47 +45,23 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected HashSet<Direction> relativeInputDirections = new HashSet<>();
 	protected HashSet<Direction> outputDirections = new HashSet<>();
 	protected HashSet<Direction> inputDirections = new HashSet<>();
-	protected double voltage = ElectrodynamicsCapabilities.DEFAULT_VOLTAGE;
-	protected double maxJoules = 0;
-	protected double joules = 0;
-	protected DoubleSupplier getJoules = () -> joules;
+	protected Property<Double> voltage;
+	protected Property<Double> maxJoules;
+	protected Property<Double> joules;
+	protected DoubleSupplier getJoules = () -> joules.get();
 	protected BooleanSupplier hasCapability = () -> true;
 	private Direction lastReturnedSide = Direction.UP;
 
 	public ComponentElectrodynamic(GenericTile source) {
 		holder(source);
-		if (holder.hasComponent(ComponentType.PacketHandler)) {
-			ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-			handler.guiPacketWriter(this::writeGuiPacket);
-			handler.guiPacketReader(this::readGuiPacket);
-		}
-	}
-
-	private void writeGuiPacket(CompoundTag nbt) {
-		nbt.putDouble("voltage", voltage);
-		nbt.putDouble("maxJoules", maxJoules);
-		nbt.putDouble("joules", joules);
-	}
-
-	private void readGuiPacket(CompoundTag nbt) {
-		voltage = nbt.getDouble("voltage");
-		maxJoules = nbt.getDouble("maxJoules");
-		joules = nbt.getDouble("joules");
-	}
-
-	@Override
-	public void loadFromNBT(CompoundTag nbt) {
-		joules = nbt.getDouble("joules");
-	}
-
-	@Override
-	public void saveToNBT(CompoundTag nbt) {
-		nbt.putDouble("joules", joules);
+		voltage = source.property(new Property<Double>(PropertyType.Double, "voltage")).set(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE);
+		maxJoules = source.property(new Property<Double>(PropertyType.Double, "maxJoules")).set(0.0);
+		joules = source.property(new Property<Double>(PropertyType.Double, "joules")).set(0.0).save();
 	}
 
 	@Override
 	public double getVoltage() {
-		return voltage;
+		return voltage.get();
 	}
 
 	@Override
@@ -135,15 +112,15 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (setJoules != null) {
 			setJoules.accept(joules);
 		} else {
-			this.joules = Math.max(0, Math.min(maxJoules, joules));
+			this.joules.set(Math.max(0, Math.min(maxJoules.get(), joules)));
 		}
 		return this;
 	}
 
 	public ComponentElectrodynamic maxJoules(double maxJoules) {
-		this.maxJoules = Math.max(maxJoules, 0);
-		if (joules > maxJoules) {
-			joules = maxJoules;
+		this.maxJoules.set(Math.max(maxJoules, 0));
+		if (joules.get() > maxJoules) {
+			joules.set(maxJoules);
 		}
 		return this;
 	}
@@ -196,7 +173,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	}
 
 	public ComponentElectrodynamic voltage(double voltage) {
-		this.voltage = voltage;
+		this.voltage.set(voltage);
 		return this;
 	}
 
@@ -206,7 +183,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 			ItemStack stack = inventory.getItem(slot);
 			if (stack.getItem() instanceof ItemElectric) {
 				IItemElectric el = (IItemElectric) stack.getItem();
-				functionReceivePower.apply(el.extractPower(stack, maxJoules - joules, false), false);
+				functionReceivePower.apply(el.extractPower(stack, maxJoules.get() - joules.get(), false), false);
 			}
 		}
 		return this;
@@ -218,7 +195,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 			ItemStack stack = inventory.getItem(slot);
 			if (stack.getItem() instanceof ItemElectric) {
 				IItemElectric el = (IItemElectric) stack.getItem();
-				functionExtractPower.apply(el.receivePower(stack, TransferPack.joulesVoltage(joules, voltage), false), false);
+				functionExtractPower.apply(el.receivePower(stack, TransferPack.joulesVoltage(joules.get(), voltage.get()), false), false);
 			}
 		}
 		return this;
@@ -231,7 +208,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public double getMaxJoulesStored() {
-		return maxJoules;
+		return maxJoules.get();
 	}
 
 	@Override

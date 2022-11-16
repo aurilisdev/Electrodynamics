@@ -21,8 +21,8 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 			TileElectricFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks > 0) {
-					return processor.operatingTicks / processor.requiredTicks;
+				if (processor.operatingTicks.get() > 0) {
+					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
 			return 0;
@@ -31,7 +31,7 @@ public class ScreenElectricFurnace extends GenericScreen<ContainerElectricFurnac
 			TileElectricFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks > 0) {
+				if (processor.operatingTicks.get() > 0) {
 					return 1;
 				}
 			}

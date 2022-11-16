@@ -21,11 +21,12 @@ import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,10 +41,10 @@ public class ComponentProcessor implements Component {
 		this.holder = holder;
 	}
 
-	public double operatingSpeed;
-	public double operatingTicks;
-	public double usage;
-	public long requiredTicks;
+	public Property<Double> operatingSpeed;
+	public Property<Double> operatingTicks;
+	public Property<Double> usage;
+	public Property<Double> requiredTicks;
 	private Predicate<ComponentProcessor> canProcess = component -> false;
 	private Consumer<ComponentProcessor> process;
 	private Consumer<ComponentProcessor> failed;
@@ -55,6 +56,12 @@ public class ComponentProcessor implements Component {
 
 	public ComponentProcessor(GenericTile source) {
 		holder(source);
+		if (holder.getProcessors().length == 0) {
+			operatingSpeed = source.property(new Property<Double>(PropertyType.Double, "operatingSpeed0")).set(1.0);
+			operatingTicks = source.property(new Property<Double>(PropertyType.Double, "operatingTicks0")).set(0.0);
+			usage = source.property(new Property<Double>(PropertyType.Double, "usage")).set(0.0);
+			requiredTicks = source.property(new Property<Double>(PropertyType.Double, "requiredTicks0")).set(0.0);
+		}
 		if (!holder.hasComponent(ComponentType.Inventory)) {
 			throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
 		}
@@ -63,18 +70,13 @@ public class ComponentProcessor implements Component {
 		} else {
 			throw new UnsupportedOperationException("You need to implement a tickable component to use the processor component!");
 		}
-		if (holder.hasComponent(ComponentType.PacketHandler)) {
-			ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-			handler.guiPacketWriter(this::writeGuiPacket);
-			handler.guiPacketReader(this::readGuiPacket);
-		}
 	}
 
 	private void tickServer(ComponentTickable tickable) {
-		operatingSpeed = 1;
 		if (holder.hasComponent(ComponentType.PacketHandler) && holder.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks() % 20 == 0) {
 			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
+		operatingSpeed.set(1.0, true);
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
@@ -85,40 +87,30 @@ public class ComponentProcessor implements Component {
 		}
 		if (holder.hasComponent(ComponentType.Electrodynamic)) {
 			ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-			electro.maxJoules(usage * operatingSpeed * 10);
+			electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
 		}
 
 		if (canProcess.test(this)) {
-			operatingTicks += operatingSpeed;
-			if (operatingTicks >= requiredTicks) {
+			operatingTicks.set(operatingTicks.get() + operatingSpeed.get());
+			if (operatingTicks.get() >= requiredTicks.get()) {
 				if (process != null) {
 					process.accept(this);
 				}
-				operatingTicks = 0;
+				operatingTicks.set(0.0);
 			}
 			if (holder.hasComponent(ComponentType.Electrodynamic)) {
 				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-				electro.joules(electro.getJoulesStored() - usage * operatingSpeed);
+				electro.joules(electro.getJoulesStored() - usage.get() * operatingSpeed.get());
 			}
-		} else if (operatingTicks > 0) {
-			operatingTicks = 0;
+		} else if (operatingTicks.get() > 0) {
+			operatingTicks.set(0.0);
 			if (failed != null) {
 				failed.accept(this);
 			}
 		}
-
-	}
-
-	private void writeGuiPacket(CompoundTag nbt) {
-		nbt.putDouble("operatingTicks" + processorNumber, operatingTicks);
-		nbt.putDouble("joulesPerTick" + processorNumber, usage * operatingSpeed);
-		nbt.putLong("requiredTicks" + processorNumber, requiredTicks);
-	}
-
-	private void readGuiPacket(CompoundTag nbt) {
-		operatingTicks = nbt.getDouble("operatingTicks" + processorNumber);
-		usage = nbt.getDouble("joulesPerTick" + processorNumber);
-		requiredTicks = nbt.getLong("requiredTicks" + processorNumber);
+		if (processorNumber > 0) {
+			System.out.println(processorNumber);
+		}
 	}
 
 	public ComponentProcessor process(Consumer<ComponentProcessor> process) {
@@ -137,21 +129,25 @@ public class ComponentProcessor implements Component {
 	}
 
 	public ComponentProcessor usage(double usage) {
-		this.usage = usage;
+		this.usage.set(usage);
 		return this;
 	}
 
 	public double getUsage() {
-		return usage;
+		return usage.get();
 	}
 
 	public ComponentProcessor requiredTicks(long requiredTicks) {
-		this.requiredTicks = requiredTicks;
+		this.requiredTicks.set(requiredTicks);
 		return this;
 	}
 
 	public ComponentProcessor setProcessorNumber(int number) {
 		processorNumber = number;
+		operatingSpeed = holder.property(new Property<Double>(PropertyType.Double, "operatingSpeed" + processorNumber)).set(0.0);
+		operatingTicks = holder.property(new Property<Double>(PropertyType.Double, "operatingTicks" + processorNumber)).set(0.0);
+		usage = holder.property(new Property<Double>(PropertyType.Double, "usage")).set(0.0);
+		requiredTicks = holder.property(new Property<Double>(PropertyType.Double, "requiredTicks" + processorNumber)).set(0.0);
 		return this;
 	}
 
@@ -208,7 +204,7 @@ public class ComponentProcessor implements Component {
 		}
 		Item2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
-			pr.operatingTicks = 0;
+			pr.operatingTicks.set(0.0);
 			locRecipe = (Item2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -255,7 +251,7 @@ public class ComponentProcessor implements Component {
 		}
 		Fluid2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
-			pr.operatingTicks = 0;
+			pr.operatingTicks.set(0.0);
 			locRecipe = (Fluid2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -300,7 +296,7 @@ public class ComponentProcessor implements Component {
 		}
 		Fluid2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
-			pr.operatingTicks = 0;
+			pr.operatingTicks.set(0.0);
 			locRecipe = (Fluid2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -337,7 +333,7 @@ public class ComponentProcessor implements Component {
 		}
 		Item2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
-			pr.operatingTicks = 0;
+			pr.operatingTicks.set(0.0);
 			locRecipe = (Item2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -374,7 +370,7 @@ public class ComponentProcessor implements Component {
 		}
 		FluidItem2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
-			pr.operatingTicks = 0;
+			pr.operatingTicks.set(0.0);
 			locRecipe = (FluidItem2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
@@ -411,7 +407,7 @@ public class ComponentProcessor implements Component {
 		}
 		FluidItem2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
-			pr.operatingTicks = 0;
+			pr.operatingTicks.set(0.0);
 			locRecipe = (FluidItem2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;

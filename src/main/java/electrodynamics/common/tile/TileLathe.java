@@ -49,7 +49,7 @@ public class TileLathe extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (getProcessor(0).operatingTicks > 0) {
+		if (getProcessor(0).operatingTicks.get() > 0) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			if (level.random.nextDouble() < 0.10) {
 				for (int i = 0; i < 5; i++) {

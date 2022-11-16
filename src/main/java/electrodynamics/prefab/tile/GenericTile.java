@@ -36,7 +36,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	private ComponentProcessor[] processors = new ComponentProcessor[5];
 	private PropertyManager propertyManager = new PropertyManager();
 
-	protected <T> Property<T> property(Property<T> prop) {
+	public <T> Property<T> property(Property<T> prop) {
 		return propertyManager.addProperty(prop);
 	}
 

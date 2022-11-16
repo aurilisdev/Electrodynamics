@@ -36,7 +36,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	}, 2),
 	basicspeed((holder, processor, upgrade) -> {
 		if (processor != null) {
-			processor.operatingSpeed = Math.min(processor.operatingSpeed * 1.5, Math.pow(1.5, 3));
+			processor.operatingSpeed.set(Math.min(processor.operatingSpeed.get() * 1.5, Math.pow(1.5, 3)));
 		}
 	}, 3),
 	advancedcapacity((holder, processor, upgrade) -> {
@@ -47,7 +47,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	}, 4),
 	advancedspeed((holder, processor, upgrade) -> {
 		if (processor != null) {
-			processor.operatingSpeed = Math.min(processor.operatingSpeed * 2.25, Math.pow(2.25, 3));
+			processor.operatingSpeed.set(Math.min(processor.operatingSpeed.get() * 2.25, Math.pow(2.25, 3)));
 		}
 	}, 3),
 	// the only way to optimize this one further is to increase the tick delay.

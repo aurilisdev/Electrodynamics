@@ -61,7 +61,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
+		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
 		if (running) {
 			if (clientTicks >= 40) {
 				clientTicks = 0;

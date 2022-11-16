@@ -58,7 +58,7 @@ public class TileOxidationFurnace extends GenericTile {
 
 	protected void tickClient(ComponentTickable tickable) {
 		ComponentProcessor processor = getComponent(ComponentType.Processor);
-		if (processor.operatingTicks > 0 && level.random.nextDouble() < 0.15) {
+		if (processor.operatingTicks.get() > 0 && level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
 			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
@@ -66,7 +66,7 @@ public class TileOxidationFurnace extends GenericTile {
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
-		if (processor.operatingTicks > 0 && tickable.getTicks() % 200 == 0) {
+		if (processor.operatingTicks.get() > 0 && tickable.getTicks() % 200 == 0) {
 			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 		}
 	}

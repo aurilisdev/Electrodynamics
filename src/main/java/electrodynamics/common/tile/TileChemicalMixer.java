@@ -49,7 +49,7 @@ public class TileChemicalMixer extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0;
+		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
 		if (running) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
