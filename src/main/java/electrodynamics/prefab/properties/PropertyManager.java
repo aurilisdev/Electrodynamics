@@ -34,7 +34,7 @@ public class PropertyManager {
 	}
 
 	public void update(int indexOf, Object value) {
-		properties.get(indexOf).set(value);
+		properties.get(indexOf).setAmbigous(value);
 	}
 
 	public boolean isDirty() {

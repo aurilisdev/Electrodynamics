@@ -37,7 +37,7 @@ public class TileSeismicRelay extends GenericTile {
 	public TileSeismicRelay(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_SEISMICRELAY.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket).addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentInventory(this).size(1).outputs(1).valid((slot, stack, i) -> ItemUtils.testItems(stack.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())));
 		addComponent(new ComponentContainerProvider("container.seismicrelay").createMenu((id, player) -> new ContainerSeismicRelay(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));

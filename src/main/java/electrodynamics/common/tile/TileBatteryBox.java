@@ -32,11 +32,8 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	public final Property<Double> powerOutput;
 	public final Property<Double> maxJoules;
-	public Property<Double> clientMaxJoulesStored;
 	public Property<Double> currentCapacityMultiplier = property(new Property<Double>(PropertyType.Double, "currentCapacityMultiplier")).set(1.0);
 	public Property<Double> currentVoltageMultiplier = property(new Property<Double>(PropertyType.Double, "currentVoltageMultiplier")).set(1.0);
-	public Property<Double> clientVoltage = property(new Property<Double>(PropertyType.Double, "clientVoltage")).set(120.0);
-	public Property<Double> clientJoules = property(new Property<Double>(PropertyType.Double, "clientJoules")).set(0.0);
 	protected Property<Double> receiveLimitLeft;
 	protected CachedTileOutput output;
 
@@ -48,14 +45,13 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		super(type, worldPosition, blockState);
 		powerOutput = property(new Property<Double>(PropertyType.Double, "powerOutput")).set(output);
 		maxJoules = property(new Property<Double>(PropertyType.Double, "maxJoules")).set(max);
-		clientMaxJoulesStored = property(new Property<Double>(PropertyType.Double, "clientMaxJoulesStored")).set(max);
 		receiveLimitLeft = property(new Property<Double>(PropertyType.Double, "receiveLimitLeft")).set(output * currentCapacityMultiplier.get());
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 3 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
 		addComponent(new ComponentContainerProvider("container.batterybox").createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-		addComponent(new ComponentElectrodynamic(this).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).voltage((int) output / 359.0 * 20.0).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -86,9 +82,6 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 			electro.joules(electro.getMaxJoulesStored());
 		}
 		electro.drainElectricItem(3);
-		clientMaxJoulesStored.set(this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
-		clientJoules.set(this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
-		clientVoltage.set(this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
 
 	@Override

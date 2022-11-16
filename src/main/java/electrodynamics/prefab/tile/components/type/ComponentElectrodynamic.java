@@ -59,7 +59,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		joules = source.property(new Property<Double>(PropertyType.Double, "joules")).set(0.0).save();
 	}
 
-	@Override
+	@Override 
 	public double getVoltage() {
 		return voltage.get();
 	}

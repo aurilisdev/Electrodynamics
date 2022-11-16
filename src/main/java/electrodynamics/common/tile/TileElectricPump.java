@@ -106,7 +106,7 @@ public class TileElectricPump extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.71875, 0.46875, 0.1875, 0.78125, 0.65625, 0.25), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.375, 0.8125, 0.375, 0.6875, 0.875, 0.6875), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.4375, 0, 0.375, 0.75, 0.0625, 0.6875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.875, 0.3125, 0.6875, 1.046875, 0.6875), BooleanOp.OR);
+		shape = Shapes.join(shape, Shapes.box(0.3125, 0.875, 0.3125, 0.6875, 1.0, 0.6875), BooleanOp.OR);
 		VoxelShapes.registerShape(SubtypeMachine.electricpump, shape, Direction.EAST);
 	}
 }

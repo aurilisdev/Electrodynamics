@@ -48,8 +48,8 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 		holder(tile);
 		if (holder.hasComponent(ComponentType.PacketHandler)) {
 			ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-			handler.guiPacketWriter(this::writeGuiPacket);
-			handler.guiPacketReader(this::readGuiPacket);
+			handler.addGuiPacketWriter(this::writeGuiPacket);
+			handler.addGuiPacketReader(this::readGuiPacket);
 		}
 	}
 

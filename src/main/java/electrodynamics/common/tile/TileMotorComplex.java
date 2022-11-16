@@ -54,7 +54,7 @@ public class TileMotorComplex extends GenericTile {
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
 		speed.set(DEFAULT_SPEED);
-		powerMultiplier.set(1);
+		powerMultiplier.set(1.0);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		// comes out to roughly 128 kW; max speed still needs to be obtainable in survival...
 		for (ItemStack stack : inv.getUpgradeContents()) {

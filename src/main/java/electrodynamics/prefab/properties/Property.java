@@ -5,7 +5,7 @@ import electrodynamics.prefab.utilities.Scheduler;
 public class Property<T> {
 	private PropertyManager manager;
 	private final PropertyType type;
-	private boolean isDirty = false;
+	private boolean isDirty = true;
 	private boolean shouldSave = false;
 	private String name;
 	private T value;
@@ -31,6 +31,8 @@ public class Property<T> {
 				return (T) (Float) 0.0f;
 			case Integer:
 				return (T) (Integer) 0;
+			case InventoryItems:
+				break;
 			default:
 				break;
 			}
@@ -50,6 +52,11 @@ public class Property<T> {
 		return isDirty;
 	}
 
+	public void setDirty() {
+		isDirty = true;
+		manager.setDirty();
+	}
+
 	public void clean() {
 		isDirty = false;
 	}
@@ -58,12 +65,12 @@ public class Property<T> {
 		this.manager = manager;
 	}
 
-	public Property<T> set(Object updated) {
+	public Property<T> set(T updated) {
 		return set(updated, false);
 	}
 
 	@Deprecated(forRemoval = false) // Try not using this at all and only if you must.
-	public Property<T> set(Object updated, boolean verifyLater) {
+	public Property<T> set(T updated, boolean verifyLater) {
 		if (verifyLater) {
 			Scheduler.schedule(1, () -> verify(updated));
 		} else {
@@ -74,8 +81,13 @@ public class Property<T> {
 		return this;
 	}
 
+	@Deprecated(forRemoval = false) // Try not using this at all and only if you must.
+	public void setAmbigous(Object val) {
+		this.set((T) val);
+	}
+
 	public void verify(Object updated) {
-		if (value == null ? value == updated : !value.equals(updated)) {
+		if (value == null ? updated != null : !value.equals(updated)) {
 			isDirty = true;
 			manager.setDirty();
 		}
@@ -89,4 +101,5 @@ public class Property<T> {
 	public boolean shouldSave() {
 		return shouldSave;
 	}
+
 }

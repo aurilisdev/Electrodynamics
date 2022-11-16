@@ -3,13 +3,15 @@ package electrodynamics.common.tile.network;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.tile.generic.GenericTilePipe;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TilePipe extends GenericTilePipe {
-	public double transmit = 0;
+	public Property<Double> transmit = property(new Property<Double>(PropertyType.Double, "transmit")).set(0.0);
 
 	public TilePipe(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_PIPE.get(), pos, state);
@@ -35,15 +37,5 @@ public class TilePipe extends GenericTilePipe {
 	public void load(CompoundTag compound) {
 		super.load(compound);
 		pipe = SubtypePipe.values()[compound.getInt("ord")];
-	}
-
-	@Override
-	protected void writeCustomPacket(CompoundTag nbt) {
-		nbt.putDouble("transmit", transmit);
-	}
-
-	@Override
-	protected void readCustomPacket(CompoundTag nbt) {
-		transmit = nbt.getDouble("transmit");
 	}
 }

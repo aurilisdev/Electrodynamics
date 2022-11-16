@@ -17,11 +17,8 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.block.Blocks;
@@ -39,7 +36,7 @@ public abstract class GenericTileCharger extends GenericTile {
 	protected GenericTileCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition, BlockState blockState) {
 		super(typeIn, worldPosition, blockState);
 		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler().guiPacketReader(this::loadFromNBT).guiPacketWriter(this::saveToNBT));
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
 		addComponent(new ComponentInventory(this).size(2 + BATTERY_COUNT).inputs(1 + BATTERY_COUNT).outputs(1).valid(machineValidator()));
@@ -82,7 +79,7 @@ public abstract class GenericTileCharger extends GenericTile {
 					inventory.setItem(4, inventory.getItem(0).copy());
 					inventory.getItem(0).shrink(1);
 				}
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+				inventory.setChanged();
 			}
 		}
 
@@ -118,16 +115,6 @@ public abstract class GenericTileCharger extends GenericTile {
 			}
 		}
 		return false;
-	}
-
-	protected void loadFromNBT(CompoundTag nbt) {
-		NonNullList<ItemStack> obj = this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems();
-		obj.clear();
-		ContainerHelper.loadAllItems(nbt, obj);
-	}
-
-	protected void saveToNBT(CompoundTag nbt) {
-		ContainerHelper.saveAllItems(nbt, this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems());
 	}
 
 	static {

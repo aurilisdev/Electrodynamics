@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
 
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -19,7 +21,6 @@ import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -40,14 +41,13 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	protected static final int[] SLOTS_EMPTY = new int[] {};
-	protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
+	protected Property<NonNullList<ItemStack>> items;
 	protected TriPredicate<Integer, ItemStack, ComponentInventory> itemValidTest = (x, y, i) -> true;
 	protected HashSet<Player> viewing = new HashSet<>();
 	protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
 	protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
 	protected int inventorySize;
 	protected Function<Direction, Collection<Integer>> getSlotsFunction;
-	protected boolean shouldSendInfo;
 	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = SidedInvWrapper.create(this, Direction.values());
 
 	/*
@@ -69,17 +69,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	private Consumer<ComponentInventory> onChanged;
 
 	protected SubtypeItemUpgrade[] validUpgrades = SubtypeItemUpgrade.values();
+	private boolean shouldSendInfo;
 
 	public ComponentInventory(GenericTile holder) {
 		holder(holder);
-	}
-
-	public ComponentInventory shouldSendInfo() {
-		if (!shouldSendInfo && holder.hasComponent(ComponentType.PacketHandler)) {
-			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).guiPacketReader(this::loadNBT).guiPacketWriter(this::saveNBT);
-		}
-		shouldSendInfo = true;
-		return this;
 	}
 
 	public ComponentInventory onChanged(Consumer<ComponentInventory> onChanged) {
@@ -94,7 +87,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	public ComponentInventory size(int inventorySize) {
 		this.inventorySize = inventorySize;
-		items = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
+		items = holder.property(new Property<NonNullList<ItemStack>>(PropertyType.InventoryItems, "itemproperty")).set(NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)).save();
 		return this;
 	}
 
@@ -159,25 +152,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	@Override
-	public void loadFromNBT(CompoundTag nbt) {
-		ContainerHelper.loadAllItems(nbt, items);
-	}
-
-	@Override
-	public void saveToNBT(CompoundTag nbt) {
-		ContainerHelper.saveAllItems(nbt, items);
-	}
-
-	protected void loadNBT(CompoundTag nbt) {
-		items.clear();
-		loadFromNBT(nbt);
-	}
-
-	protected void saveNBT(CompoundTag nbt) {
-		saveToNBT(nbt);
-	}
-
-	@Override
 	public void startOpen(Player player) {
 		viewing.add(player);
 	}
@@ -204,7 +178,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : items) {
+		for (ItemStack itemstack : items.get()) {
 			if (!itemstack.isEmpty()) {
 				return false;
 			}
@@ -214,17 +188,20 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public ItemStack getItem(int index) {
-		return items.get(index);
+		return items.get().get(index);
 	}
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
-		return ContainerHelper.removeItem(items, index, count);
+		if (shouldSendInfo) {
+			items.setDirty();
+		}
+		return ContainerHelper.removeItem(items.get(), index, count);
 	}
 
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
-		return ContainerHelper.takeItem(items, index);
+		return ContainerHelper.takeItem(items.get(), index);
 	}
 
 	@Override
@@ -232,14 +209,14 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		if (stack.getCount() > getMaxStackSize()) {
 			stack.setCount(getMaxStackSize());
 		}
-		if (shouldSendInfo && stack.getCount() != items.get(index).getCount() || stack.getItem() != items.get(index).getItem()) {
-			items.set(index, stack);
-			if (holder.hasComponent(ComponentType.PacketHandler)) {
-				holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+		if (shouldSendInfo) {
+
+			if (stack.getCount() != items.get().get(index).getCount() || stack.getItem() != items.get().get(index).getItem()) {
+				items.setDirty();
 			}
-		} else {
-			items.set(index, stack);
 		}
+		items.get().set(index, stack);
+
 	}
 
 	@Override
@@ -250,7 +227,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public void clearContent() {
-		items.clear();
+		items.get().clear();
+		if (shouldSendInfo) {
+			items.setDirty();
+		}
 	}
 
 	@Override
@@ -293,7 +273,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public NonNullList<ItemStack> getItems() {
-		return items;
+		return items.get();
 	}
 
 	public HashSet<Player> getViewing() {
@@ -313,6 +293,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public void setChanged() {
 		holder.setChanged();
+		items.setDirty();
 		if (onChanged != null) {
 			onChanged.accept(this);
 		}
@@ -594,6 +575,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			}
 		}
 		return false;
+	}
+
+	public ComponentInventory shouldSendInfo() {
+		shouldSendInfo = true;
+		return this;
 	}
 
 }

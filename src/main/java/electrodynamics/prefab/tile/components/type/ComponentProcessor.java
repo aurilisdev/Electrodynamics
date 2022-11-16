@@ -108,9 +108,6 @@ public class ComponentProcessor implements Component {
 				failed.accept(this);
 			}
 		}
-		if (processorNumber > 0) {
-			System.out.println(processorNumber);
-		}
 	}
 
 	public ComponentProcessor process(Consumer<ComponentProcessor> process) {
@@ -138,7 +135,7 @@ public class ComponentProcessor implements Component {
 	}
 
 	public ComponentProcessor requiredTicks(long requiredTicks) {
-		this.requiredTicks.set(requiredTicks);
+		this.requiredTicks.set((double) requiredTicks);
 		return this;
 	}
 

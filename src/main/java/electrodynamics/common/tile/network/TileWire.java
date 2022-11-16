@@ -3,6 +3,8 @@ package electrodynamics.common.tile.network;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.generic.GenericTileWire;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileWire extends GenericTileWire {
-	public double transmit = 0;
+	public Property<Double> transmit = property(new Property<Double>(PropertyType.Double, "transmit")).set(0.0);
 
 	public TileWire(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_WIRE.get(), pos, state);
@@ -40,15 +42,5 @@ public class TileWire extends GenericTileWire {
 	public void load(CompoundTag compound) {
 		super.load(compound);
 		wire = SubtypeWire.values()[compound.getInt("ord")];
-	}
-
-	@Override
-	protected void writeCustomPacket(CompoundTag nbt) {
-		nbt.putDouble("transmit", transmit);
-	}
-
-	@Override
-	protected void readCustomPacket(CompoundTag nbt) {
-		transmit = nbt.getDouble("transmit");
 	}
 }

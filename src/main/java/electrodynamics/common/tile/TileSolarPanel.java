@@ -56,7 +56,7 @@ public class TileSolarPanel extends GenericTile implements IElectricGenerator {
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		multiplier.set(1, true);
+		multiplier.set(1.0, true);
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {

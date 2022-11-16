@@ -1,5 +1,6 @@
 package electrodynamics.prefab.tile.components.type;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
@@ -11,6 +12,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
@@ -28,7 +30,7 @@ public class ComponentPacketHandler implements Component {
 	protected Consumer<CompoundTag> customPacketReader;
 	protected Consumer<CompoundTag> guiPacketReader;
 
-	public ComponentPacketHandler customPacketWriter(Consumer<CompoundTag> consumer) {
+	public ComponentPacketHandler addCustomPacketWriter(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (customPacketWriter != null) {
 			safe = safe.andThen(customPacketWriter);
@@ -37,7 +39,7 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
-	public ComponentPacketHandler guiPacketWriter(Consumer<CompoundTag> consumer) {
+	public ComponentPacketHandler addGuiPacketWriter(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (guiPacketWriter != null) {
 			safe = safe.andThen(guiPacketWriter);
@@ -46,7 +48,7 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
-	public ComponentPacketHandler customPacketReader(Consumer<CompoundTag> consumer) {
+	public ComponentPacketHandler addCustomPacketReader(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (customPacketReader != null) {
 			safe = safe.andThen(customPacketReader);
@@ -55,7 +57,7 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
-	public ComponentPacketHandler guiPacketReader(Consumer<CompoundTag> consumer) {
+	public ComponentPacketHandler addGuiPacketReader(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (guiPacketReader != null) {
 			safe = safe.andThen(guiPacketReader);
@@ -89,22 +91,27 @@ public class ComponentPacketHandler implements Component {
 		}
 	}
 
-	public void sendProperties() {
-		PacketSendUpdateProperties packet = new PacketSendUpdateProperties(holder);
-		Level world = holder.getLevel();
-		BlockPos pos = holder.getBlockPos();
-		if (world instanceof ServerLevel level) {
-			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
-		}
-		holder.getPropertyManager().clean();
-	}
-
 	public void sendGuiPacketToTracking() {
 		PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), true, new CompoundTag());
 		Level world = holder.getLevel();
 		BlockPos pos = holder.getBlockPos();
 		if (world instanceof ServerLevel level) {
 			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+		}
+	}
+
+	public void sendProperties() {
+		if (holder.getPropertyManager().isDirty()) {
+			Level world = holder.getLevel();
+			BlockPos pos = holder.getBlockPos();
+			if (world instanceof ServerLevel level) {
+				List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
+				if (!players.isEmpty()) {
+					PacketSendUpdateProperties packet = new PacketSendUpdateProperties(holder);
+					players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+					holder.getPropertyManager().clean();
+				}
+			}
 		}
 	}
 

@@ -5,6 +5,7 @@ import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -27,7 +28,7 @@ public class TileMultiSubnode extends GenericTile {
 	@Override
 	public void load(CompoundTag compound) {
 		super.load(compound);
-		Scheduler.schedule(20, () -> getPropertyManager().setDirty());
+		Scheduler.schedule(20, () -> this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties());
 	}
 
 	public VoxelShape getShape() {
