@@ -23,10 +23,6 @@
 		"electrodynamics:resourceblockvanadiumsteel",
 		
 		"electrodynamics:raworeblocklead",
-		"electrodynamics:raworeblocksilver",
-		
-		"electrodynamics:concreteregular",
-		"electrodynamics:concretetile",
-		"electrodynamics:concretebricks"
+		"electrodynamics:raworeblocksilver"
 	]
 }
