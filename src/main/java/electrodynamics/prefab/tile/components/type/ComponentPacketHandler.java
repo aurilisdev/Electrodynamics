@@ -30,6 +30,7 @@ public class ComponentPacketHandler implements Component {
 	protected Consumer<CompoundTag> customPacketReader;
 	protected Consumer<CompoundTag> guiPacketReader;
 
+	@Deprecated(forRemoval = true)
 	public ComponentPacketHandler addCustomPacketWriter(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (customPacketWriter != null) {
@@ -39,6 +40,7 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
+	@Deprecated(forRemoval = true)
 	public ComponentPacketHandler addGuiPacketWriter(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (guiPacketWriter != null) {
@@ -48,6 +50,7 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
+	@Deprecated(forRemoval = true)
 	public ComponentPacketHandler addCustomPacketReader(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (customPacketReader != null) {
@@ -57,6 +60,7 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
+	@Deprecated(forRemoval = true)
 	public ComponentPacketHandler addGuiPacketReader(Consumer<CompoundTag> consumer) {
 		Consumer<CompoundTag> safe = consumer;
 		if (guiPacketReader != null) {
@@ -66,37 +70,48 @@ public class ComponentPacketHandler implements Component {
 		return this;
 	}
 
+	@Deprecated(forRemoval = true)
+
 	public Consumer<CompoundTag> getCustomPacketSupplier() {
 		return customPacketWriter;
 	}
 
+	@Deprecated(forRemoval = true)
 	public Consumer<CompoundTag> getGuiPacketSupplier() {
 		return guiPacketWriter;
 	}
 
+	@Deprecated(forRemoval = true)
 	public Consumer<CompoundTag> getCustomPacketConsumer() {
 		return customPacketReader;
 	}
 
+	@Deprecated(forRemoval = true)
 	public Consumer<CompoundTag> getGuiPacketConsumer() {
 		return guiPacketReader;
 	}
 
+	@Deprecated(forRemoval = true)
 	public void sendCustomPacket() {
-		PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), false, new CompoundTag());
-		Level world = holder.getLevel();
-		BlockPos pos = holder.getBlockPos();
-		if (world instanceof ServerLevel level) {
-			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+		if (customPacketWriter != null) {
+			PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), false, new CompoundTag());
+			Level world = holder.getLevel();
+			BlockPos pos = holder.getBlockPos();
+			if (world instanceof ServerLevel level) {
+				level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			}
 		}
 	}
 
+	@Deprecated(forRemoval = true)
 	public void sendGuiPacketToTracking() {
-		PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), true, new CompoundTag());
-		Level world = holder.getLevel();
-		BlockPos pos = holder.getBlockPos();
-		if (world instanceof ServerLevel level) {
-			level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+		if (guiPacketWriter != null) {
+			PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), true, new CompoundTag());
+			Level world = holder.getLevel();
+			BlockPos pos = holder.getBlockPos();
+			if (world instanceof ServerLevel level) {
+				level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			}
 		}
 	}
 

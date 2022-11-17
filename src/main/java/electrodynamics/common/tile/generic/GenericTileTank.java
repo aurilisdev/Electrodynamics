@@ -33,7 +33,6 @@ public class GenericTileTank extends GenericTile {
 
 	public void tickServer(ComponentTickable tick) {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
-
 		FluidUtilities.drainItem(this);
 		FluidUtilities.fillItem(this);
 		FluidUtilities.outputToPipe(this, handler.getOutputTanks(), AbstractFluidHandler.getDirectionalArray(handler.relativeOutputDirections));
@@ -60,11 +59,7 @@ public class GenericTileTank extends GenericTile {
 						thisHandler.drainFluidFromTank(stack, true);
 					}
 				}
-
 			}
 		}
-
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
-
 }

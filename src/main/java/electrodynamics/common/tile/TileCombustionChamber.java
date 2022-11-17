@@ -69,9 +69,6 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(facing.getClockWise()));
 		}
-		if (tickable.getTicks() % 5 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
 		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
 		FluidUtilities.drainItem(this);
 		FluidTank tank = handler.getInputTanks()[0];

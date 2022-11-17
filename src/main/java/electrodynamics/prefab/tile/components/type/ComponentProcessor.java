@@ -73,9 +73,6 @@ public class ComponentProcessor implements Component {
 	}
 
 	private void tickServer(ComponentTickable tickable) {
-		if (holder.hasComponent(ComponentType.PacketHandler) && holder.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks() % 20 == 0) {
-			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
 		operatingSpeed.set(1.0, true);
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		for (ItemStack stack : inv.getUpgradeContents()) {

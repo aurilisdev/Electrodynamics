@@ -72,17 +72,13 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 		if (tickable.getTicks() % 40 == 0) {
 			isGenerating.set(level.isEmptyBlock(worldPosition.relative(facing).relative(Direction.UP)));
 			float height = Math.max(0, level.getHeight());
-			double f = Math.log10((getBlockPos().getY() + height / 10.0) * 10.0 / height);
+			double f = Math.log10((Math.max(0, getBlockPos().getY()) + height / 10.0) * 10.0 / height);
 			generating.set(Constants.WINDMILL_MAX_AMPERAGE * Mth.clamp(f, 0, 1));
 		}
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
-
-		if (tickable.getTicks() % 40 == 0) {
-			output.update(worldPosition.relative(Direction.DOWN));
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
+		output.update(worldPosition.relative(Direction.DOWN));
 		if (isGenerating.get() && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
 		}

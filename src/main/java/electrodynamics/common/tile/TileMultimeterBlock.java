@@ -53,7 +53,6 @@ public class TileMultimeterBlock extends GenericTile {
 				resistance.set(0.0);
 				loss.set(0.0);
 			}
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 		}
 	}
 

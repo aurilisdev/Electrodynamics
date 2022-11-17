@@ -55,7 +55,6 @@ public class TileElectricPump extends GenericTile {
 			FluidState state = level.getFluidState(worldPosition.relative(Direction.DOWN));
 			if (isGenerating.get() != (state.isSource() && state.getType() == Fluids.WATER)) {
 				isGenerating.set(electro.getJoulesStored() > Constants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER);
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 			}
 		}
 		if (isGenerating.get() == Boolean.TRUE && output.valid()) {

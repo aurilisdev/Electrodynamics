@@ -40,11 +40,7 @@ public class TileCreativePowerSource extends GenericTile {
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		ComponentPacketHandler packet = getComponent(ComponentType.PacketHandler);
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		if (tick.getTicks() % 20 == 0) {
-			packet.sendCustomPacket();
-		}
 		if (outputs == null) {
 			outputs = new ArrayList<>();
 			for (Direction dir : Direction.values()) {

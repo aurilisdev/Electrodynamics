@@ -50,9 +50,6 @@ public class TileMotorComplex extends GenericTile {
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		if (tick.getTicks() % 5 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
 		speed.set(DEFAULT_SPEED);
 		powerMultiplier.set(1.0);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);

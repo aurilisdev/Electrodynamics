@@ -87,7 +87,6 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 					}
 				}
 			}
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
 		if (isGenerating.get() == Boolean.TRUE && output.valid()) {

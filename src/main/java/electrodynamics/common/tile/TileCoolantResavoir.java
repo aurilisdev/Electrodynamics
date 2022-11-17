@@ -32,9 +32,6 @@ public class TileCoolantResavoir extends GenericTile {
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		if (tick.getTicks() % 10 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
 		FluidUtilities.drainItem(this);
 	}
 
