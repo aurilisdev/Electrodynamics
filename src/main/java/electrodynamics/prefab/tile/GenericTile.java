@@ -188,6 +188,17 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 	}
 
+	@Override
+	public CompoundTag getUpdateTag() {
+		for (Property<?> prop : propertyManager.getProperties()) {
+			prop.setDirty();
+		}
+		if (hasComponent(ComponentType.PacketHandler)) {
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
+		}
+		return super.getUpdateTag();
+	}
+
 	public SimpleContainerData getCoordsArray() {
 		SimpleContainerData array = new SimpleContainerData(3);
 		array.set(0, worldPosition.getX());
