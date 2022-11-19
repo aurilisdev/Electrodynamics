@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class GenericTileTank extends GenericTile {
+	// TODO: Make this use the property system...
 
 	public GenericTileTank(BlockEntityType<?> tile, int capacity, String name, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
@@ -61,5 +62,6 @@ public class GenericTileTank extends GenericTile {
 				}
 			}
 		}
+		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
 }

@@ -117,7 +117,7 @@ public class ComponentPacketHandler implements Component {
 
 	public void sendProperties() {
 		if (holder.getPropertyManager().isDirty()) {
-			Level world = holder.getLevel();
+			Level world = holder.getLevel(); 
 			BlockPos pos = holder.getBlockPos();
 			if (world instanceof ServerLevel level) {
 				List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);

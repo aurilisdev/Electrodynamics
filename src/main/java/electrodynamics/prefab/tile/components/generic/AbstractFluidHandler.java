@@ -9,8 +9,10 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
@@ -20,6 +22,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+//TODO: Make this use the property system...
 
 public abstract class AbstractFluidHandler<A extends Component> implements Component, IFluidHandler {
 
@@ -44,6 +47,19 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	protected AbstractFluidHandler(GenericTile tile) {
 		holder(tile);
+		if (holder.hasComponent(ComponentType.PacketHandler)) {
+			ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
+			handler.addGuiPacketWriter(this::writeGuiPacket);
+			handler.addGuiPacketReader(this::readGuiPacket);
+		}
+	}
+
+	private void writeGuiPacket(CompoundTag nbt) {
+		saveToNBT(nbt);
+	}
+
+	private void readGuiPacket(CompoundTag nbt) {
+		loadFromNBT(nbt);
 	}
 
 	@Override

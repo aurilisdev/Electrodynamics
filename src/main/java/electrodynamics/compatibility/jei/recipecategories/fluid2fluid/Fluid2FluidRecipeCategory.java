@@ -14,6 +14,7 @@ import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends ElectrodynamicsRecipeCategory<T> {
 
@@ -28,7 +29,7 @@ public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe>
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
 			List<FluidStack> fluids = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
-				if (!stack.getFluid().builtInRegistryHolder().key().location().toString().toLowerCase().contains("flow")) {
+				if (!ForgeRegistries.FLUIDS.getKey(stack.getFluid()).toString().toLowerCase().contains("flow")) {
 					fluids.add(stack);
 				}
 			}
