@@ -116,15 +116,17 @@ public class ComponentPacketHandler implements Component {
 	}
 
 	public void sendProperties() {
-		if (holder.getPropertyManager().isDirty()) {
-			Level world = holder.getLevel(); 
-			BlockPos pos = holder.getBlockPos();
-			if (world instanceof ServerLevel level) {
-				List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
-				if (!players.isEmpty()) {
-					PacketSendUpdateProperties packet = new PacketSendUpdateProperties(holder);
-					players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
-					holder.getPropertyManager().clean();
+		Level world = holder.getLevel();
+		if (!world.isClientSide) {
+			if (holder.getPropertyManager().isDirty()) {
+				BlockPos pos = holder.getBlockPos();
+				if (world instanceof ServerLevel level) {
+					List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
+					if (!players.isEmpty()) {
+						PacketSendUpdateProperties packet = new PacketSendUpdateProperties(holder);
+						players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+						holder.getPropertyManager().clean();
+					}
 				}
 			}
 		}
