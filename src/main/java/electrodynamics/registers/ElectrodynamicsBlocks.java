@@ -2,13 +2,10 @@ package electrodynamics.registers;
 
 import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
-import electrodynamics.common.block.BlockConcrete;
 import electrodynamics.common.block.BlockCustomGlass;
 import electrodynamics.common.block.BlockDeepslateOre;
 import electrodynamics.common.block.BlockFrame;
@@ -21,7 +18,6 @@ import electrodynamics.common.block.BlockResource;
 import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.connect.BlockPipe;
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -70,29 +66,11 @@ public class ElectrodynamicsBlocks {
 		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockResource(subtype), subtype)));
 		}
-		for (SubtypeConcrete subtype : SubtypeConcrete.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockConcrete(subtype), subtype)));
-		}
-
-	}
-	
-	public static final RegistryObject<Block> MULTI_SUBNODE = BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
-	public static final RegistryObject<Block> SEISMIC_MARKER = BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
-	public static final RegistryObject<Block> FRAME = BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame())); 
-	public static final RegistryObject<Block> FRAME_CORNER = BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame()));
-	public static final RegistryObject<Block> LOGISTICAL_MANAGER = BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
-	
-	
-	public static Block[] getAllBlockForSubtype(ISubtype[] values){
-		List<Block> list = new ArrayList<>();
-		for(ISubtype value : values) {
-			list.add(SUBTYPEBLOCKREGISTER_MAPPINGS.get(value).get());
-		}
-		return list.toArray(new Block[] {});
-	}
-	
-	public static Block getBlock(ISubtype value) {
-		return SUBTYPEBLOCKREGISTER_MAPPINGS.get(value).get();
+		BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
+		BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
+		BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame()));
+		BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame()));
+		BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
 	}
 
 }

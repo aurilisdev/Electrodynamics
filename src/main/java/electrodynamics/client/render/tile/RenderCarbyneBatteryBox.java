@@ -6,6 +6,8 @@ import com.mojang.math.Quaternion;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileCarbyneBatteryBox;
 import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,7 +23,8 @@ public class RenderCarbyneBatteryBox implements BlockEntityRenderer<TileCarbyneB
 	@Override
 	public void render(TileCarbyneBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel;
-		int stored = (int) (tileEntityIn.clientJoules / tileEntityIn.clientMaxJoulesStored * 6);
+		ComponentElectrodynamic el = tileEntityIn.getComponent(ComponentType.Electrodynamic);
+		int stored = (int) (el.getJoulesStored() / el.getMaxJoulesStored() * 6);
 		ibakedmodel = switch (stored) {
 		case 0 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CARBYNEBATTERYBOX);
 		case 1 -> Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CARBYNEBATTERYBOX2);

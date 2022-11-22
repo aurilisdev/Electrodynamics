@@ -20,7 +20,6 @@ import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -57,7 +56,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 				}
 			});
 		}
-		addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
+		addComponent(new ComponentPacketHandler());
 	}
 
 	private ArrayList<ICapabilityElectrodynamic> handler = new ArrayList<>();
@@ -214,9 +213,4 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		super.onLoad();
 		Scheduler.schedule(1, this::refreshNetwork);
 	}
-
-	protected abstract void writeCustomPacket(CompoundTag nbt);
-
-	protected abstract void readCustomPacket(CompoundTag nbt);
-
 }

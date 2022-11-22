@@ -32,7 +32,7 @@ public class RenderLathe implements BlockEntityRenderer<TileLathe> {
 
 		double progress = Math.sin(0.05 * Math.PI * partialTicks);
 		float progressDegrees = 0.0F;
-		if (tileEntityIn.getProcessor(0).operatingTicks > 0) {
+		if (tileEntityIn.getProcessor(0).operatingTicks.get() > 0) {
 			progressDegrees = 360.0f * (float) progress;
 		}
 

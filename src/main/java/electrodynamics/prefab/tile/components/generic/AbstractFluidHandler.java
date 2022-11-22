@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+//TODO: Make this use the property system...
 
 public abstract class AbstractFluidHandler<A extends Component> implements Component, IFluidHandler {
 
@@ -48,9 +49,17 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 		holder(tile);
 		if (holder.hasComponent(ComponentType.PacketHandler)) {
 			ComponentPacketHandler handler = holder.getComponent(ComponentType.PacketHandler);
-			handler.guiPacketWriter(this::writeGuiPacket);
-			handler.guiPacketReader(this::readGuiPacket);
+			handler.addGuiPacketWriter(this::writeGuiPacket);
+			handler.addGuiPacketReader(this::readGuiPacket);
 		}
+	}
+
+	private void writeGuiPacket(CompoundTag nbt) {
+		saveToNBT(nbt);
+	}
+
+	private void readGuiPacket(CompoundTag nbt) {
+		loadFromNBT(nbt);
 	}
 
 	@Override
@@ -65,14 +74,6 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 	@Override
 	public ComponentType getType() {
 		return ComponentType.FluidHandler;
-	}
-
-	private void writeGuiPacket(CompoundTag nbt) {
-		saveToNBT(nbt);
-	}
-
-	private void readGuiPacket(CompoundTag nbt) {
-		loadFromNBT(nbt);
 	}
 
 	public AbstractFluidHandler<A> universalInput() {
@@ -104,7 +105,7 @@ public abstract class AbstractFluidHandler<A extends Component> implements Compo
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		if (capability != ForgeCapabilities.ITEM_HANDLER) {
+		if (capability != ForgeCapabilities.FLUID_HANDLER) {
 			return false;
 		}
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {

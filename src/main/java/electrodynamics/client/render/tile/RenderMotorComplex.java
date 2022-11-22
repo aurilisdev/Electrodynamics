@@ -32,8 +32,8 @@ public class RenderMotorComplex implements BlockEntityRenderer<TileMotorComplex>
 		float clientTicks = tile.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks();
 		float progressDegrees = 0.0F;
 
-		if (tile.clientPowered) {
-			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.clientSpeed);
+		if (tile.isPowered.get()) {
+			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.speed.get());
 		}
 
 		BakedModel shaft = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);

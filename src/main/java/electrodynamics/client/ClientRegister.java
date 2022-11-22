@@ -46,7 +46,6 @@ import electrodynamics.client.screen.tile.ScreenChargerGeneric;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenCoalGenerator;
-import electrodynamics.client.screen.tile.ScreenCobblestoneGenerator;
 import electrodynamics.client.screen.tile.ScreenCombustionChamber;
 import electrodynamics.client.screen.tile.ScreenCoolantResavoir;
 import electrodynamics.client.screen.tile.ScreenCreativeFluidSource;
@@ -263,7 +262,6 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_SOLARPANEL.get(), ScreenSolarPanel::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_WINDMILL.get(), ScreenWindmill::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_HYDROELECTRICGENERATOR.get(), ScreenHydroelectricGenerator::new);
-		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_COBBLESTONEGENERATOR.get(), ScreenCobblestoneGenerator::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEPOWERSOURCE.get(), ScreenCreativePowerSource::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEFLUIDSOURCE.get(), ScreenCreativeFluidSource::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);

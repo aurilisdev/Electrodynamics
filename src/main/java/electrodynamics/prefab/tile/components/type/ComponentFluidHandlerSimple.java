@@ -13,6 +13,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
+//TODO: Make this use the property system...
 
 public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentFluidHandlerSimple> {
 
@@ -37,7 +38,7 @@ public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentF
 	@Override
 	public void saveToNBT(CompoundTag nbt) {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("FluidName", fluidTank.getFluid().getRawFluid().builtInRegistryHolder().key().location().toString());
+		tag.putString("FluidName", ForgeRegistries.FLUIDS.getKey(fluidTank.getFluid().getFluid()).toString());
 		tag.putInt("Amount", fluidTank.getFluid().getAmount());
 		if (fluidTank.getFluid().getTag() != null) {
 			tag.put("Tag", fluidTank.getFluid().getTag());

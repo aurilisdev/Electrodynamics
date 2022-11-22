@@ -10,6 +10,8 @@ import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -33,32 +35,32 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTileNode, IElectricGenerator {
 
-	public TargetValue currentRotation = new TargetValue(0);
 	protected CachedTileOutput output;
-	private boolean generating = false;
-	private double multiplier = 1;
+	public TargetValue currentRotation = new TargetValue(property(new Property<Double>(PropertyType.Double, "currentRotation")).set(0.0));
+	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean, "generating")).set(false);
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier")).set(1.0);
 
 	@Override
 	public double getMultiplier() {
-		return multiplier;
+		return multiplier.get();
 	}
 
 	@Override
 	public void setMultiplier(double val) {
-		multiplier = val;
+		multiplier.set(val);
 	}
 
 	public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
-		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon));
+		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
 		addComponent(new ComponentInventory(this).size(1).upgrades(1).slotFaces(0, Direction.values()).shouldSendInfo().validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider("container.advancedsolarpanel").createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
-	protected void tickCommon(ComponentTickable tickable) {
-		setMultiplier(1);
+	protected void tickServer(ComponentTickable tickable) {
+		multiplier.set(1.0, true);
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {
@@ -66,20 +68,14 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 				}
 			}
 		}
-	}
-
-	protected void tickServer(ComponentTickable tickable) {
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(Direction.DOWN));
-			generating = level.canSeeSky(worldPosition.offset(0, 1, 0));
+			generating.set(level.canSeeSky(worldPosition.offset(0, 1, 0)));
 		}
-		if (tickable.getTicks() % 50 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
-		if (level.isDay() && generating && output.valid()) {
+		if (level.isDay() && generating.get() && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
 		}
 	}

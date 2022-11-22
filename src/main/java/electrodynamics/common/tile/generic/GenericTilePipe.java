@@ -17,7 +17,6 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -93,7 +92,7 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 				}
 			});
 		}
-		addComponent(new ComponentPacketHandler().customPacketReader(this::readCustomPacket).customPacketWriter(this::writeCustomPacket));
+		addComponent(new ComponentPacketHandler());
 	}
 
 	private HashSet<IPipe> getConnectedConductors() {
@@ -230,9 +229,4 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 		super.onLoad();
 		Scheduler.schedule(1, this::refreshNetwork);
 	}
-
-	protected abstract void writeCustomPacket(CompoundTag nbt);
-
-	protected abstract void readCustomPacket(CompoundTag nbt);
-
 }

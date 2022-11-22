@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class GenericTileTank extends GenericTile {
+	// TODO: Make this use the property system...
 
 	public GenericTileTank(BlockEntityType<?> tile, int capacity, String name, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
@@ -33,7 +34,6 @@ public class GenericTileTank extends GenericTile {
 
 	public void tickServer(ComponentTickable tick) {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
-
 		FluidUtilities.drainItem(this);
 		FluidUtilities.fillItem(this);
 		FluidUtilities.outputToPipe(this, handler.getOutputTanks(), AbstractFluidHandler.getDirectionalArray(handler.relativeOutputDirections));
@@ -60,11 +60,8 @@ public class GenericTileTank extends GenericTile {
 						thisHandler.drainFluidFromTank(stack, true);
 					}
 				}
-
 			}
 		}
-
 		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 	}
-
 }

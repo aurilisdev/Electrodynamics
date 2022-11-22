@@ -15,6 +15,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
+//TODO: Make this use the property system...
 
 public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFluidHandlerMulti> {
 
@@ -53,7 +54,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 		ListTag inputList = new ListTag();
 		for (FluidTank tank : inputTanks) {
 			CompoundTag tag = new CompoundTag();
-			tag.putString("FluidName", tank.getFluid().getRawFluid().builtInRegistryHolder().key().location().toString());
+			tag.putString("FluidName", ForgeRegistries.FLUIDS.getKey(tank.getFluid().getFluid()).toString());
 			tag.putInt("Amount", tank.getFluid().getAmount());
 
 			if (tank.getFluid().getTag() != null) {
@@ -68,7 +69,7 @@ public class ComponentFluidHandlerMulti extends AbstractFluidHandler<ComponentFl
 		ListTag outputList = new ListTag();
 		for (FluidTank tank : outputTanks) {
 			CompoundTag tag = new CompoundTag();
-			tag.putString("FluidName", tank.getFluid().getRawFluid().builtInRegistryHolder().key().location().toString());
+			tag.putString("FluidName", ForgeRegistries.FLUIDS.getKey(tank.getFluid().getFluid()).toString());
 			tag.putInt("Amount", tank.getFluid().getAmount());
 
 			if (tank.getFluid().getTag() != null) {

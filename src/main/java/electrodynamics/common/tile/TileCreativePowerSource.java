@@ -3,9 +3,9 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.datafixers.util.Pair;
-
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -19,36 +19,28 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileCreativePowerSource extends GenericTile {
 
 	private static final int POWER_MULTIPLIER = 1000000;
 
-	public Pair<Integer, Integer> outputValue;
+	public Property<Integer> voltage = property(new Property<Integer>(PropertyType.Integer, "voltage")).set(0).save();
+	public Property<Integer> power = property(new Property<Integer>(PropertyType.Integer, "power")).set(0).save();
 
 	protected List<CachedTileOutput> outputs;
 
 	public TileCreativePowerSource(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CREATIVEPOWERSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::writePacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket).guiPacketWriter(this::writePacket));
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).output(Direction.UP).output(Direction.NORTH).output(Direction.SOUTH).output(Direction.EAST).output(Direction.WEST));
 		addComponent(new ComponentInventory(this));
 		addComponent(new ComponentContainerProvider("container.creativepowersource").createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		ComponentPacketHandler packet = getComponent(ComponentType.PacketHandler);
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		if (tick.getTicks() % 20 == 0) {
-			packet.sendCustomPacket();
-		}
-		if (outputValue == null) {
-			outputValue = Pair.of(0, 0);
-			packet.sendCustomPacket();
-		}
 		if (outputs == null) {
 			outputs = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
@@ -61,8 +53,8 @@ public class TileCreativePowerSource extends GenericTile {
 				cache.update(worldPosition.relative(Direction.values()[i]));
 			}
 		}
-		electro.voltage(outputValue.getSecond());
-		TransferPack output = TransferPack.joulesVoltage(outputValue.getSecond() * POWER_MULTIPLIER, outputValue.getFirst());
+		electro.voltage(power.get());
+		TransferPack output = TransferPack.joulesVoltage(power.get() * POWER_MULTIPLIER, voltage.get());
 		for (int i = 0; i < outputs.size(); i++) {
 			CachedTileOutput cache = outputs.get(i);
 			Direction dir = Direction.values()[i];
@@ -72,28 +64,4 @@ public class TileCreativePowerSource extends GenericTile {
 		}
 
 	}
-
-	private void writePacket(CompoundTag nbt) {
-		if (outputValue != null) {
-			nbt.putInt("voltage", outputValue.getFirst());
-			nbt.putInt("power", outputValue.getSecond());
-		}
-	}
-
-	private void readPacket(CompoundTag nbt) {
-		outputValue = Pair.of(nbt.getInt("voltage"), nbt.getInt("power"));
-	}
-
-	@Override
-	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
-		writePacket(compound);
-	}
-
-	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
-		readPacket(compound);
-	}
-
 }

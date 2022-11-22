@@ -18,7 +18,6 @@ import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.common.tile.TileChemicalMixer;
 import electrodynamics.common.tile.TileCircuitBreaker;
 import electrodynamics.common.tile.TileCoalGenerator;
-import electrodynamics.common.tile.TileCobblestoneGenerator;
 import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.common.tile.TileCoolantResavoir;
 import electrodynamics.common.tile.TileCreativeFluidSource;
@@ -116,7 +115,6 @@ public class ElectrodynamicsBlockTypes {
 	public static final RegistryObject<BlockEntityType<TileReinforcedAlloyer>> TILE_REINFORCEDALLOYER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.reinforcedalloyer.tag(), () -> new BlockEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.reinforcedalloyer), getSafeBlock(SubtypeMachine.reinforcedalloyerrunning)), null));
 	public static final RegistryObject<BlockEntityType<TileOxidationFurnace>> TILE_OXIDATIONFURNACE = BLOCK_ENTITY_TYPES.register(SubtypeMachine.oxidationfurnace.tag(), () -> new BlockEntityType<>(TileOxidationFurnace::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.oxidationfurnace), getSafeBlock(SubtypeMachine.oxidationfurnacerunning)), null));
 	public static final RegistryObject<BlockEntityType<TileCreativePowerSource>> TILE_CREATIVEPOWERSOURCE = BLOCK_ENTITY_TYPES.register(SubtypeMachine.creativepowersource.tag(), () -> new BlockEntityType<>(TileCreativePowerSource::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.creativepowersource)), null));
-	public static final RegistryObject<BlockEntityType<TileCobblestoneGenerator>> TILE_COBBLESTONEGENERATOR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.cobblestonegenerator.tag(), () -> new BlockEntityType<>(TileCobblestoneGenerator::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.cobblestonegenerator)), null));
 	public static final RegistryObject<BlockEntityType<TileElectricPump>> TILE_ELECTRICPUMP = BLOCK_ENTITY_TYPES.register(SubtypeMachine.electricpump.tag(), () -> new BlockEntityType<>(TileElectricPump::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.electricpump)), null));
 	public static final RegistryObject<BlockEntityType<TileThermoelectricGenerator>> TILE_THERMOELECTRICGENERATOR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.thermoelectricgenerator.tag(), () -> new BlockEntityType<>(TileThermoelectricGenerator::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.thermoelectricgenerator)), null));
 	public static final RegistryObject<BlockEntityType<TileHydroelectricGenerator>> TILE_HYDROELECTRICGENERATOR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.hydroelectricgenerator.tag(), () -> new BlockEntityType<>(TileHydroelectricGenerator::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.hydroelectricgenerator)), null));

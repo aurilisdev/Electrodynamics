@@ -1,10 +1,11 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.item.ItemElectric;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -19,7 +20,6 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,14 +30,11 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
-	public final double powerOutput;
-	public final double maxJoules;
-	public double clientMaxJoulesStored;
-	public double currentCapacityMultiplier = 1;
-	public double currentVoltageMultiplier = 1;
-	public double clientVoltage = 120.0;
-	public double clientJoules = 0;
-	protected double receiveLimitLeft;
+	public final Property<Double> powerOutput;
+	public final Property<Double> maxJoules;
+	public Property<Double> currentCapacityMultiplier = property(new Property<Double>(PropertyType.Double, "currentCapacityMultiplier")).set(1.0);
+	public Property<Double> currentVoltageMultiplier = property(new Property<Double>(PropertyType.Double, "currentVoltageMultiplier")).set(1.0);
+	protected Property<Double> receiveLimitLeft;
 	protected CachedTileOutput output;
 
 	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
@@ -46,16 +43,15 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {
 		super(type, worldPosition, blockState);
-		powerOutput = output;
-		maxJoules = max;
-		clientMaxJoulesStored = max;
-		receiveLimitLeft = output * currentCapacityMultiplier;
+		powerOutput = property(new Property<Double>(PropertyType.Double, "powerOutput")).set(output);
+		maxJoules = property(new Property<Double>(PropertyType.Double, "maxJoules")).set(max);
+		receiveLimitLeft = property(new Property<Double>(PropertyType.Double, "receiveLimitLeft")).set(output * currentCapacityMultiplier.get());
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler().customPacketWriter(this::createPacket).guiPacketWriter(this::createPacket).customPacketReader(this::readPacket).guiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 3 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
 		addComponent(new ComponentContainerProvider("container.batterybox").createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-		addComponent(new ComponentElectrodynamic(this).maxJoules(maxJoules).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).voltage((int) output / 359.0 * 20.0).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -67,12 +63,12 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		receiveLimitLeft = powerOutput * currentCapacityMultiplier;
+		receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput * currentCapacityMultiplier), electro.getVoltage()), false).getJoules());
+			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
 		}
-		currentCapacityMultiplier = 1;
-		currentVoltageMultiplier = 1;
+		currentCapacityMultiplier.set(1.0, true);
+		currentVoltageMultiplier.set(1.0, true);
 		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
 				for (int i = 0; i < stack.getCount(); i++) {
@@ -80,32 +76,12 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 				}
 			}
 		}
-		electro.maxJoules(maxJoules * currentCapacityMultiplier);
-		electro.voltage(120.0 * currentVoltageMultiplier);
+		electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
+		electro.voltage(120.0 * currentVoltageMultiplier.get());
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 			electro.joules(electro.getMaxJoulesStored());
 		}
-		if (tickable.getTicks() % 50 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		}
 		electro.drainElectricItem(3);
-
-		// Power loss
-		electro.extractPower(TransferPack.joulesVoltage(SubtypeWire.copper.resistance, electro.getVoltage()), false);
-	}
-
-	protected void createPacket(CompoundTag nbt) {
-		nbt.putDouble("clientMaxJoulesStored", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
-		nbt.putDouble("clientJoules", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
-		nbt.putDouble("clientVoltage", this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
-		nbt.putDouble("currentCapacityMultiplier", currentCapacityMultiplier);
-	}
-
-	protected void readPacket(CompoundTag nbt) {
-		clientJoules = nbt.getDouble("clientJoules");
-		clientVoltage = nbt.getDouble("clientVoltage");
-		clientMaxJoulesStored = nbt.getDouble("clientMaxJoulesStored");
-		currentCapacityMultiplier = nbt.getDouble("currentCapacityMultiplier");
 	}
 
 	@Override

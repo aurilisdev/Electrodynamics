@@ -31,7 +31,7 @@ public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionCh
 		components.add(new ScreenComponentProgress(() -> {
 			TileCombustionChamber boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.burnTime / (double) TileCombustionChamber.TICKS_PER_MILLIBUCKET;
+				return boiler.burnTime.get() / (double) TileCombustionChamber.TICKS_PER_MILLIBUCKET;
 			}
 			return 0;
 		}, this, 119, 34).flame());
