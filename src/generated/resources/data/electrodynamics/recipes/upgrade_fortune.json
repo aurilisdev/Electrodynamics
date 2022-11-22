@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "type": "forge:partial_nbt",
+      "item": "minecraft:book",
+      "nbt": "{Enchantments:[{id:\"minecraft:fortune\",lvl:1s}]}"
+    },
+    "C": {
+      "tag": "forge:circuits/elite"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "CBC",
+    "PCP"
+  ],
+  "result": {
+    "item": "electrodynamics:upgradefortune"
+  }
+}

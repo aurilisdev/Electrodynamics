@@ -1,0 +1,20 @@
+{
+  "values": [
+    "electrodynamics:oreuraninite",
+    "electrodynamics:orethorianite",
+    "electrodynamics:orechromite",
+    "electrodynamics:orerutile",
+    "electrodynamics:deepslateoreuraninite",
+    "electrodynamics:deepslateorethorianite",
+    "electrodynamics:deepslateorechromite",
+    "electrodynamics:deepslateorerutile",
+    "electrodynamics:raworeblockchromium",
+    "electrodynamics:raworeblocktitanium",
+    "electrodynamics:raworeblockuranium",
+    "electrodynamics:raworeblockthorium",
+    "electrodynamics:resourceblockchromium",
+    "electrodynamics:resourceblockhslasteel",
+    "electrodynamics:resourceblocktitanium",
+    "electrodynamics:resourceblocktitaniumcarbide"
+  ]
+}

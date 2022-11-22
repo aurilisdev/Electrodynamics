@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "electrodynamics:ceramiccooked"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "item": "electrodynamics:ceramicplate"
+  }
+}

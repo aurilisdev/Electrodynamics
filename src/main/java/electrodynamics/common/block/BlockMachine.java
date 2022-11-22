@@ -9,14 +9,19 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.multiblock.IMultiblockNode;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileQuarry;
 import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.prefab.block.GenericMachineBlock;
+import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,7 +32,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.Shapes;
 
@@ -84,8 +89,10 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		return machine.getRenderType();
 	}
 
+	/*
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		
 		ItemStack addstack = switch (machine) {
 		case coalgeneratorrunning -> getMachine(SubtypeMachine.coalgenerator);
 		case electricfurnacerunning -> getMachine(SubtypeMachine.electricfurnace);
@@ -107,8 +114,9 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 			}
 		});
 		return Arrays.asList(addstack);
+		
 	}
-
+	*/
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
 
@@ -173,5 +181,36 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	@Override
 	public boolean isIPlayerStorable() {
 		return machine.isPlayerStorable();
+	}
+	
+	/*
+	@Override
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (tile instanceof GenericTile machine) {
+			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
+			if (Constants.DROP_MACHINE_INVENTORIES) {
+				ItemStack stack = new ItemStack(this);
+				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
+				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
+					double joules = el.getJoulesStored();
+					if (joules > 0) {
+						stack.getOrCreateTag().putDouble("joules", joules);
+					}
+				});
+				return Arrays.asList(stack);
+			}
+		}
+		return super.getDrops(state, builder);
+	}
+	*/
+	@Override
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pPos, BlockState pState) {
+		ItemStack stack = super.getCloneItemStack(level, pPos, pState);
+		BlockEntity tile = level.getBlockEntity(pPos);
+		if(tile != null) {
+			tile.saveToItem(stack);
+		}
+		return stack;
 	}
 }

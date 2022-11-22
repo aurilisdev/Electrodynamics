@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:leather"
+    }
+  ],
+  "result": {
+    "count": 6,
+    "item": "electrodynamics:insulation"
+  }
+}

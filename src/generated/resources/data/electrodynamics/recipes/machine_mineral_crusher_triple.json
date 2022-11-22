@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "electrodynamics:mineralcrusherdouble"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    },
+    "U": {
+      "tag": "forge:circuits/ultimate"
+    },
+    "V": {
+      "item": "electrodynamics:crystalvanadium"
+    }
+  },
+  "pattern": [
+    "UVU",
+    "MCM",
+    "UVU"
+  ],
+  "result": {
+    "item": "electrodynamics:mineralcrushertriple"
+  }
+}

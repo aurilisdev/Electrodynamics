@@ -70,28 +70,36 @@ public enum SubtypeMachine implements ISubtype {
 	electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
 	electricfurnacetriple(true, TileElectricFurnaceTriple.class),
 	electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
+	
 	electricarcfurnace(true, TileElectricArcFurnace.class),
 	electricarcfurnacerunning(false, TileElectricArcFurnace.class),
 	electricarcfurnacedouble(true, TileElectricArcFurnaceDouble.class),
 	electricarcfurnacedoublerunning(false, TileElectricArcFurnaceDouble.class),
 	electricarcfurnacetriple(true, TileElectricArcFurnaceTriple.class),
 	electricarcfurnacetriplerunning(false, TileElectricArcFurnaceTriple.class),
+	
 	coalgenerator(true, TileCoalGenerator.class),
 	coalgeneratorrunning(false, TileCoalGenerator.class),
+	
 	wiremill(true, TileWireMill.class),
 	wiremilldouble(true, TileWireMillDouble.class),
 	wiremilltriple(true, TileWireMillTriple.class),
+	
 	mineralcrusher(true, TileMineralCrusher.class, true),
 	mineralcrusherdouble(true, TileMineralCrusherDouble.class, true),
 	mineralcrushertriple(true, TileMineralCrusherTriple.class, true),
+	
 	mineralgrinder(true, TileMineralGrinder.class, true),
 	mineralgrinderdouble(true, TileMineralGrinderDouble.class, true),
 	mineralgrindertriple(true, TileMineralGrinderTriple.class, true),
+	
 	batterybox(true, TileBatteryBox.class, true),
 	lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
 	carbynebatterybox(true, TileCarbyneBatteryBox.class, true),
+	
 	oxidationfurnace(true, TileOxidationFurnace.class),
 	oxidationfurnacerunning(false, TileOxidationFurnace.class),
+	
 	downgradetransformer(true, TileTransformer.class),
 	upgradetransformer(true, TileTransformer.class),
 	solarpanel(true, TileSolarPanel.class),
@@ -102,9 +110,11 @@ public enum SubtypeMachine implements ISubtype {
 	combustionchamber(true, TileCombustionChamber.class),
 	hydroelectricgenerator(true, TileHydroelectricGenerator.class),
 	windmill(true, TileWindmill.class),
+	
 	mineralwasher(true, TileMineralWasher.class),
 	chemicalmixer(true, TileChemicalMixer.class, true),
 	chemicalcrystallizer(true, TileChemicalCrystallizer.class),
+	
 	circuitbreaker(true, TileCircuitBreaker.class),
 	multimeterblock(true, TileMultimeterBlock.class),
 	energizedalloyer(true, TileEnergizedAlloyer.class),
@@ -112,17 +122,21 @@ public enum SubtypeMachine implements ISubtype {
 	lathe(true, TileLathe.class, true),
 	reinforcedalloyer(true, TileReinforcedAlloyer.class),
 	reinforcedalloyerrunning(false, TileReinforcedAlloyer.class),
+	
 	chargerlv(true, TileChargerLV.class),
 	chargermv(true, TileChargerMV.class),
 	chargerhv(true, TileChargerHV.class),
+	
 	tanksteel(true, TileTankSteel.class),
 	tankreinforced(true, TileTankReinforced.class),
 	tankhsla(true, TileTankHSLA.class),
+	
 	cobblestonegenerator(true, TileCobblestoneGenerator.class),
 	creativepowersource(true, TileCreativePowerSource.class),
 	creativefluidsource(true, TileCreativeFluidSource.class),
 	fluidvoid(true, TileFluidVoid.class),
 	electrolyticseparator(true, TileElectrolyticSeparator.class),
+	
 	seismicrelay(true, TileSeismicRelay.class),
 	quarry(true, TileQuarry.class),
 	coolantresavoir(true, TileCoolantResavoir.class),

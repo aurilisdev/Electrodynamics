@@ -19,12 +19,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsRecipe> implements RecipeSerializer<T> {
 
-	private static final String COUNT = "count";
-	private static final String ITEM_INPUTS = "iteminputs";
-	private static final String FLUID_INPUTS = "fluidinputs";
+	public static final String COUNT = "count";
+	public static final String ITEM_INPUTS = "iteminputs";
+	public static final String FLUID_INPUTS = "fluidinputs";
 	public static final String ITEM_BIPRODUCTS = "itembi";
 	public static final String FLUID_BIPRODUCTS = "fluidbi";
-	private static final String OUTPUT = "output";
+	public static final String OUTPUT = "output";
 	public static final String EXPERIENCE = "experience";
 
 	private Class<T> RECIPE_CLASS;

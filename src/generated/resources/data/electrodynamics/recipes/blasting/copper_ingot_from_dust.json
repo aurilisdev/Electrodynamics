@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.0,
+  "ingredient": {
+    "tag": "forge:dusts/copper"
+  },
+  "result": "minecraft:copper_ingot"
+}

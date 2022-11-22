@@ -109,6 +109,9 @@ minecraft {
 mixin {
     add sourceSets.main, "electrodynamics.refmap.json"
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.19.2-43.1.52'
     compileOnly(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.271"))

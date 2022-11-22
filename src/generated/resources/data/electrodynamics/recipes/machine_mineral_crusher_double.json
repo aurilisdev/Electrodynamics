@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "electrodynamics:mineralcrusher"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "E": {
+      "tag": "forge:circuits/elite"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "pattern": [
+    "EDE",
+    "MCM",
+    "EDE"
+  ],
+  "result": {
+    "item": "electrodynamics:mineralcrusherdouble"
+  }
+}

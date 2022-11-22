@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "electrodynamics:upgradebasiccapacity"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedcopper"
+    }
+  },
+  "pattern": [
+    "PBP",
+    "BWB",
+    "CBC"
+  ],
+  "result": {
+    "item": "electrodynamics:upgradeadvancedcapacity"
+  }
+}

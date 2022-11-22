@@ -1,13 +1,10 @@
 package electrodynamics.prefab.block;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
 import electrodynamics.api.IWrenchItem;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.item.ItemUpgrade;
@@ -22,7 +19,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,8 +37,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -84,15 +78,6 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	@Override
 	public final BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return blockEntitySupplier.create(pos, state);
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING)) && tile instanceof GenericTile generic && generic.hasComponent(ComponentType.Inventory)) {
-			Containers.dropContents(worldIn, pos, generic.<ComponentInventory>getComponent(ComponentType.Inventory));
-		}
-		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
 
 	@Override
@@ -208,21 +193,6 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		ItemStack stack = new ItemStack(this);
-		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		if (tile != null) {
-			tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
-				double joules = el.getJoulesStored();
-				if (joules > 0) {
-					stack.getOrCreateTag().putDouble("joules", joules);
-				}
-			});
-		}
-		return Arrays.asList(stack);
 	}
 
 	public boolean isIPlayerStorable() {

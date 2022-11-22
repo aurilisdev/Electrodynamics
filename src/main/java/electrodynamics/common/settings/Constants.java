@@ -117,6 +117,9 @@ public class Constants {
 
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;
+	
+	@BooleanValue(def = true, comment = "whether a machine will drop its inventory or not when broken")
+	public static boolean DROP_MACHINE_INVENTORIES = true;
 
 	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

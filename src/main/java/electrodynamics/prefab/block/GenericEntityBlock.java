@@ -3,6 +3,8 @@ package electrodynamics.prefab.block;
 import java.util.Arrays;
 import java.util.List;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -25,6 +27,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public abstract class GenericEntityBlock extends BaseEntityBlock implements IWrenchable {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -80,19 +84,52 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		return super.mirror(state, mirrorIn);
 	}
 
+	
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
 		Level world = player.level;
+		/*
 		BlockEntity tile = world.getBlockEntity(pos);
 		if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Inventory) instanceof ComponentInventory inv) {
 			Containers.dropContents(world, pos, inv);
 		}
+		*/
 		world.destroyBlock(pos, true, player);
 	}
-
+	/*
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+		ItemStack stack = new ItemStack(this);
+		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (tile != null) {
+			tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
+				double joules = el.getJoulesStored();
+				if (joules > 0) {
+					stack.getOrCreateTag().putDouble("joules", joules);
+				}
+			});
+		}
+		return Arrays.asList(stack);
+	}
+	*/
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		return Arrays.asList(new ItemStack(this));
+		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (tile instanceof GenericTile machine) {
+			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
+			if (Constants.DROP_MACHINE_INVENTORIES) {
+				ItemStack stack = new ItemStack(this);
+				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
+				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
+					double joules = el.getJoulesStored();
+					if (joules > 0) {
+						stack.getOrCreateTag().putDouble("joules", joules);
+					}
+				});
+				return Arrays.asList(stack);
+			}
+		}
+		return super.getDrops(state, builder);
 	}
 
 }

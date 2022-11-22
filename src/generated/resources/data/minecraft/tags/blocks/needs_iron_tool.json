@@ -1,0 +1,27 @@
+{
+  "values": [
+    "electrodynamics:oresilver",
+    "electrodynamics:orelead",
+    "electrodynamics:oremonazite",
+    "electrodynamics:orevanadinite",
+    "electrodynamics:orealuminum",
+    "electrodynamics:orelepidolite",
+    "electrodynamics:deepslateoresilver",
+    "electrodynamics:deepslateorelead",
+    "electrodynamics:deepslateoremonazite",
+    "electrodynamics:deepslateorevanadinite",
+    "electrodynamics:deepslateorealuminum",
+    "electrodynamics:deepslateorelepidolite",
+    "electrodynamics:raworeblocklead",
+    "electrodynamics:raworeblocksilver",
+    "electrodynamics:resourceblocklead",
+    "electrodynamics:resourceblocksilver",
+    "electrodynamics:resourceblocksteel",
+    "electrodynamics:resourceblockaluminum",
+    "electrodynamics:resourceblockstainlesssteel",
+    "electrodynamics:resourceblockvanadiumsteel",
+    "electrodynamics:concreteregular",
+    "electrodynamics:concretetile",
+    "electrodynamics:concretebricks"
+  ]
+}

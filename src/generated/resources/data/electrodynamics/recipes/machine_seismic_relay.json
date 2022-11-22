@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "forge:gems/amethyst"
+    },
+    "C": {
+      "tag": "forge:circuits/ultimate"
+    },
+    "M": {
+      "item": "electrodynamics:seismicmarker"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "pattern": [
+    "PAP",
+    "ACA",
+    "MAM"
+  ],
+  "result": {
+    "item": "electrodynamics:seismicrelay"
+  }
+}

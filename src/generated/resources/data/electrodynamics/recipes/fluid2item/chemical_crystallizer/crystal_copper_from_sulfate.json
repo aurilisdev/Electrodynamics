@@ -1,0 +1,15 @@
+{
+  "type": "electrodynamics:chemical_crystallizer_recipe",
+  "experience": 0.0,
+  "fluidinputs": {
+    "0": {
+      "amount": 200,
+      "tag": "forge:_sulfatecopper"
+    },
+    "count": 1
+  },
+  "output": {
+    "count": 1,
+    "item": "electrodynamics:crystalcopper"
+  }
+}

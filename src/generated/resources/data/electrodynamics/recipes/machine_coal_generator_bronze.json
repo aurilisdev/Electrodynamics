@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "forge:plates/bronze"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BFB",
+    "BMB"
+  ],
+  "result": {
+    "item": "electrodynamics:coalgenerator"
+  }
+}
