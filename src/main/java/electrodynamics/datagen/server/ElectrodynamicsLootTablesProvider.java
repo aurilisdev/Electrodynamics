@@ -1,6 +1,5 @@
 package electrodynamics.datagen.server;
 
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -35,10 +34,6 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 		for (SubtypeWire wire : SubtypeWire.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(wire));
-		}
-
-		for (SubtypeConcrete concrete : SubtypeConcrete.values()) {
-			addSimpleBlock(ElectrodynamicsBlocks.getBlock(concrete));
 		}
 
 		for (SubtypeGlass glass : SubtypeGlass.values()) {
@@ -157,8 +152,6 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 				ElectrodynamicsBlockTypes.TILE_TANKREINFORCED);
 		addIFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla), ElectrodynamicsBlockTypes.TILE_TANKHSLA);
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.cobblestonegenerator),
-				ElectrodynamicsBlockTypes.TILE_COBBLESTONEGENERATOR);
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource));
 		addITable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fluidvoid), ElectrodynamicsBlockTypes.TILE_FLUIDVOID);

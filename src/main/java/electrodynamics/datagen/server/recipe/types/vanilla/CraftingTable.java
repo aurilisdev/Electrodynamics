@@ -3,7 +3,6 @@ package electrodynamics.datagen.server.recipe.types.vanilla;
 import java.util.function.Consumer;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypePipe;
@@ -226,68 +225,6 @@ public class CraftingTable extends AbstractRecipeGenerator {
 				.addKey('P', ElectrodynamicsTags.Items.PLASTIC)
 				//
 				.complete(References.ID, "raw_composite_plating", consumer);
-
-		ElectrodynamicsShapedCraftingRecipe.start(CONCRETE[SubtypeConcrete.bricks.ordinal()], 4)
-				//
-				.addPattern("CC")
-				//
-				.addPattern("CC")
-				//
-				.addKey('C', CONCRETE[SubtypeConcrete.regular.ordinal()])
-				//
-				.complete(References.ID, "concrete_bricks", consumer);
-
-		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_CONCRETEMIX.get(), 6)
-				//
-				.addPattern("SGS")
-				//
-				.addPattern("GNG")
-				//
-				.addPattern("SGS")
-				//
-				.addKey('S', Tags.Items.SAND)
-				//
-				.addKey('G', Tags.Items.GRAVEL)
-				//
-				.addKey('N', ElectrodynamicsTags.Items.DUST_NETHERITE)
-				//
-				.complete(References.ID, "concrete_mix_netherite", consumer);
-
-		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_CONCRETEMIX.get(), 4)
-				//
-				.addPattern("SGS")
-				//
-				.addPattern("GNG")
-				//
-				.addPattern("SGS")
-				//
-				.addKey('S', Tags.Items.SAND)
-				//
-				.addKey('G', Tags.Items.GRAVEL)
-				//
-				.addKey('N', ElectrodynamicsItems.SLAG.get())
-				//
-				.complete(References.ID, "concrete_mix_slag", consumer);
-
-		ElectrodynamicsShapedCraftingRecipe.start(CONCRETE[SubtypeConcrete.regular.ordinal()], 4)
-				//
-				.addPattern("CC")
-				//
-				.addPattern("CC")
-				//
-				.addKey('C', CONCRETE[SubtypeConcrete.tile.ordinal()])
-				//
-				.complete(References.ID, "concrete_regular", consumer);
-
-		ElectrodynamicsShapedCraftingRecipe.start(CONCRETE[SubtypeConcrete.bricks.ordinal()], 4)
-				//
-				.addPattern("CC")
-				//
-				.addPattern("CC")
-				//
-				.addKey('C', CONCRETE[SubtypeConcrete.bricks.ordinal()])
-				//
-				.complete(References.ID, "concrete_tile", consumer);
 
 		for (SubtypeNugget nugget : SubtypeNugget.values()) {
 			ElectrodynamicsShapedCraftingRecipe.start(nugget.productIngot.get(), 1)
@@ -1167,24 +1104,6 @@ public class CraftingTable extends AbstractRecipeGenerator {
 				.addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
 				//
 				.complete(References.ID, "machine_coal_generator_bronze", consumer);
-
-		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.cobblestonegenerator.ordinal()], 1)
-				//
-				.addPattern("PLP")
-				//
-				.addPattern("WCW")
-				//
-				.addPattern("PLP")
-				//
-				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
-				//
-				.addKey('L', Items.WATER_BUCKET)
-				//
-				.addKey('W', Items.LAVA_BUCKET)
-				//
-				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
-				//
-				.complete(References.ID, "machine_cobblestone_generator", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.combustionchamber.ordinal()], 1)
 				//

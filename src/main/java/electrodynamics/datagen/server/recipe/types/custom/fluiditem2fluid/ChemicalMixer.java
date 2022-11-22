@@ -10,11 +10,9 @@ import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeFluidOutput;
 import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.registers.ElectrodynamicsFluids;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -44,14 +42,6 @@ public class ChemicalMixer extends AbstractRecipeGenerator {
 				.addFluidTagInput(FluidTags.WATER, 1000)
 				//
 				.addItemTagInput(ItemTags.DIRT, 1)
-				//
-				.complete(consumer);
-
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidCement, 100), 0, "liquid_concrete")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEM_CONCRETEMIX.get()))
 				//
 				.complete(consumer);
 

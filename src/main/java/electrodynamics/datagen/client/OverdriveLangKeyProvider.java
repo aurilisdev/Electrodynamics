@@ -1,7 +1,6 @@
 package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -89,8 +88,6 @@ public class OverdriveLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.SLAG, "Metallic Slag");
 			addItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, "Ceramic Insulation");
 			addItem(ElectrodynamicsItems.ITEM_COIL, "Copper Coil");
-			addItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, "Composite Plating");
-			addItem(ElectrodynamicsItems.ITEM_CONCRETEMIX, "Electrocrete");
 			addItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, "Fertilizer");
 			addItem(ElectrodynamicsItems.ITEM_MOTOR, "Motor");
 			addItem(ElectrodynamicsItems.COAL_COKE, "Coal Coke");
@@ -246,10 +243,6 @@ public class OverdriveLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.SEISMIC_MARKER, "Seismic Marker");
 			addBlock(ElectrodynamicsBlocks.MULTI_SUBNODE, "Multiblock Subnode");
 			
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeConcrete.regular), "Concrete");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeConcrete.bricks), "Concrete Bricks");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeConcrete.tile), "Concrete Tile");
-			
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGlass.aluminum), "ALON");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGlass.clear), "Clear Glass");
 			
@@ -263,7 +256,6 @@ public class OverdriveLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer), "Chemical Mixer");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker), "Circuit Breaker");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), "Coal Generator");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.cobblestonegenerator), "Cobblestone Generator");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), "Combustion Chamber");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), "Coolant Resavoir");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource), "Creative Fluid Source");
@@ -407,7 +399,6 @@ public class OverdriveLangKeyProvider extends LanguageProvider {
 			addContainer(SubtypeMachine.chemicalcrystallizer, "Chemical Crystallizer");
 			addContainer(SubtypeMachine.chemicalmixer, "Chemical Mixer");
 			addContainer(SubtypeMachine.coalgenerator, "Coal Generator");
-			addContainer(SubtypeMachine.cobblestonegenerator, "Cobblestone Generator");
 			addContainer(SubtypeMachine.coolantresavoir, "Coolant Resavoir");
 			addContainer(SubtypeMachine.creativefluidsource, "Creative Fluid Source");
 			addContainer(SubtypeMachine.creativepowersource, "Creative Power Source");

@@ -1,7 +1,6 @@
 package electrodynamics.datagen.server;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -37,7 +36,6 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypePipe.values()))
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeGlass.values()))
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.values()))
-			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeConcrete.values()))
 			.add(ElectrodynamicsBlocks.blockSeismicMarker)
 			.add(ElectrodynamicsBlocks.blockLogisticalManager);
 
@@ -67,8 +65,7 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(2)))
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(2)))
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(2)))
-			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(2)))
-			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeConcrete.values()));
+			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(2)));
 		
 		tag(BlockTags.NEEDS_DIAMOND_TOOL)
 			.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(3)))

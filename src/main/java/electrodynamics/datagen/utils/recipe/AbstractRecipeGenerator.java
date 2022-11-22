@@ -2,7 +2,6 @@ package electrodynamics.datagen.utils.recipe;
 
 import java.util.function.Consumer;
 
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -31,7 +30,6 @@ import net.minecraft.world.item.Item;
 
 public abstract class AbstractRecipeGenerator {
 
-	public static Item[] CONCRETE;
 	public static Item[] CUSTOM_GLASS;
 	public static Item[] MACHINES;
 	public static Item[] ORES;
@@ -58,7 +56,6 @@ public abstract class AbstractRecipeGenerator {
 	
 	public AbstractRecipeGenerator() {
 		
-		CONCRETE = ElectrodynamicsItems.getAllItemForSubtype(SubtypeConcrete.values());
 		CUSTOM_GLASS = ElectrodynamicsItems.getAllItemForSubtype(SubtypeGlass.values());
 		MACHINES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeMachine.values());
 		ORES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeOre.values());

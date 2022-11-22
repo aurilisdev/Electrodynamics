@@ -18,7 +18,6 @@ public class ElectrodynamicsFluidTagsProvider extends FluidTagsProvider {
 	protected void addTags() {
 		
 		tag(ElectrodynamicsTags.Fluids.CLAY).add(ElectrodynamicsFluids.fluidClay);
-		tag(ElectrodynamicsTags.Fluids.CONCRETE).add(ElectrodynamicsFluids.fluidCement);
 		tag(ElectrodynamicsTags.Fluids.ETHANOL).add(ElectrodynamicsFluids.fluidEthanol);
 		tag(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID).add(ElectrodynamicsFluids.fluidHydraulic);
 		tag(ElectrodynamicsTags.Fluids.HYDROGEN).add(ElectrodynamicsFluids.fluidHydrogen);

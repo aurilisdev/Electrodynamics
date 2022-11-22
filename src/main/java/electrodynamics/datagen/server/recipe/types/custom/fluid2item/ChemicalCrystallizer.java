@@ -3,7 +3,6 @@ package electrodynamics.datagen.server.recipe.types.custom.fluid2item;
 import java.util.function.Consumer;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.tags.ElectrodynamicsTags;
@@ -24,12 +23,6 @@ public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 		newRecipe(new ItemStack(Items.CLAY_BALL), 0, "clay_ball")
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.CLAY, 200)
-				//
-				.complete(consumer);
-
-		newRecipe(new ItemStack(ElectrodynamicsItems.getItem(SubtypeConcrete.regular)), 0, "concrete")
-				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.CONCRETE, 1000)
 				//
 				.complete(consumer);
 
