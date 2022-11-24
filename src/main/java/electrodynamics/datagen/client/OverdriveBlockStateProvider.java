@@ -1,6 +1,12 @@
 package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
+import electrodynamics.common.block.subtype.SubtypeGlass;
+import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
+import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
+import electrodynamics.common.block.subtype.SubtypeResourceBlock;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +30,27 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		
+		for(SubtypeGlass glass : SubtypeGlass.values()) {
+			glassBlock(ElectrodynamicsBlocks.getBlock(glass), blockLoc("glass/" + glass.tag()), true);
+		}
+		
+		for(SubtypeOre ore : SubtypeOre.values()) {
+			simpleBlock(ElectrodynamicsBlocks.getBlock(ore), blockLoc("ore/" + ore.tag()), true);
+		}
+		
+		for(SubtypeOreDeepslate ore : SubtypeOreDeepslate.values()) {
+			simpleBlock(ElectrodynamicsBlocks.getBlock(ore), blockLoc("deepslateore/" + ore.tag()), true);
+		}
+		
+		for(SubtypeRawOreBlock raw : SubtypeRawOreBlock.values()) {
+			simpleBlock(ElectrodynamicsBlocks.getBlock(raw), blockLoc("raworeblock/" + raw.tag()), true);
+		}
+		
+		for(SubtypeResourceBlock resource : SubtypeResourceBlock.values()) {
+			simpleBlock(ElectrodynamicsBlocks.getBlock(resource), blockLoc("resource/" + resource.tag()), true);
+		}
+		
 		/*
 		BlockModelBuilder cubeColoredAll = models()
 				.withExistingParent("cube_colored_all", blockLoc("parent/cube_colored")).texture("particle", "#all")
@@ -88,7 +115,8 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 
 		genMatterConduits();
 		genNetworkCables();
-	*/
+		*/
+	
 	}
 	/*
 	private void genMatterConduits() {
@@ -158,22 +186,30 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 				true);
 
 	}
-
-	private void simpleBlock(RegistryObject<Block> block, ModelFile file, boolean registerItem) {
-		simpleBlock(block.get(), file);
+	*/
+	private void simpleBlock(Block block, ModelFile file, boolean registerItem) {
+		simpleBlock(block, file);
 		if (registerItem)
-			simpleBlockItem(block.get(), file);
+			simpleBlockItem(block, file);
 	}
 
-	private void simpleBlock(RegistryObject<Block> block, boolean registerItem) {
-		simpleBlock(block, cubeAll(block.get()), registerItem);
+	private void simpleBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+		simpleBlock(block.get(), texture, registerItem);
+	}
+	
+	private void simpleBlock(Block block, ResourceLocation texture, boolean registerItem) {
+		simpleBlock(block, models().cubeAll(name(block), texture), registerItem);
+	}
+	
+	private void glassBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+		glassBlock(block.get(), texture, registerItem);
 	}
 
-	private void glassBlock(RegistryObject<Block> block, boolean registerItem) {
-		BlockModelBuilder builder = models().cubeAll(name(block.get()), blockTexture(block.get())).renderType("cutout");
-		getVariantBuilder(block.get()).partialState().setModels(new ConfiguredModel(builder));
+	private void glassBlock(Block block, ResourceLocation texture, boolean registerItem) {
+		BlockModelBuilder builder = models().cubeAll(name(block), texture).renderType("cutout");
+		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
 		if (registerItem)
-			simpleBlockItem(block.get(), builder);
+			simpleBlockItem(block, builder);
 	}
 
 	private void airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
@@ -190,7 +226,7 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		if (registerItem)
 			simpleBlockItem(block.get(), builder);
 	}
-
+	/*
 	private void horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
 		getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).modelForState()
 				.modelFile(modelFile).rotationY(0).addModel().partialState()
@@ -222,7 +258,7 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 			simpleBlockItem(block.get(), off);
 
 	}
-
+	 */
 	private void redstoneToggleBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
 		getVariantBuilder(block.get()).partialState().with(BlockStateProperties.LIT, false).modelForState()
 				.modelFile(off).addModel().partialState().with(BlockStateProperties.LIT, true).modelForState()
@@ -231,7 +267,7 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 			simpleBlockItem(block.get(), off);
 
 	}
-
+	/*
 	private void omniDirBlock(RegistryObject<Block> block, ModelFile model, boolean registerItem) {
 		getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
 				.with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model)
@@ -298,7 +334,7 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 			simpleBlockItem(block.get(), ns);
 
 	}
-
+	*/
 	private BlockModelBuilder getObjModel(String name, String modelLoc, String texture) {
 		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true)
 				.modelLocation(modLoc("models/" + modelLoc + ".obj")).end().texture("texture0", texture)
@@ -381,6 +417,6 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		return modLoc("block/" + texture);
 	}
 	
-	*/
+	
 
 }

@@ -2,6 +2,7 @@ package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
+import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -42,14 +43,14 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 
 		layeredItem(ElectrodynamicsItems.COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
 		layeredItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, Parent.GENERATED, itemLoc("insulationceramic"));
-		// TODO coil
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_INSULATION, Parent.GENERATED, itemLoc("insulation"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, Parent.GENERATED, itemLoc("molybdenumfertilizer"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOTOR, Parent.GENERATED, itemLoc("motor"));
 		layeredItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplatingraw"));
 		layeredItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, Parent.GENERATED, itemLoc("sheetplastic"));
 		layeredItem(ElectrodynamicsItems.SLAG, Parent.GENERATED, itemLoc("slag"));
-		// TODO solar panel plate
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, Parent.GENERATED, itemLoc("titaniumheatcoil"));
 
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATHELMET, Parent.GENERATED, itemLoc("armor/combatchestplate"));
@@ -57,7 +58,7 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATLEGGINGS, Parent.GENERATED, itemLoc("armor/combatleggings"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATBOOTS, Parent.GENERATED, itemLoc("armor/combatboots"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITEHELMET, Parent.GENERATED, itemLoc("armor/compositehelmet"));
-		layeredItem(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE, Parent.GENERATED, itemLoc("armor/compositechestplate"));
+		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE, Parent.GENERATED, itemLoc("armor/compositechestplate"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS, Parent.GENERATED, itemLoc("armor/compositeleggings"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS, Parent.GENERATED, itemLoc("armor/compositeboots"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplating"));
@@ -70,8 +71,8 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 
 		// TODO reinforced canister
 		layeredItem(ElectrodynamicsItems.GUIDEBOOK, Parent.GENERATED, itemLoc("guidebook"));
-		// TODO multimeter
-		// TODO seismic scanner
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_MULTIMETER), Parent.GENERATED, itemLoc("multimeter")).transforms().transform(TransformType.GUI).scale(0.9F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_SEISMICSCANNER), Parent.GENERATED, itemLoc("seismicscanner")).transforms().transform(TransformType.GUI).scale(0.75F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_WRENCH, Parent.GENERATED, itemLoc("wrench"));
 		layeredItem(ElectrodynamicsItems.ITEM_BATTERY, Parent.GENERATED, itemLoc("battery"));
 		layeredItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, Parent.GENERATED, itemLoc("lithiumbattery"));
@@ -119,7 +120,7 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 		}
 		
 		for(SubtypeItemUpgrade upgrade : SubtypeItemUpgrade.values()) {
-			//TODO
+			layeredBuilder(name(ElectrodynamicsItems.getItem(upgrade)), Parent.GENERATED, itemLoc("upgrade/" + upgrade.tag())).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		}
 		
 		for(SubtypeNugget nugget : SubtypeNugget.values()) {
@@ -142,7 +143,13 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 			layeredItem(ElectrodynamicsItems.getItem(rod), Parent.GENERATED, itemLoc("rod/" + rod.tag()));
 		}
 		
-		
+		for(SubtypeWire wire : SubtypeWire.values()) {
+			if(wire.wireType == 0) {
+				layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED, itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
+			} else {
+				layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/" + wire.tag()));
+			}
+		}
 		
 		
 		
