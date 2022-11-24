@@ -14,7 +14,7 @@ public class FluidHydraulic extends FluidNonPlaceable {
 
 	public FluidHydraulic() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "hydraulic");
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidhydraulic");
 	}
 
 	@Override

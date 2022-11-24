@@ -14,7 +14,7 @@ public class FluidOxygen extends FluidNonPlaceable {
 
 	public FluidOxygen() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "oxygen");
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidoxygen");
 	}
 
 	@Override

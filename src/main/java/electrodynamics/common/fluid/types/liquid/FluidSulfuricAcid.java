@@ -14,7 +14,7 @@ public class FluidSulfuricAcid extends FluidNonPlaceable {
 
 	public FluidSulfuricAcid() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "sulfuricacid", -375879936);
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidsulfuricacid", -375879936);
 	}
 
 	@Override

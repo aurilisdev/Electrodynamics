@@ -15,6 +15,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -25,15 +26,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BlockItemDescriptable extends BlockItem {
-	private static HashMap<Block, HashSet<String>> descriptionMappings = new HashMap<>();
-	private static List<Pair<Supplier<Block>, String>> cachedDescriptions = new ArrayList<>();
+	private static HashMap<Block, HashSet<MutableComponent>> descriptionMappings = new HashMap<>();
+	private static List<Pair<Supplier<Block>, MutableComponent>> cachedDescriptions = new ArrayList<>();
 
 	private final Supplier<Block> block;
 
 	private static boolean initialized;
 
-	private static void createDescription(Block block, String description) {
-		HashSet<String> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block) : new HashSet<>();
+	private static void createDescription(Block block, MutableComponent description) {
+		HashSet<MutableComponent> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block) : new HashSet<>();
 		if (!descriptionMappings.containsKey(block)) {
 			descriptionMappings.put(block, gotten);
 		}
@@ -71,19 +72,14 @@ public class BlockItemDescriptable extends BlockItem {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (!initialized) {
 			BlockItemDescriptable.initialized = true;
-			for (Pair<Supplier<Block>, String> pair : cachedDescriptions) {
+			for (Pair<Supplier<Block>, MutableComponent> pair : cachedDescriptions) {
 				createDescription(pair.getFirst().get(), pair.getSecond());
 			}
 		}
-		HashSet<String> gotten = descriptionMappings.get(block.get());
+		HashSet<MutableComponent> gotten = descriptionMappings.get(block.get());
 		if (gotten != null) {
-			for (String s : gotten) {
-				boolean translate = s.contains("|translate|");
-				if (translate) {
-					tooltip.add(Component.translatable(s.replace("|translate|", "")).withStyle(ChatFormatting.GRAY));
-				} else {
-					tooltip.add(Component.literal(s).withStyle(ChatFormatting.GRAY));
-				}
+			for (MutableComponent s : gotten) {
+				tooltip.add(s.withStyle(ChatFormatting.GRAY));
 			}
 		}
 		if (stack.hasTag()) {
@@ -99,7 +95,7 @@ public class BlockItemDescriptable extends BlockItem {
 		return stack.hasTag() && stack.getTag().getDouble("joules") > 0 ? 1 : super.getMaxStackSize(stack);
 	}
 
-	public static void addDescription(Supplier<Block> block, String description) {
+	public static void addDescription(Supplier<Block> block, MutableComponent description) {
 		cachedDescriptions.add(new Pair<>(block, description));
 	}
 }

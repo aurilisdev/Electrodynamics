@@ -14,7 +14,7 @@ public class FluidConcrete extends FluidNonPlaceable {
 
 	public FluidConcrete() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "concrete");
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidconcrete");
 	}
 
 	@Override

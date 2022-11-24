@@ -14,7 +14,7 @@ public class FluidPolyethylene extends FluidNonPlaceable {
 
 	public FluidPolyethylene() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "polyethylene", -376664948);
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidpolyethylene", -376664948);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class FluidEthanol extends FluidNonPlaceable {
 
 	public FluidEthanol() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "ethanol", -428574419);
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidethanol", -428574419);
 	}
 
 	@Override
