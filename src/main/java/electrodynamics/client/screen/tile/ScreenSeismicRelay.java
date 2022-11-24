@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.tile.TileSeismicRelay;
 import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +24,7 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 
 		TileSeismicRelay relay = menu.getHostFromIntArray();
 
-		font.draw(stack, Component.translatable("gui.seismicrelay.dataheader"), 70, 20, 4210752);
+		font.draw(stack, TextUtils.gui("seismicrelay.dataheader"), 70, 20, 4210752);
 
 		if (relay != null) {
 			List<BlockPos> markers = relay.clientLocs;
@@ -57,11 +58,11 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 	}
 
 	private void renderNotFound(PoseStack stack, int offset, int index) {
-		font.draw(stack, Component.translatable("gui.seismicrelay.posnotfound", index), 80, 30 + offset, 4210752);
+		font.draw(stack, TextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset, 4210752);
 	}
 
 	private void renderCoordinate(PoseStack stack, BlockPos pos, int offset, int index) {
-		font.draw(stack, Component.translatable("gui.seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752);
+		font.draw(stack, TextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752);
 	}
 
 }

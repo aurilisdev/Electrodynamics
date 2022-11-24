@@ -95,7 +95,6 @@
     "electrodynamics:tanksteel",
     "electrodynamics:tankreinforced",
     "electrodynamics:tankhsla",
-    "electrodynamics:cobblestonegenerator",
     "electrodynamics:creativepowersource",
     "electrodynamics:creativefluidsource",
     "electrodynamics:fluidvoid",
@@ -150,9 +149,6 @@
     "electrodynamics:resourceblockhslasteel",
     "electrodynamics:resourceblocktitanium",
     "electrodynamics:resourceblocktitaniumcarbide",
-    "electrodynamics:concreteregular",
-    "electrodynamics:concretetile",
-    "electrodynamics:concretebricks",
     "electrodynamics:seismicmarker",
     "electrodynamics:logisticalmanager"
   ]

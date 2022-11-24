@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
@@ -57,7 +58,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentFluidHandlerMulti(this).setInputTags(1, TANK_CAPACITY, FUELS).relativeInput(Direction.WEST));
-		addComponent(new ComponentContainerProvider("container.combustionchamber").createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.combustionchamber).createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {

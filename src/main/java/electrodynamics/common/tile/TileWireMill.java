@@ -32,10 +32,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWireMill extends GenericTile {
 	public TileWireMill(BlockPos worldPosition, BlockState blockState) {
-		this(0, worldPosition, blockState);
+		this(SubtypeMachine.wiremill, 0, worldPosition, blockState);
 	}
 
-	public TileWireMill(int extra, BlockPos worldPosition, BlockState blockState) {
+	public TileWireMill(SubtypeMachine machine, int extra, BlockPos worldPosition, BlockState blockState) {
 		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_WIREMILLDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_WIREMILLTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_WIREMILL.get(), worldPosition, blockState);
 		int processorInputs = 1;
 		int processorCount = extra + 1;
@@ -55,7 +55,7 @@ public class TileWireMill extends GenericTile {
 		}
 
 		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).biproducts(biproducts).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.wiremill" + extra).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE.get())).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK));

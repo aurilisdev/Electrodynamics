@@ -35,7 +35,7 @@ public class MineralCrusherRecipeCategory extends Item2ItemRecipeCategory<Minera
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.mineralcrusher.tag() + "0";
+	private static String RECIPE_GROUP = SubtypeMachine.mineralcrusher.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.mineralcrusher));
 

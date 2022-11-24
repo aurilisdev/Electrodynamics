@@ -14,6 +14,9 @@ import electrodynamics.client.guidebook.chapters.ChapterTips;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.prefab.utilities.TextUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public class ModuleElectrodynamics extends Module {
 
@@ -23,12 +26,7 @@ public class ModuleElectrodynamics extends Module {
 	public ImageWrapperObject getLogo() {
 		return LOGO;
 	}
-
-	@Override
-	public String getTitleCat() {
-		return References.ID;
-	}
-
+	
 	@Override
 	protected List<Chapter> genChapters() {
 		List<Chapter> chapters = new ArrayList<>();
@@ -45,6 +43,11 @@ public class ModuleElectrodynamics extends Module {
 	@Override
 	public boolean isFirst() {
 		return true;
+	}
+
+	@Override
+	public MutableComponent getTitle() {
+		return TextUtils.gui(References.ID);
 	}
 
 }

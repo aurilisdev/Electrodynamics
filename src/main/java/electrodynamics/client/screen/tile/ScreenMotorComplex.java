@@ -15,6 +15,7 @@ import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -32,8 +33,8 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		TileMotorComplex motor = menu.getHostFromIntArray();
 		if (motor != null) {
 			ComponentElectrodynamic electro = motor.getComponent(ComponentType.Electrodynamic);
-			list.add(Component.translatable("gui.machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(Constants.MOTORCOMPLEX_USAGE_PER_TICK * motor.powerMultiplier.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(Component.translatable("gui.machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(Constants.MOTORCOMPLEX_USAGE_PER_TICK * motor.powerMultiplier.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -46,7 +47,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		if (motor != null && motor.isPowered.get()) {
 			blocksPerTick = motor.speed.get().intValue();
 		}
-		font.draw(stack, Component.translatable("gui.motorcomplex.speed", blocksPerTick), 30, 40, 4210752);
+		font.draw(stack, TextUtils.gui("motorcomplex.speed", blocksPerTick), 30, 40, 4210752);
 	}
 
 }

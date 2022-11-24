@@ -26,7 +26,7 @@ public class ElectrodynamicsFluidTagsProvider extends FluidTagsProvider {
 		tag(ElectrodynamicsTags.Fluids.POLYETHLYENE).add(ElectrodynamicsFluids.fluidPolyethylene);
 		tag(ElectrodynamicsTags.Fluids.SULFURIC_ACID).add(ElectrodynamicsFluids.fluidSulfuricAcid);
 		for(SubtypeSulfateFluid sulfate : SubtypeSulfateFluid.values()) {
-			tag(sulfate.tag).add(ElectrodynamicsFluids.mineralFluidMap.get(sulfate).get());
+			tag(sulfate.tag).add(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(sulfate).get());
 		}
 		
 	}

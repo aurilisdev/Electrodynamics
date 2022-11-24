@@ -1,5 +1,6 @@
 package electrodynamics.common.tile.generic;
 
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.prefab.tile.GenericTile;
@@ -22,14 +23,14 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class GenericTileTank extends GenericTile {
 	// TODO: Make this use the property system...
 
-	public GenericTileTank(BlockEntityType<?> tile, int capacity, String name, BlockPos pos, BlockState state) {
+	public GenericTileTank(BlockEntityType<?> tile, int capacity, SubtypeMachine machine, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.UP).relativeOutput(Direction.DOWN).setManualFluids(1, true, capacity, FluidUtilities.getAllRegistryFluids()));
 		addComponent(new ComponentInventory(this).size(2).bucketInputs(1).bucketOutputs(1).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.tank" + name).createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tick) {

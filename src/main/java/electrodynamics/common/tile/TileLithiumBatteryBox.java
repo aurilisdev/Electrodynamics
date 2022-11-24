@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileLithiumBatteryBox extends TileBatteryBox {
 
 	public TileLithiumBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_LITHIUMBATTERYBOX.get(), 359.0 * (2 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 40000000, worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_LITHIUMBATTERYBOX.get(), SubtypeMachine.lithiumbatterybox, 359.0 * (2 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 40000000, worldPosition, blockState);
 		forceComponent(new ComponentContainerProvider("container.lithiumbatterybox").createMenu((id, player) -> new ContainerLithiumBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

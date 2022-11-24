@@ -1,27 +1,19 @@
 package electrodynamics.client.guidebook.utils;
 
-import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public class TextWrapperObject {
 
 	public int xOffset;
 	public int yOffset;
 	public int color;
-	public String textKey;
-	public Object[] componentInfo;
-	public ChatFormatting[] formats;
+	public Component text;
 
-	public TextWrapperObject(int xOffset, int yOffset, int color, String textKey, Object... componentInfo) {
+	public TextWrapperObject(int xOffset, int yOffset, int color, Component text) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		this.color = color;
-		this.textKey = textKey;
-		this.componentInfo = componentInfo;
-	}
-
-	public TextWrapperObject setTextStyles(ChatFormatting... formats) {
-		this.formats = formats;
-		return this;
+		this.text = text;
 	}
 
 }

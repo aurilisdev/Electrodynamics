@@ -33,14 +33,14 @@ public abstract class GenericTileCharger extends GenericTile {
 	private static final int BATTERY_COUNT = 3;
 	private static final double MAX_BATTERY_TRANSFER_JOULES = 1000.0;
 
-	protected GenericTileCharger(BlockEntityType<?> typeIn, int voltageMultiplier, String containerName, BlockPos worldPosition, BlockState blockState) {
+	protected GenericTileCharger(BlockEntityType<?> typeIn, int voltageMultiplier, SubtypeMachine machine, BlockPos worldPosition, BlockState blockState) {
 		super(typeIn, worldPosition, blockState);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
 		addComponent(new ComponentInventory(this).size(2 + BATTERY_COUNT).inputs(1 + BATTERY_COUNT).outputs(1).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.charger" + containerName).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
 

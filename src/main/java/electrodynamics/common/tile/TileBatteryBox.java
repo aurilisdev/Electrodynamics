@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.item.ItemElectric;
@@ -38,10 +39,10 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	protected CachedTileOutput output;
 
 	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		this(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
+		this(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), SubtypeMachine.batterybox, 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
 	}
 
-	public TileBatteryBox(BlockEntityType<?> type, double output, double max, BlockPos worldPosition, BlockState blockState) {
+	public TileBatteryBox(BlockEntityType<?> type, SubtypeMachine machine, double output, double max, BlockPos worldPosition, BlockState blockState) {
 		super(type, worldPosition, blockState);
 		powerOutput = property(new Property<Double>(PropertyType.Double, "powerOutput")).set(output);
 		maxJoules = property(new Property<Double>(PropertyType.Double, "maxJoules")).set(max);
@@ -50,7 +51,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 3 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
-		addComponent(new ComponentContainerProvider("container.batterybox").createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentElectrodynamic(this).voltage((int) output / 359.0 * 20.0).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 	}
 

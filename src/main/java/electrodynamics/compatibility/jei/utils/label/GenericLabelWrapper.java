@@ -2,11 +2,12 @@ package electrodynamics.compatibility.jei.utils.label;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.network.chat.Component;
 
 public class GenericLabelWrapper {
 
-	protected static final String POWER = "power";
+	protected static final String POWER = "guilabel.power";
 
 	private int COLOR;
 	private int Y_POS;
@@ -33,10 +34,10 @@ public class GenericLabelWrapper {
 	}
 
 	public String getLocation() {
-		return "jei.guilabel." + NAME;
+		return NAME;
 	}
 
 	public Component getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
-		return Component.translatable(getLocation());
+		return TextUtils.jeiTranslated(getLocation());
 	}
 }

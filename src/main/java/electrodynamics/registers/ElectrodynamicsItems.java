@@ -101,13 +101,6 @@ public class ElectrodynamicsItems {
 		for (SubtypeDrillHead drill : SubtypeDrillHead.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(drill, ITEMS.register(drill.tag(), supplier(() -> new ItemDrillHead(drill), drill)));
 		}
-		ITEMS.register("sheetplastic", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("compositeplating", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("compositeplatingraw", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("molybdenumfertilizer", supplier(() -> new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("frame", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64))));
-		ITEMS.register("framecorner", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64))));
-		ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
 	}
 
 	

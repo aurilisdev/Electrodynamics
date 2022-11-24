@@ -35,7 +35,7 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillReci
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.wiremill.tag() + "0";
+	private static String RECIPE_GROUP = SubtypeMachine.wiremill.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.wiremill));
 

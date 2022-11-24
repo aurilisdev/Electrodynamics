@@ -18,6 +18,7 @@ import electrodynamics.common.packet.types.PacketRenderJetpackParticles;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -120,14 +121,14 @@ public class ItemJetpack extends ArmorItem {
 		if (stack.hasTag()) {
 			int mode = stack.getTag().getInt(NBTUtils.MODE);
 			Component modeTip = switch (mode) {
-			case 0 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN));
-			case 1 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.modehover").withStyle(ChatFormatting.AQUA));
-			case 2 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.modeoff").withStyle(ChatFormatting.RED));
+			case 0 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
+			case 1 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
+			case 2 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
 			default -> Component.literal("");
 			};
 			tooltip.add(modeTip);
 		} else {
-			tooltip.add(Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
+			tooltip.add(TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
 		}
 	}
 

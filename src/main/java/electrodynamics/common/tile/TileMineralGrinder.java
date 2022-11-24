@@ -3,6 +3,7 @@ package electrodynamics.common.tile;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
@@ -33,10 +34,10 @@ public class TileMineralGrinder extends GenericTile {
 	public long clientRunningTicks = 0;
 
 	public TileMineralGrinder(BlockPos pos, BlockState state) {
-		this(0, pos, state);
+		this(SubtypeMachine.mineralgrinder, 0, pos, state);
 	}
 
-	public TileMineralGrinder(int extra, BlockPos pos, BlockState state) {
+	public TileMineralGrinder(SubtypeMachine machine, int extra, BlockPos pos, BlockState state) {
 		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_MINERALGRINDERDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_MINERALGRINDERTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_MINERALGRINDER.get(), pos, state);
 
 		int processorInputs = 1;
@@ -57,7 +58,7 @@ public class TileMineralGrinder extends GenericTile {
 		}
 
 		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).biproducts(biproducts).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.mineralgrinder" + extra).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE.get())).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.MINERALGRINDER_REQUIRED_TICKS).usage(Constants.MINERALGRINDER_USAGE_PER_TICK));

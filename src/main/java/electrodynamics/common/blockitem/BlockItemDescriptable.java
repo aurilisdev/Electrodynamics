@@ -50,6 +50,7 @@ public class BlockItemDescriptable extends BlockItem {
 		return block.get();
 	}
 
+	/*
 	@Override
 	public InteractionResult place(BlockPlaceContext p) {
 		ItemStack stack = p.getItemInHand().copy();
@@ -64,7 +65,7 @@ public class BlockItemDescriptable extends BlockItem {
 		}
 		return result;
 	}
-
+	*/
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);

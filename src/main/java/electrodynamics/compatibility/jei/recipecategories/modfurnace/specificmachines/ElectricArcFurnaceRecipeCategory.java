@@ -41,7 +41,7 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory<B
 	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricarcfurnace));
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag() + "0";
+	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag();
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

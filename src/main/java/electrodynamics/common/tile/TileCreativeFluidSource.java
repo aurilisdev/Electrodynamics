@@ -3,6 +3,7 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.tile.generic.GenericTilePipe;
 import electrodynamics.prefab.tile.GenericTile;
@@ -52,7 +53,7 @@ public class TileCreativeFluidSource extends GenericTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(this).relativeOutput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN).setManualFluids(1, true, 128000, fluids));
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentContainerProvider("container.creativefluidsource").createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.creativefluidsource).createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
+import net.minecraft.network.chat.MutableComponent;
 
 public abstract class Module {
 
@@ -88,12 +89,10 @@ public abstract class Module {
 		return chapterPages;
 	}
 
-	public String getTitle() {
-		return "guidebook." + getTitleCat() + ".moduletitle";
-	}
+	public abstract MutableComponent getTitle();
 
-	public boolean isCat(String cat) {
-		if (getTitleCat().equals(cat)) {
+	public boolean isCat(MutableComponent cat) {
+		if (getTitle().getString().equals(cat.getString())) {
 			return true;
 		}
 		return false;
@@ -105,8 +104,6 @@ public abstract class Module {
 	public abstract boolean isFirst();
 
 	public abstract ImageWrapperObject getLogo();
-
-	public abstract String getTitleCat();
 
 	// this is called at init() and init() only
 	protected abstract List<Chapter> genChapters();

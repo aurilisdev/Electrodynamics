@@ -19,9 +19,6 @@
     "electrodynamics:resourceblocksteel",
     "electrodynamics:resourceblockaluminum",
     "electrodynamics:resourceblockstainlesssteel",
-    "electrodynamics:resourceblockvanadiumsteel",
-    "electrodynamics:concreteregular",
-    "electrodynamics:concretetile",
-    "electrodynamics:concretebricks"
+    "electrodynamics:resourceblockvanadiumsteel"
   ]
 }

@@ -14,6 +14,7 @@ import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -33,8 +34,8 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry != null) {
 			ComponentElectrodynamic electro = quarry.getComponent(ComponentType.Electrodynamic);
-			list.add(Component.translatable("gui.machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.clientPowerUsage * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(Component.translatable("gui.machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.clientPowerUsage * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -45,40 +46,40 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry != null) {
 			if (quarry.clientItemVoid) {
-				font.draw(stack, Component.translatable("gui.quarry.voiditems"), 85, 14, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.voiditems"), 85, 14, 4210752);
 			} else {
-				font.draw(stack, Component.translatable("gui.quarry.needvoidcard"), 85, 14, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.needvoidcard"), 85, 14, 4210752);
 			}
-			font.draw(stack, Component.translatable("gui.quarry.status"), 5, 22, 4210752);
+			font.draw(stack, TextUtils.gui("quarry.status"), 5, 22, 4210752);
 			if (quarry.hasClientCorners()) {
-				font.draw(stack, Component.translatable("gui.quarry.ringfound"), 10, 32, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.ringfound"), 10, 32, 4210752);
 			} else {
-				font.draw(stack, Component.translatable("gui.quarry.noring"), 10, 32, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.noring"), 10, 32, 4210752);
 			}
 			if (quarry.clientMiningPos == null && quarry.hasClientCorners() && !quarry.clientFinished) {
-				font.draw(stack, Component.translatable("gui.quarry.setup"), 10, 42, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.setup"), 10, 42, 4210752);
 			} else if (quarry.clientMiningPos != null && !quarry.clientFinished) {
-				font.draw(stack, Component.translatable("gui.quarry.mining"), 10, 42, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.mining"), 10, 42, 4210752);
 			} else if (quarry.clientFinished) {
-				font.draw(stack, Component.translatable("gui.quarry.finished"), 10, 42, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.finished"), 10, 42, 4210752);
 			} else {
-				font.draw(stack, Component.translatable("gui.quarry.error"), 10, 42, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.error"), 10, 42, 4210752);
 			}
 			if (quarry.clientHead) {
-				font.draw(stack, Component.translatable("gui.quarry.hashead"), 10, 52, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.hashead"), 10, 52, 4210752);
 			} else {
-				font.draw(stack, Component.translatable("gui.quarry.nohead"), 10, 52, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.nohead"), 10, 52, 4210752);
 			}
 			if (quarry.clientIsPowered) {
-				font.draw(stack, Component.translatable("gui.quarry.running"), 10, 62, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.running"), 10, 62, 4210752);
 			} else {
-				font.draw(stack, Component.translatable("gui.quarry.needspower"), 10, 62, 4210752);
+				font.draw(stack, TextUtils.gui("quarry.needspower"), 10, 62, 4210752);
 			}
 
-			font.draw(stack, Component.translatable("gui.quarry.stats"), 5, 82, 4210752);
-			font.draw(stack, Component.translatable("gui.quarry.fortune", quarry.clientFortuneLevel), 10, 92, 4210752);
-			font.draw(stack, Component.translatable("gui.quarry.silktouch", quarry.clientSilkTouchLevel), 10, 102, 4210752);
-			font.draw(stack, Component.translatable("gui.quarry.unbreaking", quarry.clientUnbreakingLevel), 10, 112, 4210752);
+			font.draw(stack, TextUtils.gui("quarry.stats"), 5, 82, 4210752);
+			font.draw(stack, TextUtils.gui("quarry.fortune", quarry.clientFortuneLevel), 10, 92, 4210752);
+			font.draw(stack, TextUtils.gui("quarry.silktouch", quarry.clientSilkTouchLevel), 10, 102, 4210752);
+			font.draw(stack, TextUtils.gui("quarry.unbreaking", quarry.clientUnbreakingLevel), 10, 112, 4210752);
 		}
 	}
 

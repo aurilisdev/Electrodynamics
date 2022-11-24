@@ -8,13 +8,13 @@ import static electrodynamics.registers.ElectrodynamicsFluids.fluidHydrogenFluor
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidOxygen;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidPolyethylene;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidSulfuricAcid;
-import static electrodynamics.registers.ElectrodynamicsFluids.mineralFluidMap;
+import static electrodynamics.registers.ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP;
 import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
 
 import java.util.Map.Entry;
 
+import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
-import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,8 +44,8 @@ public class ElectrodynamicsFluidTypes {
 		FLUID_TYPES.register("fluidpolyethylene", supplier(() -> fluidPolyethylene.getFluidType()));
 		FLUID_TYPES.register("fluidclay", supplier(() -> fluidClay.getFluidType()));
 		FLUID_TYPES.register("fluidhydraulic", supplier(() -> fluidHydraulic.getFluidType()));
-		for (Entry<SubtypeSulfateFluid, RegistryObject<Fluid>> entry : mineralFluidMap.entrySet()) {
-			FLUID_TYPES.register("fluidsulfate" + entry.getKey().name(), supplier(() -> entry.getValue().get().getFluidType()));
+		for (Entry<ISubtype, RegistryObject<Fluid>> entry : SUBTYPEFLUID_REGISTRY_MAP.entrySet()) {
+			FLUID_TYPES.register("fluidsulfate" + entry.getKey().tag(), supplier(() -> entry.getValue().get().getFluidType()));
 		}
 		// Gasses
 		FLUID_TYPES.register("fluidoxygen", supplier(() -> fluidOxygen.getFluidType()));

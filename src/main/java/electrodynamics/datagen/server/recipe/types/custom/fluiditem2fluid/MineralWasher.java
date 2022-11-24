@@ -32,7 +32,7 @@ public class MineralWasher extends AbstractRecipeGenerator {
 
 		for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
 			if (fluid.source != null) {
-				newRecipe(new FluidStack(ElectrodynamicsFluids.mineralFluidMap.get(fluid).get(), 1000), 0,
+				newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(fluid).get(), 1000), 0,
 						"sulfate_" + fluid.name())
 						//
 						.addItemTagInput(fluid.source, 1)

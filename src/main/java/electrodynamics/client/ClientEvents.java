@@ -18,6 +18,7 @@ import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -78,14 +79,16 @@ public class ClientEvents {
 			correction = "";
 		}
 
-		Component currTempText = Component.translatable("tooltip.electrodynamics.railguntemp", Component.literal(temperature + correction + " C")).withStyle(ChatFormatting.YELLOW);
-		Component maxTempText = Component.translatable("tooltip.electrodynamics.railgunmaxtemp", Component.literal(railgun.getMaxTemp() + " C")).withStyle(ChatFormatting.YELLOW);
+		TextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
+		
+		Component currTempText = TextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C")).withStyle(ChatFormatting.YELLOW);
+		Component maxTempText = TextUtils.tooltip("railgunmaxtemp", Component.literal(railgun.getMaxTemp() + " C")).withStyle(ChatFormatting.YELLOW);
 
 		GuiComponent.drawCenteredString(event.getPoseStack(), minecraft.font, currTempText, 55, 2, 0);
 		GuiComponent.drawCenteredString(event.getPoseStack(), minecraft.font, maxTempText, 48, 11, 0);
 
 		if (temperature >= railgun.getOverheatTemp()) {
-			Component overheatWarn = Component.translatable("tooltip.electrodynamics.railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
+			Component overheatWarn = TextUtils.tooltip("railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
 			GuiComponent.drawCenteredString(event.getPoseStack(), minecraft.font, overheatWarn, 70, 20, 0);
 		}
 

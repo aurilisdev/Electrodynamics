@@ -13,6 +13,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -31,8 +32,8 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
 
-		font.draw(stack, Component.translatable("gui.seismicscanner.material"), 15, 32, 4210752);
-		font.draw(stack, Component.translatable("gui.seismicscanner.dataheader"), 85, 25, 4210752);
+		font.draw(stack, TextUtils.gui("seismicscanner.material"), 15, 32, 4210752);
+		font.draw(stack, TextUtils.gui("seismicscanner.dataheader"), 85, 25, 4210752);
 
 		ItemStack ownerItem = menu.getOwnerItem();
 
@@ -42,9 +43,9 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		if (blockLoc.equals(playerLoc)) {
 			drawNotFound(stack);
 		} else {
-			font.draw(stack, Component.translatable("gui.seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
-			font.draw(stack, Component.translatable("gui.seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
-			font.draw(stack, Component.translatable("gui.seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
+			font.draw(stack, TextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
+			font.draw(stack, TextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
+			font.draw(stack, TextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
 		}
 
 	}
@@ -53,17 +54,17 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		ItemStack ownerItem = menu.getOwnerItem();
 		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
-			list.add(Component.translatable("gui.machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(Component.translatable("gui.machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(Component.translatable("gui.machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
 
 	private void drawNotFound(PoseStack stack) {
-		font.draw(stack, Component.translatable("gui.seismicscanner.xcoordna"), 95, 35, 4210752);
-		font.draw(stack, Component.translatable("gui.seismicscanner.ycoordna"), 95, 45, 4210752);
-		font.draw(stack, Component.translatable("gui.seismicscanner.zcoordna"), 95, 55, 4210752);
+		font.draw(stack, TextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752);
+		font.draw(stack, TextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752);
+		font.draw(stack, TextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752);
 	}
 
 }

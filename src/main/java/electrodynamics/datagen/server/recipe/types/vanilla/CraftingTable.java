@@ -1759,7 +1759,7 @@ public class CraftingTable extends AbstractRecipeGenerator {
 				//
 				.addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
 				//
-				.complete(References.ID, "machine_downgrade_transformer", consumer);
+				.complete(References.ID, "machine_upgrade_transformer", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.windmill.ordinal()], 1)
 				//

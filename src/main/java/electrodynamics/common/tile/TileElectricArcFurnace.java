@@ -43,10 +43,10 @@ public class TileElectricArcFurnace extends GenericTile {
 	protected long timeSinceChange = 0;
 
 	public TileElectricArcFurnace(BlockPos worldPosition, BlockState blockState) {
-		this(0, worldPosition, blockState);
+		this(SubtypeMachine.electricarcfurnace, 0, worldPosition, blockState);
 	}
 
-	public TileElectricArcFurnace(int extra, BlockPos worldPosition, BlockState blockState) {
+	public TileElectricArcFurnace(SubtypeMachine machine, int extra, BlockPos worldPosition, BlockState blockState) {
 		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACEDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACETRIPLE.get() : ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACE.get(), worldPosition, blockState);
 
 		int processorInputs = 1;
@@ -66,7 +66,7 @@ public class TileElectricArcFurnace extends GenericTile {
 		}
 
 		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerElectricArcFurnace.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.electricarcfurnace" + extra).createMenu((id, player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));

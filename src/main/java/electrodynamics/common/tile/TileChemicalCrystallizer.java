@@ -2,6 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
@@ -36,7 +37,7 @@ public class TileChemicalCrystallizer extends GenericTile {
 		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.values())).setAddFluidsValues(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE.get(), MAX_TANK_CAPACITY, true, false));
 		addComponent(new ComponentInventory(this).size(5).relativeSlotFaces(0, Direction.values()).outputs(1).bucketInputs(1).upgrades(3).processors(1).validUpgrades(ContainerChemicalCrystallizer.VALID_UPGRADES).valid(machineValidator()).shouldSendInfo());
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.consumeBucket().canProcessFluid2ItemRecipe(component, ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_TYPE.get())).process(component -> component.processFluid2ItemRecipe(component)).requiredTicks(Constants.CHEMICALCRYSTALLIZER_REQUIRED_TICKS).usage(Constants.CHEMICALCRYSTALLIZER_USAGE_PER_TICK));
-		addComponent(new ComponentContainerProvider("container.chemicalcrystallizer").createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalcrystallizer).createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tick) {

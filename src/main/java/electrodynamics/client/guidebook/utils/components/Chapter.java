@@ -2,6 +2,8 @@ package electrodynamics.client.guidebook.utils.components;
 
 import java.util.List;
 
+import net.minecraft.network.chat.MutableComponent;
+
 public abstract class Chapter {
 
 	private List<Page> pages;
@@ -19,7 +21,7 @@ public abstract class Chapter {
 		int count = 0;
 		for (Page page : pages) {
 			page.setPageNumber(startingPageNumber);
-			page.setChapterKey(getTitleKey());
+			page.setChapterName(getTitle());
 			startingPageNumber++;
 			count++;
 		}
@@ -55,6 +57,6 @@ public abstract class Chapter {
 
 	public abstract Object getLogo();
 
-	public abstract String getTitleKey();
+	public abstract MutableComponent getTitle();
 
 }

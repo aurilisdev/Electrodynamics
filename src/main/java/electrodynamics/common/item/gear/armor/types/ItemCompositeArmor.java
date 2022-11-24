@@ -9,6 +9,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -116,7 +117,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
-		tooltip.add(Component.translatable("tooltip.electrodynamics.ceramicplatecount", Component.translatable(plates + "")).withStyle(ChatFormatting.AQUA));
+		tooltip.add(TextUtils.tooltip("ceramicplatecount", Component.translatable(plates + "")).withStyle(ChatFormatting.AQUA));
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package electrodynamics.client.guidebook.utils.components;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.ItemWrapperObject;
 import electrodynamics.client.guidebook.utils.TextWrapperObject;
+import net.minecraft.network.chat.MutableComponent;
 
 public class Page {
 
@@ -12,7 +13,7 @@ public class Page {
 	private TextWrapperObject[] text = new TextWrapperObject[] {};
 	private ItemWrapperObject[] items = new ItemWrapperObject[] {};
 
-	private String chapterKey;
+	private MutableComponent chapterText;
 
 	public Page(ImageWrapperObject[] images, TextWrapperObject[] text, ItemWrapperObject[] items) {
 		this.images = images;
@@ -55,16 +56,16 @@ public class Page {
 		pageNumber = number;
 	}
 
-	protected void setChapterKey(String key) {
-		chapterKey = key;
+	protected void setChapterName(MutableComponent text) {
+		chapterText = text;
 	}
 
 	public int getPageNumber() {
 		return pageNumber;
 	}
 
-	public String getChapterKey() {
-		return chapterKey;
+	public MutableComponent getChapterName() {
+		return chapterText;
 	}
 
 	public TextWrapperObject[] getText() {

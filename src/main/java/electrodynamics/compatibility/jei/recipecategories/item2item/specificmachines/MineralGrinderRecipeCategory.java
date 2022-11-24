@@ -35,7 +35,7 @@ public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<Minera
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.mineralgrinder.tag() + "0";
+	private static String RECIPE_GROUP = SubtypeMachine.mineralgrinder.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.mineralgrinder));
 

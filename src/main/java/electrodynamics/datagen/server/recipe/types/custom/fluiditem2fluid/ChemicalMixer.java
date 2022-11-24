@@ -45,7 +45,7 @@ public class ChemicalMixer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.mineralFluidMap.get(SubtypeSulfateFluid.molybdenum).get(), 250),
+		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250),
 				0, "molybdenum_from_carrots")
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 100)
@@ -54,7 +54,7 @@ public class ChemicalMixer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.mineralFluidMap.get(SubtypeSulfateFluid.molybdenum).get(), 250),
+		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250),
 				0, "molybdenum_from_potatos")
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 100)
@@ -63,7 +63,7 @@ public class ChemicalMixer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.mineralFluidMap.get(SubtypeSulfateFluid.molybdenum).get(), 250),
+		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250),
 				0, "molybdenum_from_wheat")
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 100)

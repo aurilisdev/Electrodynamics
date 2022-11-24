@@ -51,7 +51,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
 		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo().validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.hydroelectricgenerator").createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	@Override

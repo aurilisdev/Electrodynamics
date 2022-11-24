@@ -46,6 +46,7 @@ import electrodynamics.compatibility.jei.recipecategories.item2item.specificmach
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricArcFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
+import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.tile.CombustionFuelSource;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -58,7 +59,6 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -79,9 +79,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public static List<mezz.jei.api.recipe.RecipeType<?>> DO2O_CLICK_AREAS = new ArrayList<>();
 
 	private static final int FULL_FLUID_SQUARE = 1600;
-
-	private static final String INFO_ITEM = "jei.info.item.";
-	private static final String INFO_FLUID = "jei.info.fluid.";
 
 	@Override
 	public ResourceLocation getPluginUid() {
@@ -224,14 +221,14 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		// Items
 		for (Item item : TileCoalGenerator.getValidItems()) {
 			ItemStack fuelStack = new ItemStack(item);
-			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM_STACK, Component.translatable(INFO_ITEM + "coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));
+			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM_STACK, TextUtils.jeiItemTranslated("coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));
 		}
 
 		// Fluids
 		for (TagKey<Fluid> tag : CombustionFuelSource.FUELS.keySet()) {
 			for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
 				CombustionFuelSource source = CombustionFuelSource.getSourceFromFluid(fluid);
-				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), ForgeTypes.FLUID_STACK, Component.translatable(INFO_FLUID + "combustionchamberfuel", source.getFluidUsage(), source.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
+				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), ForgeTypes.FLUID_STACK, TextUtils.jeiFluidTranslated("combustionchamberfuel", source.getFluidUsage(), source.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
 			}
 		}
 

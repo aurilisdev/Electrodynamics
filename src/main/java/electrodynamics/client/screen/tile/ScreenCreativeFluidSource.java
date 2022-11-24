@@ -9,6 +9,7 @@ import electrodynamics.prefab.screen.component.ScreenComponentFluid;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -31,7 +32,7 @@ public class ScreenCreativeFluidSource extends GenericScreen<ContainerCreativeFl
 		super.renderLabels(matrixStack, mouseX, mouseY);
 		TileCreativeFluidSource boiler = menu.getHostFromIntArray();
 		if (boiler != null) {
-			font.draw(matrixStack, Component.translatable("gui.creativefluidsource.setfluid"), 13, 38.5f, 4210752);
+			font.draw(matrixStack, TextUtils.gui("creativefluidsource.setfluid"), 13, 38.5f, 4210752);
 		}
 	}
 

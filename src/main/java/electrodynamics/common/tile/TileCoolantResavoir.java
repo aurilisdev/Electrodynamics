@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
@@ -28,7 +29,7 @@ public class TileCoolantResavoir extends GenericTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(this).relativeInput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST).setManualFluids(1, true, Constants.QUARRY_WATERUSAGE_PER_BLOCK * 1000, Fluids.WATER));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid(machineValidator()).shouldSendInfo());
-		addComponent(new ComponentContainerProvider("container.coolantresavoir").createMenu((id, player) -> new ContainerCoolantResavoir(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.coolantresavoir).createMenu((id, player) -> new ContainerCoolantResavoir(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
