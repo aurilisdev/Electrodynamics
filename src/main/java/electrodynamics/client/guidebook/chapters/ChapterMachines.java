@@ -21,7 +21,7 @@ public class ChapterMachines extends Chapter {
 	// private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 50,
 	// 0, 0, 32, 32, 32, 32, References.ID + ":textures/item/motor.png"));
 	private static final ItemWrapperObject LOGO = new ItemWrapperObject(17, 60, 2.0F,
-			ItemUtils.fromBlock(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacerunning)));
+			ItemUtils.fromBlock(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnace)));
 
 	@Override
 	protected List<Page> genPages() {

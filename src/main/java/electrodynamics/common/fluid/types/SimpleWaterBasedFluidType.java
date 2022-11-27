@@ -43,12 +43,12 @@ public class SimpleWaterBasedFluidType extends FluidType {
 
 			@Override
 			public ResourceLocation getStillTexture() {
-				return new ResourceLocation(modId + ":fluid/" + fluidName);
+				return new ResourceLocation(modId + ":fluid/" + fluidName.replaceFirst("fluid", ""));
 			}
 
 			@Override
 			public ResourceLocation getFlowingTexture() {
-				return new ResourceLocation(modId + ":fluid/" + fluidName);
+				return new ResourceLocation(modId + ":fluid/" + fluidName.replaceFirst("fluid", ""));
 			}
 
 			@Override

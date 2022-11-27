@@ -76,7 +76,7 @@ public class Smelting extends AbstractRecipeGenerator {
 
 		ElectrodynamicsCookingRecipe.blastingRecipe(CERAMICS[SubtypeCeramic.cooked.ordinal()], 0.1F, 300)
 				//
-				.input(ItemTags.COALS)
+				.input(CERAMICS[SubtypeCeramic.wet.ordinal()])
 				//
 				.complete(References.ID, BLASTING_LOC + "cooked_ceramic", consumer);
 

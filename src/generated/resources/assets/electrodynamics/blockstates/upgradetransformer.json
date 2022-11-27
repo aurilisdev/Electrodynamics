@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/upgradetransformer"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/upgradetransformer",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/upgradetransformer",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/upgradetransformer",
+      "y": 180
+    }
+  }
+}

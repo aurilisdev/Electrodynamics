@@ -9,7 +9,6 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceT
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -23,7 +22,6 @@ import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,7 +31,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -100,14 +97,7 @@ public class TileElectricFurnace extends GenericTile {
 		timeSinceChange++;
 		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed.get()) {
 			if (timeSinceChange > 40) {
-				Block bl = getBlockState().getBlock();
-				if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnace)) {
-					level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-				} else if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacedouble)) {
-					level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacedoublerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-				} else if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacetriple)) {
-					level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacetriplerunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-				}
+				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, true));
 				timeSinceChange = 0;
 			}
 			ComponentInventory inv = getComponent(ComponentType.Inventory);
@@ -132,14 +122,7 @@ public class TileElectricFurnace extends GenericTile {
 			}
 		} else if (timeSinceChange > 40) {
 			timeSinceChange = 0;
-			Block bl = getBlockState().getBlock();
-			if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacerunning)) {
-				level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-			} else if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacedoublerunning)) {
-				level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacedouble).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-			} else if (bl == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacetriplerunning)) {
-				level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacetriple).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
-			}
+			level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, false));
 		}
 
 		return false;

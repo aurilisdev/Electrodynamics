@@ -2,11 +2,14 @@ package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeGlass;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
@@ -50,6 +54,66 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		for(SubtypeResourceBlock resource : SubtypeResourceBlock.values()) {
 			simpleBlock(ElectrodynamicsBlocks.getBlock(resource), blockLoc("resource/" + resource.tag()), true);
 		}
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), existingBlock(blockLoc("advancedsolarpanelbase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.batterybox), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.batterybox)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lithiumbatterybox), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lithiumbatterybox)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.carbynebatterybox), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.carbynebatterybox)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerlv), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerlv)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargermv), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargermv)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerhv), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerhv)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalcrystallizer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalcrystallizer)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker)), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator)), existingBlock(blockLoc("coalgeneratorrunning")), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber)), true).transforms().transform(TransformType.GUI).rotation(35, 40, 0).scale(0.665F).end();
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer)), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace)), existingBlock(blockLoc("electricfurnacerunning")), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedouble), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedouble)), existingBlock(blockLoc("electricfurnacedoublerunning")), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriple), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriple)), existingBlock(blockLoc("electricfurnacetriplerunning")), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace)), existingBlock(blockLoc("electricarcfurnacerunning")), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble)), existingBlock(blockLoc("electricarcfurnacedoublerunning")), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple)), existingBlock(blockLoc("electricarcfurnacetriplerunning")), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricpump), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricpump)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electrolyticseparator), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electrolyticseparator)), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyer)), existingBlock(blockLoc("energizedalloyerrunning")), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fermentationplant), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fermentationplant)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fluidvoid), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fluidvoid)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockFrame, existingBlock(ElectrodynamicsBlocks.blockFrame), true);
+		simpleBlock(ElectrodynamicsBlocks.blockFrameCorner, blockLoc("framecorner"), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), existingBlock(blockLoc("hydroelectricgeneratorengine")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockLogisticalManager, existingBlock(ElectrodynamicsBlocks.blockLogisticalManager), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), existingBlock(blockLoc("mineralcrusherbase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), existingBlock(blockLoc("mineralcrusherdoublebase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), existingBlock(blockLoc("mineralcrushertriplebase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinder), existingBlock(blockLoc("mineralgrinderbase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinderdouble), existingBlock(blockLoc("mineralgrinderdoublebase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), existingBlock(blockLoc("mineralgrindertriplebase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), existingBlock(blockLoc("motorcomplexbase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.multimeterblock), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.multimeterblock)), true);
+		airBlock(ElectrodynamicsBlocks.multi, "block/multisubnode", false);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace)), existingBlock(blockLoc("oxidationfurnacerunning")), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry)), true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer)), existingBlock(blockLoc("reinforcedalloyerrunning")), true);
+		simpleBlock(ElectrodynamicsBlocks.blockSeismicMarker, modelLoc("seismicmarker"), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.seismicrelay), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.seismicrelay)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tanksteel), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tanksteel)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankreinforced), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankreinforced)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), existingBlock(blockLoc("windmillbase")), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple)), true);
+		
+		
 		
 		/*
 		BlockModelBuilder cubeColoredAll = models()
@@ -187,85 +251,121 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 
 	}
 	*/
-	private void simpleBlock(Block block, ModelFile file, boolean registerItem) {
+	private ItemModelBuilder simpleBlock(Block block, ModelFile file, boolean registerItem) {
 		simpleBlock(block, file);
-		if (registerItem)
-			simpleBlockItem(block, file);
+		if (registerItem) {
+			return blockItem(block, file);
+		}
+		return null;
 	}
 
-	private void simpleBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
-		simpleBlock(block.get(), texture, registerItem);
+	private ItemModelBuilder simpleBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+		return simpleBlock(block.get(), texture, registerItem);
 	}
 	
-	private void simpleBlock(Block block, ResourceLocation texture, boolean registerItem) {
-		simpleBlock(block, models().cubeAll(name(block), texture), registerItem);
+	private ItemModelBuilder simpleBlock(Block block, ResourceLocation texture, boolean registerItem) {
+		return simpleBlock(block, models().cubeAll(name(block), texture), registerItem);
 	}
 	
-	private void glassBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
-		glassBlock(block.get(), texture, registerItem);
+	private ItemModelBuilder glassBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+		return glassBlock(block.get(), texture, registerItem);
 	}
 
-	private void glassBlock(Block block, ResourceLocation texture, boolean registerItem) {
+	private ItemModelBuilder glassBlock(Block block, ResourceLocation texture, boolean registerItem) {
 		BlockModelBuilder builder = models().cubeAll(name(block), texture).renderType("cutout");
 		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
-		if (registerItem)
-			simpleBlockItem(block, builder);
+		if (registerItem) {
+			return blockItem(block, builder);
+		}
+		return null;
+	}
+	
+	private ItemModelBuilder airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
+		return airBlock(block.get(), particleTexture, registerItem);
 	}
 
-	private void airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
-		BlockModelBuilder builder = models().getBuilder(name(block.get())).texture("particle", modLoc(particleTexture));
-		getVariantBuilder(block.get()).partialState().setModels(new ConfiguredModel(builder));
-		if (registerItem)
-			simpleBlockItem(block.get(), builder);
+	private ItemModelBuilder airBlock(Block block, String particleTexture, boolean registerItem) {
+		BlockModelBuilder builder = models().getBuilder(name(block)).texture("particle", modLoc(particleTexture)).renderType("cutout");
+		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
+		if (registerItem) {
+			return blockItem(block, builder);
+		}
+		return null;
 	}
-
-	public void bottomSlabBlock(RegistryObject<Block> block, ResourceLocation side, ResourceLocation bottom,
+	
+	private ItemModelBuilder bottomSlabBlock(RegistryObject<Block> block, ResourceLocation side, ResourceLocation bottom,
 			ResourceLocation top, boolean registerItem) {
-		BlockModelBuilder builder = models().slab(name(block.get()), side, bottom, top);
-		getVariantBuilder(block.get()).partialState().setModels(new ConfiguredModel(builder));
-		if (registerItem)
-			simpleBlockItem(block.get(), builder);
+		return bottomSlabBlock(block.get(), side, bottom, top, registerItem);
 	}
-	/*
-	private void horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
-		getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).modelForState()
-				.modelFile(modelFile).rotationY(0).addModel().partialState()
-				.with(GenericEntityBlock.FACING, Direction.EAST).modelForState().modelFile(modelFile).rotationY(90)
+
+	private ItemModelBuilder bottomSlabBlock(Block block, ResourceLocation side, ResourceLocation bottom,
+			ResourceLocation top, boolean registerItem) {
+		BlockModelBuilder builder = models().slab(name(block), side, bottom, top);
+		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
+		if (registerItem) {
+			return blockItem(block, builder);
+		}
+		return null;
+	}
+	
+	private ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
+		return horrRotatedBlock(block.get(), modelFile, registerItem);
+	}
+	
+	private ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, boolean registerItem) {
+		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).modelForState()
+				.modelFile(file).rotationY(270).addModel().partialState()
+				.with(GenericEntityBlock.FACING, Direction.EAST).modelForState().modelFile(file).rotationY(0)
 				.addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).modelForState()
-				.modelFile(modelFile).rotationY(180).addModel().partialState()
-				.with(GenericEntityBlock.FACING, Direction.WEST).modelForState().modelFile(modelFile).rotationY(270)
+				.modelFile(file).rotationY(90).addModel().partialState()
+				.with(GenericEntityBlock.FACING, Direction.WEST).modelForState().modelFile(file).rotationY(180)
 				.addModel();
-		if (registerItem)
-			simpleBlockItem(block.get(), modelFile);
+		if (registerItem) {
+			return blockItem(block, file);
+		}
+		return null;
 	}
 
-	private void horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
-		getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
-				.with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY(0).addModel()
-				.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, false)
-				.modelForState().modelFile(off).rotationY(90).addModel().partialState()
-				.with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, false).modelForState()
-				.modelFile(off).rotationY(180).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
+	private ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
+		return horrRotatedLitBlock(block.get(), off, on, registerItem);
+	}
+	
+	private ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
+		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
 				.with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY(270).addModel()
+				.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, false)
+				.modelForState().modelFile(off).rotationY(0).addModel().partialState()
+				.with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, false).modelForState()
+				.modelFile(off).rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
+				.with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY(180).addModel()
 				.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, true)
-				.modelForState().modelFile(on).rotationY(0).addModel().partialState()
+				.modelForState().modelFile(on).rotationY(270).addModel().partialState()
 				.with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, true).modelForState()
-				.modelFile(on).rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH)
-				.with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY(180).addModel()
+				.modelFile(on).rotationY(0).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH)
+				.with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY(90).addModel()
 				.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, true)
-				.modelForState().modelFile(on).rotationY(270).addModel();
-		if (registerItem)
-			simpleBlockItem(block.get(), off);
+				.modelForState().modelFile(on).rotationY(180).addModel();
+		if (registerItem) {
+			return blockItem(block, off);
+		}
+		return null;
 
 	}
-	 */
-	private void redstoneToggleBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
-		getVariantBuilder(block.get()).partialState().with(BlockStateProperties.LIT, false).modelForState()
+	
+	private ItemModelBuilder redstoneToggleBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
+		return redstoneToggleBlock(block.get(), off, on, registerItem);
+	}
+	 
+	private ItemModelBuilder redstoneToggleBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
+		getVariantBuilder(block).partialState().with(BlockStateProperties.LIT, false).modelForState()
 				.modelFile(off).addModel().partialState().with(BlockStateProperties.LIT, true).modelForState()
 				.modelFile(on).addModel();
-		if (registerItem)
-			simpleBlockItem(block.get(), off);
+		if (registerItem) {
+			return blockItem(block, off);
+		}
+		return null;
 
+		
 	}
 	/*
 	private void omniDirBlock(RegistryObject<Block> block, ModelFile model, boolean registerItem) {
@@ -396,6 +496,10 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 				.texture("back", blockLoc("network_port")).texture("sides", blockLoc("vent_" + vent))
 				.texture("front", blockLoc("matter_replicator")).texture("particle", "#bottom").renderType("cutout");
 	}
+	
+	public ItemModelBuilder blockItem(Block block, ModelFile model) {
+        return itemModels().getBuilder(key(block).getPath()).parent(model);
+    }
 
 	private ResourceLocation key(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block);
@@ -408,6 +512,10 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 	private ExistingModelFile existingBlock(RegistryObject<Block> block) {
 		return existingBlock(block.getId());
 	}
+	
+	private ExistingModelFile existingBlock(Block block) {
+		return existingBlock(ForgeRegistries.BLOCKS.getKey(block));
+	}
 
 	private ExistingModelFile existingBlock(ResourceLocation loc) {
 		return models().getExistingFile(loc);
@@ -417,6 +525,8 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		return modLoc("block/" + texture);
 	}
 	
+	private ResourceLocation modelLoc(String texture) {
+		return modLoc("model/" + texture);
+	}
 	
-
 }

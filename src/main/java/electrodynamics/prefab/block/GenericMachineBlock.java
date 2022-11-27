@@ -81,11 +81,6 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	}
 
 	@Override
-	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-		return 0;
-	}
-
-	@Override
 	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return 1;
 	}

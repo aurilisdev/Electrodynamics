@@ -8,7 +8,6 @@ import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
@@ -24,7 +23,6 @@ import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -87,7 +85,11 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 				update = true;
 			}
 			if (update) {
-				level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(burnTime.get() > 0 ? SubtypeMachine.coalgeneratorrunning : SubtypeMachine.coalgenerator).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 3);
+				if(burnTime.get() > 0) {
+					level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, true));
+				} else {
+					level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, false));
+				}
 			}
 		}
 		if (heat.getValue().get() > 27 && output.valid()) {
@@ -104,7 +106,7 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (((BlockMachine) getBlockState().getBlock()).machine == SubtypeMachine.coalgeneratorrunning) {
+		if (getBlockState().getValue(BlockMachine.ON)) {
 			Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			if (level.random.nextInt(10) == 0) {
 				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F, false);

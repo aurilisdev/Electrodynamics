@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/lithiumbatterybox"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/lithiumbatterybox",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/lithiumbatterybox",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/lithiumbatterybox",
+      "y": 180
+    }
+  }
+}

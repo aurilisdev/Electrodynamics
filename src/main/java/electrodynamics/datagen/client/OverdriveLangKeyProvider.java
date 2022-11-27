@@ -95,6 +95,7 @@ public class OverdriveLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_MOTOR, "Motor");
 			addItem(ElectrodynamicsItems.COAL_COKE, "Coal Coke");
 			addItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, "Raw Composite Plating");
+			addItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, "Composite Plating");
 
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.cooked), "Ceramic");
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.fuse), "Ceramic Fuse");

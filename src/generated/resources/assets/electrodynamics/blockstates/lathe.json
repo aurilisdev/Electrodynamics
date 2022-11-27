@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/lathe"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/lathe",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/lathe",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/lathe",
+      "y": 180
+    }
+  }
+}

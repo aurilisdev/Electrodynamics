@@ -3,7 +3,7 @@
   "cookingtime": 300,
   "experience": 0.0,
   "ingredient": {
-    "tag": "minecraft:coals"
+    "item": "electrodynamics:ceramicwet"
   },
   "result": "electrodynamics:ceramiccooked"
 }

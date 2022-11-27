@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/fermentationplant"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/fermentationplant",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/fermentationplant",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/fermentationplant",
+      "y": 180
+    }
+  }
+}

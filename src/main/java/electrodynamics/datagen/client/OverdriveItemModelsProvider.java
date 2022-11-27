@@ -2,6 +2,8 @@ package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
+import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
@@ -17,13 +19,17 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,22 +49,25 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 
 		layeredItem(ElectrodynamicsItems.COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
 		layeredItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, Parent.GENERATED, itemLoc("insulationceramic"));
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms()
+				.transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_INSULATION, Parent.GENERATED, itemLoc("insulation"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, Parent.GENERATED, itemLoc("molybdenumfertilizer"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOTOR, Parent.GENERATED, itemLoc("motor"));
 		layeredItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplatingraw"));
 		layeredItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, Parent.GENERATED, itemLoc("sheetplastic"));
 		layeredItem(ElectrodynamicsItems.SLAG, Parent.GENERATED, itemLoc("slag"));
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate")).transforms().transform(TransformType.GUI).scale(0.8F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate"))
+				.transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, Parent.GENERATED, itemLoc("titaniumheatcoil"));
 
-		layeredItem(ElectrodynamicsItems.ITEM_COMBATHELMET, Parent.GENERATED, itemLoc("armor/combatchestplate"));
-		layeredItem(ElectrodynamicsItems.ITEM_COMBATBOOTS, Parent.GENERATED, itemLoc("armor/combatchestplate"));
+		layeredItem(ElectrodynamicsItems.ITEM_COMBATHELMET, Parent.GENERATED, itemLoc("armor/combathelmet"));
+		layeredItem(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE, Parent.GENERATED, itemLoc("armor/combatchestplate"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATLEGGINGS, Parent.GENERATED, itemLoc("armor/combatleggings"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATBOOTS, Parent.GENERATED, itemLoc("armor/combatboots"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITEHELMET, Parent.GENERATED, itemLoc("armor/compositehelmet"));
-		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE, Parent.GENERATED, itemLoc("armor/compositechestplate"));
+		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE, Parent.GENERATED,
+				itemLoc("armor/compositechestplate"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS, Parent.GENERATED, itemLoc("armor/compositeleggings"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS, Parent.GENERATED, itemLoc("armor/compositeboots"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplating"));
@@ -71,8 +80,10 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 
 		// TODO reinforced canister
 		layeredItem(ElectrodynamicsItems.GUIDEBOOK, Parent.GENERATED, itemLoc("guidebook"));
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_MULTIMETER), Parent.GENERATED, itemLoc("multimeter")).transforms().transform(TransformType.GUI).scale(0.9F).end();
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_SEISMICSCANNER), Parent.GENERATED, itemLoc("seismicscanner")).transforms().transform(TransformType.GUI).scale(0.75F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_MULTIMETER), Parent.GENERATED, itemLoc("multimeter")).transforms()
+				.transform(TransformType.GUI).scale(0.9F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_SEISMICSCANNER), Parent.GENERATED, itemLoc("seismicscanner"))
+				.transforms().transform(TransformType.GUI).scale(0.75F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_WRENCH, Parent.GENERATED, itemLoc("wrench"));
 		layeredItem(ElectrodynamicsItems.ITEM_BATTERY, Parent.GENERATED, itemLoc("battery"));
 		layeredItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, Parent.GENERATED, itemLoc("lithiumbattery"));
@@ -86,73 +97,95 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 				new ResourceLocation[] { itemLoc("tools/electricdrill") },
 				new ResourceLocation[] { itemLoc("tools/electricdrillon") });
 
-		
-		for(SubtypeCeramic ceramic : SubtypeCeramic.values()) {
+		for (SubtypeCeramic ceramic : SubtypeCeramic.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(ceramic), Parent.GENERATED, itemLoc("ceramic/" + ceramic.tag()));
 		}
-		
-		for(SubtypeCircuit circuit : SubtypeCircuit.values()) {
+
+		for (SubtypeCircuit circuit : SubtypeCircuit.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(circuit), Parent.GENERATED, itemLoc("circuit/" + circuit.tag()));
 		}
-		
-		for(SubtypeCrystal crystal : SubtypeCrystal.values()) {
+
+		for (SubtypeCrystal crystal : SubtypeCrystal.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(crystal), Parent.GENERATED, itemLoc("crystal/" + crystal.tag()));
 		}
-		
-		for(SubtypeDrillHead drill : SubtypeDrillHead.values()) {
+
+		for (SubtypeDrillHead drill : SubtypeDrillHead.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(drill), Parent.GENERATED, itemLoc("drillhead/" + drill.tag()));
 		}
-		
-		for(SubtypeDust dust : SubtypeDust.values()) {
+
+		for (SubtypeDust dust : SubtypeDust.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(dust), Parent.GENERATED, itemLoc("dust/" + dust.tag()));
 		}
-		
-		for(SubtypeGear gear : SubtypeGear.values()) {
+
+		for (SubtypeGear gear : SubtypeGear.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(gear), Parent.GENERATED, itemLoc("gear/" + gear.tag()));
 		}
-		
-		for(SubtypeImpureDust impure : SubtypeImpureDust.values()) {
+
+		for (SubtypeImpureDust impure : SubtypeImpureDust.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(impure), Parent.GENERATED, itemLoc("impuredust/" + impure.tag()));
 		}
-		
-		for(SubtypeIngot ingot : SubtypeIngot.values()) {
+
+		for (SubtypeIngot ingot : SubtypeIngot.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(ingot), Parent.GENERATED, itemLoc("ingot/" + ingot.tag()));
 		}
-		
-		for(SubtypeItemUpgrade upgrade : SubtypeItemUpgrade.values()) {
-			layeredBuilder(name(ElectrodynamicsItems.getItem(upgrade)), Parent.GENERATED, itemLoc("upgrade/" + upgrade.tag())).transforms().transform(TransformType.GUI).scale(0.8F).end();
+
+		for (SubtypeItemUpgrade upgrade : SubtypeItemUpgrade.values()) {
+			layeredBuilder(name(ElectrodynamicsItems.getItem(upgrade)), Parent.GENERATED,
+					itemLoc("upgrade/" + upgrade.tag())).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		}
-		
-		for(SubtypeNugget nugget : SubtypeNugget.values()) {
+
+		for (SubtypeNugget nugget : SubtypeNugget.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(nugget), Parent.GENERATED, itemLoc("nugget/" + nugget.tag()));
 		}
-		
-		for(SubtypeOxide oxide : SubtypeOxide.values()) {
+
+		for (SubtypeOxide oxide : SubtypeOxide.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(oxide), Parent.GENERATED, itemLoc("oxide/" + oxide.tag()));
 		}
-		
-		for(SubtypePlate plate : SubtypePlate.values()) {
+
+		for (SubtypePlate plate : SubtypePlate.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(plate), Parent.GENERATED, itemLoc("plate/" + plate.tag()));
 		}
-		
-		for(SubtypeRawOre raw : SubtypeRawOre.values()) {
+
+		for (SubtypeRawOre raw : SubtypeRawOre.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(raw), Parent.GENERATED, itemLoc("rawore/" + raw.tag()));
 		}
-		
-		for(SubtypeRod rod : SubtypeRod.values()) {
+
+		for (SubtypeRod rod : SubtypeRod.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(rod), Parent.GENERATED, itemLoc("rod/" + rod.tag()));
 		}
-		
-		for(SubtypeWire wire : SubtypeWire.values()) {
-			if(wire.wireType == 0) {
-				layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED, itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
+
+		for (SubtypeWire wire : SubtypeWire.values()) {
+			if (wire.wireType == 0) {
+				layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED,
+						itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
 			} else {
 				layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/" + wire.tag()));
 			}
 		}
 		
+		for(SubtypePipe pipe : SubtypePipe.values()) {
+			layeredItem(ElectrodynamicsItems.getItem(pipe), Parent.GENERATED, itemLoc("pipe/" + pipe.tag()));
+		}
+		
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), existingBlock(blockLoc("advancedsolarpanelitem"))).transforms()
+			.transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end()
+			.transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end()
+			.transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4F).end()
+			.transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4F).end()
+			.transform(TransformType.GUI).rotation(30, 225, 0).translation(0, -3F, 0).scale(0.265F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), existingBlock(blockLoc("hydroelectricgeneratoritem"))).transforms()
+			.transform(TransformType.GUI).rotation(30, 225, 0).translation(1.85F, 1.0F, 0).scale(0.55F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), existingBlock(blockLoc("mineralcrusheritem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), existingBlock(blockLoc("mineralcrusherdoubleitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), existingBlock(blockLoc("mineralcrushertripleitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinder), existingBlock(blockLoc("mineralgrinderitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinderdouble), existingBlock(blockLoc("mineralgrinderdoubleitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), existingBlock(blockLoc("mineralgrindertripleitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), existingBlock(blockLoc("motorcomplexitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), existingBlock(blockLoc("windmillitem")));
 		
 		
+
 		/*
 		for (UpgradeType type : UpgradeType.values()) {
 			layeredItem(ItemRegistry.ITEM_UPGRADES.get(type), Parent.GENERATED,
@@ -182,153 +215,143 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 				itemLoc("pill/pill_top"));
 
 		layeredItem(ItemRegistry.ITEM_COMMUNICATOR, Parent.GENERATED, itemLoc("communicator"));
-	*/
+
 		// generateBatteries();
 		// generateMatterContainers();
 		// generateGuns();
 		// generateCharger();
+		*/
+	}
 
+	private void generateCharger() {
+		getObjModel("charger", "block/charger", modLoc("block/charger")).parent(getExistingFile(mcLoc("block/cube")))
+				.transforms().transform(TransformType.GUI).rotation(30.0F, 315.0F, 0.0F).translation(0.0F, -5.0F, 0.0F)
+				.scale(0.375F).end().transform(TransformType.GROUND).rotation(0.0F, 90.0F, 0.0F)
+				.translation(2.0F, 3.0F, -2.0F).scale(0.25F).end().transform(TransformType.FIXED)
+				.rotation(0.0F, 95.0F, 0.0F).translation(4.0F, -5.0F, -7.0F).scale(0.5F).end()
+				.transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 125.0F, 0.0F)
+				.translation(1.0F, 6.0F, 0.0F).scale(0.375F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND)
+				.rotation(75.0F, -45.0F, 0.0F).translation(-4.5F, 2.0F, 0.0F).scale(0.375F).end()
+				.transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 125.0F, 0.0F)
+				.translation(-2.0F, 0.0F, -2.0F).scale(0.4F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND)
+				.rotation(0.0F, 315.0F, 0.0F).translation(-7.0F, 0.0F, -2.0F).scale(0.4F).end();
 	}
 
 	/*
-	 * private void generateCharger() { getObjModel("charger", "block/charger",
-	 * modLoc("block/charger")).parent(getExistingFile(mcLoc("block/cube")))
-	 * .transforms() .transform(TransformType.GUI) .rotation(30.0F, 315.0F, 0.0F)
-	 * .translation(0.0F, -5.0F, 0.0F) .scale(0.375F) .end()
-	 * .transform(TransformType.GROUND) .rotation(0.0F, 90.0F, 0.0F)
-	 * .translation(2.0F, 3.0F, -2.0F) .scale(0.25F) .end()
-	 * .transform(TransformType.FIXED) .rotation(0.0F, 95.0F, 0.0F)
-	 * .translation(4.0F, -5.0F, -7.0F) .scale(0.5F) .end()
-	 * .transform(TransformType.THIRD_PERSON_RIGHT_HAND) .rotation(75.0F, 125.0F,
-	 * 0.0F) .translation(1.0F, 6.0F, 0.0F) .scale(0.375F) .end()
-	 * .transform(TransformType.THIRD_PERSON_LEFT_HAND) .rotation(75.0F, -45.0F,
-	 * 0.0F) .translation(-4.5F, 2.0F, 0.0F) .scale(0.375F) .end()
-	 * .transform(TransformType.FIRST_PERSON_RIGHT_HAND) .rotation(0.0F, 125.0F,
-	 * 0.0F) .translation(-2.0F, 0.0F, -2.0F) .scale(0.4F) .end()
-	 * .transform(TransformType.FIRST_PERSON_LEFT_HAND) .rotation(0.0F, 315.0F,
-	 * 0.0F) .translation(-7.0F, 0.0F, -2.0F) .scale(0.4F) .end(); }
-	 * 
-	 * private void generateGuns() { getObjModel(name(ItemRegistry.ITEM_PHASER),
-	 * "item/phaser", itemLoc("phaser")) .transforms() .transform(TransformType.GUI)
-	 * .rotation(90.0F, -45.0F, 90.0F) .translation(-20.0F, 3.0F, 0.0F) .scale(2.0F)
-	 * .end() .transform(TransformType.GROUND) .rotation(0.0F, 0.0F, 0.0F)
-	 * .translation(12.0F, 7.5F, 9.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIXED) .rotation(90.0F, -45.0F, 90.0F)
-	 * .translation(-20.0F, 4.0F, 15.0F) .scale(2.0F) .end()
-	 * .transform(TransformType.THIRD_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-12.0F, 12.0F, -10.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.THIRD_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(12.0F, 12.0F, -10.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-15.0F, 15.0F, -6.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(9.0F, 15.0F, -6.0F) .scale(1.5F) .end();
-	 * 
-	 * getObjModel(name(ItemRegistry.ITEM_ION_SNIPER), "item/ion_sniper",
-	 * itemLoc("ion_sniper")) .transforms() .transform(TransformType.GUI)
-	 * .rotation(90.0F, -45.0F, 90.0F) .translation(-5.0F, 4.0F, 0.0F) .scale(0.8F)
-	 * .end() .transform(TransformType.GROUND) .rotation(0.0F, 0.0F, 0.0F)
-	 * .translation(12.0F, 7.5F, 0.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIXED) .rotation(90.0F, -45.0F, 90.0F)
-	 * .translation(-6.0F, 5.0F, 7.0F) .scale(1.0F) .end()
-	 * .transform(TransformType.THIRD_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-12.0F, 12.0F, -10.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.THIRD_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(12.0F, 12.0F, -10.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-15.0F, 15.0F, -6.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(9.0F, 15.0F, -6.0F) .scale(1.5F) .end();
-	 * 
-	 * getObjModel(name(ItemRegistry.ITEM_OMNI_TOOL), "item/omni_tool",
-	 * itemLoc("omni_tool")) .transforms() .transform(TransformType.GUI)
-	 * .rotation(90.0F, -45.0F, 90.0F) .translation(-15.5F, 5.5F, 0.0F) .scale(2.0F)
-	 * .end() .transform(TransformType.GROUND) .rotation(0.0F, 0.0F, 0.0F)
-	 * .translation(12.0F, 7.5F, 5.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIXED) .rotation(90.0F, -45.0F, 90.0F)
-	 * .translation(-16.0F, 5.0F, 15.0F) .scale(2.0F) .end()
-	 * .transform(TransformType.THIRD_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-12.0F, 12.0F, -8.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.THIRD_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(12.0F, 12.0F, -8.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-15.0F, 15.0F, -4.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(9.0F, 15.0F, -4.0F) .scale(1.5F) .end();
-	 * 
-	 * getObjModel(name(ItemRegistry.ITEM_PHASER_RIFLE), "item/phaser_rifle",
-	 * itemLoc("phaser_rifle")) .transforms() .transform(TransformType.GUI)
-	 * .rotation(90.0F, -45.0F, 90.0F) .translation(-10.5F, 2.0F, 0.0F)
-	 * .scale(1.25F) .end() .transform(TransformType.GROUND) .rotation(0.0F, 0.0F,
-	 * 0.0F) .translation(12.0F, 10.0F, 8.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIXED) .rotation(90.0F, -45.0F, 90.0F)
-	 * .translation(-11.0F, 2.0F, 9.75F) .scale(1.25F) .end()
-	 * .transform(TransformType.THIRD_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-14.0F, 14.0F, -11.6725F) .scale(1.75F) .end()
-	 * .transform(TransformType.THIRD_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(14.0F, 14.0F, -11.6725F) .scale(1.75F) .end()
-	 * .transform(TransformType.FIRST_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-17.0F, 17.0F, -7.0F) .scale(1.75F) .end()
-	 * .transform(TransformType.FIRST_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(10.5F, 17.5F, -7.0F) .scale(1.75F) .end();
-	 * 
-	 * getObjModel(name(ItemRegistry.ITEM_PLASMA_SHOTGUN), "item/plasma_shotgun",
-	 * itemLoc("plasma_shotgun")) .transforms() .transform(TransformType.GUI)
-	 * .rotation(90.0F, -45.0F, 90.0F) .translation(-12.5F, 4.0F, 0.0F) .scale(1.5F)
-	 * .end() .transform(TransformType.GROUND) .rotation(0.0F, 0.0F, 0.0F)
-	 * .translation(12.0F, 7.5F, 5.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIXED) .rotation(90.0F, -45.0F, 90.0F)
-	 * .translation(-12.5F, 4.0F, 9.75F) .scale(1.5F) .end()
-	 * .transform(TransformType.THIRD_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-12.0F, 12.0F, -10.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.THIRD_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(12.0F, 12.0F, -10.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_RIGHT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(-15.0F, 15.0F, -6.0F) .scale(1.5F) .end()
-	 * .transform(TransformType.FIRST_PERSON_LEFT_HAND) .rotation(0.0F, 180.0F,
-	 * 0.0F) .translation(9.0F, 15.0F, -6.0F) .scale(1.5F) .end();
-	 * 
-	 * }
-	 * 
-	 * private void generateBatteries() { ResourceLocation batteryBase =
-	 * itemLoc("battery/battery"); String battBarBase = "battery/battery_overlay";
-	 * ItemModelBuilder[] batteries = new ItemModelBuilder[BATTERY_MODEL_COUNT];
-	 * batteries[0] = layeredBuilder("item/battery/battery0", Parent.GENERATED,
-	 * batteryBase); for(int i = 1; i < BATTERY_MODEL_COUNT; i++) { batteries[i] =
-	 * layeredBuilder("item/battery/battery" + i, Parent.GENERATED, batteryBase,
-	 * itemLoc(battBarBase + (i - 1))); } for(RegistryObject<Item> battery :
-	 * ItemRegistry.ITEM_BATTERIES.getAll()) { if(((ItemBattery)battery.get()).type
-	 * == BatteryType.CREATIVE) { withExistingParent(name(battery),
-	 * Parent.CREATIVE_BATTERY.loc()); } else { ItemModelBuilder bat =
-	 * withExistingParent(name(battery), Parent.BATTERY.loc()); for(int i = 1; i <
-	 * BATTERY_MODEL_COUNT; i++) { bat =
-	 * bat.override().model(batteries[i]).predicate(ClientRegister.CHARGE,
-	 * (float)i).end(); } } } }
-	 * 
-	 * private void generateMatterContainers() { ResourceLocation containerBase =
-	 * itemLoc("matter_container/container"); ResourceLocation containerStripe =
-	 * itemLoc("matter_container/container_bottom_overlay"); String containerBarBase
-	 * = "matter_container/container_overlay"; ItemModelBuilder[] matterContainers =
-	 * new ItemModelBuilder[MATTER_CONTAINER_MODEL_COUNT]; matterContainers[0] =
-	 * layeredBuilder("item/matter_container/matter_container0", Parent.GENERATED,
-	 * containerBase, containerStripe); for(int i = 1; i <
-	 * MATTER_CONTAINER_MODEL_COUNT; i++) { matterContainers[i] =
-	 * layeredBuilder("item/matter_container/matter_container" + i,
-	 * Parent.GENERATED, containerBase, containerStripe, itemLoc(containerBarBase +
-	 * (i - 1))); } for(RegistryObject<Item> container :
-	 * ItemRegistry.ITEM_MATTER_CONTAINERS.getAll()) {
-	 * if(((ItemMatterContainer)container.get()).container ==
-	 * ContainerType.CREATIVE) { withExistingParent(name(container),
-	 * Parent.CREATIVE_MATTER_CONTAINER.loc()); } else { ItemModelBuilder bat =
-	 * withExistingParent(name(container), Parent.MATTER_CONTAINER.loc()); for(int i
-	 * = 1; i < MATTER_CONTAINER_MODEL_COUNT; i++) { bat =
-	 * bat.override().model(matterContainers[i]).predicate(ClientRegister.CHARGE,
-	 * (float)i).end(); } } } }
-	 */
+	private void generateGuns() {
+		getObjModel(name(ItemRegistry.ITEM_PHASER), "item/phaser", itemLoc("phaser")).transforms()
+				.transform(TransformType.GUI).rotation(90.0F, -45.0F, 90.0F).translation(-20.0F, 3.0F, 0.0F).scale(2.0F)
+				.end().transform(TransformType.GROUND).rotation(0.0F, 0.0F, 0.0F).translation(12.0F, 7.5F, 9.0F)
+				.scale(1.5F).end().transform(TransformType.FIXED).rotation(90.0F, -45.0F, 90.0F)
+				.translation(-20.0F, 4.0F, 15.0F).scale(2.0F).end().transform(TransformType.THIRD_PERSON_RIGHT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(-12.0F, 12.0F, -10.0F).scale(1.5F).end()
+				.transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(12.0F, 12.0F, -10.0F).scale(1.5F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(-15.0F, 15.0F, -6.0F).scale(1.5F).end()
+				.transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(9.0F, 15.0F, -6.0F).scale(1.5F).end();
+
+		getObjModel(name(ItemRegistry.ITEM_ION_SNIPER), "item/ion_sniper", itemLoc("ion_sniper")).transforms()
+				.transform(TransformType.GUI).rotation(90.0F, -45.0F, 90.0F).translation(-5.0F, 4.0F, 0.0F).scale(0.8F)
+				.end().transform(TransformType.GROUND).rotation(0.0F, 0.0F, 0.0F).translation(12.0F, 7.5F, 0.0F)
+				.scale(1.5F).end().transform(TransformType.FIXED).rotation(90.0F, -45.0F, 90.0F)
+				.translation(-6.0F, 5.0F, 7.0F).scale(1.0F).end().transform(TransformType.THIRD_PERSON_RIGHT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(-12.0F, 12.0F, -10.0F).scale(1.5F).end()
+				.transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(12.0F, 12.0F, -10.0F).scale(1.5F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(-15.0F, 15.0F, -6.0F).scale(1.5F).end()
+				.transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(9.0F, 15.0F, -6.0F).scale(1.5F).end();
+
+		getObjModel(name(ItemRegistry.ITEM_OMNI_TOOL), "item/omni_tool", itemLoc("omni_tool")).transforms()
+				.transform(TransformType.GUI).rotation(90.0F, -45.0F, 90.0F).translation(-15.5F, 5.5F, 0.0F).scale(2.0F)
+				.end().transform(TransformType.GROUND).rotation(0.0F, 0.0F, 0.0F).translation(12.0F, 7.5F, 5.0F)
+				.scale(1.5F).end().transform(TransformType.FIXED).rotation(90.0F, -45.0F, 90.0F)
+				.translation(-16.0F, 5.0F, 15.0F).scale(2.0F).end().transform(TransformType.THIRD_PERSON_RIGHT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(-12.0F, 12.0F, -8.0F).scale(1.5F).end()
+				.transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(12.0F, 12.0F, -8.0F).scale(1.5F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(-15.0F, 15.0F, -4.0F).scale(1.5F).end()
+				.transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(9.0F, 15.0F, -4.0F).scale(1.5F).end();
+
+		getObjModel(name(ItemRegistry.ITEM_PHASER_RIFLE), "item/phaser_rifle", itemLoc("phaser_rifle")).transforms()
+				.transform(TransformType.GUI).rotation(90.0F, -45.0F, 90.0F).translation(-10.5F, 2.0F, 0.0F)
+				.scale(1.25F).end().transform(TransformType.GROUND).rotation(0.0F, 0.0F, 0.0F)
+				.translation(12.0F, 10.0F, 8.0F).scale(1.5F).end().transform(TransformType.FIXED)
+				.rotation(90.0F, -45.0F, 90.0F).translation(-11.0F, 2.0F, 9.75F).scale(1.25F).end()
+				.transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(-14.0F, 14.0F, -11.6725F).scale(1.75F).end()
+				.transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(14.0F, 14.0F, -11.6725F).scale(1.75F).end()
+				.transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(-17.0F, 17.0F, -7.0F).scale(1.75F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(10.5F, 17.5F, -7.0F).scale(1.75F).end();
+
+		getObjModel(name(ItemRegistry.ITEM_PLASMA_SHOTGUN), "item/plasma_shotgun", itemLoc("plasma_shotgun"))
+				.transforms().transform(TransformType.GUI).rotation(90.0F, -45.0F, 90.0F)
+				.translation(-12.5F, 4.0F, 0.0F).scale(1.5F).end().transform(TransformType.GROUND)
+				.rotation(0.0F, 0.0F, 0.0F).translation(12.0F, 7.5F, 5.0F).scale(1.5F).end()
+				.transform(TransformType.FIXED).rotation(90.0F, -45.0F, 90.0F).translation(-12.5F, 4.0F, 9.75F)
+				.scale(1.5F).end().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(-12.0F, 12.0F, -10.0F).scale(1.5F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(12.0F, 12.0F, -10.0F).scale(1.5F).end()
+				.transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 180.0F, 0.0F)
+				.translation(-15.0F, 15.0F, -6.0F).scale(1.5F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND)
+				.rotation(0.0F, 180.0F, 0.0F).translation(9.0F, 15.0F, -6.0F).scale(1.5F).end();
+
+	}
+	*/
+	/*
+	private void generateBatteries() {
+		ResourceLocation batteryBase = itemLoc("battery/battery");
+		String battBarBase = "battery/battery_overlay";
+		ItemModelBuilder[] batteries = new ItemModelBuilder[BATTERY_MODEL_COUNT];
+		batteries[0] = layeredBuilder("item/battery/battery0", Parent.GENERATED, batteryBase);
+		for (int i = 1; i < BATTERY_MODEL_COUNT; i++) {
+			batteries[i] = layeredBuilder("item/battery/battery" + i, Parent.GENERATED, batteryBase,
+					itemLoc(battBarBase + (i - 1)));
+		}
+		for (RegistryObject<Item> battery : ItemRegistry.ITEM_BATTERIES.getAll()) {
+			if (((ItemBattery) battery.get()).type == BatteryType.CREATIVE) {
+				withExistingParent(name(battery), Parent.CREATIVE_BATTERY.loc());
+			} else {
+				ItemModelBuilder bat = withExistingParent(name(battery), Parent.BATTERY.loc());
+				for (int i = 1; i < BATTERY_MODEL_COUNT; i++) {
+					bat = bat.override().model(batteries[i]).predicate(ClientRegister.CHARGE, (float) i).end();
+				}
+			}
+		}
+	}
+	*/
+	/*
+	private void generateMatterContainers() {
+		ResourceLocation containerBase = itemLoc("matter_container/container");
+		ResourceLocation containerStripe = itemLoc("matter_container/container_bottom_overlay");
+		String containerBarBase = "matter_container/container_overlay";
+		ItemModelBuilder[] matterContainers = new ItemModelBuilder[MATTER_CONTAINER_MODEL_COUNT];
+		matterContainers[0] = layeredBuilder("item/matter_container/matter_container0", Parent.GENERATED, containerBase,
+				containerStripe);
+		for (int i = 1; i < MATTER_CONTAINER_MODEL_COUNT; i++) {
+			matterContainers[i] = layeredBuilder("item/matter_container/matter_container" + i, Parent.GENERATED,
+					containerBase, containerStripe, itemLoc(containerBarBase + (i - 1)));
+		}
+		for (RegistryObject<Item> container : ItemRegistry.ITEM_MATTER_CONTAINERS.getAll()) {
+			if (((ItemMatterContainer) container.get()).container == ContainerType.CREATIVE) {
+				withExistingParent(name(container), Parent.CREATIVE_MATTER_CONTAINER.loc());
+			} else {
+				ItemModelBuilder bat = withExistingParent(name(container), Parent.MATTER_CONTAINER.loc());
+				for (int i = 1; i < MATTER_CONTAINER_MODEL_COUNT; i++) {
+					bat = bat.override().model(matterContainers[i]).predicate(ClientRegister.CHARGE, (float) i).end();
+				}
+			}
+		}
+	}
+	*/
 	private void layeredItem(RegistryObject<Item> item, Parent parent, ResourceLocation... textures) {
 		layeredItem(name(item), parent, textures);
 	}
-	
+
 	private void layeredItem(Item item, Parent parent, ResourceLocation... textures) {
 		layeredItem(name(item), parent, textures);
 	}
@@ -366,17 +389,41 @@ public class OverdriveItemModelsProvider extends ItemModelProvider {
 		return getBuilder("item/" + name).customLoader(ObjModelBuilder::begin)
 				.modelLocation(modLoc("models/" + modelLoc + ".obj")).flipV(true).end().texture("texture0", texture);
 	}
+	
+	public ItemModelBuilder simpleBlockItem(Block block, ModelFile model) {  
+		return getBuilder(key(block).getPath()).parent(model);
+    }
+	
+	private ResourceLocation key(Block block) {
+		return ForgeRegistries.BLOCKS.getKey(block);
+	}
 
 	private ResourceLocation itemLoc(String texture) {
 		return modLoc("item/" + texture);
+	}
+	
+	private ResourceLocation blockLoc(String texture) {
+		return modLoc("block/" + texture);
 	}
 
 	private String name(RegistryObject<Item> item) {
 		return name(item.get());
 	}
-	
+
 	private String name(Item item) {
 		return ForgeRegistries.ITEMS.getKey(item).getPath();
+	}
+	
+	private ExistingModelFile existingBlock(RegistryObject<Block> block) {
+		return existingBlock(block.getId());
+	}
+	
+	private ExistingModelFile existingBlock(Block block) {
+		return existingBlock(ForgeRegistries.BLOCKS.getKey(block));
+	}
+
+	private ExistingModelFile existingBlock(ResourceLocation loc) {
+		return getExistingFile(loc);
 	}
 
 	private static enum Parent {

@@ -2,11 +2,11 @@ package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
+import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -19,7 +19,6 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,12 +46,12 @@ public class TileEnergizedAlloyer extends GenericTile {
 
 	protected boolean canProcessEnergAlloy(ComponentProcessor component) {
 		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get())) {
-			if (getBlockState().getBlock() == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.energizedalloyer)) {
-				level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.energizedalloyerrunning).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+			if (!getBlockState().getValue(BlockMachine.ON)) {
+				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, true));
 			}
 			return true;
-		} else if (getBlockState().getBlock() == UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.energizedalloyerrunning)) {
-			level.setBlock(worldPosition, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.energizedalloyer).defaultBlockState().setValue(GenericEntityBlock.FACING, getBlockState().getValue(GenericEntityBlock.FACING)).setValue(BlockStateProperties.WATERLOGGED, getBlockState().getValue(BlockStateProperties.WATERLOGGED)), 2 | 16 | 32);
+		} else if (getBlockState().getValue(BlockMachine.ON)) {
+			level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, false));
 		}
 		return false;
 	}

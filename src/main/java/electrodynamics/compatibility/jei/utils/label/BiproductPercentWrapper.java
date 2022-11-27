@@ -13,7 +13,7 @@ public class BiproductPercentWrapper extends GenericLabelWrapper {
 	private boolean isFluid;
 
 	public BiproductPercentWrapper(int xEndPos, int yPos, boolean isFluid) {
-		super(0xFF808080, yPos, xEndPos, "");
+		super(0xFF808080, yPos, xEndPos);
 		this.isFluid = isFluid;
 	}
 

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/windmillbase"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/windmillbase",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/windmillbase",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/windmillbase",
+      "y": 180
+    }
+  }
+}

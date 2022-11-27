@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/tankreinforced"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/tankreinforced",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/tankreinforced",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/tankreinforced",
+      "y": 180
+    }
+  }
+}

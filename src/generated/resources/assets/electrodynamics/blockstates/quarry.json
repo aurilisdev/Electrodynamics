@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/quarry"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/quarry",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/quarry",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/quarry",
+      "y": 180
+    }
+  }
+}

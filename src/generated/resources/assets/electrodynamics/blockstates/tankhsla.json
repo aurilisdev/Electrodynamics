@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/tankhsla"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/tankhsla",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/tankhsla",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/tankhsla",
+      "y": 180
+    }
+  }
+}

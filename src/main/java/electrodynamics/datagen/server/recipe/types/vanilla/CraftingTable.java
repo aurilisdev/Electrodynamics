@@ -2143,6 +2143,64 @@ public class CraftingTable extends AbstractRecipeGenerator {
 				//
 				.complete(References.ID, "night_vision_goggles", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_RUBBERBOOTS.get(), 1)
+				//
+				.addPattern("I I")
+				//
+				.addPattern("I I")
+				//
+				.addKey('I', ElectrodynamicsItems.ITEM_INSULATION.get())
+				//
+				.complete(References.ID, "rubber_boots", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get(), 1)
+				//
+				.addPattern("LXS")
+				//
+				.addPattern("LPR")
+				//
+				.addPattern("BCS")
+				//
+				.addKey('L', ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get())
+				//
+				.addKey('X', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
+				//
+				.addKey('S', WIRES[SubtypeWire.superconductive.ordinal()])
+				//
+				.addKey('B', ElectrodynamicsTags.Items.STORAGE_BLOCK_STAINLESSSTEEL)
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('R', ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL)
+				//
+				.complete(References.ID, "rail_gun_kinetic", consumer);
+		
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(), 1)
+		//
+		.addPattern("LXS")
+		//
+		.addPattern("LPR")
+		//
+		.addPattern("BCS")
+		//
+		.addKey('L', ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get())
+		//
+		.addKey('X', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
+		//
+		.addKey('S', WIRES[SubtypeWire.superconductive.ordinal()])
+		//
+		.addKey('B', ElectrodynamicsTags.Items.STORAGE_BLOCK_HSLASTEEL)
+		//
+		.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+		//
+		.addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+		//
+		.addKey('R', ElectrodynamicsTags.Items.ROD_TITANIUMCARBIDE)
+		//
+		.complete(References.ID, "rail_gun_plasma", consumer);
+
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_SEISMICSCANNER.get(), 1)
 				//
 				.addPattern("PQP")

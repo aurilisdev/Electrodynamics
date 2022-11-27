@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/creativepowersource"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/creativepowersource",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/creativepowersource",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/creativepowersource",
+      "y": 180
+    }
+  }
+}

@@ -20,24 +20,32 @@ import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.Shapes;
 
 public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
 
+	public static final BooleanProperty ON = BlockStateProperties.LIT;
+	
 	public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
 	public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
 	static {
@@ -59,6 +67,9 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	public BlockMachine(SubtypeMachine machine) {
 		super(machine::createTileEntity);
 		this.machine = machine;
+		if(machine.litBrightness > 0) {
+			registerDefaultState(stateDefinition.any().setValue(ON, false));
+		}
 	}
 
 	@Override
@@ -89,52 +100,13 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		return machine.getRenderType();
 	}
 
-	/*
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		
-		ItemStack addstack = switch (machine) {
-		case coalgeneratorrunning -> getMachine(SubtypeMachine.coalgenerator);
-		case electricfurnacerunning -> getMachine(SubtypeMachine.electricfurnace);
-		case electricfurnacedoublerunning -> getMachine(SubtypeMachine.electricfurnacedouble);
-		case electricfurnacetriplerunning -> getMachine(SubtypeMachine.electricfurnacetriple);
-		case electricarcfurnacerunning -> getMachine(SubtypeMachine.electricarcfurnace);
-		case electricarcfurnacedoublerunning -> getMachine(SubtypeMachine.electricarcfurnacedouble);
-		case electricarcfurnacetriplerunning -> getMachine(SubtypeMachine.electricarcfurnacetriple);
-		case oxidationfurnacerunning -> getMachine(SubtypeMachine.oxidationfurnace);
-		case energizedalloyerrunning -> getMachine(SubtypeMachine.energizedalloyer);
-		case reinforcedalloyerrunning -> getMachine(SubtypeMachine.reinforcedalloyer);
-		default -> getMachine(machine);
-		};
-		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
-			double joules = el.getJoulesStored();
-			if (joules > 0) {
-				addstack.getOrCreateTag().putDouble("joules", joules);
-			}
-		});
-		return Arrays.asList(addstack);
-		
-	}
-	*/
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-
-		switch (machine) {
-		case coalgeneratorrunning:
-			return 12;
-		case electricfurnacerunning, electricfurnacedoublerunning, electricfurnacetriplerunning:
-			return 8;
-		case electricarcfurnacerunning, electricarcfurnacedoublerunning, electricarcfurnacetriplerunning:
-			return 9;
-		case oxidationfurnacerunning:
-			return 6;
-		case energizedalloyerrunning:
-			return 10;
-		case reinforcedalloyerrunning:
-			return 15;
-		default:
+		
+		if(machine.litBrightness == 0) {
 			return super.getLightEmission(state, world, pos);
+		} else {
+			return machine.litBrightness;
 		}
 
 	}
@@ -156,17 +128,17 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 				quarry.handleFramesDecay();
 			}
 		}
-		boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
+		//boolean update = SubtypeMachine.shouldBreakOnReplaced(state, newState);
 		if (hasMultiBlock()) {
 			if (tile instanceof IMultiblockTileNode multi) {
-				multi.onNodeReplaced(worldIn, pos, !update);
+				multi.onNodeReplaced(worldIn, pos, true);
 			}
 		}
-		if (update) {
+		//if (update) {
 			super.onRemove(state, worldIn, pos, newState, isMoving);
-		} else {
-			worldIn.setBlocksDirty(pos, state, newState);
-		}
+		//} else {
+			//worldIn.setBlocksDirty(pos, state, newState);
+		//}
 	}
 
 	@Override
@@ -212,5 +184,16 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 			tile.saveToItem(stack);
 		}
 		return stack;
+	}
+	
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(ON, false);
+	}
+	
+	@Override
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
+		builder.add(ON);
 	}
 }

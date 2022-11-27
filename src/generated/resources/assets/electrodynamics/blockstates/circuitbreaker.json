@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/circuitbreaker"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/circuitbreaker",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/circuitbreaker",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/circuitbreaker",
+      "y": 180
+    }
+  }
+}

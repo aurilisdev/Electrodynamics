@@ -3,7 +3,6 @@ package electrodynamics.common.block.subtype;
 import java.lang.reflect.InvocationTargetException;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.TileBatteryBox;
 import electrodynamics.common.tile.TileCarbyneBatteryBox;
@@ -56,27 +55,19 @@ import electrodynamics.common.tile.TileWireMill;
 import electrodynamics.common.tile.TileWireMillDouble;
 import electrodynamics.common.tile.TileWireMillTriple;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public enum SubtypeMachine implements ISubtype {
 
-	electricfurnace(true, TileElectricFurnace.class),
-	electricfurnacerunning(false, TileElectricFurnace.class),
-	electricfurnacedouble(true, TileElectricFurnaceDouble.class),
-	electricfurnacedoublerunning(false, TileElectricFurnaceDouble.class),
-	electricfurnacetriple(true, TileElectricFurnaceTriple.class),
-	electricfurnacetriplerunning(false, TileElectricFurnaceTriple.class),
-	electricarcfurnace(true, TileElectricArcFurnace.class),
-	electricarcfurnacerunning(false, TileElectricArcFurnace.class),
-	electricarcfurnacedouble(true, TileElectricArcFurnaceDouble.class),
-	electricarcfurnacedoublerunning(false, TileElectricArcFurnaceDouble.class),
-	electricarcfurnacetriple(true, TileElectricArcFurnaceTriple.class),
-	electricarcfurnacetriplerunning(false, TileElectricArcFurnaceTriple.class),
-	coalgenerator(true, TileCoalGenerator.class),
-	coalgeneratorrunning(false, TileCoalGenerator.class),
+	electricfurnace(true, TileElectricFurnace.class, 8),
+	electricfurnacedouble(true, TileElectricFurnaceDouble.class, 8),
+	electricfurnacetriple(true, TileElectricFurnaceTriple.class, 8),
+	electricarcfurnace(true, TileElectricArcFurnace.class, 9),
+	electricarcfurnacedouble(true, TileElectricArcFurnaceDouble.class, 9),
+	electricarcfurnacetriple(true, TileElectricArcFurnaceTriple.class, 9),
+	coalgenerator(true, TileCoalGenerator.class, 12),
 	wiremill(true, TileWireMill.class),
 	wiremilldouble(true, TileWireMillDouble.class),
 	wiremilltriple(true, TileWireMillTriple.class),
@@ -89,8 +80,7 @@ public enum SubtypeMachine implements ISubtype {
 	batterybox(true, TileBatteryBox.class, true),
 	lithiumbatterybox(true, TileLithiumBatteryBox.class, true),
 	carbynebatterybox(true, TileCarbyneBatteryBox.class, true),
-	oxidationfurnace(true, TileOxidationFurnace.class),
-	oxidationfurnacerunning(false, TileOxidationFurnace.class),
+	oxidationfurnace(true, TileOxidationFurnace.class, 6),
 	downgradetransformer(true, TileTransformer.class),
 	upgradetransformer(true, TileTransformer.class),
 	solarpanel(true, TileSolarPanel.class),
@@ -106,16 +96,14 @@ public enum SubtypeMachine implements ISubtype {
 	chemicalcrystallizer(true, TileChemicalCrystallizer.class),
 	circuitbreaker(true, TileCircuitBreaker.class),
 	multimeterblock(true, TileMultimeterBlock.class),
-	energizedalloyer(true, TileEnergizedAlloyer.class),
-	energizedalloyerrunning(false, TileEnergizedAlloyer.class),
+	energizedalloyer(true, TileEnergizedAlloyer.class, 10),
 	lathe(true, TileLathe.class, true),
 	reinforcedalloyer(true, TileReinforcedAlloyer.class),
-	reinforcedalloyerrunning(false, TileReinforcedAlloyer.class),
 	chargerlv(true, TileChargerLV.class),
 	chargermv(true, TileChargerMV.class),
 	chargerhv(true, TileChargerHV.class),
 	tanksteel(true, TileTankSteel.class),
-	tankreinforced(true, TileTankReinforced.class),
+	tankreinforced(true, TileTankReinforced.class, 15),
 	tankhsla(true, TileTankHSLA.class),
 	creativepowersource(true, TileCreativePowerSource.class),
 	creativefluidsource(true, TileCreativeFluidSource.class),
@@ -129,14 +117,24 @@ public enum SubtypeMachine implements ISubtype {
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;
 	private RenderShape type = RenderShape.MODEL;
+	public final int litBrightness;
 
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass) {
-		this.showInItemGroup = showInItemGroup;
-		this.tileclass = tileclass;
+		this(showInItemGroup, tileclass, 0);
 	}
 
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel) {
-		this(showInItemGroup, tileclass);
+		this(showInItemGroup, tileclass, customModel, 0);
+	}
+	
+	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, int litBrightness) {
+		this.showInItemGroup = showInItemGroup;
+		this.tileclass = tileclass;
+		this.litBrightness = litBrightness;
+	}
+
+	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel, int litBrightness) {
+		this(showInItemGroup, tileclass, litBrightness);
 		if (customModel) {
 			type = RenderShape.ENTITYBLOCK_ANIMATED;
 		}
@@ -144,17 +142,6 @@ public enum SubtypeMachine implements ISubtype {
 
 	public RenderShape getRenderType() {
 		return type;
-	}
-
-	public static boolean shouldBreakOnReplaced(BlockState before, BlockState after) {
-		Block bb = before.getBlock();
-		Block ba = after.getBlock();
-		if (bb instanceof BlockMachine tb && ba instanceof BlockMachine ta) {
-			SubtypeMachine mb = tb.machine;
-			SubtypeMachine ma = ta.machine;
-			return (mb != electricfurnace || ma != electricfurnacerunning) && (mb != electricfurnacerunning || ma != electricfurnace) && (mb != electricfurnacedouble || ma != electricfurnacedoublerunning) && (mb != electricfurnacedoublerunning || ma != electricfurnacedouble) && (mb != electricfurnacetriple || ma != electricfurnacetriplerunning) && (mb != electricfurnacetriplerunning || ma != electricfurnacetriple) && (mb != coalgenerator || ma != coalgeneratorrunning) && (mb != coalgeneratorrunning || ma != coalgenerator) && (mb != oxidationfurnace || ma != oxidationfurnacerunning) && (mb != oxidationfurnacerunning || ma != oxidationfurnace) && (mb != energizedalloyer || ma != energizedalloyerrunning) && (ma != energizedalloyer || mb != energizedalloyerrunning) && (ma != reinforcedalloyer || mb != reinforcedalloyerrunning) && (mb != reinforcedalloyer || ma != reinforcedalloyerrunning) && (mb != electricarcfurnace || ma != electricarcfurnacerunning) && (mb != electricarcfurnacerunning || ma != electricarcfurnace) && (mb != electricarcfurnacedouble || ma != electricarcfurnacedoublerunning) && (mb != electricarcfurnacedoublerunning || ma != electricarcfurnacedouble) && (mb != electricarcfurnacetriple || ma != electricarcfurnacetriplerunning) && (mb != electricarcfurnacetriplerunning || ma != electricarcfurnacetriple);
-		}
-		return true;
 	}
 
 	public BlockEntity createTileEntity(BlockPos pos, BlockState state) {
