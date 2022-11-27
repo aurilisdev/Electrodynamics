@@ -10,6 +10,7 @@ import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.block.subtype.SubtypeWire.WireType;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -19,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -30,9 +30,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class OverdriveBlockStateProvider extends BlockStateProvider {
+public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
-	public OverdriveBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
+	public ElectrodynamicsBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
 		super(gen, References.ID, exFileHelper);
 	}
 
@@ -134,33 +134,38 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		BlockModelBuilder logisticalSide = models().withExistingParent(name + "logisticswire_side", modLoc(parent + "logisticswire_side"))
 				.texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
 		
-		for(SubtypeWire wire : SubtypeWire.values()) {
-			if(wire.wireType == 0) {
-				wire(
-					ElectrodynamicsBlocks.getBlock(wire), 
-					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none"))
-						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
-					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side"))
-						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
-					false
-				);
-			} else if(wire.wireType == 1) {
-				wire(
-					ElectrodynamicsBlocks.getBlock(wire), 
-					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none"))
-						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
-					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side"))
-						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
-					false
-				);
-			} else if(wire.wireType == 2) {
-				wire(
-					ElectrodynamicsBlocks.getBlock(wire), 
-					logisticalNone, 
-					logisticalSide,
-					false
-				);
-			} else if(wire.wireType == 3) {
+		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.UNINSULATED)) {
+			wire(
+				ElectrodynamicsBlocks.getBlock(wire), 
+				models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none"))
+					.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
+				models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side"))
+					.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
+				false
+			);
+		} 
+		
+		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.INSULATED)) {
+			wire(
+				ElectrodynamicsBlocks.getBlock(wire), 
+				models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none"))
+					.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
+				models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side"))
+					.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
+				false
+			);
+		}
+		
+		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.LOGISTICAL)) {
+			wire(
+				ElectrodynamicsBlocks.getBlock(wire), 
+				logisticalNone, 
+				logisticalSide,
+				false
+			);
+		} 
+		
+		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.CERAMIC)) {
 				wire(
 					ElectrodynamicsBlocks.getBlock(wire), 
 					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "ceramicinsulatedwire_none"))
@@ -169,16 +174,18 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
 					false
 				);
-			} else if(wire.wireType == 4) {
-				wire(
-					ElectrodynamicsBlocks.getBlock(wire), 
-					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none"))
-						.texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"), 
-					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side"))
-						.texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"),
-					false
-				);
-			}
+		} 
+		
+		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.UNINSULATED)) {
+			wire(
+				ElectrodynamicsBlocks.getBlock(wire), 
+				models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none"))
+					.texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"), 
+				models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side"))
+					.texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"),
+				false
+			);
+			
 		}
 
 	}

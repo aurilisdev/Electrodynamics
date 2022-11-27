@@ -469,12 +469,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer("guidebook", "Guidebook");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
-			addTooltip("itemwire.maxamps", "Max Amps: %s");
-			addTooltip("itemwire.info.insulated", "Does not shock you for V <= 240.0V");
-			addTooltip("itemwire.info.highlyinsulated", "Does not shock you for V <= 960.0V");
-			addTooltip("itemwire.info.ceramic", "Does not shock you for V <= 480.0V");
-			addTooltip("itemwire.info.uninsulated", "Will shock you when touched!");
-			addTooltip("itemwire.info.logistical", "Emits redstone when powered");
+			addTooltip("itemwire.maxamps", "Ampacity: %s");
+			addTooltip("itemwire.info.insulationrating", "Insulation Rating: %sV");
+			addTooltip("itemwire.info.uninsulated", "Uninsulated!");
+			addTooltip("itemwire.info.fireproof", "Fire-proof");
+			addTooltip("itemwire.info.redstone", "Conducts Redstone");
 			addTooltip("info.capacityupgrade", "Multiplies Energy Capacity and Transfer by %sx");
 			addTooltip("info.capacityupgradevoltage", "Will upgrade machine voltage up to %s");
 			addTooltip("info.speedupgrade", "Multiplies Speed by %sx");

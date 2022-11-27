@@ -10,13 +10,14 @@ import com.google.common.collect.Maps;
 
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.block.subtype.SubtypeWire.WireType;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TileWire;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,14 +29,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -67,9 +66,9 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	public final SubtypeWire wire;
 
 	public BlockWire(SubtypeWire wire) {
-		super(Properties.of(wire.insulated ? Material.WOOL : Material.METAL).sound(wire.insulated ? SoundType.WOOL : SoundType.METAL).strength(0.15f).dynamicShape());
+		super(Properties.of(wire.wireType.material).sound(wire.wireType.soundType).strength(0.15f).dynamicShape());
 		this.wire = wire;
-		double w = wire.insulated ? wire.highlyinsulated ? 3 : 2 : 1;
+		double w = wire.wireType.radius;
 		double sm = 8 - w;
 		double lg = 8 + w;
 		cube = Block.box(sm, sm, sm, lg, lg, lg);
@@ -164,7 +163,8 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 		TileWire tile = (TileWire) worldIn.getBlockEntity(pos);
 		if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
-			if (!(tile.getNetwork().getActiveVoltage() <= 240.0 && wire.insulated || wire.ceramic && tile.getNetwork().getActiveVoltage() <= 480.0 || tile.getNetwork().getActiveVoltage() <= 960.0 && wire.insulated && wire.highlyinsulated)) {
+			int shockVoltage = tile.wire.wireClass.shockVoltage;
+			if (shockVoltage == 0 || tile.getNetwork().getActiveVoltage() > shockVoltage) {
 				ElectricityUtils.electrecuteEntity(entityIn, TransferPack.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
 			}
 		}
@@ -186,7 +186,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 
 	@Override
 	public boolean isSignalSource(BlockState state) {
-		return ((BlockWire) state.getBlock()).wire.logistical;
+		return ((BlockWire) state.getBlock()).wire.wireType.conductsRedstone;
 	}
 
 	@Override
@@ -232,12 +232,12 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 
 	@Override
 	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return wire.insulated ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 150 : 0;
+		return wire.wireClass.fireProof ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 150 : 0;
 	}
 
 	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return wire.insulated ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 400 : 0;
+		return wire.wireClass.fireProof ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 400 : 0;
 	}
 
 	@Override
@@ -254,11 +254,12 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlock(pos, UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeWire.getUninsulatedWire(wire)).defaultBlockState(), UPDATE_ALL));
+		Scheduler.schedule(5, () -> world.setBlock(pos, ElectrodynamicsBlocks.getBlock(SubtypeWire.getWireForType(WireType.UNINSULATED, wire.material)).defaultBlockState(), UPDATE_ALL));
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ((BlockWire) state.getBlock()).wire.logistical ? new TileLogisticalWire(pos, state) : new TileWire(pos, state);
+		return ((BlockWire) state.getBlock()).wire.wireType == WireType.LOGISTICAL ? new TileLogisticalWire(pos, state) : new TileWire(pos, state);
 	}
+	
 }

@@ -2,7 +2,7 @@ package electrodynamics.datagen;
 
 import electrodynamics.api.References;
 import electrodynamics.datagen.client.ElectrodynamicsBlockModelsProvider;
-import electrodynamics.datagen.client.OverdriveBlockStateProvider;
+import electrodynamics.datagen.client.ElectrodynamicsBlockStateProvider;
 import electrodynamics.datagen.client.ElectrodynamicsItemModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider;
 import electrodynamics.datagen.server.ElectrodynamicsBiomeFeaturesProvider;
@@ -33,7 +33,7 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(generator));
 		}
 		if (event.includeClient()) {
-			generator.addProvider(true, new OverdriveBlockStateProvider(generator, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsItemModelsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(generator, "en_us"));
