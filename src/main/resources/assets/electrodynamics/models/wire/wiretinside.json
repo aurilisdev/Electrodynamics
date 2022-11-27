@@ -1,7 +1,0 @@
-{
-	"parent": "electrodynamics:parent/wire_side",
-	"textures": {
-		"particle": "electrodynamics:block/wire/wiretin",
-		"texture": "electrodynamics:block/wire/wiretin"
-	}
-}

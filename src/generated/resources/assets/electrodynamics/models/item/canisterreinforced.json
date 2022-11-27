@@ -1,0 +1,9 @@
+{
+  "parent": "forge:item/default",
+  "fluid": "minecraft:water",
+  "loader": "forge:fluid_container",
+  "textures": {
+    "base": "electrodynamics:item/canisterreinforced/base",
+    "fluid": "electrodynamics:item/canisterreinforced/fluid"
+  }
+}

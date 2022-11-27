@@ -1,12 +1,15 @@
 package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
+import electrodynamics.common.block.connect.EnumConnectType;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
+import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
+import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -16,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -112,145 +116,92 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple)), true);
+
+		genWires();
+		genPipes();
 		
-		
-		
-		/*
-		BlockModelBuilder cubeColoredAll = models()
-				.withExistingParent("cube_colored_all", blockLoc("parent/cube_colored")).texture("particle", "#all")
-				.texture("down", "#all").texture("up", "#all").texture("north", "#all").texture("east", "#all")
-				.texture("south", "#all").texture("west", "#all");
-
-		BlockModelBuilder floorTileColorless = models().getBuilder("floor_tile_colorless").parent(cubeColoredAll)
-				.texture("all", blockLoc("decorative/floor_tile_colorless"));
-		BlockModelBuilder floorTilesColorless = models().getBuilder("floor_tiles_colorless").parent(cubeColoredAll)
-				.texture("all", blockLoc("decorative/floor_tiles_colorless"));
-		BlockModelBuilder tritaniumPlatingColorless = models().getBuilder("tritanium_plating_colorless")
-				.parent(cubeColoredAll).texture("all", blockLoc("decorative/tritanium_plating_colorless"));
-
-		simpleBlock(BlockRegistry.BLOCK_REGULAR_TRITANIUM_PLATING,
-				models().cubeAll("tritanium_plating", blockLoc("decorative/tritanium_plating")), true);
-		for (OverdriveBlockColors color : OverdriveBlockColors.values()) {
-			simpleBlock(BlockRegistry.BLOCK_COLORED_TRITANIUM_PLATING.get(color), tritaniumPlatingColorless, true);
-			simpleBlock(BlockRegistry.BLOCK_FLOOR_TILE.get(color), floorTileColorless, true);
-			simpleBlock(BlockRegistry.BLOCK_FLOOR_TILES.get(color), floorTilesColorless, true);
-		}
-		for (CrateColors color : CrateColors.values()) {
-			String name = color.id();
-			horrRotatedBlock(BlockRegistry.BLOCK_TRITANIUM_CRATES.get(color),
-					getObjModel(name, "block/" + name, "block/crate/" + name), true);
-		}
-		glassBlock(BlockRegistry.BLOCK_INDUSTRIAL_GLASS, true);
-
-		ModelFile ventOff = cubeAll(BlockRegistry.BLOCK_VENT_OPEN.get());
-		ModelFile ventOn = cubeAll(BlockRegistry.BLOCK_VENT_CLOSED.get());
-
-		redstoneToggleBlock(BlockRegistry.BLOCK_VENT_OPEN, ventOff, ventOn, true);
-		redstoneToggleBlock(BlockRegistry.BLOCK_VENT_CLOSED, ventOn, ventOff, true);
-
-		redstoneToggleBlock(BlockRegistry.BLOCK_CHUNKLOADER, getChunkloaderBase("off"), getChunkloaderBase("on"), true);
-		simpleBlock(BlockRegistry.BLOCK_CHARGER_CHILD, true);
-		simpleBlock(BlockRegistry.BLOCK_TRANSPORTER,
-				blockTopBottom(BlockRegistry.BLOCK_TRANSPORTER, "block/transporter/transporter_top",
-						"block/transporter/transporter_bottom", "block/transporter/transporter_side"),
-				true);
-		airBlock(BlockRegistry.BLOCK_CHARGER, "block/charger", false);
-		horrRotatedBlock(BlockRegistry.BLOCK_INSCRIBER, getObjModel("inscriber", "block/inscriber", "block/inscriber"),
-				true);
-		bottomSlabBlock(BlockRegistry.BLOCK_SOLAR_PANEL, blockLoc("base"), blockLoc("base"), blockLoc("solar_panel"),
-				true);
-		horrRotatedLitBlock(BlockRegistry.BLOCK_MATTER_ANALYZER, getMatAnaBase("", "", "closed"), getMatAnaBase("_on", "_on", "open"),
-				true);
-		horrRotatedLitBlock(BlockRegistry.BLOCK_MATTER_DECOMPOSER, getMatDecomBase("", "empty"),
-				getMatDecomBase("_on", "full"), true);
-		horrRotatedLitBlock(BlockRegistry.BLOCK_MATTER_RECYCLER, getMatRecBase("", ""), getMatRecBase("_on", "_anim"),
-				true);
-		horrRotatedLitBlock(BlockRegistry.BLOCK_MATTER_REPLICATOR, getMatterRepBase("off", "closed"),
-				getMatterRepBase("on", "open"), true);
-		horrRotatedLitBlock(BlockRegistry.BLOCK_MICROWAVE, getMicroBase("", ""), getMicroBase("_on", "_on"), true);
-		horrRotatedLitBlock(BlockRegistry.BLOCK_PATTERN_STORAGE, getPatternStorageBase("off", "closed"),
-				getPatternStorageBase("on", "open"), true);
-		horrRotatedBlock(BlockRegistry.BLOCK_SPACETIME_ACCELERATOR,
-				existingBlock(BlockRegistry.BLOCK_SPACETIME_ACCELERATOR), true);
-		omniDirBlock(BlockRegistry.BLOCK_PATTERN_MONITOR, existingBlock(BlockRegistry.BLOCK_PATTERN_MONITOR), true);
-		// charger TileRenderer JSON
-		getObjModel("charger_renderer", "block/charger", "block/charger");
-		horrRotatedBlock(BlockRegistry.BLOCK_ANDROID_STATION, existingBlock(BlockRegistry.BLOCK_ANDROID_STATION), true);
-
-		genMatterConduits();
-		genNetworkCables();
-		*/
 	
 	}
-	/*
-	private void genMatterConduits() {
 	
-		String id = TypeMatterConduit.REGULAR.id();
-		String parent = "parent/" + id;
-		String cable = "block/cable/" + id;
-		String text = "matter_conduit/" + id;
-		String noneText = text + "_none";
-
-		cable(BlockRegistry.BLOCK_MATTER_CONDUITS.get(TypeMatterConduit.REGULAR),
-				models().withExistingParent(cable + "_none", blockLoc(parent + "_none"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText)),
-				models().withExistingParent(cable + "_side", blockLoc(parent + "_side"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(text + "_side")),
-				models().withExistingParent(cable + "_none_seamless_ns", blockLoc(parent + "_none"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText + "_seamless_ns")),
-				models().withExistingParent(cable + "_none_seamless_ew", blockLoc(parent + "_none"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText + "_seamless_ew")),
-				models().withExistingParent(cable + "_none_seamless_ud", blockLoc(parent + "_none"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText + "_seamless_ud")),
-				true);
-
-		id = TypeMatterConduit.HEAVY.id();
-		parent = "parent/" + id;
-		cable = "block/cable/" + id;
-		text = "matter_conduit/" + id;
-		noneText = text + "_none";
-
-		cable(BlockRegistry.BLOCK_MATTER_CONDUITS.get(TypeMatterConduit.HEAVY),
-				models().withExistingParent(cable + "_none", blockLoc(parent + "_none"))
-						.texture("particle", blockLoc("base_stripes")).texture("texture", blockLoc(noneText)),
-				models().withExistingParent(cable + "_side", blockLoc(parent + "_side"))
-						.texture("particle", blockLoc("base_stripes")).texture("texture", blockLoc(text + "_side")),
-				models().withExistingParent(cable + "_none_seamless_ns", blockLoc(parent + "_none_seamless_ns"))
-						.texture("particle", blockLoc("base_stripes"))
-						.texture("texture", blockLoc(noneText + "_seamless_ns")),
-				models().withExistingParent(cable + "_none_seamless_ew", blockLoc(parent + "_none_seamless_ew"))
-						.texture("particle", blockLoc("base_stripes"))
-						.texture("texture", blockLoc(noneText + "_seamless_ew")),
-				models().withExistingParent(cable + "_none_seamless_ud", blockLoc(parent + "_none_seamless_ud"))
-						.texture("particle", blockLoc("base_stripes"))
-						.texture("texture", blockLoc(noneText + "_seamless_ud")),
-				true);
-
-	}
-
-	private void genNetworkCables() {
-
-		String id = TypeMatterNetworkCable.REGULAR.id();
-		String parent = "parent/" + id;
-		String cable = "block/cable/" + id;
-		String text = "network_cable/" + id;
-		String noneText = text + "_none";
-
-		cable(BlockRegistry.BLOCK_MATTER_NETWORK_CABLES.get(TypeMatterNetworkCable.REGULAR),
-				models().withExistingParent(cable + "_none", blockLoc(parent + "_none"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText)),
-				models().withExistingParent(cable + "_side", blockLoc(parent + "_side"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(text + "_side")),
-				models().withExistingParent(cable + "_none_seamless_ns", blockLoc(parent + "_none_seamless_ns"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText + "_seamless_ns")),
-				models().withExistingParent(cable + "_none_seamless_ew", blockLoc(parent + "_none_seamless_ew"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText + "_seamless_ew")),
-				models().withExistingParent(cable + "_none_seamless_ud", blockLoc(parent + "_none_seamless_ud"))
-						.texture("particle", blockLoc("base")).texture("texture", blockLoc(noneText + "_seamless_ud")),
-				true);
+	private void genWires() {
+	
+		String parent = "parent/";
+		String name = "block/wire/" ;
+		String texture = "wire/";
+		
+		BlockModelBuilder logisticalNone = models().withExistingParent(name + "logisticswire_none", modLoc(parent + "logisticswire_none"))
+				.texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
+		BlockModelBuilder logisticalSide = models().withExistingParent(name + "logisticswire_side", modLoc(parent + "logisticswire_side"))
+				.texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
+		
+		for(SubtypeWire wire : SubtypeWire.values()) {
+			if(wire.wireType == 0) {
+				wire(
+					ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none"))
+						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side"))
+						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
+					false
+				);
+			} else if(wire.wireType == 1) {
+				wire(
+					ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none"))
+						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side"))
+						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
+					false
+				);
+			} else if(wire.wireType == 2) {
+				wire(
+					ElectrodynamicsBlocks.getBlock(wire), 
+					logisticalNone, 
+					logisticalSide,
+					false
+				);
+			} else if(wire.wireType == 3) {
+				wire(
+					ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "ceramicinsulatedwire_none"))
+						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "ceramicinsulatedwire_side"))
+						.texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
+					false
+				);
+			} else if(wire.wireType == 4) {
+				wire(
+					ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none"))
+						.texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side"))
+						.texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"),
+					false
+				);
+			}
+		}
 
 	}
-	*/
+
+	private void genPipes() {
+		
+		String parent = "parent/";
+		String name = "block/pipe/" ;
+		String texture = "pipe/";
+		
+		for(SubtypePipe pipe : SubtypePipe.values()) {
+			wire(
+					ElectrodynamicsBlocks.getBlock(pipe), 
+					models().withExistingParent(name + pipe.tag() + "_none", modLoc(parent + "pipe_none"))
+						.texture("texture", blockLoc(texture + pipe.tag())).texture("particle", "#texture"), 
+					models().withExistingParent(name + pipe.tag() + "_side", modLoc(parent + "pipe_side"))
+						.texture("texture", blockLoc(texture + pipe.tag())).texture("particle", "#texture"),
+					false
+				);
+		}
+		
+	}
+	
 	private ItemModelBuilder simpleBlock(Block block, ModelFile file, boolean registerItem) {
 		simpleBlock(block, file);
 		if (registerItem) {
@@ -399,47 +350,34 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 			simpleBlockItem(block.get(), model);
 	}
 
-	private void cable(RegistryObject<Block> block, ModelFile none, ModelFile side, ModelFile ns, ModelFile ew,
-			ModelFile ud, boolean registerItem) {
-		getMultipartBuilder(block.get()).part().modelFile(none).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_UP, CableConnectionType.NONE)
-				.condition(OverdriveBlockStates.CABLE_DOWN, CableConnectionType.NONE)
-				.condition(OverdriveBlockStates.CABLE_NORTH, CableConnectionType.NONE)
-				.condition(OverdriveBlockStates.CABLE_EAST, CableConnectionType.NONE)
-				.condition(OverdriveBlockStates.CABLE_SOUTH, CableConnectionType.NONE)
-				.condition(OverdriveBlockStates.CABLE_WEST, CableConnectionType.NONE).end().part().modelFile(ns)
-				.addModel().useOr().condition(OverdriveBlockStates.CABLE_EAST, CableConnectionType.NONE_SEAMLESS)
-				.condition(OverdriveBlockStates.CABLE_WEST, CableConnectionType.NONE_SEAMLESS).end().part()
-				.modelFile(ew).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_UP, CableConnectionType.NONE_SEAMLESS)
-				.condition(OverdriveBlockStates.CABLE_DOWN, CableConnectionType.NONE_SEAMLESS).end().part()
-				.modelFile(ud).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_NORTH, CableConnectionType.NONE_SEAMLESS)
-				.condition(OverdriveBlockStates.CABLE_SOUTH, CableConnectionType.NONE_SEAMLESS).end().part()
-				.rotationX(270).modelFile(side).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_UP, CableConnectionType.CABLE, CableConnectionType.INVENTORY)
-				.end().part().rotationX(90).modelFile(side).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_DOWN, CableConnectionType.CABLE, CableConnectionType.INVENTORY)
-				.end().part().rotationY(0).modelFile(side).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_NORTH, CableConnectionType.CABLE, CableConnectionType.INVENTORY)
-				.end().part().rotationY(90).modelFile(side).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_EAST, CableConnectionType.CABLE, CableConnectionType.INVENTORY)
-				.end().part().rotationY(180).modelFile(side).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_SOUTH, CableConnectionType.CABLE, CableConnectionType.INVENTORY)
-				.end().part().rotationY(270).modelFile(side).addModel().useOr()
-				.condition(OverdriveBlockStates.CABLE_WEST, CableConnectionType.CABLE, CableConnectionType.INVENTORY)
-				.end();
+	*/
+	private void wire(Block block, ModelFile none, ModelFile side, boolean registerItem) {
+		getMultipartBuilder(block)
+			.part().modelFile(none).addModel().useOr()
+				.condition(EnumConnectType.UP, EnumConnectType.NONE)
+				.condition(EnumConnectType.DOWN, EnumConnectType.NONE)
+				.condition(EnumConnectType.NORTH, EnumConnectType.NONE)
+				.condition(EnumConnectType.EAST, EnumConnectType.NONE)
+				.condition(EnumConnectType.SOUTH, EnumConnectType.NONE)
+				.condition(EnumConnectType.WEST, EnumConnectType.NONE).end()
+			.part().rotationX(270).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.UP, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end()
+			.part().rotationX(90).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.DOWN, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end()
+			.part().rotationY(0).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.NORTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end()
+			.part().rotationY(90).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.EAST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end()
+			.part().rotationY(180).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.SOUTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end()
+			.part().rotationY(270).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.WEST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end();
 
 		if (registerItem)
-			simpleBlockItem(block.get(), ns);
+			simpleBlockItem(block, none);
 
 	}
-	*/
-	private BlockModelBuilder getObjModel(String name, String modelLoc, String texture) {
-		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true)
-				.modelLocation(modLoc("models/" + modelLoc + ".obj")).end().texture("texture0", texture)
-				.texture("particle", "#texture0");
-	}
+	
 
 	private BlockModelBuilder getObjModel(String name, String modelLoc) {
 		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true)
@@ -450,51 +388,6 @@ public class OverdriveBlockStateProvider extends BlockStateProvider {
 		return models().cubeBottomTop(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
 				new ResourceLocation(References.ID, side), new ResourceLocation(References.ID, bottom),
 				new ResourceLocation(References.ID, top));
-	}
-
-	private BlockModelBuilder getMatAnaBase(String name, String frontText, String vent) {
-		return models().withExistingParent("block/matter_analyzer" + name, modLoc("block/parent/matter_analyzer_base"))
-				.texture("bottom", modLoc("block/base"))
-				.texture("top", modLoc("block/matter_analyzer/matter_analyzer_top"))
-				.texture("side", modLoc("block/vent_" + vent)).texture("back", modLoc("block/network_port"))
-				.texture("particle", "block/matter_analyzer/matter_analyzer_front")
-				.texture("front", modLoc("block/matter_analyzer/matter_analyzer_front" + frontText));
-	}
-
-	private BlockModelBuilder getMatDecomBase(String name, String frontText) {
-		return models().orientableWithBottom("block/matter_decomposer" + name, modLoc("block/base_stripes"),
-				modLoc("block/tank_" + frontText), modLoc("block/vent_closed"), modLoc("block/decomposer_top"));
-	}
-
-	private BlockModelBuilder getMatRecBase(String name, String frontText) {
-		return models().orientableWithBottom("block/matter_recycler" + name, modLoc("block/base_stripes"),
-				modLoc("block/recycler_front" + frontText), modLoc("block/vent_closed"),
-				modLoc("block/decomposer_top"));
-	}
-
-	private BlockModelBuilder getMicroBase(String name, String frontText) {
-		return models().withExistingParent("block/microwave" + name, modLoc("block/parent/microwave_base"))
-				.texture("0", modLoc("block/microwave/microwave"))
-				.texture("1", modLoc("block/microwave/microwave_front" + frontText))
-				.texture("2", modLoc("block/microwave/microwave_back")).texture("particle", "#0");
-	}
-
-	private BlockModelBuilder getChunkloaderBase(String name) {
-		return models().withExistingParent("block/chunkloader_" + name, modLoc("block/parent/chunkloader_base"))
-				.texture("0", modLoc("block/chunkloader/chunkloader_" + name))
-				.texture("particle", modLoc("block/base_stripes"));
-	}
-
-	private BlockModelBuilder getPatternStorageBase(String name, String vent) {
-		return getObjModel("pattern_storage_" + name, "block/pattern_storage")
-				.texture("base", blockLoc("pattern_storage")).texture("vent", blockLoc("vent_" + vent))
-				.texture("particle", "#base");
-	}
-
-	private BlockModelBuilder getMatterRepBase(String name, String vent) {
-		return getObjModel("matter_replicator_" + name, "block/matter_replicator").texture("bottom", blockLoc("base"))
-				.texture("back", blockLoc("network_port")).texture("sides", blockLoc("vent_" + vent))
-				.texture("front", blockLoc("matter_replicator")).texture("particle", "#bottom").renderType("cutout");
 	}
 	
 	public ItemModelBuilder blockItem(Block block, ModelFile model) {
