@@ -18,6 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -32,12 +33,10 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileElectricFurnace extends GenericTile {
 
 	protected Recipe<?> cachedRecipe = null;
-	protected long timeSinceChange = 0;
 
 	public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
 		this(SubtypeMachine.electricfurnace, 0, worldPosition, blockState);
@@ -94,12 +93,9 @@ public class TileElectricFurnace extends GenericTile {
 	}
 
 	protected boolean canProcess(ComponentProcessor component) {
-		timeSinceChange++;
+		boolean canProcess = false;
+		
 		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed.get()) {
-			if (timeSinceChange > 40) {
-				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, true));
-				timeSinceChange = 0;
-			}
 			ComponentInventory inv = getComponent(ComponentType.Inventory);
 			if (!inv.getInputContents().get(component.getProcessorNumber()).get(0).isEmpty()) {
 				if (cachedRecipe != null && !cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
@@ -117,15 +113,16 @@ public class TileElectricFurnace extends GenericTile {
 				if (hasRecipe && cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
 					ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
 					ItemStack result = cachedRecipe.getResultItem();
-					return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
+					canProcess =  (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 				}
 			}
-		} else if (timeSinceChange > 40) {
-			timeSinceChange = 0;
-			level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, false));
+		} 
+		
+		if(BlockEntityUtils.isLit(this) ^ canProcess) {
+			BlockEntityUtils.updateLit(this, canProcess);
 		}
 
-		return false;
+		return canProcess;
 	}
 
 	protected void tickClient(ComponentTickable tickable) {

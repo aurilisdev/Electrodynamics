@@ -36,9 +36,6 @@ public class RenderMineralGrinderDouble implements BlockEntityRenderer<TileMiner
 		matrixStackIn.pushPose();
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0, 1.0 / 16.0, 0);
-		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALGRINDERDOUBLEBASE);
-		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		matrixStackIn.translate(0, progress / 8.0 - 1 / 8.0, 0);
 		matrixStackIn.popPose();
 
 	}

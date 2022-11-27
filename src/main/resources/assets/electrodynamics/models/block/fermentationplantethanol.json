@@ -3,7 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:fluid/ethanol"
+		"0": "electrodynamics:fluid/ethanol",
+		"particle" : "electrodynamics:fluid/ethanol"
 	},
 	"elements": [
 		{

@@ -18,6 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
@@ -34,13 +35,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class TileCoalGenerator extends GenericTile implements IElectricGenerator {
-	// public static final int COAL_BURN_TIME = 1000;
-	// protected static final int[] SLOTS_INPUT = new int[] { 0 };
 	protected CachedTileOutput output;
 	protected TransferPack currentOutput = TransferPack.EMPTY;
 	public TargetValue heat = new TargetValue(property(new Property<Double>(PropertyType.Double, "heat")).set(27.0).save());
@@ -76,20 +74,9 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 		}
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {
-			boolean update = false;
-			if (machine.machine == SubtypeMachine.coalgenerator) {
-				if (burnTime.get() > 0) {
-					update = true;
-				}
-			} else if (burnTime.get() <= 0) {
-				update = true;
-			}
-			if (update) {
-				if(burnTime.get() > 0) {
-					level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, true));
-				} else {
-					level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, false));
-				}
+			boolean greaterBurnTime = burnTime.get() > 0;
+			if(BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
+				BlockEntityUtils.updateLit(this, greaterBurnTime);
 			}
 		}
 		if (heat.getValue().get() > 27 && output.valid()) {

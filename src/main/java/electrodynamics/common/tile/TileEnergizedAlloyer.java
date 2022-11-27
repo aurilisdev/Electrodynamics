@@ -2,7 +2,6 @@ package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
-import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -16,6 +15,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -24,7 +24,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class TileEnergizedAlloyer extends GenericTile {
 
@@ -45,15 +44,11 @@ public class TileEnergizedAlloyer extends GenericTile {
 	}
 
 	protected boolean canProcessEnergAlloy(ComponentProcessor component) {
-		if (component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get())) {
-			if (!getBlockState().getValue(BlockMachine.ON)) {
-				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, true));
-			}
-			return true;
-		} else if (getBlockState().getValue(BlockMachine.ON)) {
-			level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockStateProperties.LIT, false));
+		boolean canProcess = component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get());
+		if(BlockEntityUtils.isLit(this) ^ canProcess) {
+			BlockEntityUtils.updateLit(this, canProcess);
 		}
-		return false;
+		return canProcess;
 	}
 
 	protected void tickClient(ComponentTickable tickable) {

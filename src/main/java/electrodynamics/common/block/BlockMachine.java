@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -45,6 +46,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
 
 	public static final BooleanProperty ON = BlockStateProperties.LIT;
+	public static final IntegerProperty BATTERY_CHARGE = BlockStateProperties.AGE_7;
 	
 	public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
 	public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
@@ -103,12 +105,11 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
 		
-		if(machine.litBrightness == 0) {
-			return super.getLightEmission(state, world, pos);
-		} else {
+		if(machine.litBrightness > 0 && state.hasProperty(ON) && state.getValue(ON)) {
 			return machine.litBrightness;
-		}
-
+		} 
+		
+		return super.getLightEmission(state, world, pos);
 	}
 
 	@Override

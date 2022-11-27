@@ -5,7 +5,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "electrodynamics:model/mineralcrusher",
-		"particle": "electrodynamics:model/mineralcrusher"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

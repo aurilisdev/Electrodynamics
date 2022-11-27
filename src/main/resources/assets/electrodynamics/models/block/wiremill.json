@@ -6,7 +6,7 @@
   "render_type" : "cutout",
   "textures" : {
     "0" : "electrodynamics:model/wiremill",
-    "particle" : "electrodynamics:model/wiremill"
+    "particle" : "electrodynamics:block/steelcasing"
   },
   "elements" : [ {
     "from" : [ 0, 0, 0 ],

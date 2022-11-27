@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "electrodynamics:model/fermentationplant",
-		"particle": "electrodynamics:model/fermentationplant"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
 		{
