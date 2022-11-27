@@ -72,6 +72,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		if(machine.litBrightness > 0) {
 			registerDefaultState(stateDefinition.any().setValue(ON, false));
 		}
+		
 	}
 
 	@Override

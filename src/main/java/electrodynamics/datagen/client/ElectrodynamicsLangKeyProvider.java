@@ -35,11 +35,11 @@ import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class OverdriveLangKeyProvider extends LanguageProvider {
+public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	private String locale;
 
-	public OverdriveLangKeyProvider(DataGenerator gen, String locale) {
+	public ElectrodynamicsLangKeyProvider(DataGenerator gen, String locale) {
 		super(gen, References.ID, locale);
 		this.locale = locale;
 	}
@@ -430,6 +430,7 @@ public class OverdriveLangKeyProvider extends LanguageProvider {
 			addContainer(SubtypeMachine.chemicalmixer, "Chemical Mixer");
 			addContainer(SubtypeMachine.coalgenerator, "Coal Generator");
 			addContainer(SubtypeMachine.coolantresavoir, "Coolant Resavoir");
+			addContainer(SubtypeMachine.combustionchamber, "Combustion Chamber");
 			addContainer(SubtypeMachine.creativefluidsource, "Creative Fluid Source");
 			addContainer(SubtypeMachine.creativepowersource, "Creative Power Source");
 			addContainer(SubtypeMachine.electricarcfurnace, "Arc Furnace");

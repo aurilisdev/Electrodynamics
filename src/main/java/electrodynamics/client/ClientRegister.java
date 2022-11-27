@@ -159,10 +159,6 @@ public class ClientRegister {
 		event.register(MODEL_MINERALCRUSHERDOUBLEHANDLE);
 		event.register(MODEL_MINERALCRUSHERTRIPLEHANDLE);
 		event.register(MODEL_MINERALGRINDERWHEEL);
-		event.register(MODEL_FERMENTATIONPLANTWATER);
-		event.register(MODEL_FERMENTATIONPLANTETHANOL);
-		event.register(MODEL_COMBUSTIONCHAMBERETHANOL);
-		event.register(MODEL_COMBUSTIONCHAMBERHYDROGEN);
 		event.register(MODEL_CHEMICALMIXERBLADES);
 		event.register(MODEL_RODSTEEL);
 		event.register(MODEL_RODSTAINLESSSTEEL);
@@ -220,14 +216,6 @@ public class ClientRegister {
 			BLOCK_LOC + "mineralcrushertriplehandle");
 	public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(
 			BLOCK_LOC + "mineralgrinderwheel");
-	public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(
-			BLOCK_LOC + "fermentationplantwater");
-	public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(
-			BLOCK_LOC + "fermentationplantethanol");
-	public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(
-			BLOCK_LOC + "combustionchamberethanol");
-	public static final ResourceLocation MODEL_COMBUSTIONCHAMBERHYDROGEN = new ResourceLocation(
-			BLOCK_LOC + "combustionchamberhydrogen");
 	public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(
 			BLOCK_LOC + "chemicalmixerblades");
 	public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(BLOCK_LOC + "latheshaft");
