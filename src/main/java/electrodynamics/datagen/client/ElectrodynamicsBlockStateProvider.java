@@ -176,7 +176,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 				);
 		} 
 		
-		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.UNINSULATED)) {
+		for(SubtypeWire wire : SubtypeWire.getWiresForType(WireType.HIGHLY_INSULATED)) {
 			wire(
 				ElectrodynamicsBlocks.getBlock(wire), 
 				models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none"))

@@ -7,6 +7,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.block.subtype.SubtypeWire.WireType;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -162,7 +163,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		}
 
 		for (SubtypeWire wire : SubtypeWire.values()) {
-			if (wire.wireType == 0) {
+			if (wire.wireType == WireType.UNINSULATED) {
 				layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED,
 						itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
 			} else {

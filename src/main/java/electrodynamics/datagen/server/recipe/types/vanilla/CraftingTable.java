@@ -9,6 +9,7 @@ import electrodynamics.common.block.subtype.SubtypePipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.block.subtype.SubtypeWire.WireType;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -792,71 +793,68 @@ public class CraftingTable extends AbstractRecipeGenerator {
 		}
 
 		// Insulated Wires
-		for (SubtypeWire wire : SubtypeWire.values()) {
-			if (wire.wireType == 1) {
-				SubtypeWire uninsulated = SubtypeWire.getUninsulatedWire(wire);
-				if (uninsulated != wire)
-					ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
-							//
-							.addIngredient(WIRES[uninsulated.ordinal()])
-							//
-							.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-							//
-							.complete(References.ID, "wire_" + wire.name(), consumer);
-			}
+		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.INSULATED)) {
+			SubtypeWire uninsulated = SubtypeWire.getWireForType(WireType.UNINSULATED, wire.material);
+
+			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
+					//
+					.addIngredient(WIRES[uninsulated.ordinal()])
+					//
+					.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
+					//
+					.complete(References.ID, "wire_" + wire.name(), consumer);
+
 		}
 
 		// Logistics Wires
-		for (SubtypeWire wire : SubtypeWire.values()) {
-			if (wire.wireType == 2) {
-				SubtypeWire insulated = SubtypeWire.getInsulatedWire(wire);
-				if (insulated != wire)
-					ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
-							//
-							.addIngredient(WIRES[insulated.ordinal()])
-							//
-							.addIngredient(Tags.Items.DUSTS_REDSTONE)
-							//
-							.complete(References.ID, "wire_" + wire.name(), consumer);
-			}
+		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.LOGISTICAL)) {
+			SubtypeWire insulated = SubtypeWire.getWireForType(WireType.INSULATED, wire.material);
+
+			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
+					//
+					.addIngredient(WIRES[insulated.ordinal()])
+					//
+					.addIngredient(Tags.Items.DUSTS_REDSTONE)
+					//
+					.complete(References.ID, "wire_" + wire.name(), consumer);
+
 		}
 
 		// Ceramic Insulated
-		for (SubtypeWire wire : SubtypeWire.values()) {
-			if (wire.wireType == 3) {
-				SubtypeWire ceramic = SubtypeWire.getInsulatedWire(wire);
-				if (ceramic != wire)
-					ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
-							//
-							.addIngredient(WIRES[ceramic.ordinal()])
-							//
-							.addIngredient(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get())
-							//
-							.complete(References.ID, "wire_" + wire.name(), consumer);
-			}
+		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.CERAMIC)) {
+
+			SubtypeWire insulated = SubtypeWire.getWireForType(WireType.INSULATED, wire.material);
+			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
+					//
+					.addIngredient(WIRES[insulated.ordinal()])
+					//
+					.addIngredient(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get())
+					//
+					.complete(References.ID, "wire_" + wire.name(), consumer);
+
 		}
 
 		// Highly Insulated
-		for (SubtypeWire wire : SubtypeWire.values()) {
-			if (wire.wireType == 4) {
-				SubtypeWire insulated = SubtypeWire.getInsulatedWire(wire);
-				if (insulated != wire)
-					ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 2)
-							//
-							.addIngredient(WIRES[insulated.ordinal()])
-							//
-							.addIngredient(WIRES[insulated.ordinal()])
-							//
-							.addIngredient(WIRES[insulated.ordinal()])
-							//
-							.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-							//
-							.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-							//
-							.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-							//
-							.complete(References.ID, "wire_" + wire.name(), consumer);
-			}
+		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.HIGHLY_INSULATED)) {
+
+			SubtypeWire insulated = SubtypeWire.getWireForType(WireType.INSULATED, wire.material);
+
+			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 2)
+					//
+					.addIngredient(WIRES[insulated.ordinal()])
+					//
+					.addIngredient(WIRES[insulated.ordinal()])
+					//
+					.addIngredient(WIRES[insulated.ordinal()])
+					//
+					.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
+					//
+					.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
+					//
+					.addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
+					//
+					.complete(References.ID, "wire_" + wire.name(), consumer);
+
 		}
 
 		ElectrodynamicsShapelessCraftingRecipe.start(Items.GUNPOWDER, 6)
@@ -2176,30 +2174,30 @@ public class CraftingTable extends AbstractRecipeGenerator {
 				.addKey('R', ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL)
 				//
 				.complete(References.ID, "rail_gun_kinetic", consumer);
-		
+
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(), 1)
-		//
-		.addPattern("LXS")
-		//
-		.addPattern("LPR")
-		//
-		.addPattern("BCS")
-		//
-		.addKey('L', ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get())
-		//
-		.addKey('X', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
-		//
-		.addKey('S', WIRES[SubtypeWire.superconductive.ordinal()])
-		//
-		.addKey('B', ElectrodynamicsTags.Items.STORAGE_BLOCK_HSLASTEEL)
-		//
-		.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
-		//
-		.addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
-		//
-		.addKey('R', ElectrodynamicsTags.Items.ROD_TITANIUMCARBIDE)
-		//
-		.complete(References.ID, "rail_gun_plasma", consumer);
+				//
+				.addPattern("LXS")
+				//
+				.addPattern("LPR")
+				//
+				.addPattern("BCS")
+				//
+				.addKey('L', ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get())
+				//
+				.addKey('X', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
+				//
+				.addKey('S', WIRES[SubtypeWire.superconductive.ordinal()])
+				//
+				.addKey('B', ElectrodynamicsTags.Items.STORAGE_BLOCK_HSLASTEEL)
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+				//
+				.addKey('R', ElectrodynamicsTags.Items.ROD_TITANIUMCARBIDE)
+				//
+				.complete(References.ID, "rail_gun_plasma", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_SEISMICSCANNER.get(), 1)
 				//

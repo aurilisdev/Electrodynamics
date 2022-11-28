@@ -27,7 +27,9 @@ import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -582,19 +584,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("quarry.silktouch", "Silk Touch: %s");
 			addGuiLabel("quarry.unbreaking", "Unbreaking: %s");
 
-			addSubtitle("crate_open", "Tritanium Crate Opens");
-			addSubtitle("crate_close", "Tritanium Crate Closes");
-			addSubtitle("button_expand", "Button Shifts");
-			addSubtitle("button_generic", "Button is pressed");
-			addSubtitle("matter_decomposer", "Matter Decomposer running");
-			addSubtitle("generic_machine", "Machine runs");
-			addSubtitle("transporter", "Transporter Build-up");
-			addSubtitle("transporter_arrive", "Transported Entity Appears");
-			addSubtitle("matter_scanner_running", "Matter Scanner scans");
-			addSubtitle("matter_scanner_beep", "Matter Scanner beeps");
-			addSubtitle("matter_scanner_fail", "Scan fails");
-			addSubtitle("matter_scanner_success", "Scan succeeds");
-
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
 			addKeyLabel("togglenvgs", "Toggle Night Vision Goggles");
@@ -614,33 +603,34 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addChatMessage("guidebookclick", "Click Here");
 
-			addSubtitle("hum", "Hum");
-			addSubtitle("mineralcrusher", "Mineral Crusher crusher");
-			addSubtitle("mineralgrinder", "Mineral Grinder grinds");
-			addSubtitle("electricpump", "Electric Pump pumps");
-			addSubtitle("windmill", "Air hitting windmill");
-			addSubtitle("combustionchamber", "Combustion Chamber combusts");
-			addSubtitle("ceramicplatebreaking", "Ceramic Plate breaks");
-			addSubtitle("ceramicplateadded", "Ceramic Plate added");
-			addSubtitle("kineticrailgun", "Kinetic Railgun fires");
-			addSubtitle("kineticrailgun.noammo", "Kinetic Railgun is empty");
-			addSubtitle("plasmarailgun", "Plasma Railgun fires");
-			addSubtitle("kineticrailgun.nopower", "Plasma Railgun has no power");
-			addSubtitle("rodhittingground", "Rod hits the ground");
-			addSubtitle("latherunning", "Lathe running");
-			addSubtitle("equipheavyarmor", "Equipping heavy armor");
-			addSubtitle("hydroelectricgenerator", "Hydroelectric generator spins");
-			addSubtitle("seismicscanner", "Seismic Scanner pings");
-			addSubtitle("electrolyticseparator", "Electrolytic Separator electrolyzes");
-			addSubtitle("nightvisiongoggleson", "Night Vision Goggles activated");
-			addSubtitle("nightvisiongogglesoff", "Night Vision Goggles de-activated");
-			addSubtitle("jetpackswitchmode", "Jetpack changes mode");
-			addSubtitle("jetpack", "Jetpack engine runs");
+			addSubtitle(ElectrodynamicsSounds.SOUND_HUM, "Machine Hums");
+			addSubtitle(ElectrodynamicsSounds.SOUND_MINERALCRUSHER, "Hammer crushes");
+			addSubtitle(ElectrodynamicsSounds.SOUND_MINERALGRINDER, "Grinding Wheel grinds");
+			addSubtitle(ElectrodynamicsSounds.SOUND_ELECTRICPUMP, "Electric Pump pumps");
+			addSubtitle(ElectrodynamicsSounds.SOUND_WINDMILL, "Air spins Wind Mill blades");
+			addSubtitle(ElectrodynamicsSounds.SOUND_COMBUSTIONCHAMBER, "Combustion Chamber pistons fire");
+			addSubtitle(ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING, "Ceramic Plate shatters");
+			addSubtitle(ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED, "Ceramic Plate added");
+			addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC, "Kinetic Railgun fires");
+			addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO, "Out of rods");
+			addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA, "Plasma Railgun fires");
+			addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_NOPOWER, "Plasma Railgun has no power");
+			addSubtitle(ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND, "Rod impacts ground");
+			addSubtitle(ElectrodynamicsSounds.SOUND_LATHEPLAYING, "Lathe spins");
+			addSubtitle(ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR, "Equipped heavy armor");
+			addSubtitle(ElectrodynamicsSounds.SOUND_HYDROELECTRICGENERATOR, "Hydroelectric generator spins");
+			addSubtitle(ElectrodynamicsSounds.SOUND_SEISMICSCANNER, "Seismic Ping");
+			addSubtitle(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR, "Electrical Sparks");
+			addSubtitle(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESON, "Night Vision Goggles activated");
+			addSubtitle(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESOFF, "Night Vision Goggles de-activated");
+			addSubtitle(ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS, "Hydraulic piston fires");
+			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE, "Equipment cycles mode");
+			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACK, "Jetpack engine runs");
 
 			addGuidebook("availablemodules", "Available Modules");
 			addGuidebook("chapters", "Chapters");
 
-			addGuidebook("moduletitle", "Electrodynamics");
+			addGuidebook(References.ID, "Electrodynamics");
 
 			addGuidebook("chapter.ores", "Ores");
 			addGuidebook("chapter.ores.spawnrange", "Y = %1$s to Y = %2$s");
@@ -681,7 +671,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity", "Electricity");
 			// spaces are weird, so leave a little space on the end
-			// "of flow is measured in units ");
+			// "of flow is measured in units "
 			addGuidebook("chapter.electricity.p1l1", "    Understanding how energy   ");
 			addGuidebook("chapter.electricity.p1l2", "and electricity work is key.   ");
 			addGuidebook("chapter.electricity.p1l3", "Energy is what machines use to ");
@@ -1468,6 +1458,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	private void addSubtitle(String key, String translation) {
 		add("subtitles." + References.ID + "." + key, translation);
+	}
+	
+	private void addSubtitle(RegistryObject<SoundEvent> sound, String translation) {
+		addSubtitle(sound.getId().getPath(), translation);
 	}
 
 	private void addGuiLabel(String key, String translation) {
