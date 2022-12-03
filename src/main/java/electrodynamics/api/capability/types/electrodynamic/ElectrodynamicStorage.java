@@ -24,4 +24,9 @@ public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
 		return max;
 	}
 
+	@Override
+	public void onChange() {
+		//Not Needed
+	}
+
 }

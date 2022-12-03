@@ -60,12 +60,12 @@ public class ComponentTickable implements Component {
 		if (tickServer != null) {
 			tickServer.accept(this);
 		}
+		//TODO remove
+		
 		if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) && !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
 			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 		}
-		if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.getPropertyManager().isDirty()) {
-			holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
-		}
+		
 	}
 
 	public void tickClient() {
@@ -82,6 +82,10 @@ public class ComponentTickable implements Component {
 		tickCommon();
 		if (!level.isClientSide) {
 			tickServer();
+			if(holder != null && holder.getPropertyManager().isDirty()) {
+				holder.setChanged();
+				holder.getPropertyManager().clean();
+			}
 		} else {
 			tickClient();
 		}

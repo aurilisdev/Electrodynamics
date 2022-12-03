@@ -3,14 +3,13 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -38,17 +37,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class TileCoalGenerator extends GenericTile implements IElectricGenerator {
+public class TileCoalGenerator extends GenericGeneratorTile {
 	protected CachedTileOutput output;
 	protected TransferPack currentOutput = TransferPack.EMPTY;
-	public TargetValue heat = new TargetValue(property(new Property<Double>(PropertyType.Double, "heat")).set(27.0).save());
-	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime")).set(0).save();
-	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime")).set(0).save();
+	public TargetValue heat = new TargetValue(property(new Property<Double>(PropertyType.Double, "heat", 27.0)));
+	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime", 0));
+	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime", 0));
 	public double clientMaxBurnTime;
-	private double multiplier = 1;
+	//for future planned upgrades
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState, 1.0);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
@@ -109,17 +109,17 @@ public class TileCoalGenerator extends GenericTile implements IElectricGenerator
 
 	@Override
 	public double getMultiplier() {
-		return multiplier;
+		return multiplier.get();
 	}
 
 	@Override
 	public void setMultiplier(double val) {
-		multiplier = val;
+		multiplier.set(val);
 	}
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(multiplier * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.getValue().get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		return TransferPack.ampsVoltage(multiplier.get() * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.getValue().get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	public static List<Item> getValidItems() {

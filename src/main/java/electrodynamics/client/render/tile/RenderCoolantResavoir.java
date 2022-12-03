@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantResavoir> {
 
@@ -30,7 +29,7 @@ public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantRes
 
 	@Override
 	public void render(TileCoolantResavoir entity, float tick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
-		FluidTank tank = ((ComponentFluidHandlerSimple) entity.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+		ComponentFluidHandlerSimple tank =  entity.getComponent(ComponentType.FluidHandler);
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);

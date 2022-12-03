@@ -48,14 +48,14 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.pushPose();
 		ComponentFluidHandlerMulti multi = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler);
 		FluidStack fluid = null;
-		for(FluidTank tank : multi.getOutputTanks()) {
+		for(FluidTank tank : multi.outputTanks) {
 			if(!tank.isEmpty()) {
 				fluid = tank.getFluid();
 				break;
 			}
 		}
 		if(fluid == null) {
-			for(FluidTank tank : multi.getInputTanks()) {
+			for(FluidTank tank : multi.outputTanks) {
 				if(!tank.isEmpty()) {
 					fluid = tank.getFluid();
 					break;

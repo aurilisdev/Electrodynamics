@@ -5,30 +5,21 @@ import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileMultiSubnode extends GenericTile {
-	public Property<BlockPos> nodePos = property(new Property<BlockPos>(PropertyType.BlockPos, "nodePos")).save();
+	public Property<BlockPos> nodePos = property(new Property<BlockPos>(PropertyType.BlockPos, "nodePos", BlockPos.ZERO));
 	public VoxelShape shapeCache;
 
 	public TileMultiSubnode(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_MULTI.get(), worldPosition, blockState);
 		addComponent(new ComponentPacketHandler());
-	}
-
-	@Override
-	public void load(CompoundTag compound) {
-		super.load(compound);
-		Scheduler.schedule(20, () -> this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties());
 	}
 
 	public VoxelShape getShape() {

@@ -8,7 +8,7 @@ import electrodynamics.prefab.screen.component.ScreenComponentFluid;
 import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,8 +22,7 @@ public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionCh
 		components.add(new ScreenComponentFluid(() -> {
 			TileCombustionChamber boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				AbstractFluidHandler<?> handler = boiler.getComponent(ComponentType.FluidHandler);
-				return handler.getInputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).inputTanks[0];
 			}
 			return null;
 		}, this, 98, 18));

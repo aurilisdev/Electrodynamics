@@ -270,4 +270,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	public double getMaxJoulesStored() {
 		return maxTransferBuffer;
 	}
+
+	@Override
+	public void onChange() {
+
+	}
 }

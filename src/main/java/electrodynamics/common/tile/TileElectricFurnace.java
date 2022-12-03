@@ -1,5 +1,7 @@
 package electrodynamics.common.tile;
 
+import java.util.List;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -28,15 +30,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileElectricFurnace extends GenericTile {
 
-	protected Recipe<?> cachedRecipe = null;
+	protected SmeltingRecipe cachedRecipe = null;
+	
+	private List<SmeltingRecipe> cachedRecipes = null;
 
 	public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
 		this(SubtypeMachine.electricfurnace, 0, worldPosition, blockState);
@@ -61,7 +65,7 @@ public class TileElectricFurnace extends GenericTile {
 			ints[i] = i * 2;
 		}
 
-		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerElectricFurnace.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra).shouldSendInfo());
+		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerElectricFurnace.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerElectricFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
@@ -77,52 +81,65 @@ public class TileElectricFurnace extends GenericTile {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
 		ItemStack result = cachedRecipe.getResultItem();
+		int index = inv.getOutputSlots().get(component.getProcessorNumber());
 		if (!output.isEmpty()) {
 			output.setCount(output.getCount() + result.getCount());
+			inv.setItem(index, output);
 		} else {
-			inv.setItem(inv.getOutputSlots().get(component.getProcessorNumber()), result.copy());
+			inv.setItem(index, result.copy());
 		}
 		inv.getInputContents().get(component.getProcessorNumber()).get(0).shrink(1);
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
 				CompoundTag tag = stack.getOrCreateTag();
-				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + ((AbstractCookingRecipe) cachedRecipe).getExperience());
+				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) +  cachedRecipe.getExperience());
 				break;
 			}
 		}
 	}
 
 	protected boolean canProcess(ComponentProcessor component) {
-		boolean canProcess = false;
-		
-		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= component.getUsage() * component.operatingSpeed.get()) {
-			ComponentInventory inv = getComponent(ComponentType.Inventory);
-			if (!inv.getInputContents().get(component.getProcessorNumber()).get(0).isEmpty()) {
-				if (cachedRecipe != null && !cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
-					cachedRecipe = null;
-				}
-				boolean hasRecipe = cachedRecipe != null;
-				if (!hasRecipe) {
-					for (Recipe<?> recipe : level.getRecipeManager().getRecipes()) {
-						if (recipe.getType() == RecipeType.SMELTING && recipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
-							hasRecipe = true;
-							cachedRecipe = recipe;
-						}
-					}
-				}
-				if (hasRecipe && cachedRecipe.getIngredients().get(0).test(inv.getInputContents().get(component.getProcessorNumber()).get(0))) {
-					ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
-					ItemStack result = cachedRecipe.getResultItem();
-					canProcess =  (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
-				}
-			}
-		} 
+		boolean canProcess = checkConditions(component);
 		
 		if(BlockEntityUtils.isLit(this) ^ canProcess) {
 			BlockEntityUtils.updateLit(this, canProcess);
 		}
 
 		return canProcess;
+	}
+	
+	private boolean checkConditions(ComponentProcessor component) {
+		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
+			return false;
+		}
+		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		ItemStack input = inv.getInputContents().get(component.getProcessorNumber()).get(0);
+		if (input.isEmpty()) {
+			return false;
+		}
+		
+		if (cachedRecipes == null) {
+			cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING);
+		}
+		
+		if(cachedRecipe == null) {
+			cachedRecipe = getMatchedRecipe(input);
+			if(cachedRecipe == null) {
+				return false;
+			} else {
+				component.operatingTicks.set(0.0);
+			}
+		} 
+		
+		if(!cachedRecipe.matches(new SimpleContainer(input), level)) {
+			cachedRecipe = null;
+			return false;
+		}
+		
+		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
+		ItemStack result = cachedRecipe.getResultItem();
+		return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();	
+		
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
@@ -139,4 +156,14 @@ public class TileElectricFurnace extends GenericTile {
 			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
 		}
 	}
+	
+	private SmeltingRecipe getMatchedRecipe(ItemStack stack) {
+		for(SmeltingRecipe recipe : cachedRecipes) {
+			if(recipe.matches(new SimpleContainer(stack), level)) {
+				return recipe;
+			}
+		}
+		return null;
+	}
+	
 }

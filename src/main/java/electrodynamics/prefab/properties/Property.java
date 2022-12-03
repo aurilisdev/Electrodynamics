@@ -1,19 +1,22 @@
 package electrodynamics.prefab.properties;
 
-import electrodynamics.prefab.utilities.Scheduler;
-
 public class Property<T> {
 	private PropertyManager manager;
 	private final PropertyType type;
 	private boolean isDirty = true;
-	private boolean shouldSave = false;
+	private boolean shouldSave = true;
 	private String name;
 	private T value;
 	private T rawValue;
 
-	public Property(PropertyType type, String name) {
+	public Property(PropertyType type, String name, T defaultValue) {
 		this.type = type;
+		if(name == null || name.length() == 0) {
+			throw new RuntimeException("The property's name cannot be null or empty");
+		}
 		this.name = name;
+		value = defaultValue;
+		rawValue = defaultValue;
 	}
 
 	public T get() {
@@ -51,10 +54,10 @@ public class Property<T> {
 	public boolean isDirty() {
 		return isDirty;
 	}
-
-	public void setDirty() {
+	
+	@Deprecated(forRemoval = false)
+	public void forceDirty() {
 		isDirty = true;
-		manager.setDirty();
 	}
 
 	public void clean() {
@@ -65,17 +68,11 @@ public class Property<T> {
 		this.manager = manager;
 	}
 
+	//there is no benefit to delaying value verification. The marginal performance value is traded for potential desync issues
+	//you also don't need to set the values like the multiplier on the battery box to one at the beginning of every tick if
+	//you do an interrupt-type method of setting them. You can define a default value in the constructor that is saved to NBT
 	public Property<T> set(T updated) {
-		return set(updated, false);
-	}
-
-	@Deprecated(forRemoval = false) // Try not using this at all and only if you must.
-	public Property<T> set(T updated, boolean verifyLater) {
-		if (verifyLater) {
-			Scheduler.schedule(1, () -> verify(updated));
-		} else {
-			verify(updated);
-		}
+		verify(updated);
 		value = (T) type.attemptCast(updated);
 		rawValue = value;
 		return this;
@@ -93,8 +90,8 @@ public class Property<T> {
 		}
 	}
 
-	public Property<T> save() {
-		shouldSave = true;
+	public Property<T> noSave() {
+		shouldSave = false;
 		return this;
 	}
 

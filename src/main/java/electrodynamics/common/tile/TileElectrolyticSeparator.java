@@ -10,7 +10,6 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileElectrolyticSeparator extends GenericTile {
 
@@ -45,7 +43,7 @@ public class TileElectrolyticSeparator extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK * 10));
-		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeOutput(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).relativeInput(Direction.NORTH)).setAddFluidsValues(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get(), MAX_TANK_CAPACITY, true, true));
+		addComponent(new ComponentFluidHandlerMulti(this).setOutputDirections(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).setInputDirections(Direction.NORTH).setTanks(1, 2, MAX_TANK_CAPACITY).setRecipeType(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get()));
 		addComponent(new ComponentInventory(this).size(6).bucketInputs(1).bucketOutputs(2).upgrades(3).validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(component -> component.consumeBucket().dispenseBucket().canProcessFluid2FluidRecipe(component, ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get())).process(component -> component.processFluid2FluidRecipe(component)).usage(Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK).requiredTicks(Constants.ELECTROLYTICSEPARATOR_REQUIRED_TICKS));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator).createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
@@ -53,11 +51,9 @@ public class TileElectrolyticSeparator extends GenericTile {
 
 	public void tickServer(ComponentTickable tickable) {
 		// ensures only one fluid per output
-		AbstractFluidHandler<?> handler = getComponent(ComponentType.FluidHandler);
-		FluidTank oxygen = handler.getOutputTanks()[0];
-		FluidTank hydrogen = handler.getOutputTanks()[1];
-		FluidUtilities.outputToPipe(this, new FluidTank[] { oxygen }, OXYGEN_DIRECTION);
-		FluidUtilities.outputToPipe(this, new FluidTank[] { hydrogen }, HYDROGEN_DIRECTION);
+		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
+		FluidUtilities.outputToPipe(this, handler.outputTanks[0].asArray(), OXYGEN_DIRECTION);
+		FluidUtilities.outputToPipe(this, handler.outputTanks[1].asArray(), HYDROGEN_DIRECTION);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {

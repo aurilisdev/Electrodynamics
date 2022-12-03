@@ -6,13 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.api.item.ItemUtils;
-import electrodynamics.common.tile.TileAdvancedSolarPanel;
-import electrodynamics.common.tile.TileBatteryBox;
-import electrodynamics.common.tile.TileHydroelectricGenerator;
-import electrodynamics.common.tile.TileSolarPanel;
-import electrodynamics.common.tile.TileWindmill;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -28,28 +22,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public enum SubtypeItemUpgrade implements ISubtype {
-	basiccapacity((holder, processor, upgrade) -> {
-		if (holder instanceof TileBatteryBox box) {
-			box.currentCapacityMultiplier.set(Math.min(box.currentCapacityMultiplier.get() * 1.5, Math.pow(1.5, 3)));
-			box.currentVoltageMultiplier.set(Math.min(box.currentVoltageMultiplier.get() * 2, 2));
-		}
-	}, 2),
-	basicspeed((holder, processor, upgrade) -> {
-		if (processor != null) {
-			processor.operatingSpeed.set(Math.min(processor.operatingSpeed.get() * 1.5, Math.pow(1.5, 3)));
-		}
-	}, 3),
-	advancedcapacity((holder, processor, upgrade) -> {
-		if (holder instanceof TileBatteryBox box) {
-			box.currentCapacityMultiplier.set(Math.min(box.currentCapacityMultiplier.get() * 2.25, Math.pow(2.25, 3)));
-			box.currentVoltageMultiplier.set(Math.min(box.currentVoltageMultiplier.get() * 4, 4));
-		}
-	}, 4),
-	advancedspeed((holder, processor, upgrade) -> {
-		if (processor != null) {
-			processor.operatingSpeed.set(Math.min(processor.operatingSpeed.get() * 2.25, Math.pow(2.25, 3)));
-		}
-	}, 3),
+	
+	
+	basiccapacity(2),
+	//box.currentCapacityMultiplier.set(Math.min(box.currentCapacityMultiplier.get() * 1.5, Math.pow(1.5, 3)));
+	//box.currentVoltageMultiplier.set(Math.min(box.currentVoltageMultiplier.get() * 2, 2));
+	
+	basicspeed(3),
+	//processor.operatingSpeed.set(Math.min(processor.operatingSpeed.get() * 1.5, Math.pow(1.5, 3)));
+	
+	advancedcapacity(4),
+	//box.currentCapacityMultiplier.set(Math.min(box.currentCapacityMultiplier.get() * 2.25, Math.pow(2.25, 3)));
+	//box.currentVoltageMultiplier.set(Math.min(box.currentVoltageMultiplier.get() * 4, 4));
+	
+	advancedspeed(3),
+	//processor.operatingSpeed.set(Math.min(processor.operatingSpeed.get() * 2.25, Math.pow(2.25, 3)));
+	
+	
 	// the only way to optimize this one further is to increase the tick delay.
 	// Currently, it's set to every 4 ticks
 	iteminput((holder, processor, upgrade) -> {
@@ -64,16 +53,16 @@ public enum SubtypeItemUpgrade implements ISubtype {
 				if (isSmart) {
 					int slot;
 					Direction dir = Direction.DOWN;
-					for (int i = 0; i < inv.getInputSlots().size(); i++) {
-						slot = inv.getInputSlots().get(i);
+					for (int i = 0; i < inv.getInputSlots().get(processor.getProcessorNumber()).size(); i++) {
+						slot = inv.getInputSlots().get(processor.getProcessorNumber()).get(i);
 						if (i < dirs.size()) {
 							dir = dirs.get(i);
 						}
-						inputSmartMode(getBlockEntity(holder, dir), inv, slot, dir);
+						inputSmartMode(getBlockEntity(holder, dir), inv, slot, processor.getProcessorNumber(), dir);
 					}
 				} else {
 					for (Direction dir : dirs) {
-						inputDefaultMode(getBlockEntity(holder, dir), inv, dir);
+						inputDefaultMode(getBlockEntity(holder, dir), inv, dir, processor.getProcessorNumber());
 					}
 				}
 			}
@@ -111,35 +100,34 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			tag.putInt(NBTUtils.TIMER, tag.getInt(NBTUtils.TIMER) + 1);
 		}
 	}, 1),
-	improvedsolarcell((holder, processor, upgrade) -> {
-		if (holder instanceof IElectricGenerator generator && (holder instanceof TileSolarPanel || holder instanceof TileAdvancedSolarPanel)) {
-			generator.setMultiplier(2.25);
-		}
-	}, 1),
-	stator((holder, processor, upgrade) -> {
-		if (holder instanceof IElectricGenerator generator && (holder instanceof TileWindmill || holder instanceof TileHydroelectricGenerator)) {
-			generator.setMultiplier(2.25);
-		}
-	}, 1),
-	range((holder, processor, upgrade) -> {
-		/* it does nothing; the count determines the new range */}, 12),
-	experience((holder, processor, upgrade) -> {
-		/* the machine handles adding the experience */}, 1),
-	itemvoid((holder, processor, upgrade) -> {
-	}, 1),
-	silktouch((holder, processor, upgrade) -> {
-	}, 1),
-	fortune((holder, processor, upgrade) -> {
-	}, 3),
-	unbreaking((holder, processor, upgrade) -> {
-	}, 3);
+	improvedsolarcell(1),
+	//generator.setMultiplier(2.25);
+	stator(1),
+	//generator.setMultiplier(2.25);
+	range(12),
+	experience(1),
+	itemvoid(1),
+	silktouch(1),
+	fortune(3),
+	unbreaking(3);
 
+	
+	
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;
+	//does it have an appliable effect?
+	public final boolean isEmpty;
 
 	SubtypeItemUpgrade(TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade, int maxSize) {
 		this.applyUpgrade = applyUpgrade;
 		this.maxSize = maxSize;
+		isEmpty = false;
+	}
+	
+	SubtypeItemUpgrade(int maxStackSize){
+		this.applyUpgrade = (holder, processor, upgrade) -> { };
+		this.maxSize = maxStackSize;
+		isEmpty = true;
 	}
 
 	@Override
@@ -157,7 +145,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 		return true;
 	}
 
-	private static void inputSmartMode(BlockEntity entity, ComponentInventory inv, int slot, Direction dir) {
+	private static void inputSmartMode(BlockEntity entity, ComponentInventory inv, int slot, int procNumber, Direction dir) {
 		if (entity instanceof Container container) {
 			attemptContainerExtract(inv, slot, container, dir);
 		} else if (entity != null && entity instanceof GenericTile tile) {
@@ -168,15 +156,15 @@ public enum SubtypeItemUpgrade implements ISubtype {
 		}
 	}
 
-	private static void inputDefaultMode(BlockEntity entity, ComponentInventory inv, Direction dir) {
+	private static void inputDefaultMode(BlockEntity entity, ComponentInventory inv, Direction dir, int procNumber) {
 		if (entity instanceof Container container) {
-			for (int slot : inv.getInputSlots()) {
+			for (int slot : inv.getInputSlots().get(procNumber)) {
 				attemptContainerExtract(inv, slot, container, dir);
 			}
 		} else if (entity != null && entity instanceof GenericTile tile) {
 			ComponentInventory otherInv = tile.getComponent(ComponentType.Inventory);
 			if (otherInv != null) {
-				for (int slot : inv.getInputSlots()) {
+				for (int slot : inv.getInputSlots().get(procNumber)) {
 					takeItemFromCompInv(inv, slot, otherInv, dir);
 				}
 			}

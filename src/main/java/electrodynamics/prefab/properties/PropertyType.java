@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public enum PropertyType {
 	Byte,
@@ -18,7 +19,8 @@ public enum PropertyType {
 	UUID,
 	CompoundTag,
 	BlockPos,
-	InventoryItems;
+	InventoryItems,
+	FluidTank;
 
 	public void write(Property<?> prop, FriendlyByteBuf buf) {
 		Object val = prop.get();
@@ -55,6 +57,11 @@ public enum PropertyType {
 			ContainerHelper.saveAllItems(tag, list);
 			buf.writeNbt(tag);
 			break;
+		case FluidTank:
+			FluidTank tank = (FluidTank) prop.get();
+			buf.writeInt(tank.getCapacity());
+			buf.writeFluidStack(tank.getFluid());
+			break;
 		default:
 			break;
 		}
@@ -84,6 +91,10 @@ public enum PropertyType {
 			NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(buf.readNbt(), toBeFilled);
 			return toBeFilled;
+		case FluidTank:
+			FluidTank tank = new FluidTank(buf.readInt());
+			tank.setFluid(buf.readFluidStack());
+			return tank;
 		default:
 			break;
 		}
@@ -127,6 +138,10 @@ public enum PropertyType {
 			tag.putInt(prop.getName() + "_size", list.size());
 			ContainerHelper.saveAllItems(tag, list);
 			break;
+		case FluidTank:
+			FluidTank tank = (FluidTank) prop.get();
+			tank.writeToNBT(tag);
+			break;
 		default:
 			break;
 		}
@@ -164,6 +179,9 @@ public enum PropertyType {
 			NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, toBeFilled);
 			val = toBeFilled;
+			break;
+		case FluidTank:
+			val = new FluidTank(0).readFromNBT(tag);
 			break;
 		default:
 			break;

@@ -10,7 +10,7 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
@@ -37,6 +37,12 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	private PropertyManager propertyManager = new PropertyManager();
 
 	public <T> Property<T> property(Property<T> prop) {
+		for(Property<?> existing : propertyManager.getProperties()) {
+			if(existing.getName().equals(prop.getName())) {
+				throw new RuntimeException(prop.getName() + " is already being used by another property!");
+			}
+		}
+		
 		return propertyManager.addProperty(prop);
 	}
 
@@ -139,17 +145,21 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		// JSON recipe fluids have to be added at load time
-		if (hasComponent(ComponentType.FluidHandler)) {
-			AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
-			tank.addFluids();
+		
+		for(Component component : components) {
+			if(component != null) {
+				component.holder(this);
+				component.onLoad();
+			}
 		}
+		
 		if (hasComponent(ComponentType.PacketHandler)) {
 			Scheduler.schedule(1, () -> {
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 			});
 		}
+		
 	}
 
 	@Override
@@ -188,20 +198,9 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 	}
 
-	private void sendAllProperties() {
-		if (!level.isClientSide) {
-			for (Property<?> prop : propertyManager.getProperties()) {
-				prop.setDirty();
-			}
-			if (hasComponent(ComponentType.PacketHandler)) {
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
-			}
-		}
-	}
-
 	@Override
 	public CompoundTag getUpdateTag() {
-		sendAllProperties();
+		//sendAllProperties();
 		CompoundTag tag = super.getUpdateTag();
 		saveAdditional(tag);
 		return tag;
@@ -211,7 +210,9 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void setChanged() {
 		super.setChanged();
 		if (!level.isClientSide) {
-			sendAllProperties();
+			if (hasComponent(ComponentType.PacketHandler)) {
+				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
+			}
 		}
 	}
 
@@ -238,5 +239,29 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return (x, y, i) -> list.contains(x) || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
+	
+	public void onEnergyChange(ComponentElectrodynamic cap) {
+		//hook method for now
+	}
+	
+	//no more polling for upgrade effects :D
+	public void onInventoryChange(ComponentInventory inv, int slot) {
+		//this can be moved to a seperate tile class in the future
+		if(hasComponent(ComponentType.Processor)) {
+			this.<ComponentProcessor>getComponent(ComponentType.Processor).onInventoryChange(inv, slot);
+		}
+		for(ComponentProcessor processor : processors) {
+			if(processor != null) {
+				processor.onInventoryChange(inv, slot);
+			}
+		}
+	}
+	
+	//TODO implement
+	public void onFluidChange() {
+		
+	}
+	
+	
 
 }

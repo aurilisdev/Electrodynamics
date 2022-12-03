@@ -9,7 +9,7 @@ import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,7 +35,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 		components.add(new ScreenComponentFluid(() -> {
 			TileChemicalCrystallizer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
+				return  boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).inputTanks[0];
 			}
 			return null;
 		}, this, 21, 18));

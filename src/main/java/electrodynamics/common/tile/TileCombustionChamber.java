@@ -37,10 +37,12 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class TileCombustionChamber extends GenericTile implements IElectricGenerator {
 	public static final int TICKS_PER_MILLIBUCKET = 200;
 	public static final int TANK_CAPACITY = 1000;
-	public Property<Boolean> running = property(new Property<Boolean>(PropertyType.Boolean, "running")).set(false).save();
-	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime")).set(0).save();
-	private double multiplier = 1;
+	public Property<Boolean> running = property(new Property<Boolean>(PropertyType.Boolean, "running", false));
+	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime", 0));
+	private double fuelMultiplier = 1;
 	private CachedTileOutput output;
+	//for future upgrades
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 
 	private static TagKey<Fluid>[] FUELS;
 
@@ -57,7 +59,7 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentFluidHandlerMulti(this).setInputTags(1, TANK_CAPACITY, FUELS).relativeInput(Direction.WEST));
+		addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, TANK_CAPACITY).setInputDirections(Direction.WEST).setInputFluidTags(FUELS));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.combustionchamber).createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -71,14 +73,14 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 			output.update(worldPosition.relative(facing.getClockWise()));
 		}
 		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
-		FluidUtilities.drainItem(this);
-		FluidTank tank = handler.getInputTanks()[0];
+		FluidUtilities.drainItem(this, handler.inputTanks);
+		FluidTank tank = handler.inputTanks[0];
 		if (burnTime.get() <= 0) {
 			running.set(false);
 			if (tank.getFluidAmount() > 0) {
 				CombustionFuelSource source = CombustionFuelSource.getSourceFromFluid(tank.getFluid().getFluid());
 				tank.getFluid().shrink(source.getFluidUsage());
-				multiplier = source.getPowerMultiplier();
+				fuelMultiplier = source.getPowerMultiplier();
 				running.set(true);
 				burnTime.set(TICKS_PER_MILLIBUCKET);
 			}
@@ -104,16 +106,17 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 
 	@Override
 	public void setMultiplier(double val) {
+		multiplier.set(val);
 	}
 
 	@Override
 	public double getMultiplier() {
-		return 1;
+		return multiplier.get();
 	}
 
 	@Override
 	public TransferPack getProduced() {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		return TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * multiplier, electro.getVoltage());
+		return TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * fuelMultiplier * multiplier.get(), electro.getVoltage());
 	}
 }

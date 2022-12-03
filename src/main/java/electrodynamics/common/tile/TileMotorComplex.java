@@ -35,9 +35,9 @@ public class TileMotorComplex extends GenericTile {
 	// 1 tick per block
 	public static final double MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
 
-	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed")).set(1.0);
-	public Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier")).set(1.0);
-	public Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered")).set(false);
+	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed", 1.0));
+	public Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier", 1.0));
+	public Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered", false));
 
 	public TileMotorComplex(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), pos, state);
