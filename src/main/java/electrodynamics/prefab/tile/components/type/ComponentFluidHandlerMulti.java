@@ -14,8 +14,8 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
@@ -27,9 +27,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ComponentFluidHandlerMulti implements Component {
+public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 	private GenericTile holder;
 	
@@ -38,8 +39,8 @@ public class ComponentFluidHandlerMulti implements Component {
 	@Nullable
 	public Direction[] outputDirections;
 	
-	public PropertyFluidTank[] inputTanks;
-	public PropertyFluidTank[] outputTanks;
+	private PropertyFluidTank[] inputTanks;
+	private PropertyFluidTank[] outputTanks;
 	
 	@Nullable
 	private RecipeType<? extends AbstractFluidRecipe> recipeType;
@@ -319,6 +320,16 @@ public class ComponentFluidHandlerMulti implements Component {
 				tank.setValidator(fluidStack -> outputValidatorFluids.contains(fluidStack.getFluid()));
 			}
 		}
+	}
+	
+	@Override
+	public FluidTank[] getInputTanks() {
+		return inputTanks;
+	}
+
+	@Override
+	public FluidTank[] getOutputTanks() {
+		return outputTanks;
 	}
 	
 	private boolean hasOutputDir(Direction dir) {

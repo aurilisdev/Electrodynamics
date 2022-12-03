@@ -8,7 +8,6 @@ import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSepa
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -18,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
@@ -28,8 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileElectrolyticSeparator extends GenericTile {
+public class TileElectrolyticSeparator extends GenericFluidTile {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;
@@ -52,8 +53,8 @@ public class TileElectrolyticSeparator extends GenericTile {
 	public void tickServer(ComponentTickable tickable) {
 		// ensures only one fluid per output
 		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
-		FluidUtilities.outputToPipe(this, handler.outputTanks[0].asArray(), OXYGEN_DIRECTION);
-		FluidUtilities.outputToPipe(this, handler.outputTanks[1].asArray(), HYDROGEN_DIRECTION);
+		FluidUtilities.outputToPipe(this, new FluidTank[] { handler.getOutputTanks()[0] }, OXYGEN_DIRECTION);
+		FluidUtilities.outputToPipe(this, new FluidTank[] { handler.getOutputTanks()[1] }, HYDROGEN_DIRECTION);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {

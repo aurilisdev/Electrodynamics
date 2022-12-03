@@ -30,7 +30,7 @@ public class RenderElectrolyticSeparator implements BlockEntityRenderer<TileElec
 
 	@Override
 	public void render(TileElectrolyticSeparator entity, float ticks, PoseStack stack, MultiBufferSource source, int light, int overlay) {
-		FluidTank tank = entity.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).inputTanks[0];
+		FluidTank tank = entity.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);

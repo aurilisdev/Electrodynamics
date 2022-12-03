@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -39,7 +39,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  * @author skip999
  *
  */
-public class ComponentFluidHandlerSimple extends FluidTank implements Component {
+public class ComponentFluidHandlerSimple extends FluidTank implements IComponentFluidHandler {
 
 	@Nullable
 	private GenericTile holder;
@@ -116,6 +116,9 @@ public class ComponentFluidHandlerSimple extends FluidTank implements Component 
 		if (property != null) {
 			property.set(this);
 			property.forceDirty();
+			if(holder != null) {
+				holder.onFluidTankChange(this);
+			}
 		}
 	}
 
@@ -187,6 +190,16 @@ public class ComponentFluidHandlerSimple extends FluidTank implements Component 
 		if(!validatorFluids.isEmpty()) {
 			validator = fluidStack -> validatorFluids.contains(fluidStack.getFluid());
 		}
+	}
+	
+	@Override
+	public FluidTank[] getInputTanks() {
+		return toArray();
+	}
+
+	@Override
+	public FluidTank[] getOutputTanks() {
+		return toArray();
 	}
 
 	private boolean hasOutputDir(Direction dir) {

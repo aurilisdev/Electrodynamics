@@ -148,18 +148,18 @@ public class ComponentProcessor implements Component {
 	}
 
 	public ComponentProcessor consumeBucket() {
-		FluidUtilities.drainItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).inputTanks);
+		FluidUtilities.drainItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks());
 		return this;
 	}
 
 	public ComponentProcessor dispenseBucket() {
-		FluidUtilities.fillItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).outputTanks);
+		FluidUtilities.fillItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks());
 		return this;
 	}
 
 	public ComponentProcessor outputToPipe() {
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-		FluidUtilities.outputToPipe(holder, handler.outputTanks, handler.outputDirections);
+		FluidUtilities.outputToPipe(holder, handler.getOutputTanks(), handler.outputDirections);
 		return this;
 	}
 
@@ -223,7 +223,7 @@ public class ComponentProcessor implements Component {
 		}
 		if (locRecipe.hasFluidBiproducts()) {
 			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			boolean fluidBiRoom = roomInBiproductTanks(handler.outputTanks, locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -268,7 +268,7 @@ public class ComponentProcessor implements Component {
 		}
 		if (locRecipe.hasFluidBiproducts()) {
 			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			boolean fluidBiRoom = roomInBiproductTanks(handler.outputTanks, locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -293,7 +293,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-		int amtAccepted = handler.outputTanks[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
+		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
 			return false;
 		}
@@ -305,7 +305,7 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			boolean fluidBiRoom = roomInBiproductTanks(handler.outputTanks, locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -330,7 +330,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-		int amtAccepted = handler.outputTanks[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
+		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
 			return false;
 		}
@@ -342,7 +342,7 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			boolean fluidBiRoom = roomInBiproductTanks(handler.outputTanks, locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -367,7 +367,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-		int amtAccepted = handler.outputTanks[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
+		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
 			return false;
 		}
@@ -379,7 +379,7 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			boolean fluidBiRoom = roomInBiproductTanks(handler.outputTanks, locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -424,7 +424,7 @@ public class ComponentProcessor implements Component {
 		}
 		if (locRecipe.hasFluidBiproducts()) {
 			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			boolean fluidBiRoom = roomInBiproductTanks(handler.outputTanks, locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -472,7 +472,7 @@ public class ComponentProcessor implements Component {
 			if (locRecipe.hasFluidBiproducts()) {
 				ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.Inventory);
 				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.outputTanks;
+				FluidTank[] outTanks = handler.getOutputTanks();
 				for (int i = 0; i < fluidBi.length; i++) {
 					
 					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
@@ -526,13 +526,13 @@ public class ComponentProcessor implements Component {
 
 			if (locRecipe.hasFluidBiproducts()) {
 				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.outputTanks;
+				FluidTank[] outTanks = handler.getOutputTanks();
 				for (int i = 0; i < fluidBi.length; i++) {
 					outTanks[i + 1].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
 				}
 			}
 
-			handler.outputTanks[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
+			handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
 
 			List<List<Integer>> inputs = inv.getInputSlots();
 			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
@@ -542,7 +542,7 @@ public class ComponentProcessor implements Component {
 				inv.setItem(index, stack);
 			}
 
-			FluidTank[] tanks = handler.inputTanks;
+			FluidTank[] tanks = handler.getInputTanks();
 			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
 			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
 			for (int i = 0; i < handler.tankCount(true); i++) {
@@ -579,7 +579,7 @@ public class ComponentProcessor implements Component {
 
 			if (locRecipe.hasFluidBiproducts()) {
 				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.outputTanks;
+				FluidTank[] outTanks = handler.getOutputTanks();
 				for (int i = 0; i < fluidBi.length; i++) {
 					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
 				}
@@ -598,7 +598,7 @@ public class ComponentProcessor implements Component {
 				inv.setItem(index, stack);
 			}
 
-			FluidTank[] tanks = handler.inputTanks;
+			FluidTank[] tanks = handler.getInputTanks();
 			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
 			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
 			for (int i = 0; i < handler.tankCount(true); i++) {
@@ -634,7 +634,7 @@ public class ComponentProcessor implements Component {
 
 			if (locRecipe.hasFluidBiproducts()) {
 				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.outputTanks;
+				FluidTank[] outTanks = handler.getOutputTanks();
 				for (int i = 0; i < fluidBi.length; i++) {
 					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
 				}
@@ -645,7 +645,7 @@ public class ComponentProcessor implements Component {
 				inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
 			}
 
-			FluidTank[] tanks = handler.inputTanks;
+			FluidTank[] tanks = handler.getInputTanks();
 			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
 			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
 			for (int i = 0; i < handler.tankCount(true); i++) {
@@ -680,15 +680,15 @@ public class ComponentProcessor implements Component {
 
 			if (locRecipe.hasFluidBiproducts()) {
 				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.outputTanks;
+				FluidTank[] outTanks = handler.getOutputTanks();
 				for (int i = 0; i < fluidBi.length; i++) {
 					outTanks[i + 1].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
 				}
 			}
 
-			handler.outputTanks[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
+			handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
 
-			FluidTank[] tanks = handler.inputTanks;
+			FluidTank[] tanks = handler.getInputTanks();
 			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
 			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
 			for (int i = 0; i < handler.tankCount(true); i++) {

@@ -3,8 +3,10 @@ package electrodynamics.prefab.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
@@ -20,16 +22,22 @@ import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private Component[] components = new Component[ComponentType.values().length];
@@ -257,11 +265,46 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 	}
 	
-	//TODO implement
-	public void onFluidChange() {
-		
+	public void onFluidTankChange(FluidTank tank) {
+		//hook method for now
 	}
 	
-	
+	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
+		ItemStack stack = player.getItemInHand(handIn);
+		if (stack.getItem() instanceof ItemUpgrade upgrade && hasComponent(ComponentType.Inventory)) {
+
+			ComponentInventory inv = getComponent(ComponentType.Inventory);
+			// null check for safety
+			if (inv != null && inv.upgrades() > 0) {
+				int upgradeIndex = inv.getUpgradeSlotStartIndex();
+				for (int i = 0; i < inv.upgrades(); i++) {
+					if (inv.canPlaceItem(upgradeIndex + i, stack)) {
+						ItemStack upgradeStack = inv.getItem(upgradeIndex + i);
+						if (upgradeStack.isEmpty()) {
+							inv.setItem(upgradeIndex + i, stack.copy());
+							stack.shrink(stack.getCount());
+							return InteractionResult.CONSUME;
+						} else if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
+							int room = upgradeStack.getMaxStackSize() - upgradeStack.getCount();
+							if (room > 0) {
+								int accepted = room > stack.getCount() ? stack.getCount() : room;
+								upgradeStack.grow(accepted);
+								stack.shrink(accepted);
+								return InteractionResult.CONSUME;
+							}
+						}
+					}
+				}
+			}
+
+		} else if (!(stack.getItem() instanceof IWrenchItem)) {
+			if (hasComponent(ComponentType.ContainerProvider)) {
+				player.openMenu(getComponent(ComponentType.ContainerProvider));
+			}
+			player.awardStat(Stats.INTERACT_WITH_FURNACE);
+			return InteractionResult.CONSUME;
+		}
+		return InteractionResult.PASS;
+	}
 
 }

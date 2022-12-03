@@ -9,7 +9,6 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -18,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
@@ -34,7 +34,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileCombustionChamber extends GenericTile implements IElectricGenerator {
+public class TileCombustionChamber extends GenericFluidTile implements IElectricGenerator {
+	
 	public static final int TICKS_PER_MILLIBUCKET = 200;
 	public static final int TANK_CAPACITY = 1000;
 	public Property<Boolean> running = property(new Property<Boolean>(PropertyType.Boolean, "running", false));
@@ -73,8 +74,8 @@ public class TileCombustionChamber extends GenericTile implements IElectricGener
 			output.update(worldPosition.relative(facing.getClockWise()));
 		}
 		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
-		FluidUtilities.drainItem(this, handler.inputTanks);
-		FluidTank tank = handler.inputTanks[0];
+		FluidUtilities.drainItem(this, handler.getInputTanks());
+		FluidTank tank = handler.getInputTanks()[0];
 		if (burnTime.get() <= 0) {
 			running.set(false);
 			if (tank.getFluidAmount() > 0) {

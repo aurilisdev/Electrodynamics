@@ -22,7 +22,7 @@ public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionCh
 		components.add(new ScreenComponentFluid(() -> {
 			TileCombustionChamber boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).inputTanks[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
 		}, this, 98, 18));

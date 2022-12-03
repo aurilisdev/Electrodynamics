@@ -30,7 +30,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 		Direction facing = tileEntityIn.getBlockState().getValue(GenericMachineBlock.FACING);
 		
 		FluidStack input = null;
-		for(FluidTank tank : multi.inputTanks) {
+		for(FluidTank tank : multi.getInputTanks()) {
 			if(!tank.isEmpty()) {
 				input = tank.getFluid();
 				break;
@@ -52,7 +52,7 @@ public class RenderFermentationPlant implements BlockEntityRenderer<TileFermenta
 		}
 		
 		FluidStack output = null;
-		for(FluidTank tank : multi.outputTanks) {
+		for(FluidTank tank : multi.getOutputTanks()) {
 			if(!tank.isEmpty()) {
 				output = tank.getFluid();
 				break;

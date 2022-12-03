@@ -44,14 +44,14 @@ public class ScreenFermentationPlant extends GenericScreen<ContainerFermentation
 		components.add(new ScreenComponentFluid(() -> {
 			TileFermentationPlant boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).inputTanks[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
 		}, this, 21, 18));
 		components.add(new ScreenComponentFluid(() -> {
 			TileFermentationPlant boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).outputTanks[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
 		}, this, 127, 18));
