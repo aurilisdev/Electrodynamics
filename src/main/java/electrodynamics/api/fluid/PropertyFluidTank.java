@@ -70,6 +70,7 @@ public class PropertyFluidTank extends FluidTank {
 	@Override
 	public PropertyFluidTank setCapacity(int capacity) {
 		this.capacityProperty.set(capacity);
+		onContentsChanged();
 		return this;
 	}
 
@@ -151,6 +152,7 @@ public class PropertyFluidTank extends FluidTank {
 
 	@Override
 	public void setFluid(FluidStack stack) {
+		onContentsChanged();
 		this.fluidStackProperty.set(stack);
 	}
 

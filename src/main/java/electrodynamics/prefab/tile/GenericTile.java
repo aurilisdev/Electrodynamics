@@ -269,6 +269,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		//hook method for now
 	}
 	
+	//This is ceded to the tile to allow for greater control with the use function
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(handIn);
 		if (stack.getItem() instanceof ItemUpgrade upgrade && hasComponent(ComponentType.Inventory)) {
