@@ -3,20 +3,17 @@ package electrodynamics.prefab.tile.components.type;
 import java.util.HashSet;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,7 +21,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -39,12 +35,8 @@ import net.minecraftforge.registries.ForgeRegistries;
  * @author skip999
  *
  */
-public class ComponentFluidHandlerSimple extends FluidTank implements IComponentFluidHandler {
+public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IComponentFluidHandler {
 
-	@Nullable
-	private GenericTile holder;
-	@Nullable
-	private Property<FluidTank> property;
 	@Nullable
 	public Direction[] inputDirections;
 	@Nullable
@@ -56,19 +48,16 @@ public class ComponentFluidHandlerSimple extends FluidTank implements IComponent
 
 	private HashSet<Fluid> validatorFluids = new HashSet<>();
 
-	public ComponentFluidHandlerSimple(int capacity, Predicate<FluidStack> validator) {
-		super(capacity, validator);
+	public ComponentFluidHandlerSimple(int capacity, Predicate<FluidStack> validator, GenericTile holder, String key) {
+		super(capacity, validator, holder, key);
 	}
 
-	public ComponentFluidHandlerSimple(int capacity) {
-		super(capacity);
+	public ComponentFluidHandlerSimple(int capacity, GenericTile holder, String key) {
+		super(capacity, holder, key);
 	}
-
-	public ComponentFluidHandlerSimple setProperty(@Nonnull GenericTile holder) {
-		this.holder = holder;
-		property = holder.property(
-				new Property<FluidTank>(PropertyType.FluidTank, "componentfluidhandlersimple", new FluidTank(capacity)));
-		return this;
+	
+	protected ComponentFluidHandlerSimple(ComponentFluidHandlerSimple other) {
+		super(other);
 	}
 
 	public ComponentFluidHandlerSimple setInputDirections(Direction... directions) {
@@ -109,17 +98,6 @@ public class ComponentFluidHandlerSimple extends FluidTank implements IComponent
 	public ComponentFluidHandlerSimple setValidFluidTags(TagKey<Fluid>...fluids) {
 		validFluidTags = fluids;
 		return this;
-	}
-
-	@Override
-	protected void onContentsChanged() {
-		if (property != null) {
-			property.set(this);
-			property.forceDirty();
-			if(holder != null) {
-				holder.onFluidTankChange(this);
-			}
-		}
 	}
 
 	@Override
@@ -164,16 +142,6 @@ public class ComponentFluidHandlerSimple extends FluidTank implements IComponent
 	}
 
 	@Override
-	public void saveToNBT(CompoundTag nbt) {
-		writeToNBT(nbt);
-	}
-
-	@Override
-	public void loadFromNBT(CompoundTag nbt) {
-		readFromNBT(nbt);
-	}
-
-	@Override
 	public void onLoad() {
 		if(validFluids != null) {
 			for(Fluid fluid : validFluids) {
@@ -193,12 +161,12 @@ public class ComponentFluidHandlerSimple extends FluidTank implements IComponent
 	}
 	
 	@Override
-	public FluidTank[] getInputTanks() {
+	public PropertyFluidTank[] getInputTanks() {
 		return toArray();
 	}
 
 	@Override
-	public FluidTank[] getOutputTanks() {
+	public PropertyFluidTank[] getOutputTanks() {
 		return toArray();
 	}
 
@@ -218,14 +186,14 @@ public class ComponentFluidHandlerSimple extends FluidTank implements IComponent
 		return ArrayUtils.contains(inputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
 	
-	public FluidTank[] toArray() {
-		return new FluidTank[] {this};
+	public PropertyFluidTank[] toArray() {
+		return new PropertyFluidTank[] {this};
 	}
 
 	private class InputTank extends ComponentFluidHandlerSimple {
 
 		public InputTank(ComponentFluidHandlerSimple property) {
-			super(property.capacity, property.validator);
+			super(property);
 		}
 
 		@Override
@@ -243,7 +211,7 @@ public class ComponentFluidHandlerSimple extends FluidTank implements IComponent
 	private class OutputTank extends ComponentFluidHandlerSimple {
 
 		public OutputTank(ComponentFluidHandlerSimple property) {
-			super(property.capacity, property.validator);
+			super(property);
 		}
 
 		@Override

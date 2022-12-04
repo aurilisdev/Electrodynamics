@@ -51,7 +51,7 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 		components.add(new ScreenComponentFluid(() -> {
 			TileChemicalMixer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
 		}, this, 127, 18));

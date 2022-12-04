@@ -58,6 +58,7 @@ public class Property<T> {
 	@Deprecated(forRemoval = false)
 	public void forceDirty() {
 		isDirty = true;
+		manager.setDirty();
 	}
 
 	public void clean() {
@@ -83,7 +84,7 @@ public class Property<T> {
 		this.set((T) val);
 	}
 
-	public void verify(Object updated) {
+	public void verify(T updated) {
 		if (value == null ? updated != null : !value.equals(updated)) {
 			isDirty = true;
 			manager.setDirty();
@@ -97,6 +98,11 @@ public class Property<T> {
 
 	public boolean shouldSave() {
 		return shouldSave;
+	}
+	
+	@Override
+	public String toString() {
+		return rawValue == null ? "null" : rawValue.toString();
 	}
 
 }

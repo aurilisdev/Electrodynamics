@@ -36,7 +36,7 @@ public class TileCreativeFluidSource extends GenericTile {
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(128000).setProperty(this).universalOutput());
+		addComponent(new ComponentFluidHandlerSimple(128000, this, "").universalOutput());
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.creativefluidsource).createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}

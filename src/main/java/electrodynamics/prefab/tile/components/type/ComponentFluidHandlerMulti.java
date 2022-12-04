@@ -27,7 +27,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
@@ -64,7 +63,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 	public ComponentFluidHandlerMulti setInputTanks(int count, int capacity) {
 		inputTanks = new PropertyFluidTank[count];
 		for(int i = 0; i < count; i++) {
-			inputTanks[i] = new PropertyFluidTank(capacity);
+			inputTanks[i] = new PropertyFluidTank(capacity, holder, "input" + i);
 		}
 		return this;
 	}
@@ -72,27 +71,13 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 	public ComponentFluidHandlerMulti setOutputTanks(int count, int capacity) {
 		outputTanks = new PropertyFluidTank[count];
 		for(int i = 0; i < count; i++) {
-			outputTanks[i] = new PropertyFluidTank(capacity);
+			outputTanks[i] = new PropertyFluidTank(capacity, holder, "output" + i);
 		}
 		return this;
 	}
 	
 	public ComponentFluidHandlerMulti setTanks(int inputCount, int outputCount, int capacity) {
 		return setInputTanks(inputCount, capacity).setOutputTanks(outputCount, capacity);
-	}
-	
-	public ComponentFluidHandlerMulti setProperties(GenericTile holder) {
-		if(inputTanks != null) {
-			for(int i = 0; i < inputTanks.length; i++) {
-				inputTanks[i].setProperty(holder, "input" + i);
-			}
-		}
-		if(outputTanks != null) {
-			for(int i = 0; i < outputTanks.length; i++) {
-				outputTanks[i].setProperty(holder, "output" + i);
-			}
-		}
-		return this;
 	}
 	
 	public ComponentFluidHandlerMulti setInputFluids(Fluid...fluids) {
@@ -154,6 +139,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 		return outputTanks[tank].getFluid();
 	}
 	
+	@Nullable
 	public PropertyFluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
 		if (isInput) {
 			for (PropertyFluidTank tank : inputTanks) {
@@ -178,7 +164,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 			}
 		}
 		
-		return new PropertyFluidTank(0);
+		return null;
 	}
 
 	public int getTankCapacity(int tank, boolean input) {
@@ -323,12 +309,12 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 	}
 	
 	@Override
-	public FluidTank[] getInputTanks() {
+	public PropertyFluidTank[] getInputTanks() {
 		return inputTanks;
 	}
 
 	@Override
-	public FluidTank[] getOutputTanks() {
+	public PropertyFluidTank[] getOutputTanks() {
 		return outputTanks;
 	}
 	

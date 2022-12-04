@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.FluidStack;
 
 public enum PropertyType {
 	Byte,
@@ -20,7 +20,7 @@ public enum PropertyType {
 	CompoundTag,
 	BlockPos,
 	InventoryItems,
-	FluidTank;
+	Fluidstack;
 
 	public void write(Property<?> prop, FriendlyByteBuf buf) {
 		Object val = prop.get();
@@ -57,10 +57,8 @@ public enum PropertyType {
 			ContainerHelper.saveAllItems(tag, list);
 			buf.writeNbt(tag);
 			break;
-		case FluidTank:
-			FluidTank tank = (FluidTank) prop.get();
-			buf.writeInt(tank.getCapacity());
-			buf.writeFluidStack(tank.getFluid());
+		case Fluidstack:
+			buf.writeFluidStack((FluidStack) prop.get());
 			break;
 		default:
 			break;
@@ -91,10 +89,8 @@ public enum PropertyType {
 			NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(buf.readNbt(), toBeFilled);
 			return toBeFilled;
-		case FluidTank:
-			FluidTank tank = new FluidTank(buf.readInt());
-			tank.setFluid(buf.readFluidStack());
-			return tank;
+		case Fluidstack:
+			return buf.readFluidStack();
 		default:
 			break;
 		}
@@ -138,9 +134,10 @@ public enum PropertyType {
 			tag.putInt(prop.getName() + "_size", list.size());
 			ContainerHelper.saveAllItems(tag, list);
 			break;
-		case FluidTank:
-			FluidTank tank = (FluidTank) prop.get();
-			tank.writeToNBT(tag);
+		case Fluidstack:
+			CompoundTag fluidTag = new CompoundTag();
+			((FluidStack) prop.get()).writeToNBT(fluidTag);
+			tag.put(prop.getName(), fluidTag);
 			break;
 		default:
 			break;
@@ -180,8 +177,8 @@ public enum PropertyType {
 			ContainerHelper.loadAllItems(tag, toBeFilled);
 			val = toBeFilled;
 			break;
-		case FluidTank:
-			val = new FluidTank(0).readFromNBT(tag);
+		case Fluidstack:
+			val = FluidStack.loadFluidStackFromNBT(tag.getCompound(prop.getName()));
 			break;
 		default:
 			break;

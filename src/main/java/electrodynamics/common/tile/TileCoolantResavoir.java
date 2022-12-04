@@ -26,7 +26,7 @@ public class TileCoolantResavoir extends GenericFluidTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(Constants.QUARRY_WATERUSAGE_PER_BLOCK * 1000).setProperty(this).setInputDirections(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST).setValidFluids(Fluids.WATER));
+		addComponent(new ComponentFluidHandlerSimple(Constants.QUARRY_WATERUSAGE_PER_BLOCK * 1000, this, "").setInputDirections(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST).setValidFluids(Fluids.WATER));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.coolantresavoir).createMenu((id, player) -> new ContainerCoolantResavoir(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}

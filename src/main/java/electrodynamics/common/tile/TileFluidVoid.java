@@ -27,7 +27,7 @@ public class TileFluidVoid extends GenericFluidTile {
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(128000).setInputDirections(Direction.NORTH, Direction.SOUTH,
+		addComponent(new ComponentFluidHandlerSimple(128000, this, "").setInputDirections(Direction.NORTH, Direction.SOUTH,
 				Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN));
 		addComponent(
 				new ComponentInventory(this).size(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));

@@ -44,4 +44,13 @@ public class PropertyManager {
 	public void setDirty() {
 		isDirty = true;
 	}
+	
+	@Override
+	public String toString() {
+		String string = "";
+		for(int i = 0; i < properties.size(); i++) {
+			string = string + i + ": " + properties.get(i).toString() + "\n";
+		}
+		return string;
+	}
 }

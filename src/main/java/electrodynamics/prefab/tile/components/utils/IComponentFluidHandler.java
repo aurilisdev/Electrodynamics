@@ -1,12 +1,12 @@
 package electrodynamics.prefab.tile.components.utils;
 
+import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.prefab.tile.components.Component;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public interface IComponentFluidHandler extends Component {
 
-	FluidTank[] getInputTanks();
+	PropertyFluidTank[] getInputTanks();
 	
-	FluidTank[] getOutputTanks();
+	PropertyFluidTank[] getOutputTanks();
 	
 }
