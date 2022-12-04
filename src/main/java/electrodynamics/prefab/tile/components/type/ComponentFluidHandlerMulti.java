@@ -29,6 +29,19 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
+
+/**
+ * This class is separate from ComponentFluidHandlerSimple as it has segregated
+ * input and output tanks. These tanks are then dispatched when the Capability 
+ * is requested. The only way to fill an output tank or drain an input tank
+ * is through internal tile logic. 
+ * 
+ * This class also allows for RecipeTypes to be used as filters, as Recipes 
+ * inherently have segregated inputs and outputs. 
+ * 
+ * @author skip999
+ *
+ */
 public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 	private GenericTile holder;

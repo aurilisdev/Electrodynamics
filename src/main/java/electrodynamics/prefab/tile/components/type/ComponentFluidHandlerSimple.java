@@ -24,13 +24,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * Extension of FluidTank allowing for simple fluid storage for one tank
+ * Extension of PropertyFluidTank implementing directional I/O and the Component system
  * 
- * This is a separate class because ComponentFluidHandlerMulti is geared towards
- * having distinct input and output tanks where as this only has one tank
+ * This is a separate class because ComponentFluidHandlerMulti is does not have 
+ * segregated input and output tanks. Instead it has a single tank that is used for 
+ * both functions. 
  * 
- * This class also has no concept of a RecipeType tied to it since recipes have distinct 
- * inputs and outputs
+ * This class also has no concept of a RecipeType tied to it since recipes have 
+ * segregated inputs and outputs. 
  * 
  * @author skip999
  *

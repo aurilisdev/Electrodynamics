@@ -153,6 +153,7 @@ public class FluidUtilities {
 		}
 	}
 
+	@Deprecated(since = "don't set a filter if you want to allow for all fluids")
 	public static Fluid[] getAllRegistryFluids() {
 		List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
 		Fluid[] fluids = new Fluid[list.size()];
