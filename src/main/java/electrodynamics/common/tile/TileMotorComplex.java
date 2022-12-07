@@ -52,28 +52,6 @@ public class TileMotorComplex extends GenericTile implements ITickableSoundTile 
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		speed.set(DEFAULT_SPEED);
-		powerMultiplier.set(1.0);
-		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		// comes out to roughly 128 kW; max speed still needs to be obtainable in survival...
-		for (ItemStack stack : inv.getUpgradeContents()) {
-			if (!stack.isEmpty()) {
-				for (int i = 0; i < stack.getCount(); i++) {
-					switch (((ItemUpgrade) stack.getItem()).subtype) {
-					case basicspeed:
-						speed.set(Math.max(speed.set(speed.get() * 0.8).get(), MAX_SPEED));
-						powerMultiplier.set(powerMultiplier.get() * 3);
-						break;
-					case advancedspeed:
-						speed.set(Math.max(speed.set(speed.get() * 0.5).get(), MAX_SPEED));
-						powerMultiplier.set(powerMultiplier.get() * 2);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-		}
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 
 		if (electro.getJoulesStored() >= Constants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier.get()) {
@@ -88,6 +66,33 @@ public class TileMotorComplex extends GenericTile implements ITickableSoundTile 
 		if (shouldPlaySound() && !isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), this, true);
+		}
+	}
+	
+	@Override
+	public void onInventoryChange(ComponentInventory inv, int slot) {
+		super.onInventoryChange(inv, slot);
+		if(inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
+			speed.set(DEFAULT_SPEED);
+			powerMultiplier.set(1.0);
+			for (ItemStack stack : inv.getUpgradeContents()) {
+				if (!stack.isEmpty()) {
+					for (int i = 0; i < stack.getCount(); i++) {
+						switch (((ItemUpgrade) stack.getItem()).subtype) {
+						case basicspeed:
+							speed.set(Math.max(speed.set(speed.get() * 0.8).get(), MAX_SPEED));
+							powerMultiplier.set(powerMultiplier.get() * 3);
+							break;
+						case advancedspeed:
+							speed.set(Math.max(speed.set(speed.get() * 0.5).get(), MAX_SPEED));
+							powerMultiplier.set(powerMultiplier.get() * 2);
+							break;
+						default:
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 
