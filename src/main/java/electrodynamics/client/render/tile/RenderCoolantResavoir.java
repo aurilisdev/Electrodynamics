@@ -10,12 +10,11 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantResavoir> {
+public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResavoir> {
 
 	private static final float MIN_X = 1.0F / 16.0F;
 	private static final float MAX_X = 15.0F / 16.0F;
@@ -25,6 +24,7 @@ public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantRes
 	private static final float MAX_Z = 15.0F / 16.0F;
 
 	public RenderCoolantResavoir(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

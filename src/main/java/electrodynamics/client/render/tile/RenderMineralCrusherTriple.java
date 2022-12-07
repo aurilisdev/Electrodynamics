@@ -13,15 +13,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderMineralCrusherTriple implements BlockEntityRenderer<TileMineralCrusherTriple> {
+public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineralCrusherTriple> {
+	
 	public RenderMineralCrusherTriple(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class RenderMineralCrusherTriple implements BlockEntityRenderer<TileMiner
 		double ticks = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks.get() > 0 ? partialTicks : 0)) % 20;
 		double progress = ticks < 10.010392739868964 ? Math.sin(0.05 * Math.PI * ticks) : (Math.sin(0.29 * Math.PI * ticks) + 1) / 1.3;
 		matrixStackIn.translate(0, progress / 8.0 - 1 / 8.0, 0);
-		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALCRUSHERTRIPLEHANDLE);
+		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_MINERALCRUSHERTRIPLEHANDLE);
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);

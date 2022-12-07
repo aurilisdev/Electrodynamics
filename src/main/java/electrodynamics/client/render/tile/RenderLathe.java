@@ -13,13 +13,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderLathe implements BlockEntityRenderer<TileLathe> {
+public class RenderLathe extends AbstractTileRenderer<TileLathe> {
+	
 	public RenderLathe(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class RenderLathe implements BlockEntityRenderer<TileLathe> {
 		}
 
 		matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-		BakedModel lathe = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_LATHESHAFT);
+		BakedModel lathe = getModel(ClientRegister.MODEL_LATHESHAFT);
 		RenderingUtils.renderModel(lathe, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputContents().get(0).get(0);

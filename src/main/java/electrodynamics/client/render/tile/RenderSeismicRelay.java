@@ -7,11 +7,10 @@ import electrodynamics.common.tile.TileSeismicRelay;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 
-public class RenderSeismicRelay implements BlockEntityRenderer<TileSeismicRelay> {
+public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
 	private static final AABB LEFT = new AABB(0.1875F, 0.9375F, 0.1875F, 0.8125F, 0.98F, 0.3125F);
 	private static final AABB UP = new AABB(0.1875F, 0.9375F, 0.3125F, 0.3125F, 0.98F, 0.6875F);
@@ -19,6 +18,7 @@ public class RenderSeismicRelay implements BlockEntityRenderer<TileSeismicRelay>
 	private static final AABB DOWN = new AABB(0.6875F, 0.9375F, 0.3125F, 0.8125F, 0.98F, 0.6875F);
 
 	public RenderSeismicRelay(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

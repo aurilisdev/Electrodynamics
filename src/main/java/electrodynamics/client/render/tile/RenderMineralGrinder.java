@@ -6,21 +6,21 @@ import com.mojang.math.Quaternion;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.TileMineralGrinder;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
-public class RenderMineralGrinder implements BlockEntityRenderer<TileMineralGrinder> {
+public class RenderMineralGrinder extends AbstractTileRenderer<TileMineralGrinder> {
+	
 	public RenderMineralGrinder(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
 	public void render(TileMineralGrinder tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		double progress = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks.get() > 0 ? partialTicks : 0)) * 10;
-		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MINERALGRINDERWHEEL);
+		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_MINERALGRINDERWHEEL);
 		matrixStackIn.pushPose();
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0.0, 7.0 / 16.0, 2.5 / 16.0);

@@ -10,12 +10,11 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RenderTankGeneric implements BlockEntityRenderer<GenericTileTank> {
+public class RenderTankGeneric extends AbstractTileRenderer<GenericTileTank> {
 
 	private static final float MIN_X = 2.0F / 16.0F;
 	private static final float MAX_X = 14.0F / 16.0F;
@@ -25,6 +24,7 @@ public class RenderTankGeneric implements BlockEntityRenderer<GenericTileTank> {
 	private static final float MAX_Z = 14.0F / 16.0F;
 
 	public RenderTankGeneric(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

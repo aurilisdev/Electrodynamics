@@ -11,14 +11,15 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RenderCombustionChamber implements BlockEntityRenderer<TileCombustionChamber> {
+public class RenderCombustionChamber extends AbstractTileRenderer<TileCombustionChamber> {
+	
 	public RenderCombustionChamber(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

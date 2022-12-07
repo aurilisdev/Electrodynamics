@@ -14,24 +14,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixer> {
+public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer> {
 	
 	public RenderChemicalMixer(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 	
-	
-
 	@Override
 	public void render(TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
+		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
 		matrixStackIn.pushPose();
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0, 1 / 16.0, 0);
@@ -39,7 +37,7 @@ public class RenderChemicalMixer implements BlockEntityRenderer<TileChemicalMixe
 		matrixStackIn.popPose();
 		
 		matrixStackIn.pushPose();
-		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
+		ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 		matrixStackIn.mulPose(new Quaternion(0, (tileEntityIn.clientTicks + (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? partialTicks : 0)) * 10, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);

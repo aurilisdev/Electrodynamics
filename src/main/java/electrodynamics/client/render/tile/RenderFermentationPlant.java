@@ -11,15 +11,16 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class RenderFermentationPlant implements BlockEntityRenderer<TileFermentationPlant> {
+public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentationPlant> {
+	
 	public RenderFermentationPlant(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
