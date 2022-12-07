@@ -2,13 +2,14 @@ package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.particle.ParticleAPI;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -24,14 +25,15 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileMineralCrusher extends GenericTile {
+public class TileMineralCrusher extends GenericTile implements ITickableSoundTile {
 	public long clientRunningTicks = 0;
+	
+	private boolean isSoundPlaying = false;
 
 	public TileMineralCrusher(BlockPos pos, BlockState state) {
 		this(SubtypeMachine.mineralcrusher, 0, pos, state);
@@ -70,7 +72,7 @@ public class TileMineralCrusher extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
+		boolean has = shouldPlaySound();
 		if (has) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			if (level.random.nextDouble() < 0.15) {
@@ -81,9 +83,7 @@ public class TileMineralCrusher extends GenericTile {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 			}
 			double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
-			if (progress == 1) {
-				SoundAPI.playSound(ElectrodynamicsSounds.SOUND_MINERALCRUSHER.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
-			} else if (progress < 0.3) {
+			if (progress < 0.3) {
 				for (int i = 0; i < 5; i++) {
 					double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
 					double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
@@ -105,6 +105,20 @@ public class TileMineralCrusher extends GenericTile {
 			}
 			clientRunningTicks++;
 		}
+		if (has && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MINERALCRUSHER.get(), this, true);
+		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
 	}
 
 }

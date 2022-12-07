@@ -1,12 +1,13 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -20,7 +21,6 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -30,8 +30,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileElectricPump extends GenericTile {
+public class TileElectricPump extends GenericTile implements ITickableSoundTile {
+	
 	private Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating", false));
+	
+	private boolean isSoundPlaying = false;
 
 	public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
@@ -65,16 +68,29 @@ public class TileElectricPump extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (isGenerating.get()) {
+		if (shouldPlaySound()) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
 			level.addParticle(ParticleTypes.BUBBLE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() - level.random.nextDouble() * 0.2 - .1, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-			if (tickable.getTicks() % 200 == 0) {
-				SoundAPI.playSound(ElectrodynamicsSounds.SOUND_ELECTRICPUMP.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
-			}
+		}
+		
+		if (shouldPlaySound() && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTRICPUMP.get(), this, true);
 		}
 	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return isGenerating.get();
+	}
+	
 
 	static {
 		VoxelShape shape = Shapes.empty();

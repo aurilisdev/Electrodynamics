@@ -1,7 +1,6 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
@@ -9,6 +8,8 @@ import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -21,19 +22,20 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileMotorComplex extends GenericTile {
+public class TileMotorComplex extends GenericTile implements ITickableSoundTile {
 
 	// 10 ticks per block
 	public static final double DEFAULT_SPEED = Math.min(Constants.MIN_QUARRYBLOCKS_PER_TICK, 100);
 	// 1 tick per block
 	public static final double MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
+	
+	private boolean isSoundPlaying = false;
 
 	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed", 1.0));
 	public Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier", 1.0));
@@ -83,9 +85,20 @@ public class TileMotorComplex extends GenericTile {
 	}
 
 	private void tickClient(ComponentTickable tick) {
-		if (tick.getTicks() % 20 == 0 && isPowered.get()) {
-			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), SoundSource.BLOCKS, 1.0F, 1.0F, worldPosition);
+		if (shouldPlaySound() && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), this, true);
 		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return isPowered.get();
 	}
 
 	static {

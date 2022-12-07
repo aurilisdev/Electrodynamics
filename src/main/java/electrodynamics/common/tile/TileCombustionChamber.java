@@ -1,7 +1,6 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.network.FluidUtilities;
@@ -9,6 +8,8 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -16,6 +17,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -28,13 +30,12 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileCombustionChamber extends GenericFluidTile implements IElectricGenerator {
+public class TileCombustionChamber extends GenericFluidTile implements IElectricGenerator, ITickableSoundTile {
 	
 	public static final int TICKS_PER_MILLIBUCKET = 200;
 	public static final int TANK_CAPACITY = 1000;
@@ -46,6 +47,8 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 
 	private static TagKey<Fluid>[] FUELS;
+	
+	private boolean isSoundPlaying = false;
 
 	static {
 		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.HYDROGEN, 1000, 1);
@@ -100,9 +103,21 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 		if (running.get() && level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble(), worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
-		if (running.get() && tickable.getTicks() % 100 == 0) {
-			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_COMBUSTIONCHAMBER.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+		
+		if (shouldPlaySound() && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_COMBUSTIONCHAMBER.get(), this, true);
 		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
 	}
 
 	@Override

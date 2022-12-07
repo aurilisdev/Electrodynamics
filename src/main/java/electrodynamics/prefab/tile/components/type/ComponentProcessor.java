@@ -90,9 +90,11 @@ public class ComponentProcessor implements Component {
 			}
 			if (holder.hasComponent(ComponentType.Electrodynamic)) {
 				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+				//TODO implement recipe usage and operating times
 				electro.joules(electro.getJoulesStored() - usage.get() * operatingSpeed.get());
 			}
 		} else if (operatingTicks.get() > 0) {
+			//TODO look at keeping progress if the recipe is unchanged
 			operatingTicks.set(0.0);
 			if (failed != null) {
 				failed.accept(this);

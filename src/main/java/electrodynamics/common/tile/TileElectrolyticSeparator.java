@@ -1,13 +1,14 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -23,20 +24,21 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileElectrolyticSeparator extends GenericFluidTile {
+public class TileElectrolyticSeparator extends GenericFluidTile implements ITickableSoundTile {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;
 
 	private static final Direction OXYGEN_DIRECTION = Direction.EAST;
 	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
+	
+	private boolean isSoundPlaying = false;
 
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
@@ -58,17 +60,26 @@ public class TileElectrolyticSeparator extends GenericFluidTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
-		if (running) {
-			if (clientTicks >= 40) {
-				clientTicks = 0;
-				SoundAPI.playSound(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR.get(), SoundSource.BLOCKS, 5, .75f, worldPosition);
-			}
+		if (shouldPlaySound()) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
-			clientTicks++;
 		}
+		
+		if (shouldPlaySound() && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR.get(), this, true);
+		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
 	}
 
 	static {

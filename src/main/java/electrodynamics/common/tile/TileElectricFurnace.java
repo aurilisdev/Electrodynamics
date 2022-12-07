@@ -3,7 +3,6 @@ package electrodynamics.common.tile;
 import java.util.List;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
@@ -11,6 +10,8 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceT
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -29,18 +30,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileElectricFurnace extends GenericTile {
+public class TileElectricFurnace extends GenericTile implements ITickableSoundTile {
 
 	protected SmeltingRecipe cachedRecipe = null;
 	
 	private List<SmeltingRecipe> cachedRecipes = null;
+	
+	private boolean isSoundPlaying = false;
 
 	public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
 		this(SubtypeMachine.electricfurnace, 0, worldPosition, blockState);
@@ -143,7 +145,7 @@ public class TileElectricFurnace extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
+		boolean has = shouldPlaySound();
 		if (has && level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
@@ -152,9 +154,20 @@ public class TileElectricFurnace extends GenericTile {
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
-		if (has && tickable.getTicks() % 200 == 0) {
-			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+		if (has && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
 	}
 	
 	private SmeltingRecipe getMatchedRecipe(ItemStack stack) {

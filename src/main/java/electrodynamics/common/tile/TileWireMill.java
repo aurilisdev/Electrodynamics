@@ -1,7 +1,6 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
@@ -9,6 +8,8 @@ import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDoub
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -24,13 +25,15 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileWireMill extends GenericTile {
+public class TileWireMill extends GenericTile implements ITickableSoundTile {
+	
+	private boolean isSoundPlaying = false;
+	
 	public TileWireMill(BlockPos worldPosition, BlockState blockState) {
 		this(SubtypeMachine.wiremill, 0, worldPosition, blockState);
 	}
@@ -67,15 +70,26 @@ public class TileWireMill extends GenericTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
+		boolean has = shouldPlaySound();
 		if (has) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.5 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
-			if (tickable.getTicks() % 200 == 0) {
-				SoundAPI.playSound(ElectrodynamicsSounds.SOUND_HUM.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
-			}
 		}
+		if (has && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
+		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
 	}
 
 	static {
