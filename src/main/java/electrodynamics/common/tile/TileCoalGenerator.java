@@ -51,13 +51,16 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState, 1.0);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient).tickCommon(this::tickCommon).tickServer(this::tickServer));
+		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
 		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if (burnTime.get() > 0) {
+			burnTime.set(burnTime.get() - 1);
+		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(direction.getDirection().getOpposite()));
@@ -84,12 +87,6 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		}
 		heat.rangeParameterize(27, 3000, burnTime.get() > 0 ? 3000 : 27, heat.getValue().get(), 600).flush();
 		currentOutput = getProduced();
-	}
-
-	protected void tickCommon(ComponentTickable tickable) {
-		if (burnTime.get() > 0) {
-			burnTime.set(burnTime.get() - 1);
-		}
 	}
 
 	protected void tickClient(ComponentTickable tickable) {

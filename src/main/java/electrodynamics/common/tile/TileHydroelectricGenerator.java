@@ -89,7 +89,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 			}
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		if (isGenerating.get() == Boolean.TRUE && output.valid()) {
+		if (isGenerating.get() && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), facing, getProduced(), false);
 		}
 	}
@@ -100,7 +100,10 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (isGenerating.get() && level.random.nextDouble() < 0.3) {
+		if(!shouldPlaySound()) {
+			return;
+		}
+		if (level.random.nextDouble() < 0.3) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
 			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0.2D : 1.2D) : d4;
@@ -108,7 +111,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0.2D : 1.2D) : d4;
 			level.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
-		if (shouldPlaySound() && !isSoundPlaying) {
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HYDROELECTRICGENERATOR.get(), this, true);
 		}

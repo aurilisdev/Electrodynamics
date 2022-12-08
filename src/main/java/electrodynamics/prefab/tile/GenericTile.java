@@ -235,6 +235,15 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public boolean isPoweredByRedstone() {
 		return level.getDirectSignalTo(worldPosition) > 0;
 	}
+	
+	public boolean isProcessorActive() {
+		for(ComponentProcessor pr : processors) {
+			if(pr != null && pr.operatingTicks.get() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
 		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);

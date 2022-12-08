@@ -145,8 +145,10 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = shouldPlaySound();
-		if (has && level.random.nextDouble() < 0.15) {
+		if(!isProcessorActive()) {
+			return;
+		}
+		if (level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
 			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
@@ -154,7 +156,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
-		if (has && !isSoundPlaying) {
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
@@ -167,7 +169,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 
 	@Override
 	public boolean shouldPlaySound() {
-		return getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
+		return isProcessorActive();
 	}
 	
 	private SmeltingRecipe getMatchedRecipe(ItemStack stack) {

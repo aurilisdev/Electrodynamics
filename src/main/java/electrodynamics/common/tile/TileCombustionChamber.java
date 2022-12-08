@@ -17,7 +17,6 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -100,11 +99,15 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (running.get() && level.random.nextDouble() < 0.15) {
+		if(!running.get()) {
+			return;
+		}
+		
+		if (level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble(), worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
 		
-		if (shouldPlaySound() && !isSoundPlaying) {
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_COMBUSTIONCHAMBER.get(), this, true);
 		}
@@ -117,7 +120,7 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 
 	@Override
 	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
+		return running.get();
 	}
 
 	@Override

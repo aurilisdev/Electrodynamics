@@ -26,8 +26,7 @@ import net.minecraft.world.phys.AABB;
 public class TileChemicalMixer extends GenericFluidTile {
 	
 	public static final int MAX_TANK_CAPACITY = 5000;
-	public long clientTicks = 0;
-
+	
 	public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
@@ -56,7 +55,6 @@ public class TileChemicalMixer extends GenericFluidTile {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
-			clientTicks++;
 		}
 	}
 

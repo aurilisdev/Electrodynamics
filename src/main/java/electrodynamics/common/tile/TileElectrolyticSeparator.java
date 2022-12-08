@@ -60,13 +60,14 @@ public class TileElectrolyticSeparator extends GenericFluidTile implements ITick
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (shouldPlaySound()) {
-			if (level.random.nextDouble() < 0.15) {
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-			}
+		if (!shouldPlaySound()) {
+			return;
+		}
+		if (level.random.nextDouble() < 0.15) {
+			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
 		
-		if (shouldPlaySound() && !isSoundPlaying) {
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR.get(), this, true);
 		}

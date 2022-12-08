@@ -72,40 +72,42 @@ public class TileMineralCrusher extends GenericTile implements ITickableSoundTil
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = shouldPlaySound();
-		if (has) {
-			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-			if (level.random.nextDouble() < 0.15) {
-				double d4 = level.random.nextDouble();
-				double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
-				double d6 = level.random.nextDouble();
-				double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
+		if(!isProcessorActive()) {
+			return;
+		}
+
+		Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (level.random.nextDouble() < 0.15) {
+			double d4 = level.random.nextDouble();
+			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
+			double d6 = level.random.nextDouble();
+			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
+			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
+		}
+		double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
+		if (progress < 0.3) {
+			for (int i = 0; i < 5; i++) {
+				double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+				double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.4, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D);
 			}
-			double progress = Math.sin(0.05 * Math.PI * (clientRunningTicks % 20));
-			if (progress < 0.3) {
-				for (int i = 0; i < 5; i++) {
-					double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-					double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.4, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D);
-				}
-				int amount = getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? 2 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
-				for (int in = 0; in < amount; in++) {
-					ComponentInventory inv = getComponent(ComponentType.Inventory);
-					ItemStack stack = inv.getInputContents().get(getProcessor(in).getProcessorNumber()).get(0);
-					if (stack.getItem() instanceof BlockItem it) {
-						Block block = it.getBlock();
-						for (int i = 0; i < 5; i++) {
-							double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-							double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-							ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.4, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D, block.defaultBlockState(), worldPosition);
-						}
+			int amount = getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? 2 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
+			for (int in = 0; in < amount; in++) {
+				ComponentInventory inv = getComponent(ComponentType.Inventory);
+				ItemStack stack = inv.getInputContents().get(getProcessor(in).getProcessorNumber()).get(0);
+				if (stack.getItem() instanceof BlockItem it) {
+					Block block = it.getBlock();
+					for (int i = 0; i < 5; i++) {
+						double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+						double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+						ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2, worldPosition.getY() + 0.4, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D, 0.0D, block.defaultBlockState(), worldPosition);
 					}
 				}
 			}
-			clientRunningTicks++;
 		}
-		if (has && !isSoundPlaying) {
+		clientRunningTicks++;
+		
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MINERALCRUSHER.get(), this, true);
 		}
@@ -118,7 +120,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSoundTil
 
 	@Override
 	public boolean shouldPlaySound() {
-		return getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
+		return isProcessorActive();
 	}
 
 }

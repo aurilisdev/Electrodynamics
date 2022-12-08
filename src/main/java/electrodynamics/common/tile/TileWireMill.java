@@ -70,13 +70,15 @@ public class TileWireMill extends GenericTile implements ITickableSoundTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean has = shouldPlaySound();
-		if (has) {
-			if (level.random.nextDouble() < 0.15) {
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.5 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-			}
+		if(!isProcessorActive()) {
+			return;
 		}
-		if (has && !isSoundPlaying) {
+
+		if (level.random.nextDouble() < 0.15) {
+			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.5 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
+		}
+		
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
@@ -89,7 +91,7 @@ public class TileWireMill extends GenericTile implements ITickableSoundTile {
 
 	@Override
 	public boolean shouldPlaySound() {
-		return getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() > 0 : getType() == ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() ? getProcessor(0).operatingTicks.get() + getProcessor(1).operatingTicks.get() + getProcessor(2).operatingTicks.get() > 0 : getProcessor(0).operatingTicks.get() > 0;
+		return isProcessorActive();
 	}
 
 	static {

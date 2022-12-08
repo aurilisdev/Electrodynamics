@@ -58,19 +58,20 @@ public class TileLathe extends GenericTile implements ITickableSoundTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (getProcessor(0).operatingTicks.get() > 0) {
-			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-			if (level.random.nextDouble() < 0.10) {
-				for (int i = 0; i < 5; i++) {
-					double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-					double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
-					ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2,
-							worldPosition.getY() + 0.7, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D,
-							0.0D, 0.0D, Blocks.IRON_BLOCK.defaultBlockState(), worldPosition);
-				}
+		if (!isProcessorActive()) {
+			return;
+		}
+		Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (level.random.nextDouble() < 0.10) {
+			for (int i = 0; i < 5; i++) {
+				double d4 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+				double d6 = level.random.nextDouble() * 4.0 / 16.0 + 0.5 - 2.0 / 16.0;
+				ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4 + direction.getStepX() * 0.2,
+						worldPosition.getY() + 0.7, worldPosition.getZ() + d6 + direction.getStepZ() * 0.2, 0.0D, 0.0D,
+						0.0D, Blocks.IRON_BLOCK.defaultBlockState(), worldPosition);
 			}
 		}
-		if (shouldPlaySound() && !isSoundPlaying) {
+		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_LATHEPLAYING.get(), this, true);
 		}
@@ -83,7 +84,7 @@ public class TileLathe extends GenericTile implements ITickableSoundTile {
 
 	@Override
 	public boolean shouldPlaySound() {
-		return getProcessor(0).operatingTicks.get() > 0;
+		return isProcessorActive();
 	}
 
 	static {
